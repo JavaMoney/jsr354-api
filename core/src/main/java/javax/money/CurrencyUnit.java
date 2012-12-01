@@ -64,7 +64,16 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit>, Serializable {
      * @return the three digit numeric currency code, empty is no code, never null
      */
     //public String getNumeric3Code();
-
+    
+    /**
+     * Gets the name that is suitable for displaying this currency for
+     * the default locale.  If there is no suitable display name found
+     * for the default locale, the ISO 4217 currency code is returned.
+     *
+     * @return the display name of this currency for the default locale
+     */
+    public String getDisplayName();
+    
     /**
      * Gets the number of decimal places typically used by this currency.
      * <p>

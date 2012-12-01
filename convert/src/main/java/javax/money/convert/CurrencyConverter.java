@@ -25,9 +25,9 @@ import javax.money.CurrencyUnit;
  * </p>
  * 
  * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
- * @version 0.2.3
+ * @version 0.2.4
  */
-public interface CurrencyConverter<T> extends ExchangeRateProvider, Formattable {
+public interface CurrencyConverter<T> extends ExchangeRateProvider<T>, Formattable {
 
 
 
@@ -63,7 +63,7 @@ public interface CurrencyConverter<T> extends ExchangeRateProvider, Formattable 
 
 	public boolean isIdentity();
 
-	public ExchangeRate getExchangeRate();
+	public ExchangeRate<T> getExchangeRate();
 
 	public void formatTo(Formatter fmt, int f, int width, int precision);
 }

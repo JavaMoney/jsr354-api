@@ -26,6 +26,8 @@ package java.util.money;
  *
  */
 
+import static java.math.BigDecimal.ZERO;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -163,7 +165,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * @param amountMajor  the amount getInstance money in the major division getInstance the currency
      * @return the new instance, never null
      */
-    public static Money ofMajor(CurrencyUnit currency, long amountMajor) {
+    public static Money getInstanceMajor(CurrencyUnit currency, long amountMajor) {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -181,7 +183,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * @param amountMinor  the amount getInstance money in the minor division getInstance the currency
      * @return the new instance, never null
      */
-    public static Money ofMinor(CurrencyUnit currency, long amountMinor) {
+    public static Money getInstanceMinor(CurrencyUnit currency, long amountMinor) {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -346,18 +348,6 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     	return null;
     }
 
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the currency.
-     * 
-     * @return the currency, never null
-     */
-    public CurrencyUnit getCurrencyUnit() {
-    	// TODO Not Implemented yet
-    	return null;
-    }
-
-    //-----------------------------------------------------------------------
     /**
      * Returns a copy getInstance this monetary value with the specified currency.
      * <p>
@@ -396,7 +386,6 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     	return null;
     }
 
-    //-----------------------------------------------------------------------
     /**
      * Gets the scale getInstance the {@code BigDecimal} amount.
      * <p>
@@ -413,8 +402,17 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     	// TODO Not Implemented yet
     	return 0;
     }
+    
+    /**
+     * Gets the currency.
+     * 
+     * @return the currency, never null
+     */
+	@Override
+	public CurrencyUnit getCurrency() {
+		return currency;
+	}
 
-    //-----------------------------------------------------------------------
     /**
      * Gets the amount.
      * <p>
@@ -423,6 +421,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * 
      * @return the amount, never null
      */
+	@Override
     public BigDecimal getAmount() {
     	return amount;
     }
@@ -540,15 +539,13 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     	return 0;
     }
 
-    //-----------------------------------------------------------------------
     /**
      * Checks if the amount is zero.
      * 
      * @return true if the amount is zero
      */
     public boolean isZero() {
-    	// TODO Not Implemented yet
-    	return false;
+    	return ZERO.equals(amount);
     }
 
     /**
@@ -1105,7 +1102,6 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     	return null;
     }
 
-    //-----------------------------------------------------------------------
     /**
      * Returns a copy getInstance this monetary value with the amount negated.
      * <p>
@@ -1114,8 +1110,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * @return the new instance with the amount negated, never null
      */
     public Money negated() {
-    	// TODO Not Implemented yet
-    	return null;
+    	return getInstance(currency, amount.negate());
     }
 
     /**
@@ -1173,10 +1168,10 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * @throws IllegalArgumentException if the conversion multiplier is negative
      * @throws ArithmeticException if the rounding fails
      */
-    public Money convertedTo(CurrencyUnit currency, BigDecimal conversionMultipler, RoundingMode roundingMode) {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+//    public Money convertedTo(CurrencyUnit currency, BigDecimal conversionMultipler, RoundingMode roundingMode) {
+//    	// TODO Not Implemented yet
+//    	return null;
+//    }
 
     //-----------------------------------------------------------------------
     /**
@@ -1298,19 +1293,8 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
 	@Override
-	public CurrencyUnit getCurrency() {
-		return currency;
-	}
-
-	@Override
-	public BigDecimal getAmout() {
-		return amount;
-	}
-
-	@Override
 	public int compareTo(Monetary<BigDecimal> o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
 }

@@ -24,7 +24,7 @@ public interface Monetary<T> extends Comparable<Monetary<T>> {
      * 
      * @return the amount, never null
      */
-    public T getAmout();
+    public T getAmount();
     
     /**
      * Gets the scale of the {@code T} amount.

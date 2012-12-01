@@ -102,7 +102,7 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 	public BigCurrencyConverter(CurrencyUnit source, Money target,
 			BigDecimal factor) {
 		if (target instanceof Monetary) {
-			rate = new ExchangeRate<BigDecimal>(source, target.getCurrencyUnit(),
+			rate = new ExchangeRate<BigDecimal>(source, target.getCurrency(),
 					factor);
 		} else {
 			CurrencyUnit defCurrency = Currency.getInstance(Locale.getDefault());

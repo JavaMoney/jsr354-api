@@ -22,7 +22,7 @@ package java.util.money;
  *
  *
  *
- *
+ * TODO Package should be java.util, unless otherwise preferred. Stub for OpenJDK class
  *
  */
 

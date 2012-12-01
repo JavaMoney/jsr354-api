@@ -22,7 +22,7 @@ package java.util.money;
  *
  *
  *
- *
+ * TODO Package should be java.util, this is a stub for the equivalent OpenJDK class
  */
 
 import java.io.BufferedInputStream;

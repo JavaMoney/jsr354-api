@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.*;
@@ -74,7 +75,7 @@ import sun.util.resources.OpenListResourceBundle;
  * @since 1.4
  */
 @SuppressWarnings("restriction")
-public final class Currency implements CurrencyUnit {
+public final class Currency implements CurrencyUnit, Serializable {
 
     private static final long serialVersionUID = -158308464356906721L;
 

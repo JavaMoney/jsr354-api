@@ -1,5 +1,5 @@
 /**
- * 
+ * JSR 354: Money and Currency API
  */
 package javax.money;
 

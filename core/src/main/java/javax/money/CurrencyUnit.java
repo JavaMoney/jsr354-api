@@ -15,7 +15,6 @@
  */
 package javax.money;
 
-import java.io.Serializable;
 import java.util.Locale;
 
 
@@ -33,7 +32,7 @@ import java.util.Locale;
  * @author Werner Keil
  * @author Stephen Colebourne
  */
-public interface CurrencyUnit extends Comparable<CurrencyUnit>, Serializable {
+public interface CurrencyUnit extends Comparable<CurrencyUnit> {
 
 
     //-----------------------------------------------------------------------

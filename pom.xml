@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>javax.money</groupId>
+	<artifactId>jsr354</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<name>Java Money and Currency API</name>
+	<url>http://java.net/projects/javamoney</url>
+	<packaging>pom</packaging>
+	<modules>
+		<module>core</module>
+		<module>format</module>
+		<module>convert</module>
+		<!--  module>jdk-stub</module -->
+	</modules>
+</project>

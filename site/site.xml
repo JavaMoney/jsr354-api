@@ -2,12 +2,12 @@
 <project name="Joda-Money">
   <publishDate position="navigation-bottom" format="yyyy-MM-dd"/>
   <bannerLeft>
-    <name>Joda.org</name>
+    <name>JCP.org</name>
     <!--src>images/joda.png</src-->
     <href>http://joda.sourceforge.net/</href>
   </bannerLeft>
   <bannerRight>
-    <name>Joda Money</name>
+    <name>Java Money</name>
     <!--src>images/jodamoney.png</src-->
     <href>http://joda-money.sourceforge.net/</href>
   </bannerRight>
@@ -24,22 +24,14 @@
     </menu>
 
     <menu name="Development">
-      <item name="GitHub (Source code)" href="https://github.com/JodaOrg/joda-money"/>
-      <item name="Sourceforge" href="http://sourceforge.net/projects/joda-money/"/>
+      <item name="GitHub (Source code)" href="https://github.com/JavaMoney/javamoney"/>
+      <item name="Java.net" href="http://java.net/projects/javamoney/"/>
       <item name="Test results" href="surefire-report.html"/>
       <item name="Test coverage" href="/cobertura/index.html"/>
       <item name="Mailing lists" href="mail-lists.html"/>
       <item name="Tasks" href="tasks.html"/>
       <!--item name="Subversion" href="http://joda-money.svn.sourceforge.net/viewvc/joda-money/JodaMoney/trunk/"/-->
       <item name="Javadoc (Latest)" href="apidocs/index.html"/>
-    </menu>
-
-    <menu name="Joda">
-      <item name="Joda home" href="http://joda.sourceforge.net"/>
-      <item name="Beans" href="http://joda-beans.sourceforge.net/index.html"/>
-      <item name="Convert" href="http://joda-convert.sourceforge.net/index.html"/>
-      <item name="Primitives" href="http://joda-primitives.sourceforge.net/index.html"/>
-      <item name="Time" href="http://joda-time.sourceforge.net/index.html"/>
     </menu>
 
     <menu ref="reports"/>

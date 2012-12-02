@@ -13,6 +13,18 @@
 		<module>convert</module>
 		<!--  module>jdk-stub</module -->
 	</modules>
+	
+	  <licenses>
+	     <license>
+            <name>Spec</name>
+            <url>LICENSE.txt</url>
+        </license>
+        <license>
+            <name>RI + TCK</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
+	
 	<issueManagement>
 		<system>JIRA</system>
 		<url>http://java.net/jira/browse/JAVAMONEY</url>

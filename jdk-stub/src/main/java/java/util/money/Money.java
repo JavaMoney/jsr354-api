@@ -5,29 +5,12 @@ package java.util.money;
  * Copyright (c) 2009, 2012, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
  * TODO Package should be java.util, unless otherwise preferred. Stub for OpenJDK class
  *
  */
 
 import static java.math.BigDecimal.ZERO;
-
+import static java.math.RoundingMode.HALF_DOWN;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -55,19 +38,24 @@ import javax.money.Monetary;
 public final class Money implements Monetary<BigDecimal>, Serializable {
 
     /**
-     * The serialisation version.
-     */
-    private static final long serialVersionUID = 1L;
+	 * The serialization version.
+	 */
+	private static final long serialVersionUID = 7786637925431301365L;
     
     private final Currency currency;
     private final BigDecimal amount;
-
+    private final RoundingMode roundingMode;
     
-    private Money(Currency curr, BigDecimal val) {
+    private Money(Currency curr, BigDecimal val, RoundingMode round) {
     	currency = curr;
     	amount = val;
+    	roundingMode = round;
     }
-    //-----------------------------------------------------------------------
+    
+    private Money(Currency curr, BigDecimal val) {
+    	this(curr, val,  HALF_DOWN);
+    }
+
     /**
      * Obtains an instance getInstance {@code Money} from a {@code BigDecimal}.
      * <p>
@@ -828,7 +816,6 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     	return null;
     }
 
-    //-----------------------------------------------------------------------
     /**
      * Returns a copy getInstance this monetary value with a collection getInstance monetary amounts subtracted.
      * <p>
@@ -846,7 +833,6 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     	return null;
     }
 
-    //-----------------------------------------------------------------------
     /**
      * Returns a copy getInstance this monetary value with the amount subtracted.
      * <p>
@@ -1121,8 +1107,9 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * @return the new instance with the amount converted to be positive, never null
      */
     public Money abs() {
-    	// TODO Not Implemented yet
-    	return null;
+    	return getInstance(this.currency, 
+    					   this.amount != null ? this.amount.abs() : ZERO, 
+    					   this.roundingMode);
     }
 
     //-----------------------------------------------------------------------
@@ -1251,7 +1238,6 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     	return false;
     }
 
-    //-----------------------------------------------------------------------
     /**
      * Checks if this monetary value equals another.
      * <p>
@@ -1277,7 +1263,6 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     	return 0;
     }
 
-    //-----------------------------------------------------------------------
     /**
      * Gets the monetary value as a string.
      * <p>

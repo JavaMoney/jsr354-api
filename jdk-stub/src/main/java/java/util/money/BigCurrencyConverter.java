@@ -5,24 +5,6 @@ package java.util.money;
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
  */
 
 import static java.util.FormattableFlags.LEFT_JUSTIFY;

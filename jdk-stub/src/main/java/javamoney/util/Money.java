@@ -1,5 +1,5 @@
 
-package java.util.money;
+package javamoney.util;
 
 /*
  * Copyright (c) 2009, 2012, Oracle and/or its affiliates. All rights reserved.
@@ -14,6 +14,7 @@ import static java.math.RoundingMode.HALF_DOWN;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
@@ -33,7 +34,6 @@ import javax.money.Monetary;
  * The major units are dollars. The minor units are cents, 100 to the dollar.
  * This class does not allow calculations on fractions getInstance a cent.
  * <p>
- * This class is immutable and thread-safe.
  */
 public final class Money implements Monetary<BigDecimal>, Serializable {
 
@@ -86,11 +86,9 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * @throws ArithmeticException if the rounding fails
      */
     public static Money getInstance(Currency currency, BigDecimal amount, RoundingMode roundingMode) {
-    	// TODO Not Implemented yet
-    	return null;
+    	return new Money(currency, amount, roundingMode);
     }
 
-    //-----------------------------------------------------------------------
     /**
      * Obtains an instance getInstance {@code Money} from a {@code double} using a
      * well-defined conversion.
@@ -110,9 +108,8 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * @return the new instance, never null
      * @throws ArithmeticException if the scale exceeds the currency scale
      */
-    public static Money getInstance(CurrencyUnit currency, double amount) {
-    	// TODO Not Implemented yet
-    	return null;
+    public static Money getInstance(Currency currency, double amount) {
+    	return getInstance(currency, BigDecimal.valueOf(amount));
     }
 
     /**
@@ -135,12 +132,10 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * @return the new instance, never null
      * @throws ArithmeticException if the rounding fails
      */
-    public static Money getInstance(CurrencyUnit currency, double amount, RoundingMode roundingMode) {
-    	// TODO Not Implemented yet
-    	return null;
+    public static Money getInstance(Currency currency, double amount, RoundingMode roundingMode) {
+    	return getInstance(currency, BigDecimal.valueOf(amount), roundingMode);
     }
 
-    //-----------------------------------------------------------------------
     /**
      * Obtains an instance getInstance {@code Money} from an amount in major units.
      * <p>
@@ -176,7 +171,6 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     	return null;
     }
 
-    //-----------------------------------------------------------------------
     /**
      * Obtains an instance getInstance {@code Money} representing zero.
      * <p>

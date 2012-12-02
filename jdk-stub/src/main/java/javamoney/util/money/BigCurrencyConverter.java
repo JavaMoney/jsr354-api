@@ -1,4 +1,4 @@
-package java.util.money;
+package javamoney.util.money;
 
 /*
  * Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.
@@ -13,6 +13,9 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.Formatter;
 import java.util.Locale;
+
+import javamoney.util.Currency;
+import javamoney.util.Money;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;

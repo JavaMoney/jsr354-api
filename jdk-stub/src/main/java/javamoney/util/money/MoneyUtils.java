@@ -1,5 +1,7 @@
 
-package java.util.money;
+package javamoney.util.money;
+
+import javamoney.util.Money;
 
 /*
  * Copyright (c) 2009, 2012, Oracle and/or its affiliates. All rights reserved.

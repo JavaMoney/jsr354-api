@@ -72,7 +72,7 @@ public final class MoneyFormatter<T> implements Serializable {
      * @param locale  the locale, not null
      * @return the new instance, never null
      */
-    public MoneyFormatter withLocale(Locale locale) {
+    public MoneyFormatter<T> withLocale(Locale locale) {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -113,7 +113,7 @@ public final class MoneyFormatter<T> implements Serializable {
      * @throws UnsupportedOperationException if the formatter is unable to print
      * @throws MoneyFormatException if there is a problem while printing
      */
-    public String print(Monetary money) {
+    public String print(Monetary<T> money) {
     	// TODO Not Implemented yet
     	return null;
     }

@@ -25,7 +25,7 @@ import java.util.Locale;
  * A new instance should be created for each use.
  * The formatters produced by the builder are immutable and thread-safe.
  */
-public final class MoneyFormatterBuilder {
+public final class MoneyFormatterBuilder<T> {
 
     //-----------------------------------------------------------------------
     /**
@@ -44,7 +44,7 @@ public final class MoneyFormatterBuilder {
      * 
      * @return this, for chaining, never null
      */
-    public MoneyFormatterBuilder appendAmount() {
+    public MoneyFormatterBuilder<T> appendAmount() {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -57,7 +57,7 @@ public final class MoneyFormatterBuilder {
      * 
      * @return this, for chaining, never null
      */
-    public MoneyFormatterBuilder appendAmountLocalized() {
+    public MoneyFormatterBuilder<T> appendAmountLocalized() {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -156,7 +156,7 @@ public final class MoneyFormatterBuilder {
      * @param formatter  the formatter to append, not null
      * @return this for chaining, never null
      */
-    public MoneyFormatterBuilder append(MoneyFormatter formatter) {
+    public MoneyFormatterBuilder append(MoneyFormatter<T> formatter) {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -188,7 +188,7 @@ public final class MoneyFormatterBuilder {
      * 
      * @return the formatter built from this builder, never null
      */
-    public MoneyFormatter toFormatter() {
+    public MoneyFormatter<T> toFormatter() {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -207,7 +207,7 @@ public final class MoneyFormatterBuilder {
      * @return the formatter built from this builder, never null
      */
     @SuppressWarnings("cast")
-    public MoneyFormatter toFormatter(Locale locale) {
+    public MoneyFormatter<T> toFormatter(Locale locale) {
     	// TODO Not Implemented yet
     	return null;
     }

@@ -162,7 +162,7 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 		return factor.doubleValue() * value;
 	}
 
-	public Number convert(Number value, MathContext ctx)
+	public BigDecimal convert(BigDecimal value, MathContext ctx)
 			throws ArithmeticException {
 		// Number factor = rate.getSource().getExchangeRate(rate.getTarget());
 		Number factor = rate.getFactor();

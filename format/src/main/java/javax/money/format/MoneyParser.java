@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2011 Stephen Colebourne
+ *  Copyright 2009-2012 Werner Keil, Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ package javax.money.format;
  * All instantiable implementations must be thread-safe, and should generally
  * be final and immutable.
  */
-public interface MoneyParser {
+public interface MoneyParser<T> {
 
     /**
      * Parses monetary information using a textual representation.
@@ -45,5 +45,5 @@ public interface MoneyParser {
      * 
      * @param context  the context to use and parse into, not null
      */
-    void parse(MoneyParseContext context);
+    void parse(MoneyParseContext<T> context);
 }

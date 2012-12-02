@@ -43,6 +43,8 @@ import java.util.Locale;
  * </ul>
  * <p>
  * This class is immutable and thread-safe.
+ * 
+ * FIXME this should use enum if possible
  */
 public final class MoneyAmountStyle implements Serializable {
 

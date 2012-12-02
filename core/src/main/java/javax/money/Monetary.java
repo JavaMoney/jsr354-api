@@ -1,4 +1,4 @@
-/**
+/*
  * JSR 354: Money and Currency API
  */
 package javax.money;
@@ -7,7 +7,7 @@ package javax.money;
  * @author Werner Keil
  *
  */
-public interface Monetary<T> extends Comparable<Monetary<T>> {
+public interface Monetary<T> extends Comparable<Monetary<T>>, CurrencyProvider {
 	
     /**
      * Gets the currency.

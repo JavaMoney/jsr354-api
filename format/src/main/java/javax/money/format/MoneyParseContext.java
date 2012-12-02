@@ -18,6 +18,7 @@ package javax.money.format;
 import java.text.ParsePosition;
 import java.util.Locale;
 
+import javax.money.CurrencyProvider;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 
@@ -28,7 +29,7 @@ import javax.money.Monetary;
  * This class is mutable and intended for use by a single thread.
  * A new instance is created for each parse.
  */
-public final class MoneyParseContext<T> {
+public final class MoneyParseContext<T> implements CurrencyProvider {
 
 	//-----------------------------------------------------------------------
     /**

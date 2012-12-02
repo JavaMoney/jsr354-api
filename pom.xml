@@ -13,4 +13,13 @@
 		<module>convert</module>
 		<!--  module>jdk-stub</module -->
 	</modules>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://java.net/jira/browse/JAVAMONEY</url>
+	</issueManagement>
+	<description>JSR 354 provides an API for representing, transporting, and performing comprehensive calculations with Money and Currency. </description>
+	<organization>
+		<name>JSR 354 EG</name>
+		<url>https://github.com/JavaMoney</url>
+	</organization>
 </project>

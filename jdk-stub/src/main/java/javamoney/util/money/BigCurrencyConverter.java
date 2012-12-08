@@ -37,7 +37,7 @@ import javax.money.convert.ExchangeRate;
  * </p>
  * 
  * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
- * @version 0.2.2
+ * @version 0.2.3
  */
 public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal> {
 
@@ -77,17 +77,17 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 	 * CurrencyUnit.
 	 * 
 	 * @param source
-	 *            the source CurrencyUnit.
+	 *            the source Money.
 	 * @param target
 	 *            the target CurrencyUnit.
 	 * @param factor
 	 *            the multiplier factor from source to target.
 	 * @return the corresponding converter.
 	 */
-	public BigCurrencyConverter(CurrencyUnit source, Money target,
+	public BigCurrencyConverter(Money source, CurrencyUnit target,
 			BigDecimal factor) {
-		if (target instanceof Monetary) {
-			rate = new ExchangeRate<BigDecimal>(source, target.getCurrency(),
+		if (source instanceof Monetary) {
+			rate = new ExchangeRate<BigDecimal>(source.getCurrency(), target,
 					factor);
 		} else {
 			CurrencyUnit defCurrency = Currency.getInstance(Locale.getDefault());
@@ -147,20 +147,16 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 		return factor.doubleValue() * value;
 	}
 
+	public BigDecimal convert(BigDecimal value) {
+		return convert((BigDecimal) value, MathContext.DECIMAL128);
+	}
+	
 	public BigDecimal convert(BigDecimal value, MathContext ctx)
 			throws ArithmeticException {
 		// Number factor = rate.getSource().getExchangeRate(rate.getTarget());
-		Number factor = rate.getFactor();
+		BigDecimal factor = rate.getFactor();
 		checkFactor(factor);
-		if (factor instanceof BigDecimal)
-			return ((BigDecimal)value).multiply((BigDecimal) factor, ctx);
-		if (factor instanceof Number) {
-			return ((BigDecimal)value).multiply(
-					(BigDecimal.valueOf(((Number) factor).doubleValue())), ctx);
-		} else { // Reverts to double convert.
-			return ((BigDecimal)value)
-					.multiply(BigDecimal.valueOf(factor.doubleValue()), ctx);
-		}
+		return value.multiply(factor, ctx);
 	}
 
 	public Number convert(Number value) {
@@ -228,10 +224,5 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 					sb.insert(0, ' ');
 
 		fmt.format(sb.toString());
-	}
-
-	public BigDecimal convert(BigDecimal value) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

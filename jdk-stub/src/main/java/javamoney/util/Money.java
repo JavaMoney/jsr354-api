@@ -38,7 +38,7 @@ import javax.money.Monetary;
 public final class Money implements Monetary<BigDecimal>, Serializable {
 
     /**
-	 * The serialization version.
+     * The serialization version.
 	 */
 	private static final long serialVersionUID = 7786637925431301365L;
     

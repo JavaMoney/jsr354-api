@@ -20,19 +20,19 @@ import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 
 /**
- * An amount getInstance money with the standard decimal places defined by the currency.
+ * An amount of money with the standard decimal places defined by the currency.
  * <p>
- * This class represents a quantity getInstance money, stored as a {@code BigDecimal} amount
+ * This class represents a quantity of money, stored as a {@code BigDecimal} amount
  * in a single {@link CurrencyUnit currency}.
  * <p>
- * Every currency has a certain standard number getInstance decimal places.
+ * Every currency has a certain standard number of decimal places.
  * This is typically 2 (Euro, British Pound, US Dollar) but might be
  * 0 (Japanese Yen), 1 (Vietnamese Dong) or 3 (Bahrain Dinar).
- * The {@code Money} class is fixed to this number getInstance decimal places.
+ * The {@code Money} class is fixed to this number of decimal places.
  * <p>
- * For example, US dollars has a standard number getInstance decimal places getInstance 2.
+ * For example, US dollars has a standard number of 2 decimal places.
  * The major units are dollars. The minor units are cents, 100 to the dollar.
- * This class does not allow calculations on fractions getInstance a cent.
+ * This class does not allow calculations on fractions of a cent.
  * <p>
  */
 public final class Money implements Monetary<BigDecimal>, Serializable {
@@ -57,14 +57,14 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Obtains an instance getInstance {@code Money} from a {@code BigDecimal}.
+     * Obtains an instance of {@code Money} from a {@code BigDecimal}.
      * <p>
      * This allows you to create an instance with a specific currency and amount.
      * No rounding is performed on the amount, so it must have a scale compatible
      * with the currency.
      *
      * @param currency  the currency, not null
-     * @param amount  the amount getInstance money, not null
+     * @param amount  the amount of money, not null
      * @return the new instance, never null
      * @throws ArithmeticException if the scale exceeds the currency scale
      */
@@ -73,14 +73,14 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Obtains an instance getInstance {@code Money} from a {@code BigDecimal}, rounding as necessary.
+     * Obtains an instance of {@code Money} from a {@code BigDecimal}, rounding as necessary.
      * <p>
      * This allows you to create an instance with a specific currency and amount.
-     * If the amount has a scale in excess getInstance the scale getInstance the currency then the excess
+     * If the amount has a scale in excess of the currency's scale then the excess
      * fractional digits are rounded using the rounding mode.
      *
      * @param currency  the currency, not null
-     * @param amount  the amount getInstance money, not null
+     * @param amount  the amount of money, not null
      * @param roundingMode  the rounding mode to use, not null
      * @return the new instance, never null
      * @throws ArithmeticException if the rounding fails
@@ -90,7 +90,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Obtains an instance getInstance {@code Money} from a {@code double} using a
+     * Obtains an instance of {@code Money} from a {@code double} using a
      * well-defined conversion.
      * <p>
      * This allows you to create an instance with a specific currency and amount.
@@ -104,7 +104,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * For example, the literal '1.45d' will be converted to '1.45'.
      *
      * @param currency  the currency, not null
-     * @param amount  the amount getInstance money, not null
+     * @param amount  the amount of money, not null
      * @return the new instance, never null
      * @throws ArithmeticException if the scale exceeds the currency scale
      */
@@ -113,11 +113,11 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Obtains an instance getInstance {@code Money} from a {@code double} using a
+     * Obtains an instance of {@code Money} from a {@code double} using a
      * well-defined conversion, rounding as necessary.
      * <p>
      * This allows you to create an instance with a specific currency and amount.
-     * If the amount has a scale in excess getInstance the scale getInstance the currency then the excess
+     * If the amount has a scale in excess of the currency's scale then the excess
      * fractional digits are rounded using the rounding mode.
      * <p>
      * The amount is converted via {@link BigDecimal#valueOf(double)} which yields
@@ -127,7 +127,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * For example, the literal '1.45d' will be converted to '1.45'.
      *
      * @param currency  the currency, not null
-     * @param amount  the amount getInstance money, not null
+     * @param amount  the amount of money, not null
      * @param roundingMode  the rounding mode to use, not null
      * @return the new instance, never null
      * @throws ArithmeticException if the rounding fails
@@ -137,15 +137,15 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Obtains an instance getInstance {@code Money} from an amount in major units.
+     * Obtains an instance of {@code Money} from an amount in major units.
      * <p>
      * This allows you to create an instance with a specific currency and amount.
-     * The amount is a whole number only. Thus you can initialise the value
+     * The amount is a whole number only. Thus you can initialize the value
      * 'USD 20', but not the value 'USD 20.32'.
-     * For example, {@code ofMajor(USD, 25)} creates the instance {@code USD 25.00}.
+     * For example, {@code getInstanceMajor(USD, 25)} creates the instance {@code USD 25.00}.
      *
      * @param currency  the currency, not null
-     * @param amountMajor  the amount getInstance money in the major division getInstance the currency
+     * @param amountMajor  the amount of money in the major division of the currency
      * @return the new instance, never null
      */
     public static Money getInstanceMajor(CurrencyUnit currency, long amountMajor) {
@@ -154,16 +154,16 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Obtains an instance getInstance {@code Money} from an amount in minor units.
+     * Obtains an instance of {@code Money} from an amount in minor units.
      * <p>
      * This allows you to create an instance with a specific currency and amount
-     * expressed in terms getInstance the minor unit.
+     * expressed in terms of the minor unit.
      * For example, if constructing US Dollars, the input to this method represents cents.
      * Note that when a currency has zero decimal places, the major and minor units are the same.
-     * For example, {@code ofMajor(USD, 2595)} creates the instance {@code USD 25.95}.
+     * For example, {@code getInstanceMajor(USD, 2595)} creates the instance {@code USD 25.95}.
      *
      * @param currency  the currency, not null
-     * @param amountMinor  the amount getInstance money in the minor division getInstance the currency
+     * @param amountMinor  the amount of money in the minor division of the currency
      * @return the new instance, never null
      */
     public static Money getInstanceMinor(CurrencyUnit currency, long amountMinor) {
@@ -172,7 +172,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Obtains an instance getInstance {@code Money} representing zero.
+     * Obtains an instance of {@code Money} representing zero.
      * <p>
      * For example, {@code zero(USD)} creates the instance {@code USD 0.00}.
      *
@@ -186,7 +186,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Obtains an instance getInstance {@code Money} from a provider.
+     * Obtains an instance of {@code Money} from a provider.
      * <p>
      * This allows you to create an instance from any class that implements the
      * provider, such as {@code BigMoney}.
@@ -203,11 +203,11 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Obtains an instance getInstance {@code Money} from a provider, rounding as necessary.
+     * Obtains an instance of {@code Money} from a provider, rounding as necessary.
      * <p>
      * This allows you to create an instance from any class that implements the
      * provider, such as {@code BigMoney}.
-     * The rounding mode is used to adjust the scale to the scale getInstance the currency.
+     * The rounding mode is used to adjust the scale to the scale of the currency.
      *
      * @param moneyProvider  the money to convert, not null
      * @param roundingMode  the rounding mode to use, not null
@@ -221,7 +221,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Obtains an instance getInstance {@code Money} as the total value getInstance an array.
+     * Obtains an instance of {@code Money} as the total value  an array.
      * <p>
      * The array must contain at least one monetary value.
      * Subsequent amounts are added as though using {@link #plus(Money)}.
@@ -238,7 +238,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Obtains an instance getInstance {@code Money} as the total value getInstance a collection.
+     * Obtains an instance of {@code Money} as the total value  a collection.
      * <p>
      * The iterable must provide at least one monetary value.
      * Subsequent amounts are added as though using {@link #plus(Money)}.
@@ -255,7 +255,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Obtains an instance getInstance {@code Money} as the total value getInstance
+     * Obtains an instance of {@code Money} as the total value 
      * a possibly empty array.
      * <p>
      * The amounts are added as though using {@link #plus(Money)} starting
@@ -273,7 +273,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Obtains an instance getInstance {@code Money} as the total value getInstance
+     * Obtains an instance of {@code Money} as the total value 
      * a possibly empty collection.
      * <p>
      * The amounts are added as though using {@link #plus(Money)} starting
@@ -292,7 +292,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Parses an instance getInstance {@code Money} from a string.
+     * Parses an instance of {@code Money} from a string.
      * <p>
      * The string format is '<currencyCode> <amount>'.
      * The currency code must be a valid three letter currency.
@@ -331,7 +331,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the specified currency.
+     * Returns a copy of this monetary value with the specified currency.
      * <p>
      * The returned instance will have the specified currency and the amount
      * from this instance. If the scale differs between the currencies such
@@ -341,8 +341,8 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * 
      * @param currency  the currency to use, not null
      * @return the new instance with the input currency set, never null
-     * @throws ArithmeticException if the scale getInstance the new currency is less than
-     *  the scale getInstance this currency
+     * @throws ArithmeticException if the scale of the new currency is less than
+     *  the scale of this currency
      */
     public Money withCurrencyUnit(CurrencyUnit currency) {
     	// TODO Not Implemented yet
@@ -350,10 +350,10 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the specified currency.
+     * Returns a copy of this monetary value with the specified currency.
      * <p>
      * The returned instance will have the specified currency and the amount
-     * from this instance. If the number getInstance decimal places differs between the
+     * from this instance. If the number of decimal places differs between the
      * currencies, then the amount may be rounded.
      * <p>
      * This instance is immutable and unaffected by this method.
@@ -369,14 +369,14 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Gets the scale getInstance the {@code BigDecimal} amount.
+     * Gets the scale of the {@code BigDecimal} amount.
      * <p>
      * The scale has the same meaning as in {@link BigDecimal}.
-     * Positive values represent the number getInstance decimal places in use.
-     * For example, a scale getInstance 2 means that the money will have two decimal places
+     * Positive values represent the number of decimal places in use.
+     * For example, a scale of 2 means that the money will have two decimal places
      * such as 'USD 43.25'.
      * <p>
-     * For {@code Money}, the scale is fixed and always matches that getInstance the currency.
+     * For {@code Money}, the scale is fixed and always matches that of the currency.
      * 
      * @return the scale in use, typically 2 but could be 0, 1 and 3
      */
@@ -398,8 +398,8 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     /**
      * Gets the amount.
      * <p>
-     * This returns the value getInstance the money as a {@code BigDecimal}.
-     * The scale will be the scale getInstance this money.
+     * This returns the value of the money as a {@code BigDecimal}.
+     * The scale will be the scale of this money.
      * 
      * @return the amount, never null
      */
@@ -411,7 +411,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     /**
      * Gets the amount in major units as a {@code BigDecimal} with scale 0.
      * <p>
-     * This returns the monetary amount in terms getInstance the major units getInstance the currency,
+     * This returns the monetary amount in terms of the major units of the currency,
      * truncating the amount if necessary.
      * For example, 'EUR 2.35' will return 2, and 'BHD -1.345' will return -1.
      * <p>
@@ -419,7 +419,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * This is to allow further calculations to be performed on the result.
      * Should you need a {@code BigInteger}, simply call {@link BigDecimal#toBigInteger()}.
      * 
-     * @return the major units part getInstance the amount, never null
+     * @return the major units part of the amount, never null
      */
     public BigDecimal getAmountMajor() {
     	// TODO Not Implemented yet
@@ -429,11 +429,11 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     /**
      * Gets the amount in major units as a {@code long}.
      * <p>
-     * This returns the monetary amount in terms getInstance the major units getInstance the currency,
+     * This returns the monetary amount in terms of the major units of the currency,
      * truncating the amount if necessary.
      * For example, 'EUR 2.35' will return 2, and 'BHD -1.345' will return -1.
      * 
-     * @return the major units part getInstance the amount
+     * @return the major units part of the amount
      * @throws ArithmeticException if the amount is too large for a {@code long}
      */
     public long getAmountMajorLong() {
@@ -444,11 +444,11 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     /**
      * Gets the amount in major units as an {@code int}.
      * <p>
-     * This returns the monetary amount in terms getInstance the major units getInstance the currency,
+     * This returns the monetary amount in terms of the major units of the currency,
      * truncating the amount if necessary.
      * For example, 'EUR 2.35' will return 2, and 'BHD -1.345' will return -1.
      * 
-     * @return the major units part getInstance the amount
+     * @return the major units part of the amount
      * @throws ArithmeticException if the amount is too large for an {@code int}
      */
     public int getAmountMajorInt() {
@@ -459,7 +459,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     /**
      * Gets the amount in minor units as a {@code BigDecimal} with scale 0.
      * <p>
-     * This returns the monetary amount in terms getInstance the minor units getInstance the currency,
+     * This returns the monetary amount in terms of the minor units of the currency,
      * truncating the amount if necessary.
      * For example, 'EUR 2.35' will return 235, and 'BHD -1.345' will return -1345.
      * <p>
@@ -467,7 +467,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * This is to allow further calculations to be performed on the result.
      * Should you need a {@code BigInteger}, simply call {@link BigDecimal#toBigInteger()}.
      * 
-     * @return the minor units part getInstance the amount, never null
+     * @return the minor units part of the amount, never null
      */
     public BigDecimal getAmountMinor() {
     	// TODO Not Implemented yet
@@ -477,11 +477,11 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     /**
      * Gets the amount in minor units as a {@code long}.
      * <p>
-     * This returns the monetary amount in terms getInstance the minor units getInstance the currency,
+     * This returns the monetary amount in terms of the minor units of the currency,
      * truncating the amount if necessary.
      * For example, 'EUR 2.35' will return 235, and 'BHD -1.345' will return -1345.
      * 
-     * @return the minor units part getInstance the amount
+     * @return the minor units part of the amount
      * @throws ArithmeticException if the amount is too large for a {@code long}
      */
     public long getAmountMinorLong() {
@@ -492,11 +492,11 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     /**
      * Gets the amount in minor units as an {@code int}.
      * <p>
-     * This returns the monetary amount in terms getInstance the minor units getInstance the currency,
+     * This returns the monetary amount in terms of the minor units of the currency,
      * truncating the amount if necessary.
      * For example, 'EUR 2.35' will return 235, and 'BHD -1.345' will return -1345.
      * 
-     * @return the minor units part getInstance the amount
+     * @return the minor units part of the amount
      * @throws ArithmeticException if the amount is too large for an {@code int}
      */
     public int getAmountMinorInt() {
@@ -505,16 +505,16 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Gets the minor part getInstance the amount.
+     * Gets the minor part of the amount.
      * <p>
-     * This return the minor unit part getInstance the monetary amount.
+     * This return the minor unit part of the monetary amount.
      * This is defined as the amount in minor units excluding major units.
      * <p>
-     * For example, EUR has a scale getInstance 2, so the minor part is always between 0 and 99
+     * For example, EUR has a scale of 2, so the minor part is always between 0 and 99
      * for positive amounts, and 0 and -99 for negative amounts.
      * Thus 'EUR 2.35' will return 35, and 'EUR -1.34' will return -34.
      * 
-     * @return the minor part getInstance the amount, negative if the amount is negative
+     * @return the minor part of the amount, negative if the amount is negative
      */
     public int getMinorPart() {
     	// TODO Not Implemented yet
@@ -572,7 +572,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a copy getInstance this monetary value with the specified amount.
+     * Returns a copy of this monetary value with the specified amount.
      * <p>
      * The returned instance will have this currency and the new amount.
      * No rounding is performed on the amount to be added, so it must have a
@@ -582,7 +582,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * 
      * @param amount  the monetary amount to set in the returned instance, not null
      * @return the new instance with the input amount set, never null
-     * @throws ArithmeticException if the scale getInstance the amount is too large
+     * @throws ArithmeticException if the scale of the amount is too large
      */
     public Money withAmount(BigDecimal amount) {
     	// TODO Not Implemented yet
@@ -590,10 +590,10 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the specified amount.
+     * Returns a copy of this monetary value with the specified amount.
      * <p>
      * The returned instance will have this currency and the new amount.
-     * If the scale getInstance the {@code BigDecimal} needs to be adjusted, then
+     * If the scale of the {@code BigDecimal} needs to be adjusted, then
      * it will be rounded using the specified mode.
      * <p>
      * This instance is immutable and unaffected by this method.
@@ -608,7 +608,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the specified amount using a well-defined
+     * Returns a copy of this monetary value with the specified amount using a well-defined
      * conversion from a {@code double}.
      * <p>
      * The returned instance will have this currency and the new amount.
@@ -625,7 +625,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * 
      * @param amount  the monetary amount to set in the returned instance, not null
      * @return the new instance with the input amount set, never null
-     * @throws ArithmeticException if the scale getInstance the amount is too large
+     * @throws ArithmeticException if the scale of the amount is too large
      */
     public Money withAmount(double amount) {
     	// TODO Not Implemented yet
@@ -633,11 +633,11 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the specified amount using a well-defined
+     * Returns a copy of this monetary value with the specified amount using a well-defined
      * conversion from a {@code double}.
      * <p>
      * The returned instance will have this currency and the new amount.
-     * If the scale getInstance the {@code BigDecimal} needs to be adjusted, then
+     * If the scale of the {@code BigDecimal} needs to be adjusted, then
      * it will be rounded using the specified mode.
      * <p>
      * The amount is converted via {@link BigDecimal#valueOf(double)} which yields
@@ -659,7 +659,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a copy getInstance this monetary value with a collection getInstance monetary amounts added.
+     * Returns a copy of this monetary value with a collection of monetary amounts added.
      * <p>
      * This adds the specified amounts to this monetary amount, returning a new object.
      * The amounts must be in the same currency.
@@ -677,7 +677,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a copy getInstance this monetary value with the amount added.
+     * Returns a copy of this monetary value with the amount added.
      * <p>
      * This adds the specified amount to this monetary amount, returning a new object.
      * The amount added must be in the same currency.
@@ -697,7 +697,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount added.
+     * Returns a copy of this monetary value with the amount added.
      * <p>
      * This adds the specified amount to this monetary amount, returning a new object.
      * No rounding is performed on the amount to be added, so it must have a
@@ -707,7 +707,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * 
      * @param amountToAdd  the monetary value to add, not null
      * @return the new instance with the input amount added, never null
-     * @throws ArithmeticException if the scale getInstance the amount is too large
+     * @throws ArithmeticException if the scale of the amount is too large
      */
     public Money plus(BigDecimal amountToAdd) {
     	// TODO Not Implemented yet
@@ -715,10 +715,10 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount added.
+     * Returns a copy of this monetary value with the amount added.
      * <p>
      * This adds the specified amount to this monetary amount, returning a new object.
-     * If the amount to add exceeds the scale getInstance the currency, then the
+     * If the amount to add exceeds the scale of the currency, then the
      * rounding mode will be used to adjust the result.
      * <p>
      * This instance is immutable and unaffected by this method.
@@ -732,7 +732,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount added.
+     * Returns a copy of this monetary value with the amount added.
      * <p>
      * This adds the specified amount to this monetary amount, returning a new object.
      * No rounding is performed on the amount to be added, so it must have a
@@ -748,7 +748,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * 
      * @param amountToAdd  the monetary value to add, not null
      * @return the new instance with the input amount added, never null
-     * @throws ArithmeticException if the scale getInstance the amount is too large
+     * @throws ArithmeticException if the scale of the amount is too large
      */
     public Money plus(double amountToAdd) {
     	// TODO Not Implemented yet
@@ -756,10 +756,10 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount added.
+     * Returns a copy of this monetary value with the amount added.
      * <p>
      * This adds the specified amount to this monetary amount, returning a new object.
-     * If the amount to add exceeds the scale getInstance the currency, then the
+     * If the amount to add exceeds the scale of the currency, then the
      * rounding mode will be used to adjust the result.
      * <p>
      * The amount is converted via {@link BigDecimal#valueOf(double)} which yields
@@ -779,7 +779,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount in major units added.
+     * Returns a copy of this monetary value with the amount in major units added.
      * <p>
      * This adds an amount in major units, leaving the minor units untouched.
      * For example, USD 23.45 plus 138 gives USD 161.45.
@@ -795,7 +795,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount in minor units added.
+     * Returns a copy of this monetary value with the amount in minor units added.
      * <p>
      * This adds an amount in minor units.
      * For example, USD 23.45 plus 138 gives USD 24.83.
@@ -811,7 +811,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with a collection getInstance monetary amounts subtracted.
+     * Returns a copy of this monetary value with a collection of monetary amounts subtracted.
      * <p>
      * This subtracts the specified amounts from this monetary amount, returning a new object.
      * The amounts must be in the same currency.
@@ -828,7 +828,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount subtracted.
+     * Returns a copy of this monetary value with the amount subtracted.
      * <p>
      * This subtracts the specified amount from this monetary amount, returning a new object.
      * The amount subtracted must be in the same currency.
@@ -848,7 +848,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount subtracted.
+     * Returns a copy of this monetary value with the amount subtracted.
      * <p>
      * This subtracts the specified amount from this monetary amount, returning a new object.
      * No rounding is performed on the amount to be subtracted, so it must have a
@@ -858,7 +858,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * 
      * @param amountToSubtract  the monetary value to subtract, not null
      * @return the new instance with the input amount subtracted, never null
-     * @throws ArithmeticException if the scale getInstance the amount is too large
+     * @throws ArithmeticException if the scale of the amount is too large
      */
     public Money minus(BigDecimal amountToSubtract) {
     	// TODO Not Implemented yet
@@ -866,10 +866,10 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount subtracted.
+     * Returns a copy of this monetary value with the amount subtracted.
      * <p>
      * This subtracts the specified amount from this monetary amount, returning a new object.
-     * If the amount to subtract exceeds the scale getInstance the currency, then the
+     * If the amount to subtract exceeds the scale of the currency, then the
      * rounding mode will be used to adjust the result.
      * <p>
      * This instance is immutable and unaffected by this method.
@@ -883,7 +883,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount subtracted.
+     * Returns a copy of this monetary value with the amount subtracted.
      * <p>
      * This subtracts the specified amount from this monetary amount, returning a new object.
      * No rounding is performed on the amount to be subtracted, so it must have a
@@ -899,7 +899,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * 
      * @param amountToSubtract  the monetary value to subtract, not null
      * @return the new instance with the input amount subtracted, never null
-     * @throws ArithmeticException if the scale getInstance the amount is too large
+     * @throws ArithmeticException if the scale of the amount is too large
      */
     public Money minus(double amountToSubtract) {
     	// TODO Not Implemented yet
@@ -907,10 +907,10 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount subtracted.
+     * Returns a copy of this monetary value with the amount subtracted.
      * <p>
      * This subtracts the specified amount from this monetary amount, returning a new object.
-     * If the amount to subtract exceeds the scale getInstance the currency, then the
+     * If the amount to subtract exceeds the scale of the currency, then the
      * rounding mode will be used to adjust the result.
      * <p>
      * The amount is converted via {@link BigDecimal#valueOf(double)} which yields
@@ -930,7 +930,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount in major units subtracted.
+     * Returns a copy of this monetary value with the amount in major units subtracted.
      * <p>
      * This subtracts an amount in major units, leaving the minor units untouched.
      * For example, USD 23.45 minus 138 gives USD -114.55.
@@ -946,7 +946,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount in minor units subtracted.
+     * Returns a copy of this monetary value with the amount in minor units subtracted.
      * <p>
      * This subtracts an amount in minor units.
      * For example, USD 23.45 minus 138 gives USD 22.07.
@@ -963,7 +963,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a copy getInstance this monetary value multiplied by the specified value.
+     * Returns a copy of this monetary value multiplied by the specified value.
      * <p>
      * This takes this amount and multiplies it by the specified value, rounding
      * the result is rounded as specified.
@@ -981,7 +981,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value multiplied by the specified value.
+     * Returns a copy of this monetary value multiplied by the specified value.
      * <p>
      * This takes this amount and multiplies it by the specified value, rounding
      * the result is rounded as specified.
@@ -1005,7 +1005,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value multiplied by the specified value.
+     * Returns a copy of this monetary value multiplied by the specified value.
      * <p>
      * This takes this amount and multiplies it by the specified value.
      * <p>
@@ -1021,7 +1021,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a copy getInstance this monetary value divided by the specified value.
+     * Returns a copy of this monetary value divided by the specified value.
      * <p>
      * This takes this amount and divides it by the specified value, rounding
      * the result is rounded as specified.
@@ -1040,7 +1040,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value divided by the specified value.
+     * Returns a copy of this monetary value divided by the specified value.
      * <p>
      * This takes this amount and divides it by the specified value, rounding
      * the result is rounded as specified.
@@ -1065,7 +1065,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value divided by the specified value.
+     * Returns a copy of this monetary value divided by the specified value.
      * <p>
      * This takes this amount and divides it by the specified value, rounding
      * the result is rounded as specified.
@@ -1083,7 +1083,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with the amount negated.
+     * Returns a copy of this monetary value with the amount negated.
      * <p>
      * This instance is immutable and unaffected by this method.
      * 
@@ -1094,7 +1094,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
     /**
-     * Returns a copy getInstance this monetary value with a positive amount.
+     * Returns a copy of this monetary value with a positive amount.
      * <p>
      * This instance is immutable and unaffected by this method.
      * 
@@ -1108,17 +1108,17 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a copy getInstance this monetary value rounded to the specified scale without
+     * Returns a copy of this monetary value rounded to the specified scale without
      * changing the current scale.
      * <p>
      * Scale has the same meaning as in {@link BigDecimal}.
-     * A scale getInstance 2 means round to 2 decimal places.
+     * A scale of 2 means round to 2 decimal places.
      * <ul>
-     * <li>Rounding 'EUR 45.23' to a scale getInstance -1 returns 40.00 or 50.00 depending on the rounding mode.
-     * <li>Rounding 'EUR 45.23' to a scale getInstance 0 returns 45.00 or 46.00 depending on the rounding mode.
-     * <li>Rounding 'EUR 45.23' to a scale getInstance 1 returns 45.20 or 45.30 depending on the rounding mode.
-     * <li>Rounding 'EUR 45.23' to a scale getInstance 2 has no effect (it already has that scale).
-     * <li>Rounding 'EUR 45.23' to a scale getInstance 3 has no effect (the scale is not increased).
+     * <li>Rounding 'EUR 45.23' to a scale of -1 returns 40.00 or 50.00 depending on the rounding mode.
+     * <li>Rounding 'EUR 45.23' to a scale of 0 returns 45.00 or 46.00 depending on the rounding mode.
+     * <li>Rounding 'EUR 45.23' to a scale of 1 returns 45.20 or 45.30 depending on the rounding mode.
+     * <li>Rounding 'EUR 45.23' to a scale of 2 has no effect (it already has that scale).
+     * <li>Rounding 'EUR 45.23' to a scale of 3 has no effect (the scale is not increased).
      * </ul>
      * <p>
      * This instance is immutable and unaffected by this method.
@@ -1135,7 +1135,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a copy getInstance this monetary value converted into another currency
+     * Returns a copy of this monetary value converted into another currency
      * using the specified conversion rate, with a rounding mode used to adjust
      * the decimal places in the result.
      * <p>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Victor Grazi
+ * Copyright (c) 2012,  Credit Suisse (Anatole Tresch), Werner Keil
  *
  * All rights reserved.
  *

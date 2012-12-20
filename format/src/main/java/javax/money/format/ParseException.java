@@ -29,30 +29,39 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.format;
+
 
 /**
- * Exception thrown when the requested currency is unknown to the currency system in use.
- * <p>
- * For example, this exception would be thrown when trying to obtain a
- * currency using an unrecognized currency code or locale.
+ * Exception thrown during parsing of an item.
  * <p>
  * This exception makes no guarantees about immutability or thread-safety.
  *
- * @author Werner Keil
+ * @author Anatole Tresch
  */
-public class UnknownCurrencyException extends IllegalArgumentException {
+public class ParseException extends Exception {
 
     /** Serialization lock. */
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructor.
+     * Constructor taking a message.
      * 
-     * @param message  the message, may be null
+     * @param message  the message
      */
-    public UnknownCurrencyException(String message) {
+    public ParseException(String message) {
     	// TODO Not Implemented yet
+    }
+
+    /**
+     * Constructor taking a message and cause.
+     * 
+     * @param message  the message
+     * @param cause  the exception cause
+     */
+    public ParseException(String message, Throwable cause) {
+    	// TODO Not Implemented yet
+    	super(message, cause);
     }
 
 }

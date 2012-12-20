@@ -29,29 +29,62 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.format;
+
+import java.io.IOException;
 
 /**
- * Exception thrown when the requested currency is unknown to the currency system in use.
- * <p>
- * For example, this exception would be thrown when trying to obtain a
- * currency using an unrecognized currency code or locale.
+ * Exception thrown during monetary formatting.
  * <p>
  * This exception makes no guarantees about immutability or thread-safety.
  *
- * @author Werner Keil
+ * @author Stephen Colebourne, Werner Keil
  */
-public class UnknownCurrencyException extends IllegalArgumentException {
+public class FormatException extends RuntimeException {
 
     /** Serialization lock. */
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructor.
+     * Constructor taking a message.
      * 
-     * @param message  the message, may be null
+     * @param message  the message
      */
-    public UnknownCurrencyException(String message) {
+    public FormatException(String message) {
+    	// TODO Not Implemented yet
+    }
+
+    /**
+     * Constructor taking a message and cause.
+     * 
+     * @param message  the message
+     * @param cause  the exception cause
+     */
+    public FormatException(String message, Throwable cause) {
+    	// TODO Not Implemented yet
+    	super(message, cause);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Checks if the cause of this exception was an IOException, and if so re-throws it
+     * <p>
+     * This method is useful if you call a printer with an open stream or
+     * writer and want to ensure that IOExceptions are not lost.
+     * <pre>
+     * try {
+     *   printer.print(writer, money);
+     * } catch (CalendricalFormatException ex) {
+     *   ex.rethrowIOException();
+     *   // if code reaches here exception was caused by issues other than IO
+     * }
+     * </pre>
+     * Note that calling this method will re-throw the original IOException,
+     * causing this MoneyFormatException to be lost.
+     *
+     * @throws IOException if the cause of this exception is an IOException
+     */
+    public void rethrowIOException() throws IOException {
     	// TODO Not Implemented yet
     }
 

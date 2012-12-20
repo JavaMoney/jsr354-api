@@ -29,30 +29,18 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.format;
 
 /**
- * Exception thrown when the requested currency is unknown to the currency system in use.
+ * Formats instances of number to and from a String.
  * <p>
- * For example, this exception would be thrown when trying to obtain a
- * currency using an unrecognized currency code or locale.
+ * Instances of {@code NumberPrinterParser} can be created by
+ * {@code NumberPrinterParserFactory}.
  * <p>
- * This exception makes no guarantees about immutability or thread-safety.
- *
- * @author Werner Keil
+ * This class is immutable and thread-safe.
+ * 
+ * @author Anatole Tresch
  */
-public class UnknownCurrencyException extends IllegalArgumentException {
-
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Constructor.
-     * 
-     * @param message  the message, may be null
-     */
-    public UnknownCurrencyException(String message) {
-    	// TODO Not Implemented yet
-    }
+public interface NumberPrinterParser<T extends Number> extends PrinterParser<T> {
 
 }

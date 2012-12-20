@@ -1,5 +1,7 @@
 package javamoney.util.money;
 
+import javax.money.spi.*;
+
 /*
  * Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.

@@ -29,29 +29,38 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.spi;
+
+import java.util.List;
 
 /**
- * Exception thrown when the requested currency is unknown to the currency system in use.
- * <p>
- * For example, this exception would be thrown when trying to obtain a
- * currency using an unrecognized currency code or locale.
- * <p>
- * This exception makes no guarantees about immutability or thread-safety.
- *
- * @author Werner Keil
+ * Provider for available currencies.
+ * This is part of the SPI
+ * 
+ * @author Stephen Colebourne, Werner Keil
  */
-public class UnknownCurrencyException extends IllegalArgumentException {
-
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
+public abstract class CurrencyUnitDataProvider {
 
     /**
-     * Constructor.
+     * Registers all the currencies known by this provider.
      * 
-     * @param message  the message, may be null
+     * @throws Exception if an error occurs
      */
-    public UnknownCurrencyException(String message) {
+    protected abstract void registerCurrencies() throws Exception;
+
+    /**
+     * Registers a currency allowing it to be used.
+     * <p>
+     * This method is called by {@link #registerCurrencies()} to perform the
+     * actual creation of a currency.
+     *
+     * @param currencyCode  the currency code, not null
+     * @param numericCurrencyCode  the numeric currency code, -1 if none
+     * @param decimalPlaces  the number of decimal places that the currency
+     *  normally has, from 0 to 3, or -1 for a pseudo-currency
+     * @param countryCodes  the country codes to register the currency under, not null
+     */
+    protected final void registerCurrency(String currencyCode, int numericCurrencyCode, int decimalPlaces, List<String> countryCodes) {
     	// TODO Not Implemented yet
     }
 

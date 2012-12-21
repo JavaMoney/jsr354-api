@@ -1,19 +1,32 @@
+/*
+ *  Copyright 2012 Credit Suisse (Anatole Tresch)
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package javax.money;
 
 import java.util.Currency;
+import java.util.ServiceLoader;
 
 /**
  * * A unit of currency.
  * <p>
  * * This class represents a unit of currency such as the British Pound, Euro or
- * US Dollar, Linden Dollars, BitCoins or other.
+ * US Dollar, BitCoins or other.
  * <p>
- * * The set of loaded currencies is provided by an instance of
- * {@link CurrencyUnitDataProvider}. * The provider used is determined by the
- * system property {@code javax.money.CurrencyUnitDataProvider} * which should
- * be the fully qualified class name of the provider. The default provider loads
- * the first * resource named {@code /MoneyData.csv} on the classpath.
- * <p>
+ * * The set of loaded currencies is provided by an instances of
+ * {@link CurrencyUnitProvider}. The providers used are registered using the
+ * {@link ServiceLoader} feature.
  * 
  * @author Werner Keil
  * @author Stephen Colebourne
@@ -45,10 +58,11 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit> {
 	public String getCurrencyCode();
 
 	/**
-	 * * Gets the ISO-4217 numeric currency code.
+	 * Gets the ISO-4217 numeric currency code.
 	 * <p>
-	 * * The numeric code is an alternative to the standard three letter code. * @return
-	 * the numeric currency code
+	 * The numeric code is an alternative to the standard three letter code.
+	 * 
+	 * @return the numeric currency code
 	 */
 	public int getNumericCode();
 

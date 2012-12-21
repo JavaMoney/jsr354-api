@@ -18,7 +18,7 @@ import javamoney.util.Currency;
 import javamoney.util.Money;
 
 import javax.money.CurrencyUnit;
-import javax.money.Monetary;
+import javax.money.Amount;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
 
@@ -86,7 +86,7 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 	 */
 	public BigCurrencyConverter(Money source, CurrencyUnit target,
 			BigDecimal factor) {
-		if (source instanceof Monetary) {
+		if (source instanceof Money) {
 			rate = new ExchangeRate<BigDecimal>(source.getCurrency(), target,
 					factor);
 		} else {

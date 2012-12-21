@@ -17,6 +17,9 @@ package javax.money.format;
 
 import java.util.Locale;
 
+import javax.money.Amount;
+
+
 
 /**
  * Provides the ability to build a formatter for monetary values.
@@ -25,15 +28,7 @@ import java.util.Locale;
  * A new instance should be created for each use.
  * The formatters produced by the builder are immutable and thread-safe.
  */
-public final class MoneyFormatterBuilder<T> {
-
-    //-----------------------------------------------------------------------
-    /**
-     * Constructor, creating a new empty builder.
-     */
-    public MoneyFormatterBuilder() {
-    	// TODO Not Implemented yet
-    }
+public interface AmountFormatterBuilder {
 
     //-----------------------------------------------------------------------
     /**
@@ -44,23 +39,7 @@ public final class MoneyFormatterBuilder<T> {
      * 
      * @return this, for chaining, never null
      */
-    public MoneyFormatterBuilder<T> appendAmount() {
-    	// TODO Not Implemented yet
-    	return null;
-    }
-
-    /**
-     * Appends the amount to the builder using a grouped localized format.
-     * <p>
-     * The format used is {@link MoneyAmountStyle#LOCALIZED_GROUPING}.
-     * The amount is the value itself, such as '12.34'.
-     * 
-     * @return this, for chaining, never null
-     */
-    public MoneyFormatterBuilder<T> appendAmountLocalized() {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+    public AmountFormatterBuilder appendAmount();
 
     /**
      * Appends the amount to the builder using the specified amount style.
@@ -73,10 +52,7 @@ public final class MoneyFormatterBuilder<T> {
      * @param style  the style to use, not null
      * @return this, for chaining, never null
      */
-    public MoneyFormatterBuilder appendAmount(MoneyAmountStyle style) {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+    public AmountFormatterBuilder appendAmount(MoneyAmountStyle style);
 
     //-----------------------------------------------------------------------
     /**
@@ -86,23 +62,8 @@ public final class MoneyFormatterBuilder<T> {
      * 
      * @return this, for chaining, never null
      */
-    public MoneyFormatterBuilder appendCurrencyCode() {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+    public AmountFormatterBuilder appendCurrencyCode();
 
-    /**
-     * Appends the currency code to the builder.
-     * <p>
-     * The numeric code is the ISO numeric code, such as '826' and is
-     * zero padded to three digits.
-     * 
-     * @return this, for chaining, never null
-     */
-    public MoneyFormatterBuilder appendCurrencyNumeric3Code() {
-    	// TODO Not Implemented yet
-    	return null;
-    }
 
     /**
      * Appends the currency code to the builder.
@@ -111,10 +72,7 @@ public final class MoneyFormatterBuilder<T> {
      * 
      * @return this, for chaining, never null
      */
-    public MoneyFormatterBuilder appendCurrencyNumericCode() {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+    public AmountFormatterBuilder appendCurrencyNumericCode();
 
     /**
      * Appends the localized currency symbol to the builder.
@@ -126,10 +84,7 @@ public final class MoneyFormatterBuilder<T> {
      * 
      * @return this, for chaining, never null
      */
-    public MoneyFormatterBuilder appendCurrencySymbolLocalized() {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+    public AmountFormatterBuilder appendCurrencySymbolLocalized();
 
     /**
      * Appends a literal to the builder.
@@ -140,10 +95,7 @@ public final class MoneyFormatterBuilder<T> {
      * @param literal  the literal to append, null or empty ignored
      * @return this, for chaining, never null
      */
-    public MoneyFormatterBuilder appendLiteral(CharSequence literal) {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+    public AmountFormatterBuilder appendLiteral(CharSequence literal);
 
     //-----------------------------------------------------------------------
     /**
@@ -156,24 +108,8 @@ public final class MoneyFormatterBuilder<T> {
      * @param formatter  the formatter to append, not null
      * @return this for chaining, never null
      */
-    public MoneyFormatterBuilder append(MoneyFormatter<T> formatter) {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+    public AmountFormatterBuilder append(Formatter<Amount> formatter);
 
-    /**
-     * Appends the specified printer and parser to this builder.
-     * <p>
-     * If null is specified then the formatter will be unable to print/parse.
-     * 
-     * @param printer  the printer to append, null makes the formatter unable to print
-     * @param parser  the parser to append, null makes the formatter unable to parse
-     * @return this for chaining, never null
-     */
-    public MoneyFormatterBuilder append(MoneyPrinter printer, MoneyParser parser) {
-    	// TODO Not Implemented yet
-    	return null;
-    }
 
     //-----------------------------------------------------------------------
     /**
@@ -188,10 +124,7 @@ public final class MoneyFormatterBuilder<T> {
      * 
      * @return the formatter built from this builder, never null
      */
-    public MoneyFormatter<T> toFormatter() {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+    public AmountFormatter toFormatter();
 
     /**
      * Builds the formatter from the builder setting the locale.
@@ -206,9 +139,20 @@ public final class MoneyFormatterBuilder<T> {
      * @param locale  the initial locale for the formatter, not null
      * @return the formatter built from this builder, never null
      */
-    @SuppressWarnings("cast")
-    public MoneyFormatter<T> toFormatter(Locale locale) {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+    public AmountFormatter toFormatter(Locale locale);
+    
+    /**
+     * Builds the formatter from the builder setting the locale.
+     * <p>
+     * Once the builder is in the correct state it must be converted to a
+     * {@code MoneyFormatter} to be used. Calling this method does not
+     * change the state of this instance, so it can still be used.
+     * <p>
+     * This method uses the specified locale within the returned formatter.
+     * It can be changed by calling {@link MoneyFormatter#withLocale(Locale)}.
+     * 
+     * @param locale  the initial locale for the formatter, not null
+     * @return the formatter built from this builder, never null
+     */
+    public AmountFormatter toFormatter(LocalizationStyle style);
 }

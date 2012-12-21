@@ -15,43 +15,37 @@
  */
 package javax.money.format;
 
-import java.io.IOException;
-import java.io.Serializable;
-
-import javax.money.Monetary;
-
 
 /**
- * Prints and parses a literal.
+ * Exception thrown during parsing of an item.
  * <p>
- * This class is immutable and thread-safe.
+ * This exception makes no guarantees about immutability or thread-safety.
+ *
+ * @author Anatole Tresch
  */
-final class LiteralPrinterParser<T> implements MoneyPrinter<T>, MoneyParser, Serializable {
+public class ParseException extends Exception {
 
-    /** Serialization version. */
+    /** Serialization lock. */
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructor.
-     * @param literal  the literal text, not null
+     * Constructor taking a message.
+     * 
+     * @param message  the message
      */
-    LiteralPrinterParser(String literal) {
+    public ParseException(String message) {
     	// TODO Not Implemented yet
     }
 
-    //-----------------------------------------------------------------------
-    public void print(MoneyPrintContext context, Appendable appendable, Monetary<T> money) throws IOException {
+    /**
+     * Constructor taking a message and cause.
+     * 
+     * @param message  the message
+     * @param cause  the exception cause
+     */
+    public ParseException(String message, Throwable cause) {
     	// TODO Not Implemented yet
-    }
-
-    public void parse(MoneyParseContext context) {
-    	// TODO Not Implemented yet
-    }
-
-    @Override
-    public String toString() {
-    	// TODO Not Implemented yet
-    	return null;
+    	super(message, cause);
     }
 
 }

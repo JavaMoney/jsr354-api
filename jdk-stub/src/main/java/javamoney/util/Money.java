@@ -17,7 +17,7 @@ import java.math.RoundingMode;
 
 
 import javax.money.CurrencyUnit;
-import javax.money.Monetary;
+import javax.money.Amount;
 
 /**
  * An amount of money with the standard decimal places defined by the currency.
@@ -35,7 +35,7 @@ import javax.money.Monetary;
  * This class does not allow calculations on fractions of a cent.
  * <p>
  */
-public final class Money implements Monetary<BigDecimal>, Serializable {
+public final class Money implements Money<BigDecimal>, Serializable {
 
     /**
      * The serialization version.
@@ -197,7 +197,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * @return the new instance, never null
      * @throws ArithmeticException if the scale exceeds the currency scale
      */
-    public static Money getInstance(Monetary<BigDecimal> money) {
+    public static Money getInstance(Money<BigDecimal> money) {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -214,7 +214,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
      * @return the new instance, never null
      * @throws ArithmeticException if the rounding fails
      */
-    public static Money getInstance(Monetary<BigDecimal> moneyProvider, RoundingMode roundingMode) {
+    public static Money getInstance(Money<BigDecimal> moneyProvider, RoundingMode roundingMode) {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -1272,7 +1272,7 @@ public final class Money implements Monetary<BigDecimal>, Serializable {
     }
 
 	@Override
-	public int compareTo(Monetary<BigDecimal> o) {
+	public int compareTo(Money<BigDecimal> o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -1,7 +1,23 @@
+/*
+ *  Copyright 2012 Credit Suisse (Anatole Tresch)
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package javax.money;
 
-
-/** * @author Anatole Tresch * */
+/**
+ * @author Anatole Tresch
+ */
 public interface Amount extends Comparable<Amount> {
 
 	/**
@@ -28,7 +44,7 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a {@code Amount} whose value is the absolute value of this
-	 * {@code Amount}, and whose scale is {@code this.getScale()}.
+	 * {@code Amount}, and whose scale is {@code this.getgetScale()}.
 	 * 
 	 * @return {@code abs(this)}
 	 */
@@ -45,7 +61,7 @@ public interface Amount extends Comparable<Amount> {
 	 *         returned.
 	 * @see #compareTo(java.math.Amount)
 	 */
-	public Amount min(Amount val);
+	public Amount min(Amount amount);
 
 	/**
 	 * Returns the maximum of this {@code Amount} and {@code val}.
@@ -58,23 +74,23 @@ public interface Amount extends Comparable<Amount> {
 	 *         returned.
 	 * @see #compareTo(Amount)
 	 */
-	public Amount max(Amount val);
+	public Amount max(Amount amount);
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (this +
-	 * augend)}, and whose scale is {@code max(this.scale(),
-	 * augend.scale())}.
+	 * augend)}, and whose scale is {@code max(this.getScale(),
+	 * augend.getScale())}.
 	 * 
 	 * @param augend
 	 *            value to be added to this {@code Amount}.
 	 * @return {@code this + augend}
 	 */
-	public Amount add(Amount augend);
+	public Amount add(Amount amount);
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (this +
-	 * augend)}, and whose scale is {@code max(this.scale(),
-	 * augend.scale())}.
+	 * augend)}, and whose scale is {@code max(this.getScale(),
+	 * augend.getScale())}.
 	 * 
 	 * @param augend
 	 *            value to be added to this {@code Amount}.
@@ -84,9 +100,9 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (this /
-	 * divisor)}, and whose preferred scale is {@code (this.scale() -
-	 * divisor.scale())}; if the exact quotient cannot be represented (because
-	 * it has a non-terminating decimal expansion) an
+	 * divisor)}, and whose preferred scale is {@code (this.getScale() -
+	 * divisor.getScale())}; if the exact quotient cannot be represented
+	 * (because it has a non-terminating decimal expansion) an
 	 * {@code ArithmeticException} is thrown.
 	 * 
 	 * @param divisor
@@ -100,9 +116,9 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (this /
-	 * divisor)}, and whose preferred scale is {@code (this.scale() -
-	 * divisor.scale())}; if the exact quotient cannot be represented (because
-	 * it has a non-terminating decimal expansion) an
+	 * divisor)}, and whose preferred scale is {@code (this.getScale() -
+	 * divisor.getScale())}; if the exact quotient cannot be represented
+	 * (because it has a non-terminating decimal expansion) an
 	 * {@code ArithmeticException} is thrown.
 	 * 
 	 * @param divisor
@@ -116,9 +132,9 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (this /
-	 * divisor)}, and whose preferred scale is {@code (this.scale() -
-	 * divisor.scale())}; if the exact quotient cannot be represented (because
-	 * it has a non-terminating decimal expansion) an
+	 * divisor)}, and whose preferred scale is {@code (this.getScale() -
+	 * divisor.getScale())}; if the exact quotient cannot be represented
+	 * (because it has a non-terminating decimal expansion) an
 	 * {@code ArithmeticException} is thrown.
 	 * 
 	 * @param divisor
@@ -132,9 +148,9 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (this /
-	 * divisor)}, and whose preferred scale is {@code (this.scale() -
-	 * divisor.scale())}; if the exact quotient cannot be represented (because
-	 * it has a non-terminating decimal expansion) an
+	 * divisor)}, and whose preferred scale is {@code (this.getScale() -
+	 * divisor.getScale())}; if the exact quotient cannot be represented
+	 * (because it has a non-terminating decimal expansion) an
 	 * {@code ArithmeticException} is thrown.
 	 * 
 	 * @param divisor
@@ -197,8 +213,8 @@ public interface Amount extends Comparable<Amount> {
 	/**
 	 * Returns a {@code Amount} whose value is the integer part of the quotient
 	 * {@code (this / divisor)} rounded down. The preferred scale of the result
-	 * is {@code (this.scale() -
-	 * divisor.scale())}.
+	 * is {@code (this.getScale() -
+	 * divisor.getScale())}.
 	 * 
 	 * @param divisor
 	 *            value by which this {@code Amount} is to be divided.
@@ -211,8 +227,8 @@ public interface Amount extends Comparable<Amount> {
 	/**
 	 * Returns a {@code Amount} whose value is the integer part of the quotient
 	 * {@code (this / divisor)} rounded down. The preferred scale of the result
-	 * is {@code (this.scale() -
-	 * divisor.scale())}.
+	 * is {@code (this.getScale() -
+	 * divisor.getScale())}.
 	 * 
 	 * @param divisor
 	 *            value by which this {@code Amount} is to be divided.
@@ -224,8 +240,8 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a {@code Amount} whose value is <tt>(this &times;
-	 * multiplicand)</tt>, and whose scale is {@code (this.scale() +
-	 * multiplicand.scale())}.
+	 * multiplicand)</tt>, and whose scale is {@code (this.getScale() +
+	 * multiplicand.getScale())}.
 	 * 
 	 * @param multiplicand
 	 *            value to be multiplied by this {@code Amount}.
@@ -235,8 +251,8 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a {@code Amount} whose value is <tt>(this &times;
-	 * multiplicand)</tt>, and whose scale is {@code (this.scale() +
-	 * multiplicand.scale())}.
+	 * multiplicand)</tt>, and whose scale is {@code (this.getScale() +
+	 * multiplicand.getScale())}.
 	 * 
 	 * @param multiplicand
 	 *            value to be multiplied by this {@code Amount}.
@@ -246,7 +262,7 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (-this)}, and whose scale
-	 * is {@code this.scale()}.
+	 * is {@code this.getScale()}.
 	 * 
 	 * @return {@code -this}.
 	 */
@@ -254,7 +270,7 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (+this)}, and whose scale
-	 * is {@code this.scale()}.
+	 * is {@code this.getScale()}.
 	 * 
 	 * <p>
 	 * This method, which simply returns this {@code Amount} is included for
@@ -267,8 +283,8 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (this -
-	 * subtrahend)}, and whose scale is {@code max(this.scale(),
-	 * subtrahend.scale())}.
+	 * subtrahend)}, and whose scale is {@code max(this.getScale(),
+	 * subtrahend.getScale())}.
 	 * 
 	 * @param subtrahend
 	 *            value to be subtracted from this {@code Amount}.
@@ -278,8 +294,8 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (this -
-	 * subtrahend)}, and whose scale is {@code max(this.scale(),
-	 * subtrahend.scale())}.
+	 * subtrahend)}, and whose scale is {@code max(this.getScale(),
+	 * subtrahend.getScale())}.
 	 * 
 	 * @param subtrahend
 	 *            value to be subtracted from this {@code Amount}.
@@ -315,7 +331,7 @@ public interface Amount extends Comparable<Amount> {
 	 * numerically equal to 1 with the scale of {@code this}. The result is
 	 * stored with the same scale as {@code this} so the result for zero and
 	 * nonzero values is equal to {@code [1,
-	 * this.scale()]}.
+	 * this.getgetScale()]}.
 	 * 
 	 * @return the size of an ulp of {@code this}
 	 */
@@ -385,7 +401,8 @@ public interface Amount extends Comparable<Amount> {
 
 	/**
 	 * Returns a Amount whose numerical value is equal to ({@code this} *
-	 * 10<sup>n</sup>). The scale of the result is {@code (this.scale() - n)}.
+	 * 10<sup>n</sup>). The scale of the result is {@code (this.getScale() - n)}
+	 * .
 	 * 
 	 * @throws ArithmeticException
 	 *             if the scale would be outside the range supported.

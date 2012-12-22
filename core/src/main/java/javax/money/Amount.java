@@ -15,6 +15,13 @@
  */
 package javax.money;
 
+import static java.math.BigDecimal.ZERO;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+
+
 /**
  * @author Anatole Tresch
  */
@@ -247,6 +254,28 @@ public interface Amount extends Comparable<Amount> {
 	 *            value to be multiplied by this {@code Amount}.
 	 * @return {@code this * multiplicand}
 	 */
+	public Amount multiply(Amount multiplicand, MathContext ctx);
+
+	/**
+	 * Returns a {@code Amount} whose value is <tt>(this &times;
+	 * multiplicand)</tt>, and whose scale is {@code (this.getScale() +
+	 * multiplicand.getScale())}.
+	 * 
+	 * @param multiplicand
+	 *            value to be multiplied by this {@code Amount}.
+	 * @return {@code this * multiplicand}
+	 */
+	public Amount multiply(Number multiplicand, MathContext ctx);
+	
+	/**
+	 * Returns a {@code Amount} whose value is <tt>(this &times;
+	 * multiplicand)</tt>, and whose scale is {@code (this.getScale() +
+	 * multiplicand.getScale())}.
+	 * 
+	 * @param multiplicand
+	 *            value to be multiplied by this {@code Amount}.
+	 * @return {@code this * multiplicand}
+	 */
 	public Amount multiply(Amount multiplicand);
 
 	/**
@@ -408,6 +437,212 @@ public interface Amount extends Comparable<Amount> {
 	 *             if the scale would be outside the range supported.
 	 */
 	public Amount scaleByPowerOfTen(int n);
+
+	/**
+	 * Returns a copy of this monetary value with the specified currency.
+	 * <p>
+	 * The returned instance will have the specified currency and the amount
+	 * from this instance. If the scale differs between the currencies such that
+	 * rounding would be required, then an exception is thrown.
+	 * <p>
+	 * This instance is immutable and unaffected by this method.
+	 * 
+	 * @param currency
+	 *            the currency to use, not null
+	 * @return the new instance with the input currency set, never null
+	 * @throws ArithmeticException
+	 *             if the scale of the new currency is less than the scale of
+	 *             this currency
+	 */
+	public Amount withCurrencyUnit(CurrencyUnit currency);
+
+	/**
+	 * Returns a copy of this monetary value with the specified currency.
+	 * <p>
+	 * The returned instance will have the specified currency and the amount
+	 * from this instance. If the number of decimal places differs between the
+	 * currencies, then the amount may be rounded.
+	 * <p>
+	 * This instance is immutable and unaffected by this method.
+	 * 
+	 * @param currency
+	 *            the currency to use, not null
+	 * @param roundingMode
+	 *            the rounding mode to use to bring the decimal places back in
+	 *            line, not null
+	 * @return the new instance with the input currency set, never null
+	 * @throws ArithmeticException
+	 *             if the rounding fails
+	 */
+	public Amount withCurrencyUnit(CurrencyUnit currency, Rounding rounding);
+
+	/**
+	 * Gets the amount in major units as a {@code BigDecimal} with scale 0.
+	 * <p>
+	 * This returns the monetary amount in terms of the major units of the
+	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
+	 * will return 2, and 'BHD -1.345' will return -1.
+	 * <p>
+	 * This is returned as a {@code BigDecimal} rather than a {@code BigInteger}
+	 * . This is to allow further calculations to be performed on the result.
+	 * Should you need a {@code BigInteger}, simply call
+	 * {@link BigDecimal#toBigInteger()}.
+	 * 
+	 * @return the major units part of the amount, never null
+	 */
+	public BigDecimal getAmountMajor();
+
+	/**
+	 * Gets the amount in major units as a {@code long}.
+	 * <p>
+	 * This returns the monetary amount in terms of the major units of the
+	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
+	 * will return 2, and 'BHD -1.345' will return -1.
+	 * 
+	 * @return the major units part of the amount
+	 * @throws ArithmeticException
+	 *             if the amount is too large for a {@code long}
+	 */
+	public long getAmountMajorLong();
+
+	/**
+	 * Gets the amount in major units as an {@code int}.
+	 * <p>
+	 * This returns the monetary amount in terms of the major units of the
+	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
+	 * will return 2, and 'BHD -1.345' will return -1.
+	 * 
+	 * @return the major units part of the amount
+	 * @throws ArithmeticException
+	 *             if the amount is too large for an {@code int}
+	 */
+	public int getAmountMajorInt();
+
+	/**
+	 * Gets the amount in minor units as a {@code BigDecimal} with scale 0.
+	 * <p>
+	 * This returns the monetary amount in terms of the minor units of the
+	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
+	 * will return 235, and 'BHD -1.345' will return -1345.
+	 * <p>
+	 * This is returned as a {@code BigDecimal} rather than a {@code BigInteger}
+	 * . This is to allow further calculations to be performed on the result.
+	 * Should you need a {@code BigInteger}, simply call
+	 * {@link BigDecimal#toBigInteger()}.
+	 * 
+	 * @return the minor units part of the amount, never null
+	 */
+	public BigDecimal getAmountMinor();
+
+	/**
+	 * Gets the amount in minor units as a {@code long}.
+	 * <p>
+	 * This returns the monetary amount in terms of the minor units of the
+	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
+	 * will return 235, and 'BHD -1.345' will return -1345.
+	 * 
+	 * @return the minor units part of the amount
+	 * @throws ArithmeticException
+	 *             if the amount is too large for a {@code long}
+	 */
+	public long getAmountMinorLong();
+
+	/**
+	 * Gets the amount in minor units as an {@code int}.
+	 * <p>
+	 * This returns the monetary amount in terms of the minor units of the
+	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
+	 * will return 235, and 'BHD -1.345' will return -1345.
+	 * 
+	 * @return the minor units part of the amount
+	 * @throws ArithmeticException
+	 *             if the amount is too large for an {@code int}
+	 */
+	public int getAmountMinorInt();
+
+	/**
+	 * Gets the minor part of the amount.
+	 * <p>
+	 * This return the minor unit part of the monetary amount. This is defined
+	 * as the amount in minor units excluding major units.
+	 * <p>
+	 * For example, EUR has a scale of 2, so the minor part is always between 0
+	 * and 99 for positive amounts, and 0 and -99 for negative amounts. Thus
+	 * 'EUR 2.35' will return 35, and 'EUR -1.34' will return -34.
+	 * 
+	 * @return the minor part of the amount, negative if the amount is negative
+	 */
+	public int getMinorPart();
+
+	/**
+	 * Checks if the amount is zero.
+	 * 
+	 * @return true if the amount is zero
+	 */
+	public boolean isZero();
+
+	/**
+	 * Checks if the amount is greater than zero.
+	 * 
+	 * @return true if the amount is greater than zero
+	 */
+	public boolean isPositive();
+
+	/**
+	 * Checks if the amount is zero or greater.
+	 * 
+	 * @return true if the amount is zero or greater
+	 */
+	public boolean isPositiveOrZero();
+
+	/**
+	 * Checks if the amount is less than zero.
+	 * 
+	 * @return true if the amount is less than zero
+	 */
+	public boolean isNegative();
+
+	/**
+	 * Checks if the amount is zero or less.
+	 * 
+	 * @return true if the amount is zero or less
+	 */
+	public boolean isNegativeOrZero();
+
+	// -----------------------------------------------------------------------
+	/**
+	 * Returns a copy of this monetary value with the specified amount.
+	 * <p>
+	 * The returned instance will have this currency and the new amount. No
+	 * rounding is performed on the amount to be added, so it must have a scale
+	 * compatible with the currency.
+	 * <p>
+	 * This instance is immutable and unaffected by this method.
+	 * 
+	 * @param amount
+	 *            the monetary amount to set in the returned instance, not null
+	 * @return the new instance with the input amount set, never null
+	 * @throws ArithmeticException
+	 *             if the scale of the amount is too large
+	 */
+	public Money withAmount(BigDecimal amount);
+
+	/**
+	 * Returns a copy of this monetary value with the specified amount.
+	 * <p>
+	 * The returned instance will have this currency and the new amount. If the
+	 * scale of the {@code BigDecimal} needs to be adjusted, then it will be
+	 * rounded using the specified mode.
+	 * <p>
+	 * This instance is immutable and unaffected by this method.
+	 * 
+	 * @param amount
+	 *            the monetary amount to set in the returned instance, not null
+	 * @param roundingMode
+	 *            the rounding mode to adjust the scale, not null
+	 * @return the new instance with the input amount set, never null
+	 */
+	public Money withAmount(BigDecimal amount, RoundingMode roundingMode);
 
 	// -------------------- Introspection and value methods, similar to
 	// java.lang.Number; java.lang.BigDecimal

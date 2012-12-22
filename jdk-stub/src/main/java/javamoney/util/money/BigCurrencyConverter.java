@@ -15,7 +15,6 @@ import java.util.Formatter;
 import java.util.Locale;
 
 import javamoney.util.Currency;
-import javamoney.util.Money;
 
 import javax.money.CurrencyUnit;
 import javax.money.Amount;
@@ -24,22 +23,24 @@ import javax.money.convert.ExchangeRate;
 
 /**
  * <p>
- * This class represents a converter between two currencies using {@code BigDecimal}
+ * This class represents a converter between two currencies using
+ * {@code BigDecimal}
  * </p>
  * 
  * <p>
  * CurrencyUnit converters convert values based upon the current exchange rate
  * {@link CurrencyUnit#getExchangeRate() exchange rate}. If the
- * {@link CurrencyUnit#getExchangeRate() exchange rate} from the target CurrencyUnit to
- * the source CurrencyUnit is not set, conversion fails. In others words, the
- * converter from a CurrencyUnit <code>A</code> to a CurrencyUnit <code>B</code> is
- * independant from the converter from <code>B</code> to <code>A</code>.
+ * {@link CurrencyUnit#getExchangeRate() exchange rate} from the target
+ * CurrencyUnit to the source CurrencyUnit is not set, conversion fails. In
+ * others words, the converter from a CurrencyUnit <code>A</code> to a
+ * CurrencyUnit <code>B</code> is independant from the converter from
+ * <code>B</code> to <code>A</code>.
  * </p>
  * 
  * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
  * @version 0.2.3
  */
-public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal> {
+public final class BigCurrencyConverter implements CurrencyConverter {
 
 	/**
 	 * Holds the exchange rate.
@@ -48,8 +49,8 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 
 	private void checkFactor(Number factor) {
 		if (factor == null)
-			throw new UnsupportedOperationException("Exchange Rate not set " +
-					rate.getSource() + "->" + rate.getTarget()); //$NON-NLS-1$
+			throw new UnsupportedOperationException("Exchange Rate not set "
+					+ rate.getSource() + "->" + rate.getTarget()); //$NON-NLS-1$
 	}
 
 	private static final CurrencyUnit fromJDK(java.util.Currency jdkCurrency) {
@@ -57,8 +58,8 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 	}
 
 	/**
-	 * Creates the CurrencyUnit converter from the source CurrencyUnit to the target
-	 * CurrencyUnit.
+	 * Creates the CurrencyUnit converter from the source CurrencyUnit to the
+	 * target CurrencyUnit.
 	 * 
 	 * @param source
 	 *            the source CurrencyUnit.
@@ -68,13 +69,14 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 	 *            the multiplier factor from source to target.
 	 * @return the corresponding converter.
 	 */
-	protected BigCurrencyConverter(CurrencyUnit source, CurrencyUnit target, BigDecimal factor) {
-		rate = new ExchangeRate<BigDecimal>(source, target, factor);
+	protected BigCurrencyConverter(CurrencyUnit source, CurrencyUnit target,
+			BigDecimal factor) {
+		rate = new ExchangeRate(source, target, factor, null);
 	}
 
 	/**
-	 * Creates the CurrencyUnit converter from the source CurrencyUnit to the target
-	 * CurrencyUnit.
+	 * Creates the CurrencyUnit converter from the source CurrencyUnit to the
+	 * target CurrencyUnit.
 	 * 
 	 * @param source
 	 *            the source Money.
@@ -84,20 +86,14 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 	 *            the multiplier factor from source to target.
 	 * @return the corresponding converter.
 	 */
-	public BigCurrencyConverter(Money source, CurrencyUnit target,
+	public BigCurrencyConverter(Amount source, CurrencyUnit target,
 			BigDecimal factor) {
-		if (source instanceof Money) {
-			rate = new ExchangeRate<BigDecimal>(source.getCurrency(), target,
-					factor);
-		} else {
-			CurrencyUnit defCurrency = Currency.getInstance(Locale.getDefault());
-			rate = new ExchangeRate<BigDecimal>(defCurrency, defCurrency, factor);
-		}
+		rate = new ExchangeRate(source.getCurrency(), target, factor, null);
 	}
 
 	/**
-	 * Creates the CurrencyUnit converter from the source CurrencyUnit to the target
-	 * CurrencyUnit using <strong>JDK</strong> types.
+	 * Creates the CurrencyUnit converter from the source CurrencyUnit to the
+	 * target CurrencyUnit using <strong>JDK</strong> types.
 	 * 
 	 * @param source
 	 *            the source CurrencyUnit (<strong>JDK</strong>).
@@ -136,8 +132,8 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 	}
 
 	public BigCurrencyConverter negate() {
-		return new BigCurrencyConverter(rate.getSource(), rate.getTarget(), rate
-				.getFactor().negate());
+		return new BigCurrencyConverter(rate.getSource(), rate.getTarget(),
+				rate.getFactor().negate());
 	}
 
 	public double convert(double value) {
@@ -147,24 +143,28 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 		return factor.doubleValue() * value;
 	}
 
-	public BigDecimal convert(BigDecimal value) {
-		return convert((BigDecimal) value, MathContext.DECIMAL128);
+	public Amount convert(Amount value) {
+		return convert(value, MathContext.DECIMAL128);
 	}
-	
-	public BigDecimal convert(BigDecimal value, MathContext ctx)
+
+	public Amount convert(Amount value, MathContext ctx)
 			throws ArithmeticException {
 		// Number factor = rate.getSource().getExchangeRate(rate.getTarget());
-		BigDecimal factor = rate.getFactor();
+		Number factor = rate.getFactor();
 		checkFactor(factor);
 		return value.multiply(factor, ctx);
 	}
+	
+	public Amount convert(Number value) {
+		return convert(value, MathContext.DECIMAL128);
+	}
 
-	public Number convert(Number value) {
-		if (value instanceof BigDecimal) {
-			return convert((BigDecimal) value, MathContext.DECIMAL128);
-		} else {
-			return convert(value.doubleValue());
-		}
+	public Amount convert(Number value, MathContext ctx)
+			throws ArithmeticException {
+		// Number factor = rate.getSource().getExchangeRate(rate.getTarget());
+		Number factor = rate.getFactor();
+		checkFactor(factor);
+		return value.multiply(factor, ctx);
 	}
 
 	@Override
@@ -189,40 +189,8 @@ public final class BigCurrencyConverter implements CurrencyConverter<BigDecimal>
 		return false;
 	}
 
-	public ExchangeRate<BigDecimal> getExchangeRate() {
+	public ExchangeRate getExchangeRate() {
 		return rate;
 	}
 
-	public void formatTo(Formatter fmt, int f, int width, int precision) {
-		StringBuilder sb = new StringBuilder();
-
-		// decide form of name
-		String name = getSource().toString();
-		String symbol = getSource().getSymbol();
-		// if (fmt.locale().equals(Locale.FRANCE))
-		// name = frenchCompanyName;
-		// boolean alternate = (f & ALTERNATE) == ALTERNATE;
-		boolean usesymbol = true; // alternate || (precision != -1 && precision
-									// < 10);
-		String out = (usesymbol ? symbol : name);
-
-		// apply precision
-		if (precision == -1 || out.length() < precision) {
-			// write it all
-			sb.append(out);
-		} else {
-			sb.append(out.substring(0, precision - 1)).append('*');
-		}
-
-		// apply width and justification
-		int len = sb.length();
-		if (len < width)
-			for (int i = 0; i < width - len; i++)
-				if ((f & LEFT_JUSTIFY) == LEFT_JUSTIFY)
-					sb.append(' ');
-				else
-					sb.insert(0, ' ');
-
-		fmt.format(sb.toString());
-	}
 }

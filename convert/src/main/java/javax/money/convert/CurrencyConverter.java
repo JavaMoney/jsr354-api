@@ -6,9 +6,9 @@
  */
 package javax.money.convert;
 
-import java.util.Formattable;
-import java.util.Formatter;
+import javax.money.Amount;
 import javax.money.CurrencyUnit;
+import javax.money.convert.spi.ExchangeRateProvider;
 
 /**
  * <p>
@@ -18,24 +18,21 @@ import javax.money.CurrencyUnit;
  * <p>
  * CurrencyUnit converters convert values based upon the current exchange rate
  * {@link CurrencyUnit#getExchangeRate() exchange rate}. If the
- * {@link CurrencyUnit#getExchangeRate() exchange rate} from the target CurrencyUnit to
- * the source CurrencyUnit is not set, conversion fails. In others words, the
- * converter from a CurrencyUnit <code>A</code> to a CurrencyUnit <code>B</code> is
- * independant from the converter from <code>B</code> to <code>A</code>.
+ * {@link CurrencyUnit#getExchangeRate() exchange rate} from the target
+ * CurrencyUnit to the source CurrencyUnit is not set, conversion fails. In
+ * others words, the converter from a CurrencyUnit <code>A</code> to a
+ * CurrencyUnit <code>B</code> is independant from the converter from
+ * <code>B</code> to <code>A</code>.
  * </p>
  * 
  * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
  * @version 0.2.4
  */
-public interface CurrencyConverter<T> extends ExchangeRateProvider<T>, Formattable {
+public interface CurrencyConverter {
 
-
-
-//	private CurrencyUnit fromJDK(java.util.Currency jdkCurrency) {
-//		return CurrencyUnit.getInstance(CurrencyUnit.getCurrencyCode());
-//	}
-
-
+	// private CurrencyUnit fromJDK(java.util.Currency jdkCurrency) {
+	// return CurrencyUnit.getInstance(CurrencyUnit.getCurrencyCode());
+	// }
 
 	/**
 	 * Returns the source CurrencyUnit.
@@ -51,19 +48,20 @@ public interface CurrencyConverter<T> extends ExchangeRateProvider<T>, Formattab
 	 */
 	public CurrencyUnit getTarget();
 
-	public CurrencyConverter<T> inverse();
+	public CurrencyConverter inverse();
 
-	public CurrencyConverter<T> negate();
+	public CurrencyConverter negate();
 
 	public double convert(double value);
+	
+	public double convertInverse(double value);
 
-	public abstract T convert(T value);
+	public abstract Amount convert(Amount value);
 
 	public boolean isLinear();
 
 	public boolean isIdentity();
 
-	public ExchangeRate<T> getExchangeRate();
+	public ExchangeRate getExchangeRate();
 
-	public void formatTo(Formatter fmt, int f, int width, int precision);
 }

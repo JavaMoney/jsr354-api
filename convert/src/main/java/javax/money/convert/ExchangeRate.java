@@ -29,57 +29,63 @@ public class ExchangeRate<T> {
 	 * Holds the exchange factor.
 	 */
 	private final T factor;
+	
+	/**
+	 * Holds the exchange factor.
+	 */
+	private final T inverseFactor;
 
 	/**
 	 * Holds the effective (start) date.
 	 */
-	private final Date date;
+	private final Date fromDate;
 
 	//private final Date interval;
 	
-	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor,
+	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor,  T inverseFactor,
 			Date fromDate, Date toDate) {
 		super();
 		this.source = source;
 		this.target = target;
 		this.factor = factor;
-		this.date = fromDate;
+		this.inverseFactor = inverseFactor;
+		this.fromDate = fromDate;
 		//this.interval = new DateInterval(fromDate.getTime(), toDate.getTime());
 	}
 	
-	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor,
+	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor, T inverseFactor,
 			Date date) {
-		this(source, target, factor, date, date);
+		this(source, target, factor, inverseFactor, date, date);
 	}
 
-	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor) {
-		this(source, target, factor, new Date());
+	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor, T inverseFactor) {
+		this(source, target, factor, inverseFactor, new Date());
 	}
 
-	public CurrencyUnit getSource() {
+	public CurrencyUnit getSourceCurrency() {
 		return source;
 	}
 
-	public CurrencyUnit getSourceUnit() {
-		return source;
-	}
-
-	public CurrencyUnit getTarget() {
-		return target;
-	}
-
-	public CurrencyUnit getTargetUnit() {
+	public CurrencyUnit getTargetCurrency() {
 		return target;
 	}
 
 	public T getFactor() {
 		return factor;
 	}
-
-	public Date getDate() {
-		return date;
+	
+	public T getInverseFactor() {
+		return inverseFactor;
 	}
 
+	public boolean isConvertible(){
+		return this.factor != null;
+	}
+	
+	public boolean isInverseConvertible(){
+		return this.inverseFactor != null;
+	}
+	
 //	public DateInterval getInterval() {
 //		return interval;
 //	}

@@ -1,7 +1,9 @@
 
 package javamoney.util.money;
 
-import javamoney.util.Money;
+import javax.money.Amount;
+import javax.money.Money;
+import javax.money.convert.CurrencyMismatchException;
 
 /*
  * Copyright (c) 2009, 2012, Oracle and/or its affiliates. All rights reserved.
@@ -52,7 +54,7 @@ public final class MoneyUtils {
      * 
      * @return true if the money is null or zero
      */
-    public static boolean isZero(Money moneyProvider) {
+    public static boolean isZero(Amount moneyProvider) {
     	// TODO Not Implemented yet
     	return false;
     }
@@ -64,7 +66,7 @@ public final class MoneyUtils {
      * 
      * @return true if the money is non-null and positive
      */
-    public static boolean isPositive(Money moneyProvider) {
+    public static boolean isPositive(Amount moneyProvider) {
     	// TODO Not Implemented yet
     	return false;
     }
@@ -76,7 +78,7 @@ public final class MoneyUtils {
      * 
      * @return true if the money is null, zero or positive
      */
-    public static boolean isPositiveOrZero(Money moneyProvider) {
+    public static boolean isPositiveOrZero(Amount moneyProvider) {
     	// TODO Not Implemented yet
     	return false;
     }
@@ -88,7 +90,7 @@ public final class MoneyUtils {
      * 
      * @return true if the money is non-null and negative
      */
-    public static boolean isNegative(Money moneyProvider) {
+    public static boolean isNegative(Amount moneyProvider) {
     	// TODO Not Implemented yet
     	return false;
     }
@@ -100,7 +102,7 @@ public final class MoneyUtils {
      * 
      * @return true if the money is null, zero or negative
      */
-    public static boolean isNegativeOrZero(Money moneyProvider) {
+    public static boolean isNegativeOrZero(Amount moneyProvider) {
     	// TODO Not Implemented yet
     	return false;
     }
@@ -117,7 +119,7 @@ public final class MoneyUtils {
      * @return the maximum value, null if both inputs are null
      * @throws CurrencyMismatchException if the currencies differ
      */
-    public static Money max(Money money1, Money money2) {
+    public static Money max(Amount money1, Amount money2) {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -133,7 +135,7 @@ public final class MoneyUtils {
      * @return the minimum value, null if both inputs are null
      * @throws CurrencyMismatchException if the currencies differ
      */
-    public static Money min(Money money1, Money money2) {
+    public static Amount min(Amount money1, Amount money2) {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -150,7 +152,7 @@ public final class MoneyUtils {
      * @return the total, where null is ignored, null if both inputs are null
      * @throws CurrencyMismatchException if the currencies differ
      */
-    public static Money add(Money money1, Money money2) {
+    public static Amount add(Amount money1, Amount money2) {
     	// TODO Not Implemented yet
     	return null;
     }
@@ -167,7 +169,7 @@ public final class MoneyUtils {
      * @return the total, where null is ignored, null if both inputs are null
      * @throws CurrencyMismatchException if the currencies differ
      */
-    public static Money subtract(Money money1, Money money2) {
+    public static Amount subtract(Amount money1, Amount money2) {
     	// TODO Not Implemented yet
     	return null;
     }

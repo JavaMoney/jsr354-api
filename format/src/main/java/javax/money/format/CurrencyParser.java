@@ -23,8 +23,8 @@ import javax.money.CurrencyUnit;
 /**
  * Formats instances of number to and from a String.
  * <p>
- * Instances of {@code NumberPrinterParser} can be created by
- * {@code NumberPrinterParserFactory}.
+ * Instances of {@code CurrencyParser} can be created by
+ * {@code MoneyFormat#getCurrencyParser()}.
  * <p>
  * This class is immutable and thread-safe.
  */
@@ -38,9 +38,10 @@ public interface CurrencyParser extends Parser<CurrencyUnit> {
 	public String getNamespace();
 
 	/**
-	 * Formats a monetary value to a {@code String}.
+	 * Gets the localizaed symbol value of a {@link CurrencyUnit} of a
+	 * {@code String}.
 	 * 
-	 * @param money
+	 * @param currency
 	 *            the money to print, not null
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
@@ -51,10 +52,13 @@ public interface CurrencyParser extends Parser<CurrencyUnit> {
 	public String getSymbol(CurrencyUnit currency, Locale locale);
 
 	/**
-	 * Formats a monetary value to a {@code String}.
+	 * Gets the localizaed symbol value of a {@link CurrencyUnit} of a
+	 * {@code String}.
 	 * 
-	 * @param money
-	 *            the money to print, not null
+	 * @param currency
+	 *            the currency to print, not null
+	 * @param style
+	 *            The target {@link LocalizationStyle}.
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
@@ -64,10 +68,12 @@ public interface CurrencyParser extends Parser<CurrencyUnit> {
 	public String getSymbol(CurrencyUnit currency, LocalizationStyle style);
 
 	/**
-	 * Formats a monetary value to a {@code String}.
+	 * Formats a currency's value to a {@code String}.
 	 * 
-	 * @param money
-	 *            the money to print, not null
+	 * @param currency
+	 *            the currency to print, not null
+	 * @param locale
+	 *            the target {@link Locale}.
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
@@ -79,8 +85,10 @@ public interface CurrencyParser extends Parser<CurrencyUnit> {
 	/**
 	 * Formats a monetary value to a {@code String}.
 	 * 
-	 * @param money
-	 *            the money to print, not null
+	 * @param currency
+	 *            the currency to print, not null
+	 * @param style
+	 *            The target {@link LocaliazationStyle}.
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
@@ -99,8 +107,10 @@ public interface CurrencyParser extends Parser<CurrencyUnit> {
 	 * 
 	 * @param appendable
 	 *            the appendable to add to, not null
-	 * @param moneyProvider
-	 *            the money to print, not null
+	 * @param currency
+	 *            the currency to print, not null
+	 * @param locale
+	 *            the target {@link Locale}.
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
@@ -112,7 +122,7 @@ public interface CurrencyParser extends Parser<CurrencyUnit> {
 			Locale locale) throws IOException;
 
 	/**
-	 * Prints a monetary value to an {@code Appendable} converting any
+	 * Prints a currency's symbol value to an {@code Appendable} converting any
 	 * {@code IOException} to a {@code MoneyFormatException}.
 	 * <p>
 	 * Example implementations of {@code Appendable} are {@code StringBuilder},
@@ -121,8 +131,10 @@ public interface CurrencyParser extends Parser<CurrencyUnit> {
 	 * 
 	 * @param appendable
 	 *            the appendable to add to, not null
-	 * @param moneyProvider
-	 *            the money to print, not null
+	 * @param currency
+	 *            the currency to print, not null
+	 * @param style
+	 *            The target {@link LocaliazationStyle}.
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
@@ -143,8 +155,10 @@ public interface CurrencyParser extends Parser<CurrencyUnit> {
 	 * 
 	 * @param appendable
 	 *            the appendable to add to, not null
-	 * @param moneyProvider
-	 *            the money to print, not null
+	 * @param currency
+	 *            the currency to print, not null
+	 * @param locale
+	 *            the target {@link Locale}.
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
@@ -156,7 +170,7 @@ public interface CurrencyParser extends Parser<CurrencyUnit> {
 			Locale locale) throws IOException;
 
 	/**
-	 * Prints a monetary value to an {@code Appendable} converting any
+	 * Prints a currency value to an {@code Appendable} converting any
 	 * {@code IOException} to a {@code MoneyFormatException}.
 	 * <p>
 	 * Example implementations of {@code Appendable} are {@code StringBuilder},
@@ -165,8 +179,10 @@ public interface CurrencyParser extends Parser<CurrencyUnit> {
 	 * 
 	 * @param appendable
 	 *            the appendable to add to, not null
-	 * @param moneyProvider
-	 *            the money to print, not null
+	 * @param currency
+	 *            the currency to print, not null
+	 * @param style
+	 *            The target {@link LocaliazationStyle}.
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException

@@ -15,6 +15,7 @@
  */
 package javax.money;
 
+
 /**
  * Access point for money related core functionality.
  * 
@@ -160,4 +161,118 @@ public final class Money {
 		return null;
 	}
 
+	 /**
+     * Obtains an instance of {@code Money} representing zero.
+     * <p>
+     * For example, {@code zero(USD)} creates the instance {@code USD 0.00}.
+     *
+     * @param currency  the currency, not null
+     * @return the instance representing zero, never null
+     */
+    public static Money zero(CurrencyUnit currency) {
+    	// TODO Not Implemented yet
+    	return null;
+    }
+    
+	/**
+	 * Obtains an instance of {@code Money} as the total value an array.
+	 * <p>
+	 * The array must contain at least one monetary value. Subsequent amounts
+	 * are added as though using {@link #plus(Money)}. All amounts must be in
+	 * the same currency.
+	 * 
+	 * @param monies
+	 *            the monetary values to total, not empty, no null elements, not
+	 *            null
+	 * @return the total, never null
+	 * @throws IllegalArgumentException
+	 *             if the array is empty
+	 * @throws CurrencyMismatchException
+	 *             if the currencies differ
+	 */
+	public static Amount total(Amount... monies) {
+		// TODO Not Implemented yet
+		return null;
+	}
+
+	/**
+	 * Obtains an instance of {@code Money} as the total value a collection.
+	 * <p>
+	 * The iterable must provide at least one monetary value. Subsequent amounts
+	 * are added as though using {@link #plus(Money)}. All amounts must be in
+	 * the same currency.
+	 * 
+	 * @param monies
+	 *            the monetary values to total, not empty, no null elements, not
+	 *            null
+	 * @return the total, never null
+	 * @throws IllegalArgumentException
+	 *             if the iterable is empty
+	 * @throws CurrencyMismatchException
+	 *             if the currencies differ
+	 */
+	public static Amount total(Iterable<Amount> monies) {
+		// TODO Not Implemented yet
+		return null;
+	}
+
+	/**
+	 * Obtains an instance of {@code Money} as the total value a possibly empty
+	 * array.
+	 * <p>
+	 * The amounts are added as though using {@link #plus(Money)} starting from
+	 * zero in the specified currency. All amounts must be in the same currency.
+	 * 
+	 * @param currency
+	 *            the currency to total in, not null
+	 * @param monies
+	 *            the monetary values to total, no null elements, not null
+	 * @return the total, never null
+	 * @throws CurrencyMismatchException
+	 *             if the currencies differ
+	 */
+	public static Amount total(CurrencyUnit currency, Amount... monies) {
+		// TODO Not Implemented yet
+		return null;
+	}
+
+	/**
+	 * Obtains an instance of {@code Money} as the total value a possibly empty
+	 * collection.
+	 * <p>
+	 * The amounts are added as though using {@link #plus(Money)} starting from
+	 * zero in the specified currency. All amounts must be in the same currency.
+	 * 
+	 * @param currency
+	 *            the currency to total in, not null
+	 * @param monies
+	 *            the monetary values to total, no null elements, not null
+	 * @return the total, never null
+	 * @throws CurrencyMismatchException
+	 *             if the currencies differ
+	 */
+	public static Amount total(CurrencyUnit currency, Iterable<Amount> monies) {
+		// TODO Not Implemented yet
+		return null;
+	}
+
+	/**
+	 * Ensures that a {@code Money} is not {@code null}.
+	 * <p>
+	 * If the input money is not {@code null}, then it is returned, providing
+	 * that the currency matches the specified currency. If the input money is
+	 * {@code null}, then zero money in the currency is returned.
+	 * 
+	 * @param money
+	 *            the monetary value to check, may be null
+	 * @param currency
+	 *            the currency to use, not null
+	 * @return the input money or zero in the specified currency, never null
+	 * @throws CurrencyMismatchException
+	 *             if the input money is non-null and the currencies differ
+	 */
+	public static Amount nonNull(Amount money, CurrencyUnit currency) {
+		// TODO Not Implemented yet
+		return null;
+	}
 }

@@ -31,8 +31,8 @@ public interface Formatter<T> {
 	/**
 	 * Formats a monetary value to a {@code String}.
 	 * 
-	 * @param money
-	 *            the money to print, not null
+	 * @param item
+	 *            the item to print, not null
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
@@ -42,7 +42,7 @@ public interface Formatter<T> {
 	public String print(T item, LocalizationStyle style);
 	
 	/**
-	 * Formats a monetary value to a {@code String}.
+	 * Formats a value to a {@code String}.
 	 * 
 	 * @param money
 	 *            the money to print, not null

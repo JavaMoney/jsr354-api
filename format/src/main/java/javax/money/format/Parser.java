@@ -15,44 +15,42 @@
  */
 package javax.money.format;
 
-import java.io.IOException;
 import java.util.Locale;
 
 /**
- * Formats instances of number to and from a String.
- * <p>
- * Instances of {@code NumberPrinterParser} can be created by
- * {@code NumberPrinterParserFactory}.
- * <p>
- * This class is immutable and thread-safe.
+ * Instance that implement this interface parse Strings into instances of of
+ * type T.
  */
 public interface Parser<T> {
 
 	/**
-	 * Fully parses the text into a {@code Money} requiring that the parsed
-	 * amount has the correct number of decimal places.
+	 * Fully parses the text into an instance of T.
 	 * <p>
-	 * The parse must complete normally and parse the entire text (currency and
-	 * amount). If the parse completes without reading the entire length of the
-	 * text, an exception is thrown. If any other problem occurs during parsing,
-	 * an exception is thrown.
+	 * The parse must complete normally and parse the entire text. If the parse
+	 * completes without reading the entire length of the text, an exception is
+	 * thrown. If any other problem occurs during parsing, an exception is
+	 * thrown.
+	 * <p>
+	 * This method uses a {@link LocalizationStyle} as an input parameter.
+	 * Styles allows to define detailed and customized formatting input
+	 * parameters. This allows to implement also complex formatting requirements
+	 * using this interface.
 	 * 
 	 * @param text
 	 *            the text to parse, not null
-	 * @return the parsed monetary value, never null
+	 * @param style
+	 *            the localization style to be used for parsing
+	 * @return the parsed value, never null
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to parse
-	 * @throws FormatException
+	 * @throws ParseException
 	 *             if there is a problem while parsing
-	 * @throws ArithmeticException
-	 *             if the scale of the parsed money exceeds the scale of the
-	 *             currency
 	 */
-	public T parse(CharSequence text, LocalizationStyle locale)throws ParseException;
-	
+	public T parse(CharSequence text, LocalizationStyle locale)
+			throws ParseException;
+
 	/**
-	 * Fully parses the text into a {@code Money} requiring that the parsed
-	 * amount has the correct number of decimal places.
+	 * Fully parses the text into an instance of T.
 	 * <p>
 	 * The parse must complete normally and parse the entire text (currency and
 	 * amount). If the parse completes without reading the entire length of the
@@ -61,15 +59,14 @@ public interface Parser<T> {
 	 * 
 	 * @param text
 	 *            the text to parse, not null
-	 * @return the parsed monetary value, never null
+	 * @param locale
+	 *            The locale to be used for parsing, nnot null.
+	 * @return the parsed value, never null
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to parse
-	 * @throws FormatException
+	 * @throws ParseException
 	 *             if there is a problem while parsing
-	 * @throws ArithmeticException
-	 *             if the scale of the parsed money exceeds the scale of the
-	 *             currency
 	 */
-	public T parse(CharSequence text, Locale locale)throws ParseException;
-	
+	public T parse(CharSequence text, Locale locale) throws ParseException;
+
 }

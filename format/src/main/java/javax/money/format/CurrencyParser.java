@@ -15,18 +15,17 @@
  */
 package javax.money.format;
 
-import java.io.IOException;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
+import javax.money.UnknownCurrencyException;
 
 /**
- * Formats instances of number to and from a String.
+ * Parses instances of {@link CurrencyUnit} to and from a {@link CharSequence}.
  * <p>
- * Instances of {@code CurrencyParser} can be created by
- * {@code MoneyFormat#getCurrencyParser()}.
- * <p>
- * This class is immutable and thread-safe.
+ * Instances of {@code CurrencyParser} can be obtained by calling
+ * {@code MoneyFormat#getCurrencyParser(Locale)} or
+ * {@code MoneyFormat#getCurrencyParser(LocalizationStyle)}.
  */
 public interface CurrencyParser extends Parser<CurrencyUnit> {
 
@@ -38,159 +37,35 @@ public interface CurrencyParser extends Parser<CurrencyUnit> {
 	public String getNamespace();
 
 	/**
-	 * Gets the localizaed symbol value of a {@link CurrencyUnit} of a
-	 * {@code String}.
+	 * Parses a {@link CurrencyUnit} based on the localized symbol.
 	 * 
-	 * @param currency
-	 *            the money to print, not null
-	 * @return the string printed using the settings of this formatter
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 */
-	public String getSymbol(CurrencyUnit currency, Locale locale);
-
-	/**
-	 * Gets the localizaed symbol value of a {@link CurrencyUnit} of a
-	 * {@code String}.
-	 * 
-	 * @param currency
-	 *            the currency to print, not null
-	 * @param style
-	 *            The target {@link LocalizationStyle}.
-	 * @return the string printed using the settings of this formatter
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 */
-	public String getSymbol(CurrencyUnit currency, LocalizationStyle style);
-
-	/**
-	 * Formats a currency's value to a {@code String}.
-	 * 
-	 * @param currency
-	 *            the currency to print, not null
+	 * @param symbol
+	 *            the input data.
 	 * @param locale
-	 *            the target {@link Locale}.
-	 * @return the string printed using the settings of this formatter
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
+	 *            the target locale
+	 * @return parsed {@link CurrencyUnit}, never null.
+	 * @throws UnknownCurrencyException
+	 *             if the required symbol can be mapped to a
+	 *             {@link CurrencyUnit} on the given namespace.
+	 * @throws ParseException
+	 *             if there is a problem while parsing
 	 */
-	public String getName(CurrencyUnit currency, Locale locale);
+	public CurrencyUnit parseSymbol(CharSequence symbol, Locale locale);
 
 	/**
-	 * Formats a monetary value to a {@code String}.
+	 * Parses a {@link CurrencyUnit} based on the localized symbol.
 	 * 
-	 * @param currency
-	 *            the currency to print, not null
+	 * @param symbol
+	 *            the input data.
 	 * @param style
-	 *            The target {@link LocaliazationStyle}.
-	 * @return the string printed using the settings of this formatter
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
+	 *            the target style.
+	 * @return parsed {@link CurrencyUnit}, never null.
+	 * @throws UnknownCurrencyException
+	 *             if the required symbol can be mapped to a
+	 *             {@link CurrencyUnit} on the given namespace.
+	 * @throws ParseException
+	 *             if there is a problem while parsing
 	 */
-	public String getName(CurrencyUnit currency, LocalizationStyle style);
-
-	/**
-	 * Prints a monetary value to an {@code Appendable} converting any
-	 * {@code IOException} to a {@code MoneyFormatException}.
-	 * <p>
-	 * Example implementations of {@code Appendable} are {@code StringBuilder},
-	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
-	 * and {@code StringBuffer} never throw an {@code IOException}.
-	 * 
-	 * @param appendable
-	 *            the appendable to add to, not null
-	 * @param currency
-	 *            the currency to print, not null
-	 * @param locale
-	 *            the target {@link Locale}.
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 * @throws IOException
-	 *             if an IO error occurs
-	 */
-	public void printSymbol(Appendable appendable, CurrencyUnit currency,
-			Locale locale) throws IOException;
-
-	/**
-	 * Prints a currency's symbol value to an {@code Appendable} converting any
-	 * {@code IOException} to a {@code MoneyFormatException}.
-	 * <p>
-	 * Example implementations of {@code Appendable} are {@code StringBuilder},
-	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
-	 * and {@code StringBuffer} never throw an {@code IOException}.
-	 * 
-	 * @param appendable
-	 *            the appendable to add to, not null
-	 * @param currency
-	 *            the currency to print, not null
-	 * @param style
-	 *            The target {@link LocaliazationStyle}.
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 * @throws IOException
-	 *             if an IO error occurs
-	 */
-	public void printSymbol(Appendable appendable, CurrencyUnit currency,
-			LocalizationStyle style) throws IOException;
-
-	/**
-	 * Prints a monetary value to an {@code Appendable} converting any
-	 * {@code IOException} to a {@code MoneyFormatException}.
-	 * <p>
-	 * Example implementations of {@code Appendable} are {@code StringBuilder},
-	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
-	 * and {@code StringBuffer} never throw an {@code IOException}.
-	 * 
-	 * @param appendable
-	 *            the appendable to add to, not null
-	 * @param currency
-	 *            the currency to print, not null
-	 * @param locale
-	 *            the target {@link Locale}.
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 * @throws IOException
-	 *             if an IO error occurs
-	 */
-	public void printName(Appendable appendable, CurrencyUnit currency,
-			Locale locale) throws IOException;
-
-	/**
-	 * Prints a currency value to an {@code Appendable} converting any
-	 * {@code IOException} to a {@code MoneyFormatException}.
-	 * <p>
-	 * Example implementations of {@code Appendable} are {@code StringBuilder},
-	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
-	 * and {@code StringBuffer} never throw an {@code IOException}.
-	 * 
-	 * @param appendable
-	 *            the appendable to add to, not null
-	 * @param currency
-	 *            the currency to print, not null
-	 * @param style
-	 *            The target {@link LocaliazationStyle}.
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 * @throws IOException
-	 *             if an IO error occurs
-	 */
-	public void printName(Appendable appendable, CurrencyUnit currency,
-			LocalizationStyle style) throws IOException;
+	public CurrencyUnit parseSymbol(CharSequence symbol, LocalizationStyle style);
 
 }

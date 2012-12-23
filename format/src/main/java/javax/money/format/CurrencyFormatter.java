@@ -21,9 +21,7 @@ import java.util.Locale;
 import javax.money.CurrencyUnit;
 
 /**
- * Formats instances of CurrencyUnit to and from a String.
- * <p>
- * This class is immutable and thread-safe.
+ * Formats instances of {@link CurrencyUnit} to and from a String.
  */
 public interface CurrencyFormatter extends Formatter<CurrencyUnit> {
 
@@ -40,7 +38,7 @@ public interface CurrencyFormatter extends Formatter<CurrencyUnit> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getSymbol(CurrencyUnit currency, Locale locale);
+	public String getSymbol(CurrencyUnit currency, Locale locale); // formatSymbol ?
 
 	/**
 	 * Formats a currency's symbol value to a {@code String}.
@@ -56,7 +54,7 @@ public interface CurrencyFormatter extends Formatter<CurrencyUnit> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getSymbol(CurrencyUnit currency, LocalizationStyle style);
+	public String getSymbol(CurrencyUnit currency, LocalizationStyle style); // formatSymbol ?
 
 	/**
 	 * Formats a currency value to a {@code String}.
@@ -71,7 +69,7 @@ public interface CurrencyFormatter extends Formatter<CurrencyUnit> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getName(CurrencyUnit currency, Locale locale);
+	public String getName(CurrencyUnit currency, Locale locale); // formatName ?
 
 	/**
 	 * Formats a currency's name to a {@code String}.
@@ -84,7 +82,7 @@ public interface CurrencyFormatter extends Formatter<CurrencyUnit> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getName(CurrencyUnit currency, LocalizationStyle style);
+	public String getName(CurrencyUnit currency, LocalizationStyle style); // formatName ?
 
 	/**
 	 * Prints an currency's symbol value to an {@code Appendable} converting any

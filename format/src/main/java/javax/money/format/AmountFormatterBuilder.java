@@ -29,25 +29,28 @@ import javax.money.Amount;
 public interface AmountFormatterBuilder {
 
 	/**
-	 * This sets the {@link LocalizationStyle} to be used, if none is eplicitly
-	 * defined.
+	 * This sets the {@link LocalizationStyle} to be used, if none is explicitly
+	 * passed as parameters to the methods called.
+	 * <p>
+	 * A {@link LocalizationStyle} allows to define detailed and customized
+	 * formatting input parameters. This allows to implement also complex
+	 * formatting requirements using this interface.
 	 * 
 	 * @param style
-	 *            the target style
+	 *            the style to be used by default by this builder.
 	 */
 	public void setLocalization(LocalizationStyle style);
 
 	/**
-	 * This sets the {@link Locale} to be used, if none is eplicitly defined.
-	 * The locale is copied into an according instance of
+	 * This sets the {@link Locale} to be used, if none is explicitly defined.
+	 * The locale is wrapped into an according instance of
 	 * {@link LocalizationStyle} by using {@link LocalizationStyle#of(Locale)}.
 	 * 
-	 * @param lo0cale
+	 * @param locale
 	 *            the target locale
 	 */
 	public void setLocale(Locale locale);
 
-	// -----------------------------------------------------------------------
 	/**
 	 * Appends the amount to the builder using the default format. The default
 	 * format equals to the format that is used by the {@link AmountFormatter}
@@ -145,8 +148,9 @@ public interface AmountFormatterBuilder {
 	 * {@code AmountFormatter} to be used. Calling this method does not change
 	 * the state of this instance, so it can still be used.
 	 * <p>
-	 * This method uses the default locale within the returned formatter. It can
-	 * be changed by calling {@link AmountFormatter#withLocale(Locale)}.
+	 * This method uses the specified locale within the returned formatter. It
+	 * can be changed by calling {@link AmountFormatter#toFormatter(Locale)} or
+	 * {@link AmountFormatter#toFormatter(LocalizationStyle)}.
 	 * 
 	 * @return the formatter built from this builder, never null
 	 */
@@ -159,11 +163,11 @@ public interface AmountFormatterBuilder {
 	 * {@code AmountFormatter} to be used. Calling this method does not change
 	 * the state of this instance, so it can still be used.
 	 * <p>
-	 * This method uses the specified locale within the returned formatter. It
-	 * can be changed by calling {@link AmountFormatter#withLocale(Locale)}.
+	 * This method uses the specified locale. FOr extended style parameters use
+	 * {@link AmountFormatter#toFormatter(LocalizationStyle)} instead of.
 	 * 
 	 * @param locale
-	 *            the initial locale for the formatter, not null
+	 *            the locale for the formatter, not null
 	 * @return the formatter built from this builder, never null
 	 */
 	public AmountFormatter toFormatter(Locale locale);
@@ -174,12 +178,9 @@ public interface AmountFormatterBuilder {
 	 * Once the builder is in the correct state it must be converted to a
 	 * {@code AmountFormatter} to be used. Calling this method does not change
 	 * the state of this instance, so it can still be used.
-	 * <p>
-	 * This method uses the specified locale within the returned formatter. It
-	 * can be changed by calling {@link AmountFormatter#withLocale(Locale)}.
 	 * 
-	 * @param locale
-	 *            the initial locale for the formatter, not null
+	 * @param style
+	 *            the style for the formatter, not null
 	 * @return the formatter built from this builder, never null
 	 */
 	public AmountFormatter toFormatter(LocalizationStyle style);

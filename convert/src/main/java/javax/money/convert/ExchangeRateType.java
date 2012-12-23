@@ -13,18 +13,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package javax.money.format;
+package javax.money.convert;
 
 /**
- * Enumeration for the different placement of a currency when formatting an amount.
+ * Enumeration to identify if a given exchange rate is a direct rate, or a
+ * derived rate, using several exchanges steps.
  * 
  * @author Anatole Tresch
  */
-public enum CurrencyPlacement {
-	/** Place the currency before the number. */
-	BEFORE,
-	/** Place the currency after the number. */
-	AFTER,
-	/** Omit the currency completely. */
-	OMIT
+public enum ExchangeRateType {
+	/** This value represent a direct exchange rate. */
+	DIRECT,
+	/** This value represents a indorect/derived exchange rate. */
+	DERIVED
 }

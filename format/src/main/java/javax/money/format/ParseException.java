@@ -21,7 +21,7 @@ package javax.money.format;
  * <p>
  * This exception makes no guarantees about immutability or thread-safety.
  *
- * @author Anatole Tresch
+ * @author Stephen Colebourne
  */
 public class ParseException extends Exception {
 

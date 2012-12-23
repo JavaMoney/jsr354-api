@@ -19,20 +19,20 @@ import java.io.IOException;
 import java.util.Locale;
 
 /**
- * Formats instances of number to and from a String.
- * <p>
- * Instances of {@code NumberPrinterParser} can be created by
- * {@code NumberPrinterParserFactory}.
- * <p>
- * This class is immutable and thread-safe.
+ * Formats instances of T to a {@link String} or an {@link Appendable}.
  */
 public interface Formatter<T> {
 
 	/**
-	 * Formats a monetary value to a {@code String}.
+	 * Formats a value of T to a {@code String}. This method uses a
+	 * {@link LocalizationStyle} as an input parameter. Styles allows to define
+	 * detailed and customized formatting input parameters. This allows to
+	 * implement also complex formatting requirements using this interface.
 	 * 
 	 * @param item
 	 *            the item to print, not null
+	 * @param style
+	 *            the style to be used for formatting.
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
@@ -40,23 +40,26 @@ public interface Formatter<T> {
 	 *             if there is a problem while printing
 	 */
 	public String print(T item, LocalizationStyle style);
-	
+
 	/**
-	 * Formats a value to a {@code String}.
+	 * Formats a value of T to a {@code String}.
 	 * 
-	 * @param money
-	 *            the money to print, not null
+	 * @param item
+	 *            the item to print, not null
+	 * @param locale
+	 *            the target locale to be used for formatting. The locale can be
+	 *            converted into an according {@link LocalizationStyle} by using
+	 *            the static factory method {@link LocalizationStyle#of(Locale)}
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String print(T item, Locale style);
-	
+	public String print(T item, Locale locale);
+
 	/**
-	 * Prints a monetary value to an {@code Appendable} converting any
-	 * {@code IOException} to a {@code MoneyFormatException}.
+	 * Prints a item value to an {@code Appendable}.
 	 * <p>
 	 * Example implementations of {@code Appendable} are {@code StringBuilder},
 	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
@@ -64,8 +67,12 @@ public interface Formatter<T> {
 	 * 
 	 * @param appendable
 	 *            the appendable to add to, not null
-	 * @param moneyProvider
-	 *            the money to print, not null
+	 * @param item
+	 *            the item to print, not null
+	 * @param locale
+	 *            The target locale used for formatting. The locale can be
+	 *            converted into an according {@link LocalizationStyle} by using
+	 *            the static factory method {@link LocalizationStyle#of(Locale)}
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
@@ -75,10 +82,12 @@ public interface Formatter<T> {
 	 */
 	public void print(Appendable appendable, T item, Locale locale)
 			throws IOException;
-	
+
 	/**
-	 * Prints a monetary value to an {@code Appendable} converting any
-	 * {@code IOException} to a {@code MoneyFormatException}.
+	 * Prints a value to an {@code Appendable}. This method uses a
+	 * {@link LocalizationStyle} as an input parameter. Styles allows to define
+	 * detailed and customized formatting input parameters. This allows to
+	 * implement also complex formatting requirements using this interface.
 	 * <p>
 	 * Example implementations of {@code Appendable} are {@code StringBuilder},
 	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
@@ -86,8 +95,10 @@ public interface Formatter<T> {
 	 * 
 	 * @param appendable
 	 *            the appendable to add to, not null
-	 * @param moneyProvider
-	 *            the money to print, not null
+	 * @param item
+	 *            the item to print, not null
+	 * @param style
+	 *            the style to be used for formatting.
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
@@ -97,5 +108,5 @@ public interface Formatter<T> {
 	 */
 	public void print(Appendable appendable, T item, LocalizationStyle style)
 			throws IOException;
-	
+
 }

@@ -20,6 +20,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import javax.money.Amount;
+import javax.money.CurrencyUnit;
 import javax.money.Rounding;
 
 /**
@@ -47,6 +49,9 @@ import javax.money.Rounding;
  * </ul>
  * <p>
  * This class is immutable and thread-safe.
+ * 
+ * @author Stephen Colebourne
+ * @author ANatole Tresch
  */
 public final class MoneyAmountStyle implements Serializable {
 
@@ -54,7 +59,7 @@ public final class MoneyAmountStyle implements Serializable {
 	 * serial version ID.
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * A style that uses ASCII digits/negative sign, the decimal point and
 	 * groups large amounts in 3's using a comma. Forced decimal point is
@@ -96,37 +101,54 @@ public final class MoneyAmountStyle implements Serializable {
 	public static final MoneyAmountStyle ASCII_DECIMAL_COMMA_NO_GROUPING = new MoneyAmountStyle(
 			'0', '+', '-', ',', '.', 0, false);
 
-	private int[] groupSizes;
+	/** Defines the grouping sizes. */
+	private int[] groupSizes = new int[] { 3 };
+	/** Defines the grouping characters. */
 	private char[] groupChars;
-	private boolean forceDecimalPoint;
+	/** FLags if a decimal point should be enforced. */
+	private boolean decimalPointEnforced = false;
+	/** Defines the rounding used to display the amount. */
 	private Rounding rounding;
-	private boolean decimalPointEnforced;
-	private int zeroCharacter;
-	private int decimalPointCharacter;
-	private String positiveValue = "";
-	private String negativeValue = "-";
+	/** Defines the character to be shown, when the value is zero. */
+	private Character zeroCharacter = null;
+	/** defines the decimal point character to be used. */
+	private Character decimalPointCharacter;
+	/** Defines the character to be used as a sign for positive values. */
+	private char[] positiveSign = new char[0];
+	/** Defines the text to be used as a sign for negative values. */
+	private char[] negativeSign = new char[] { '-' };
+	/** Defines the position of the characters to be used as a sign. */
 	private SignPlacement placement = SignPlacement.BEFORE;
 
 	/**
-	 * Gets a localized style.
+	 * Creates a new MoneyAmountStyle instance.
 	 * <p>
-	 * This creates a localized style for the specified locale. Grouping will be
+	 * This creates a localized style using the given locale. Grouping will be
 	 * enabled, forced decimal point will be disabled.
 	 * 
 	 * @param locale
 	 *            the locale to use, not null
 	 * @return the new instance, never null
 	 */
-	public static MoneyAmountStyle of(Locale locale) {
+	public MoneyAmountStyle of(Locale locale) {
 		// TODO Not Implemented yet
 		return null;
 	}
 
-	
-	public MoneyAmountStyle(){
-		
+	/**
+	 * Creates a new MoneyAmountStyle instance.
+	 * <p>
+	 * This creates a localized style using the specified locale. Grouping will
+	 * be enabled, forced decimal point will be disabled.
+	 * 
+	 * @param locale
+	 *            the locale to use, not null
+	 * @return the new instance, never null
+	 */
+	public MoneyAmountStyle() {
+
 	}
-	
+
 	// -----------------------------------------------------------------------
 	/**
 	 * Constructor, creating a new monetary instance.
@@ -189,72 +211,110 @@ public final class MoneyAmountStyle implements Serializable {
 		// TODO Not Implemented yet
 	}
 
+	/**
+	 * Configures the sign used to format positive amounts.
+	 * 
+	 * @param sign
+	 *            The sign to be used.
+	 * @return the instance for chaining, never null
+	 */
 	public MoneyAmountStyle setPositiveSign(String sign) {
 		// TODO
 		return this;
 	}
 
+	/**
+	 * Configures the sign used to format negative amounts.
+	 * 
+	 * @param sign
+	 *            The sign to be used.
+	 * @return the instance for chaining, never null
+	 */
 	public MoneyAmountStyle setNegativeSign(String sign) {
 		// TODO
 		return this;
 	}
 
-	public MoneyAmountStyle setPlacement(SignPlacement placement) {
+	/**
+	 * Configures the sign used to format negative amounts.
+	 * 
+	 * @param sign
+	 *            The sign to be used.
+	 * @return the instance for chaining, never null
+	 */
+	public MoneyAmountStyle setNegativeSign(char... sign) {
 		// TODO
 		return this;
 	}
 
 	/**
-	 * Returns a copy of this style with the specified grouping setting.
+	 * Returns a copy of this style with the specified sign placement.
 	 * 
-	 * @param grouping
-	 *            true to use the grouping separator, false to not use it
+	 * @param signPlacement
+	 *            the signPlacement used
+	 * @see SignPlacement
 	 * @return the new instance for chaining, never null
 	 */
-	public MoneyAmountStyle setGrouping(GroupingStyle grouping) {
+	public MoneyAmountStyle setSignPlacement(SignPlacement placement) {
+		// TODO
+		return this;
+	}
+
+	/**
+	 * Defines the sizes of grouping. The first number is used for the first
+	 * group size, the second for the next, etc. The last size is used for all
+	 * subsequent group sizes.
+	 * <p>
+	 * <ul>
+	 * <li>3 uses 3 for all groupings as a size. Example: 1'234'567.00</li>
+	 * <li>2,2,3" uses 2 for the first and second grouping, but 3 for all
+	 * subsequent groupings. Example: 123,123,45,67.00</li>
+	 * </ul>
+	 * <p>
+	 * Note that the grouping characters can similarly configured using the
+	 * {@link #setGroupingChars(char...)} method.
+	 * 
+	 * @param groupChars
+	 *            the characters to be used for grouping.
+	 * @return the new instance for chaining, never null
+	 */
+	public MoneyAmountStyle setGroupingSizes(int... groupSizes) {
 		// TODO Not Implemented yet
 		return null;
 	}
 
 	/**
-	 * Gets whether to always use the decimal point, even if there is no
-	 * fraction.
+	 * Defines which characters should be used for grouping. The first character
+	 * is used for the first position, the second for the next position etc. The
+	 * last character is used for all subsequent grouping characters.
+	 * <p>
+	 * <ul>
+	 * <li>"'" uses "'" for all groupings as a character. Example: 1'234'567.00</li>
+	 * <li>",'" uses "," for the first grouping, but "'" for all subsequent
+	 * groupings. Example: 1'234,567.00</li>
+	 * </ul>
+	 * <p>
+	 * Note that the grouping sizes can similarly configured using the
+	 * {@link #setGroupingSizes(int[])} method.
 	 * 
-	 * @return whether to force the decimal point on output
+	 * @param groupChars
+	 *            the characters to be used for grouping.
+	 * @return the new instance for chaining, never null
 	 */
-	public boolean isForceDecimalPoint() {
+	public MoneyAmountStyle setGroupingChars(char... groupChars) {
 		// TODO Not Implemented yet
-		return false;
+		return null;
 	}
 
 	/**
-	 * Returns a copy of this style with the specified decimal point setting.
+	 * Evaluates if grouping of the amount is required.
 	 * 
-	 * @param forceDecimalPoint
-	 *            true to force the use of the decimal point, false to use it if
-	 *            required
-	 * @return the new instance for chaining, never null
+	 * @return true, if grouping is required.
 	 */
-	public MoneyAmountStyle setForceDecimalPoint(boolean forceDecimalPoint) {
-		// TODO Not Implemented yet
-		return this;
-	}
-
-	public MoneyAmountStyle setGroups(int... groups) {
-		// TODO
-		return this;
-	}
-
-	public MoneyAmountStyle setGroupChars(char... groupChars) {
-		// TODO
-		return this;
-	}
-
 	public boolean isGrouping() {
 		return groupSizes != null && groupSizes.length > 0;
 	}
 
-	// -----------------------------------------------------------------------
 	/**
 	 * Returns a {@code MoneyAmountStyle} instance configured for the specified
 	 * locale.
@@ -276,7 +336,6 @@ public final class MoneyAmountStyle implements Serializable {
 		return this;
 	}
 
-	// -----------------------------------------------------------------------
 	/**
 	 * Gets the character used for zero, and defining the characters zero to
 	 * nine.
@@ -311,156 +370,120 @@ public final class MoneyAmountStyle implements Serializable {
 		return this;
 	}
 
-	/**
-	 * Returns a copy of this style with the specified sign placement.
-	 * 
-	 * @param signPlacement
-	 *            the signPlacement used
-	 * @see SignPlacement
-	 * @return the new instance for chaining, never null
-	 */
-	public MoneyAmountStyle setSignPlacement(SignPlacement signPlacement) {
-		// TODO Not Implemented yet
-		return this;
-	}
-
 	// -----------------------------------------------------------------------
-	/**
-	 * Gets the character used for the decimal point.
-	 * 
-	 * @return the decimal point character, null if to be determined by locale
-	 */
-	public Character getDecimalPoint() {
-		// TODO Not Implemented yet
-		return null;
-	}
 
 	/**
-	 * Returns a copy of this style with the specified decimal point character.
+	 * Get the sizes of groups created.
 	 * <p>
-	 * For English, this is a dot.
+	 * <ul>
+	 * <li>3 uses 3 for all groupings as a size. Example: 1'234'567.00</li>
+	 * <li>2,2,3" uses 2 for the first and second grouping, but 3 for all
+	 * subsequent groupings. Example: 123,123,45,67.00</li>
+	 * </ul>
 	 * 
-	 * @param decimalPointCharacter
-	 *            the decimal point character, null if to be determined by
-	 *            locale
-	 * @return the new instance for chaining, never null
-	 */
-	public MoneyAmountStyle setDecimalPoint(Character decimalPointCharacter) {
-		// TODO Not Implemented yet
-		return this;
-	}
-
-	// -----------------------------------------------------------------------
-
-	/**
 	 * @return the groupSizes
 	 */
-	public final int[] getGroupSizes() {
+	public final int[] getGroupingSizes() {
 		return groupSizes;
 	}
 
-
 	/**
-	 * @param groupSizes the groupSizes to set
-	 */
-	public final MoneyAmountStyle setGroupSizes(int[] groupSizes) {
-		this.groupSizes = groupSizes;
-		return this;
-	}
-
-
-	/**
+	 * Get the rounding used.
+	 * 
 	 * @return the rounding
 	 */
 	public final Rounding getRounding() {
 		return rounding;
 	}
 
-
 	/**
-	 * @param rounding the rounding to set
+	 * Set the rounding to be used, by default
+	 * {@link CurrencyUnit#getDefaultFractionDigits()} is used to determine
+	 * rounding.
+	 * 
+	 * @param rounding
+	 *            the rounding to be used.
 	 */
 	public final MoneyAmountStyle setRounding(Rounding rounding) {
 		this.rounding = rounding;
 		return this;
 	}
 
-
 	/**
-	 * @return the decimalPointEnforced
+	 * Gets whether to always use the decimal point, even if there is no
+	 * fraction.
+	 * 
+	 * @return whether to force the decimal point on output
 	 */
 	public final boolean isDecimalPointEnforced() {
 		return decimalPointEnforced;
 	}
 
-
 	/**
-	 * @param decimalPointEnforced the decimalPointEnforced to set
+	 * Returns a copy of this style with the specified decimal point setting.
+	 * 
+	 * @param forceDecimalPoint
+	 *            true to force the use of the decimal point, false to use it if
+	 *            required
+	 * @return the new instance for chaining, never null
 	 */
-	public final MoneyAmountStyle setDecimalPointEnforced(boolean decimalPointEnforced) {
+	public final MoneyAmountStyle setDecimalPointEnforced(
+			boolean decimalPointEnforced) {
 		this.decimalPointEnforced = decimalPointEnforced;
 		return this;
 	}
 
-
 	/**
-	 * @return the decimalPointCharacter
+	 * Gets the character used for the decimal point.
+	 * 
+	 * @return the decimal point character, null if to be determined by locale
 	 */
-	public final int getDecimalPointCharacter() {
+	public final Character getDecimalPointCharacter() {
 		return decimalPointCharacter;
 	}
 
-
 	/**
-	 * @param decimalPointCharacter the decimalPointCharacter to set
+	 * @param decimalPointCharacter
+	 *            the decimalPointCharacter to set
 	 */
-	public final MoneyAmountStyle setDecimalPointCharacter(int decimalPointCharacter) {
+	public final MoneyAmountStyle setDecimalPointCharacter(
+			Character decimalPointCharacter) {
 		this.decimalPointCharacter = decimalPointCharacter;
 		return this;
 	}
 
-
 	/**
 	 * @return the positiveValue
 	 */
-	public final String getPositiveValue() {
-		return positiveValue;
+	public final char[] getPositiveSign() {
+		return positiveSign.clone();
 	}
-
 
 	/**
-	 * @param positiveValue the positiveValue to set
+	 * Configures the sign used to format positive amounts.
+	 * 
+	 * @param sign
+	 *            The sign to be used.
+	 * @return the instance for chaining, never null
 	 */
-	public final MoneyAmountStyle setPositiveValue(String positiveValue) {
-		this.positiveValue = positiveValue;
+	public final MoneyAmountStyle setPositiveSign(char... positiveSign) {
+		this.positiveSign = positiveSign;
 		return this;
 	}
-
 
 	/**
 	 * @return the negativeValue
 	 */
-	public final String getNegativeValue() {
-		return negativeValue;
+	public final char[] getNegativeSign() {
+		return negativeSign.clone();
 	}
-
-
-	/**
-	 * @param negativeValue the negativeValue to set
-	 */
-	public final MoneyAmountStyle setNegativeValue(String negativeValue) {
-		this.negativeValue = negativeValue;
-		return this;
-	}
-
 
 	/**
 	 * @return the groupChars
 	 */
-	public final char[] getGroupChars() {
+	public final char[] getGroupingChars() {
 		return groupChars;
 	}
-
 
 	/**
 	 * @return the placement
@@ -468,8 +491,6 @@ public final class MoneyAmountStyle implements Serializable {
 	public final SignPlacement getPlacement() {
 		return placement;
 	}
-
-
 
 	// -----------------------------------------------------------------------
 	/**

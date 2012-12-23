@@ -3,90 +3,60 @@
  * All rights reserved. 
  * Contributors:
  *    Werner Keil - initial API and implementation
+ *    Anatole Tresch - extensions and adaptions.
  */
 package javax.money.convert;
 
 import javax.money.CurrencyUnit;
-import java.util.Date;
 
 /**
  * @author Werner Keil
+ * @author Anatole Tresch
  * @version 0.2.2
  */
-public class ExchangeRate<T> {
+public interface ExchangeRate {
 
 	/**
-	 * Holds the source CurrencyUnit.
+	 * Get the source currency.
+	 * 
+	 * @return the source currency.
 	 */
-	private final CurrencyUnit source;
+	public CurrencyUnit getSourceCurrency();
 
 	/**
-	 * Holds the target CurrencyUnit.
+	 * Get the target currency.
+	 * 
+	 * @return the target currency.
 	 */
-	private final CurrencyUnit target;
+	public CurrencyUnit getTargetCurrency();
 
 	/**
-	 * Holds the exchange factor.
+	 * Get the exchange factor.
+	 * 
+	 * @return the exchange factor.
 	 */
-	private final T factor;
-	
-	/**
-	 * Holds the exchange factor.
-	 */
-	private final T inverseFactor;
+	public <T> T getAdaptedFactor(Class<T> targetAdapterClass);
 
 	/**
-	 * Holds the effective (start) date.
+	 * Access the rate's factor.
+	 * 
+	 * @return the factor for this exchange rate.
 	 */
-	private final Date fromDate;
+	public Number getFactor();
 
-	//private final Date interval;
-	
-	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor,  T inverseFactor,
-			Date fromDate, Date toDate) {
-		super();
-		this.source = source;
-		this.target = target;
-		this.factor = factor;
-		this.inverseFactor = inverseFactor;
-		this.fromDate = fromDate;
-		//this.interval = new DateInterval(fromDate.getTime(), toDate.getTime());
-	}
-	
-	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor, T inverseFactor,
-			Date date) {
-		this(source, target, factor, inverseFactor, date, date);
-	}
+	/**
+	 * Access the chain of exchange rates.
+	 * 
+	 * @return the chain of rates, in case of a derived rate, this may be
+	 *         several instances.
+	 */
+	public ExchangeRate[] getExchangeRateChain();
 
-	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor, T inverseFactor) {
-		this(source, target, factor, inverseFactor, new Date());
-	}
+	/**
+	 * Access the type of exchange rate.
+	 * 
+	 * @return the type of this rate.
+	 */
+	public ExchangeRateType getExchangeRateType();
 
-	public CurrencyUnit getSourceCurrency() {
-		return source;
-	}
-
-	public CurrencyUnit getTargetCurrency() {
-		return target;
-	}
-
-	public T getFactor() {
-		return factor;
-	}
-	
-	public T getInverseFactor() {
-		return inverseFactor;
-	}
-
-	public boolean isConvertible(){
-		return this.factor != null;
-	}
-	
-	public boolean isInverseConvertible(){
-		return this.inverseFactor != null;
-	}
-	
-//	public DateInterval getInterval() {
-//		return interval;
-//	}
 }

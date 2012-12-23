@@ -8,7 +8,6 @@ package javax.money.convert;
 
 import javax.money.Amount;
 import javax.money.CurrencyUnit;
-import javax.money.convert.spi.ExchangeRateProvider;
 
 /**
  * <p>

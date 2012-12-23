@@ -18,7 +18,7 @@ package javax.money.format;
 import java.io.IOException;
 
 /**
- * Exception thrown during monetary formatting.
+ * Exception thrown during formatting.
  * <p>
  * This exception makes no guarantees about immutability or thread-safety.
  *

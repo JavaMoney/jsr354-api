@@ -21,7 +21,7 @@ import java.util.Locale;
 import javax.money.Amount;
 
 /**
- * Formats instances of {@link Amount}, by default the full amopunt is printed,
+ * Formats instances of {@link Amount}, by default the full amount is printed,
  * whereas some method allows also to print the number part without currency.
  * <p>
  * Instances of {@code AmountFormatter} can be created by
@@ -33,6 +33,11 @@ public interface AmountFormatter extends Formatter<Amount> {
 	/**
 	 * Formats a amount's numeric value to a {@code String}, the currency is
 	 * omitted.
+	 * <p>
+	 * This method uses a {@link LocalizationStyle} as an input parameter.
+	 * Styles allows to define detailed and customized formatting input
+	 * parameters. This allows to implement also complex formatting requirements
+	 * using this interface.
 	 * 
 	 * @param amount
 	 *            the amount to print, not null
@@ -88,6 +93,11 @@ public interface AmountFormatter extends Formatter<Amount> {
 	/**
 	 * Formats a amount's numeric value to a {@code Appendable}, the currency is
 	 * omitted.
+	 * <p>
+	 * This method uses a {@link LocalizationStyle} as an input parameter.
+	 * Styles allows to define detailed and customized formatting input
+	 * parameters. This allows to implement also complex formatting requirements
+	 * using this interface.
 	 * 
 	 * @param appendable
 	 *            the appendable to print to, not null

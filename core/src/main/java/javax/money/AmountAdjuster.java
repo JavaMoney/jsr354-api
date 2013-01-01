@@ -15,36 +15,25 @@
  */
 package javax.money;
 
-import java.util.Locale;
-
 /**
- * This instance defines a rounding mode that can be applied to amounts.
+ * This instance defines a an adjuster for amounts.
  * 
  * @author Anatole Tresch
  */
-public interface Rounding extends AmountAdjuster{
-	
-	/**
-	 * The id uniquely identifies a rounding type.
-	 * 
-	 * @return The rounding ID, not null.
-	 */
-	String getId();
+public interface AmountAdjuster {
 
 	/**
-	 * The name of the rounding, using the default {@link Locale}.
+	 * This method is called for adjusting an amount. Basically adjusting may
+	 * cover several use cases, such as {@link Rounding} or more complex
+	 * operations, such as calculating a net present value, given additional
+	 * settings such as timestamp and hypothetical interest rate.
 	 * 
-	 * @return The name of the rounding, not null.
+	 * @param amount
+	 *            the amount
+	 * @return the adjusted amount
+	 * @throws ArithmeticException
+	 *             if adjustment fails.
 	 */
-	String getName();
-
-	/**
-	 * The name of the rounding, using the {@link Locale} provided.
-	 * 
-	 * @param locale
-	 *            the target locale
-	 * @return The name of the rounding, not null.
-	 */
-	String getName(Locale locale);
+	Amount adjust(Amount amount);
 
 }

@@ -21,12 +21,12 @@ package javax.money;
  * 
  * @author Anatole Tresch
  */
-public final class Money {
+public final class MoneyUtil {
 
 	/**
 	 * Singleton accessor.
 	 */
-	private Money() {
+	private MoneyUtil() {
 	}
 
 	/**
@@ -169,7 +169,7 @@ public final class Money {
      * @param currency  the currency, not null
      * @return the instance representing zero, never null
      */
-    public static Money zero(CurrencyUnit currency) {
+    public static Amount zero(CurrencyUnit currency) {
     	// TODO Not Implemented yet
     	return null;
     }

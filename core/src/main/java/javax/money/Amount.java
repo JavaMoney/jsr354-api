@@ -15,14 +15,18 @@
  */
 package javax.money;
 
-import static java.math.BigDecimal.ZERO;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
-
 
 /**
+ * Interface defining a monetary amount. The effective internal representation
+ * of an amount may vary depending on the implementation used. Nevertheless
+ * basically an amount provides a functionality similar to {@link BigDecimal}.
+ * <p>
+ * Unfortunately, since {@link Number} is not an interface this class can not
+ * extend {@link Number}. TODO discuss if we want to extend Number as an
+ * abstract class, instead of using a plain interface.
+ * 
  * @author Anatole Tresch
  */
 public interface Amount extends Comparable<Amount> {
@@ -151,7 +155,7 @@ public interface Amount extends Comparable<Amount> {
 	 *             expansion
 	 * @return {@code this / divisor}
 	 */
-	public Amount divide(Amount divisor, Rounding rounding);
+	public Amount divide(Amount divisor, AmountAdjuster... rounding);
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (this /
@@ -167,7 +171,7 @@ public interface Amount extends Comparable<Amount> {
 	 *             expansion
 	 * @return {@code this / divisor}
 	 */
-	public Amount divide(Number divisor, Rounding rounding);
+	public Amount divide(Number divisor, AmountAdjuster... rounding);
 
 	/**
 	 * Returns a two-element {@code Amount} array containing the result of
@@ -266,7 +270,7 @@ public interface Amount extends Comparable<Amount> {
 	 * @return {@code this * multiplicand}
 	 */
 	public Amount multiply(Number multiplicand, MathContext ctx);
-	
+
 	/**
 	 * Returns a {@code Amount} whose value is <tt>(this &times;
 	 * multiplicand)</tt>, and whose scale is {@code (this.getScale() +
@@ -401,34 +405,6 @@ public interface Amount extends Comparable<Amount> {
 	public Amount remainder(Number divisor);
 
 	/**
-	 * Returns a {@code Amount} rounded according to the {@code Rounding}
-	 * settings. If the precision setting is 0 then no rounding takes place.
-	 * 
-	 * @param rounding
-	 *            the rounding to use.
-	 * @return a {@code Amount} rounded according to the {@code MathContext}
-	 *         settings.
-	 * @throws ArithmeticException
-	 *             if the rounding mode is {@code UNNECESSARY} and the
-	 *             {@code Amount} operation would require rounding.
-	 */
-	public Amount toRoundedValue(Rounding rounding);
-
-	/**
-	 * Returns a {@code Amount} rounded according to the {@code Rounding}
-	 * settings. If the precision setting is 0 then no rounding takes place.
-	 * 
-	 * @param rounding
-	 *            the rounding to use.
-	 * @return a {@code BigDecimal} rounded according to the {@code MathContext}
-	 *         settings.
-	 * @throws ArithmeticException
-	 *             if the rounding mode is {@code UNNECESSARY} and the
-	 *             {@code BigDecimal} operation would require rounding.
-	 */
-	public Amount round(Rounding rounding);
-
-	/**
 	 * Returns a Amount whose numerical value is equal to ({@code this} *
 	 * 10<sup>n</sup>). The scale of the result is {@code (this.getScale() - n)}
 	 * .
@@ -454,7 +430,7 @@ public interface Amount extends Comparable<Amount> {
 	 *             if the scale of the new currency is less than the scale of
 	 *             this currency
 	 */
-	public Amount withCurrencyUnit(CurrencyUnit currency);
+	public Amount with(CurrencyUnit currency);
 
 	/**
 	 * Returns a copy of this monetary value with the specified currency.
@@ -474,7 +450,21 @@ public interface Amount extends Comparable<Amount> {
 	 * @throws ArithmeticException
 	 *             if the rounding fails
 	 */
-	public Amount withCurrencyUnit(CurrencyUnit currency, Rounding rounding);
+	public Amount with(CurrencyUnit currency, AmountAdjuster... adjuster);
+
+	/**
+	 * Returns a copy of this amount adjusted by the {@link AmountAdjuster},
+	 * e.g. a {@link Rounding}.
+	 * <p>
+	 * This instance is immutable and unaffected by this method.
+	 * 
+	 * @param adjuster
+	 *            the adjuster to use, not null
+	 * @return the adjusted instance, never null
+	 * @throws ArithmeticException
+	 *             if the adjustment fails
+	 */
+	public Amount with(AmountAdjuster... adjuster);
 
 	/**
 	 * Gets the amount in major units as a {@code BigDecimal} with scale 0.
@@ -490,7 +480,7 @@ public interface Amount extends Comparable<Amount> {
 	 * 
 	 * @return the major units part of the amount, never null
 	 */
-	public BigDecimal getAmountMajor();
+	public Amount getMajorPart();
 
 	/**
 	 * Gets the amount in major units as a {@code long}.
@@ -503,7 +493,7 @@ public interface Amount extends Comparable<Amount> {
 	 * @throws ArithmeticException
 	 *             if the amount is too large for a {@code long}
 	 */
-	public long getAmountMajorLong();
+	public long getMajorLong();
 
 	/**
 	 * Gets the amount in major units as an {@code int}.
@@ -516,7 +506,7 @@ public interface Amount extends Comparable<Amount> {
 	 * @throws ArithmeticException
 	 *             if the amount is too large for an {@code int}
 	 */
-	public int getAmountMajorInt();
+	public int getMajorInt();
 
 	/**
 	 * Gets the amount in minor units as a {@code BigDecimal} with scale 0.
@@ -532,7 +522,7 @@ public interface Amount extends Comparable<Amount> {
 	 * 
 	 * @return the minor units part of the amount, never null
 	 */
-	public BigDecimal getAmountMinor();
+	public Amount getMinor();
 
 	/**
 	 * Gets the amount in minor units as a {@code long}.
@@ -545,7 +535,7 @@ public interface Amount extends Comparable<Amount> {
 	 * @throws ArithmeticException
 	 *             if the amount is too large for a {@code long}
 	 */
-	public long getAmountMinorLong();
+	public long getMinorLong();
 
 	/**
 	 * Gets the amount in minor units as an {@code int}.
@@ -558,7 +548,7 @@ public interface Amount extends Comparable<Amount> {
 	 * @throws ArithmeticException
 	 *             if the amount is too large for an {@code int}
 	 */
-	public int getAmountMinorInt();
+	public int getMinorInt();
 
 	/**
 	 * Gets the minor part of the amount.
@@ -620,29 +610,12 @@ public interface Amount extends Comparable<Amount> {
 	 * This instance is immutable and unaffected by this method.
 	 * 
 	 * @param amount
-	 *            the monetary amount to set in the returned instance, not null
+	 *            the amount to set in the returned instance, not null
 	 * @return the new instance with the input amount set, never null
 	 * @throws ArithmeticException
 	 *             if the scale of the amount is too large
 	 */
-	public Money withAmount(BigDecimal amount);
-
-	/**
-	 * Returns a copy of this monetary value with the specified amount.
-	 * <p>
-	 * The returned instance will have this currency and the new amount. If the
-	 * scale of the {@code BigDecimal} needs to be adjusted, then it will be
-	 * rounded using the specified mode.
-	 * <p>
-	 * This instance is immutable and unaffected by this method.
-	 * 
-	 * @param amount
-	 *            the monetary amount to set in the returned instance, not null
-	 * @param roundingMode
-	 *            the rounding mode to adjust the scale, not null
-	 * @return the new instance with the input amount set, never null
-	 */
-	public Money withAmount(BigDecimal amount, RoundingMode roundingMode);
+	public Amount with(Number amount);
 
 	// -------------------- Introspection and value methods, similar to
 	// java.lang.Number; java.lang.BigDecimal
@@ -789,6 +762,130 @@ public interface Amount extends Comparable<Amount> {
 	 */
 	public int signum();
 
+	/**
+	 * Checks if this amount is less compared to the amount passed.
+	 * 
+	 * @param amount
+	 *            The amount to compare to.
+	 * @return TRUE, if this amount is less compared to the amount passed.
+	 */
+	public boolean lessThan(Amount amount);
+
+	/**
+	 * Checks if this amount's value is less compared to the number passed.
+	 * 
+	 * @param number
+	 *            The number to compare to.
+	 * @return TRUE, if this amount's value is less compared to the number
+	 *         passed.
+	 */
+	public boolean lessThan(Number number);
+
+	/**
+	 * Checks if this amount is less or the same compared to the amount passed.
+	 * 
+	 * @param amount
+	 *            The amount to compare to.
+	 * @return TRUE, if this amount is less or the same compared to the amount
+	 *         passed.
+	 */
+	public boolean lessThanOrEqualTo(Amount amount);
+
+	/**
+	 * Checks if this amount's value is less or the same compared to the number
+	 * passed.
+	 * 
+	 * @param number
+	 *            The number to compare to.
+	 * @return TRUE, if this amount's value is less or the same compared to the
+	 *         number passed.
+	 */
+	public boolean lessThanOrEqualTo(Number number);
+
+	/**
+	 * Checks if this amount is greater compared to the amount passed.
+	 * 
+	 * @param amount
+	 *            The amount to compare to.
+	 * @return TRUE, if this amount is greater compared to the amount passed.
+	 */
+	public boolean greaterThan(Amount amount);
+
+	/**
+	 * Checks if this amount's value is greater compared to the number passed.
+	 * 
+	 * @param number
+	 *            The number to compare to.
+	 * @return TRUE, if this amount's value is greater compared to the number
+	 *         passed.
+	 */
+	public boolean greaterThan(Number number);
+
+	/**
+	 * Checks if this amount is greater or the same compared to the amount
+	 * passed.
+	 * 
+	 * @param amount
+	 *            The amount to compare to.
+	 * @return TRUE, if this amount is greater or the same compared to the
+	 *         amount passed.
+	 */
+	public boolean greaterThanOrEqualTo(Amount amount);
+
+	/**
+	 * Checks if this amount's value is greater or the same compared to the
+	 * number passed.
+	 * 
+	 * @param number
+	 *            The number to compare to.
+	 * @return TRUE, if this amount's value is greater or the same compared to
+	 *         the number passed.
+	 */
+	public boolean greaterThanOrEqualTo(Number number);
+
+	/**
+	 * Checks if this amount is the same compared to the amount passed. This is
+	 * a convenience method to reflect {@link #same(Number)} also for amounts,
+	 * but basically should behave similarly as {@link #equals(Object)}.
+	 * 
+	 * @param number
+	 *            The number to compare to.
+	 * @return TRUE, if this amount's value is the same compared to the number
+	 *         passed.
+	 */
+	public boolean isEqualTo(Amount amount);
+
+	/**
+	 * Checks if this amount's value is the same compared to the number passed.
+	 * 
+	 * @param number
+	 *            The number to compare to.
+	 * @return TRUE, if this amount's value is the same compared to the number
+	 *         passed.
+	 */
+	public boolean isEqualTo(Number number);
+
+	/**
+	 * Checks if this amount is not the same compared to the amount passed.
+	 * 
+	 * @param number
+	 *            The number to compare to.
+	 * @return TRUE, if this amount's value is not the same compared to the
+	 *         number passed.
+	 */
+	public boolean isNotEqualTo(Amount amount);
+
+	/**
+	 * Checks if this amount's value is not the same compared to the number
+	 * passed.
+	 * 
+	 * @param number
+	 *            The number to compare to.
+	 * @return TRUE, if this amount's value is not the same compared to the
+	 *         number passed.
+	 */
+	public boolean isNotEqualTo(Number number);
+
 	// -------------------------------------------- Misc
 
 	/**
@@ -845,4 +942,46 @@ public interface Amount extends Comparable<Amount> {
 	 * @see #toEngineeringString()
 	 */
 	public String toPlainString();
+
+	/**
+	 * Returns an {@code Amount} rounded according to the {@code Rounding}
+	 * settings defined by the {@link CurrencyUnit}.
+	 * 
+	 * @return a {@code BigDecimal} rounded according to the {@code MathContext}
+	 *         settings.
+	 * @throws ArithmeticException
+	 *             if rounding fails.
+	 */
+	public Amount getAdjusted();
+	
+	/**
+	 * Get the internal value, without any modification. By default, a numeric
+	 * value of an Amount will be rounded as defined by
+	 * {@link CurrencyUnit#getDefaultFractionDigits()}.
+	 * 
+	 * @param representationType
+	 * @return
+	 */
+	public <T> T valueOf(Class<T> representationType);
+
+	/**
+	 * Get the amount's value, without any modification. By default, a numeric
+	 * value of an Amount will be rounded as defined by
+	 * {@link CurrencyUnit#getDefaultFractionDigits()}.
+	 * 
+	 * @param representationType
+	 *            the required target type
+	 * @return the representation of this amount, adjusted using the given
+	 *         adjustment.
+	 */
+	public <T> T valueOf(Class<T> representationType, AmountAdjuster... adjustment);
+
+	/**
+	 * Access the class that models the representation of the numeric part of
+	 * the amount. The internal value can be accessed by calling
+	 * {@link #valueOf(Class)} passing the result of this method.
+	 * 
+	 * @return The class that represents the numeric representation, never null.
+	 */
+	public Class<?> getInternalValueType();
 }

@@ -120,7 +120,7 @@ public final class LocalizationStyle implements Serializable {
 	 */
 	public LocalizationStyle(LocalizationStyle baseStyle) {
 		this.attributes.putAll(baseStyle.getAttributes());
-		this.id = baseStyle.getID();
+		this.id = baseStyle.getId();
 	}
 
 	/**
@@ -143,9 +143,9 @@ public final class LocalizationStyle implements Serializable {
 	/**
 	 * Get the style's identifier, not null.
 	 * 
-	 * @return the style's ID.
+	 * @return the style's id.
 	 */
-	public String getID() {
+	public String getId() {
 		return id;
 	}
 

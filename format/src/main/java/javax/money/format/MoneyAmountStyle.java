@@ -22,7 +22,7 @@ import java.util.Locale;
 
 import javax.money.Amount;
 import javax.money.CurrencyUnit;
-import javax.money.Rounding;
+import javax.money.AmountAdjuster;
 
 /**
  * Defines the style that the amount of a monetary value will be formatted with.
@@ -108,7 +108,7 @@ public final class MoneyAmountStyle implements Serializable {
 	/** FLags if a decimal point should be enforced. */
 	private boolean decimalPointEnforced = false;
 	/** Defines the rounding used to display the amount. */
-	private Rounding rounding;
+	private AmountAdjuster rounding;
 	/** Defines the character to be shown, when the value is zero. */
 	private Character zeroCharacter = null;
 	/** defines the decimal point character to be used. */
@@ -200,14 +200,14 @@ public final class MoneyAmountStyle implements Serializable {
 	public MoneyAmountStyle(int zeroCharacter, int positiveCharacter,
 			int negativeCharacter, SignPlacement signPlacement,
 			int decimalPointCharacter, int groupingCharacter, int groupingSize,
-			boolean forceDecimalPoint, Rounding rounding) {
+			boolean forceDecimalPoint, AmountAdjuster rounding) {
 		// TODO Not Implemented yet
 	}
 
 	public MoneyAmountStyle(int zeroCharacter, int positiveCharacter,
 			int negativeCharacter, SignPlacement signPlacement,
 			int decimalPointCharacter, int[] groupingCharacters,
-			int[] groupingSizes, boolean forceDecimalPoint, Rounding rounding) {
+			int[] groupingSizes, boolean forceDecimalPoint, AmountAdjuster rounding) {
 		// TODO Not Implemented yet
 	}
 
@@ -392,7 +392,7 @@ public final class MoneyAmountStyle implements Serializable {
 	 * 
 	 * @return the rounding
 	 */
-	public final Rounding getRounding() {
+	public final AmountAdjuster getRounding() {
 		return rounding;
 	}
 
@@ -404,7 +404,7 @@ public final class MoneyAmountStyle implements Serializable {
 	 * @param rounding
 	 *            the rounding to be used.
 	 */
-	public final MoneyAmountStyle setRounding(Rounding rounding) {
+	public final MoneyAmountStyle setRounding(AmountAdjuster rounding) {
 		this.rounding = rounding;
 		return this;
 	}

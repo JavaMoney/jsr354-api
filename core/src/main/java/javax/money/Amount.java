@@ -1,17 +1,33 @@
 /*
- *  Copyright 2012 Credit Suisse (Anatole Tresch)
+ * Copyright (c) 2012-2013,  Credit Suisse (Anatole Tresch), Werner Keil
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * All rights reserved.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *  * Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ *  * Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  * Neither the name of JSR-354 nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package javax.money;
 
@@ -959,7 +975,7 @@ public interface Amount extends Comparable<Amount> {
 	 * @throws IllegalArgumentException
 	 *             if the representation type is not supported.
 	 */
-	public <T> T valueOf(Class<T> numberType);
+	public <T> T asType(Class<T> type);
 
 	/**
 	 * * Gets the monetary amount using the passed target type. This method
@@ -972,7 +988,7 @@ public interface Amount extends Comparable<Amount> {
 	 * affected. for additional scaling based on the currency use
 	 * {@link #getAdjusted()}.
 	 * 
-	 * @param representationType
+	 * @param type
 	 *            The target type, not null.
 	 * @param performRounding
 	 *            if true, {@link #getAdjusted()} is called, before adapting to
@@ -982,19 +998,19 @@ public interface Amount extends Comparable<Amount> {
 	 * @throws IllegalArgumentException
 	 *             if the representation type is not supported.
 	 */
-	public <T> T valueOf(Class<T> numberType, boolean performRounding);
+	public <T> T asType(Class<T> type, boolean performRounding);
 
 	/**
 	 * Get the amount's value, without any modification. By default, a numeric
 	 * value of an Amount will be rounded as defined by
 	 * {@link CurrencyUnit#getDefaultFractionDigits()}.
 	 * 
-	 * @param numberType
+	 * @param type
 	 *            the required target type
 	 * @return the representation of this amount, adjusted using the given
 	 *         adjustment.
 	 */
-	public <T> T valueOf(Class<T> numberType, AmountAdjuster... adjustment);
+	public <T> T asType(Class<T> type, AmountAdjuster... adjustment);
 
 	/**
 	 * Access the class that models the representation of the numeric part of

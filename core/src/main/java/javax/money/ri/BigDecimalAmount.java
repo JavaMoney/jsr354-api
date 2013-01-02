@@ -1,8 +1,11 @@
-package javax.money;
+package javax.money.ri;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
+
+import javax.money.Amount;
+import javax.money.AmountAdjuster;
+import javax.money.CurrencyUnit;
 
 public class BigDecimalAmount implements Amount {
 
@@ -27,21 +30,13 @@ public class BigDecimalAmount implements Amount {
 	public int compareTo(Amount o) {
 		int compare = this.currency.compareTo(o.getCurrency());
 		if (compare == 0) {
-			compare = this.number.compareTo(o.valueOf(BigDecimal.class));
+			compare = this.number.compareTo(o.asType(BigDecimal.class));
 		}
 		return compare;
 	}
 
 	public CurrencyUnit getCurrency() {
 		return currency;
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> T adapt(Class<T> targetClass) {
-		if (BigDecimal.class.getName().equals(targetClass.getName())) {
-			return (T) this.number;
-		}
-		return null;
 	}
 
 	public Amount abs() {
@@ -80,7 +75,7 @@ public class BigDecimalAmount implements Amount {
 					+ this.currency + ", but was " + amount.getCurrency());
 		}
 		return new BigDecimalAmount(this.number.add(amount
-				.valueOf(BigDecimal.class)), this.currency);
+				.asType(BigDecimal.class)), this.currency);
 	}
 
 	public Amount add(Number number) {
@@ -175,7 +170,7 @@ public class BigDecimalAmount implements Amount {
 
 	public Amount subtract(Amount subtrahend) {
 		return new BigDecimalAmount(this.number.subtract(subtrahend
-				.valueOf(BigDecimal.class)), this.currency);
+				.asType(BigDecimal.class)), this.currency);
 	}
 
 	public Amount subtract(Number subtrahend) {
@@ -432,37 +427,33 @@ public class BigDecimalAmount implements Amount {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public Class<?> getNumberType() {
+		return BigDecimal.class;
+	}
 
-	public <T> T valueOf(Class<T> representationType) {
-		if (BigDecimal.class.equals(representationType)) {
+	public <T> T asType(Class<T> type) {
+		if (BigDecimal.class.equals(type)) {
 			return (T) this.number;
 		}
 		// TODO add Number types...
 		throw new IllegalArgumentException("Unsupported representation type: "
-				+ representationType);
+				+ type);
 	}
 
-	public <T> T valueOf(Class<T> representationType, AmountAdjuster... adjustment) {
+	public <T> T asType(Class<T> type, AmountAdjuster... adjustment) {
 		Amount amount = this;
 		for (int i = 0; i < adjustment.length; i++) {
 			amount = adjustment[i].adjust(amount);
 		}
-		return amount.valueOf(representationType);
+		return amount.asType(type);
 	}
 
-	public Class<?> getInternalValueType() {
-		return BigDecimal.class;
-	}
-
-	public <T> T valueOf(Class<T> numberType, boolean performRounding) {
+	public <T> T asType(Class<T> type, boolean performRounding) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Class<?> getNumberType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public Amount[] divideAndSeparate(Number divisor,
 			boolean addDifferenceToLastValue) {

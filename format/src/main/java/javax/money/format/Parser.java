@@ -36,6 +36,7 @@ import java.util.Locale;
 /**
  * Instance that implement this interface parse Strings into instances of of
  * type T.
+ * TODO check if this class can be moved to {@code java.util}.
  */
 public interface Parser<T> {
 

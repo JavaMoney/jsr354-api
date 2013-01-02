@@ -55,6 +55,7 @@ import java.util.Map;
  * {@link #of(Locale)}.
  * 
  * @author Anatole Tresch
+ * TODO check if this class can be moved to {@code java.util}.
  */
 public final class LocalizationStyle implements Serializable {
 

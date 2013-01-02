@@ -36,6 +36,7 @@ import java.util.Locale;
 
 /**
  * Formats instances of T to a {@link String} or an {@link Appendable}.
+ * TODO check if this class can be moved to {@code java.util}.
  */
 public interface Formatter<T> {
 

@@ -34,49 +34,63 @@ package javax.money.convert;
 import javax.money.CurrencyUnit;
 
 /**
- * Exception thrown when a monetary operation fails due to mismatched currencies.
+ * Exception thrown when a monetary operation fails due to mismatched
+ * currencies.
  * <p>
  * For example, this exception would be thrown when trying to add a monetary
  * value in one currency to a monetary value in a different currency.
  * <p>
  * This exception makes no guarantees about immutability or thread-safety.
- *
+ * 
  * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
  * @author Stephen Colebourne
  */
-public class CurrencyMismatchException extends IllegalArgumentException {
+public class CurrencyConversionException extends IllegalArgumentException {
 
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
+	/** Serialization lock. */
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructor.
-     * 
-     * @param firstCurrency  the first currency, may be null
-     */
-    public CurrencyMismatchException(CurrencyUnit source, CurrencyUnit target) {
-    	// TODO Not Implemented yet
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param firstCurrency
+	 *            the first currency, may be null
+	 */
+	public CurrencyConversionException(CurrencyUnit source,
+			CurrencyUnit target, String message) {
+		super(message);
+	}
 
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the first currency at fault.
-     * 
-     * @return the currency at fault, may be null
-     */
-    public CurrencyUnit getSource() {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param firstCurrency
+	 *            the first currency, may be null
+	 */
+	public CurrencyConversionException(CurrencyUnit source,
+			CurrencyUnit target, String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    /**
-     * Gets the second currency at fault.
-     * 
-     * @return the currency at fault, may be null
-     */
-    public CurrencyUnit getTarget() {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+	// -----------------------------------------------------------------------
+	/**
+	 * Gets the first currency at fault.
+	 * 
+	 * @return the currency at fault, may be null
+	 */
+	public CurrencyUnit getSource() {
+		// TODO Not Implemented yet
+		return null;
+	}
+
+	/**
+	 * Gets the second currency at fault.
+	 * 
+	 * @return the currency at fault, may be null
+	 */
+	public CurrencyUnit getTarget() {
+		// TODO Not Implemented yet
+		return null;
+	}
 
 }

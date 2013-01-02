@@ -38,19 +38,6 @@ public interface Amount extends Comparable<Amount> {
 	 */
 	public CurrencyUnit getCurrency();
 
-	/**
-	 * * Gets the monetary amount using the passed target type. This method
-	 * allows to support different return types, depenending of the concrete
-	 * implementation. E.g. BigDecimal is supported within SE environments,
-	 * whereas on ME environments this may not be the case.
-	 * <p>
-	 * This returns the monetary value as a {@code T}. The scale will be the
-	 * scale of this money.
-	 * 
-	 * @return the amount, never null
-	 */
-	public <T> T adapt(Class<T> targetClass);
-
 	// -------------------- calculation methods
 
 	/**
@@ -150,12 +137,14 @@ public interface Amount extends Comparable<Amount> {
 	 * 
 	 * @param divisor
 	 *            value by which this {@code Amount} is to be divided.
+	 * @param adjusters
+	 *            the adjusters to be applied on the result.
 	 * @throws ArithmeticException
 	 *             if the exact quotient does not have a terminating decimal
 	 *             expansion
 	 * @return {@code this / divisor}
 	 */
-	public Amount divide(Amount divisor, AmountAdjuster... rounding);
+	public Amount divide(Amount divisor, AmountAdjuster... adjusters);
 
 	/**
 	 * Returns a {@code Amount} whose value is {@code (this /
@@ -166,12 +155,14 @@ public interface Amount extends Comparable<Amount> {
 	 * 
 	 * @param divisor
 	 *            value by which this {@code Amount} is to be divided.
+	 * @param adjusters
+	 *            the adjusters to be applied on the result.
 	 * @throws ArithmeticException
 	 *             if the exact quotient does not have a terminating decimal
 	 *             expansion
 	 * @return {@code this / divisor}
 	 */
-	public Amount divide(Number divisor, AmountAdjuster... rounding);
+	public Amount divide(Number divisor, AmountAdjuster... adjusters);
 
 	/**
 	 * Returns a two-element {@code Amount} array containing the result of
@@ -443,14 +434,13 @@ public interface Amount extends Comparable<Amount> {
 	 * 
 	 * @param currency
 	 *            the currency to use, not null
-	 * @param roundingMode
-	 *            the rounding mode to use to bring the decimal places back in
-	 *            line, not null
+	 * @param adjusters
+	 *            the adjusters to be applied, e.g. rounding
 	 * @return the new instance with the input currency set, never null
 	 * @throws ArithmeticException
 	 *             if the rounding fails
 	 */
-	public Amount with(CurrencyUnit currency, AmountAdjuster... adjuster);
+	public Amount with(CurrencyUnit currency, AmountAdjuster... adjusters);
 
 	/**
 	 * Returns a copy of this amount adjusted by the {@link AmountAdjuster},
@@ -458,13 +448,13 @@ public interface Amount extends Comparable<Amount> {
 	 * <p>
 	 * This instance is immutable and unaffected by this method.
 	 * 
-	 * @param adjuster
-	 *            the adjuster to use, not null
+	 * @param adjusterss
+	 *            the adjusters to use, not null
 	 * @return the adjusted instance, never null
 	 * @throws ArithmeticException
 	 *             if the adjustment fails
 	 */
-	public Amount with(AmountAdjuster... adjuster);
+	public Amount with(AmountAdjuster... adjusters);
 
 	/**
 	 * Gets the amount in major units as a {@code BigDecimal} with scale 0.
@@ -953,28 +943,58 @@ public interface Amount extends Comparable<Amount> {
 	 *             if rounding fails.
 	 */
 	public Amount getAdjusted();
-	
+
 	/**
-	 * Get the internal value, without any modification. By default, a numeric
-	 * value of an Amount will be rounded as defined by
-	 * {@link CurrencyUnit#getDefaultFractionDigits()}.
+	 * * Gets the monetary amount using the passed target type. This method
+	 * allows to support different return types, depending of the concrete
+	 * implementation. E.g. {@link BigDecimal} should be supported within SE
+	 * environments, whereas on ME environments {@link Double} will be more
+	 * likely.
+	 * <p>
+	 * This returns the monetary value as a {@code T}. No scaling will be
+	 * affected. for additional scaling based on the currency use
+	 * {@link #valueOf(Class, boolean)} instead of.
+	 * 
+	 * @return the amount represented as T, never null
+	 * @throws IllegalArgumentException
+	 *             if the representation type is not supported.
+	 */
+	public <T> T valueOf(Class<T> numberType);
+
+	/**
+	 * * Gets the monetary amount using the passed target type. This method
+	 * allows to support different return types, depending of the concrete
+	 * implementation. E.g. {@link BigDecimal} should be supported within SE
+	 * environments, whereas on ME environments {@link Double} will be more
+	 * likely.
+	 * <p>
+	 * This returns the monetary value as a {@code T}. No scaling will be
+	 * affected. for additional scaling based on the currency use
+	 * {@link #getAdjusted()}.
 	 * 
 	 * @param representationType
-	 * @return
+	 *            The target type, not null.
+	 * @param performRounding
+	 *            if true, {@link #getAdjusted()} is called, before adapting to
+	 *            the target type, which performs adjustments or rounding. #see
+	 *            {@link #getAdjusted()}
+	 * @return the amount represented as T, never null
+	 * @throws IllegalArgumentException
+	 *             if the representation type is not supported.
 	 */
-	public <T> T valueOf(Class<T> representationType);
+	public <T> T valueOf(Class<T> numberType, boolean performRounding);
 
 	/**
 	 * Get the amount's value, without any modification. By default, a numeric
 	 * value of an Amount will be rounded as defined by
 	 * {@link CurrencyUnit#getDefaultFractionDigits()}.
 	 * 
-	 * @param representationType
+	 * @param numberType
 	 *            the required target type
 	 * @return the representation of this amount, adjusted using the given
 	 *         adjustment.
 	 */
-	public <T> T valueOf(Class<T> representationType, AmountAdjuster... adjustment);
+	public <T> T valueOf(Class<T> numberType, AmountAdjuster... adjustment);
 
 	/**
 	 * Access the class that models the representation of the numeric part of
@@ -983,5 +1003,29 @@ public interface Amount extends Comparable<Amount> {
 	 * 
 	 * @return The class that represents the numeric representation, never null.
 	 */
-	public Class<?> getInternalValueType();
+	public Class<?> getNumberType();
+
+	/**
+	 * This method divides this amount into a number of subamounts determined by
+	 * the divisor passed.
+	 * 
+	 * @param divisor
+	 *            Determines how many amounts should be divided based on this
+	 *            amount (which represents the total amount).
+	 * @param addDifferenceToLastValue
+	 *            if true, the rounding difference between the sum of the
+	 *            divided amounts and this total amount value, is simply added
+	 *            to the last amount, otherwise the last element of the array
+	 *            returned contains the rounding difference (note: this element
+	 *            may be 0!).<br/>
+	 *            For example dividing 100 by 3, when set to true, a three
+	 *            element array is returned, containing 33.33, 33.33 and 33.34.<br/>
+	 *            If set to false, a 4 elements array would be returned,
+	 *            containing 3.33, 3.33, 3.33, 0.01.
+	 * @return the divided and separated amounts, and, if
+	 *         addDifferenceToLastValue is false, an additional amount instance
+	 *         containing the rounding difference.
+	 */
+	public Amount[] divideAndSeparate(Number divisor,
+			boolean addDifferenceToLastValue);
 }

@@ -27,7 +27,7 @@ public class BigDecimalAmount implements Amount {
 	public int compareTo(Amount o) {
 		int compare = this.currency.compareTo(o.getCurrency());
 		if (compare == 0) {
-			compare = this.number.compareTo(o.adapt(BigDecimal.class));
+			compare = this.number.compareTo(o.valueOf(BigDecimal.class));
 		}
 		return compare;
 	}
@@ -80,7 +80,7 @@ public class BigDecimalAmount implements Amount {
 					+ this.currency + ", but was " + amount.getCurrency());
 		}
 		return new BigDecimalAmount(this.number.add(amount
-				.adapt(BigDecimal.class)), this.currency);
+				.valueOf(BigDecimal.class)), this.currency);
 	}
 
 	public Amount add(Number number) {
@@ -175,7 +175,7 @@ public class BigDecimalAmount implements Amount {
 
 	public Amount subtract(Amount subtrahend) {
 		return new BigDecimalAmount(this.number.subtract(subtrahend
-				.adapt(BigDecimal.class)), this.currency);
+				.valueOf(BigDecimal.class)), this.currency);
 	}
 
 	public Amount subtract(Number subtrahend) {
@@ -452,6 +452,22 @@ public class BigDecimalAmount implements Amount {
 
 	public Class<?> getInternalValueType() {
 		return BigDecimal.class;
+	}
+
+	public <T> T valueOf(Class<T> numberType, boolean performRounding) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Class<?> getNumberType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Amount[] divideAndSeparate(Number divisor,
+			boolean addDifferenceToLastValue) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

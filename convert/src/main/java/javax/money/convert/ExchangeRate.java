@@ -34,6 +34,8 @@ package javax.money.convert;
 import javax.money.CurrencyUnit;
 
 /**
+ * This interface models a exchange rate between two currencies.
+ * 
  * @author Werner Keil
  * @author Anatole Tresch
  * @version 0.2.2
@@ -55,11 +57,14 @@ public interface ExchangeRate {
 	public CurrencyUnit getTargetCurrency();
 
 	/**
-	 * Get the exchange factor.
+	 * Get the exchange factor converted to the given target type. This allows
+	 * to use different exchange rate implementations.
 	 * 
-	 * @return the exchange factor.
+	 * @param targetClass
+	 *            The target type required.
+	 * @return the exchange factor, as instance of T.
 	 */
-	public <T> T getAdaptedFactor(Class<T> targetAdapterClass);
+	public <T> T getFactorAsType(Class<T> targetClass);
 
 	/**
 	 * Access the rate's factor.
@@ -69,10 +74,39 @@ public interface ExchangeRate {
 	public Number getFactor();
 
 	/**
+	 * Returns the UTC timestamp of the rate.
+	 * 
+	 * @return The UTC timestamp of the rate.
+	 */
+	public long getTimestamp();
+
+	/**
+	 * Get the location of this quote. TODO model this as an object?
+	 * 
+	 * @return the stock exchange name, or location.
+	 */
+	public String getLocation();
+
+	/**
+	 * Flag that signals that this rate is a deferred rate.
+	 * 
+	 * @return true, if the rate is not real time (deferred).
+	 */
+	public boolean isDeferred();
+
+	/**
+	 * Get the name of the data provider, that provided this rate.
+	 * 
+	 * @return the name of the data provider.
+	 */
+	public String getDataProvider();
+
+	/**
 	 * Access the chain of exchange rates.
 	 * 
 	 * @return the chain of rates, in case of a derived rate, this may be
-	 *         several instances.
+	 *         several instances. For a direct exchange rate, this equals to
+	 *         <code>new ExchangeRate[]{this}</code>.
 	 */
 	public ExchangeRate[] getExchangeRateChain();
 

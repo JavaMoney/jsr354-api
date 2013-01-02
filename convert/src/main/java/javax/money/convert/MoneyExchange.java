@@ -60,7 +60,7 @@ public final class MoneyExchange {
 	 *            duration how long this rate is considered valid.
 	 */
 	public static ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, boolean deferred, long validdityDuration) {
+			CurrencyUnit target, boolean deferred, long validityDuration) {
 		// TODO
 		return null;
 	}

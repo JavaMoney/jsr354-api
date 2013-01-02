@@ -236,7 +236,27 @@ public class ExchangeRateImpl implements ExchangeRate {
 				+ "]";
 	}
 
-	public <T> T getAdaptedFactor(Class<T> targetAdapterClass) {
+	public <T> T getFactorAsType(Class<T> targetClass) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public long getTimestamp() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public String getLocation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isDeferred() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public String getDataProvider() {
 		// TODO Auto-generated method stub
 		return null;
 	}

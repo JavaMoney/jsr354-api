@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013,  Credit Suisse (Anatole Tresch), Werner Keil
+ * Copyright (c) 2012-2013,  Credit Suisse, Werner Keil
  *
  * All rights reserved.
  *

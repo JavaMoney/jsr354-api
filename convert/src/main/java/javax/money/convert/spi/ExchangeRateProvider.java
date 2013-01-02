@@ -31,10 +31,11 @@
  */
 package javax.money.convert.spi;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.money.CurrencyUnit;
 import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 
 /**
  * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
@@ -50,12 +51,15 @@ public interface ExchangeRateProvider {
 	 *            the source currency.
 	 * @param target
 	 *            the target currency.
+	 * @param type
+	 *            Allows to determine the kind of rate to returned. {@code null}
+	 *            means any type.
 	 * @param deferred
 	 *            If the quote should be deferred.
 	 * @return the according exchange rate, or null.
 	 */
 	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, boolean deferred);
+			CurrencyUnit target, ExchangeRateType type, boolean deferred);
 
 	/**
 	 * Get an exchange rate for the given parameters.
@@ -64,26 +68,16 @@ public interface ExchangeRateProvider {
 	 *            the source currency.
 	 * @param target
 	 *            the target currency.
-	 * @param deferred
-	 *            If the quote should be deferred.
+	 * @param type
+	 *            Allows to determine the kind of rate to returned. {@code null}
+	 *            means any type.
+	 * @param timestamp
+	 *            the required target timestamp for the rate.
 	 * @param validityDuration
 	 *            how long the quote should be considered valid.
 	 * @return the according exchange rate, or null.
 	 */
 	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, boolean deferred, long validityDuration);
+			CurrencyUnit target, ExchangeRateType type, Calendar timestamp);
 
-	/**
-	 * Access a historic exchange rate.
-	 * 
-	 * @param source
-	 *            the source currency.
-	 * @param target
-	 *            the target currency.
-	 * @param targetDate
-	 *            the target timestamp for the quote (unitemporal history).
-	 * @return the according exchange rate, or null.
-	 */
-	public ExchangeRate getHistoricExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, Date targetDate);
 }

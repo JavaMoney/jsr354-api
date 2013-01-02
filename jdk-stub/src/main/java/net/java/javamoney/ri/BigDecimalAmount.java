@@ -1,4 +1,4 @@
-package javax.money.ri;
+package net.java.javamoney.ri;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

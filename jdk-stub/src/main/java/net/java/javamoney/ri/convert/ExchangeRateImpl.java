@@ -5,7 +5,7 @@
  *    Werner Keil - initial API and implementation
  *    Anatole Tresch - extensions and adaptions.
  */
-package javax.money.convert.ri;
+package net.java.javamoney.ri.convert;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

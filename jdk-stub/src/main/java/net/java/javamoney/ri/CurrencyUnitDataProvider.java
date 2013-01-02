@@ -1,5 +1,5 @@
 
-package javamoney.util.money;
+package net.java.javamoney.ri;
 
 /*
  * Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.

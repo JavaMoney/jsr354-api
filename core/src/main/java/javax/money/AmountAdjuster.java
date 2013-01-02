@@ -32,21 +32,22 @@
 package javax.money;
 
 /**
- * This instance defines a an adjuster for amounts.
+ * This instance defines a an adjuster for amounts. An adjuster basically can be
+ * anything that is able to convert an amount of one type to another. So
+ * adjusting may cover several use cases, such as {@link Rounding} or more
+ * complex operations, such as calculating a net present value, given additional
+ * settings such as timestamp and hypothetical interest rate.
  * 
  * @author Anatole Tresch
  */
 public interface AmountAdjuster {
 
 	/**
-	 * This method is called for adjusting an amount. Basically adjusting may
-	 * cover several use cases, such as {@link Rounding} or more complex
-	 * operations, such as calculating a net present value, given additional
-	 * settings such as timestamp and hypothetical interest rate.
+	 * This method is called for adjusting an amount.
 	 * 
 	 * @param amount
-	 *            the amount
-	 * @return the adjusted amount
+	 *            the amount to be adjusted
+	 * @return the adjusted amount.
 	 * @throws ArithmeticException
 	 *             if adjustment fails.
 	 */

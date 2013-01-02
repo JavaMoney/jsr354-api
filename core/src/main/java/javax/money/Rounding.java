@@ -34,12 +34,14 @@ package javax.money;
 import java.util.Locale;
 
 /**
- * This instance defines a rounding mode that can be applied to amounts.
+ * This instance defines a rounding mode that can be applied to amounts. Since
+ * rounding is a typical use case for amount adjustement the corresponding
+ * {@link AmountAdjuster} interface is extended.
  * 
  * @author Anatole Tresch
  */
-public interface Rounding extends AmountAdjuster{
-	
+public interface Rounding extends AmountAdjuster {
+
 	/**
 	 * The id uniquely identifies a rounding type.
 	 * 

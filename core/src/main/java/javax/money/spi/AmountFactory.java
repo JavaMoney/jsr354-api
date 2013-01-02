@@ -31,29 +31,101 @@
  */
 package javax.money.spi;
 
-import javax.money.CurrencyUnit;
 import javax.money.Amount;
+import javax.money.CurrencyUnit;
 
 /**
- * The Money provider models the SPI interface that allows to exchange the Java {@link Amount}
- * implementation for different platforms or usage scenarios. 
+ * The Money provider models the SPI interface that allows to exchange the Java
+ * {@link Amount} implementation for different platforms or usage scenarios.
  * 
- * @TODO Discussion: should caching features implemented by the SPI, or by the Spec Part
+ * @TODO Discussion: should caching features implemented by the SPI, or by the
+ *       Spec Part
  * 
  * @author Anatole Tresch
  */
 public interface AmountFactory {
 
-	Amount create(CurrencyUnit currency, Number number);
+	/**
+	 * Creates a new {@link Amount} instances using the given
+	 * {@code CurrencyUnit} and {@code Number}.
+	 * 
+	 * @param currency
+	 *            The currency, not null.
+	 * @param number
+	 *            The amount's number, not null.
+	 * @return The new amount instance.
+	 */
+	public Amount create(CurrencyUnit currency, Number number);
 
-	Amount create(CurrencyUnit currency, byte value);
+	/**
+	 * Creates a new {@link Amount} instances using the given
+	 * {@code CurrencyUnit} and {@code byte}.
+	 * 
+	 * @param currency
+	 *            The currency, not null.
+	 * @param number
+	 *            The amount's number, not null.
+	 * @return The new amount instance.
+	 */
+	public Amount create(CurrencyUnit currency, byte number);
 
-	Amount create(CurrencyUnit currency, short value);
+	/**
+	 * Creates a new {@link Amount} instances using the given
+	 * {@code CurrencyUnit} and {@code short}.
+	 * 
+	 * @param currency
+	 *            The currency, not null.
+	 * @param number
+	 *            The amount's number, not null.
+	 * @return The new amount instance.
+	 */
+	public Amount create(CurrencyUnit currency, short number);
 
-	Amount create(CurrencyUnit currency, int value);
+	/**
+	 * Creates a new {@link Amount} instances using the given
+	 * {@code CurrencyUnit} and {@code int}.
+	 * 
+	 * @param currency
+	 *            The currency, not null.
+	 * @param number
+	 *            The amount's number, not null.
+	 * @return The new amount instance.
+	 */
+	public Amount create(CurrencyUnit currency, int number);
 
-	Amount create(CurrencyUnit currency, float value);
+	/**
+	 * Creates a new {@link Amount} instances using the given
+	 * {@code CurrencyUnit} and {@code float}.
+	 * 
+	 * @param currency
+	 *            The currency, not null.
+	 * @param number
+	 *            The amount's number, not null.
+	 * @return The new amount instance.
+	 */
+	public Amount create(CurrencyUnit currency, float number);
 
-	Amount create(CurrencyUnit currency, double value);
+	/**
+	 * Creates a new {@link Amount} instances using the given
+	 * {@code CurrencyUnit} and {@code double}.
+	 * 
+	 * @param currency
+	 *            The currency, not null.
+	 * @param number
+	 *            The amount's number, not null.
+	 * @return The new amount instance.
+	 */
+	public Amount create(CurrencyUnit currency, double number);
+
+	/**
+	 * Creates a new {@link Amount} instances using the given decimal parts.
+	 * 
+	 * @param major
+	 *            The major part of the decimal number.
+	 * @param minor
+	 *            The minor part of the decimal number, not negative.
+	 * @return The new amount instance.
+	 */
+	public Amount create(CurrencyUnit currency, long major, long minor);
 
 }

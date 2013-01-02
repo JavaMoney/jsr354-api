@@ -31,6 +31,7 @@
  */
 package javax.money;
 
+import java.math.RoundingMode;
 
 /**
  * Access point for money related core functionality.
@@ -160,6 +161,34 @@ public final class MoneyUtil {
 	 *            The required numeric value.
 	 * @return The amount instance.
 	 */
+	public static Amount get(CurrencyUnit currency, long value) {
+		return null;
+	}
+
+	/**
+	 * Create an amount given the parameters.
+	 * 
+	 * @param currency
+	 *            The required currency, not null.
+	 * @param major
+	 *            The required major decimal number part.
+	 * @param minor
+	 *            The required minor decimal number part, not negative.
+	 * @return The amount instance.
+	 */
+	public static Amount get(CurrencyUnit currency, long major, long minor) {
+		return null;
+	}
+
+	/**
+	 * Create an amount given the parameters.
+	 * 
+	 * @param currency
+	 *            The required currency, not null.
+	 * @param value
+	 *            The required numeric value.
+	 * @return The amount instance.
+	 */
 	public static Amount get(CurrencyUnit currency, float value) {
 		return null;
 	}
@@ -177,19 +206,20 @@ public final class MoneyUtil {
 		return null;
 	}
 
-	 /**
-     * Obtains an instance of {@code Money} representing zero.
-     * <p>
-     * For example, {@code zero(USD)} creates the instance {@code USD 0.00}.
-     *
-     * @param currency  the currency, not null
-     * @return the instance representing zero, never null
-     */
-    public static Amount zero(CurrencyUnit currency) {
-    	// TODO Not Implemented yet
-    	return null;
-    }
-    
+	/**
+	 * Obtains an instance of {@code Money} representing zero.
+	 * <p>
+	 * For example, {@code zero(USD)} creates the instance {@code USD 0.00}.
+	 * 
+	 * @param currency
+	 *            the currency, not null
+	 * @return the instance representing zero, never null
+	 */
+	public static Amount zero(CurrencyUnit currency) {
+		// TODO Not Implemented yet
+		return null;
+	}
+
 	/**
 	 * Obtains an instance of {@code Money} as the total value an array.
 	 * <p>
@@ -273,22 +303,65 @@ public final class MoneyUtil {
 	}
 
 	/**
-	 * Ensures that a {@code Money} is not {@code null}.
+	 * Ensures that an {@code Amount} is not {@code null}.
 	 * <p>
 	 * If the input money is not {@code null}, then it is returned, providing
-	 * that the currency matches the specified currency. If the input money is
-	 * {@code null}, then zero money in the currency is returned.
+	 * that the currency matches the specified currency. If the input amount is
+	 * {@code null}, then a zero amount in the currency is returned.
 	 * 
-	 * @param money
-	 *            the monetary value to check, may be null
+	 * @param amonut
+	 *            the amount to check, may be null
 	 * @param currency
 	 *            the currency to use, not null
-	 * @return the input money or zero in the specified currency, never null
+	 * @return the input amount or zero in the specified currency, never null
 	 * @throws CurrencyMismatchException
 	 *             if the input money is non-null and the currencies differ
 	 */
-	public static Amount nonNull(Amount money, CurrencyUnit currency) {
+	public static Amount nonNull(Amount amount, CurrencyUnit currency) {
 		// TODO Not Implemented yet
 		return null;
+	}
+
+	/**
+	 * Access a {@link Rounding} using its identifier.
+	 * 
+	 * @param id
+	 *            The id that identifies the rounding.
+	 * @return The currency found, never null.
+	 * @throws IllegalArgumentException
+	 *             if the required rounding is not defined.
+	 */
+	public static Rounding getRounding(String id) {
+		return null;
+	}
+
+	/**
+	 * Checks if a rounding is defined using its identifier.
+	 * 
+	 * @param id
+	 *            The rounding id, e.g. 'HALF-UP'.
+	 * @param code
+	 *            The code that, together with the namespace identifies the
+	 *            currency.
+	 * @return true, if the currency is defined.
+	 */
+	public static boolean isRoundingDefined(String id) {
+		return false;
+	}
+
+	/**
+	 * Allow to access all rounding identifiers currently available.
+	 * {@link Rounding} can be accessed by calling {@link #getRounding(String)}.
+	 * 
+	 * @return the identifiers of all currently defined roundings.
+	 */
+	public static String[] getRoundingIds() {
+		// TODO implement this using registered rounding modes.
+		RoundingMode[] roundingItems = RoundingMode.values();
+		String[] roundings = new String[roundingItems.length];
+		for (int i = 0; i < roundings.length; i++) {
+			roundings[i] = roundingItems[i].toString();
+		}
+		return roundings;
 	}
 }

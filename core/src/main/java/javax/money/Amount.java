@@ -528,7 +528,7 @@ public interface Amount extends Comparable<Amount> {
 	 * 
 	 * @return the minor units part of the amount, never null
 	 */
-	public Amount getMinor();
+	public Amount getMinorPart();
 
 	/**
 	 * Gets the amount in minor units as a {@code long}.
@@ -555,20 +555,6 @@ public interface Amount extends Comparable<Amount> {
 	 *             if the amount is too large for an {@code int}
 	 */
 	public int getMinorInt();
-
-	/**
-	 * Gets the minor part of the amount.
-	 * <p>
-	 * This return the minor unit part of the monetary amount. This is defined
-	 * as the amount in minor units excluding major units.
-	 * <p>
-	 * For example, EUR has a scale of 2, so the minor part is always between 0
-	 * and 99 for positive amounts, and 0 and -99 for negative amounts. Thus
-	 * 'EUR 2.35' will return 35, and 'EUR -1.34' will return -34.
-	 * 
-	 * @return the minor part of the amount, negative if the amount is negative
-	 */
-	public int getMinorPart();
 
 	/**
 	 * Checks if the amount is zero.
@@ -640,21 +626,6 @@ public interface Amount extends Comparable<Amount> {
 	 * @return the scale in use, typically 2 but could be 0, 1 and 3
 	 */
 	public int getScale();
-
-	/**
-	 * * Gets the scale of the {@code Amount}.
-	 * <p>
-	 * * The scale has the same meaning as in {@link Amount}. Positive values
-	 * represent the number of decimal places in use. For example, a scale of 2
-	 * means that the money will have two decimal places * such as 'USD 43.25'.
-	 * *
-	 * <p>
-	 * * For {@code Amount}, the scale is fixed and always matches that of the
-	 * currency.
-	 * 
-	 * @return the scale in use, typically 2 but could be 0, 1 and 3
-	 */
-	public int getDecimals();
 
 	/**
 	 * Returns the <i>precision</i> of this {@code Amount}. (The precision is

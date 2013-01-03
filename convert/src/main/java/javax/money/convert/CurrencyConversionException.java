@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013,  Credit Suisse, Werner Keil
+ * Copyright (c) 2012-2013, Credit Suisse
  *
  * All rights reserved.
  *

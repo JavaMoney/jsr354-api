@@ -31,6 +31,9 @@
  */
 package javax.money.convert;
 
+import java.util.Calendar;
+
+import javax.money.Amount;
 import javax.money.CurrencyUnit;
 
 /**
@@ -40,6 +43,47 @@ import javax.money.CurrencyUnit;
  * @author Anatole Tresch
  */
 public interface ExchangeSupport {
+
+	/**
+	 * Checks if an exchange of a currency is defined.
+	 * 
+	 * @param source
+	 *            the source currency
+	 * @param target
+	 *            the target currency
+	 * @return true, if such an exchange is currently defined.
+	 */
+	public boolean isExchangeDefined(CurrencyUnit src, CurrencyUnit target,
+			ExchangeRateType type);
+
+	/**
+	 * Checks if an exchange of a currency is defined.
+	 * 
+	 * @param source
+	 *            the source currency
+	 * @param target
+	 *            the target currency
+	 * @param deferred
+	 *            if the required exchange rate may be deferred, or a real time
+	 *            rate is required.
+	 * @return true, if such an exchange is currently defined.
+	 */
+	public boolean isExchangeDefined(CurrencyUnit src, CurrencyUnit target,
+			ExchangeRateType type, boolean deferred);
+
+	/**
+	 * Checks if an exchange of a currency is defined.
+	 * 
+	 * @param source
+	 *            the source currency
+	 * @param target
+	 *            the target currency
+	 * @param timestamp
+	 *            the target timestamp for which the exchange rate is queried.
+	 * @return true, if such an exchange is currently defined.
+	 */
+	public boolean isExchangeDefined(CurrencyUnit src, CurrencyUnit target,
+			ExchangeRateType type, Calendar timestamp);
 
 	/**
 	 * Access a exchange rate using the given currencies.
@@ -83,13 +127,230 @@ public interface ExchangeSupport {
 	public ExchangeRate getExchangeRate(ExchangeRate... exchangeRates);
 
 	/**
-	 * Access a {@link CurrencyConverter} for the given currencies.
+	 * Method that converts the source {@link Amount} to an {@link Amount} with
+	 * the given target {@link CurrencyUnit}.<br/>
+	 * By default this method should use a real time conversion, but may also
+	 * fall back to deferred data.
 	 * 
-	 * @param src
-	 *            the source currency
-	 * @param tgt
-	 *            the target currency
-	 * @return a instance of a currency converter.
+	 * @param amount
+	 *            The source amount
+	 * @param target
+	 *            The target currency
+	 * @return The converted amount, never null.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
 	 */
-	public CurrencyConverter getConverter(CurrencyUnit src, CurrencyUnit tgt);
+	public Amount convert(Amount amount, CurrencyUnit target);
+
+	/**
+	 * Method that converts the source {@link Amount} to an {@link Amount} with
+	 * the given target {@link CurrencyUnit}.
+	 * 
+	 * @param amount
+	 *            The source amount
+	 * @param target
+	 *            The target currency
+	 * @param deferred
+	 *            if the required exchange rate may be deferred, or a real time
+	 *            rate is required.
+	 * @return The converted amount, never null.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public Amount convert(Amount amount, CurrencyUnit target, boolean deferred);
+
+	/**
+	 * Method that converts the source {@link Amount} to an {@link Amount} with
+	 * the given target {@link CurrencyUnit}.
+	 * 
+	 * @param amount
+	 *            The source amount
+	 * @param target
+	 *            The target currency
+	 * @param timestamp
+	 *            the target timestamp for which the exchange rate is queried.
+	 * @return The converted amount, never null.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public Amount convert(Amount amount, CurrencyUnit target, Calendar timestamp);
+
+	/**
+	 * Method that converts the source {@code double} amount in source
+	 * {@link CurrencyUnit} to an {@link Amount} with the given target
+	 * {@link CurrencyUnit}.<br/>
+	 * By default this method should use a real time conversion, but may also
+	 * fall back to deferred data.
+	 * 
+	 * @param amount
+	 *            The amount.
+	 * @param sourceCurrency
+	 *            The source currency
+	 * @param targetCurrency
+	 *            The target currency
+	 * @return the converted {@code value} as {@code double}.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public double convert(double amount, CurrencyUnit sourceCurrency,
+			CurrencyUnit targetCurrency);
+
+	/**
+	 * Method that converts the source {@code double} amount in source
+	 * {@link CurrencyUnit} to an {@link Amount} with the given target
+	 * {@link CurrencyUnit}.
+	 * 
+	 * @param amount
+	 *            The amount.
+	 * @param sourceCurrency
+	 *            The source currency
+	 * @param targetCurrency
+	 *            The target currency
+	 * @param deferred
+	 *            if the required exchange rate may be deferred, or a real time
+	 *            rate is required.
+	 * @return the converted {@code value} as {@code double}.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public double convert(double amount, CurrencyUnit source,
+			CurrencyUnit target, boolean deferred);
+
+	/**
+	 * Method that converts the source {@code double} amount in source
+	 * {@link CurrencyUnit} to an {@link Amount} with the given target
+	 * {@link CurrencyUnit}.
+	 * 
+	 * @param amount
+	 *            The amount.
+	 * @param sourceCurrency
+	 *            The source currency
+	 * @param targetCurrency
+	 *            The target currency
+	 * @param timestamp
+	 *            the target timestamp for which the exchange rate is queried.
+	 * @return the converted {@code value} as {@code double}.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public double convert(double amount, CurrencyUnit source,
+			CurrencyUnit target, Calendar timestamp);
+
+	/**
+	 * Get an {@link ExchangeRate} for a given combination of currencies.<br/>
+	 * By default this method should use a real time conversion, but may also
+	 * fall back to deferred data.
+	 * 
+	 * @param sourceCurrency
+	 *            The source currency
+	 * @param targetCurrency
+	 *            The target currency
+	 * @param timestamp
+	 *            the target timestamp for which the identity check is queried.
+	 * @return the matching {@link ExchangeRate}, or null.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
+			CurrencyUnit targetCurrency, ExchangeRateType type);
+
+	/**
+	 * Get an {@link ExchangeRate} for a given combination of currencies.
+	 * 
+	 * @param sourceCurrency
+	 *            The source currency
+	 * @param targetCurrency
+	 *            The target currency
+	 * @param deferred
+	 *            if the required exchange rate may be deferred, or a real time
+	 *            rate is required.
+	 * @return the matching {@link ExchangeRate}, or null.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
+			CurrencyUnit targetCurrency, ExchangeRateType type, boolean deferred);
+
+	/**
+	 * Get an {@link ExchangeRate} for a given timestamp (including historic
+	 * rates).
+	 * 
+	 * @param sourceCurrency
+	 *            The source currency
+	 * @param targetCurrency
+	 *            The target currency
+	 * @param timestamp
+	 *            the target timestamp for which the exchange rate is queried.
+	 * @return the matching {@link ExchangeRate}, or null.
+	 */
+	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
+			CurrencyUnit targetCurrency, ExchangeRateType type,
+			Calendar timestamp);
+
+	// TODO Use case, background?
+	// /**
+	// * Checks if a conversion is linear.
+	// *
+	// * @param sourceCurrency
+	// * The source currency
+	// * @param targetCurrency
+	// * The target currency
+	// * @param deferred
+	// * if the required exchange rate may be deferred, or a real time
+	// * rate is required.
+	// * @return true, if the conversion is linear.
+	// * @throws CurrencyConversionException
+	// * if conversion failed, or the required data is not available.
+	// */
+	// public boolean isLinear(CurrencyUnit sourceCurrency,
+	// CurrencyUnit targetCurrency, boolean deferred);
+	//
+	// /**
+	// * Checks if a conversion is linear.
+	// *
+	// * @param sourceCurrency
+	// * The source currency
+	// * @param targetCurrency
+	// * The target currency
+	// * @param timestamp
+	// * the target timestamp for which the exchange rate is queried.
+	// * @return true, if the conversion is linear.
+	// * @throws CurrencyConversionException
+	// * if conversion failed, or the required data is not available.
+	// */
+	// public boolean isLinear(CurrencyUnit sourceCurrency,
+	// CurrencyUnit targetCurrency, Calendar timestamp);
+	// /**
+	// * Checks if a conversion is an identity.
+	// *
+	// * @param sourceCurrency
+	// * The source currency
+	// * @param targetCurrency
+	// * The target currency
+	// * @param timestamp
+	// * the target timestamp for which the identity check is queried.
+	// * @return true, if the conversion is linear.
+	// * @throws CurrencyConversionException
+	// * if conversion failed, or the required data is not available.
+	// */
+	// public boolean isIdentity(CurrencyUnit sourceCurrency,
+	// CurrencyUnit targetCurrency, Calendar timestamp);
+	//
+	// /**
+	// * Checks if a conversion is an identity.
+	// *
+	// * @param sourceCurrency
+	// * The source currency
+	// * @param targetCurrency
+	// * The target currency
+	// * @param deferred
+	// * if the required exchange rate may be deferred, or a real time
+	// * rate is required.
+	// * @return true, if the conversion is linear.
+	// * @throws CurrencyConversionException
+	// * if conversion failed, or the required data is not available.
+	// */
+	// public boolean isIdentity(CurrencyUnit sourceCurrency,
+	// CurrencyUnit targetCurrency, boolean deferred);
+
 }

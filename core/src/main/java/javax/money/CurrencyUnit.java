@@ -34,6 +34,8 @@ package javax.money;
 import java.util.Currency;
 import java.util.ServiceLoader;
 
+import javax.money.spi.CurrencyUnitProvider;
+
 /**
  * * A unit of currency.
  * <p>
@@ -99,10 +101,37 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit> {
 	public int getDefaultFractionDigits();
 
 	/**
+	 * Gets the increment used for rounding, along with
+	 * {@link #getDefaultFractionDigits()} rounding is defined.
+	 * 
+	 * @return
+	 * 
+	 *         public double getRoundingIncrement();
+	 */
+
+	/**
 	 * Checks if this is a virtual currency, such as BitCoins or Linden Dollars.
 	 * 
 	 * @return true if this is a virtual currency.
 	 */
 	public boolean isVirtualCurrency();
+
+	/**
+	 * Get the timestamp from when this currency instance is valid from.<br/>
+	 * This is useful for historic currencies.
+	 * 
+	 * @return the UTC timestamp from where this instance is valid. If not
+	 *         defined -1 should be returned.
+	 */
+	public long getValidFrom();
+
+	/**
+	 * Get the timestamp until when this currency instance is valid from.<br/>
+	 * This is useful for historic currencies.
+	 * 
+	 * @return the UTC timestamp until when this instance is valid. If not
+	 *         defined -1 should be returned.
+	 */
+	public long getValidUntil();
 
 }

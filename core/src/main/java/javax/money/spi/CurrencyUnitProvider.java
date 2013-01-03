@@ -31,9 +31,12 @@
  */
 package javax.money.spi;
 
+import java.util.Locale;
 import java.util.ServiceLoader;
 
 import javax.money.CurrencyUnit;
+import javax.money.Region;
+import javax.money.Rounding;
 
 /**
  * Implementation of this interface define the currencies supported in the
@@ -46,7 +49,7 @@ import javax.money.CurrencyUnit;
  * @author Anatole Tresch
  */
 public interface CurrencyUnitProvider {
-	
+
 	/**
 	 * The currency namespace provided by this instance.
 	 * 
@@ -61,12 +64,56 @@ public interface CurrencyUnitProvider {
 	 * @param code
 	 *            The code of the currency required. This code with the name
 	 *            space uniquely identify a currency instance.
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
 	 * @return The currency unit to used, or null. Hereby the implementation
 	 *         should return immutable and final instances of
 	 *         {@link CurrencyUnit}. It is the responsibility of the
 	 *         implementation to implement caching of currency instances
 	 *         (recommended).
 	 */
-	public CurrencyUnit getCurrency(String code);
+	public CurrencyUnit getCurrency(String code, long timestamp);
+
+	/**
+	 * Get the available currencies for the given {@link Locale}.
+	 * 
+	 * @param locale
+	 *            the target {@link Locale}
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 * @return the currencies found, or null.
+	 */
+	public CurrencyUnit[] getCurrencies(Locale locale, long timestamp);
+
+	/**
+	 * Get the available currencies for the given {@link Locale}.
+	 * 
+	 * @param region
+	 *            the target {@link Region}
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 * @return the currencies found, or null.
+	 */
+	public CurrencyUnit[] getCurrencies(Region region, long timestamp);
+
+	/**
+	 * Get the currencies available.
+	 * 
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 * @return the currencies found, or null.
+	 */
+	public CurrencyUnit[] getCurrencies(long timestamp);
+
+	/**
+	 * Get the {@link Rounding} to be used for the given currency instance.
+	 * 
+	 * @param currency
+	 *            The currency
+	 * @return the {@link Rounding} to be applied, or null for determining
+	 *         rounding based on the
+	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
+	 */
+	public Rounding getRounding(CurrencyUnit currency);
 
 }

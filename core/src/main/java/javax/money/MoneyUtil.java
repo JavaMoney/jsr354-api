@@ -32,6 +32,8 @@
 package javax.money;
 
 import java.math.RoundingMode;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Access point for money related core functionality.
@@ -47,7 +49,9 @@ public final class MoneyUtil {
 	}
 
 	/**
-	 * Access a currency using its name space and code.
+	 * Access a currency using its name space and code. This is a convenience
+	 * method for {@link #getCurrency(String, String, Date)}, where {@code null}
+	 * is passed for the target date (meaning current date).
 	 * 
 	 * @param namespace
 	 *            The name space, e.g. 'ISO-4217'.
@@ -63,6 +67,72 @@ public final class MoneyUtil {
 	}
 
 	/**
+	 * Access a currency using its name space and code.
+	 * 
+	 * @param namespace
+	 *            The name space, e.g. 'ISO-4217'.
+	 * @param code
+	 *            The code that, together with the namespace identifies the
+	 *            currency.
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 * @return The currency found, never null.
+	 * @throws UnknownCurrencyException
+	 *             if the required currency is not defined.
+	 */
+	public static CurrencyUnit getCurrency(String namespace, String code,
+			long timestamp) {
+		return null;
+	}
+
+	/**
+	 * Access all currencies currently available.
+	 * 
+	 * @return the list of currencies available, never null.
+	 */
+	public static CurrencyUnit[] getCurrencies() {
+		// TODO implement
+		return null;
+	}
+
+	/**
+	 * Access all currencies available for the given timestamp.
+	 * 
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 * @return the list of currencies available, never null.
+	 */
+	public static CurrencyUnit[] getCurrencies(long timestamp) {
+		// TODO implement
+		return null;
+	}
+
+	/**
+	 * Access all currencies matching a {@link Region}.
+	 * 
+	 * @param locale
+	 *            the target locale, not null.
+	 * @return the currencies found, never null.
+	 */
+	public CurrencyUnit[] getCurrencies(Region region) {
+		return null;
+	}
+
+	/**
+	 * Access all currencies matching a {@link Region}, valid at the given
+	 * timestamp.
+	 * 
+	 * @param locale
+	 *            the target locale, not null.
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 * @return the currencies found, never null.
+	 */
+	public CurrencyUnit[] getCurrencies(Region region, long timestamp) {
+		return null;
+	}
+
+	/**
 	 * Checks if a currency is defined using its name space and code.
 	 * 
 	 * @param namespace
@@ -72,7 +142,24 @@ public final class MoneyUtil {
 	 *            currency.
 	 * @return true, if the currency is defined.
 	 */
-	public static CurrencyUnit isCurrencyDefined(String namespace, String code) {
+	public static CurrencyUnit isCurrencyAvailable(String namespace, String code) {
+		return null;
+	}
+
+	/**
+	 * Checks if a currency is defined using its name space and code.
+	 * 
+	 * @param namespace
+	 *            The name space, e.g. 'ISO-4217'.
+	 * @param code
+	 *            The code that, together with the namespace identifies the
+	 *            currency.
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 * @return true, if the currency is defined.
+	 */
+	public static CurrencyUnit isCurrencyAvailable(String namespace,
+			String code, long timestamp) {
 		return null;
 	}
 
@@ -98,6 +185,93 @@ public final class MoneyUtil {
 	public static String[] getCurrencyNamespaces() {
 		// TODO Use SPIs to evaluate
 		return new String[] { "ISO-4217" };
+	}
+
+	/**
+	 * Access all currencies matching a {@link Locale}.
+	 * 
+	 * @param locale
+	 *            the target locale, not null.
+	 * @return the currencies found, never null.
+	 */
+	public CurrencyUnit[] getCurrencies(Locale locale) {
+		return null;
+	}
+
+	/**
+	 * Access all currencies matching a {@link Locale}, valid at the given
+	 * timestamp.
+	 * 
+	 * @param locale
+	 *            the target locale, not null.
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 * @return the currencies found, never null.
+	 */
+	public CurrencyUnit[] getCurrencies(Locale locale, long timestamp) {
+		return null;
+	}
+
+	// TODO move to RI somehow.
+	// /**
+	// * Register a {@link CurrencyUnit} programmatically to a {@link Locale}.
+	// *
+	// * @param currency
+	// * the currency
+	// * @param locale
+	// * the locale
+	// */
+	// public void registerCurrency(CurrencyUnit currency, Locale locale) {
+	//
+	// }
+	//
+	// /**
+	// * Unregister a {@link CurrencyUnit} programmatically from a {@link
+	// Locale}.
+	// * @param unit
+	// */
+	// public void unregisterCurrency(CurrencyUnit unit, Locale locale) {
+	//
+	// }
+
+	/**
+	 * Access a region.
+	 * 
+	 * @param identifier
+	 *            The region's id, not null.
+	 * @param type
+	 *            The region type, not null.
+	 * @return the region instance.
+	 * @throws IllegalArgumentException
+	 *             if the region does not exist.
+	 */
+	public static Region getRegion(String identifier, RegionType type) {
+		return null;
+	}
+
+	/**
+	 * Access a region, if the region is not yet defined, it will be created and
+	 * registered.
+	 * 
+	 * @param identifier
+	 *            The region's id, not null.
+	 * @param type
+	 *            The region type, not null.
+	 * @return the region instance, never null.
+	 */
+	public static Region getOrCreateRegion(String identifier, RegionType type) {
+		return null;
+	}
+
+	/**
+	 * Access all regions for a given {@link RegionType}.
+	 * 
+	 * @param type
+	 *            The region type, not null.
+	 * @return the regions found, never null.
+	 */
+	public static Region[] getRegions(RegionType type) {
+		return null;
 	}
 
 	/**
@@ -347,6 +521,36 @@ public final class MoneyUtil {
 	 */
 	public static boolean isRoundingDefined(String id) {
 		return false;
+	}
+
+	/**
+	 * Access the {@link Rounding} for a given {@link CurrencyUnit}.
+	 * 
+	 * @param currency
+	 *            the currency instance. not null.
+	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
+	 *         it should be created/registered based on
+	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
+	 */
+	public static Rounding getRounding(CurrencyUnit currency) {
+		return null;
+	}
+
+	/**
+	 * Access the {@link Rounding} for a given {@link CurrencyUnit} and
+	 * timestamp.
+	 * 
+	 * @param currency
+	 *            the currency instance. not null.
+	 * @param timestamp
+	 *            the target timestamp for the {@link Rounding}, or -1 for the
+	 *            current UTC time.
+	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
+	 *         it should be created/registered based on
+	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
+	 */
+	public static Rounding getRounding(CurrencyUnit currency, long timestamp) {
+		return null;
 	}
 
 	/**

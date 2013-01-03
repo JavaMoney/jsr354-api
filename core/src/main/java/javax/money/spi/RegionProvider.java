@@ -29,56 +29,32 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.convert.spi;
+package javax.money.spi;
 
-import java.util.Calendar;
+import java.util.Locale;
+import java.util.ServiceLoader;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
+import javax.money.Region;
+import javax.money.Rounding;
 
 /**
- * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
+ * Implementation of this interface define the currencies supported in the
+ * system. Each provider implementation hereby may be responsible for exactly
+ * one name space. For multiple name spaces being supported several providers
+ * must be registered.
+ * <p>
+ * Registration is done using the {@link ServiceLoader} features.
+ * 
  * @author Anatole Tresch
- * @version 0.1.1
  */
-public interface ExchangeRateProvider {
+public interface RegionProvider {
 
 	/**
-	 * Get an exchange rate for the given parameters.
+	 * Access the regions provided by this region provider.
 	 * 
-	 * @param source
-	 *            the source currency.
-	 * @param target
-	 *            the target currency.
-	 * @param type
-	 *            Allows to determine the kind of rate to returned. {@code null}
-	 *            means any type.
-	 * @param deferred
-	 *            If the quote should be deferred.
-	 * @return the according exchange rate, or null.
+	 * @return the regions to be added, not null.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, ExchangeRateType type, boolean deferred);
-
-	/**
-	 * Get an exchange rate for the given parameters.
-	 * 
-	 * @param source
-	 *            the source currency.
-	 * @param target
-	 *            the target currency.
-	 * @param type
-	 *            Allows to determine the kind of rate to returned. {@code null}
-	 *            means any type.
-	 * @param timestamp
-	 *            the required target UTC timestamp for the rate, or -1 for the
-	 *            latest available.
-	 * @param validityDuration
-	 *            how long the quote should be considered valid.
-	 * @return the according exchange rate, or null.
-	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, ExchangeRateType type, long timestamp);
+	public Region[] getRegions();
 
 }

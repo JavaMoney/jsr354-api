@@ -1,11 +1,5 @@
 package net.java.javamoney.ri.convert;
 
-/*
- * Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.
- * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- *
- *
- */
 
 import static java.util.FormattableFlags.LEFT_JUSTIFY;
 

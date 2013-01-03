@@ -29,56 +29,35 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.convert.spi;
-
-import java.util.Calendar;
-
-import javax.money.CurrencyUnit;
-import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
+package javax.money;
 
 /**
- * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
+ * Defines the different region types available. This allows to segregate
+ * different grouping strategy types.
+ * 
  * @author Anatole Tresch
- * @version 0.1.1
  */
-public interface ExchangeRateProvider {
+public enum RegionType {
+	/** Type representing a continent. */
+	CONTINENT,
+
+	/** Type representing a sub-continent. */
+	SUBCONTINENT,
 
 	/**
-	 * Get an exchange rate for the given parameters.
-	 * 
-	 * @param source
-	 *            the source currency.
-	 * @param target
-	 *            the target currency.
-	 * @param type
-	 *            Allows to determine the kind of rate to returned. {@code null}
-	 *            means any type.
-	 * @param deferred
-	 *            If the quote should be deferred.
-	 * @return the according exchange rate, or null.
+	 * Type representing a grouping of territories that is not mappable to a
+	 * normal WORLD/CONTINENT/SUBCONTINENT/TERRITORY structure, or an arbitrary
+	 * user defined grouping.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, ExchangeRateType type, boolean deferred);
+	GROUPING,
 
-	/**
-	 * Get an exchange rate for the given parameters.
-	 * 
-	 * @param source
-	 *            the source currency.
-	 * @param target
-	 *            the target currency.
-	 * @param type
-	 *            Allows to determine the kind of rate to returned. {@code null}
-	 *            means any type.
-	 * @param timestamp
-	 *            the required target UTC timestamp for the rate, or -1 for the
-	 *            latest available.
-	 * @param validityDuration
-	 *            how long the quote should be considered valid.
-	 * @return the according exchange rate, or null.
-	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, ExchangeRateType type, long timestamp);
+	/** Type representing a territory. */
+	TERRITORY,
+
+	/** Type representing the unknown region. */
+	UNKNOWN,
+
+	/** Type representing the whole world. */
+	WORLD
 
 }

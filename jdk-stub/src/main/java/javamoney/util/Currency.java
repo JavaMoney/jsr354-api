@@ -793,4 +793,14 @@ public final class Currency implements CurrencyUnit, Serializable {
 	public String getNamespace() {
 		return "ISO-4217";
 	}
+
+	@Override
+	public long getValidFrom() {
+		return -1;
+	}
+
+	@Override
+	public long getValidUntil() {
+		return -1;
+	}
 }

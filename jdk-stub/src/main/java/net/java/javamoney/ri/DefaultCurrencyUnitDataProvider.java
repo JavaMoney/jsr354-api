@@ -1,31 +1,6 @@
 package net.java.javamoney.ri;
 
 
-/*
- * Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.
- * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
-
 /**
  * Provider for available currencies using a file.
  * <p>

@@ -79,7 +79,7 @@ public interface ExchangeRate {
 	 * @return The UTC timestamp of the rate.
 	 */
 	public long getTimestamp();
-
+	
 	/**
 	 * Get the location of this quote. TODO model this as an object?
 	 * 

@@ -32,60 +32,40 @@
 package javax.money;
 
 /**
- * Access point for money related core functionality.
+ * This component provides support for accessing and managing/caching of
+ * {@link Region} instances.
  * 
  * @author Anatole Tresch
  */
-public final class MoneyUtil {
+public interface RegionSupport {
 
 	/**
-	 * Singleton accessor.
-	 */
-	private MoneyUtil() {
-	}
-
-	/**
-	 * Access the {@link CurrencySupport} instance.
+	 * Access a region.
 	 * 
-	 * @return the {@link CurrencySupport}, never null.
-	 * @throws IllegalStateException
-	 *             , if no instance could be determined.
+	 * @param identifier
+	 *            The region's id, not null.
+	 * @param type
+	 *            The region type, not null.
+	 * @return the region instance.
+	 * @throws IllegalArgumentException
+	 *             if the region does not exist.
 	 */
-	public static CurrencySupport getCurrencySupport() {
-		return null;
-	}
+	public Region getRegion(String identifier, RegionType type);
 
 	/**
-	 * Access the {@link AmountSupport} instance.
+	 * Access all regions for a given {@link RegionType}.
 	 * 
-	 * @return the {@link AmountSupport}, never null.
-	 * @throws IllegalStateException
-	 *             , if no instance could be determined.
+	 * @param type
+	 *            The region type, not null.
+	 * @return the regions found, never null.
 	 */
-	public static AmountSupport getAmountSupport() {
-		return null;
-	}
+	public Region[] getRegions(RegionType type);
 
 	/**
-	 * Access the {@link RoundingSupport} instance.
+	 * Access all regions available.
 	 * 
-	 * @return the {@link RoundingSupport}, never null.
-	 * @throws IllegalStateException
-	 *             , if no instance could be determined.
+	 * @return the regions found, never null.
 	 */
-	public static RoundingSupport getRoundingSupport() {
-		return null;
-	}
-
-	/**
-	 * Access the {@link RegionSupport} instance.
-	 * 
-	 * @return the {@link RegionSupport}, never null.
-	 * @throws IllegalStateException
-	 *             , if no instance could be determined.
-	 */
-	public static RegionSupport getRegionSupport() {
-		return null;
-	}
+	public Region[] getRegions();
 
 }

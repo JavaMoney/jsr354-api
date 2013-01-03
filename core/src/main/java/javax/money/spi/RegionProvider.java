@@ -31,12 +31,9 @@
  */
 package javax.money.spi;
 
-import java.util.Locale;
 import java.util.ServiceLoader;
 
-import javax.money.CurrencyUnit;
 import javax.money.Region;
-import javax.money.Rounding;
 
 /**
  * Implementation of this interface define the currencies supported in the

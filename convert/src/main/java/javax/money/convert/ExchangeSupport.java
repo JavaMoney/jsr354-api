@@ -31,30 +31,65 @@
  */
 package javax.money.convert;
 
+import javax.money.CurrencyUnit;
+
 /**
  * This class provides singleton access to the exchange conversion logic of
  * JavaMoney.
  * 
  * @author Anatole Tresch
  */
-public final class MoneyExchange {
+public interface ExchangeSupport {
 
 	/**
-	 * Private singleton constructor.
-	 */
-	private MoneyExchange() {
-
-	}
-
-	/**
-	 * Access the {@link ExchangeSupport} instance.
+	 * Access a exchange rate using the given currencies.
 	 * 
-	 * @return the {@link ExchangeSupport}, never null.
-	 * @throws IllegalStateException
-	 *             , if no instance could be determined.
+	 * @param source
+	 *            source currency.
+	 * @param target
+	 *            target currency.
+	 * @param deferred
+	 *            if the exchange rate is a deferred.
+	 * @param validityDuration
+	 *            duration how long this rate is considered valid.
 	 */
-	public static ExchangeSupport getExchangeSupport() {
-		return null;
-	}
+	public ExchangeRate getExchangeRate(CurrencyUnit source,
+			CurrencyUnit target, boolean deferred, long validityDuration);
 
+	/**
+	 * Access a exchange rate using the given currencies. The rate is, by
+	 * default, deferred.
+	 * 
+	 * @param source
+	 *            source currency.
+	 * @param target
+	 *            target currency.
+	 */
+	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target);
+
+	/**
+	 * Creates a {@link ExchangeRateType#DERIVED} exchange rate using the given
+	 * chain of rates.
+	 * 
+	 * @param exchangeRates
+	 *            the chain of rates that define a derived exchange rate from
+	 *            the source currency of the first item in the chain to the
+	 *            target currency in the last item of the chain. In between
+	 *            every target currency must match the source currency of the
+	 *            next rate within the chain.
+	 * @throws IllegalArgumentException
+	 *             if the chain passed is inconsistent.
+	 */
+	public ExchangeRate getExchangeRate(ExchangeRate... exchangeRates);
+
+	/**
+	 * Access a {@link CurrencyConverter} for the given currencies.
+	 * 
+	 * @param src
+	 *            the source currency
+	 * @param tgt
+	 *            the target currency
+	 * @return a instance of a currency converter.
+	 */
+	public CurrencyConverter getConverter(CurrencyUnit src, CurrencyUnit tgt);
 }

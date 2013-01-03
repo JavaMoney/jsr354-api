@@ -31,6 +31,7 @@
  */
 package javax.money.format;
 
+import java.util.Locale;
 
 /**
  * This class represent the singleton for money related formatting and parsing
@@ -38,35 +39,55 @@ package javax.money.format;
  * 
  * @author Anatole Tresch
  */
-public final class MoneyFormat {
+public interface ParseSupport {
 
 	/**
-	 * Private singleton constructor.
-	 */
-	private MoneyFormat() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * Access the {@link FormatSupport} instance.
+	 * This method returns a parser instance for {@link Amount} instances
+	 * formatted in the given {@link Locale}. The instance returned must be
+	 * provided by the registered AmountParserFactory SPI implementation.
 	 * 
-	 * @return the {@link FormatSupport}, never null.
-	 * @throws IllegalStateException
-	 *             , if no instance could be determined.
+	 * @param locale
+	 *            The target locale. The locale will be converted into an
+	 *            according {@link LocalizationStyle} using
+	 *            {@link LocalizationStyle#of(Locale)}.
+	 * @return the according parser, if available.
+	 * @throws
 	 */
-	public static FormatSupport getFormatSupport() {
-		return null;
-	}
+	public AmountParser getAmountParser(Locale locale);
 
 	/**
-	 * Access the {@link ParseSupport} instance.
+	 * This method returns a parser instance for {@link Amount} instances
+	 * formatted in the given {@link Locale}. The instance returned must be
+	 * provided by the registered AmountParserFactory SPI implementation.
 	 * 
-	 * @return the {@link ParseSupport}, never null.
-	 * @throws IllegalStateException
-	 *             , if no instance could be determined.
+	 * @param style
+	 *            The target localization style.
+	 * @return the according parser, if available.
+	 * @throws
 	 */
-	public static ParseSupport getParseSupport() {
-		return null;
-	}
+	public AmountParser getAmountParser(LocalizationStyle style);
+
+	/**
+	 * This method returns an instance of a {@link CurrencyParser}.
+	 * 
+	 * @param namespace
+	 *            the target name space of currencies.
+	 * @param style
+	 *            The target localization style.
+	 * @return a currency formatter.
+	 */
+	public CurrencyParser getCurrencyParser(String namespace,
+			LocalizationStyle style);
+
+	/**
+	 * This method returns an instance of a {@link CurrencyParser}.
+	 * 
+	 * @param namespace
+	 *            the target name space of currencies.
+	 * @param locale
+	 *            The target locale.
+	 * @return a currency formatter.
+	 */
+	public CurrencyParser getCurrencyParser(String namespace, Locale locale);
 
 }

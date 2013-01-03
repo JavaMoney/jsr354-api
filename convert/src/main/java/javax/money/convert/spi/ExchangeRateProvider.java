@@ -31,8 +31,6 @@
  */
 package javax.money.convert.spi;
 
-import java.util.Calendar;
-
 import javax.money.CurrencyUnit;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;

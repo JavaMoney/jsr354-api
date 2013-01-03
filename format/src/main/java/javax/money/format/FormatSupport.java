@@ -31,6 +31,7 @@
  */
 package javax.money.format;
 
+import java.util.Locale;
 
 /**
  * This class represent the singleton for money related formatting and parsing
@@ -38,35 +39,57 @@ package javax.money.format;
  * 
  * @author Anatole Tresch
  */
-public final class MoneyFormat {
+public interface FormatSupport {
 
 	/**
-	 * Private singleton constructor.
-	 */
-	private MoneyFormat() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * Access the {@link FormatSupport} instance.
+	 * This method allows to create a new {@link AmountFormatterBuilder} that
+	 * can be used to create a {@link AmountFormatter} using programmatic
+	 * configuration.
 	 * 
-	 * @return the {@link FormatSupport}, never null.
-	 * @throws IllegalStateException
-	 *             , if no instance could be determined.
+	 * @return a new instance of a {@link AmountFormatterBuilder}, never null.
 	 */
-	public static FormatSupport getFormatSupport() {
-		return null;
-	}
+	public AmountFormatterBuilder createFormatterBuilder();
 
 	/**
-	 * Access the {@link ParseSupport} instance.
+	 * This method returns an instance of a {@link AmountFormatter} that is
+	 * provided the registered AmountFormatterFactory SPI implementation.
 	 * 
-	 * @return the {@link ParseSupport}, never null.
-	 * @throws IllegalStateException
-	 *             , if no instance could be determined.
+	 * @param locale
+	 *            The target locale. The locale will be converted into an
+	 *            according {@link LocalizationStyle} using
+	 *            {@link LocalizationStyle#of(Locale)}.
+	 * @return the formatter required, if available.
+	 * @throws
 	 */
-	public static ParseSupport getParseSupport() {
-		return null;
-	}
+	public AmountFormatter getAmountFormatter(Locale locale);
+
+	/**
+	 * This method returns an instance of a {@link AmountFormatter} that is
+	 * provided the registered AmountFormatterFactory SPI implementation.
+	 * 
+	 * @param style
+	 *            The target localization style.
+	 * @return the formatter required, if available.
+	 * @throws
+	 */
+	public AmountFormatter getAmountFormatter(LocalizationStyle style);
+
+	/**
+	 * This method returns an instance of a {@link CurrencyFormatter}.
+	 * 
+	 * @param style
+	 *            The target localization style.
+	 * @return a currency formatter.
+	 */
+	public CurrencyFormatter getCurrencyFormatter(LocalizationStyle style);
+
+	/**
+	 * This method returns an instance of a {@link CurrencyFormatter}.
+	 * 
+	 * @param locale
+	 *            The target locale.
+	 * @return a currency formatter.
+	 */
+	public CurrencyFormatter getCurrencyFormatter(Locale locale);
 
 }

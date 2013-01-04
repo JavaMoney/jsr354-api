@@ -42,7 +42,7 @@ import java.util.Locale;
 public interface ParseSupport {
 
 	/**
-	 * This method returns a parser instance for {@link Amount} instances
+	 * This method returns a parser instance for {@link MonetaryAmount} instances
 	 * formatted in the given {@link Locale}. The instance returned must be
 	 * provided by the registered AmountParserFactory SPI implementation.
 	 * 
@@ -56,7 +56,7 @@ public interface ParseSupport {
 	public AmountParser getAmountParser(Locale locale);
 
 	/**
-	 * This method returns a parser instance for {@link Amount} instances
+	 * This method returns a parser instance for {@link MonetaryAmount} instances
 	 * formatted in the given {@link Locale}. The instance returned must be
 	 * provided by the registered AmountParserFactory SPI implementation.
 	 * 

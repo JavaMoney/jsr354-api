@@ -45,7 +45,7 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 	}
 
 	@Override
-	public boolean isVirtualCurrency() {
+	public boolean isVirtual() {
 		return false;
 	}
 

@@ -782,7 +782,7 @@ public final class Currency implements CurrencyUnit, Serializable {
 	}
 
 	@Override
-	public boolean isVirtualCurrency() {
+	public boolean isVirtual() {
 		return false;
 	}
 

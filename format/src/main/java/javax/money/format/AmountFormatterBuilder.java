@@ -33,7 +33,7 @@ package javax.money.format;
 
 import java.util.Locale;
 
-import javax.money.Amount;
+import javax.money.MonetaryAmount;
 
 /**
  * Provides the ability to build a formatter for amount values.
@@ -154,7 +154,7 @@ public interface AmountFormatterBuilder {
 	 *            the formatter to append, not null
 	 * @return this for chaining, never null
 	 */
-	public AmountFormatterBuilder append(Formatter<Amount> formatter);
+	public AmountFormatterBuilder append(Formatter<MonetaryAmount> formatter);
 
 	// -----------------------------------------------------------------------
 	/**

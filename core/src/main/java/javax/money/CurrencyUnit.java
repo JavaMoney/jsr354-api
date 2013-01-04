@@ -114,7 +114,7 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit> {
 	 * 
 	 * @return true if this is a virtual currency.
 	 */
-	public boolean isVirtualCurrency();
+	public boolean isVirtual();
 
 	/**
 	 * Get the timestamp from when this currency instance is valid from.<br/>

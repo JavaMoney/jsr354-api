@@ -11,7 +11,7 @@ import java.util.Locale;
 import javamoney.util.Currency;
 
 import javax.money.CurrencyUnit;
-import javax.money.Amount;
+import javax.money.MonetaryAmount;
 import javax.money.convert.ExchangeRate;
 //
 ///**

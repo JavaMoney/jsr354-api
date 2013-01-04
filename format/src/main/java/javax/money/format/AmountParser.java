@@ -33,7 +33,7 @@ package javax.money.format;
 
 import java.util.Locale;
 
-import javax.money.Amount;
+import javax.money.MonetaryAmount;
 import javax.money.CurrencyUnit;
 
 /**
@@ -44,11 +44,11 @@ import javax.money.CurrencyUnit;
  * <p>
  * This class is immutable and thread-safe.
  */
-public interface AmountParser extends Parser<Amount> {
+public interface AmountParser extends Parser<MonetaryAmount> {
 
 	/**
 	 * Fully parses a number and combines it with a {@link CurrencyUnit} to an
-	 * {@link Amount} instance. The amount of parsed decimals can hereby differ
+	 * {@link MonetaryAmount} instance. The amount of parsed decimals can hereby differ
 	 * from the correct number of decimal places.
 	 * <p>
 	 * The parse must complete normally and parse the entire text (currency and
@@ -73,7 +73,7 @@ public interface AmountParser extends Parser<Amount> {
 	 *             if the scale of the parsed money exceeds the scale of the
 	 *             currency
 	 */
-	public Amount parseNumber(CharSequence text, CurrencyUnit currency,
+	public MonetaryAmount parseNumber(CharSequence text, CurrencyUnit currency,
 			LocalizationStyle style) throws ParseException;
 
 	/**
@@ -101,7 +101,7 @@ public interface AmountParser extends Parser<Amount> {
 	 *             if the scale of the parsed money exceeds the scale of the
 	 *             currency
 	 */
-	public Amount parseNumber(CharSequence text, CurrencyUnit currency,
+	public MonetaryAmount parseNumber(CharSequence text, CurrencyUnit currency,
 			Locale locale) throws ParseException;
 
 }

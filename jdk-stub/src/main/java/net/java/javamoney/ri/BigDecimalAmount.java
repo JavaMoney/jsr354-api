@@ -1,33 +1,29 @@
 package net.java.javamoney.ri;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
+import java.math.RoundingMode;
 
-import javax.money.Amount;
 import javax.money.AmountAdjuster;
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryAmount;
 
-public class BigDecimalAmount implements Amount {
+public class BigDecimalAmount implements MonetaryAmount {
 
 	private BigDecimal number;
 	private CurrencyUnit currency;
-	private AmountAdjuster[] adjusters;
 
 	public BigDecimalAmount(BigDecimal number, CurrencyUnit currency) {
-		this(number, currency, (AmountAdjuster[]) null);
-	}
-
-	public BigDecimalAmount(BigDecimal number, CurrencyUnit currency,
-			AmountAdjuster... adjusters) {
 		if (currency == null) {
 			throw new IllegalArgumentException("Currency is required.");
 		}
+		if(number==null){
+			throw new IllegalArgumentException("Number is required.");
+		}
 		this.currency = currency;
-		this.adjusters = adjusters;
 		this.number = number;
 	}
 
-	public int compareTo(Amount o) {
+	public int compareTo(MonetaryAmount o) {
 		int compare = this.currency.compareTo(o.getCurrency());
 		if (compare == 0) {
 			compare = this.number.compareTo(o.asType(BigDecimal.class));
@@ -41,7 +37,7 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public Amount abs() {
+	public MonetaryAmount abs() {
 		if (this.isPositiveOrZero()) {
 			return this;
 		}
@@ -49,7 +45,7 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public Amount min(Amount amount) {
+	public MonetaryAmount min(MonetaryAmount amount) {
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount rewuired.");
 		}
@@ -60,7 +56,7 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public Amount max(Amount amount) {
+	public MonetaryAmount max(MonetaryAmount amount) {
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount rewuired.");
 		}
@@ -71,7 +67,7 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public Amount add(Amount amount) {
+	public MonetaryAmount add(MonetaryAmount amount) {
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount must not be null.");
 		}
@@ -84,187 +80,155 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public Amount add(Number number) {
+	public MonetaryAmount add(Number number) {
 		BigDecimal dec = this.number.add(BigDecimal.valueOf(number
 				.doubleValue()));
 		return new BigDecimalAmount(dec, this.currency);
 	}
 
 	@Override
-	public Amount divide(Amount divisor) {
-		BigDecimal dec = this.number.divide(BigDecimal.valueOf(number
+	public MonetaryAmount divide(MonetaryAmount divisor) {
+		BigDecimal dec = this.number.divide(divisor.asType(BigDecimal.class));
+		return new BigDecimalAmount(dec, this.currency);
+	}
+
+	@Override
+	public MonetaryAmount divide(Number divisor) {
+		BigDecimal dec = this.number.divide(BigDecimal.valueOf(divisor
 				.doubleValue()));
 		return new BigDecimalAmount(dec, this.currency);
 	}
 
 	@Override
-	public Amount divide(Number divisor) {
-		BigDecimal dec = this.number.divide(BigDecimal.valueOf(divisor
-				.doubleValue()));
-		return new BigDecimalAmount(dec, this.currency);
-	}
-
-	@Override
-	public Amount divide(Amount divisor, AmountAdjuster... adjusters) {
-		BigDecimal dec = this.number.divide(BigDecimal.valueOf(divisor
-				.doubleValue()));
-		return new BigDecimalAmount(dec, this.currency, adjusters);
-	}
-
-	@Override
-	public Amount divide(Number divisor, AmountAdjuster... adjusters) {
-		BigDecimal dec = this.number.divide(BigDecimal.valueOf(divisor
-				.doubleValue()));
-		return new BigDecimalAmount(dec, this.currency, adjusters);
-	}
-
-	@Override
-	public Amount[] divideAndRemainder(Amount divisor) {
+	public MonetaryAmount[] divideAndRemainder(MonetaryAmount divisor) {
 		BigDecimal[] dec = this.number.divideAndRemainder(BigDecimal
 				.valueOf(divisor.doubleValue()));
-		return new Amount[] {
-				new BigDecimalAmount(dec[0], this.currency, adjusters),
-				new BigDecimalAmount(dec[1], this.currency, adjusters) };
+		return new MonetaryAmount[] {
+				new BigDecimalAmount(dec[0], this.currency),
+				new BigDecimalAmount(dec[1], this.currency) };
 	}
 
 	@Override
-	public Amount[] divideAndRemainder(Number divisor) {
+	public MonetaryAmount[] divideAndRemainder(Number divisor) {
 		BigDecimal[] dec = this.number.divideAndRemainder(BigDecimal
 				.valueOf(divisor.doubleValue()));
-		return new Amount[] {
-				new BigDecimalAmount(dec[0], this.currency, adjusters),
-				new BigDecimalAmount(dec[1], this.currency, adjusters) };
+		return new MonetaryAmount[] {
+				new BigDecimalAmount(dec[0], this.currency),
+				new BigDecimalAmount(dec[1], this.currency) };
 	}
 
 	@Override
-	public Amount divideToIntegralValue(Amount divisor) {
+	public MonetaryAmount divideToIntegralValue(MonetaryAmount divisor) {
 		BigDecimal dec = this.number.divideToIntegralValue(BigDecimal
 				.valueOf(divisor.doubleValue()));
 		return new BigDecimalAmount(dec, this.currency);
 	}
 
 	@Override
-	public Amount divideToIntegralValue(Number divisor) {
+	public MonetaryAmount divideToIntegralValue(Number divisor) {
 		BigDecimal dec = this.number.divideToIntegralValue(BigDecimal
 				.valueOf(divisor.doubleValue()));
 		return new BigDecimalAmount(dec, this.currency);
 	}
 
 	@Override
-	public Amount multiply(Amount multiplicand, MathContext ctx) {
+	public MonetaryAmount multiply(MonetaryAmount multiplicand) {
 		BigDecimal dec = this.number.multiply(
-				BigDecimal.valueOf(multiplicand.doubleValue()), ctx);
+				multiplicand.asType(BigDecimal.class));
 		return new BigDecimalAmount(dec, this.currency);
 	}
 
 	@Override
-	public Amount multiply(Number multiplicand, MathContext ctx) {
-		BigDecimal dec = this.number.multiply(
-				BigDecimal.valueOf(multiplicand.doubleValue()), ctx);
-		return new BigDecimalAmount(dec, this.currency);
-	}
-
-	@Override
-	public Amount multiply(Amount multiplicand) {
+	public MonetaryAmount multiply(Number multiplicand) {
 		BigDecimal dec = this.number.multiply(BigDecimal.valueOf(multiplicand
 				.doubleValue()));
 		return new BigDecimalAmount(dec, this.currency);
 	}
 
 	@Override
-	public Amount multiply(Number multiplicand) {
-		BigDecimal dec = this.number.multiply(BigDecimal.valueOf(multiplicand
-				.doubleValue()));
-		return new BigDecimalAmount(dec, this.currency);
-	}
-
-	@Override
-	public Amount negate() {
+	public MonetaryAmount negate() {
 		return new BigDecimalAmount(this.number.negate(), this.currency);
 	}
 
 	@Override
-	public Amount plus() {
+	public MonetaryAmount plus() {
 		return new BigDecimalAmount(this.number.plus(), this.currency);
 	}
 
 	@Override
-	public Amount subtract(Amount subtrahend) {
+	public MonetaryAmount subtract(MonetaryAmount subtrahend) {
 		return new BigDecimalAmount(this.number.subtract(subtrahend
 				.asType(BigDecimal.class)), this.currency);
 	}
 
 	@Override
-	public Amount subtract(Number subtrahend) {
+	public MonetaryAmount subtract(Number subtrahend) {
 		return new BigDecimalAmount(this.number.subtract(BigDecimal
 				.valueOf(subtrahend.doubleValue())), this.currency);
 	}
 
 	@Override
-	public Amount pow(int n) {
+	public MonetaryAmount pow(int n) {
 		return new BigDecimalAmount(this.number.pow(n), this.currency);
 	}
 
 	@Override
-	public Amount ulp() {
+	public MonetaryAmount ulp() {
 		return new BigDecimalAmount(this.number.ulp(), this.currency);
 	}
 
 	@Override
-	public Amount remainder(Amount divisor) {
+	public MonetaryAmount remainder(MonetaryAmount divisor) {
 		return new BigDecimalAmount(this.number.remainder(divisor
 				.asType(BigDecimal.class)), this.currency);
 	}
 
 	@Override
-	public Amount remainder(Number divisor) {
+	public MonetaryAmount remainder(Number divisor) {
 		return new BigDecimalAmount(this.number.remainder(BigDecimal
 				.valueOf(divisor.doubleValue())), this.currency);
 	}
 
 	@Override
-	public Amount scaleByPowerOfTen(int n) {
+	public MonetaryAmount scaleByPowerOfTen(int n) {
 		return new BigDecimalAmount(this.number.scaleByPowerOfTen(n),
 				this.currency);
 	}
 
 	@Override
-	public Amount with(CurrencyUnit currency) {
+	public MonetaryAmount with(CurrencyUnit currency) {
 		return new BigDecimalAmount(this.number, currency);
 	}
 
 	@Override
-	public Amount with(CurrencyUnit currency, AmountAdjuster... adjusters) {
+	public MonetaryAmount with(CurrencyUnit currency, AmountAdjuster... adjusters) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getMajorLong() {
-		return this.number.longValue();
+		return this.number.setScale(0, RoundingMode.DOWN).longValueExact();
 	}
 
 	@Override
 	public int getMajorInt() {
-		return this.number.intValue();
+		return this.number.setScale(0, RoundingMode.DOWN).intValueExact();
 	}
 
 	@Override
 	public long getMinorLong() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.number.movePointRight(this.number.precision()).longValueExact();
 	}
 
 	@Override
 	public int getMinorInt() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.number.movePointRight(this.number.precision()).intValueExact();
 	}
 
 	@Override
 	public boolean isZero() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.number.signum()==0;
 	}
 
 	@Override
@@ -291,13 +255,13 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public Amount with(Number amount) {
+	public MonetaryAmount with(Number amount) {
 		return new BigDecimalAmount(BigDecimal.valueOf(amount.doubleValue()),
 				currency);
 	}
 
 	@Override
-	public Amount with(AmountAdjuster... adjuster) {
+	public MonetaryAmount with(AmountAdjuster... adjuster) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -377,7 +341,7 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public boolean lessThan(Amount amount) {
+	public boolean lessThan(MonetaryAmount amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -389,7 +353,7 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public boolean lessThanOrEqualTo(Amount amount) {
+	public boolean lessThanOrEqualTo(MonetaryAmount amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -401,7 +365,7 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public boolean greaterThan(Amount amount) {
+	public boolean greaterThan(MonetaryAmount amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -413,7 +377,7 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public boolean greaterThanOrEqualTo(Amount amount) {
+	public boolean greaterThanOrEqualTo(MonetaryAmount amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -425,7 +389,7 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public boolean isEqualTo(Amount amount) {
+	public boolean isEqualTo(MonetaryAmount amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -437,7 +401,7 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public boolean isNotEqualTo(Amount amount) {
+	public boolean isNotEqualTo(MonetaryAmount amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -449,19 +413,19 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public Amount getMajorPart() {
+	public MonetaryAmount getMajorPart() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public Amount getMinorPart() {
+	public MonetaryAmount getMinorPart() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Amount getAdjusted() {
+	public MonetaryAmount getAdjusted() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -483,7 +447,7 @@ public class BigDecimalAmount implements Amount {
 
 	@Override
 	public <T> T asType(Class<T> type, AmountAdjuster... adjustment) {
-		Amount amount = this;
+		MonetaryAmount amount = this;
 		for (int i = 0; i < adjustment.length; i++) {
 			amount = adjustment[i].adjust(amount);
 		}
@@ -497,7 +461,7 @@ public class BigDecimalAmount implements Amount {
 	}
 
 	@Override
-	public Amount[] divideAndSeparate(Number divisor,
+	public MonetaryAmount[] divideAndSeparate(Number divisor,
 			boolean addDifferenceToLastValue) {
 		// TODO Auto-generated method stub
 		return null;

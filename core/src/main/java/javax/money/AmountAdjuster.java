@@ -51,6 +51,6 @@ public interface AmountAdjuster {
 	 * @throws ArithmeticException
 	 *             if adjustment fails.
 	 */
-	Amount adjust(Amount amount);
+	MonetaryAmount adjust(MonetaryAmount amount);
 
 }

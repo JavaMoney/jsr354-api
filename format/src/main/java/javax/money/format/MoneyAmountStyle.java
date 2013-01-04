@@ -36,7 +36,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import javax.money.Amount;
+import javax.money.MonetaryAmount;
 import javax.money.CurrencyUnit;
 import javax.money.AmountAdjuster;
 

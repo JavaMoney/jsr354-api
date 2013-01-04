@@ -33,7 +33,7 @@ package javax.money.convert;
 
 import java.util.Calendar;
 
-import javax.money.Amount;
+import javax.money.MonetaryAmount;
 import javax.money.CurrencyUnit;
 
 /**
@@ -127,7 +127,7 @@ public interface ExchangeSupport {
 	public ExchangeRate getExchangeRate(ExchangeRate... exchangeRates);
 
 	/**
-	 * Method that converts the source {@link Amount} to an {@link Amount} with
+	 * Method that converts the source {@link MonetaryAmount} to an {@link MonetaryAmount} with
 	 * the given target {@link CurrencyUnit}.<br/>
 	 * By default this method should use a real time conversion, but may also
 	 * fall back to deferred data.
@@ -140,10 +140,10 @@ public interface ExchangeSupport {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public Amount convert(Amount amount, CurrencyUnit target);
+	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target);
 
 	/**
-	 * Method that converts the source {@link Amount} to an {@link Amount} with
+	 * Method that converts the source {@link MonetaryAmount} to an {@link MonetaryAmount} with
 	 * the given target {@link CurrencyUnit}.
 	 * 
 	 * @param amount
@@ -157,10 +157,10 @@ public interface ExchangeSupport {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public Amount convert(Amount amount, CurrencyUnit target, boolean deferred);
+	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target, boolean deferred);
 
 	/**
-	 * Method that converts the source {@link Amount} to an {@link Amount} with
+	 * Method that converts the source {@link MonetaryAmount} to an {@link MonetaryAmount} with
 	 * the given target {@link CurrencyUnit}.
 	 * 
 	 * @param amount
@@ -173,11 +173,11 @@ public interface ExchangeSupport {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public Amount convert(Amount amount, CurrencyUnit target, Calendar timestamp);
+	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target, Calendar timestamp);
 
 	/**
 	 * Method that converts the source {@code double} amount in source
-	 * {@link CurrencyUnit} to an {@link Amount} with the given target
+	 * {@link CurrencyUnit} to an {@link MonetaryAmount} with the given target
 	 * {@link CurrencyUnit}.<br/>
 	 * By default this method should use a real time conversion, but may also
 	 * fall back to deferred data.
@@ -197,7 +197,7 @@ public interface ExchangeSupport {
 
 	/**
 	 * Method that converts the source {@code double} amount in source
-	 * {@link CurrencyUnit} to an {@link Amount} with the given target
+	 * {@link CurrencyUnit} to an {@link MonetaryAmount} with the given target
 	 * {@link CurrencyUnit}.
 	 * 
 	 * @param amount
@@ -218,7 +218,7 @@ public interface ExchangeSupport {
 
 	/**
 	 * Method that converts the source {@code double} amount in source
-	 * {@link CurrencyUnit} to an {@link Amount} with the given target
+	 * {@link CurrencyUnit} to an {@link MonetaryAmount} with the given target
 	 * {@link CurrencyUnit}.
 	 * 
 	 * @param amount

@@ -42,7 +42,7 @@ public interface AmountSupport {
 	 *            The required numeric value, not null.
 	 * @return The amount instance.
 	 */
-	public Amount get(CurrencyUnit currency, Number number);
+	public MonetaryAmount get(CurrencyUnit currency, Number number);
 
 	/**
 	 * Create an amount given the parameters.
@@ -53,7 +53,7 @@ public interface AmountSupport {
 	 *            The required numeric value.
 	 * @return The amount instance.
 	 */
-	public Amount get(CurrencyUnit currency, byte value);
+	public MonetaryAmount get(CurrencyUnit currency, byte value);
 
 	/**
 	 * Create an amount given the parameters.
@@ -64,7 +64,7 @@ public interface AmountSupport {
 	 *            The required numeric value.
 	 * @return The amount instance.
 	 */
-	public Amount get(CurrencyUnit currency, short value);
+	public MonetaryAmount get(CurrencyUnit currency, short value);
 
 	/**
 	 * Create an amount given the parameters.
@@ -75,7 +75,7 @@ public interface AmountSupport {
 	 *            The required numeric value.
 	 * @return The amount instance.
 	 */
-	public Amount get(CurrencyUnit currency, int value);
+	public MonetaryAmount get(CurrencyUnit currency, int value);
 
 	/**
 	 * Create an amount given the parameters.
@@ -86,7 +86,7 @@ public interface AmountSupport {
 	 *            The required numeric value.
 	 * @return The amount instance.
 	 */
-	public Amount get(CurrencyUnit currency, long value);
+	public MonetaryAmount get(CurrencyUnit currency, long value);
 
 	/**
 	 * Create an amount given the parameters.
@@ -99,7 +99,7 @@ public interface AmountSupport {
 	 *            The required minor decimal number part, not negative.
 	 * @return The amount instance.
 	 */
-	public Amount get(CurrencyUnit currency, long major, long minor);
+	public MonetaryAmount get(CurrencyUnit currency, long major, long minor);
 
 	/**
 	 * Create an amount given the parameters.
@@ -110,7 +110,7 @@ public interface AmountSupport {
 	 *            The required numeric value.
 	 * @return The amount instance.
 	 */
-	public Amount get(CurrencyUnit currency, float value);
+	public MonetaryAmount get(CurrencyUnit currency, float value);
 
 	/**
 	 * Create an amount given the parameters.
@@ -121,7 +121,7 @@ public interface AmountSupport {
 	 *            The required numeric value.
 	 * @return The amount instance.
 	 */
-	public Amount get(CurrencyUnit currency, double value);
+	public MonetaryAmount get(CurrencyUnit currency, double value);
 
 	/**
 	 * Obtains an instance of {@code Money} representing zero.
@@ -132,7 +132,7 @@ public interface AmountSupport {
 	 *            the currency, not null
 	 * @return the instance representing zero, never null
 	 */
-	public Amount zero(CurrencyUnit currency);
+	public MonetaryAmount zero(CurrencyUnit currency);
 
 	/**
 	 * Obtains an instance of {@code Money} as the total value an array.
@@ -150,7 +150,7 @@ public interface AmountSupport {
 	 * @throws CurrencyMismatchException
 	 *             if the currencies differ
 	 */
-	public Amount total(Amount... monies);
+	public MonetaryAmount total(MonetaryAmount... monies);
 
 	/**
 	 * Obtains an instance of {@code Money} as the total value a collection.
@@ -168,7 +168,7 @@ public interface AmountSupport {
 	 * @throws CurrencyMismatchException
 	 *             if the currencies differ
 	 */
-	public Amount total(Iterable<Amount> monies);
+	public MonetaryAmount total(Iterable<MonetaryAmount> monies);
 
 	/**
 	 * Obtains an instance of {@code Money} as the total value a possibly empty
@@ -185,7 +185,7 @@ public interface AmountSupport {
 	 * @throws CurrencyMismatchException
 	 *             if the currencies differ
 	 */
-	public Amount total(CurrencyUnit currency, Amount... monies);
+	public MonetaryAmount total(CurrencyUnit currency, MonetaryAmount... monies);
 
 	/**
 	 * Obtains an instance of {@code Money} as the total value a possibly empty
@@ -202,7 +202,7 @@ public interface AmountSupport {
 	 * @throws CurrencyMismatchException
 	 *             if the currencies differ
 	 */
-	public Amount total(CurrencyUnit currency, Iterable<Amount> monies);
+	public MonetaryAmount total(CurrencyUnit currency, Iterable<MonetaryAmount> monies);
 
 	/**
 	 * Ensures that an {@code Amount} is not {@code null}.
@@ -219,7 +219,7 @@ public interface AmountSupport {
 	 * @throws CurrencyMismatchException
 	 *             if the input money is non-null and the currencies differ
 	 */
-	public Amount nonNull(Amount amount, CurrencyUnit currency);
+	public MonetaryAmount nonNull(MonetaryAmount amount, CurrencyUnit currency);
 	
 	// TODO Should we manage general AmountAdjusters for access and caching ?
 }

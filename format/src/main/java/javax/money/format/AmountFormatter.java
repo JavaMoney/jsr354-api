@@ -34,17 +34,17 @@ package javax.money.format;
 import java.io.IOException;
 import java.util.Locale;
 
-import javax.money.Amount;
+import javax.money.MonetaryAmount;
 
 /**
- * Formats instances of {@link Amount}, by default the full amount is printed,
+ * Formats instances of {@link MonetaryAmount}, by default the full amount is printed,
  * whereas some method allows also to print the number part without currency.
  * <p>
  * Instances of {@code AmountFormatter} can be created by
  * {@code AmountFormatterBuilder} or by accessing instances from the the
  * {@link MoneyFormat} singleton.
  */
-public interface AmountFormatter extends Formatter<Amount> {
+public interface AmountFormatter extends Formatter<MonetaryAmount> {
 
 	/**
 	 * Formats a amount's numeric value to a {@code String}, the currency is
@@ -65,7 +65,7 @@ public interface AmountFormatter extends Formatter<Amount> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String printNumber(Amount amount, LocalizationStyle style);
+	public String printNumber(MonetaryAmount amount, LocalizationStyle style);
 
 	/**
 	 * Formats a amount's numeric value to a {@code String}, the currency is
@@ -83,7 +83,7 @@ public interface AmountFormatter extends Formatter<Amount> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String printNumber(Amount item, Locale locale);
+	public String printNumber(MonetaryAmount item, Locale locale);
 
 	/**
 	 * Formats a amount's numeric value to a {@code Appendable}, the currency is
@@ -103,7 +103,7 @@ public interface AmountFormatter extends Formatter<Amount> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public void printNumber(Appendable appendable, Amount amount, Locale locale)
+	public void printNumber(Appendable appendable, MonetaryAmount amount, Locale locale)
 			throws IOException;
 
 	/**
@@ -127,7 +127,7 @@ public interface AmountFormatter extends Formatter<Amount> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public void printNumber(Appendable appendable, Amount item,
+	public void printNumber(Appendable appendable, MonetaryAmount item,
 			LocalizationStyle style) throws IOException;
 
 }

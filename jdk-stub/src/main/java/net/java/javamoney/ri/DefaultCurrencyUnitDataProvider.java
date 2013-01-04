@@ -1,5 +1,6 @@
-package javamoney.util.money;
+package net.java.javamoney.ri;
 
+<<<<<<< HEAD:jdk-stub/src/main/java/javamoney/util/money/DefaultCurrencyUnitDataProvider.java
 import javax.money.spi.*;
 
 /*
@@ -26,6 +27,8 @@ import javax.money.spi.*;
  *
  *
  */
+=======
+>>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa:jdk-stub/src/main/java/net/java/javamoney/ri/DefaultCurrencyUnitDataProvider.java
 
 /**
  * Provider for available currencies using a file.

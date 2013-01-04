@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * Copyright (c) 2012, Credit Suisse (Anatole Tresch), Werner Keil
-=======
  * Copyright (c) 2012-2013, Credit Suisse
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *
  * All rights reserved.
  *
@@ -17,11 +13,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
-<<<<<<< HEAD
- *  * Neither the name of JSR-310 nor the names of its contributors
-=======
  *  * Neither the name of JSR-354 nor the names of its contributors
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *
@@ -37,30 +29,17 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.convert;
 
 /**
- * Exception thrown when the requested currency is unknown to the currency system in use.
- * <p>
- * For example, this exception would be thrown when trying to obtain a
- * currency using an unrecognized currency code or locale.
- * <p>
- * This exception makes no guarantees about immutability or thread-safety.
- *
- * @author Werner Keil
+ * Enumeration to identify if a given exchange rate is a direct rate, or a
+ * derived rate, using several exchanges steps.
+ * 
+ * @author Anatole Tresch
  */
-public class UnknownCurrencyException extends IllegalArgumentException {
-
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Constructor.
-     * 
-     * @param message  the message, may be null
-     */
-    public UnknownCurrencyException(String message) {
-    	// TODO Not Implemented yet
-    }
-
+public enum ExchangeRateType {
+	/** This value represent a direct exchange rate. */
+	DIRECT,
+	/** This value represents a indorect/derived exchange rate. */
+	DERIVED
 }

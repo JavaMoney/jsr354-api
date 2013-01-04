@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * Copyright (c) 2012, Credit Suisse (Anatole Tresch), Werner Keil
-=======
  * Copyright (c) 2012-2013, Credit Suisse
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *
  * All rights reserved.
  *
@@ -17,11 +13,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
-<<<<<<< HEAD
- *  * Neither the name of JSR-310 nor the names of its contributors
-=======
  *  * Neither the name of JSR-354 nor the names of its contributors
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *
@@ -40,27 +32,32 @@
 package javax.money;
 
 /**
- * Exception thrown when the requested currency is unknown to the currency system in use.
- * <p>
- * For example, this exception would be thrown when trying to obtain a
- * currency using an unrecognized currency code or locale.
- * <p>
- * This exception makes no guarantees about immutability or thread-safety.
- *
- * @author Werner Keil
+ * Defines the different region types available. This allows to segregate
+ * different grouping strategy types.
+ * 
+ * @author Anatole Tresch
  */
-public class UnknownCurrencyException extends IllegalArgumentException {
+public enum RegionType {
+	/** Type representing a continent. */
+	CONTINENT,
 
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
+	/** Type representing a sub-continent. */
+	SUBCONTINENT,
 
-    /**
-     * Constructor.
-     * 
-     * @param message  the message, may be null
-     */
-    public UnknownCurrencyException(String message) {
-    	// TODO Not Implemented yet
-    }
+	/**
+	 * Type representing a grouping of territories that is not mappable to a
+	 * normal WORLD/CONTINENT/SUBCONTINENT/TERRITORY structure, or an arbitrary
+	 * user defined grouping.
+	 */
+	GROUPING,
+
+	/** Type representing a territory. */
+	TERRITORY,
+
+	/** Type representing the unknown region. */
+	UNKNOWN,
+
+	/** Type representing the whole world. */
+	WORLD
 
 }

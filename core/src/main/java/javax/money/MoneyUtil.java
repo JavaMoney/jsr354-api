@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012,  Credit Suisse (Anatole Tresch), Werner Keil
+ * Copyright (c) 2012-2013, Credit Suisse
  *
  * All rights reserved.
  *
@@ -13,7 +13,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- *  * Neither the name of JSR-310 nor the names of its contributors
+ *  * Neither the name of JSR-354 nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *
@@ -29,45 +29,63 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format;
-
-import java.io.IOException;
-import java.io.Serializable;
-
-import javax.money.Monetary;
-
+package javax.money;
 
 /**
- * Prints and parses a literal.
- * <p>
- * This class is immutable and thread-safe.
+ * Access point for money related core functionality.
+ * 
+ * @author Anatole Tresch
  */
-final class LiteralPrinterParser<T> implements MoneyPrinter<T>, MoneyParser, Serializable {
+public final class MoneyUtil {
 
-    /** Serialization version. */
-    private static final long serialVersionUID = 1L;
+	/**
+	 * Singleton accessor.
+	 */
+	private MoneyUtil() {
+	}
 
-    /**
-     * Constructor.
-     * @param literal  the literal text, not null
-     */
-    LiteralPrinterParser(String literal) {
-    	// TODO Not Implemented yet
-    }
+	/**
+	 * Access the {@link CurrencySupport} instance.
+	 * 
+	 * @return the {@link CurrencySupport}, never null.
+	 * @throws IllegalStateException
+	 *             , if no instance could be determined.
+	 */
+	public static CurrencySupport getCurrencySupport() {
+		return null;
+	}
 
-    //-----------------------------------------------------------------------
-    public void print(MoneyPrintContext context, Appendable appendable, Monetary<T> money) throws IOException {
-    	// TODO Not Implemented yet
-    }
+	/**
+	 * Access the {@link AmountSupport} instance.
+	 * 
+	 * @return the {@link AmountSupport}, never null.
+	 * @throws IllegalStateException
+	 *             , if no instance could be determined.
+	 */
+	public static AmountSupport getAmountSupport() {
+		return null;
+	}
 
-    public void parse(MoneyParseContext context) {
-    	// TODO Not Implemented yet
-    }
+	/**
+	 * Access the {@link RoundingSupport} instance.
+	 * 
+	 * @return the {@link RoundingSupport}, never null.
+	 * @throws IllegalStateException
+	 *             , if no instance could be determined.
+	 */
+	public static RoundingSupport getRoundingSupport() {
+		return null;
+	}
 
-    @Override
-    public String toString() {
-    	// TODO Not Implemented yet
-    	return null;
-    }
+	/**
+	 * Access the {@link RegionSupport} instance.
+	 * 
+	 * @return the {@link RegionSupport}, never null.
+	 * @throws IllegalStateException
+	 *             , if no instance could be determined.
+	 */
+	public static RegionSupport getRegionSupport() {
+		return null;
+	}
 
 }

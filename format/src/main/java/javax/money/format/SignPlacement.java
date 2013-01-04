@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * Copyright (c) 2012, Credit Suisse (Anatole Tresch), Werner Keil
-=======
  * Copyright (c) 2012-2013, Credit Suisse
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *
  * All rights reserved.
  *
@@ -17,11 +13,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
-<<<<<<< HEAD
- *  * Neither the name of JSR-310 nor the names of its contributors
-=======
  *  * Neither the name of JSR-354 nor the names of its contributors
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *
@@ -37,30 +29,22 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.format;
 
 /**
- * Exception thrown when the requested currency is unknown to the currency system in use.
- * <p>
- * For example, this exception would be thrown when trying to obtain a
- * currency using an unrecognized currency code or locale.
- * <p>
- * This exception makes no guarantees about immutability or thread-safety.
- *
- * @author Werner Keil
+ * This enumeration defines the possible placement variants of numeric signs as
+ * used with the {@link AmountFormatterBuilder}.
+ * 
+ * @author Anatole Tresch
+ * 
  */
-public class UnknownCurrencyException extends IllegalArgumentException {
-
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Constructor.
-     * 
-     * @param message  the message, may be null
-     */
-    public UnknownCurrencyException(String message) {
-    	// TODO Not Implemented yet
-    }
-
+public enum SignPlacement {
+	/** The sign is placed before the numeric part, e.g. 'CHF -12.35'. */
+	BEFORE,
+	/** The sign is placed after the numeric part, e.g. 'USD 123,45-'. */
+	AFTER,
+	/** The sign is placed around the numeric part, e.g. '(123.45)'. */
+	AROUND,
+	/** The sign is completely omited from the formatted representation. */
+	OMIT
 }

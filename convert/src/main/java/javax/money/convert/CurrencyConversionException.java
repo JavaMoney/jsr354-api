@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * Copyright (c) 2012, Credit Suisse (Anatole Tresch), Werner Keil
-=======
  * Copyright (c) 2012-2013, Credit Suisse
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *
  * All rights reserved.
  *
@@ -17,11 +13,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
-<<<<<<< HEAD
- *  * Neither the name of JSR-310 nor the names of its contributors
-=======
  *  * Neither the name of JSR-354 nor the names of its contributors
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *
@@ -37,30 +29,68 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.convert;
+
+import javax.money.CurrencyUnit;
 
 /**
- * Exception thrown when the requested currency is unknown to the currency system in use.
+ * Exception thrown when a monetary operation fails due to mismatched
+ * currencies.
  * <p>
- * For example, this exception would be thrown when trying to obtain a
- * currency using an unrecognized currency code or locale.
+ * For example, this exception would be thrown when trying to add a monetary
+ * value in one currency to a monetary value in a different currency.
  * <p>
  * This exception makes no guarantees about immutability or thread-safety.
- *
- * @author Werner Keil
+ * 
+ * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
+ * @author Stephen Colebourne
  */
-public class UnknownCurrencyException extends IllegalArgumentException {
+public class CurrencyConversionException extends IllegalArgumentException {
 
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
+	/** Serialization lock. */
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructor.
-     * 
-     * @param message  the message, may be null
-     */
-    public UnknownCurrencyException(String message) {
-    	// TODO Not Implemented yet
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param firstCurrency
+	 *            the first currency, may be null
+	 */
+	public CurrencyConversionException(CurrencyUnit source,
+			CurrencyUnit target, String message) {
+		super(message);
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param firstCurrency
+	 *            the first currency, may be null
+	 */
+	public CurrencyConversionException(CurrencyUnit source,
+			CurrencyUnit target, String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	// -----------------------------------------------------------------------
+	/**
+	 * Gets the first currency at fault.
+	 * 
+	 * @return the currency at fault, may be null
+	 */
+	public CurrencyUnit getSource() {
+		// TODO Not Implemented yet
+		return null;
+	}
+
+	/**
+	 * Gets the second currency at fault.
+	 * 
+	 * @return the currency at fault, may be null
+	 */
+	public CurrencyUnit getTarget() {
+		// TODO Not Implemented yet
+		return null;
+	}
 
 }

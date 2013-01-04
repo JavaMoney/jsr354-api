@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Credit Suisse (Anatole Tresch), Werner Keil
+ * Copyright (c) 2012-2013, Credit Suisse
  *
  * All rights reserved.
  *
@@ -13,7 +13,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- *  * Neither the name of JSR-310 nor the names of its contributors
+ *  * Neither the name of JSR-354 nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *
@@ -32,15 +32,15 @@
 package javax.money.format;
 
 /**
- * Formats instances of number to and from a String.
- * <p>
- * Instances of {@code NumberPrinterParser} can be created by
- * {@code NumberPrinterParserFactory}.
- * <p>
- * This class is immutable and thread-safe.
+ * Enumeration for the different placement of a currency when formatting an amount.
  * 
  * @author Anatole Tresch
  */
-public interface NumberPrinterParser<T extends Number> extends PrinterParser<T> {
-
+public enum CurrencyPlacement {
+	/** Place the currency before the number. */
+	BEFORE,
+	/** Place the currency after the number. */
+	AFTER,
+	/** Omit the currency completely. */
+	OMIT
 }

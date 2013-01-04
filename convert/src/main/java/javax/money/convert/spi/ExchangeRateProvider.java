@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * Copyright (c) 2012, Credit Suisse (Anatole Tresch), Werner Keil
-=======
  * Copyright (c) 2012-2013, Credit Suisse
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *
  * All rights reserved.
  *
@@ -17,11 +13,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
-<<<<<<< HEAD
- *  * Neither the name of JSR-310 nor the names of its contributors
-=======
  *  * Neither the name of JSR-354 nor the names of its contributors
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *
@@ -37,30 +29,54 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.convert.spi;
+
+import javax.money.CurrencyUnit;
+import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 
 /**
- * Exception thrown when the requested currency is unknown to the currency system in use.
- * <p>
- * For example, this exception would be thrown when trying to obtain a
- * currency using an unrecognized currency code or locale.
- * <p>
- * This exception makes no guarantees about immutability or thread-safety.
- *
- * @author Werner Keil
+ * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
+ * @author Anatole Tresch
+ * @version 0.1.1
  */
-public class UnknownCurrencyException extends IllegalArgumentException {
+public interface ExchangeRateProvider {
 
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
+	/**
+	 * Get an exchange rate for the given parameters.
+	 * 
+	 * @param source
+	 *            the source currency.
+	 * @param target
+	 *            the target currency.
+	 * @param type
+	 *            Allows to determine the kind of rate to returned. {@code null}
+	 *            means any type.
+	 * @param deferred
+	 *            If the quote should be deferred.
+	 * @return the according exchange rate, or null.
+	 */
+	public ExchangeRate getExchangeRate(CurrencyUnit source,
+			CurrencyUnit target, ExchangeRateType type, boolean deferred);
 
-    /**
-     * Constructor.
-     * 
-     * @param message  the message, may be null
-     */
-    public UnknownCurrencyException(String message) {
-    	// TODO Not Implemented yet
-    }
+	/**
+	 * Get an exchange rate for the given parameters.
+	 * 
+	 * @param source
+	 *            the source currency.
+	 * @param target
+	 *            the target currency.
+	 * @param type
+	 *            Allows to determine the kind of rate to returned. {@code null}
+	 *            means any type.
+	 * @param timestamp
+	 *            the required target UTC timestamp for the rate, or -1 for the
+	 *            latest available.
+	 * @param validityDuration
+	 *            how long the quote should be considered valid.
+	 * @return the according exchange rate, or null.
+	 */
+	public ExchangeRate getExchangeRate(CurrencyUnit source,
+			CurrencyUnit target, ExchangeRateType type, long timestamp);
 
 }

@@ -1,86 +1,120 @@
-/**
- * Copyright (c) 2005, 2012, Werner Keil.
- * All rights reserved. 
- * Contributors:
- *    Werner Keil - initial API and implementation
+/*
+ * Copyright (c) 2012-2013, Credit Suisse
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *  * Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ *  * Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  * Neither the name of JSR-354 nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package javax.money.convert;
 
 import javax.money.CurrencyUnit;
-import java.util.Date;
 
 /**
+ * This interface models a exchange rate between two currencies.
+ * 
  * @author Werner Keil
+ * @author Anatole Tresch
  * @version 0.2.2
  */
-public class ExchangeRate<T> {
+public interface ExchangeRate {
 
 	/**
-	 * Holds the source CurrencyUnit.
+	 * Get the source currency.
+	 * 
+	 * @return the source currency.
 	 */
-	private final CurrencyUnit source;
+	public CurrencyUnit getSourceCurrency();
 
 	/**
-	 * Holds the target CurrencyUnit.
+	 * Get the target currency.
+	 * 
+	 * @return the target currency.
 	 */
-	private final CurrencyUnit target;
+	public CurrencyUnit getTargetCurrency();
 
 	/**
-	 * Holds the exchange factor.
+	 * Get the exchange factor converted to the given target type. This allows
+	 * to use different exchange rate implementations.
+	 * 
+	 * @param targetClass
+	 *            The target type required.
+	 * @return the exchange factor, as instance of T.
 	 */
-	private final T factor;
+	public <T> T getFactorAsType(Class<T> targetClass);
 
 	/**
-	 * Holds the effective (start) date.
+	 * Access the rate's factor.
+	 * 
+	 * @return the factor for this exchange rate.
 	 */
-	private final Date date;
+	public Number getFactor();
 
-	//private final Date interval;
+	/**
+	 * Returns the UTC timestamp of the rate.
+	 * 
+	 * @return The UTC timestamp of the rate.
+	 */
+	public long getTimestamp();
 	
-	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor,
-			Date fromDate, Date toDate) {
-		super();
-		this.source = source;
-		this.target = target;
-		this.factor = factor;
-		this.date = fromDate;
-		//this.interval = new DateInterval(fromDate.getTime(), toDate.getTime());
-	}
-	
-	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor,
-			Date date) {
-		this(source, target, factor, date, date);
-	}
+	/**
+	 * Get the location of this quote. TODO model this as an object?
+	 * 
+	 * @return the stock exchange name, or location.
+	 */
+	public String getLocation();
 
-	public ExchangeRate(CurrencyUnit source, CurrencyUnit target, T factor) {
-		this(source, target, factor, new Date());
-	}
+	/**
+	 * Flag that signals that this rate is a deferred rate.
+	 * 
+	 * @return true, if the rate is not real time (deferred).
+	 */
+	public boolean isDeferred();
 
-	public CurrencyUnit getSource() {
-		return source;
-	}
+	/**
+	 * Get the name of the data provider, that provided this rate.
+	 * 
+	 * @return the name of the data provider.
+	 */
+	public String getDataProvider();
 
-	public CurrencyUnit getSourceUnit() {
-		return source;
-	}
+	/**
+	 * Access the chain of exchange rates.
+	 * 
+	 * @return the chain of rates, in case of a derived rate, this may be
+	 *         several instances. For a direct exchange rate, this equals to
+	 *         <code>new ExchangeRate[]{this}</code>.
+	 */
+	public ExchangeRate[] getExchangeRateChain();
 
-	public CurrencyUnit getTarget() {
-		return target;
-	}
+	/**
+	 * Access the type of exchange rate.
+	 * 
+	 * @return the type of this rate.
+	 */
+	public ExchangeRateType getExchangeRateType();
 
-	public CurrencyUnit getTargetUnit() {
-		return target;
-	}
-
-	public T getFactor() {
-		return factor;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-//	public DateInterval getInterval() {
-//		return interval;
-//	}
 }

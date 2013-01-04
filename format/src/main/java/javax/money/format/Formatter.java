@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Credit Suisse (Anatole Tresch), Werner Keil
+ * Copyright (c) 2012-2013, Credit Suisse
  *
  * All rights reserved.
  *
@@ -13,7 +13,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- *  * Neither the name of JSR-310 nor the names of its contributors
+ *  * Neither the name of JSR-354 nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *
@@ -35,22 +35,21 @@ import java.io.IOException;
 import java.util.Locale;
 
 /**
- * Formats instances of number to and from a String.
- * <p>
- * Instances of {@code NumberPrinterParser} can be created by
- * {@code NumberPrinterParserFactory}.
- * <p>
- * This class is immutable and thread-safe.
- * 
- * @author Anatole Tresch
+ * Formats instances of T to a {@link String} or an {@link Appendable}.
+ * TODO check if this class can be moved to {@code java.util}.
  */
-public interface PrinterParser<T> {
+public interface Formatter<T> {
 
 	/**
-	 * Formats a monetary value to a {@code String}.
+	 * Formats a value of T to a {@code String}. This method uses a
+	 * {@link LocalizationStyle} as an input parameter. Styles allows to define
+	 * detailed and customized formatting input parameters. This allows to
+	 * implement also complex formatting requirements using this interface.
 	 * 
-	 * @param money
-	 *            the money to print, not null
+	 * @param item
+	 *            the item to print, not null
+	 * @param style
+	 *            the style to be used for formatting.
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
@@ -58,24 +57,26 @@ public interface PrinterParser<T> {
 	 *             if there is a problem while printing
 	 */
 	public String print(T item, LocalizationStyle style);
-	
+
 	/**
-	 * Formats a monetary value to a {@code String}.
+	 * Formats a value of T to a {@code String}.
 	 * 
-	 * @param money
-	 *            the money to print, not null
+	 * @param item
+	 *            the item to print, not null
+	 * @param locale
+	 *            the target locale to be used for formatting. The locale can be
+	 *            converted into an according {@link LocalizationStyle} by using
+	 *            the static factory method {@link LocalizationStyle#of(Locale)}
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String print(T item, Locale style);
-	
-	
+	public String print(T item, Locale locale);
+
 	/**
-	 * Prints a monetary value to an {@code Appendable} converting any
-	 * {@code IOException} to a {@code MoneyFormatException}.
+	 * Prints a item value to an {@code Appendable}.
 	 * <p>
 	 * Example implementations of {@code Appendable} are {@code StringBuilder},
 	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
@@ -83,8 +84,38 @@ public interface PrinterParser<T> {
 	 * 
 	 * @param appendable
 	 *            the appendable to add to, not null
-	 * @param moneyProvider
-	 *            the money to print, not null
+	 * @param item
+	 *            the item to print, not null
+	 * @param locale
+	 *            The target locale used for formatting. The locale can be
+	 *            converted into an according {@link LocalizationStyle} by using
+	 *            the static factory method {@link LocalizationStyle#of(Locale)}
+	 * @throws UnsupportedOperationException
+	 *             if the formatter is unable to print
+	 * @throws FormatException
+	 *             if there is a problem while printing
+	 * @throws IOException
+	 *             if an IO error occurs
+	 */
+	public void print(Appendable appendable, T item, Locale locale)
+			throws IOException;
+
+	/**
+	 * Prints a value to an {@code Appendable}. This method uses a
+	 * {@link LocalizationStyle} as an input parameter. Styles allows to define
+	 * detailed and customized formatting input parameters. This allows to
+	 * implement also complex formatting requirements using this interface.
+	 * <p>
+	 * Example implementations of {@code Appendable} are {@code StringBuilder},
+	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
+	 * and {@code StringBuffer} never throw an {@code IOException}.
+	 * 
+	 * @param appendable
+	 *            the appendable to add to, not null
+	 * @param item
+	 *            the item to print, not null
+	 * @param style
+	 *            the style to be used for formatting.
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
@@ -95,48 +126,4 @@ public interface PrinterParser<T> {
 	public void print(Appendable appendable, T item, LocalizationStyle style)
 			throws IOException;
 
-	/**
-	 * Fully parses the text into a {@code Money} requiring that the parsed
-	 * amount has the correct number of decimal places.
-	 * <p>
-	 * The parse must complete normally and parse the entire text (currency and
-	 * amount). If the parse completes without reading the entire length of the
-	 * text, an exception is thrown. If any other problem occurs during parsing,
-	 * an exception is thrown.
-	 * 
-	 * @param text
-	 *            the text to parse, not null
-	 * @return the parsed monetary value, never null
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to parse
-	 * @throws FormatException
-	 *             if there is a problem while parsing
-	 * @throws ArithmeticException
-	 *             if the scale of the parsed money exceeds the scale of the
-	 *             currency
-	 */
-	public T parse(CharSequence text, LocalizationStyle locale)throws ParseException;
-	
-	/**
-	 * Fully parses the text into a {@code Money} requiring that the parsed
-	 * amount has the correct number of decimal places.
-	 * <p>
-	 * The parse must complete normally and parse the entire text (currency and
-	 * amount). If the parse completes without reading the entire length of the
-	 * text, an exception is thrown. If any other problem occurs during parsing,
-	 * an exception is thrown.
-	 * 
-	 * @param text
-	 *            the text to parse, not null
-	 * @return the parsed monetary value, never null
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to parse
-	 * @throws FormatException
-	 *             if there is a problem while parsing
-	 * @throws ArithmeticException
-	 *             if the scale of the parsed money exceeds the scale of the
-	 *             currency
-	 */
-	public T parse(CharSequence text, Locale locale)throws ParseException;
-	
 }

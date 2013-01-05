@@ -36,7 +36,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import javax.money.MonetaryAmount;
 import javax.money.CurrencyUnit;
 import javax.money.AmountAdjuster;
 
@@ -67,7 +66,7 @@ import javax.money.AmountAdjuster;
  * This class is immutable and thread-safe.
  * 
  * @author Stephen Colebourne
- * @author ANatole Tresch
+ * @author Anatole Tresch
  */
 public final class MoneyAmountStyle implements Serializable {
 
@@ -126,6 +125,7 @@ public final class MoneyAmountStyle implements Serializable {
 	/** Defines the rounding used to display the amount. */
 	private AmountAdjuster rounding;
 	/** Defines the character to be shown, when the value is zero. */
+	@SuppressWarnings("unused")
 	private Character zeroCharacter = null;
 	/** defines the decimal point character to be used. */
 	private Character decimalPointCharacter;

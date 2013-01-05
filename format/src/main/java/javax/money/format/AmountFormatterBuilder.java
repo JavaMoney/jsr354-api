@@ -41,6 +41,8 @@ import javax.money.MonetaryAmount;
  * This class is mutable and intended for use by a single thread. A new instance
  * should be created for each use. The formatters produced by the builder are
  * immutable and thread-safe.
+ * 
+ * TODO see Formatter, maybe rename to *Printer* like suggested by Joda sandbox
  */
 public interface AmountFormatterBuilder {
 

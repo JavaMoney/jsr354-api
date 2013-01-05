@@ -107,6 +107,7 @@ public class ExchangeRateImpl implements ExchangeRate {
 		this.source = source;
 		this.target = target;
 		this.factor = factor;
+		this.timestamp = quoteTS;
 		this.rateChain = new ExchangeRate[] { this };
 	}
 
@@ -254,8 +255,7 @@ public class ExchangeRateImpl implements ExchangeRate {
 	}
 
 	public long getTimestamp() {
-		// TODO Auto-generated method stub
-		return 0;
+		return timestamp;
 	}
 
 	public String getLocation() {

@@ -45,6 +45,6 @@ public enum SignPlacement {
 	AFTER,
 	/** The sign is placed around the numeric part, e.g. '(123.45)'. */
 	AROUND,
-	/** The sign is completely omited from the formatted representation. */
+	/** The sign is completely omitted from the formatted representation. */
 	OMIT
 }

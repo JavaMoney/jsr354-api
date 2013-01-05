@@ -37,6 +37,8 @@ import java.util.Locale;
 /**
  * Formats instances of T to a {@link String} or an {@link Appendable}.
  * TODO check if this class can be moved to {@code java.util}.
+ * FIXME rename to something else, java.util.Formatter class exists already,
+ *       plus <b>print</b> method suggests a name with Print or Printer.
  */
 public interface Formatter<T> {
 

@@ -1,4 +1,4 @@
-package javamoney.util.money;
+package net.java.javamoney.ri.convert;
 
 //
 //public class BigCurrencyConverterTest {

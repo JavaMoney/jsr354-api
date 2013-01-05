@@ -59,6 +59,8 @@ import javax.money.format.MoneyFormat;
  * {@link AmountFormatter}.
  * 
  * @author Anatole Tresch
+ * 
+ * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
  */
 public interface AmountFormatterFactory {
 

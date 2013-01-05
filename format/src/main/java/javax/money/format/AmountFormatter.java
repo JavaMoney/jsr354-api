@@ -43,6 +43,8 @@ import javax.money.MonetaryAmount;
  * Instances of {@code AmountFormatter} can be created by
  * {@code AmountFormatterBuilder} or by accessing instances from the the
  * {@link MoneyFormat} singleton.
+ * 
+ * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
  */
 public interface AmountFormatter extends Formatter<MonetaryAmount> {
 

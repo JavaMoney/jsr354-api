@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch).
+ *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,14 +14,15 @@
  *  limitations under the License.
  *
  * Contributors:
- *    Anatole Tresch - initial implementation
+ *    Anatole Tresch - initial implementation.
+ *    Werner Keil - extension and adjustment.
  */
 package net.java.javamoney.ri;
 
 
 import java.io.Serializable;
 
-import javamoney.util.Currency;
+import java.util.Currency;
 
 import javax.money.CurrencyUnit;
 
@@ -57,6 +58,7 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 		this.currency = currency;
 	}
 
+	// TODO could we harmonize this like in Currency by calling getInstance()?
 	public static CurrencyUnit valueOf(Currency currency) {
 		// TODO implement caching!
 		return new JDKCurrencyAdapter(currency);

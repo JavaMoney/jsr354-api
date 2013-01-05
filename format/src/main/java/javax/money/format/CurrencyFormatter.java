@@ -38,6 +38,7 @@ import javax.money.CurrencyUnit;
 
 /**
  * Formats instances of {@link CurrencyUnit} to and from a String.
+ * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
  */
 public interface CurrencyFormatter extends Formatter<CurrencyUnit> {
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch).
+ *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  *
  * Contributors:
  *    Anatole Tresch - initial implementation
+ *    Wernner Keil - extensions and adaptions.
  */
 package net.java.javamoney.ri;
 
@@ -84,6 +85,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 		return this;
 	}
 
+	// Arithmetic Operations
 	@Override
 	public MonetaryAmount add(MonetaryAmount amount) {
 		if (amount == null) {
@@ -106,6 +108,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 
 	@Override
 	public MonetaryAmount divide(MonetaryAmount divisor) {
+		// TODO is division OK with different currencies?
 		BigDecimal dec = this.number.divide(divisor.asType(BigDecimal.class));
 		return new BigDecimalAmount(dec, this.currency);
 	}
@@ -331,8 +334,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 
 	@Override
 	public short shortValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.number.shortValue();
 	}
 
 	@Override
@@ -348,8 +350,8 @@ public class BigDecimalAmount implements MonetaryAmount {
 
 	@Override
 	public String toEngineeringString() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO consider currency or not?
+		return this.number.toEngineeringString();
 	}
 
 	@Override
@@ -485,4 +487,16 @@ public class BigDecimalAmount implements MonetaryAmount {
 		return null;
 	}
 
+	// Static Factory Methods
+	 /**
+     * Translates a {@code BigDecimal} value and a
+     * {@code CurrencyUnit} currency into a {@code BigDecimalAmount}.
+     *
+     * @param number numeric value of the {@code BigDecimalAmount}.
+     * @param currency currency unit of the {@code BigDecimalAmount}.
+     * @return a {@code BigDecimalAmount} combining the numeric value and currency unit.
+     */
+	public static BigDecimalAmount valueOf(BigDecimal number, CurrencyUnit currency) {
+		return new BigDecimalAmount(number, currency);
+	}
 }

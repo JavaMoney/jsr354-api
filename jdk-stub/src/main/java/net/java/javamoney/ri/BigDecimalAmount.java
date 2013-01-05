@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2012, 2013, Creddit Suisse (Anatole Tresch).
+ *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch).
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.

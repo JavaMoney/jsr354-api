@@ -42,6 +42,7 @@ package javax.money;
  *
  * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
  * @author Stephen Colebourne
+ * @deprecated TODO should be dropped in favor of CurrencyConversionException in convert or moved there
  */
 public class CurrencyMismatchException extends IllegalArgumentException {
 

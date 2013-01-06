@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD
- * Copyright (c) 2012, Credit Suisse (Anatole Tresch), Werner Keil
-=======
  * Copyright (c) 2012-2013, Credit Suisse
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *
  * All rights reserved.
  *
@@ -17,11 +13,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
-<<<<<<< HEAD
- *  * Neither the name of JSR-310 nor the names of its contributors
-=======
  *  * Neither the name of JSR-354 nor the names of its contributors
->>>>>>> a63812e1178535e10625662ed6299a6669e1d3fa
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *

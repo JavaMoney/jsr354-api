@@ -35,7 +35,7 @@ import java.util.Locale;
 
 /**
  * This instance defines a rounding mode that can be applied to amounts. Since
- * rounding is a typical use case for amount adjustement the corresponding
+ * rounding is a typical use case for amount adjustment the corresponding
  * {@link AmountAdjuster} interface is extended.
  * 
  * @author Anatole Tresch

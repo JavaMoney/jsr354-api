@@ -37,8 +37,10 @@ import javax.money.MonetaryAmount;
 import javax.money.CurrencyUnit;
 
 /**
- * This class provides singleton access to the exchange conversion logic of
+ * This class provides singleton access to the (exchange) conversion logic of
  * JavaMoney.
+ * 
+ * TODO consider renaming this to ConversionSupport, the main action here is convert()
  * 
  * @author Anatole Tresch
  */

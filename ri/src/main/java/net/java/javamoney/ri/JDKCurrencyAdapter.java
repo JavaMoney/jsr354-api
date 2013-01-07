@@ -64,7 +64,7 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 		return new JDKCurrencyAdapter(currency);
 	}
 
-	@Override
+
 	public boolean isVirtual() {
 		return false;
 	}
@@ -72,22 +72,22 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 	/**
 	 * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
 	 */
-	@Override
+
 	public String getNamespace() {
 		return "ISO-4217";
 	}
 
-	@Override
+
 	public long getValidFrom() {
 		return -1;
 	}
 
-	@Override
+
 	public long getValidUntil() {
 		return -1;
 	}
 
-	@Override
+
 	public int compareTo(CurrencyUnit currency) {
 		// TODO Auto-generated method stub
 		int compare = getNamespace().compareTo(currency.getNamespace());
@@ -98,17 +98,17 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 		return compare;
 	}
 
-	@Override
+
 	public String getCurrencyCode() {
 		return this.currency.getCurrencyCode();
 	}
 
-	@Override
+
 	public int getNumericCode() {
 		return this.currency.getNumericCode();
 	}
 
-	@Override
+
 	public int getDefaultFractionDigits() {
 		return this.currency.getDefaultFractionDigits();
 	}

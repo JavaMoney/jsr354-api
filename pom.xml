@@ -12,6 +12,7 @@
 		<module>format</module>
 		<module>convert</module>
 		<!--  module>jdk-stub</module -->
+		<module>ri</module>
 	</modules>
 	
 	  <licenses>

@@ -17,9 +17,14 @@
  *    Anatole Tresch - initial implementation
  *    Wernner Keil - extensions and adaptions.
  */
-package javax.money.format;
+package net.java.javamoney.format;
 
 import java.util.Locale;
+
+import javax.money.format.AmountFormatter;
+import javax.money.format.AmountFormatterBuilder;
+import javax.money.format.CurrencyFormatter;
+import javax.money.format.LocalizationStyle;
 
 /**
  * This class represent the singleton for money related formatting and parsing
@@ -27,74 +32,72 @@ import java.util.Locale;
  * 
  * @author Anatole Tresch
  */
-public final class MoneyParsers {
+public final class MoneyFormats {
 
 	/**
 	 * Singleton constructor.
 	 */
-	private MoneyParsers() {
+	private MoneyFormats() {
 	}
 
 	/**
-	 * This method returns a parser instance for {@link MonetaryAmount}
-	 * instances formatted in the given {@link Locale}. The instance returned
-	 * must be provided by the registered AmountParserFactory SPI
-	 * implementation.
+	 * This method allows to create a new {@link AmountFormatterBuilder} that
+	 * can be used to create a {@link AmountFormatter} using programmatic
+	 * configuration.
+	 * 
+	 * @return a new instance of a {@link AmountFormatterBuilder}, never null.
+	 */
+	public AmountFormatterBuilder createFormatterBuilder() {
+		return null;
+	}
+
+	/**
+	 * This method returns an instance of a {@link AmountFormatter} that is
+	 * provided the registered AmountFormatterFactory SPI implementation.
 	 * 
 	 * @param locale
 	 *            The target locale. The locale will be converted into an
 	 *            according {@link LocalizationStyle} using
 	 *            {@link LocalizationStyle#of(Locale)}.
-	 * @return the according parser, if available.
+	 * @return the formatter required, if available.
 	 * @throws
 	 */
-	public AmountParser getAmountParser(Locale locale) {
-		// TODO implement this
+	public AmountFormatter getAmountFormatter(Locale locale) {
 		return null;
 	}
 
 	/**
-	 * This method returns a parser instance for {@link MonetaryAmount}
-	 * instances formatted in the given {@link Locale}. The instance returned
-	 * must be provided by the registered AmountParserFactory SPI
-	 * implementation.
+	 * This method returns an instance of a {@link AmountFormatter} that is
+	 * provided the registered AmountFormatterFactory SPI implementation.
 	 * 
 	 * @param style
 	 *            The target localization style.
-	 * @return the according parser, if available.
+	 * @return the formatter required, if available.
 	 * @throws
 	 */
-	public AmountParser getAmountParser(LocalizationStyle style) {
-		// TODO implement this
+	public AmountFormatter getAmountFormatter(LocalizationStyle style) {
 		return null;
 	}
 
 	/**
-	 * This method returns an instance of a {@link CurrencyParser}.
+	 * This method returns an instance of a {@link CurrencyFormatter}.
 	 * 
-	 * @param namespace
-	 *            the target name space of currencies.
 	 * @param style
 	 *            The target localization style.
 	 * @return a currency formatter.
 	 */
-	public CurrencyParser getCurrencyParser(String namespace,
-			LocalizationStyle style) {
-		// TODO implement this
+	public CurrencyFormatter getCurrencyFormatter(LocalizationStyle style) {
 		return null;
 	}
 
 	/**
-	 * This method returns an instance of a {@link CurrencyParser}.
+	 * This method returns an instance of a {@link CurrencyFormatter}.
 	 * 
-	 * @param namespace
-	 *            the target name space of currencies.
 	 * @param locale
 	 *            The target locale.
 	 * @return a currency formatter.
 	 */
-	public CurrencyParser getCurrencyParser(String namespace, Locale locale) {
-		// TODO implement this
+	public CurrencyFormatter getCurrencyFormatter(Locale locale) {
 		return null;
 	}
 

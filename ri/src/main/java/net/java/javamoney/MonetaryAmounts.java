@@ -17,7 +17,12 @@
  *    Anatole Tresch - initial implementation
  *    Wernner Keil - extensions and adaptions.
  */
-package javax.money;
+package net.java.javamoney;
+
+import javax.money.CurrencyMismatchException;
+import javax.money.CurrencyUnit;
+import javax.money.MonetaryAmount;
+import javax.money.Rounding;
 
 /**
  * Singleton for accessing {@link MonetaryAmount} instances.

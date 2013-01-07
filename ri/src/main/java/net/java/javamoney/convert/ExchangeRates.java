@@ -17,12 +17,15 @@
  *    Anatole Tresch - initial implementation
  *    Wernner Keil - extensions and adaptions.
  */
-package javax.money.convert;
+package net.java.javamoney.convert;
 
 import java.util.Calendar;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.convert.CurrencyConversionException;
+import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 
 /**
  * This class provides singleton access to the exchange conversion logic of

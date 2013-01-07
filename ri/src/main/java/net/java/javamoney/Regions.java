@@ -17,7 +17,10 @@
  *    Anatole Tresch - initial implementation
  *    Wernner Keil - extensions and adaptions.
  */
-package javax.money;
+package net.java.javamoney;
+
+import javax.money.Region;
+import javax.money.RegionType;
 
 
 /**

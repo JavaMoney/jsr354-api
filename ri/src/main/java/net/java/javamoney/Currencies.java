@@ -17,10 +17,14 @@
  *    Anatole Tresch - initial implementation
  *    Wernner Keil - extensions and adaptions.
  */
-package javax.money;
+package net.java.javamoney;
 
 import java.util.Date;
 import java.util.Locale;
+
+import javax.money.CurrencyUnit;
+import javax.money.Region;
+import javax.money.UnknownCurrencyException;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors

@@ -35,7 +35,6 @@ import java.util.ServiceLoader;
 
 import javax.money.format.AmountParser;
 import javax.money.format.LocalizationStyle;
-import javax.money.format.MoneyFormat;
 import javax.money.format.Parser;
 
 /**

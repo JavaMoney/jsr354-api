@@ -1,50 +1,46 @@
 /*
- * Copyright (c) 2012-2013, Credit Suisse
+ *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
  *
- * All rights reserved.
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *  * Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  *
- *  * Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- *  * Neither the name of JSR-354 nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Contributors:
+ *    Anatole Tresch - initial implementation
+ *    Wernner Keil - extensions and adaptions.
  */
 package javax.money.convert;
 
 import java.util.Calendar;
 
-import javax.money.MonetaryAmount;
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryAmount;
 
 /**
- * This class provides singleton access to the (exchange) conversion logic of
+ * This class provides singleton access to the exchange conversion logic of
  * JavaMoney.
  * 
- * TODO consider renaming this to ConversionSupport, the main action here is convert()
+ * TODO if this is a final class, then how will it get instances of interfaces?
+ * Probably a service (->SPI?)
  * 
  * @author Anatole Tresch
  */
-public interface ExchangeSupport {
+public final class ExchangeRates {
+
+	/**
+	 * Private singleton constructor.
+	 */
+	private ExchangeRates() {
+
+	}
 
 	/**
 	 * Checks if an exchange of a currency is defined.
@@ -56,7 +52,10 @@ public interface ExchangeSupport {
 	 * @return true, if such an exchange is currently defined.
 	 */
 	public boolean isExchangeDefined(CurrencyUnit src, CurrencyUnit target,
-			ExchangeRateType type);
+			ExchangeRateType type) {
+		// TODO implement this
+		return false;
+	}
 
 	/**
 	 * Checks if an exchange of a currency is defined.
@@ -71,7 +70,10 @@ public interface ExchangeSupport {
 	 * @return true, if such an exchange is currently defined.
 	 */
 	public boolean isExchangeDefined(CurrencyUnit src, CurrencyUnit target,
-			ExchangeRateType type, boolean deferred);
+			ExchangeRateType type, boolean deferred) {
+		// TODO implement this
+		return false;
+	}
 
 	/**
 	 * Checks if an exchange of a currency is defined.
@@ -85,7 +87,10 @@ public interface ExchangeSupport {
 	 * @return true, if such an exchange is currently defined.
 	 */
 	public boolean isExchangeDefined(CurrencyUnit src, CurrencyUnit target,
-			ExchangeRateType type, Calendar timestamp);
+			ExchangeRateType type, Calendar timestamp) {
+		// TODO implement this
+		return false;
+	}
 
 	/**
 	 * Access a exchange rate using the given currencies.
@@ -100,7 +105,10 @@ public interface ExchangeSupport {
 	 *            duration how long this rate is considered valid.
 	 */
 	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, boolean deferred, long validityDuration);
+			CurrencyUnit target, boolean deferred, long validityDuration) {
+		// TODO implement this
+		return null;
+	}
 
 	/**
 	 * Access a exchange rate using the given currencies. The rate is, by
@@ -111,7 +119,10 @@ public interface ExchangeSupport {
 	 * @param target
 	 *            target currency.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target);
+	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target) {
+		// TODO implement this
+		return null;
+	}
 
 	/**
 	 * Creates a {@link ExchangeRateType#DERIVED} exchange rate using the given
@@ -126,11 +137,14 @@ public interface ExchangeSupport {
 	 * @throws IllegalArgumentException
 	 *             if the chain passed is inconsistent.
 	 */
-	public ExchangeRate getExchangeRate(ExchangeRate... exchangeRates);
+	public ExchangeRate getExchangeRate(ExchangeRate... exchangeRates) {
+		// TODO implement this
+		return null;
+	}
 
 	/**
-	 * Method that converts the source {@link MonetaryAmount} to an {@link MonetaryAmount} with
-	 * the given target {@link CurrencyUnit}.<br/>
+	 * Method that converts the source {@link MonetaryAmount} to an
+	 * {@link MonetaryAmount} with the given target {@link CurrencyUnit}.<br/>
 	 * By default this method should use a real time conversion, but may also
 	 * fall back to deferred data.
 	 * 
@@ -142,11 +156,14 @@ public interface ExchangeSupport {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target);
+	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target) {
+		// TODO implement this
+		return null;
+	}
 
 	/**
-	 * Method that converts the source {@link MonetaryAmount} to an {@link MonetaryAmount} with
-	 * the given target {@link CurrencyUnit}.
+	 * Method that converts the source {@link MonetaryAmount} to an
+	 * {@link MonetaryAmount} with the given target {@link CurrencyUnit}.
 	 * 
 	 * @param amount
 	 *            The source amount
@@ -159,11 +176,15 @@ public interface ExchangeSupport {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target, boolean deferred);
+	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
+			boolean deferred) {
+		// TODO implement this
+		return null;
+	}
 
 	/**
-	 * Method that converts the source {@link MonetaryAmount} to an {@link MonetaryAmount} with
-	 * the given target {@link CurrencyUnit}.
+	 * Method that converts the source {@link MonetaryAmount} to an
+	 * {@link MonetaryAmount} with the given target {@link CurrencyUnit}.
 	 * 
 	 * @param amount
 	 *            The source amount
@@ -175,7 +196,11 @@ public interface ExchangeSupport {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target, Calendar timestamp);
+	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
+			Calendar timestamp) {
+		// TODO implement this
+		return null;
+	}
 
 	/**
 	 * Method that converts the source {@code double} amount in source
@@ -195,7 +220,10 @@ public interface ExchangeSupport {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public double convert(double amount, CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency);
+			CurrencyUnit targetCurrency) {
+		// TODO implement this
+		return amount;
+	}
 
 	/**
 	 * Method that converts the source {@code double} amount in source
@@ -216,7 +244,10 @@ public interface ExchangeSupport {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public double convert(double amount, CurrencyUnit source,
-			CurrencyUnit target, boolean deferred);
+			CurrencyUnit target, boolean deferred) {
+		// TODO implement this
+		return amount;
+	}
 
 	/**
 	 * Method that converts the source {@code double} amount in source
@@ -236,7 +267,10 @@ public interface ExchangeSupport {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public double convert(double amount, CurrencyUnit source,
-			CurrencyUnit target, Calendar timestamp);
+			CurrencyUnit target, Calendar timestamp) {
+		// TODO implement this
+		return amount;
+	}
 
 	/**
 	 * Get an {@link ExchangeRate} for a given combination of currencies.<br/>
@@ -254,7 +288,10 @@ public interface ExchangeSupport {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, ExchangeRateType type);
+			CurrencyUnit targetCurrency, ExchangeRateType type) {
+		// TODO implement this
+		return null;
+	}
 
 	/**
 	 * Get an {@link ExchangeRate} for a given combination of currencies.
@@ -271,7 +308,10 @@ public interface ExchangeSupport {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, ExchangeRateType type, boolean deferred);
+			CurrencyUnit targetCurrency, ExchangeRateType type, boolean deferred) {
+		// TODO implement this
+		return null;
+	}
 
 	/**
 	 * Get an {@link ExchangeRate} for a given timestamp (including historic
@@ -287,7 +327,10 @@ public interface ExchangeSupport {
 	 */
 	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
 			CurrencyUnit targetCurrency, ExchangeRateType type,
-			Calendar timestamp);
+			Calendar timestamp) {
+		// TODO implement this
+		return null;
+	}
 
 	// TODO Use case, background?
 	// /**

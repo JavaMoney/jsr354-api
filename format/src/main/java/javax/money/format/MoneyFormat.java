@@ -48,24 +48,24 @@ public final class MoneyFormat {
 	}
 
 	/**
-	 * Access the {@link FormatSupport} instance.
+	 * Access the {@link MoneyFormats} instance.
 	 * 
-	 * @return the {@link FormatSupport}, never null.
+	 * @return the {@link MoneyFormats}, never null.
 	 * @throws IllegalStateException
 	 *             , if no instance could be determined.
 	 */
-	public static FormatSupport getFormatSupport() {
+	public static MoneyFormats getFormatSupport() {
 		return null;
 	}
 
 	/**
-	 * Access the {@link ParseSupport} instance.
+	 * Access the {@link MoneyParsers} instance.
 	 * 
-	 * @return the {@link ParseSupport}, never null.
+	 * @return the {@link MoneyParsers}, never null.
 	 * @throws IllegalStateException
 	 *             , if no instance could be determined.
 	 */
-	public static ParseSupport getParseSupport() {
+	public static MoneyParsers getParseSupport() {
 		return null;
 	}
 

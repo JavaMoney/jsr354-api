@@ -1,40 +1,37 @@
 /*
- * Copyright (c) 2012-2013, Credit Suisse
+ *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
  *
- * All rights reserved.
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *  * Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  *
- *  * Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- *  * Neither the name of JSR-354 nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Contributors:
+ *    Anatole Tresch - initial implementation
+ *    Wernner Keil - extensions and adaptions.
  */
 package javax.money;
 
 import java.util.Date;
 import java.util.Locale;
 
-public interface CurrencySupport {
+/**
+ * This class models the singleton defined by JSR 354 that provides accessors
+ * for {@link CurrencyUnit}.
+ * 
+ * @author Anatole Tresch
+ */
+public final class Currencies {
+
+	private Currencies() {
+	}
 
 	/**
 	 * Access a currency using its name space and code. This is a convenience
@@ -50,7 +47,9 @@ public interface CurrencySupport {
 	 * @throws UnknownCurrencyException
 	 *             if the required currency is not defined.
 	 */
-	public CurrencyUnit getCurrency(String namespace, String code);
+	public static CurrencyUnit getCurrency(String namespace, String code) {
+		return null;
+	}
 
 	/**
 	 * Access a currency using its name space and code.
@@ -66,15 +65,19 @@ public interface CurrencySupport {
 	 * @throws UnknownCurrencyException
 	 *             if the required currency is not defined.
 	 */
-	public CurrencyUnit getCurrency(String namespace, String code,
-			long timestamp);
+	public static CurrencyUnit getCurrency(String namespace, String code,
+			long timestamp) {
+		return null;
+	}
 
 	/**
 	 * Access all currencies currently available.
 	 * 
 	 * @return the list of currencies available, never null.
 	 */
-	public CurrencyUnit[] getCurrencies();
+	public static CurrencyUnit[] getCurrencies() {
+		return null;
+	}
 
 	/**
 	 * Access all currencies available for the given timestamp.
@@ -83,7 +86,9 @@ public interface CurrencySupport {
 	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
 	 * @return the list of currencies available, never null.
 	 */
-	public CurrencyUnit[] getCurrencies(long timestamp);
+	public static CurrencyUnit[] getCurrencies(long timestamp) {
+		return null;
+	}
 
 	/**
 	 * Access all currencies matching a {@link Region}.
@@ -92,7 +97,9 @@ public interface CurrencySupport {
 	 *            the target locale, not null.
 	 * @return the currencies found, never null.
 	 */
-	public CurrencyUnit[] getCurrencies(Region region);
+	public static CurrencyUnit[] getCurrencies(Region region) {
+		return null;
+	}
 
 	/**
 	 * Access all currencies matching a {@link Region}, valid at the given
@@ -104,7 +111,9 @@ public interface CurrencySupport {
 	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
 	 * @return the currencies found, never null.
 	 */
-	public CurrencyUnit[] getCurrencies(Region region, long timestamp);
+	public static CurrencyUnit[] getCurrencies(Region region, long timestamp) {
+		return null;
+	}
 
 	/**
 	 * Checks if a currency is defined using its name space and code.
@@ -116,7 +125,9 @@ public interface CurrencySupport {
 	 *            currency.
 	 * @return true, if the currency is defined.
 	 */
-	public CurrencyUnit isCurrencyAvailable(String namespace, String code);
+	public static boolean isCurrencyAvailable(String namespace, String code) {
+		return false;
+	}
 
 	/**
 	 * Checks if a currency is defined using its name space and code.
@@ -130,8 +141,31 @@ public interface CurrencySupport {
 	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
 	 * @return true, if the currency is defined.
 	 */
-	public CurrencyUnit isCurrencyAvailable(String namespace,
-			String code, long timestamp);
+	public static boolean isCurrencyAvailable(String namespace, String code,
+			long timestamp) {
+		return false;
+	}
+
+	/**
+	 * Checks if a currency is defined using its name space and code for the
+	 * given time period.
+	 * 
+	 * @param namespace
+	 *            The name space, e.g. 'ISO-4217'.
+	 * @param code
+	 *            The code that, together with the namespace identifies the
+	 *            currency.
+	 * @param start
+	 *            The starting UTC timestamp, or -1 for the current UTC
+	 *            timestamp.
+	 * @param end
+	 *            The ending UTC timestamp, or -1 for the current UTC timestamp.
+	 * @return true, if the currency is defined.
+	 */
+	public static boolean isCurrencyAvailable(String namespace, String code,
+			long start, long end) {
+		return false;
+	}
 
 	/**
 	 * This method allows to evaluate, if the given currency name space is
@@ -141,7 +175,9 @@ public interface CurrencySupport {
 	 *            the required name space
 	 * @return true, if the name space exists.
 	 */
-	public boolean isCurrencyNamespaceDefined(String namespace);
+	public static boolean isCurrencyNamespaceDefined(String namespace) {
+		return false;
+	}
 
 	/**
 	 * This method allows to access all name spaces currently defined.
@@ -149,7 +185,9 @@ public interface CurrencySupport {
 	 * 
 	 * @return the array of currently defined name space.
 	 */
-	public String[] getCurrencyNamespaces();
+	public static String[] getCurrencyNamespaces() {
+		return null;
+	}
 
 	/**
 	 * Access all currencies matching a {@link Locale}.
@@ -158,7 +196,9 @@ public interface CurrencySupport {
 	 *            the target locale, not null.
 	 * @return the currencies found, never null.
 	 */
-	public CurrencyUnit[] getCurrencies(Locale locale);
+	public static CurrencyUnit[] getCurrencies(Locale locale) {
+		return null;
+	}
 
 	/**
 	 * Access all currencies matching a {@link Locale}, valid at the given
@@ -170,8 +210,10 @@ public interface CurrencySupport {
 	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
 	 * @return the currencies found, never null.
 	 */
-	public CurrencyUnit[] getCurrencies(Locale locale, long timestamp);
-	
+	public static CurrencyUnit[] getCurrencies(Locale locale, long timestamp) {
+		return null;
+	}
+
 	// TODO move to RI somehow.
 	// /**
 	// * Register a {@link CurrencyUnit} programmatically to a {@link Locale}.
@@ -181,7 +223,8 @@ public interface CurrencySupport {
 	// * @param locale
 	// * the locale
 	// */
-	// public void registerCurrency(CurrencyUnit currency, Locale locale) {
+	// public static void registerCurrency(CurrencyUnit currency, Locale locale)
+	// {
 	//
 	// }
 	//
@@ -190,8 +233,9 @@ public interface CurrencySupport {
 	// Locale}.
 	// * @param unit
 	// */
-	// public void unregisterCurrency(CurrencyUnit unit, Locale locale) {
+	// public static void unregisterCurrency(CurrencyUnit unit, Locale locale) {
 	//
 	// }
+
 
 }

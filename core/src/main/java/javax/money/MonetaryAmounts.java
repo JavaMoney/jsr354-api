@@ -19,6 +19,11 @@
  */
 package javax.money;
 
+/**
+ * Singleton for accessing {@link MonetaryAmount} instances.
+ * 
+ * @author Anatole Tresch
+ */
 public final class MonetaryAmounts {
 
 	/**

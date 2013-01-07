@@ -22,7 +22,7 @@ package javax.money;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
- * for {@link CurrencyUnit}.
+ * for {@link Region}.
  * 
  * @author Anatole Tresch
  */

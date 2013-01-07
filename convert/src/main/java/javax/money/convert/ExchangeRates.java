@@ -28,9 +28,6 @@ import javax.money.MonetaryAmount;
  * This class provides singleton access to the exchange conversion logic of
  * JavaMoney.
  * 
- * TODO if this is a final class, then how will it get instances of interfaces?
- * Probably a service (->SPI?)
- * 
  * @author Anatole Tresch
  */
 public final class ExchangeRates {

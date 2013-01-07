@@ -27,7 +27,7 @@ import java.math.MathContext;
 import java.util.Formatter;
 import java.util.Locale;
 
-import javamoney.util.Currency;
+import java.util.Currency;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;

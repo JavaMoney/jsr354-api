@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 
  * @author Anatole Tresch
  */
-public final class Region implements Serializable, Comparable<Region> {
+public class Region implements Serializable, Comparable<Region> {
 	/**
 	 * serialID.
 	 */

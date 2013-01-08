@@ -19,12 +19,17 @@
  */
 package net.java.javamoney;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.ServiceLoader;
 
 import javax.money.CurrencyUnit;
 import javax.money.Region;
 import javax.money.UnknownCurrencyException;
+import javax.money.spi.CurrencyUnitProvider;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -32,9 +37,37 @@ import javax.money.UnknownCurrencyException;
  * 
  * @author Anatole Tresch
  */
-public final class Currencies {
+public final class Currencies extends AbstractSPIComponent {
+	/** The singleton instance. */
+	private static final Currencies INSTANCE = new Currencies();
+	/** The currently loaded providers. */
+	private Map<String, List<CurrencyUnitProvider>> currencyProviders;
 
+	/**
+	 * Singleton constructor.
+	 */
 	private Currencies() {
+	}
+
+	/**
+	 * This method reloads the providers available from the
+	 * {@link ServiceLoader}. This adds providers that were not yet visible
+	 * before.
+	 */
+	public void reload() {
+		List<CurrencyUnitProvider> providers = getSPIProviders(CurrencyUnitProvider.class);
+		for (CurrencyUnitProvider currencyUnitProvider : providers) {
+			List<CurrencyUnitProvider> providerList = currencyProviders
+					.get(currencyUnitProvider.getNamespace());
+			if (providerList == null) {
+				providerList = new ArrayList<CurrencyUnitProvider>();
+				INSTANCE.currencyProviders.put(
+						currencyUnitProvider.getNamespace(), providerList);
+			}
+			if (!providerList.contains(currencyUnitProvider)) {
+				providerList.add(currencyUnitProvider);
+			}
+		}
 	}
 
 	/**
@@ -52,7 +85,7 @@ public final class Currencies {
 	 *             if the required currency is not defined.
 	 */
 	public static CurrencyUnit getCurrency(String namespace, String code) {
-		return null;
+		return getCurrency(namespace, code, -1);
 	}
 
 	/**
@@ -71,7 +104,25 @@ public final class Currencies {
 	 */
 	public static CurrencyUnit getCurrency(String namespace, String code,
 			long timestamp) {
-		return null;
+		List<CurrencyUnitProvider> providers = INSTANCE.currencyProviders
+				.get(namespace);
+		if (providers == null) {
+			throw new IllegalArgumentException("Invalid currency namespace: "
+					+ namespace);
+		}
+		for (CurrencyUnitProvider currencyUnitProvider : providers) {
+			try {
+				CurrencyUnit currencyUnit = currencyUnitProvider.getCurrency(
+						code, -1);
+				if (currencyUnit != null) {
+					return currencyUnit;
+				}
+			} catch (Exception e) {
+				// log error thrown by currencyUnitProvider
+			}
+		}
+		throw new IllegalArgumentException("No such currency " + namespace
+				+ ':' + code);
 	}
 
 	/**
@@ -147,7 +198,7 @@ public final class Currencies {
 	 */
 	public static boolean isCurrencyAvailable(String namespace, String code,
 			long timestamp) {
-		return false;
+		return isCurrencyAvailable(namespace, code, timestamp, -1L);
 	}
 
 	/**
@@ -240,6 +291,5 @@ public final class Currencies {
 	// public static void unregisterCurrency(CurrencyUnit unit, Locale locale) {
 	//
 	// }
-
 
 }

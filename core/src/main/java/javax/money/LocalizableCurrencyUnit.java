@@ -44,16 +44,6 @@ public interface LocalizableCurrencyUnit extends CurrencyUnit {
 
 	/**
 	 * Gets the name that is suitable for displaying this currency for the
-	 * default locale. If there is no suitable display name found for the
-	 * default locale, the ISO 4217 currency code is returned.
-	 * 
-	 * @return the display name of this currency for the default locale
-	 * @since 1.7
-	 */
-	public String getDisplayName();
-
-	/**
-	 * Gets the name that is suitable for displaying this currency for the
 	 * specified locale. If there is no suitable display name found for the
 	 * specified locale, the ISO 4217 currency code is returned.
 	 * 
@@ -66,16 +56,6 @@ public interface LocalizableCurrencyUnit extends CurrencyUnit {
 	 * @since 1.7
 	 */
 	public String getDisplayName(Locale locale);
-
-	/**
-	 * Gets the symbol of this currency for the default locale. For example, for
-	 * the US Dollar, the symbol is "$" if the default locale is the US, while
-	 * for other locales it may be "US$". If no symbol can be determined, the
-	 * ISO 4217 currency code is returned.
-	 * 
-	 * @return the symbol of this currency for the default locale
-	 */
-	public String getSymbol();
 
 	/**
 	 * Gets the symbol of this currency for the specified locale. For example,

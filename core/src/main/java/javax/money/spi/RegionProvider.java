@@ -34,12 +34,11 @@ package javax.money.spi;
 import java.util.ServiceLoader;
 
 import javax.money.Region;
+import javax.money.RegionType;
 
 /**
- * Implementation of this interface define the currencies supported in the
- * system. Each provider implementation hereby may be responsible for exactly
- * one name space. For multiple name spaces being supported several providers
- * must be registered.
+ * Implementation of this interface define the regions supported in the system.
+ * Each provider may hereby serve several region types.
  * <p>
  * Registration is done using the {@link ServiceLoader} features.
  * 
@@ -48,10 +47,23 @@ import javax.money.Region;
 public interface RegionProvider {
 
 	/**
-	 * Access the regions provided by this region provider.
+	 * Access a region.
 	 * 
+	 * @param identifier
+	 *            The region's id.
+	 * @param type
+	 *            The required region type.
+	 * @return The corresponding region, or null.
+	 */
+	public Region getRegion(String identifier, RegionType type);
+
+	/**
+	 * Access all regions provided by this region provider.
+	 * 
+	 * @param type
+	 *            The required region type.
 	 * @return the regions to be added, not null.
 	 */
-	public Region[] getRegions();
+	public Region[] getRegions(RegionType type);
 
 }

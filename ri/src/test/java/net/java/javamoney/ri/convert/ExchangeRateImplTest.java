@@ -14,7 +14,7 @@ public class ExchangeRateImplTest extends ConvertTestBase {
 	public void testGetSourceCurrency() {
 		ExchangeRate rate = new ExchangeRateImpl(EURO, DOLLAR, BigDecimal.valueOf(1.30693d), 
 				System.currentTimeMillis(),	TEN_MINUTES_IN_MILLIS);
-		assertNotNull(rate);
+		assertNotNull(rate.getSourceCurrency());
 		assertEquals("EUR", rate.getSourceCurrency().getCurrencyCode());
 	}
 
@@ -22,7 +22,7 @@ public class ExchangeRateImplTest extends ConvertTestBase {
 	public void testGetTargetCurrency() {
 		ExchangeRate rate = new ExchangeRateImpl(EURO, DOLLAR, BigDecimal.valueOf(1.30693d), 
 				System.currentTimeMillis(),	TEN_MINUTES_IN_MILLIS);
-		assertNotNull(rate);
+		assertNotNull(rate.getTargetCurrency());
 		assertEquals("USD", rate.getTargetCurrency().getCurrencyCode());
 	}
 
@@ -31,7 +31,6 @@ public class ExchangeRateImplTest extends ConvertTestBase {
 		long timestamp = System.currentTimeMillis();
 		ExchangeRate rate = new ExchangeRateImpl(EURO, DOLLAR, BigDecimal.valueOf(1.30693d), timestamp, 
 				TEN_MINUTES_IN_MILLIS);
-		assertNotNull(rate);
 		assertEquals(timestamp, rate.getTimestamp());
 	}
 

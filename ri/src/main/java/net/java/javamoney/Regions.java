@@ -19,9 +19,15 @@
  */
 package net.java.javamoney;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ServiceLoader;
+import java.util.Set;
+
 import javax.money.Region;
 import javax.money.RegionType;
-
+import javax.money.spi.RegionProvider;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -29,12 +35,30 @@ import javax.money.RegionType;
  * 
  * @author Anatole Tresch
  */
-public final class Regions {
+public final class Regions extends AbstractSPIComponent {
+	/** Singleton instance. */
+	private static final Regions INSTANCE = new Regions();
+	/** Loaded region providers. */
+	private List<RegionProvider> regionProviders;
 
 	/**
 	 * Singleton constructor.
 	 */
 	private Regions() {
+		try {
+			reload();
+		} catch (Exception e) {
+			// TODO log excetion!
+		}
+	}
+
+	/**
+	 * This method reloads the providers available from the
+	 * {@link ServiceLoader}. This adds providers that were not yet visible
+	 * before.
+	 */
+	public void reload() {
+		regionProviders = getSPIProviders(RegionProvider.class);
 	}
 
 	/**
@@ -48,8 +72,15 @@ public final class Regions {
 	 * @throws IllegalArgumentException
 	 *             if the region does not exist.
 	 */
-	public Region getRegion(String identifier, RegionType type) {
-		return null;
+	public static Region getRegion(String identifier, RegionType type) {
+		for (RegionProvider prov : INSTANCE.regionProviders) {
+			Region reg = prov.getRegion(identifier, type);
+			if (reg != null) {
+				return reg;
+			}
+		}
+		throw new IllegalArgumentException("So such reagion " + type + ':'
+				+ identifier);
 	}
 
 	/**
@@ -59,17 +90,30 @@ public final class Regions {
 	 *            The region type, not null.
 	 * @return the regions found, never null.
 	 */
-	public Region[] getRegions(RegionType type) {
-		return null;
+	public static Region[] getRegions(RegionType type) {
+		Set<Region> result = new HashSet<Region>();
+		for (RegionProvider prov : INSTANCE.regionProviders) {
+			Region[] regions = prov.getRegions(type);
+			if (regions == null) {
+				// TODO Log warning
+			}
+			result.addAll(Arrays.asList(regions));
+		}
+		return result.toArray(new Region[result.size()]);
 	}
 
 	/**
-	 * Access all regions available.
+	 * Access all regions.
 	 * 
 	 * @return the regions found, never null.
 	 */
-	public Region[] getRegions() {
-		return null;
+	public static Region[] getRegions() {
+		Set<Region> result = new HashSet<Region>();
+		for (RegionType type : RegionType.values()) {
+			Region[] regions = getRegions(type);
+			result.addAll(Arrays.asList(regions));
+		}
+		return result.toArray(new Region[result.size()]);
 	}
 
 }

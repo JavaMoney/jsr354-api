@@ -36,14 +36,19 @@ import javax.money.CurrencyUnit;
 
 /**
  * The Money provider models the SPI interface that allows to exchange the Java
- * {@link MonetaryAmount} implementation for different platforms or usage scenarios.
- * 
- * @TODO Discussion: should caching features implemented by the SPI, or by the
- *       Spec Part
+ * {@link MonetaryAmount} implementation for different platforms or usage
+ * scenarios.<br/>
+ * Hereby each factory supports one specific representation type.
  * 
  * @author Anatole Tresch
  */
 public interface AmountFactory {
+
+	/**
+	 * The representation type used by this factory instance, e.g.
+	 * <code>java.lang.Double</code> or <code>java.math.BigDecimal</code>.
+	 */
+	public Class<?> getRepresentationType();
 
 	/**
 	 * Creates a new {@link MonetaryAmount} instances using the given
@@ -118,7 +123,8 @@ public interface AmountFactory {
 	public MonetaryAmount create(CurrencyUnit currency, double number);
 
 	/**
-	 * Creates a new {@link MonetaryAmount} instances using the given decimal parts.
+	 * Creates a new {@link MonetaryAmount} instances using the given decimal
+	 * parts.
 	 * 
 	 * @param major
 	 *            The major part of the decimal number.

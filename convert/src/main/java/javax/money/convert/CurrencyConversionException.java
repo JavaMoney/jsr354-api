@@ -34,21 +34,17 @@ package javax.money.convert;
 import javax.money.CurrencyUnit;
 
 /**
- * Exception thrown when a monetary operation fails due to mismatched
- * currencies.
- * <p>
- * For example, this exception would be thrown when trying to add a monetary
- * value in one currency to a monetary value in a different currency.
- * <p>
- * This exception makes no guarantees about immutability or thread-safety.
+ * Exception thrown when a monetary conversion operation fails.
  * 
  * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
  * @author Stephen Colebourne
  */
 public class CurrencyConversionException extends IllegalArgumentException {
 
-	/** Serialization lock. */
-	private static final long serialVersionUID = 1L;
+	/**
+	 * serialVersionUID.
+	 */
+	private static final long serialVersionUID = -7743240650686883450L;
 
 	/**
 	 * Constructor.

@@ -41,9 +41,7 @@ import javax.money.CurrencyUnit;
  */
 public class CurrencyConversionException extends IllegalArgumentException {
 
-	/**
-	 * serialVersionUID.
-	 */
+	/** Serialization lock. */
 	private static final long serialVersionUID = -7743240650686883450L;
 
 	/**

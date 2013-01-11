@@ -93,11 +93,11 @@ public final class Monetary {
 		return null;
 	}
 
-	
 	/**
 	 * Access the {@link CurrencyFormatterFactory} component.
 	 * 
-	 * @return the {@link CurrencyFormatterFactory} component, never {@code null}.
+	 * @return the {@link CurrencyFormatterFactory} component, never
+	 *         {@code null}.
 	 */
 	public static CurrencyFormatterFactory getCurrencyFormatterFactory() {
 		return null;
@@ -109,6 +109,15 @@ public final class Monetary {
 	 * @return the {@link CurrencyParserFactory} component, never {@code null}.
 	 */
 	public static CurrencyParserFactory getCurrencyParserFactory() {
+		return null;
+	}
+
+	/**
+	 * Access the {@link RoundingProvider} component.
+	 * 
+	 * @return the {@link RoundingProvider} component, never {@code null}.
+	 */
+	public static RoundingProvider getRoundingProvider() {
 		return null;
 	}
 }

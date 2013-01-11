@@ -195,27 +195,30 @@ public interface CurrencyUnitProvider {
 	 */
 	public CurrencyUnit[] getAll(Locale locale, long timestamp);
 
-	// TODO move to RI somehow.
-	// /**
-	// * Register a {@link CurrencyUnit} programmatically to a {@link Locale}.
-	// *
-	// * @param currency
-	// * the currency
-	// * @param locale
-	// * the locale
-	// */
-	// public static void registerCurrency(CurrencyUnit currency, Locale locale)
-	// {
-	//
-	// }
-	//
-	// /**
-	// * Unregister a {@link CurrencyUnit} programmatically from a {@link
-	// Locale}.
-	// * @param unit
-	// */
-	// public static void unregisterCurrency(CurrencyUnit unit, Locale locale) {
-	//
-	// }
+	/**
+	 * This method maps the given {@link CurrencyUnit} to another
+	 * {@link CurrencyUnit} with the given target namespace.
+	 * 
+	 * @param unit
+	 *            The source unit, never {@code null}.
+	 * @param targetNamespace
+	 *            the target namespace, never {@code null}.
+	 * @return The mapped {@link CurrencyUnit}, or null.
+	 */
+	public CurrencyUnit map(CurrencyUnit unit, String targetNamespace);
+
+	/**
+	 * This method maps the given {@link CurrencyUnit} instances to another
+	 * {@link CurrencyUnit} instances with the given target namespace.
+	 * 
+	 * @param units
+	 *            The source units, never {@code null}.
+	 * @param targetNamespace
+	 *            the target namespace, never {@code null}.
+	 * @return The mapped {@link CurrencyUnit} instances (same array length). If
+	 *         a unit could not be mapped, the according array element will be
+	 *         {@code null}.
+	 */
+	public CurrencyUnit[] mapAll(CurrencyUnit[] units, String targetNamespace);
 
 }

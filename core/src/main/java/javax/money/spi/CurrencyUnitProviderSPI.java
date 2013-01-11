@@ -34,7 +34,6 @@ package javax.money.spi;
 import java.util.Locale;
 import java.util.ServiceLoader;
 
-import javax.money.AmountAdjuster;
 import javax.money.CurrencyUnit;
 import javax.money.Region;
 
@@ -106,15 +105,16 @@ public interface CurrencyUnitProviderSPI {
 	public CurrencyUnit[] getCurrencies(long timestamp);
 
 	/**
-	 * Get the {@link AmountAdjuster} to be used for rounding amounts of the
-	 * given currency instance.
+	 * This method maps the given {@link CurrencyUnit} to another
+	 * {@link CurrencyUnit} with the given target namespace.
 	 * 
-	 * @param currency
-	 *            The currency
-	 * @return the {@link AmountAdjuster} to be applied, or null for determining
-	 *         rounding based on the
-	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
+	 * @param unit
+	 *            The source unit, never {@code null}. Hereby the unit will
+	 *            match the namespace as defined by {@link #getNamespace()}.
+	 * @param targetNamespace
+	 *            the target namespace, never {@code null}.
+	 * @return The mapped {@link CurrencyUnit}, or null.
 	 */
-	public AmountAdjuster getRounding(CurrencyUnit currency);
+	public CurrencyUnit map(CurrencyUnit unit, String targetNamespace);
 
 }

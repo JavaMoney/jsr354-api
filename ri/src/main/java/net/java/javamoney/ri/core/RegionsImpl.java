@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation
  *    Wernner Keil - extensions and adaptions.
  */
-package net.java.javamoney;
+package net.java.javamoney.ri.core;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -27,7 +27,10 @@ import java.util.Set;
 
 import javax.money.Region;
 import javax.money.RegionType;
+import javax.money.Regions;
 import javax.money.spi.RegionProvider;
+
+import net.java.javamoney.ri.AbstractSPIComponent;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -35,16 +38,16 @@ import javax.money.spi.RegionProvider;
  * 
  * @author Anatole Tresch
  */
-public final class Regions extends AbstractSPIComponent {
+public final class RegionsImpl extends AbstractSPIComponent implements Regions {
 	/** Singleton instance. */
-	private static final Regions INSTANCE = new Regions();
+	private static final RegionsImpl INSTANCE = new RegionsImpl();
 	/** Loaded region providers. */
 	private List<RegionProvider> regionProviders;
 
 	/**
 	 * Singleton constructor.
 	 */
-	private Regions() {
+	private RegionsImpl() {
 		try {
 			reload();
 		} catch (Exception e) {
@@ -72,7 +75,7 @@ public final class Regions extends AbstractSPIComponent {
 	 * @throws IllegalArgumentException
 	 *             if the region does not exist.
 	 */
-	public static Region getRegion(String identifier, RegionType type) {
+	public Region get(String identifier, RegionType type) {
 		for (RegionProvider prov : INSTANCE.regionProviders) {
 			Region reg = prov.getRegion(identifier, type);
 			if (reg != null) {
@@ -90,7 +93,7 @@ public final class Regions extends AbstractSPIComponent {
 	 *            The region type, not null.
 	 * @return the regions found, never null.
 	 */
-	public static Region[] getRegions(RegionType type) {
+	public Region[] getAll(RegionType type) {
 		Set<Region> result = new HashSet<Region>();
 		for (RegionProvider prov : INSTANCE.regionProviders) {
 			Region[] regions = prov.getRegions(type);
@@ -107,10 +110,10 @@ public final class Regions extends AbstractSPIComponent {
 	 * 
 	 * @return the regions found, never null.
 	 */
-	public static Region[] getRegions() {
+	public Region[] getAll() {
 		Set<Region> result = new HashSet<Region>();
 		for (RegionType type : RegionType.values()) {
-			Region[] regions = getRegions(type);
+			Region[] regions = getAll(type);
 			result.addAll(Arrays.asList(regions));
 		}
 		return result.toArray(new Region[result.size()]);

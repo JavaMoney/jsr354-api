@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 
 import javax.money.MonetaryAmount;
 
+import net.java.javamoney.ri.core.BigDecimalAmount;
+
 import org.junit.Test;
 
 public class BigDecimalAmountTest extends RITestBase {

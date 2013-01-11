@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation
  *    Wernner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri;
+package net.java.javamoney.ri.core;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

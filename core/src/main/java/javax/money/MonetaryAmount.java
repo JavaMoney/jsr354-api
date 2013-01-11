@@ -561,10 +561,10 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	/**
 	 * * Gets the scale of the amount.
 	 * <p>
-	 * The scale has the same meaning as in {@link MonetaryAmount}. * Positive
-	 * values represent the number of decimal places in use. * For example, a
-	 * scale of 2 means that the money will have two decimal places * such as
-	 * 'USD 43.25'.
+	 * The scale has the same meaning as in {@link MonetaryAmount}. Positive
+	 * values represent the number of decimal places in use. For example, a
+	 * scale of 2 means that the money will have two decimal places such as 'USD
+	 * 43.25'.
 	 * <p>
 	 * For {@code MonetaryAmount}, the scale is fixed and always matches that of
 	 * the currency.
@@ -574,8 +574,8 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	public int getScale();
 
 	/**
-	 * Returns the <i>precision</i> of this {@code MonetaryAmount}. (The
-	 * precision is the number of digits in the unscaled value.)
+	 * Returns the <i>internal precision</i> of this {@code MonetaryAmount}.
+	 * (The precision is the number of digits in the unscaled value.)
 	 * 
 	 * <p>
 	 * The precision of a zero value is 1.

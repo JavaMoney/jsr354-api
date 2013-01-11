@@ -31,38 +31,42 @@
  */
 package javax.money;
 
-import java.util.Locale;
 
 /**
- * This instance defines a rounding mode that can be applied to amounts. Since
- * rounding is a typical use case for amount adjustment the corresponding
- * {@link AmountAdjuster} interface is extended.
+ * This class models the component defined by JSR 354 that provides accessors
+ * for {@link Region}. It is provided by the Money singleton.
  * 
  * @author Anatole Tresch
  */
-public interface Rounding extends AmountAdjuster {
+public interface Regions {
 
 	/**
-	 * The id uniquely identifies a rounding type.
+	 * Access a region.
 	 * 
-	 * @return The rounding ID, not null.
+	 * @param identifier
+	 *            The region's id, not null.
+	 * @param type
+	 *            The region type, not null.
+	 * @return the region instance.
+	 * @throws IllegalArgumentException
+	 *             if the region does not exist.
 	 */
-	String getId();
+	public Region get(String identifier, RegionType type);
 
 	/**
-	 * The name of the rounding, using the default {@link Locale}.
+	 * Access all regions for a given {@link RegionType}.
 	 * 
-	 * @return The name of the rounding, not null.
+	 * @param type
+	 *            The region type, not null.
+	 * @return the regions found, never null.
 	 */
-	String getName();
+	public Region[] getAll(RegionType type);
 
 	/**
-	 * The name of the rounding, using the {@link Locale} provided.
+	 * Access all regions.
 	 * 
-	 * @param locale
-	 *            the target locale
-	 * @return The name of the rounding, not null.
+	 * @return the regions found, never null.
 	 */
-	String getName(Locale locale);
+	public Region[] getAll();
 
 }

@@ -34,9 +34,9 @@ package javax.money.spi;
 import java.util.Locale;
 import java.util.ServiceLoader;
 
+import javax.money.AmountAdjuster;
 import javax.money.CurrencyUnit;
 import javax.money.Region;
-import javax.money.Rounding;
 
 /**
  * Implementation of this interface define the currencies supported in the
@@ -106,14 +106,15 @@ public interface CurrencyUnitProvider {
 	public CurrencyUnit[] getCurrencies(long timestamp);
 
 	/**
-	 * Get the {@link Rounding} to be used for the given currency instance.
+	 * Get the {@link AmountAdjuster} to be used for rounding amounts of the
+	 * given currency instance.
 	 * 
 	 * @param currency
 	 *            The currency
-	 * @return the {@link Rounding} to be applied, or null for determining
+	 * @return the {@link AmountAdjuster} to be applied, or null for determining
 	 *         rounding based on the
 	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
 	 */
-	public Rounding getRounding(CurrencyUnit currency);
+	public AmountAdjuster getRounding(CurrencyUnit currency);
 
 }

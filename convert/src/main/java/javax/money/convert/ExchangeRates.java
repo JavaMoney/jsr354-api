@@ -1,46 +1,48 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * Copyright (c) 2012-2013, Credit Suisse
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * All rights reserved.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *  * Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
  *
- * Contributors:
- *    Anatole Tresch - initial implementation
- *    Wernner Keil - extensions and adaptions.
+ *  * Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  * Neither the name of JSR-354 nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.java.javamoney.convert;
+package javax.money.convert;
 
 import java.util.Calendar;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
-import javax.money.convert.CurrencyConversionException;
-import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
 
 /**
- * This class provides singleton access to the exchange conversion logic of
- * JavaMoney.
+ * This interface defines access to the exchange conversion logic of JavaMoney.
+ * It is provided by the Money singleton.  It is provided by the Money singleton.
  * 
  * @author Anatole Tresch
  */
-public final class ExchangeRates {
-
-	/**
-	 * Private singleton constructor.
-	 */
-	private ExchangeRates() {
-
-	}
+public interface ExchangeRates {
 
 	/**
 	 * Checks if an exchange of a currency is defined.
@@ -51,11 +53,8 @@ public final class ExchangeRates {
 	 *            the target currency
 	 * @return true, if such an exchange is currently defined.
 	 */
-	public boolean isExchangeDefined(CurrencyUnit src, CurrencyUnit target,
-			ExchangeRateType type) {
-		// TODO implement this
-		return false;
-	}
+	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
+			ExchangeRateType type);
 
 	/**
 	 * Checks if an exchange of a currency is defined.
@@ -69,11 +68,8 @@ public final class ExchangeRates {
 	 *            rate is required.
 	 * @return true, if such an exchange is currently defined.
 	 */
-	public boolean isExchangeDefined(CurrencyUnit src, CurrencyUnit target,
-			ExchangeRateType type, boolean deferred) {
-		// TODO implement this
-		return false;
-	}
+	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
+			ExchangeRateType type, boolean deferred);
 
 	/**
 	 * Checks if an exchange of a currency is defined.
@@ -86,11 +82,8 @@ public final class ExchangeRates {
 	 *            the target timestamp for which the exchange rate is queried.
 	 * @return true, if such an exchange is currently defined.
 	 */
-	public boolean isExchangeDefined(CurrencyUnit src, CurrencyUnit target,
-			ExchangeRateType type, Calendar timestamp) {
-		// TODO implement this
-		return false;
-	}
+	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
+			ExchangeRateType type, Calendar timestamp);
 
 	/**
 	 * Access a exchange rate using the given currencies.
@@ -104,11 +97,8 @@ public final class ExchangeRates {
 	 * @param validityDuration
 	 *            duration how long this rate is considered valid.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, boolean deferred, long validityDuration) {
-		// TODO implement this
-		return null;
-	}
+	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target,
+			boolean deferred, long validityDuration);
 
 	/**
 	 * Access a exchange rate using the given currencies. The rate is, by
@@ -119,10 +109,7 @@ public final class ExchangeRates {
 	 * @param target
 	 *            target currency.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target) {
-		// TODO implement this
-		return null;
-	}
+	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target);
 
 	/**
 	 * Creates a {@link ExchangeRateType#DERIVED} exchange rate using the given
@@ -137,10 +124,7 @@ public final class ExchangeRates {
 	 * @throws IllegalArgumentException
 	 *             if the chain passed is inconsistent.
 	 */
-	public ExchangeRate getExchangeRate(ExchangeRate... exchangeRates) {
-		// TODO implement this
-		return null;
-	}
+	public ExchangeRate get(ExchangeRate... exchangeRates);
 
 	/**
 	 * Method that converts the source {@link MonetaryAmount} to an
@@ -156,10 +140,7 @@ public final class ExchangeRates {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target) {
-		// TODO implement this
-		return null;
-	}
+	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target);
 
 	/**
 	 * Method that converts the source {@link MonetaryAmount} to an
@@ -177,10 +158,7 @@ public final class ExchangeRates {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
-			boolean deferred) {
-		// TODO implement this
-		return null;
-	}
+			boolean deferred);
 
 	/**
 	 * Method that converts the source {@link MonetaryAmount} to an
@@ -197,10 +175,7 @@ public final class ExchangeRates {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
-			Calendar timestamp) {
-		// TODO implement this
-		return null;
-	}
+			Calendar timestamp);
 
 	/**
 	 * Method that converts the source {@code double} amount in source
@@ -220,10 +195,7 @@ public final class ExchangeRates {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public double convert(double amount, CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency) {
-		// TODO implement this
-		return amount;
-	}
+			CurrencyUnit targetCurrency);
 
 	/**
 	 * Method that converts the source {@code double} amount in source
@@ -244,10 +216,7 @@ public final class ExchangeRates {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public double convert(double amount, CurrencyUnit source,
-			CurrencyUnit target, boolean deferred) {
-		// TODO implement this
-		return amount;
-	}
+			CurrencyUnit target, boolean deferred);
 
 	/**
 	 * Method that converts the source {@code double} amount in source
@@ -267,10 +236,7 @@ public final class ExchangeRates {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public double convert(double amount, CurrencyUnit source,
-			CurrencyUnit target, Calendar timestamp) {
-		// TODO implement this
-		return amount;
-	}
+			CurrencyUnit target, Calendar timestamp);
 
 	/**
 	 * Get an {@link ExchangeRate} for a given combination of currencies.<br/>
@@ -287,11 +253,8 @@ public final class ExchangeRates {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, ExchangeRateType type) {
-		// TODO implement this
-		return null;
-	}
+	public ExchangeRate get(CurrencyUnit sourceCurrency,
+			CurrencyUnit targetCurrency, ExchangeRateType type);
 
 	/**
 	 * Get an {@link ExchangeRate} for a given combination of currencies.
@@ -307,11 +270,8 @@ public final class ExchangeRates {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, ExchangeRateType type, boolean deferred) {
-		// TODO implement this
-		return null;
-	}
+	public ExchangeRate get(CurrencyUnit sourceCurrency,
+			CurrencyUnit targetCurrency, ExchangeRateType type, boolean deferred);
 
 	/**
 	 * Get an {@link ExchangeRate} for a given timestamp (including historic
@@ -325,12 +285,9 @@ public final class ExchangeRates {
 	 *            the target timestamp for which the exchange rate is queried.
 	 * @return the matching {@link ExchangeRate}, or null.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
+	public ExchangeRate get(CurrencyUnit sourceCurrency,
 			CurrencyUnit targetCurrency, ExchangeRateType type,
-			Calendar timestamp) {
-		// TODO implement this
-		return null;
-	}
+			Calendar timestamp);
 
 	// TODO Use case, background?
 	// /**

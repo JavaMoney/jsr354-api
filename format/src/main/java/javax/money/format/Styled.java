@@ -29,41 +29,10 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.spi;
+package javax.money.format;
 
-import java.util.ServiceLoader;
+public interface Styled {
 
-import javax.money.Region;
-import javax.money.RegionType;
-
-/**
- * Implementation of this interface define the regions supported in the system.
- * Each provider may hereby serve several region types.
- * <p>
- * Registration is done using the {@link ServiceLoader} features.
- * 
- * @author Anatole Tresch
- */
-public interface RegionProvider {
-
-	/**
-	 * Access a region.
-	 * 
-	 * @param identifier
-	 *            The region's id.
-	 * @param type
-	 *            The required region type.
-	 * @return The corresponding region, or null.
-	 */
-	public Region getRegion(String identifier, RegionType type);
-
-	/**
-	 * Access all regions provided by this region provider.
-	 * 
-	 * @param type
-	 *            The required region type.
-	 * @return the regions to be added, not null.
-	 */
-	public Region[] getRegions(RegionType type);
-
+	public LocalizationStyle getStyle();
+	
 }

@@ -36,15 +36,13 @@ import java.util.Locale;
 import javax.money.MonetaryAmount;
 
 /**
- * Provides the ability to build a formatter for amount values.
+ * Provides the ability to build a parser for amount values.
  * <p>
  * This class is mutable and intended for use by a single thread. A new instance
- * should be created for each use. The formatters produced by the builder are
+ * should be created for each use. The parsers produced by the builder are
  * immutable and thread-safe.
- * 
- * TODO see Formatter, maybe rename to *Printer* like suggested by Joda sandbox
  */
-public interface AmountFormatterBuilder extends FormatterBuilder<MonetaryAmount>{
+public interface AmountParserBuilder extends ParserBuilder<MonetaryAmount> {
 
 	/**
 	 * Appends the amount to the builder using the default format. The default
@@ -53,7 +51,7 @@ public interface AmountFormatterBuilder extends FormatterBuilder<MonetaryAmount>
 	 * 
 	 * @return this, for chaining, never null
 	 */
-	public AmountFormatterBuilder appendAmount();
+	public AmountParserBuilder appendAmount();
 
 	/**
 	 * Appends the amount to the builder using the given {@link Locale}. The
@@ -66,7 +64,7 @@ public interface AmountFormatterBuilder extends FormatterBuilder<MonetaryAmount>
 	 *            {@link LocalizationStyle#of(Locale)}.
 	 * @return this, for chaining, never null
 	 */
-	public AmountFormatterBuilder appendAmountLocalized();
+	public AmountParserBuilder appendAmountLocalized();
 
 	/**
 	 * Appends the amount to the builder using the specified amount style.
@@ -80,7 +78,7 @@ public interface AmountFormatterBuilder extends FormatterBuilder<MonetaryAmount>
 	 *            the required style to use, not null.
 	 * @return this, for chaining, never null
 	 */
-	public AmountFormatterBuilder appendAmount(MoneyAmountStyle style);
+	public AmountParserBuilder appendAmount(MoneyAmountStyle style);
 
 	// -----------------------------------------------------------------------
 	/**
@@ -89,7 +87,7 @@ public interface AmountFormatterBuilder extends FormatterBuilder<MonetaryAmount>
 	 * 
 	 * @return this, for chaining, never null
 	 */
-	public AmountFormatterBuilder appendCurrencyCode();
+	public AmountParserBuilder appendCurrencyCode();
 
 	/**
 	 * Appends the currency code to the builder, e.g. an ISO numeric code, such
@@ -98,7 +96,7 @@ public interface AmountFormatterBuilder extends FormatterBuilder<MonetaryAmount>
 	 * 
 	 * @return this, for chaining, never null
 	 */
-	public AmountFormatterBuilder appendCurrencyNumericCode();
+	public AmountParserBuilder appendCurrencyNumericCode();
 
 	/**
 	 * Appends the localized currency symbol to the builder.
@@ -110,7 +108,7 @@ public interface AmountFormatterBuilder extends FormatterBuilder<MonetaryAmount>
 	 * 
 	 * @return this, for chaining, never null
 	 */
-	public AmountFormatterBuilder appendCurrencySymbolLocalized();
+	public AmountParserBuilder appendCurrencySymbolLocalized();
 
 	/**
 	 * Appends a literal to the builder.
@@ -119,7 +117,7 @@ public interface AmountFormatterBuilder extends FormatterBuilder<MonetaryAmount>
 	 *            the literal to append, null or empty ignored
 	 * @return this, for chaining, never null
 	 */
-	public AmountFormatterBuilder appendLiteral(CharSequence literal);
+	public AmountParserBuilder appendLiteral(CharSequence literal);
 
 	// -----------------------------------------------------------------------
 	/**
@@ -133,50 +131,50 @@ public interface AmountFormatterBuilder extends FormatterBuilder<MonetaryAmount>
 	 *            the formatter to append, not null
 	 * @return this for chaining, never null
 	 */
-	public AmountFormatterBuilder append(Formatter<MonetaryAmount> formatter);
+	public AmountParserBuilder append(Parser<MonetaryAmount> formatter);
 
 	// -----------------------------------------------------------------------
 	/**
-	 * Builds the formatter from the builder using the default locale.
+	 * Builds the parser from the builder using the default locale.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code AmountFormatter} to be used. Calling this method does not change
-	 * the state of this instance, so it can still be used.
+	 * {@code AmountParser} to be used. Calling this method does not change the
+	 * state of this instance, so it can still be used.
 	 * <p>
 	 * This method uses the specified locale within the returned formatter. It
 	 * can be changed by calling {@link AmountFormatter#toFormatter(Locale)} or
 	 * {@link AmountFormatter#toFormatter(LocalizationStyle)}.
 	 * 
-	 * @return the formatter built from this builder, never null
+	 * @return the parser built from this builder, never null
 	 */
-	public AmountFormatter toFormatter();
+	public AmountParser toParser();
 
 	/**
-	 * Builds the formatter from the builder setting the locale.
+	 * Builds the parser from the builder setting the locale.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code AmountFormatter} to be used. Calling this method does not change
-	 * the state of this instance, so it can still be used.
+	 * {@code AmountParser} to be used. Calling this method does not change the
+	 * state of this instance, so it can still be used.
 	 * <p>
 	 * This method uses the specified locale. FOr extended style parameters use
 	 * {@link AmountFormatter#toFormatter(LocalizationStyle)} instead of.
 	 * 
 	 * @param locale
 	 *            the locale for the formatter, not null
-	 * @return the formatter built from this builder, never null
+	 * @return the parser built from this builder, never null
 	 */
-	public AmountFormatter toFormatter(Locale locale);
+	public AmountParser toParser(Locale locale);
 
 	/**
-	 * Builds the formatter from the builder setting the locale.
+	 * Builds the parser from the builder setting the locale.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code AmountFormatter} to be used. Calling this method does not change
-	 * the state of this instance, so it can still be used.
+	 * {@code AmountParser} to be used. Calling this method does not change the
+	 * state of this instance, so it can still be used.
 	 * 
 	 * @param style
 	 *            the style for the formatter, not null
-	 * @return the formatter built from this builder, never null
+	 * @return the parser built from this builder, never null
 	 */
-	public AmountFormatter toFormatter(LocalizationStyle style);
+	public AmountParser toParser(LocalizationStyle style);
 }

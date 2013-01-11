@@ -31,56 +31,59 @@
  */
 package javax.money.format;
 
-import java.io.IOException;
-
-import javax.money.MonetaryAmount;
+import java.util.Locale;
 
 /**
- * Formats instances of {@link MonetaryAmount}, by default the full amount is printed,
- * whereas some method allows also to print the number part without currency.
- * <p>
- * Instances of {@code AmountFormatter} can be created by
- * {@code AmountFormatterBuilder} or by accessing instances from the the
- * {@link MoneyFormat} singleton.
- * 
- * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
+ * Instance that implement this interface parse Strings into instances of of
+ * type T.
+ * TODO check if this class can be moved to {@code java.util}.
  */
-public interface AmountFormatter extends Formatter<MonetaryAmount> {
+public interface LocalizableParser<T> extends Targetable{
 
 	/**
-	 * Formats a amount's numeric value to a {@code String}, the currency is
-	 * omitted.
+	 * Fully parses the text into an instance of T.
+	 * <p>
+	 * The parse must complete normally and parse the entire text. If the parse
+	 * completes without reading the entire length of the text, an exception is
+	 * thrown. If any other problem occurs during parsing, an exception is
+	 * thrown.
 	 * <p>
 	 * This method uses a {@link LocalizationStyle} as an input parameter.
 	 * Styles allows to define detailed and customized formatting input
 	 * parameters. This allows to implement also complex formatting requirements
 	 * using this interface.
 	 * 
-	 * @param amount
-	 *            the amount to print, not null
-	 * @return the string printed using the settings of this formatter
+	 * @param text
+	 *            the text to parse, not null
+	 * @param style
+	 *            the localization style to be used for parsing
+	 * @return the parsed value, never null
 	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
+	 *             if the formatter is unable to parse
+	 * @throws ParseException
+	 *             if there is a problem while parsing
 	 */
-	public String printNumber(MonetaryAmount amount);
+	public T parse(CharSequence text, LocalizationStyle locale)
+			throws ParseException;
 
 	/**
-	 * Formats a amount's numeric value to a {@code Appendable}, the currency is
-	 * omitted.
+	 * Fully parses the text into an instance of T.
+	 * <p>
+	 * The parse must complete normally and parse the entire text (currency and
+	 * amount). If the parse completes without reading the entire length of the
+	 * text, an exception is thrown. If any other problem occurs during parsing,
+	 * an exception is thrown.
 	 * 
-	 * @param appendable
-	 *            the appendable to print to, not null
-	 * @param amount
-	 *            the amount to print, not null
-	 * @return the string printed using the settings of this formatter
+	 * @param text
+	 *            the text to parse, not null
+	 * @param locale
+	 *            The locale to be used for parsing, nnot null.
+	 * @return the parsed value, never null
 	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
+	 *             if the formatter is unable to parse
+	 * @throws ParseException
+	 *             if there is a problem while parsing
 	 */
-	public void printNumber(Appendable appendable, MonetaryAmount amount)
-			throws IOException;
+	public T parse(CharSequence text, Locale locale) throws ParseException;
 
 }

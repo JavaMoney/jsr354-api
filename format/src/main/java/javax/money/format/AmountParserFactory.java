@@ -34,35 +34,47 @@ package javax.money.format;
 import java.util.Locale;
 
 /**
- * Instance that implement this interface parse Strings into instances of of
- * type T.
- * TODO check if this class can be moved to {@code java.util}.
+ * This class represent the singleton for money related formatting and parsing
+ * functionality. It is provided by the Money singleton.
+ * 
+ * @author Anatole Tresch
  */
-public interface Parser<T>  extends Targetable, Styled{
+public interface AmountParserFactory {
 
 	/**
-	 * Fully parses the text into an instance of T.
-	 * <p>
-	 * The parse must complete normally and parse the entire text. If the parse
-	 * completes without reading the entire length of the text, an exception is
-	 * thrown. If any other problem occurs during parsing, an exception is
-	 * thrown.
-	 * <p>
-	 * This method uses a {@link LocalizationStyle} as an input parameter.
-	 * Styles allows to define detailed and customized formatting input
-	 * parameters. This allows to implement also complex formatting requirements
-	 * using this interface.
+	 * This method returns a parser instance for {@link MonetaryAmount}
+	 * instances formatted in the given {@link Locale}. The instance returned
+	 * must be provided by the registered AmountParserFactory SPI
+	 * implementation.
 	 * 
-	 * @param text
-	 *            the text to parse, not null
-	 * @return the parsed value, never null
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to parse
-	 * @throws ParseException
-	 *             if there is a problem while parsing
+	 * @param locale
+	 *            The target locale. The locale will be converted into an
+	 *            according {@link LocalizationStyle} using
+	 *            {@link LocalizationStyle#of(Locale)}.
+	 * @return the according parser, if available.
+	 * @throws
 	 */
-	public T parse(CharSequence text)
-			throws ParseException;
+	public AmountParser getAmountParser(Locale locale);
 
+	/**
+	 * This method returns a parser instance for {@link MonetaryAmount}
+	 * instances formatted in the given {@link Locale}. The instance returned
+	 * must be provided by the registered AmountParserFactory SPI
+	 * implementation.
+	 * 
+	 * @param style
+	 *            The target localization style.
+	 * @return the according parser, if available.
+	 * @throws
+	 */
+	public AmountParser getAmountParser(LocalizationStyle style);
+
+	/**
+	 * This method returns a {@link LocalizableAmountParser} instance.
+	 * 
+	 * @return the according parser, if available.
+	 * @throws
+	 */
+	public LocalizableAmountParser getLocalizableAmountParser();
 
 }

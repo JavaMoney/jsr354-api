@@ -31,8 +31,10 @@
  */
 package javax.money.format;
 
-import javax.money.CurrencyUnit;
+import java.util.Locale;
+
 import javax.money.MonetaryAmount;
+import javax.money.CurrencyUnit;
 
 /**
  * Formats instances of money to and from a String.
@@ -42,12 +44,12 @@ import javax.money.MonetaryAmount;
  * <p>
  * This class is immutable and thread-safe.
  */
-public interface AmountParser extends Parser<MonetaryAmount> {
+public interface LocalizableAmountParser extends LocalizableParser<MonetaryAmount> {
 
 	/**
 	 * Fully parses a number and combines it with a {@link CurrencyUnit} to an
-	 * {@link MonetaryAmount} instance. The amount of parsed decimals can hereby
-	 * differ from the correct number of decimal places.
+	 * {@link MonetaryAmount} instance. The amount of parsed decimals can hereby differ
+	 * from the correct number of decimal places.
 	 * <p>
 	 * The parse must complete normally and parse the entire text (currency and
 	 * amount). If the parse completes without reading the entire length of the
@@ -71,7 +73,35 @@ public interface AmountParser extends Parser<MonetaryAmount> {
 	 *             if the scale of the parsed money exceeds the scale of the
 	 *             currency
 	 */
-	public MonetaryAmount parseNumber(CharSequence text, CurrencyUnit currency)
-			throws ParseException;
+	public MonetaryAmount parseNumber(CharSequence text, CurrencyUnit currency,
+			LocalizationStyle style) throws ParseException;
+
+	/**
+	 * Fully parses the text into a {@code Money} requiring that the parsed
+	 * amount has the correct number of decimal places.
+	 * <p>
+	 * The parse must complete normally and parse the entire text (currency and
+	 * amount). If the parse completes without reading the entire length of the
+	 * text, an exception is thrown. If any other problem occurs during parsing,
+	 * an exception is thrown.
+	 * 
+	 * @param text
+	 *            the text to parse, not null
+	 * @param currency
+	 *            the target currency to be used (not the text to parse contains
+	 *            only a number).
+	 * @param locale
+	 *            The target locale determining the input format.
+	 * @return the parsed monetary value, never null
+	 * @throws UnsupportedOperationException
+	 *             if the formatter is unable to parse
+	 * @throws FormatException
+	 *             if there is a problem while parsing
+	 * @throws ArithmeticException
+	 *             if the scale of the parsed money exceeds the scale of the
+	 *             currency
+	 */
+	public MonetaryAmount parseNumber(CharSequence text, CurrencyUnit currency,
+			Locale locale) throws ParseException;
 
 }

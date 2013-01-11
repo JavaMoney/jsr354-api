@@ -29,44 +29,18 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.spi;
 
+import java.util.ServiceLoader;
 
 /**
- * This class models the component defined by JSR 354 that provides accessors
- * for {@link Region}. It is provided by the Money singleton.
+ * This is a marker interface that allows to load additional extension hooks
+ * into the Monetary singleton. Extensions must be registered using the
+ * {@link ServiceLoader} functionality. This allows to keep all money related
+ * functionality bundled within one central catalog.
  * 
  * @author Anatole Tresch
  */
-public interface Regions {
-
-	/**
-	 * Access a region.
-	 * 
-	 * @param identifier
-	 *            The region's id, not null.
-	 * @param type
-	 *            The region type, not null.
-	 * @return the region instance.
-	 * @throws IllegalArgumentException
-	 *             if the region does not exist.
-	 */
-	public Region get(String identifier, RegionType type);
-
-	/**
-	 * Access all regions for a given {@link RegionType}.
-	 * 
-	 * @param type
-	 *            The region type, not null.
-	 * @return the regions found, never null.
-	 */
-	public Region[] getAll(RegionType type);
-
-	/**
-	 * Access all regions.
-	 * 
-	 * @return the regions found, never null.
-	 */
-	public Region[] getAll();
-
+public interface MonetaryExtension {
+	// empty just a marker interface.
 }

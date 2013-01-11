@@ -34,35 +34,37 @@ package javax.money.format;
 import java.util.Locale;
 
 /**
- * Instance that implement this interface parse Strings into instances of of
- * type T.
- * TODO check if this class can be moved to {@code java.util}.
+ * This class represent the singleton for money related formatting and parsing
+ * functionality. It is provided by the Money singleton.
+ * 
+ * @author Anatole Tresch
  */
-public interface Parser<T>  extends Targetable, Styled{
+public interface CurrencyFormatterFactory {
 
 	/**
-	 * Fully parses the text into an instance of T.
-	 * <p>
-	 * The parse must complete normally and parse the entire text. If the parse
-	 * completes without reading the entire length of the text, an exception is
-	 * thrown. If any other problem occurs during parsing, an exception is
-	 * thrown.
-	 * <p>
-	 * This method uses a {@link LocalizationStyle} as an input parameter.
-	 * Styles allows to define detailed and customized formatting input
-	 * parameters. This allows to implement also complex formatting requirements
-	 * using this interface.
+	 * This method returns an instance of a {@link CurrencyFormatter}.
 	 * 
-	 * @param text
-	 *            the text to parse, not null
-	 * @return the parsed value, never null
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to parse
-	 * @throws ParseException
-	 *             if there is a problem while parsing
+	 * @param style
+	 *            The target localization style.
+	 * @return a currency formatter.
 	 */
-	public T parse(CharSequence text)
-			throws ParseException;
+	public CurrencyFormatter getCurrencyFormatter(LocalizationStyle style);
 
+	/**
+	 * This method returns an instance of a {@link CurrencyFormatter}.
+	 * 
+	 * @param locale
+	 *            The target locale.
+	 * @return a currency formatter.
+	 */
+	public CurrencyFormatter getCurrencyFormatter(Locale locale);
+
+	/**
+	 * This method returns an instance of a {@link LocalizableCurrencyFormatter}
+	 * .
+	 * 
+	 * @return a currency formatter.
+	 */
+	public LocalizableCurrencyFormatter getLocalizableCurrencyFormatter();
 
 }

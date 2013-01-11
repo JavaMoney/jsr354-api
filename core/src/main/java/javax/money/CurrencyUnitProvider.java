@@ -40,7 +40,7 @@ import java.util.Locale;
  * 
  * @author Anatole Tresch
  */
-public interface Currencies {
+public interface CurrencyUnitProvider {
 
 	/**
 	 * Access a currency using its name space and code. This is a convenience

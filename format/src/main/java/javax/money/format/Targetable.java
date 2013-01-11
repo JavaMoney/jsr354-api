@@ -31,38 +31,8 @@
  */
 package javax.money.format;
 
-import java.util.Locale;
+public interface Targetable {
 
-/**
- * Instance that implement this interface parse Strings into instances of of
- * type T.
- * TODO check if this class can be moved to {@code java.util}.
- */
-public interface Parser<T>  extends Targetable, Styled{
-
-	/**
-	 * Fully parses the text into an instance of T.
-	 * <p>
-	 * The parse must complete normally and parse the entire text. If the parse
-	 * completes without reading the entire length of the text, an exception is
-	 * thrown. If any other problem occurs during parsing, an exception is
-	 * thrown.
-	 * <p>
-	 * This method uses a {@link LocalizationStyle} as an input parameter.
-	 * Styles allows to define detailed and customized formatting input
-	 * parameters. This allows to implement also complex formatting requirements
-	 * using this interface.
-	 * 
-	 * @param text
-	 *            the text to parse, not null
-	 * @return the parsed value, never null
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to parse
-	 * @throws ParseException
-	 *             if there is a problem while parsing
-	 */
-	public T parse(CharSequence text)
-			throws ParseException;
-
+	public Class<?> getTargetClass();
 
 }

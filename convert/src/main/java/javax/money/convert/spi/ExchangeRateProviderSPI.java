@@ -29,40 +29,54 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format;
+package javax.money.convert.spi;
 
-import java.util.Locale;
+import javax.money.CurrencyUnit;
+import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 
 /**
- * Instance that implement this interface parse Strings into instances of of
- * type T.
- * TODO check if this class can be moved to {@code java.util}.
+ * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
+ * @author Anatole Tresch
+ * @version 0.1.1
  */
-public interface Parser<T>  extends Targetable, Styled{
+public interface ExchangeRateProviderSPI {
 
 	/**
-	 * Fully parses the text into an instance of T.
-	 * <p>
-	 * The parse must complete normally and parse the entire text. If the parse
-	 * completes without reading the entire length of the text, an exception is
-	 * thrown. If any other problem occurs during parsing, an exception is
-	 * thrown.
-	 * <p>
-	 * This method uses a {@link LocalizationStyle} as an input parameter.
-	 * Styles allows to define detailed and customized formatting input
-	 * parameters. This allows to implement also complex formatting requirements
-	 * using this interface.
+	 * Get an exchange rate for the given parameters.
 	 * 
-	 * @param text
-	 *            the text to parse, not null
-	 * @return the parsed value, never null
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to parse
-	 * @throws ParseException
-	 *             if there is a problem while parsing
+	 * @param source
+	 *            the source currency.
+	 * @param target
+	 *            the target currency.
+	 * @param type
+	 *            Allows to determine the kind of rate to returned. {@code null}
+	 *            means any type.
+	 * @param deferred
+	 *            If the quote should be deferred.
+	 * @return the according exchange rate, or null.
 	 */
-	public T parse(CharSequence text)
-			throws ParseException;
+	public ExchangeRate getExchangeRate(CurrencyUnit source,
+			CurrencyUnit target, ExchangeRateType type, boolean deferred);
 
+	/**
+	 * Get an exchange rate for the given parameters.
+	 * 
+	 * @param source
+	 *            the source currency.
+	 * @param target
+	 *            the target currency.
+	 * @param type
+	 *            Allows to determine the kind of rate to returned. {@code null}
+	 *            means any type.
+	 * @param timestamp
+	 *            the required target UTC timestamp for the rate, or -1 for the
+	 *            latest available.
+	 * @param validityDuration
+	 *            how long the quote should be considered valid.
+	 * @return the according exchange rate, or null.
+	 */
+	public ExchangeRate getExchangeRate(CurrencyUnit source,
+			CurrencyUnit target, ExchangeRateType type, long timestamp);
 
 }

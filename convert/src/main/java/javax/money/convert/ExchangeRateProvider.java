@@ -42,7 +42,7 @@ import javax.money.MonetaryAmount;
  * 
  * @author Anatole Tresch
  */
-public interface ExchangeRates {
+public interface ExchangeRateProvider {
 
 	/**
 	 * Checks if an exchange of a currency is defined.

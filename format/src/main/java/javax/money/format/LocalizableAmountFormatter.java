@@ -32,6 +32,7 @@
 package javax.money.format;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.money.MonetaryAmount;
 
@@ -45,7 +46,7 @@ import javax.money.MonetaryAmount;
  * 
  * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
  */
-public interface AmountFormatter extends Formatter<MonetaryAmount> {
+public interface LocalizableAmountFormatter extends LocalizableFormatter<MonetaryAmount> {
 
 	/**
 	 * Formats a amount's numeric value to a {@code String}, the currency is
@@ -58,13 +59,33 @@ public interface AmountFormatter extends Formatter<MonetaryAmount> {
 	 * 
 	 * @param amount
 	 *            the amount to print, not null
+	 * @param style
+	 *            The localization settings to be used.,
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String printNumber(MonetaryAmount amount);
+	public String printNumber(MonetaryAmount amount, LocalizationStyle style);
+
+	/**
+	 * Formats a amount's numeric value to a {@code String}, the currency is
+	 * omitted.
+	 * 
+	 * @param amount
+	 *            the amount to print, not null
+	 * @param locale
+	 *            The {@link Locale} to be used. This instance is used to create
+	 *            a simple {@link LocalizationStyle} using
+	 *            {@link LocalizationStyle#of(Locale)}.
+	 * @return the string printed using the settings of this formatter
+	 * @throws UnsupportedOperationException
+	 *             if the formatter is unable to print
+	 * @throws FormatException
+	 *             if there is a problem while printing
+	 */
+	public String printNumber(MonetaryAmount item, Locale locale);
 
 	/**
 	 * Formats a amount's numeric value to a {@code Appendable}, the currency is
@@ -74,13 +95,41 @@ public interface AmountFormatter extends Formatter<MonetaryAmount> {
 	 *            the appendable to print to, not null
 	 * @param amount
 	 *            the amount to print, not null
+	 * @param locale
+	 *            The {@link Locale} to be used. This instance is used to create
+	 *            a simple {@link LocalizationStyle} using
+	 *            {@link LocalizationStyle#of(Locale)}.
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public void printNumber(Appendable appendable, MonetaryAmount amount)
+	public void printNumber(Appendable appendable, MonetaryAmount amount, Locale locale)
 			throws IOException;
+
+	/**
+	 * Formats a amount's numeric value to a {@code Appendable}, the currency is
+	 * omitted.
+	 * <p>
+	 * This method uses a {@link LocalizationStyle} as an input parameter.
+	 * Styles allows to define detailed and customized formatting input
+	 * parameters. This allows to implement also complex formatting requirements
+	 * using this interface.
+	 * 
+	 * @param appendable
+	 *            the appendable to print to, not null
+	 * @param amount
+	 *            the amount to print, not null
+	 * @param style
+	 *            The localization settings to be used.
+	 * @return the string printed using the settings of this formatter
+	 * @throws UnsupportedOperationException
+	 *             if the formatter is unable to print
+	 * @throws FormatException
+	 *             if there is a problem while printing
+	 */
+	public void printNumber(Appendable appendable, MonetaryAmount item,
+			LocalizationStyle style) throws IOException;
 
 }

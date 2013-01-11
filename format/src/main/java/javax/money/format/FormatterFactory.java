@@ -34,25 +34,17 @@ package javax.money.format;
 import java.util.Locale;
 
 /**
- * This class represent the singleton for money related formatting and parsing
- * functionality. It is provided by the Money singleton.
+ * This class represent the accessor interface for creating different kind of
+ * formatters.
  * 
+ * @see Formatter
+ * @see LocalizableFormatter
  * @author Anatole Tresch
  */
-public interface MoneyFormats {
+public interface FormatterFactory<T> extends Targetable {
 
 	/**
-	 * This method allows to create a new {@link AmountFormatterBuilder} that
-	 * can be used to create a {@link AmountFormatter} using programmatic
-	 * configuration.
-	 * 
-	 * @return a new instance of a {@link AmountFormatterBuilder}, never null.
-	 */
-	public AmountFormatterBuilder createFormatterBuilder();
-
-	/**
-	 * This method returns an instance of a {@link AmountFormatter} that is
-	 * provided the registered AmountFormatterFactory SPI implementation.
+	 * This method returns an instance of a fixed styled {@link Formatter}.
 	 * 
 	 * @param locale
 	 *            The target locale. The locale will be converted into an
@@ -61,35 +53,24 @@ public interface MoneyFormats {
 	 * @return the formatter required, if available.
 	 * @throws
 	 */
-	public AmountFormatter getAmountFormatter(Locale locale);
+	public Formatter<T> getFormatter(Locale locale);
 
 	/**
-	 * This method returns an instance of a {@link AmountFormatter} that is
-	 * provided the registered AmountFormatterFactory SPI implementation.
+	 * This method returns an instance of a fixed styled {@link Formatter}.
 	 * 
 	 * @param style
 	 *            The target localization style.
 	 * @return the formatter required, if available.
 	 * @throws
 	 */
-	public AmountFormatter getAmountFormatter(LocalizationStyle style);
+	public Formatter<T> getFormatter(LocalizationStyle style);
 
 	/**
-	 * This method returns an instance of a {@link CurrencyFormatter}.
+	 * This method returns an instance of a {@link LocalizableFormatter}.
 	 * 
-	 * @param style
-	 *            The target localization style.
-	 * @return a currency formatter.
+	 * @return the formatter required, if available.
+	 * @throws
 	 */
-	public CurrencyFormatter getCurrencyFormatter(LocalizationStyle style);
-
-	/**
-	 * This method returns an instance of a {@link CurrencyFormatter}.
-	 * 
-	 * @param locale
-	 *            The target locale.
-	 * @return a currency formatter.
-	 */
-	public CurrencyFormatter getCurrencyFormatter(Locale locale);
+	public LocalizableFormatter<T> getLocalizableFormatter();
 
 }

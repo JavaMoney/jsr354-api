@@ -29,40 +29,44 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format;
+package javax.money;
 
-import java.util.Locale;
 
 /**
- * Instance that implement this interface parse Strings into instances of of
- * type T.
- * TODO check if this class can be moved to {@code java.util}.
+ * This class models the component defined by JSR 354 that provides accessors
+ * for {@link Region}. It is provided by the Money singleton.
+ * 
+ * @author Anatole Tresch
  */
-public interface Parser<T>  extends Targetable, Styled{
+public interface RegionProvider {
 
 	/**
-	 * Fully parses the text into an instance of T.
-	 * <p>
-	 * The parse must complete normally and parse the entire text. If the parse
-	 * completes without reading the entire length of the text, an exception is
-	 * thrown. If any other problem occurs during parsing, an exception is
-	 * thrown.
-	 * <p>
-	 * This method uses a {@link LocalizationStyle} as an input parameter.
-	 * Styles allows to define detailed and customized formatting input
-	 * parameters. This allows to implement also complex formatting requirements
-	 * using this interface.
+	 * Access a region.
 	 * 
-	 * @param text
-	 *            the text to parse, not null
-	 * @return the parsed value, never null
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to parse
-	 * @throws ParseException
-	 *             if there is a problem while parsing
+	 * @param identifier
+	 *            The region's id, not null.
+	 * @param type
+	 *            The region type, not null.
+	 * @return the region instance.
+	 * @throws IllegalArgumentException
+	 *             if the region does not exist.
 	 */
-	public T parse(CharSequence text)
-			throws ParseException;
+	public Region get(String identifier, RegionType type);
 
+	/**
+	 * Access all regions for a given {@link RegionType}.
+	 * 
+	 * @param type
+	 *            The region type, not null.
+	 * @return the regions found, never null.
+	 */
+	public Region[] getAll(RegionType type);
+
+	/**
+	 * Access all regions.
+	 * 
+	 * @return the regions found, never null.
+	 */
+	public Region[] getAll();
 
 }

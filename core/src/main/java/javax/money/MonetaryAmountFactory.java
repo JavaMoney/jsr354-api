@@ -37,7 +37,7 @@ package javax.money;
  * 
  * @author Anatole Tresch
  */
-public interface MonetaryAmounts {
+public interface MonetaryAmountFactory {
 
 	/**
 	 * Create an amount given the parameters.

@@ -39,57 +39,49 @@ import java.util.Locale;
  * 
  * @author Anatole Tresch
  */
-public interface MoneyParsers {
+public interface AmountFormatterFactory {
 
 	/**
-	 * This method returns a parser instance for {@link MonetaryAmount}
-	 * instances formatted in the given {@link Locale}. The instance returned
-	 * must be provided by the registered AmountParserFactory SPI
-	 * implementation.
+	 * This method allows to create a new {@link AmountFormatterBuilder} that
+	 * can be used to create a {@link AmountFormatter} using programmatic
+	 * configuration.
+	 * 
+	 * @return a new instance of a {@link AmountFormatterBuilder}, never null.
+	 */
+	public AmountFormatterBuilder createFormatterBuilder();
+
+	/**
+	 * This method returns an instance of a {@link AmountFormatter} that is
+	 * provided the registered AmountFormatterFactory SPI implementation.
 	 * 
 	 * @param locale
 	 *            The target locale. The locale will be converted into an
 	 *            according {@link LocalizationStyle} using
 	 *            {@link LocalizationStyle#of(Locale)}.
-	 * @return the according parser, if available.
+	 * @return the formatter required, if available.
 	 * @throws
 	 */
-	public AmountParser getAmountParser(Locale locale);
+	public AmountFormatter getAmountFormatter(Locale locale);
 
 	/**
-	 * This method returns a parser instance for {@link MonetaryAmount}
-	 * instances formatted in the given {@link Locale}. The instance returned
-	 * must be provided by the registered AmountParserFactory SPI
+	 * This method returns an instance of a {@link AmountFormatter} that is
+	 * provided the registered AmountFormatterFactory SPI implementation.
+	 * 
+	 * @param style
+	 *            The target localization style.
+	 * @return the formatter required, if available.
+	 * @throws
+	 */
+	public AmountFormatter getAmountFormatter(LocalizationStyle style);
+
+	/**
+	 * This method returns an instance of a {@link LocalizableAmountFormatter}
+	 * that is provided the registered AmountFormatterFactory SPI
 	 * implementation.
 	 * 
-	 * @param style
-	 *            The target localization style.
-	 * @return the according parser, if available.
+	 * @return the formatter required, if available.
 	 * @throws
 	 */
-	public AmountParser getAmountParser(LocalizationStyle style);
-
-	/**
-	 * This method returns an instance of a {@link CurrencyParser}.
-	 * 
-	 * @param namespace
-	 *            the target name space of currencies.
-	 * @param style
-	 *            The target localization style.
-	 * @return a currency formatter.
-	 */
-	public CurrencyParser getCurrencyParser(String namespace,
-			LocalizationStyle style);
-
-	/**
-	 * This method returns an instance of a {@link CurrencyParser}.
-	 * 
-	 * @param namespace
-	 *            the target name space of currencies.
-	 * @param locale
-	 *            The target locale.
-	 * @return a currency formatter.
-	 */
-	public CurrencyParser getCurrencyParser(String namespace, Locale locale);
+	public LocalizableAmountFormatter getLocalizableAmountFormatter();
 
 }

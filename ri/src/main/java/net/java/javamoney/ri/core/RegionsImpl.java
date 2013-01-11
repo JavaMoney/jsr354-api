@@ -27,8 +27,8 @@ import java.util.Set;
 
 import javax.money.Region;
 import javax.money.RegionType;
-import javax.money.Regions;
-import javax.money.spi.RegionProvider;
+import javax.money.RegionProvider;
+import javax.money.spi.RegionProviderSPI;
 
 import net.java.javamoney.ri.AbstractSPIComponent;
 
@@ -38,11 +38,11 @@ import net.java.javamoney.ri.AbstractSPIComponent;
  * 
  * @author Anatole Tresch
  */
-public final class RegionsImpl extends AbstractSPIComponent implements Regions {
+public final class RegionsImpl extends AbstractSPIComponent implements RegionProvider {
 	/** Singleton instance. */
 	private static final RegionsImpl INSTANCE = new RegionsImpl();
 	/** Loaded region providers. */
-	private List<RegionProvider> regionProviders;
+	private List<RegionProviderSPI> regionProviders;
 
 	/**
 	 * Singleton constructor.
@@ -61,7 +61,7 @@ public final class RegionsImpl extends AbstractSPIComponent implements Regions {
 	 * before.
 	 */
 	public void reload() {
-		regionProviders = getSPIProviders(RegionProvider.class);
+		regionProviders = getSPIProviders(RegionProviderSPI.class);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public final class RegionsImpl extends AbstractSPIComponent implements Regions {
 	 *             if the region does not exist.
 	 */
 	public Region get(String identifier, RegionType type) {
-		for (RegionProvider prov : INSTANCE.regionProviders) {
+		for (RegionProviderSPI prov : INSTANCE.regionProviders) {
 			Region reg = prov.getRegion(identifier, type);
 			if (reg != null) {
 				return reg;
@@ -95,7 +95,7 @@ public final class RegionsImpl extends AbstractSPIComponent implements Regions {
 	 */
 	public Region[] getAll(RegionType type) {
 		Set<Region> result = new HashSet<Region>();
-		for (RegionProvider prov : INSTANCE.regionProviders) {
+		for (RegionProviderSPI prov : INSTANCE.regionProviders) {
 			Region[] regions = prov.getRegions(type);
 			if (regions == null) {
 				// TODO Log warning

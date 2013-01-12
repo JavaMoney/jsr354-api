@@ -367,44 +367,6 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	public MonetaryAmount scaleByPowerOfTen(int n);
 
 	/**
-	 * Returns a copy of this monetary value with the specified currency.
-	 * <p>
-	 * The returned instance will have the specified currency and the amount
-	 * from this instance. If the scale differs between the currencies such that
-	 * rounding would be required, then an exception is thrown.
-	 * <p>
-	 * This instance is immutable and unaffected by this method.
-	 * 
-	 * @param currency
-	 *            the currency to use, not null
-	 * @return the new instance with the input currency set, never null
-	 * @throws ArithmeticException
-	 *             if the scale of the new currency is less than the scale of
-	 *             this currency
-	 */
-	public MonetaryAmount with(CurrencyUnit currency);
-
-	/**
-	 * Returns a copy of this monetary value with the specified currency.
-	 * <p>
-	 * The returned instance will have the specified currency and the amount
-	 * from this instance. If the number of decimal places differs between the
-	 * currencies, then the amount may be rounded.
-	 * <p>
-	 * This instance is immutable and unaffected by this method.
-	 * 
-	 * @param currency
-	 *            the currency to use, not null
-	 * @param adjusters
-	 *            the adjusters to be applied, e.g. rounding
-	 * @return the new instance with the input currency set, never null
-	 * @throws ArithmeticException
-	 *             if the rounding fails
-	 */
-	public MonetaryAmount with(CurrencyUnit currency,
-			AmountAdjuster... adjusters);
-
-	/**
 	 * Returns a copy of this amount adjusted by the {@link AmountAdjuster},
 	 * e.g. a {@link Rounding}.
 	 * <p>

@@ -1,4 +1,4 @@
-package net.java.javamoney.ri;
+package net.java.javamoney.ri.core;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 import javax.money.MonetaryAmount;
 
+import net.java.javamoney.ri.RITestBase;
 import net.java.javamoney.ri.core.BigDecimalAmount;
 
 import org.junit.Test;

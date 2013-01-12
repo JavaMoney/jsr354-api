@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation.
  *    Werner Keil - extension and adjustment.
  */
-package net.java.javamoney.ri;
+package net.java.javamoney.ri.core;
 
 
 import java.io.Serializable;
@@ -51,7 +51,7 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 	 * 
 	 * @param currency
 	 */
-	private JDKCurrencyAdapter(Currency currency) {
+	JDKCurrencyAdapter(Currency currency) {
 		if (currency == null) {
 			throw new IllegalArgumentException("Currency required.");
 		}
@@ -112,14 +112,8 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 	public int getDefaultFractionDigits() {
 		return this.currency.getDefaultFractionDigits();
 	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return currency.toString();
+	
+	public String toString(){
+		return this.currency.toString();
 	}
-	
-	
 }

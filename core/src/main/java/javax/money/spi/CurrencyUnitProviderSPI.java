@@ -117,4 +117,18 @@ public interface CurrencyUnitProviderSPI {
 	 */
 	public CurrencyUnit map(CurrencyUnit unit, String targetNamespace);
 
+	/**
+	 * Method that allows to check if a currency is available for a given time
+	 * range.
+	 * 
+	 * @param code
+	 *            the required code within this namespace, never null.
+	 * @param start
+	 *            the start UTC timestamp, or -1
+	 * @param end
+	 *            the end UTC timestamp, or -1
+	 * @return true, if the code is defined.
+	 */
+	public boolean isAvailable(String code, long start, long end);
+
 }

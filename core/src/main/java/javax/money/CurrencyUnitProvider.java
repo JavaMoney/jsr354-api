@@ -82,13 +82,33 @@ public interface CurrencyUnitProvider {
 	public CurrencyUnit[] getAll();
 
 	/**
-	 * Access all currencies available for the given timestamp.
+	 * Access all currencies available for the given UTC timestamp.
 	 * 
 	 * @param timestamp
 	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
 	 * @return the list of currencies available, never null.
 	 */
-	public CurrencyUnit[] get(long timestamp);
+	public CurrencyUnit[] getAll(long timstamp);
+
+	/**
+	 * Access all currencies available for a given namespace, timestamp.
+	 * 
+	 * @param namespace
+	 *            The target namespace, not null.
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for current.
+	 * @return the currencies found.
+	 */
+	public CurrencyUnit[] getAll(String namespace, long timestamp);
+
+	/**
+	 * Access all current currencies for a given namespace.
+	 * 
+	 * @param namespace
+	 *            The target namespace, not null.
+	 * @return the currencies found.
+	 */
+	public CurrencyUnit[] getAll(String namespace);
 
 	/**
 	 * Access all currencies matching a {@link Region}.
@@ -97,7 +117,7 @@ public interface CurrencyUnitProvider {
 	 *            the target locale, not null.
 	 * @return the currencies found, never null.
 	 */
-	public CurrencyUnit[] get(Region region);
+	public CurrencyUnit[] getAll(Region region);
 
 	/**
 	 * Access all currencies matching a {@link Region}, valid at the given
@@ -109,7 +129,7 @@ public interface CurrencyUnitProvider {
 	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
 	 * @return the currencies found, never null.
 	 */
-	public CurrencyUnit[] get(Region region, long timestamp);
+	public CurrencyUnit[] getAll(Region region, long timestamp);
 
 	/**
 	 * Checks if a currency is defined using its name space and code.

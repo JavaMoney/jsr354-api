@@ -40,6 +40,15 @@ package javax.money;
 public interface MonetaryAmountFactory {
 
 	/**
+	 * This method defines the number class used by this factory instances. The
+	 * Monetary singleton allows to use monetary amounts using different numeric
+	 * representations.
+	 * 
+	 * @return The number representation class used by this factory, never null.
+	 */
+	public Class<?> getNumberClass();
+	
+	/**
 	 * Create an amount given the parameters.
 	 * 
 	 * @param currency
@@ -139,93 +148,5 @@ public interface MonetaryAmountFactory {
 	 * @return the instance representing zero, never null
 	 */
 	public MonetaryAmount zero(CurrencyUnit currency);
-
-	/**
-	 * Obtains an instance of {@code Money} as the total value an array.
-	 * <p>
-	 * The array must contain at least one monetary value. Subsequent amounts
-	 * are added as though using {@link #plus(Money)}. All amounts must be in
-	 * the same currency.
-	 * 
-	 * @param monies
-	 *            the monetary values to total, not empty, no null elements, not
-	 *            null
-	 * @return the total, never null
-	 * @throws IllegalArgumentException
-	 *             if the array is empty
-	 * @throws CurrencyMismatchException
-	 *             if the currencies differ
-	 */
-	public MonetaryAmount total(MonetaryAmount... monies);
-
-	/**
-	 * Obtains an instance of {@code Money} as the total value a collection.
-	 * <p>
-	 * The iterable must provide at least one monetary value. Subsequent amounts
-	 * are added as though using {@link #plus(Money)}. All amounts must be in
-	 * the same currency.
-	 * 
-	 * @param monies
-	 *            the monetary values to total, not empty, no null elements, not
-	 *            null
-	 * @return the total, never null
-	 * @throws IllegalArgumentException
-	 *             if the iterable is empty
-	 * @throws CurrencyMismatchException
-	 *             if the currencies differ
-	 */
-	public MonetaryAmount total(Iterable<MonetaryAmount> monies);
-
-	/**
-	 * Obtains an instance of {@code Money} as the total value a possibly empty
-	 * array.
-	 * <p>
-	 * The amounts are added as though using {@link #plus(Money)} starting from
-	 * zero in the specified currency. All amounts must be in the same currency.
-	 * 
-	 * @param currency
-	 *            the currency to total in, not null
-	 * @param monies
-	 *            the monetary values to total, no null elements, not null
-	 * @return the total, never null
-	 * @throws CurrencyMismatchException
-	 *             if the currencies differ
-	 */
-	public MonetaryAmount total(CurrencyUnit currency, MonetaryAmount... monies);
-
-	/**
-	 * Obtains an instance of {@code Money} as the total value a possibly empty
-	 * collection.
-	 * <p>
-	 * The amounts are added as though using {@link #plus(Money)} starting from
-	 * zero in the specified currency. All amounts must be in the same currency.
-	 * 
-	 * @param currency
-	 *            the currency to total in, not null
-	 * @param monies
-	 *            the monetary values to total, no null elements, not null
-	 * @return the total, never null
-	 * @throws CurrencyMismatchException
-	 *             if the currencies differ
-	 */
-	public MonetaryAmount total(CurrencyUnit currency,
-			Iterable<MonetaryAmount> monies);
-
-	/**
-	 * Ensures that an {@code Amount} is not {@code null}.
-	 * <p>
-	 * If the input money is not {@code null}, then it is returned, providing
-	 * that the currency matches the specified currency. If the input amount is
-	 * {@code null}, then a zero amount in the currency is returned.
-	 * 
-	 * @param amonut
-	 *            the amount to check, may be null
-	 * @param currency
-	 *            the currency to use, not null
-	 * @return the input amount or zero in the specified currency, never null
-	 * @throws CurrencyMismatchException
-	 *             if the input money is non-null and the currencies differ
-	 */
-	public MonetaryAmount nonNull(MonetaryAmount amount, CurrencyUnit currency);
 
 }

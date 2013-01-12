@@ -1,8 +1,11 @@
-package javax.money;
+package net.java.javamoney.ri.samples;
 
 import java.io.IOException;
 import java.util.Locale;
 
+import javax.money.CurrencyUnit;
+import javax.money.Monetary;
+import javax.money.MonetaryAmount;
 import javax.money.format.AmountFormatter;
 import javax.money.format.AmountParser;
 import javax.money.format.LocalizableAmountFormatter;

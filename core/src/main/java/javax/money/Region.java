@@ -6,6 +6,10 @@ import java.io.Serializable;
  * Regions can be used to segregate or access artefacts (e.g. currencies) either
  * based on geographical, or commercial aspects (e.g. legal units).
  * 
+ * @see <a
+ *      href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">UN M.49: UN Statistics Division
+Country or area & region codes</a>
+ * 
  * @author Anatole Tresch
  */
 public class Region implements Serializable, Comparable<Region> {
@@ -22,7 +26,7 @@ public class Region implements Serializable, Comparable<Region> {
 
 	/**
 	 * Creates a region. Regions should only be accessed using the accessor
-	 * method on {@link MoneyUtil}. TODO link method here...
+	 * method on {@link Monetary}. TODO link method here...
 	 * 
 	 * @param id
 	 *            the region's id, not null.

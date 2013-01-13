@@ -31,8 +31,6 @@
  */
 package javax.money.format;
 
-import java.util.Locale;
-
 /**
  * Instance that implement this interface parse Strings into instances of of
  * type T.

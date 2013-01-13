@@ -32,7 +32,7 @@
 package javax.money.format;
 
 public interface Targetable {
-
+    // TODO why Styled but not Targeted here?
 	public Class<?> getTargetClass();
 
 }

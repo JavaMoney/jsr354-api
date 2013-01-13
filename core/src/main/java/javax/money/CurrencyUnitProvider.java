@@ -36,7 +36,7 @@ import java.util.Locale;
 
 /**
  * This class models the component defined by JSR 354 that provides accessors
- * for {@link CurrencyUnit}. It is provided by the Money singleton.
+ * for {@link CurrencyUnit}. It is provided by the Monetary singleton.
  * 
  * @author Anatole Tresch
  */

@@ -31,9 +31,6 @@
  */
 package javax.money;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-
 /**
  * Interface defining a monetary amount. The effective internal representation
  * of an amount may vary depending on the implementation used. Nevertheless

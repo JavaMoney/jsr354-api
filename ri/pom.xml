@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>jsr354</artifactId>
 		<groupId>javax.money</groupId>
-		<version>0.1.0</version>
+		<version>0.2.0-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>javamoney-ri</artifactId>
@@ -12,7 +12,7 @@
 	<description>Reference Implementation for JSR 354</description>
 	
 	<properties>
-	  <javax.money.version>0.1.0</javax.money.version>
+	  <javax.money.version>0.2.0-SNAPSHOT</javax.money.version>
 	</properties>
 	
 	<dependencyManagement>

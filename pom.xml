@@ -4,7 +4,7 @@
 	<groupId>javax.money</groupId>
 	<artifactId>jsr354</artifactId>
 	<version>0.2.0-SNAPSHOT</version>
-	<name>Java Money and Currency API</name>
+	<name>Java Money and Currency</name>
 	<url>http://java.net/projects/javamoney</url>
 	<packaging>pom</packaging>
 
@@ -20,12 +20,9 @@
 	</properties>
 
 	<modules>
-		<module>core</module>
-		<module>format</module>
-		<module>convert</module>
 		<!-- module>jdk-stub</module -->
-		<module>ri</module>
-		<module>singleton</module>
+		<module>javamoney-ri</module>
+		<module>javamoney-api</module>
 	</modules>
 
 	<licenses>

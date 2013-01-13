@@ -26,7 +26,7 @@ import javax.money.AmountAdjuster;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 
-class BigDecimalAmount implements MonetaryAmount {
+public class BigDecimalAmount implements MonetaryAmount {
 
 	private BigDecimal number;
 	private CurrencyUnit currency;

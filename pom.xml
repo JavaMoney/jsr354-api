@@ -58,17 +58,17 @@
 
 	<distributionManagement>
 		<site>
-			<id>javamoney.jcp@gmail.com</id>
-			<name>Cloudbees Public SVN Site Repository</name>
-			<url>scm:svn:https://svn-jsr354.forge.cloudbees.com/site</url>
+			<id>java.net-site</id>
+			<name>Java Net Public SVN Site Repository</name>
+			<url>scm:svn:https://svn.java.net/svn/javamoney~maven-site</url>
 		</site>
 		<repository>
-			<id>java.net-release</id>
+			<id>java.net-snapshot</id>
 			<name>Java Net Release Repository</name>
 			<url>https://java.net/projects/javamoney/downloads/directory/release</url>
 		</repository>
 		<snapshotRepository>
-			<id>java.net-snapshot</id>
+			<id>java.net-release</id>
 			<name>Java Net Snapshot Repository</name>
 			<url>https://java.net/projects/javamoney/downloads/directory/snapshot</url>
 		</snapshotRepository>

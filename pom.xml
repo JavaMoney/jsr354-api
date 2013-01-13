@@ -58,7 +58,7 @@
 
 	<distributionManagement>
 		<site>
-			<id>jsr354</id>
+			<id>javamoney.jcp@gmail.com</id>
 			<name>Cloudbees Public SVN Site Repository</name>
 			<url>scm:svn:https://svn-jsr354.forge.cloudbees.com/site</url>
 		</site>

@@ -11,28 +11,116 @@
 		<module>core</module>
 		<module>format</module>
 		<module>convert</module>
-		<!--  module>jdk-stub</module -->
+		<!-- module>jdk-stub</module -->
 		<module>ri</module>
+		<module>singleton</module>
 	</modules>
-	
-	  <licenses>
-	     <license>
-            <name>Spec</name>
-            <url>LICENSE.txt</url>
-        </license>
-        <license>
-            <name>RI + TCK</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-        </license>
-    </licenses>
-	
+
+	<licenses>
+		<license>
+			<name>Spec</name>
+			<url>LICENSE.txt</url>
+		</license>
+		<license>
+			<name>RI + TCK</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+		</license>
+	</licenses>
+
 	<issueManagement>
 		<system>JIRA</system>
 		<url>http://java.net/jira/browse/JAVAMONEY</url>
 	</issueManagement>
 	<description>JSR 354 provides an API for representing, transporting, and performing comprehensive calculations with Money and Currency. </description>
 	<organization>
-		<name>JSR 354 EG</name>
+		<name>JSR 354 - Expert Group</name>
 		<url>https://github.com/JavaMoney</url>
 	</organization>
+	<developers>
+		<developer>
+			<id>atsticks</id>
+			<name>Anatole Tresch</name>
+			<organization>Credit Suisse</organization>
+			<roles>
+				<role>Specicifaction Lead</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>keilw</id>
+			<name>Werner Keil</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>dunnschtig</id>
+			<name>Sascha Freitag</name>
+			<organization>Credit Suisse</organization>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>tom-huesler</id>
+			<name>Thomas Hüsler</name>
+			<organization>Credit Suisse</organization>
+			<timezone>GMT+1</timezone>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>vgrazi</id>
+			<name>Victor Grazi</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>jodastephen</id>
+			<name>Stephen Colebourne</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>chrisphe</id>
+			<name>Christopher Pheby</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>crazybob</id>
+			<name>Bob Lee</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>jeffprestes</id>
+			<name>Jefferson Prestes</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>-</id>
+			<name>Jeremy Davies</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://jsr354.ci.cloudbees.com/</url>
+	</ciManagement>
+	<scm>
+		<connection>https://github.com/JavaMoney/javamoney.git</connection>
+		<tag>master</tag>
+		<developerConnection>https://github.com/JavaMoney/javamoney.git</developerConnection>
+		<url>https://github.com/JavaMoney/javamoney</url>
+	</scm>
 </project>

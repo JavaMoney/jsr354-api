@@ -12,15 +12,7 @@
   	<dependency>
   		<groupId>javax.money</groupId>
   		<artifactId>javamoney-core</artifactId>
+  		<version>${project.version}</version>
   	</dependency>
   </dependencies>
-  <dependencyManagement>
-  	<dependencies>
-  		<dependency>
-  			<groupId>javax.money</groupId>
-  			<artifactId>javamoney-core</artifactId>
-  			<version>0.1.0-SNAPSHOT</version>
-  		</dependency>
-  	</dependencies>
-  </dependencyManagement>
 </project>

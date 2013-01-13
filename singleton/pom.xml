@@ -7,7 +7,7 @@
     <relativePath>..</relativePath>
   </parent>
   <artifactId>javamoney-singleton</artifactId>
-  <name>Java Money and Currency Conversion, API Singleton</name>
+  <name>Java Money and Currency API Singleton</name>
   <dependencies>
   	<dependency>
   		<groupId>javax.money</groupId>

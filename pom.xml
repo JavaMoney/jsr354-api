@@ -58,9 +58,9 @@
 
 	<distributionManagement>
 		<site>
-			<id>site-Cloudbees</id>
-			<name>Java.net Homepage</name>
-			<url>dav:https://svn-jsr354.forge.cloudbees.com/site</url>
+			<id>jsr354</id>
+			<name>Cloudbees Public SVN Site Repository</name>
+			<url>scm:svn:https://svn-jsr354.forge.cloudbees.com/site</url>
 		</site>
 		<repository>
 			<id>java.net-release</id>
@@ -89,8 +89,18 @@
 		<extensions>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<artifactId>wagon-scm</artifactId>
 				<version>2.2</version>
+			</extension>
+			<extension>
+				<groupId>org.apache.maven.scm</groupId>
+				<artifactId>maven-scm-manager-plexus</artifactId>
+				<version>1.5</version>
+			</extension>
+			<extension>
+				<groupId>org.apache.maven.scm</groupId>
+				<artifactId>maven-scm-provider-svnexe</artifactId>
+				<version>1.5</version>
 			</extension>
 		</extensions>
 		<pluginManagement>

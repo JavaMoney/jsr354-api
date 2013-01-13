@@ -61,12 +61,22 @@
 	
 	<distributionManagement>
 	  <site>
-	    <id>java.net</id>
+	    <id>site-Cloudbees</id>
 	    <name>Java.net Homepage</name>
-	    <url>http://javamoney.java.net</url>
+	    <url>https://svn-jsr354.forge.cloudbees.com/site</url>
 	  </site>
+	  <repository>
+	  	<id>java.net-release</id>
+	  	<name>Java Net Release Repository</name>
+	  	<url>https://java.net/projects/javamoney/downloads/directory/release</url>
+	  </repository>
+	  <snapshotRepository>
+	  	<id>java.net-snapshot</id>
+	  	<name>Java Net Snapshot Repository</name>
+	  	<url>https://java.net/projects/javamoney/downloads/directory/snapshot</url>
+	  </snapshotRepository>
 	</distributionManagement>
-
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

@@ -58,25 +58,25 @@
 			<post>jcurrency_mail@javamoney.java.net</post>
 		</mailingList>
 	</mailingLists>
-	
+
 	<distributionManagement>
-	  <site>
-	    <id>site-Cloudbees</id>
-	    <name>Java.net Homepage</name>
-	    <url>https://svn-jsr354.forge.cloudbees.com/site</url>
-	  </site>
-	  <repository>
-	  	<id>java.net-release</id>
-	  	<name>Java Net Release Repository</name>
-	  	<url>https://java.net/projects/javamoney/downloads/directory/release</url>
-	  </repository>
-	  <snapshotRepository>
-	  	<id>java.net-snapshot</id>
-	  	<name>Java Net Snapshot Repository</name>
-	  	<url>https://java.net/projects/javamoney/downloads/directory/snapshot</url>
-	  </snapshotRepository>
+		<site>
+			<id>site-Cloudbees</id>
+			<name>Java.net Homepage</name>
+			<url>dav:https://svn-jsr354.forge.cloudbees.com/site</url>
+		</site>
+		<repository>
+			<id>java.net-release</id>
+			<name>Java Net Release Repository</name>
+			<url>https://java.net/projects/javamoney/downloads/directory/release</url>
+		</repository>
+		<snapshotRepository>
+			<id>java.net-snapshot</id>
+			<name>Java Net Snapshot Repository</name>
+			<url>https://java.net/projects/javamoney/downloads/directory/snapshot</url>
+		</snapshotRepository>
 	</distributionManagement>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -213,7 +213,7 @@
 						<!-- excludePackageNames>blabla</excludePackageNames -->
 						<keywords>true</keywords>
 						<linksource>true</linksource>
-						<!-- overview>${basedir}/overview.html</overview  -->
+						<!-- overview>${basedir}/overview.html</overview -->
 						<source>${project.build.sourceCompilerLevel}</source>
 						<!-- stylesheetfile>${basedir}/src/site/css/javamoney-jdoc.css</stylesheetfile -->
 						<verbose>true</verbose>
@@ -230,6 +230,18 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>2.1</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.maven.wagon</groupId>
+							<artifactId>wagon-webdav</artifactId>
+							<version>1.0</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -249,16 +261,14 @@
 						</reports>
 						<configuration>
 							<detectLinks>true</detectLinks>
-							<!-- links>
-								<link>http://static.springsource.org/spring/docs/${spring.version}/javadoc-api</link>
-								<link>http://static.springsource.org/spring-security/site/docs/3.0.x/apidocs</link>
-								<link>http://commons.apache.org/lang/api-2.5</link>
-								<link>http://docs.oracle.com/javaee/5/api</link>
-							</links  -->
-							<!-- excludePackageNames>blabla</excludePackageNames  -->
+							<!-- links> <link>http://static.springsource.org/spring/docs/${spring.version}/javadoc-api</link> 
+								<link>http://static.springsource.org/spring-security/site/docs/3.0.x/apidocs</link> 
+								<link>http://commons.apache.org/lang/api-2.5</link> <link>http://docs.oracle.com/javaee/5/api</link> 
+								</links -->
+							<!-- excludePackageNames>blabla</excludePackageNames -->
 							<keywords>true</keywords>
 							<linksource>true</linksource>
-							<!-- overview>${basedir}/overview.html</overview  -->
+							<!-- overview>${basedir}/overview.html</overview -->
 							<source>${project.build.sourceCompilerLevel}</source>
 							<!-- stylesheetfile>${basedir}/src/site/css/javamoney-jdoc.css</stylesheetfile -->
 							<verbose>true</verbose>
@@ -271,8 +281,10 @@
 							</docletArtifact>
 							<show>private</show>
 							<additionalparam>
-								-inferrel -inferdep -quiet -hide java.* -collpackages java.util.*
-								-postfixpackage -nodefontname Tahoma -nodefontsize 9
+								-inferrel -inferdep -quiet -hide java.*
+								-collpackages java.util.*
+								-postfixpackage -nodefontname Tahoma
+								-nodefontsize 9
 								-nodefontpackagesize 7 -outputencoding UTF-8
 							</additionalparam>
 						</configuration>
@@ -341,17 +353,11 @@
 					</tagListOptions>
 				</configuration>
 			</plugin>
-			<!-- plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<xrefLocation>${project.reporting.outputDirectory}/../../xref</xrefLocation>
-					<enableRulesSummary>false</enableRulesSummary>
-					<configLocation>https://raw.github.com/JavaMoney/javamoney/master/checkstyle.xml</configLocation>
-					<headerLocation>https://raw.github.com/JavaMoney/javamoney/master/checkstyle-license.txt</headerLocation>
-				</configuration>
-			</plugin -->
+			<!-- plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-checkstyle-plugin</artifactId> 
+				<version>2.4</version> <configuration> <xrefLocation>${project.reporting.outputDirectory}/../../xref</xrefLocation> 
+				<enableRulesSummary>false</enableRulesSummary> <configLocation>https://raw.github.com/JavaMoney/javamoney/master/checkstyle.xml</configLocation> 
+				<headerLocation>https://raw.github.com/JavaMoney/javamoney/master/checkstyle-license.txt</headerLocation> 
+				</configuration> </plugin -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -452,7 +458,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>2.1</version>
 			</plugin>
 
 		</plugins>

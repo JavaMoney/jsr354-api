@@ -116,4 +116,14 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 	public String toString(){
 		return this.currency.toString();
 	}
+
+	@Override
+	public Object getAttribute(String key) {
+		return null;
+	}
+
+	@Override
+	public String[] getAttributeKeys() {
+		return new String[0];
+	}
 }

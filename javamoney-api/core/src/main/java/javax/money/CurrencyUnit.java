@@ -34,7 +34,6 @@ package javax.money;
 import java.util.Currency;
 import java.util.ServiceLoader;
 
-
 /**
  * * A unit of currency.
  * <p>
@@ -75,13 +74,36 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit> {
 	public String getCurrencyCode();
 
 	/**
-	 * Gets the ISO-4217 numeric currency code.
+	 * Gets a numeric currency code. within the ISO-4217 name space, this equals
+	 * to the ISO numeric code. In other currency name spaces this number may be
+	 * different, or even undefined (-1).
 	 * <p>
-	 * The numeric code is an alternative to the standard three letter code.
+	 * The numeric code is an optional alternative to the standard currency
+	 * code.
 	 * 
 	 * @return the numeric currency code
 	 */
 	public int getNumericCode();
+
+	/**
+	 * Access additional attributes of this currency instance. This allows to
+	 * add additional codes or extended information by SPI providers. For
+	 * instance there are ISO currency codes existing that may represented by
+	 * different country specific currencies. The detailed country can be added
+	 * as an attribute here.
+	 * 
+	 * @param key
+	 *            The attribute's key, never null.
+	 * @return the according attribute value, or null.
+	 */
+	public Object getAttribute(String key);
+
+	/**
+	 * Access the extended attributes defined.
+	 * 
+	 * @return the attribute key available, never null.
+	 */
+	public String[] getAttributeKeys();
 
 	/**
 	 * Gets the number of fractional digits typically used by this currency.

@@ -22,6 +22,8 @@ import java.util.Currency;
 
 import javax.money.CurrencyUnit;
 
+import net.java.javamoney.ri.core.JDKCurrencyAdapter;
+
 /**
  * @author Werner Keil
  *

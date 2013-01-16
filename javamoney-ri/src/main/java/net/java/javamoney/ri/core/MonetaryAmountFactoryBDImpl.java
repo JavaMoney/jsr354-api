@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmountFactory;
+import net.java.javamoney.ri.qualifiers.*;
 
+@Amount
 public class MonetaryAmountFactoryBDImpl implements MonetaryAmountFactory {
 
 	public MonetaryAmount get(CurrencyUnit currency, Number number) {

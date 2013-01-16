@@ -39,6 +39,7 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.spi.CurrencyNameProvider;
 import javax.money.CurrencyUnit;
+import javax.money.LocalizableCurrencyUnit;
 
 import sun.util.LocaleServiceProviderPool;
 import sun.util.logging.PlatformLogger;
@@ -74,7 +75,7 @@ import sun.util.resources.OpenListResourceBundle;
  * @since 1.4
  */
 @SuppressWarnings("restriction")
-public final class Currency implements CurrencyUnit, Serializable {
+public final class Currency implements LocalizableCurrencyUnit, Serializable {
 
 	private static final long serialVersionUID = -158308464356906721L;
 
@@ -802,5 +803,17 @@ public final class Currency implements CurrencyUnit, Serializable {
 	@Override
 	public long getValidUntil() {
 		return -1;
+	}
+
+	@Override
+	public Object getAttribute(String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String[] getAttributeKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -9,11 +9,11 @@
 	<artifactId>javamoney-ri</artifactId>
 	<name>Java Money and Currency RI</name>
 	<description>Reference Implementation for JSR 354</description>
-	
+
 	<properties>
-	  <javax.money.version>0.2.0-SNAPSHOT</javax.money.version>
+		<javax.money.version>0.2.0-SNAPSHOT</javax.money.version>
 	</properties>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -27,12 +27,21 @@
 				<version>4.8.1</version>
 				<scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>1</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>javax.money</groupId>
 			<artifactId>javamoney-api-singleton</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

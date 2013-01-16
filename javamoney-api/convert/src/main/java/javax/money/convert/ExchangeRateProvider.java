@@ -41,6 +41,8 @@ import javax.money.MonetaryAmount;
  * It is provided by the Money singleton.  It is provided by the Money singleton.
  * 
  * @author Anatole Tresch
+ * TODO should this probably be called CurrencyConverter? The main action is convert()
+ * Getters for ExchangeRate might remain here, separated from convert() methods in a *Converter interface...?
  */
 public interface ExchangeRateProvider {
 

@@ -33,54 +33,46 @@ package javax.money.format;
 
 import java.io.IOException;
 
-import javax.money.MonetaryAmount;
-
 /**
- * Formats instances of {@link MonetaryAmount}, by default the full amount is printed,
- * whereas some method allows also to print the number part without currency.
- * <p>
- * Instances of {@code AmountFormatter} can be created by
- * {@code AmountFormatterBuilder} or by accessing instances from the the
- * {@link MoneyFormat} singleton.
- * 
- * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
+ * Formats instances of T to a {@link String} or an {@link Appendable}.
+ * @TODO check if this class can be moved to {@code java.util}.
  */
-public interface AmountFormatter extends ItemFormatter<MonetaryAmount> {
+public interface ItemFormatter<T> extends Targeted, Styled {
 
 	/**
-	 * Formats a amount's numeric value to a {@code String}, the currency is
-	 * omitted.
-	 * <p>
-	 * This method uses a {@link LocalizationStyle} as an input parameter.
-	 * Styles allows to define detailed and customized formatting input
-	 * parameters. This allows to implement also complex formatting requirements
-	 * using this interface.
+	 * Formats a value of T to a {@code String}. This method uses a
+	 * {@link LocalizationStyle} as an input parameter. Styles allows to define
+	 * detailed and customized formatting input parameters. This allows to
+	 * implement also complex formatting requirements using this interface.
 	 * 
-	 * @param amount
-	 *            the amount to print, not null
+	 * @param item
+	 *            the item to print, not null
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String printNumber(MonetaryAmount amount);
+	public String print(T item);
 
 	/**
-	 * Formats a amount's numeric value to a {@code Appendable}, the currency is
-	 * omitted.
+	 * Prints a item value to an {@code Appendable}.
+	 * <p>
+	 * Example implementations of {@code Appendable} are {@code StringBuilder},
+	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
+	 * and {@code StringBuffer} never throw an {@code IOException}.
 	 * 
 	 * @param appendable
-	 *            the appendable to print to, not null
-	 * @param amount
-	 *            the amount to print, not null
-	 * @return the string printed using the settings of this formatter
+	 *            the appendable to add to, not null
+	 * @param item
+	 *            the item to print, not null
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
 	 *             if there is a problem while printing
+	 * @throws IOException
+	 *             if an IO error occurs
 	 */
-	public void printNumber(Appendable appendable, MonetaryAmount amount)
-			throws IOException;
+	public void print(Appendable appendable, T item) throws IOException;
 
 }

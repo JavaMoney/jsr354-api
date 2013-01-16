@@ -55,22 +55,22 @@ import java.util.Map;
  * {@link #of(Locale)}.
  * 
  * @author Anatole Tresch
- * TODO check if this class can be moved to {@code java.util}.
+ * @TODO check if this class can be moved to {@code java.util}.
  */
-public final class LocalizationStyle implements Serializable {
+public class LocalizationStyle implements Serializable {
 
 	/**
 	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = 8612440355369457473L;
 	/** The internal key used for a time locale set. */
-	private static final String TIME_LOCALE = "timeLocale";
+	public static final String TIME_LOCALE = "timeLocale";
 	/** The internal key used for a date locale set. */
-	private static final String DATE_LOCALE = "dateLocale";
+	public static final String DATE_LOCALE = "dateLocale";
 	/** The internal key used for a number locale set. */
-	private static final String NUMBER_LOCALE = "numberLocale";
+	public static final String NUMBER_LOCALE = "numberLocale";
 	/** The internal key used for a translation locale set (default). */
-	private static final String LOCALE = "locale";
+	public static final String TRANSLATION_LOCALE = "locale";
 	/** The internal key used for a formatting/parsing style. */
 	private static final String DEFAULT_ID = "default";
 	/** The style's name, by default ({@link #DEFAULT_ID}. */
@@ -141,15 +141,43 @@ public final class LocalizationStyle implements Serializable {
 	}
 
 	/**
+	 * Allows to evaluate if a style is a default style. A style is a default
+	 * style, if its id equals to {@link #DEFAULT_ID}.
+	 * <p>
+	 * Note that nevertheless multiple default style instances may be defined
+	 * that are not equal, since its attributes may differ.
+	 * 
+	 * @return true, if this style is a default style.
+	 */
+	public boolean isDefault() {
+		return DEFAULT_ID.equals(getId());
+	}
+
+	/**
 	 * This method allows to check, if the given style can be changed or, if it
 	 * read only.
 	 * 
 	 * @return true, if the style is read-only.
 	 */
-	public boolean isReadOnly() {
+	public final boolean isReadOnly() {
 		return readOnly;
 	}
 
+	/**
+	 * This method renders this style instance into an immutable instance.
+	 * Subsequent calls to {@link #setAttribute(String, Serializable)},
+	 * {@link #setDateLocale(Locale)}, {@link #setNumberLocale(Locale)},
+	 * {@link #setTimeLocale(Locale)}or {@link #removeAttribute(String)} will
+	 * throw an {@link IllegalStateException}.
+	 */
+	public void setImmutable() {
+		this.readOnly = true;
+	}
+
+	/**
+	 * Method used to simply create a {@link IllegalStateException}, if this
+	 * instance is read-only. This prevents duplicating the corresponding code.
+	 */
 	private void throwsExceptionIfReadonly() {
 		if (readOnly) {
 			throw new IllegalStateException(
@@ -174,7 +202,7 @@ public final class LocalizationStyle implements Serializable {
 	 * @return the translation (default) locale
 	 */
 	public final Locale getTranslationLocale() {
-		Locale locale = (Locale) getAttribute(LOCALE);
+		Locale locale = (Locale) getAttribute(TRANSLATION_LOCALE);
 		if (locale != null) {
 			return locale;
 		}

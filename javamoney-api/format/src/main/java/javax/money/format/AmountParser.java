@@ -42,7 +42,7 @@ import javax.money.MonetaryAmount;
  * <p>
  * This class is immutable and thread-safe.
  */
-public interface AmountParser extends Parser<MonetaryAmount> {
+public interface AmountParser extends ItemParser<MonetaryAmount> {
 
 	/**
 	 * Fully parses a number and combines it with a {@link CurrencyUnit} to an

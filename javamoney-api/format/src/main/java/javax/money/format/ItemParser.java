@@ -36,7 +36,7 @@ package javax.money.format;
  * type T.
  * TODO check if this class can be moved to {@code java.util}.
  */
-public interface Parser<T>  extends Targetable, Styled{
+public interface ItemParser<T>  extends Targeted, Styled{
 
 	/**
 	 * Fully parses the text into an instance of T.

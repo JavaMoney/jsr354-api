@@ -131,7 +131,7 @@ public interface AmountParserBuilder extends ParserBuilder<MonetaryAmount> {
 	 *            the formatter to append, not null
 	 * @return this for chaining, never null
 	 */
-	public AmountParserBuilder append(Parser<MonetaryAmount> formatter);
+	public AmountParserBuilder append(ItemParser<MonetaryAmount> formatter);
 
 	// -----------------------------------------------------------------------
 	/**

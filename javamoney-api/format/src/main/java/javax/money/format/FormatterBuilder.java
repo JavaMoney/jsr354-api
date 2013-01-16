@@ -54,7 +54,7 @@ import java.util.Locale;
  * instance should be created for each use. The formatters produced by the
  * builder are immutable and thread-safe.
  * 
- * @see Formatter
+ * @see ItemFormatter
  * @see LocalizableFormatter
  */
 public interface FormatterBuilder<T> {
@@ -85,10 +85,10 @@ public interface FormatterBuilder<T> {
 	 * 
 	 * @param locale
 	 *            the locale for the formatter, not null
-	 * @return the {@link Styled} {@link Formatter} built from this builder,
+	 * @return the {@link Styled} {@link ItemFormatter} built from this builder,
 	 *         never null
 	 */
-	public Formatter<T> toFormatter(Locale locale);
+	public ItemFormatter<T> toFormatter(Locale locale);
 
 	/**
 	 * Builds the formatter from the builder setting the
@@ -101,9 +101,9 @@ public interface FormatterBuilder<T> {
 	 * 
 	 * @param style
 	 *            the style for the formatter, not null
-	 * @return the {@link Styled} {@link Formatter} built from this builder,
+	 * @return the {@link Styled} {@link ItemFormatter} built from this builder,
 	 *         never null
 	 */
-	public Formatter<T> toFormatter(LocalizationStyle style);
+	public ItemFormatter<T> toFormatter(LocalizationStyle style);
 
 }

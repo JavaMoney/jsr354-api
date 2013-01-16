@@ -37,14 +37,14 @@ import java.util.Locale;
  * This class represent the accessor interface for creating different kind of
  * formatters.
  * 
- * @see Formatter
+ * @see ItemFormatter
  * @see LocalizableFormatter
  * @author Anatole Tresch
  */
-public interface FormatterFactory<T> extends Targetable {
+public interface FormatterFactory<T> extends Targeted {
 
 	/**
-	 * This method returns an instance of a fixed styled {@link Formatter}.
+	 * This method returns an instance of a fixed styled {@link ItemFormatter}.
 	 * 
 	 * @param locale
 	 *            The target locale. The locale will be converted into an
@@ -53,17 +53,17 @@ public interface FormatterFactory<T> extends Targetable {
 	 * @return the formatter required, if available.
 	 * @throws
 	 */
-	public Formatter<T> getFormatter(Locale locale);
+	public ItemFormatter<T> getFormatter(Locale locale);
 
 	/**
-	 * This method returns an instance of a fixed styled {@link Formatter}.
+	 * This method returns an instance of a fixed styled {@link ItemFormatter}.
 	 * 
 	 * @param style
 	 *            The target localization style.
 	 * @return the formatter required, if available.
 	 * @throws
 	 */
-	public Formatter<T> getFormatter(LocalizationStyle style);
+	public ItemFormatter<T> getFormatter(LocalizationStyle style);
 
 	/**
 	 * This method returns an instance of a {@link LocalizableFormatter}.

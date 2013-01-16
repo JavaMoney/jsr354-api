@@ -40,7 +40,7 @@ import javax.money.CurrencyUnit;
  * Formats instances of {@link CurrencyUnit} to and from a String.
  * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
  */
-public interface CurrencyFormatter extends Formatter<CurrencyUnit> {
+public interface CurrencyFormatter extends ItemFormatter<CurrencyUnit> {
 
 	/**
 	 * Formats a currency's symbol value to a {@code String}.

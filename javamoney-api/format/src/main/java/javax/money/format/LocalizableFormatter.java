@@ -37,7 +37,7 @@ import java.util.Locale;
 /**
  * Formats instances of T to a {@link String} or an {@link Appendable}.
  */
-public interface LocalizableFormatter<T> extends Targetable {
+public interface LocalizableFormatter<T> extends Targeted {
 
 	/**
 	 * Prints a item value to an {@code Appendable}.

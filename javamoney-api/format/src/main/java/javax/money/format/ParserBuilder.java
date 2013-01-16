@@ -54,7 +54,7 @@ import java.util.Locale;
  * instance should be created for each use. The parsers produced by the builder
  * are immutable and thread-safe.
  * 
- * @see Parser
+ * @see ItemParser
  * @see LocalizableParser
  */
 public interface ParserBuilder<T> {
@@ -84,10 +84,10 @@ public interface ParserBuilder<T> {
 	 * 
 	 * @param locale
 	 *            the locale for the parser, not null
-	 * @return the {@link Styled} {@link Parser} built from this builder, never
+	 * @return the {@link Styled} {@link ItemParser} built from this builder, never
 	 *         null
 	 */
-	public Parser<T> toParser(Locale locale);
+	public ItemParser<T> toParser(Locale locale);
 
 	/**
 	 * Builds the parser from the builder setting the {@link LocalizationStyle}.
@@ -99,9 +99,9 @@ public interface ParserBuilder<T> {
 	 * 
 	 * @param style
 	 *            the style for the parser, not null
-	 * @return the {@link Styled} {@link Parser} built from this builder, never
+	 * @return the {@link Styled} {@link ItemParser} built from this builder, never
 	 *         null
 	 */
-	public Parser<T> toParser(LocalizationStyle style);
+	public ItemParser<T> toParser(LocalizationStyle style);
 
 }

@@ -41,7 +41,7 @@ import javax.money.UnknownCurrencyException;
  * {@code MoneyFormat#getCurrencyParser(Locale)} or
  * {@code MoneyFormat#getCurrencyParser(LocalizationStyle)}.
  */
-public interface CurrencyParser extends Parser<CurrencyUnit> {
+public interface CurrencyParser extends ItemParser<CurrencyUnit> {
 
 	/**
 	 * Get the name space this parser is working on.

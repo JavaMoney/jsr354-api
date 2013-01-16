@@ -38,7 +38,7 @@ import java.util.Locale;
  * type T.
  * TODO check if this class can be moved to {@code java.util}.
  */
-public interface LocalizableParser<T> extends Targetable{
+public interface LocalizableParser<T> extends Targeted{
 
 	/**
 	 * Fully parses the text into an instance of T.

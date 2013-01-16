@@ -133,7 +133,7 @@ public interface AmountFormatterBuilder extends FormatterBuilder<MonetaryAmount>
 	 *            the formatter to append, not null
 	 * @return this for chaining, never null
 	 */
-	public AmountFormatterBuilder append(Formatter<MonetaryAmount> formatter);
+	public AmountFormatterBuilder append(ItemFormatter<MonetaryAmount> formatter);
 
 	// -----------------------------------------------------------------------
 	/**

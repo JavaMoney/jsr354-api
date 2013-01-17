@@ -127,8 +127,9 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public MonetaryAmount[] divideAndRemainder(MonetaryAmount divisor) {
-		BigDecimal[] dec = this.number.divideAndRemainder(BigDecimal
-				.valueOf(divisor.doubleValue()));
+//		BigDecimal[] dec = this.number.divideAndRemainder(BigDecimal
+//				.valueOf(divisor.doubleValue()));
+		BigDecimal[] dec = this.number.divideAndRemainder(divisor.asType(BigDecimal.class));
 		return new MonetaryAmount[] {
 				new BigDecimalAmount(this.currency, dec[0]),
 				new BigDecimalAmount(this.currency, dec[1]) };
@@ -143,8 +144,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public MonetaryAmount divideToIntegralValue(MonetaryAmount divisor) {
-		BigDecimal dec = this.number.divideToIntegralValue(BigDecimal
-				.valueOf(divisor.doubleValue()));
+		BigDecimal dec = this.number.divideToIntegralValue(divisor.asType(BigDecimal.class));
 		return new BigDecimalAmount(this.currency, dec);
 	}
 

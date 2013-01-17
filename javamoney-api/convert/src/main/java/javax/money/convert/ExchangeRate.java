@@ -32,6 +32,7 @@
 package javax.money.convert;
 
 import javax.money.CurrencyUnit;
+import javax.money.util.AttributeProvider;
 
 /**
  * This interface models a exchange rate between two currencies.
@@ -40,7 +41,7 @@ import javax.money.CurrencyUnit;
  * @author Anatole Tresch
  * @version 0.2.2
  */
-public interface ExchangeRate {
+public interface ExchangeRate extends AttributeProvider, Comparable<ExchangeRate> {
 
 	/**
 	 * Get the source currency.
@@ -79,7 +80,7 @@ public interface ExchangeRate {
 	 * @return The UTC timestamp of the rate.
 	 */
 	public long getTimestamp();
-	
+
 	/**
 	 * Get the location of this quote. TODO model this as an object?
 	 * 
@@ -111,9 +112,19 @@ public interface ExchangeRate {
 	public ExchangeRate[] getExchangeRateChain();
 
 	/**
+	 * Allows to evaluate if this exchange rate is a derived exchange rate.
+	 * Derived exchange rates are defined by an ordered list of subconversions
+	 * with intermediate steps, whereas a direct conversion is possible in one
+	 * steps.
+	 * 
+	 * @return true, if the exchange rate is derived.
+	 */
+	public boolean isDerived();
+
+	/**
 	 * Access the type of exchange rate.
 	 * 
-	 * @return the type of this rate.
+	 * @return the type of this rate, never null.
 	 */
 	public ExchangeRateType getExchangeRateType();
 

@@ -34,6 +34,8 @@ package javax.money;
 import java.util.Currency;
 import java.util.ServiceLoader;
 
+import javax.money.util.AttributeProvider;
+
 /**
  * * A unit of currency.
  * <p>
@@ -48,7 +50,7 @@ import java.util.ServiceLoader;
  * @author Stephen Colebourne
  * @author Anatole Tresch
  */
-public interface CurrencyUnit extends Comparable<CurrencyUnit> {
+public interface CurrencyUnit extends AttributeProvider, Comparable<CurrencyUnit> {
 
 	/**
 	 * Defines the name space for the currency code. If the CurrencyUnit is an
@@ -85,25 +87,7 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit> {
 	 */
 	public int getNumericCode();
 
-	/**
-	 * Access additional attributes of this currency instance. This allows to
-	 * add additional codes or extended information by SPI providers. For
-	 * instance there are ISO currency codes existing that may represented by
-	 * different country specific currencies. The detailed country can be added
-	 * as an attribute here.
-	 * 
-	 * @param key
-	 *            The attribute's key, never null.
-	 * @return the according attribute value, or null.
-	 */
-	public Object getAttribute(String key);
-
-	/**
-	 * Access the extended attributes defined.
-	 * 
-	 * @return the attribute key available, never null.
-	 */
-	public String[] getAttributeKeys();
+	
 
 	/**
 	 * Gets the number of fractional digits typically used by this currency.

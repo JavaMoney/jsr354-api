@@ -29,85 +29,44 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.convert;
+package javax.money.util;
+
+import java.util.Enumeration;
 
 /**
- * This class models the type of a given exchange rate. Basically the types
- * possible are determined by the concrete use cases and implementations.
- * Typical use cases is that exchange rates for different credit card systems or
- * debit/credit may differ. This class allows to distinguish these rates.
+ * This interface is used by several parts within JSR 354, since many othe the
+ * artifacts defined must be extendable by arbitrary attributes.
  * 
  * @author Anatole Tresch
  */
-public class ExchangeRateType {
-	/** The id of this type. */
-	private final String id;
+public interface AttributeProvider {
 
 	/**
-	 * Constructs a new instance of an ExchangeRateType..
+	 * Access additional attributes of this currency instance. This allows to
+	 * add additional codes or extended information by SPI providers. For
+	 * instance there are ISO currency codes existing that may represented by
+	 * different country specific currencies. The detailed country can be added
+	 * as an attribute here.
 	 * 
-	 * @param id
-	 *            The id of this type instance, never null.
+	 * @param key
+	 *            The attribute's key, never null.
+	 * @return the according attribute value, or null.
 	 */
-	public ExchangeRateType(String id) {
-		if (id == null) {
-			throw new IllegalArgumentException("Id must not be null.");
-		}
-		this.id = id;
-	}
+	public <T> T getAttribute(String key, Class<T> type);
 
 	/**
-	 * Get the identifier of this instance.
+	 * Access the extended attributes defined.
 	 * 
-	 * @return The identifier, never null.
+	 * @return the attribute key available, never null.
 	 */
-	public String getId() {
-		return this.id;
-	}
+	public Enumeration<String> getAttributeKeys();
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Access the type of an attribute.
 	 * 
-	 * @see java.lang.Object#hashCode()
+	 * @param key
+	 *            The attribute key
+	 * @return the attribute's value class, or null.
 	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ExchangeRateType other = (ExchangeRateType) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "ExchangeRateType [id=" + id + "]";
-	}
-
+	public Class<?> getAttributeType(String key);
 }

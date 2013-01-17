@@ -21,6 +21,7 @@ package net.java.javamoney.ri.convert;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Enumeration;
 
 import javax.money.CurrencyUnit;
 import javax.money.convert.ExchangeRate;
@@ -271,6 +272,36 @@ public class ExchangeRateImpl implements ExchangeRate {
 	public String getDataProvider() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public <T> T getAttribute(String key, Class<T> type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Enumeration<String> getAttributeKeys() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Class<?> getAttributeType(String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int compareTo(ExchangeRate o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean isDerived() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

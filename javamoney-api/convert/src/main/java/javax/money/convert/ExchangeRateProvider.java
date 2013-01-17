@@ -38,13 +38,21 @@ import javax.money.MonetaryAmount;
 
 /**
  * This interface defines access to the exchange conversion logic of JavaMoney.
- * It is provided by the Money singleton.  It is provided by the Money singleton.
+ * It is provided by the Money singleton. It is provided by the Money singleton.
  * 
- * @author Anatole Tresch
- * TODO should this probably be called CurrencyConverter? The main action is convert()
- * Getters for ExchangeRate might remain here, separated from convert() methods in a *Converter interface...?
+ * @author Anatole Tresch TODO should this probably be called CurrencyConverter?
+ *         The main action is convert() Getters for ExchangeRate might remain
+ *         here, separated from convert() methods in a *Converter interface...?
  */
 public interface ExchangeRateProvider {
+
+	/**
+	 * Get the exchange rate type that this provider instance is providing data
+	 * for.
+	 * 
+	 * @return the {@link ExchangeRateType} if this instance.
+	 */
+	public ExchangeRateType getExchangeRateType();
 
 	/**
 	 * Checks if an exchange of a currency is defined.
@@ -127,118 +135,6 @@ public interface ExchangeRateProvider {
 	 *             if the chain passed is inconsistent.
 	 */
 	public ExchangeRate get(ExchangeRate... exchangeRates);
-
-	/**
-	 * Method that converts the source {@link MonetaryAmount} to an
-	 * {@link MonetaryAmount} with the given target {@link CurrencyUnit}.<br/>
-	 * By default this method should use a real time conversion, but may also
-	 * fall back to deferred data.
-	 * 
-	 * @param amount
-	 *            The source amount
-	 * @param target
-	 *            The target currency
-	 * @return The converted amount, never null.
-	 * @throws CurrencyConversionException
-	 *             if conversion failed, or the required data is not available.
-	 */
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target);
-
-	/**
-	 * Method that converts the source {@link MonetaryAmount} to an
-	 * {@link MonetaryAmount} with the given target {@link CurrencyUnit}.
-	 * 
-	 * @param amount
-	 *            The source amount
-	 * @param target
-	 *            The target currency
-	 * @param deferred
-	 *            if the required exchange rate may be deferred, or a real time
-	 *            rate is required.
-	 * @return The converted amount, never null.
-	 * @throws CurrencyConversionException
-	 *             if conversion failed, or the required data is not available.
-	 */
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
-			boolean deferred);
-
-	/**
-	 * Method that converts the source {@link MonetaryAmount} to an
-	 * {@link MonetaryAmount} with the given target {@link CurrencyUnit}.
-	 * 
-	 * @param amount
-	 *            The source amount
-	 * @param target
-	 *            The target currency
-	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried.
-	 * @return The converted amount, never null.
-	 * @throws CurrencyConversionException
-	 *             if conversion failed, or the required data is not available.
-	 */
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
-			Calendar timestamp);
-
-	/**
-	 * Method that converts the source {@code double} amount in source
-	 * {@link CurrencyUnit} to an {@link MonetaryAmount} with the given target
-	 * {@link CurrencyUnit}.<br/>
-	 * By default this method should use a real time conversion, but may also
-	 * fall back to deferred data.
-	 * 
-	 * @param amount
-	 *            The amount.
-	 * @param sourceCurrency
-	 *            The source currency
-	 * @param targetCurrency
-	 *            The target currency
-	 * @return the converted {@code value} as {@code double}.
-	 * @throws CurrencyConversionException
-	 *             if conversion failed, or the required data is not available.
-	 */
-	public double convert(double amount, CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency);
-
-	/**
-	 * Method that converts the source {@code double} amount in source
-	 * {@link CurrencyUnit} to an {@link MonetaryAmount} with the given target
-	 * {@link CurrencyUnit}.
-	 * 
-	 * @param amount
-	 *            The amount.
-	 * @param sourceCurrency
-	 *            The source currency
-	 * @param targetCurrency
-	 *            The target currency
-	 * @param deferred
-	 *            if the required exchange rate may be deferred, or a real time
-	 *            rate is required.
-	 * @return the converted {@code value} as {@code double}.
-	 * @throws CurrencyConversionException
-	 *             if conversion failed, or the required data is not available.
-	 */
-	public double convert(double amount, CurrencyUnit source,
-			CurrencyUnit target, boolean deferred);
-
-	/**
-	 * Method that converts the source {@code double} amount in source
-	 * {@link CurrencyUnit} to an {@link MonetaryAmount} with the given target
-	 * {@link CurrencyUnit}.
-	 * 
-	 * @param amount
-	 *            The amount.
-	 * @param sourceCurrency
-	 *            The source currency
-	 * @param targetCurrency
-	 *            The target currency
-	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried.
-	 * @return the converted {@code value} as {@code double}.
-	 * @throws CurrencyConversionException
-	 *             if conversion failed, or the required data is not available.
-	 */
-	public double convert(double amount, CurrencyUnit source,
-			CurrencyUnit target, Calendar timestamp);
 
 	/**
 	 * Get an {@link ExchangeRate} for a given combination of currencies.<br/>

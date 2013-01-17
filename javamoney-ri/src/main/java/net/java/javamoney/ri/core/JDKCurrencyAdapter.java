@@ -21,8 +21,9 @@ package net.java.javamoney.ri.core;
 
 
 import java.io.Serializable;
-
+import java.util.Collections;
 import java.util.Currency;
+import java.util.Enumeration;
 
 import javax.money.CurrencyUnit;
 
@@ -118,12 +119,17 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 	}
 
 	@Override
-	public Object getAttribute(String key) {
+	public <T> T getAttribute(String key, Class<T> type) {
 		return null;
 	}
 
 	@Override
-	public String[] getAttributeKeys() {
-		return new String[0];
+	public Enumeration<String> getAttributeKeys() {
+		return Collections.emptyEnumeration();
+	}
+
+	@Override
+	public Class<?> getAttributeType(String key) {
+		return null;
 	}
 }

@@ -31,9 +31,9 @@ import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.CurrencyUnitProvider;
-import javax.money.Region;
-import javax.money.RegionType;
 import javax.money.UnknownCurrencyException;
+import javax.money.ext.Region;
+import javax.money.ext.RegionType;
 import javax.money.spi.CurrencyUnitProviderSPI;
 
 import net.java.javamoney.ri.AbstractSPIComponent;
@@ -156,25 +156,6 @@ public final class CurrencyUnitProviderImpl extends AbstractSPIComponent
 
 	public CurrencyUnit get(String namespace, String code) {
 		return get(namespace, code, -1L);
-	}
-
-	public CurrencyUnit[] getAll(Region region) {
-		return getAll(region, -1);
-	}
-
-	public CurrencyUnit[] getAll(Region region, long timestamp) {
-		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		for (List<CurrencyUnitProviderSPI> provList : INSTANCE.currencyProviders
-				.values()) {
-			for (CurrencyUnitProviderSPI prov : provList) {
-				CurrencyUnit[] currencies = prov.getCurrencies(region,
-						timestamp);
-				if (currencies != null) {
-					result.addAll(Arrays.asList(currencies));
-				}
-			}
-		}
-		return result.toArray(new CurrencyUnit[result.size()]);
 	}
 
 	public boolean isAvailable(String namespace, String code) {

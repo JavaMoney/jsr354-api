@@ -35,7 +35,6 @@ import java.util.Locale;
 import java.util.ServiceLoader;
 
 import javax.money.CurrencyUnit;
-import javax.money.Region;
 
 /**
  * Implementation of this interface define the currencies supported in the
@@ -83,17 +82,6 @@ public interface CurrencyUnitProviderSPI {
 	 * @return the currencies found, or null.
 	 */
 	public CurrencyUnit[] getCurrencies(Locale locale, long timestamp);
-
-	/**
-	 * Get the available currencies for the given {@link Locale}.
-	 * 
-	 * @param region
-	 *            the target {@link Region}
-	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
-	 * @return the currencies found, or null.
-	 */
-	public CurrencyUnit[] getCurrencies(Region region, long timestamp);
 
 	/**
 	 * Get the currencies available.

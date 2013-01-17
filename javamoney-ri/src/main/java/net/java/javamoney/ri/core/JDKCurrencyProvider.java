@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.Region;
+import javax.money.ext.Region;
 import javax.money.spi.CurrencyUnitProviderSPI;
 
 /**
@@ -68,11 +68,6 @@ public class JDKCurrencyProvider implements CurrencyUnitProviderSPI {
 						.getCurrencyCode()) };
 			}
 		}
-		return null;
-	}
-
-	public CurrencyUnit[] getCurrencies(Region region, long timestamp) {
-		// not supported by the JDK.
 		return null;
 	}
 

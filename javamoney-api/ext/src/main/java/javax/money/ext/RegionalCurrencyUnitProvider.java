@@ -29,41 +29,43 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.spi;
+package javax.money.ext;
 
-import java.util.ServiceLoader;
+import java.util.Date;
+import java.util.Locale;
 
-import javax.money.Region;
-import javax.money.RegionType;
+import javax.money.CurrencyUnit;
+import javax.money.MonetaryExtension;
+import javax.money.UnknownCurrencyException;
 
 /**
- * Implementation of this interface define the regions supported in the system.
- * Each provider may hereby serve several region types.
- * <p>
- * Registration is done using the {@link ServiceLoader} features.
+ * This class models the component defined by JSR 354 that provides accessors
+ * for {@link CurrencyUnit} using {@link Region}s. It is provided by the
+ * Monetary singleton.
  * 
  * @author Anatole Tresch
  */
-public interface RegionProviderSPI {
+public interface RegionalCurrencyUnitProvider extends MonetaryExtension{
 
 	/**
-	 * Access a region.
+	 * Access all currencies matching a {@link Region}.
 	 * 
-	 * @param identifier
-	 *            The region's id.
-	 * @param type
-	 *            The required region type.
-	 * @return The corresponding region, or null.
+	 * @param locale
+	 *            the target locale, not null.
+	 * @return the currencies found, never null.
 	 */
-	public Region getRegion(String identifier, RegionType type);
+	public CurrencyUnit[] getAll(Region region);
 
 	/**
-	 * Access all regions provided by this region provider.
+	 * Access all currencies matching a {@link Region}, valid at the given
+	 * timestamp.
 	 * 
-	 * @param type
-	 *            The required region type.
-	 * @return the regions to be added, not null.
+	 * @param locale
+	 *            the target locale, not null.
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 * @return the currencies found, never null.
 	 */
-	public Region[] getRegions(RegionType type);
+	public CurrencyUnit[] getAll(Region region, long timestamp);
 
 }

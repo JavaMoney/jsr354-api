@@ -1,6 +1,8 @@
-package javax.money;
+package net.java.javamoney.ri.ext;
 
-import java.io.Serializable;
+import javax.money.Monetary;
+import javax.money.ext.Region;
+import javax.money.ext.RegionType;
 
 /**
  * Regions can be used to segregate or access artefacts (e.g. currencies) either
@@ -12,7 +14,7 @@ Country or area & region codes</a>
  * 
  * @author Anatole Tresch
  */
-public class Region implements Serializable, Comparable<Region> {
+public class RegionImpl implements Region {
 	/**
 	 * serialID.
 	 */
@@ -33,7 +35,7 @@ public class Region implements Serializable, Comparable<Region> {
 	 * @param type
 	 *            the region's type, not null.
 	 */
-	public Region(String id, RegionType regionType) {
+	public RegionImpl(String id, RegionType regionType) {
 		this.id = id;
 		this.regionType = regionType;
 	}
@@ -63,9 +65,9 @@ public class Region implements Serializable, Comparable<Region> {
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Region o) {
-		int compare = this.regionType.compareTo(o.regionType);
+		int compare = this.regionType.compareTo(o.getRegionType());
 		if (compare == 0) {
-			compare = this.id.compareTo(o.id);
+			compare = this.id.compareTo(o.getId());
 		}
 		return compare;
 	}
@@ -98,7 +100,7 @@ public class Region implements Serializable, Comparable<Region> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Region other = (Region) obj;
+		RegionImpl other = (RegionImpl) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

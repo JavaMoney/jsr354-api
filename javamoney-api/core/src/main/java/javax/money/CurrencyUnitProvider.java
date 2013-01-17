@@ -111,27 +111,6 @@ public interface CurrencyUnitProvider {
 	public CurrencyUnit[] getAll(String namespace);
 
 	/**
-	 * Access all currencies matching a {@link Region}.
-	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @return the currencies found, never null.
-	 */
-	public CurrencyUnit[] getAll(Region region);
-
-	/**
-	 * Access all currencies matching a {@link Region}, valid at the given
-	 * timestamp.
-	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
-	 * @return the currencies found, never null.
-	 */
-	public CurrencyUnit[] getAll(Region region, long timestamp);
-
-	/**
 	 * Checks if a currency is defined using its name space and code.
 	 * 
 	 * @param namespace

@@ -59,7 +59,6 @@ public final class Monetary {
 	private Class<?> defaultNumberClass;
 
 	private final CurrencyUnitProvider currencyUnitProvider;
-	private final RegionProvider regionProvider;
 	private final Map<Class<?>, MonetaryAmountFactory> monetaryAmountFactories = new HashMap<Class<?>, MonetaryAmountFactory>();
 	private final RoundingProvider roundingProvider;
 	private final Map<ExchangeRateType, ExchangeRateProvider> exchangeRateProviders = new HashMap<ExchangeRateType, ExchangeRateProvider>();
@@ -81,7 +80,6 @@ public final class Monetary {
 	 */
 	private Monetary() {
 		currencyUnitProvider = loadService(CurrencyUnitProvider.class);
-		regionProvider = loadService(RegionProvider.class);
 		roundingProvider = loadService(RoundingProvider.class);
 		amountParserFactory = loadService(AmountParserFactory.class);
 		amountFormatterFactory = loadService(AmountFormatterFactory.class);
@@ -133,18 +131,6 @@ public final class Monetary {
 			}
 		}
 		return instance;
-	}
-
-	/**
-	 * Access the {@link RegionProvider} component.
-	 * 
-	 * @return the {@link RegionProvider} component, never {@code null}.
-	 */
-	public static RegionProvider getRegionProvider() {
-		if (INSTANCE.regionProvider == null) {
-			throw new UnsupportedOperationException("No RegionProvider loaded");
-		}
-		return INSTANCE.regionProvider;
 	}
 
 	/**

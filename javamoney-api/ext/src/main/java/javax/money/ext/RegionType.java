@@ -29,44 +29,35 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
-
+package javax.money.ext;
 
 /**
- * This class models the component defined by JSR 354 that provides accessors
- * for {@link Region}. It is provided by the Money singleton.
+ * Defines the different region types available. This allows to segregate
+ * different grouping strategy types.
  * 
  * @author Anatole Tresch
  */
-public interface RegionProvider {
+public enum RegionType {
+	/** Type representing a continent. */
+	CONTINENT,
+
+	/** Type representing a sub-continent. */
+	SUBCONTINENT,
 
 	/**
-	 * Access a region.
-	 * 
-	 * @param identifier
-	 *            The region's id, not null.
-	 * @param type
-	 *            The region type, not null.
-	 * @return the region instance.
-	 * @throws IllegalArgumentException
-	 *             if the region does not exist.
+	 * Type representing a grouping of territories that is not mappable to a
+	 * normal WORLD/CONTINENT/SUBCONTINENT/TERRITORY structure, or an arbitrary
+	 * user defined grouping.
 	 */
-	public Region get(String identifier, RegionType type);
+	GROUPING,
 
-	/**
-	 * Access all regions for a given {@link RegionType}.
-	 * 
-	 * @param type
-	 *            The region type, not null.
-	 * @return the regions found, never null.
-	 */
-	public Region[] getAll(RegionType type);
+	/** Type representing a territory. */
+	TERRITORY,
 
-	/**
-	 * Access all regions.
-	 * 
-	 * @return the regions found, never null.
-	 */
-	public Region[] getAll();
+	/** Type representing the unknown region. */
+	UNKNOWN,
+
+	/** Type representing the whole world. */
+	WORLD
 
 }

@@ -29,35 +29,39 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.ext.spi;
+
+import javax.money.CurrencyUnit;
+import javax.money.ext.Region;
 
 /**
- * Defines the different region types available. This allows to segregate
- * different grouping strategy types.
+ * This class models the component defined by JSR 354 that provides accessors
+ * for {@link CurrencyUnit} using {@link Region}s. It is provided by the
+ * Monetary singleton.
  * 
  * @author Anatole Tresch
  */
-public enum RegionType {
-	/** Type representing a continent. */
-	CONTINENT,
-
-	/** Type representing a sub-continent. */
-	SUBCONTINENT,
+public interface RegionalCurrencyUnitProviderSPI{
 
 	/**
-	 * Type representing a grouping of territories that is not mappable to a
-	 * normal WORLD/CONTINENT/SUBCONTINENT/TERRITORY structure, or an arbitrary
-	 * user defined grouping.
+	 * Access all currencies matching a {@link Region}.
+	 * 
+	 * @param locale
+	 *            the target locale, not null.
+	 * @return the currencies found, or null.
 	 */
-	GROUPING,
+	public CurrencyUnit[] getAll(Region region);
 
-	/** Type representing a territory. */
-	TERRITORY,
-
-	/** Type representing the unknown region. */
-	UNKNOWN,
-
-	/** Type representing the whole world. */
-	WORLD
+	/**
+	 * Access all currencies matching a {@link Region}, valid at the given
+	 * timestamp.
+	 * 
+	 * @param locale
+	 *            the target locale, not null.
+	 * @param timestamp
+	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 * @return the currencies found, or null.
+	 */
+	public CurrencyUnit[] getAll(Region region, long timestamp);
 
 }

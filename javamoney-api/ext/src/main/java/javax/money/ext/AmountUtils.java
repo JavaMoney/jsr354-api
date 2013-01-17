@@ -29,7 +29,12 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.ext;
+
+import javax.money.CurrencyMismatchException;
+import javax.money.CurrencyUnit;
+import javax.money.MonetaryAmount;
+import javax.money.MonetaryExtension;
 
 /**
  * Component for accessing {@link MonetaryAmount} instances. It is provided by

@@ -32,11 +32,15 @@
 package javax.money;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateProvider;
+import javax.money.convert.ExchangeRateType;
 import javax.money.format.AmountFormatterFactory;
 import javax.money.format.AmountParserFactory;
 import javax.money.format.CurrencyFormatterFactory;
@@ -58,7 +62,8 @@ public final class Monetary {
 	private final RegionProvider regionProvider;
 	private final Map<Class<?>, MonetaryAmountFactory> monetaryAmountFactories = new HashMap<Class<?>, MonetaryAmountFactory>();
 	private final RoundingProvider roundingProvider;
-	private final ExchangeRateProvider exchangeRateProvider;
+	private final Map<ExchangeRateType, ExchangeRateProvider> exchangeRateProviders = new HashMap<ExchangeRateType, ExchangeRateProvider>();
+	private final Map<ExchangeRateType, CurrencyConverter> currencyConverters = new HashMap<ExchangeRateType, CurrencyConverter>();
 	private final AmountParserFactory amountParserFactory;
 	private final AmountFormatterFactory amountFormatterFactory;
 	private final CurrencyParserFactory currencyParserFactory;
@@ -66,6 +71,10 @@ public final class Monetary {
 
 	private final ServiceLoader<MonetaryAmountFactory> amountFactoryLoader = ServiceLoader
 			.load(MonetaryAmountFactory.class);
+	private final ServiceLoader<ExchangeRateProvider> exchangeRateProviderLoader = ServiceLoader
+			.load(ExchangeRateProvider.class);
+	private final ServiceLoader<CurrencyConverter> currencyConverterLoader = ServiceLoader
+			.load(CurrencyConverter.class);
 
 	/**
 	 * Singleton constructor.
@@ -78,7 +87,13 @@ public final class Monetary {
 		amountFormatterFactory = loadService(AmountFormatterFactory.class);
 		currencyParserFactory = loadService(CurrencyParserFactory.class);
 		currencyFormatterFactory = loadService(CurrencyFormatterFactory.class);
-		exchangeRateProvider = loadService(ExchangeRateProvider.class);
+		// TODO define how to handle and handle duplicate registrations!
+		for (ExchangeRateProvider t : exchangeRateProviderLoader) {
+			this.exchangeRateProviders.put(t.getExchangeRateType(), t);
+		}
+		for (CurrencyConverter t : currencyConverterLoader) {
+			this.currencyConverters.put(t.getExchangeRateType(), t);
+		}
 		for (MonetaryAmountFactory t : amountFactoryLoader) {
 			this.monetaryAmountFactories.put(t.getNumberClass(), t);
 		}
@@ -191,14 +206,52 @@ public final class Monetary {
 	/**
 	 * Access the {@link ExchangeRateProvider} component.
 	 * 
+	 * @param type
+	 *            the target {@link ExchangeRateType}.
 	 * @return the {@link ExchangeRateProvider} component, never {@code null}.
+	 * @throws IllegalArgumentException
+	 *             if no such provider is registered.
 	 */
-	public static ExchangeRateProvider getExchangeRateProvider() {
-		if (INSTANCE.exchangeRateProvider == null) {
-			throw new UnsupportedOperationException(
-					"No ExchangeRateProvider loaded");
+	public static ExchangeRateProvider getExchangeRateProvider(
+			ExchangeRateType type) {
+		ExchangeRateProvider prov = INSTANCE.exchangeRateProviders.get(type);
+		if (prov == null) {
+			throw new IllegalArgumentException(
+					"No ExchangeRateProvider for the required type registered: "
+							+ type);
 		}
-		return INSTANCE.exchangeRateProvider;
+		return prov;
+	}
+
+	/**
+	 * Access the {@link ExchangeRateProvider} component.
+	 * 
+	 * @param type
+	 *            the target {@link ExchangeRateType}.
+	 * @return the {@link ExchangeRateProvider} component, never {@code null}.
+	 * @throws IllegalArgumentException
+	 *             if no such provider is registered.
+	 */
+	public static CurrencyConverter getCurrencyConverter(ExchangeRateType type) {
+		CurrencyConverter prov = INSTANCE.currencyConverters.get(type);
+		if (prov == null) {
+			throw new IllegalArgumentException(
+					"No CurrencyConverter for the required type registered: "
+							+ type);
+		}
+		return prov;
+	}
+
+	/**
+	 * Access the defined {@link ExchangeRateType} currently registered.
+	 * 
+	 * @see #getCurrencyConverter(ExchangeRateType)
+	 * @see #getExchangeRateProvider(ExchangeRateType)
+	 * @return The exchange rate types allow to access a
+	 *         {@link CurrencyConverter} or an {@link ExchangeRateProvider}.
+	 */
+	public Enumeration<ExchangeRateType> getSupportedExchangeRateTypes() {
+		return Collections.enumeration(this.exchangeRateProviders.keySet());
 	}
 
 	/**

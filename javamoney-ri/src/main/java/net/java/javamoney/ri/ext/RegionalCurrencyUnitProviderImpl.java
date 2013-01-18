@@ -49,7 +49,7 @@ public final class RegionalCurrencyUnitProviderImpl extends
 	private List<RegionalCurrencyUnitProviderSPI> regionalCurrencyProviders = new ArrayList<RegionalCurrencyUnitProviderSPI>();
 
 	/**
-	 * Singleton constructor.
+	 * Constructor.
 	 */
 	public RegionalCurrencyUnitProviderImpl() {
 		try {
@@ -58,6 +58,16 @@ public final class RegionalCurrencyUnitProviderImpl extends
 			// TODO log excetion!
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * This method defined that this implementation is exposed as
+	 * {@link RegionalCurrencyUnitProvider}.
+	 * 
+	 * @return {@link RegionalCurrencyUnitProvider}.class
+	 */
+	public Class getExposedType() {
+		return RegionalCurrencyUnitProvider.class;
 	}
 
 	/**
@@ -95,19 +105,19 @@ public final class RegionalCurrencyUnitProviderImpl extends
 		return result.toArray(new CurrencyUnit[result.size()]);
 	}
 
-//	public CurrencyUnit[] getAll(Locale locale, long timestamp) {
-//		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-//		for (List<CurrencyUnitProviderSPI> provList : INSTANCE.currencyProviders
-//				.values()) {
-//			for (CurrencyUnitProviderSPI prov : provList) {
-//				CurrencyUnit[] currencies = prov.getCurrencies(locale,
-//						timestamp);
-//				if (currencies != null) {
-//					result.addAll(Arrays.asList(currencies));
-//				}
-//			}
-//		}
-//		return result.toArray(new CurrencyUnit[result.size()]);
-//	}
+	// public CurrencyUnit[] getAll(Locale locale, long timestamp) {
+	// Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
+	// for (List<CurrencyUnitProviderSPI> provList : INSTANCE.currencyProviders
+	// .values()) {
+	// for (CurrencyUnitProviderSPI prov : provList) {
+	// CurrencyUnit[] currencies = prov.getCurrencies(locale,
+	// timestamp);
+	// if (currencies != null) {
+	// result.addAll(Arrays.asList(currencies));
+	// }
+	// }
+	// }
+	// return result.toArray(new CurrencyUnit[result.size()]);
+	// }
 
 }

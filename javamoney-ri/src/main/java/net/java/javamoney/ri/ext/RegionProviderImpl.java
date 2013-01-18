@@ -38,14 +38,15 @@ import net.java.javamoney.ri.AbstractSPIComponent;
  * 
  * @author Anatole Tresch
  */
-public final class RegionProviderImpl extends AbstractSPIComponent implements RegionProvider {
+public final class RegionProviderImpl extends AbstractSPIComponent implements
+		RegionProvider {
 	/** Singleton instance. */
 	private static final RegionProviderImpl INSTANCE = new RegionProviderImpl();
 	/** Loaded region providers. */
 	private List<RegionProviderSPI> regionProviders;
 
 	/**
-	 * Singleton constructor.
+	 * Constructor.
 	 */
 	public RegionProviderImpl() {
 		try {
@@ -53,6 +54,44 @@ public final class RegionProviderImpl extends AbstractSPIComponent implements Re
 		} catch (Exception e) {
 			// TODO log excetion!
 		}
+	}
+
+	/**
+	 * This method defined that this implementation is exposed as
+	 * {@link RegionProvider}.
+	 * 
+	 * @return {@link RegionProvider}.class
+	 */
+	public Class getExposedType() {
+		return RegionProvider.class;
+	}
+
+	/**
+	 * Access all defined {@link RegionType}.
+	 * 
+	 * @see Region#getRegionType() #see
+	 *      {@link RegionProviderSPI#getRegionTypes()}
+	 * @return all defined region types, never null.
+	 */
+	@Override
+	public RegionType[] getRegionTypes() {
+		Set<RegionType> result = new HashSet<RegionType>();
+		for (RegionProviderSPI prov : INSTANCE.regionProviders) {
+			RegionType[] regionTypes = prov.getRegionTypes();
+			if (regionTypes == null) {
+				continue;
+			}
+			for (int i = 0; i < regionTypes.length; i++) {
+				if(regionTypes[i]==null){
+					// TODO log Warning: "Found null element in RegionType array returned from "+prov.getClass().getName()
+				}
+				if(result.contains(regionTypes[i])){
+					// TODO log Warning: "Ignoring ambigous RegionType in RegionType array returned from "+prov.getClass().getName()
+				}
+				result.add(regionTypes[i]);
+			}
+		}
+		return result.toArray(new RegionType[result.size()]);
 	}
 
 	/**
@@ -112,8 +151,11 @@ public final class RegionProviderImpl extends AbstractSPIComponent implements Re
 	 */
 	public Region[] getAll() {
 		Set<Region> result = new HashSet<Region>();
-		for (RegionType type : RegionType.values()) {
-			Region[] regions = getAll(type);
+		for (RegionProviderSPI prov : INSTANCE.regionProviders) {
+			Region[] regions = prov.getRegions();
+			if (regions == null) {
+				// TODO Log warning
+			}
 			result.addAll(Arrays.asList(regions));
 		}
 		return result.toArray(new Region[result.size()]);

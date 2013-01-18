@@ -29,18 +29,34 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.ext;
 
-import java.util.ServiceLoader;
+import java.util.Locale;
 
 /**
- * This is a marker interface that allows to load additional extension hooks
- * into the Monetary singleton. Extensions must be registered using the
- * {@link ServiceLoader} functionality. This allows to keep all money related
- * functionality bundled within one central catalog.
+ * This interface adds localizable support for {@link RegionType}s.
  * 
  * @author Anatole Tresch
  */
-public interface MonetaryExtension {
-	// empty just a marker interface.
+public interface LocalizableRegionType extends RegionType {
+
+	/**
+	 * Access the display name for this {@link RegionType}, the locale used is
+	 * determined by {@link Locale#getDefault()}. If the display name is not
+	 * defined, the according {@link RegionType} id is returned.
+	 * 
+	 * @return the display name, never null.
+	 */
+	public String getDisplayName();
+
+	/**
+	 * Access the display name for this {@link RegionType}. If the display name
+	 * is not defined, the according {@link RegionType} id is returned.
+	 * 
+	 * @param locale
+	 *            The target {@link Locale}.
+	 * @return the display name, never null.
+	 */
+	public String getDisplayName(Locale locale);
+
 }

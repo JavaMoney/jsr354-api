@@ -31,33 +31,43 @@
  */
 package javax.money.ext;
 
+import java.io.Serializable;
+
 /**
  * Defines the different region types available. This allows to segregate
  * different grouping strategy types.
  * 
  * @author Anatole Tresch
  */
-public enum RegionType {
-	/** Type representing a continent. */
-	CONTINENT,
-
-	/** Type representing a sub-continent. */
-	SUBCONTINENT,
+public interface RegionType extends Serializable, Comparable<RegionType>{
 
 	/**
-	 * Type representing a grouping of territories that is not mappable to a
-	 * normal WORLD/CONTINENT/SUBCONTINENT/TERRITORY structure, or an arbitrary
-	 * user defined grouping.
+	 * Return the type's identifier.
+	 * 
+	 * @return the unique identifier.
 	 */
-	GROUPING,
-
-	/** Type representing a territory. */
-	TERRITORY,
-
-	/** Type representing the unknown region. */
-	UNKNOWN,
-
-	/** Type representing the whole world. */
-	WORLD
+	public String getId();
+	// /** Type representing a continent. */
+	// CONTINENT,
+	//
+	// /** Type representing a sub-continent. */
+	// SUBCONTINENT,
+	//
+	// /**
+	// * Type representing a grouping of territories that is not mappable to a
+	// * normal WORLD/CONTINENT/SUBCONTINENT/TERRITORY structure, or an
+	// arbitrary
+	// * user defined grouping.
+	// */
+	// GROUPING,
+	//
+	// /** Type representing a territory. */
+	// TERRITORY,
+	//
+	// /** Type representing the unknown region. */
+	// UNKNOWN,
+	//
+	// /** Type representing the whole world. */
+	// WORLD
 
 }

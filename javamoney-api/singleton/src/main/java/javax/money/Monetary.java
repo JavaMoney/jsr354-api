@@ -45,6 +45,7 @@ import javax.money.format.AmountFormatterFactory;
 import javax.money.format.AmountParserFactory;
 import javax.money.format.CurrencyFormatterFactory;
 import javax.money.format.CurrencyParserFactory;
+import javax.money.spi.MonetaryExtension;
 
 /**
  * This is the main accessor component for Java Money.
@@ -63,6 +64,8 @@ public final class Monetary {
 	private final RoundingProvider roundingProvider;
 	private final Map<ExchangeRateType, ExchangeRateProvider> exchangeRateProviders = new HashMap<ExchangeRateType, ExchangeRateProvider>();
 	private final Map<ExchangeRateType, CurrencyConverter> currencyConverters = new HashMap<ExchangeRateType, CurrencyConverter>();
+	@SuppressWarnings("rawtypes")
+	private final Map<Class, MonetaryExtension> extensions = new HashMap<Class, MonetaryExtension>();
 	private final AmountParserFactory amountParserFactory;
 	private final AmountFormatterFactory amountFormatterFactory;
 	private final CurrencyParserFactory currencyParserFactory;
@@ -74,6 +77,8 @@ public final class Monetary {
 			.load(ExchangeRateProvider.class);
 	private final ServiceLoader<CurrencyConverter> currencyConverterLoader = ServiceLoader
 			.load(CurrencyConverter.class);
+	private final ServiceLoader<MonetaryExtension> extensionsLoader = ServiceLoader
+			.load(MonetaryExtension.class);
 
 	/**
 	 * Singleton constructor.
@@ -95,9 +100,42 @@ public final class Monetary {
 		for (MonetaryAmountFactory t : amountFactoryLoader) {
 			this.monetaryAmountFactories.put(t.getNumberClass(), t);
 		}
+		loadExtensions();
 		initDefaultNumberClass();
 	}
 
+	/**
+	 * Loads and registers the {@link MonetaryExtension} instances. It also
+	 * checks for the types exposed.
+	 */
+	@SuppressWarnings("unchecked")
+	private void loadExtensions() {
+		for (MonetaryExtension t : extensionsLoader) {
+			try {
+				if (t.getExposedType() == null) {
+					throw new IllegalArgumentException(
+							"Monetary extension of type: "
+									+ t.getClass().getName()
+									+ " does not expose a type.");
+				}
+				if (!t.getExposedType().isAssignableFrom(t.getClass())) {
+					throw new IllegalArgumentException(
+							"Monetary extension of type: "
+									+ t.getClass().getName()
+									+ " does not implement exposed type: "
+									+ t.getExposedType().getName());
+				}
+				this.extensions.put(t.getExposedType(), t);
+			} catch (Exception e) {
+
+			}
+		}
+	}
+
+	/**
+	 * Initializes the default numeric representation class, used when calling
+	 * {@link #getMonetaryAmountFactory()}.
+	 */
 	private void initDefaultNumberClass() {
 		String defaultClassName = System
 				.getProperty("javax.money.defaultNumberClass");
@@ -118,6 +156,16 @@ public final class Monetary {
 		}
 	}
 
+	/**
+	 * Loads a service from the {@link ServiceLoader} that should be unique.
+	 * This is typically the case for API services.
+	 * 
+	 * @param serviceType
+	 *            THe target service interface type.
+	 * @return The single instance found, or null.
+	 * @throws IllegalStateException
+	 *             if multiple service implementations are registered.
+	 */
 	private <T> T loadService(Class<T> serviceType) {
 		ServiceLoader<T> loader = ServiceLoader.load(serviceType);
 		T instance = null;

@@ -31,8 +31,7 @@
  */
 package javax.money.ext;
 
-import javax.money.MonetaryExtension;
-
+import javax.money.spi.MonetaryExtension;
 
 /**
  * This class models the component defined by JSR 354 that provides accessors
@@ -40,7 +39,14 @@ import javax.money.MonetaryExtension;
  * 
  * @author Anatole Tresch
  */
-public interface RegionProvider extends MonetaryExtension{
+public interface RegionProvider extends MonetaryExtension {
+
+	/**
+	 * Access all types of regions available.
+	 * 
+	 * @return all {@link RegionType}s available, never null.
+	 */
+	public RegionType[] getRegionTypes();
 
 	/**
 	 * Access a region.

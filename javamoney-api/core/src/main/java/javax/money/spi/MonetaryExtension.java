@@ -29,57 +29,27 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.ext.spi;
+package javax.money.spi;
 
 import java.util.ServiceLoader;
 
-import javax.money.ext.Region;
-import javax.money.ext.RegionType;
-
 /**
- * Implementation of this interface define the regions supported in the system.
- * Each provider may hereby serve several region types.
- * <p>
- * Registration is done using the {@link ServiceLoader} features.
+ * This is a marker interface that allows to load additional extension hooks
+ * into the Monetary singleton. Extensions must be registered using the
+ * {@link ServiceLoader} functionality. This allows to keep all money related
+ * functionality bundled within one central catalog.
  * 
  * @author Anatole Tresch
  */
-public interface RegionProviderSPI {
+public interface MonetaryExtension {
 
 	/**
-	 * Returns all {@link RegionType}s defined by this {@link RegionProviderSPI}
-	 * instance.
+	 * This method allows an extension to define the type that is exposed as
+	 * API. It is highly recommended that extensions provide an according usage
+	 * interface instead of returning implementation classes.
 	 * 
-	 * @return the {@link RegionType}s to be defined.
+	 * @return The exposed type, never null.
 	 */
-	public RegionType[] getRegionTypes();
-
-	/**
-	 * Access a region.
-	 * 
-	 * @param identifier
-	 *            The region's id.
-	 * @param type
-	 *            The required region type.
-	 * @return The corresponding region, or null.
-	 */
-	public Region getRegion(String identifier, RegionType type);
-
-	/**
-	 * Access all regions provided for {@link RegionType} by this region
-	 * provider.
-	 * 
-	 * @param type
-	 *            The required region type.
-	 * @return the regions to be added, not null.
-	 */
-	public Region[] getRegions(RegionType type);
-
-	/**
-	 * Access all regions provided by this region provider.
-	 * 
-	 * @return the regions to be added, not null.
-	 */
-	public Region[] getRegions();
+	public Class getExposedType();
 
 }

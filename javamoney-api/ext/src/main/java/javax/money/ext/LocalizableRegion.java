@@ -29,57 +29,34 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.ext.spi;
+package javax.money.ext;
 
-import java.util.ServiceLoader;
-
-import javax.money.ext.Region;
-import javax.money.ext.RegionType;
+import java.util.Locale;
 
 /**
- * Implementation of this interface define the regions supported in the system.
- * Each provider may hereby serve several region types.
- * <p>
- * Registration is done using the {@link ServiceLoader} features.
+ * This interface adds localizable support for regions.
  * 
  * @author Anatole Tresch
  */
-public interface RegionProviderSPI {
+public interface LocalizableRegion extends Region {
 
 	/**
-	 * Returns all {@link RegionType}s defined by this {@link RegionProviderSPI}
-	 * instance.
+	 * Access the display name for this {@link Region}, the locale used is
+	 * determined by {@link Locale#getDefault()}. If the display name is not
+	 * defined, the according {@link Region} id is returned.
 	 * 
-	 * @return the {@link RegionType}s to be defined.
+	 * @return the display name, never null.
 	 */
-	public RegionType[] getRegionTypes();
+	public String getDisplayName();
 
 	/**
-	 * Access a region.
+	 * Access the display name for this {@link Region}. If the display name is
+	 * not defined, the according {@link Region} id is returned.
 	 * 
-	 * @param identifier
-	 *            The region's id.
-	 * @param type
-	 *            The required region type.
-	 * @return The corresponding region, or null.
+	 * @param locale
+	 *            The target {@link Locale}.
+	 * @return the display name, never null.
 	 */
-	public Region getRegion(String identifier, RegionType type);
-
-	/**
-	 * Access all regions provided for {@link RegionType} by this region
-	 * provider.
-	 * 
-	 * @param type
-	 *            The required region type.
-	 * @return the regions to be added, not null.
-	 */
-	public Region[] getRegions(RegionType type);
-
-	/**
-	 * Access all regions provided by this region provider.
-	 * 
-	 * @return the regions to be added, not null.
-	 */
-	public Region[] getRegions();
+	public String getDisplayName(Locale locale);
 
 }

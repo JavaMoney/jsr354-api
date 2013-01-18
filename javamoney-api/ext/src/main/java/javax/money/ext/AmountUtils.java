@@ -34,7 +34,7 @@ package javax.money.ext;
 import javax.money.CurrencyMismatchException;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryExtension;
+import javax.money.spi.MonetaryExtension;
 
 /**
  * Component for accessing {@link MonetaryAmount} instances. It is provided by

@@ -31,9 +31,14 @@
  */
 package javax.money;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+import java.util.Enumeration;
 
 import org.junit.Test;
 
@@ -50,38 +55,44 @@ public class MonetaryTest {
 	@Test
 	public void testGetAmountFormatterFactory() {
 		assertNotNull(Monetary.getAmountFormatterFactory());
-		assertSame(Monetary.getAmountFormatterFactory().getClass(), TestAmountFormatterFactory.class);
+		assertSame(Monetary.getAmountFormatterFactory().getClass(),
+				TestAmountFormatterFactory.class);
 	}
 
 	@Test
 	public void testGetAmountParserFactory() {
 		assertNotNull(Monetary.getAmountParserFactory());
-		assertSame(Monetary.getAmountParserFactory().getClass(), TestAmountParseFactory.class);
+		assertSame(Monetary.getAmountParserFactory().getClass(),
+				TestAmountParseFactory.class);
 	}
 
 	@Test
 	public void testGetCurrencyConverter_ExchangeRateType() {
 		// TODO imeplement this test!
 		// Monetary.getCurrencyConverter(type)
-//		assertSame(Monetary.getCurrencyConverter(type).getClass(), TestCurrencyConverter.class);
+		// assertSame(Monetary.getCurrencyConverter(type).getClass(),
+		// TestCurrencyConverter.class);
 	}
 
 	@Test
 	public void testGetCurrencyFormatterFactory() {
 		assertNotNull(Monetary.getCurrencyFormatterFactory());
-		assertSame(Monetary.getCurrencyFormatterFactory().getClass(), TestCurrencyFormatterFactory.class);
+		assertSame(Monetary.getCurrencyFormatterFactory().getClass(),
+				TestCurrencyFormatterFactory.class);
 	}
 
 	@Test
 	public void testGetCurrencyUnitProvider() {
 		assertNotNull(Monetary.getCurrencyUnitProvider());
-		assertSame(Monetary.getCurrencyUnitProvider().getClass(), TestCurrencyUnitProvider.class);
+		assertSame(Monetary.getCurrencyUnitProvider().getClass(),
+				TestCurrencyUnitProvider.class);
 	}
 
 	@Test
 	public void testGetCurrencyParserFactory() {
 		assertNotNull(Monetary.getCurrencyParserFactory());
-		assertSame(Monetary.getCurrencyParserFactory().getClass(), TestCurrencyParserFactory.class);
+		assertSame(Monetary.getCurrencyParserFactory().getClass(),
+				TestCurrencyParserFactory.class);
 	}
 
 	@Test
@@ -93,25 +104,57 @@ public class MonetaryTest {
 	@Test
 	public void testGetExchangeRateProvider_ExchangeRateType() {
 		// TODO implement test.
-//		Monetary.getExchangeRateProvider(ExchangeRateType);
-//		assertSame(Monetary.getExchangeRateProvider().getClass(), TestExchangeRateProvider.class);
+		// Monetary.getExchangeRateProvider(ExchangeRateType);
+		// assertSame(Monetary.getExchangeRateProvider().getClass(),
+		// TestExchangeRateProvider.class);
 	}
 
 	@Test
 	public void testGetMonetaryAmountFactory() {
 		assertNotNull(Monetary.getMonetaryAmountFactory());
-		assertSame(Monetary.getMonetaryAmountFactory().getClass(), TestMonetaryAmountFactory2.class);
+		assertSame(Monetary.getMonetaryAmountFactory().getClass(),
+				TestMonetaryAmountFactory2.class);
 	}
 
 	@Test
 	public void testGetMonetaryAmountFactory_Class() {
 		assertNotNull(Monetary.getMonetaryAmountFactory(String.class));
-		assertSame(Monetary.getMonetaryAmountFactory(String.class).getClass(), TestMonetaryAmountFactory.class);
+		assertSame(Monetary.getMonetaryAmountFactory(String.class).getClass(),
+				TestMonetaryAmountFactory.class);
 	}
 
 	@Test
 	public void testGetRoundingProvider() {
 		assertNotNull(Monetary.getRoundingProvider());
-		assertSame(Monetary.getRoundingProvider().getClass(), TestRoundingProvider.class);
+		assertSame(Monetary.getRoundingProvider().getClass(),
+				TestRoundingProvider.class);
+	}
+
+	@Test
+	public void testGetExtensions() {
+		@SuppressWarnings("rawtypes")
+		Enumeration<Class> types = Monetary.getLoadedExtensions();
+		assertNotNull(types);
+		int count = 0;
+		while (types.hasMoreElements()) {
+			Class clazz = (Class) types.nextElement();
+			assertSame(clazz, TestExtension.class);
+			count++;
+		}
+		assertTrue(count == 1);
+	}
+
+	@Test
+	public void testIsExtensionAvailable() {
+		assertTrue(Monetary.isExtensionAvailable(TestExtension.class));
+		assertFalse(Monetary.isExtensionAvailable(String.class));
+		assertFalse(Monetary.isExtensionAvailable(TestExtensionImpl.class));
+	}
+
+	@Test
+	public void testGetAndUseExtension() {
+		TestExtension ext = Monetary.getExtension(TestExtension.class);
+		assertNotNull(ext);
+		assertEquals("Hello!", ext.sayHello());
 	}
 }

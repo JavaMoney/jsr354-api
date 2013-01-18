@@ -353,4 +353,46 @@ public final class Monetary {
 		}
 		return INSTANCE.roundingProvider;
 	}
+
+	/**
+	 * Access a monetary extension by type.
+	 * 
+	 * @param extensionType
+	 * @return The corresponding extension reference, never null.
+	 * @throws IllegalArgumentException
+	 *             if the required extension is not loaded, or does not expose
+	 *             the required interface.
+	 */
+	public static <T> T getExtension(Class<T> extensionType) {
+		@SuppressWarnings("unchecked")
+		T ext = (T) INSTANCE.extensions.get(extensionType);
+		if (ext == null) {
+			throw new IllegalArgumentException(
+					"Unsupported monetary extension: " + extensionType);
+		}
+		return ext;
+	}
+
+	/**
+	 * Allows to check for the availability of an extension.
+	 * 
+	 * @param type
+	 *            The exposed extension type.
+	 * @return true, if such an extension type is loaded and registered.
+	 */
+	public static boolean isExtensionAvailable(Class<?> type) {
+		return INSTANCE.extensions.containsKey(type);
+	}
+
+	/**
+	 * Provides the list of exposed extension APIs currently registered.
+	 * 
+	 * @see MonetaryExtension#getExposedType()
+	 * @return the enumeration containing the types of extensions loaded, never
+	 *         null.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static Enumeration<Class> getLoadedExtensions() {
+		return Collections.enumeration(INSTANCE.extensions.keySet());
+	}
 }

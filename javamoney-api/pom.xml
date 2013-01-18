@@ -19,4 +19,12 @@
 		<module>ext</module>
 	</modules>
 	<description>Spec for JSR 354</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

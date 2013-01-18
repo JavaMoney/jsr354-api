@@ -43,8 +43,7 @@ public class TestCurrencyConverter implements CurrencyConverter {
 
 	@Override
 	public ExchangeRateType getExchangeRateType() {
-		// empty implementation
-		return null;
+		return TestExchangeRateProvider.EXCHANGE_RATE_TYPE;
 	}
 
 	@Override

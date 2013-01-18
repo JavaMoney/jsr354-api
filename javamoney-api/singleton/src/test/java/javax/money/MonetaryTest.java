@@ -40,6 +40,10 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.util.Enumeration;
 
+import javax.money.convert.CurrencyConverter;
+import javax.money.convert.ExchangeRateProvider;
+import javax.money.convert.ExchangeRateType;
+
 import org.junit.Test;
 
 /**
@@ -68,10 +72,15 @@ public class MonetaryTest {
 
 	@Test
 	public void testGetCurrencyConverter_ExchangeRateType() {
-		// TODO imeplement this test!
-		// Monetary.getCurrencyConverter(type)
-		// assertSame(Monetary.getCurrencyConverter(type).getClass(),
-		// TestCurrencyConverter.class);
+		Enumeration<ExchangeRateType> types = Monetary
+				.getSupportedExchangeRateTypes();
+		ExchangeRateType exchangeRateType = types.nextElement();
+		CurrencyConverter prov = Monetary
+				.getCurrencyConverter(exchangeRateType);
+		assertTrue(prov == Monetary.getCurrencyConverter(exchangeRateType));
+		assertSame(Monetary.getCurrencyConverter(exchangeRateType).getClass(),
+				TestCurrencyConverter.class);
+		assertTrue(prov.getExchangeRateType() == exchangeRateType);
 	}
 
 	@Test
@@ -103,10 +112,16 @@ public class MonetaryTest {
 
 	@Test
 	public void testGetExchangeRateProvider_ExchangeRateType() {
-		// TODO implement test.
-		// Monetary.getExchangeRateProvider(ExchangeRateType);
-		// assertSame(Monetary.getExchangeRateProvider().getClass(),
-		// TestExchangeRateProvider.class);
+		Enumeration<ExchangeRateType> types = Monetary
+				.getSupportedExchangeRateTypes();
+		ExchangeRateType exchangeRateType = types.nextElement();
+		ExchangeRateProvider prov = Monetary
+				.getExchangeRateProvider(exchangeRateType);
+		assertTrue(prov == Monetary.getExchangeRateProvider(exchangeRateType));
+		assertSame(Monetary.getExchangeRateProvider(exchangeRateType)
+				.getClass(), TestExchangeRateProvider.class);
+		assertTrue(Monetary.getExchangeRateProvider(exchangeRateType)
+				.getExchangeRateType() == exchangeRateType);
 	}
 
 	@Test
@@ -156,5 +171,20 @@ public class MonetaryTest {
 		TestExtension ext = Monetary.getExtension(TestExtension.class);
 		assertNotNull(ext);
 		assertEquals("Hello!", ext.sayHello());
+	}
+
+	@Test
+	public void testGetSupportedExchangeRateTypes() {
+		Enumeration<ExchangeRateType> types = Monetary
+				.getSupportedExchangeRateTypes();
+		assertNotNull(types);
+		int count = 0;
+		while (types.hasMoreElements()) {
+			ExchangeRateType exchangeRateType = (ExchangeRateType) types
+					.nextElement();
+			count++;
+			assertEquals("TEST", exchangeRateType.getId());
+		}
+		assertTrue(count == 1);
 	}
 }

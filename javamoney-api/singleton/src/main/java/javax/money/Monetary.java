@@ -284,8 +284,8 @@ public final class Monetary {
 	 * @return The exchange rate types allow to access a
 	 *         {@link CurrencyConverter} or an {@link ExchangeRateProvider}.
 	 */
-	public Enumeration<ExchangeRateType> getSupportedExchangeRateTypes() {
-		return Collections.enumeration(this.exchangeRateProviders.keySet());
+	public static Enumeration<ExchangeRateType> getSupportedExchangeRateTypes() {
+		return Collections.enumeration(INSTANCE.exchangeRateProviders.keySet());
 	}
 
 	/**

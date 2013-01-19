@@ -264,10 +264,6 @@ public class ExchangeRateImpl implements ExchangeRate {
 		return null;
 	}
 
-	public boolean isDeferred() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	public String getDataProvider() {
 		// TODO Auto-generated method stub

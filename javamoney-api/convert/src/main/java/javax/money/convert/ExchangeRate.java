@@ -89,13 +89,6 @@ public interface ExchangeRate extends AttributeProvider, Comparable<ExchangeRate
 	public String getLocation();
 
 	/**
-	 * Flag that signals that this rate is a deferred rate.
-	 * 
-	 * @return true, if the rate is not real time (deferred).
-	 */
-	public boolean isDeferred();
-
-	/**
 	 * Get the name of the data provider, that provided this rate.
 	 * 
 	 * @return the name of the data provider.

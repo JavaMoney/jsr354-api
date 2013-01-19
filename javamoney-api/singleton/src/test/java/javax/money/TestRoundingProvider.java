@@ -31,6 +31,8 @@
  */
 package javax.money;
 
+import java.util.Enumeration;
+
 /**
  * Empty pseudo implementation for testing only.
  * @author Anatole Tresch
@@ -48,6 +50,24 @@ public class TestRoundingProvider implements RoundingProvider {
 	public Rounding getRounding(CurrencyUnit currency, long timestamp) {
 		// empty implementation
 		return null;
+	}
+
+	@Override
+	public Rounding getRounding(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Enumeration<String> getRoundingIds() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isRoundingDefined(String id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

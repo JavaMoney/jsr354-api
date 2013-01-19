@@ -31,6 +31,8 @@
  */
 package javax.money.spi;
 
+import java.util.Enumeration;
+
 import javax.money.CurrencyUnit;
 import javax.money.Rounding;
 
@@ -40,6 +42,24 @@ import javax.money.Rounding;
  * @author Anatole Tresch
  */
 public interface RoundingProviderSPI {
+
+	/**
+	 * Access the {@link Rounding} by id.
+	 * 
+	 * @param name
+	 *            the rounding's id. not null.
+	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
+	 *         {@code null} is returned.
+	 */
+	public Rounding getRounding(String name);
+
+	/**
+	 * Access the ids, defined by this provider SPI implementation.
+	 * 
+	 * @return the its provided, or {@code null}, when no named {@link Rounding}
+	 *         instances are provided by this implementation.
+	 */
+	public Enumeration<String> getRoundingIds();
 
 	/**
 	 * Access the {@link Rounding} for a given {@link CurrencyUnit} and

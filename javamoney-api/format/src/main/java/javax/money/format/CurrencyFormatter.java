@@ -58,7 +58,7 @@ public interface CurrencyFormatter extends ItemFormatter<CurrencyUnit> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getSymbol(CurrencyUnit currency, Locale locale); // formatSymbol ?
+	public String formatSymbol(CurrencyUnit currency, Locale locale); // formatSymbol ?
 
 	/**
 	 * Formats a currency's symbol value to a {@code String}.
@@ -74,7 +74,7 @@ public interface CurrencyFormatter extends ItemFormatter<CurrencyUnit> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getSymbol(CurrencyUnit currency, LocalizationStyle style); // formatSymbol ?
+	public String formatSymbol(CurrencyUnit currency, LocalizationStyle style); // formatSymbol ?
 
 	/**
 	 * Formats a currency value to a {@code String}.
@@ -89,7 +89,7 @@ public interface CurrencyFormatter extends ItemFormatter<CurrencyUnit> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getName(CurrencyUnit currency, Locale locale); // formatName ?
+	public String formatName(CurrencyUnit currency, Locale locale); // formatName ?
 
 	/**
 	 * Formats a currency's name to a {@code String}.
@@ -102,7 +102,7 @@ public interface CurrencyFormatter extends ItemFormatter<CurrencyUnit> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getName(CurrencyUnit currency, LocalizationStyle style); // formatName ?
+	public String formatName(CurrencyUnit currency, LocalizationStyle style); // formatName ?
 
 	/**
 	 * Prints an currency's symbol value to an {@code Appendable} converting any

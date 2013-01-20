@@ -42,7 +42,12 @@ import javax.money.convert.ExchangeRateType;
  */
 public class TestExchangeRateProvider implements ExchangeRateProvider {
 
-	static final ExchangeRateType EXCHANGE_RATE_TYPE = new ExchangeRateType("TEST");
+	static final ExchangeRateType EXCHANGE_RATE_TYPE = new ExchangeRateType(){
+
+		@Override
+		public String getId() {
+			return "TEST";
+		}};
 	
 	@Override
 	public ExchangeRateType getExchangeRateType() {

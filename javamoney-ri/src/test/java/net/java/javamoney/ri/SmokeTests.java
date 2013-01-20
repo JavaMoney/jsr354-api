@@ -21,7 +21,7 @@ public class SmokeTests {
 	public void testCreateAmounts() {
 		// Creating one
 		CurrencyUnit currency = Monetary.getCurrencyUnitProvider().get(
-				"ISO4217", "CHF");
+				"ISO-4217", "CHF");
 		MonetaryAmount amount1 = Monetary.getMonetaryAmountFactory().get(
 				currency, 1.0d);
 		MonetaryAmount amount2 = Monetary.getMonetaryAmountFactory().get(

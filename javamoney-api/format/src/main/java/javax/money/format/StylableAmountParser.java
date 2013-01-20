@@ -35,6 +35,10 @@ import java.util.Locale;
 
 import javax.money.MonetaryAmount;
 import javax.money.CurrencyUnit;
+import javax.money.format.common.FormatException;
+import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.ParseException;
+import javax.money.format.common.StylableItemParser;
 
 /**
  * Formats instances of money to and from a String.
@@ -44,7 +48,7 @@ import javax.money.CurrencyUnit;
  * <p>
  * This class is immutable and thread-safe.
  */
-public interface LocalizableAmountParser extends LocalizableParser<MonetaryAmount> {
+public interface StylableAmountParser extends StylableItemParser<MonetaryAmount> {
 
 	/**
 	 * Fully parses a number and combines it with a {@link CurrencyUnit} to an

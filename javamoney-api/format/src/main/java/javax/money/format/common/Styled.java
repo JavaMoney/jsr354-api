@@ -29,10 +29,10 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format;
+package javax.money.format.common;
 
-public interface Targeted {
+public interface Styled {
 
-	public Class<?> getTargetClass();
-
+	public LocalizationStyle getStyle();
+	
 }

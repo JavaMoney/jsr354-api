@@ -29,19 +29,19 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format;
+package javax.money.format.common;
 
 import java.util.Locale;
 
 /**
- * Provides the ability to build a formatter by programmatic defining the
- * formatting required. The implementing class should add additional
- * configuration methods returning itself as the method's result, for example:
+ * Provides the ability to build a parser by programmatic defining the parsing
+ * required. The implementing class should add additional configuration methods
+ * returning itself as the method's result, for example:
  * 
  * <pre>
- * public final class MyFormatterBuilder implements FormatterBuilder<MyItem>{
+ * public final class MyParserBuilder implements ParserBuilder<MyItem>{
  * 
- *   public MyFormatterBuilder setPlaceBeforeX(booleanplaceBefore){
+ *   public MyParserBuilder setPlaceBeforeX(boolean placeBefore){
  *     ...
  *   }
  * 
@@ -50,60 +50,58 @@ import java.util.Locale;
  * }
  * </pre>
  * 
- * FormatterBuilders are mutable and intended for use by a single thread. A new
- * instance should be created for each use. The formatters produced by the
- * builder are immutable and thread-safe.
+ * Parser Builders are mutable and intended for use by a single thread. A new
+ * instance should be created for each use. The parsers produced by the builder
+ * are immutable and thread-safe.
  * 
- * @see ItemFormatter
- * @see LocalizableFormatter
+ * @see ItemParser
+ * @see StylableItemParser
  */
-public interface FormatterBuilder<T> {
+public interface ItemParserBuilder<T> {
 
 	/**
-	 * Builds a {@link LocalizableFormatter} from the builder.
+	 * Builds the {@link StylableItemParser} from this builder.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code Formatter} or {@link LocalizableFormatter} to be used. Calling
+	 * {@code Formatter} of {@link StylableItemFormatter} to be used. Calling
 	 * this method does not change the state of this instance, so it can still
 	 * be used.
 	 * 
-	 * @return the {@link LocalizableFormatter} built from this builder, never
-	 *         null
+	 * @return the {@link StylableItemParser} built from this builder, never null
 	 */
-	public LocalizableFormatter<T> toLocalizableFormatter();
+	public StylableItemParser<T> toLocalizableParser();
 
 	/**
-	 * Builds the formatter from the builder setting the locale.
+	 * Builds the parser from the builder setting the locale.
+	 * <p>
+	 * Calling this method does not change the state of this instance, so it can
+	 * still be used.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code Formatter} or {@link LocalizableFormatter} to be used. Calling
-	 * this method does not change the state of this instance, so it can still
-	 * be used.
-	 * <p>
-	 * This method uses the specified locale. For extended style parameters use
-	 * {@link FormatterBuilder#toFormatter(LocalizationStyle)} instead of.
+	 * {@code Formatter} of {@link StylableItemFormatter} to be used. This method
+	 * uses the specified locale. For extended style parameters use
+	 * {@link ItemParserBuilder#toParser(LocalizationStyle)} instead of.
 	 * 
 	 * @param locale
-	 *            the locale for the formatter, not null
-	 * @return the {@link Styled} {@link ItemFormatter} built from this builder,
-	 *         never null
+	 *            the locale for the parser, not null
+	 * @return the {@link Styled} {@link ItemParser} built from this builder, never
+	 *         null
 	 */
-	public ItemFormatter<T> toFormatter(Locale locale);
+	public ItemParser<T> toParser(Locale locale);
 
 	/**
-	 * Builds the formatter from the builder setting the
-	 * {@link LocalizationStyle}.
+	 * Builds the parser from the builder setting the {@link LocalizationStyle}.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code Formatter} or {@link LocalizableFormatter} to be used. Calling
+	 * {@code Formatter} of {@link StylableItemFormatter} to be used. Calling
 	 * this method does not change the state of this instance, so it can still
 	 * be used.
 	 * 
 	 * @param style
-	 *            the style for the formatter, not null
-	 * @return the {@link Styled} {@link ItemFormatter} built from this builder,
-	 *         never null
+	 *            the style for the parser, not null
+	 * @return the {@link Styled} {@link ItemParser} built from this builder, never
+	 *         null
 	 */
-	public ItemFormatter<T> toFormatter(LocalizationStyle style);
+	public ItemParser<T> toParser(LocalizationStyle style);
 
 }

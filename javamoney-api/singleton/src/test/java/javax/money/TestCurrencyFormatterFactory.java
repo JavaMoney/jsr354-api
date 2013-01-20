@@ -35,8 +35,8 @@ import java.util.Locale;
 
 import javax.money.format.CurrencyFormatter;
 import javax.money.format.CurrencyFormatterFactory;
-import javax.money.format.LocalizableCurrencyFormatter;
-import javax.money.format.LocalizationStyle;
+import javax.money.format.StylableCurrencyFormatter;
+import javax.money.format.common.LocalizationStyle;
 
 /**
  * Empty pseudo implementation for testing only.
@@ -58,7 +58,7 @@ public class TestCurrencyFormatterFactory implements CurrencyFormatterFactory {
 	}
 
 	@Override
-	public LocalizableCurrencyFormatter getLocalizableCurrencyFormatter() {
+	public StylableCurrencyFormatter getLocalizableCurrencyFormatter() {
 		// empty implementation
 		return null;
 	}

@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format;
+package javax.money.format.common;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -37,7 +37,7 @@ import java.util.Locale;
 /**
  * Formats instances of T to a {@link String} or an {@link Appendable}.
  */
-public interface LocalizableFormatter<T> extends Targeted {
+public interface StylableItemFormatter<T> extends Targeted {
 
 	/**
 	 * Prints a item value to an {@code Appendable}.

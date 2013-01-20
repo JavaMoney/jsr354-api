@@ -29,10 +29,48 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format;
+package javax.money.format.common;
 
-public interface Styled {
+import java.util.Locale;
 
-	public LocalizationStyle getStyle();
-	
+/**
+ * This class represent the accessor interface for creating different kind of
+ * formatters.
+ * 
+ * @see ItemFormatter
+ * @see StylableItemFormatter
+ * @author Anatole Tresch
+ */
+public interface ItemFormatterFactory<T> extends Targeted {
+
+	/**
+	 * This method returns an instance of a fixed styled {@link ItemFormatter}.
+	 * 
+	 * @param locale
+	 *            The target locale. The locale will be converted into an
+	 *            according {@link LocalizationStyle} using
+	 *            {@link LocalizationStyle#of(Locale)}.
+	 * @return the formatter required, if available.
+	 * @throws
+	 */
+	public ItemFormatter<T> getFormatter(Locale locale);
+
+	/**
+	 * This method returns an instance of a fixed styled {@link ItemFormatter}.
+	 * 
+	 * @param style
+	 *            The target localization style.
+	 * @return the formatter required, if available.
+	 * @throws
+	 */
+	public ItemFormatter<T> getFormatter(LocalizationStyle style);
+
+	/**
+	 * This method returns an instance of a {@link StylableItemFormatter}.
+	 * 
+	 * @return the formatter required, if available.
+	 * @throws
+	 */
+	public StylableItemFormatter<T> getLocalizableFormatter();
+
 }

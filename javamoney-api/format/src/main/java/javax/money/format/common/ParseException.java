@@ -29,45 +29,41 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.format.common;
 
-import java.util.Locale;
-
-import javax.money.format.AmountFormatter;
-import javax.money.format.AmountFormatterBuilder;
-import javax.money.format.AmountFormatterFactory;
-import javax.money.format.StylableAmountFormatter;
-import javax.money.format.common.LocalizationStyle;
 
 /**
- * Empty pseudo implementation for testing only.
- * @author Anatole Tresch
+ * Exception thrown during parsing of an item.
+ * <p>
+ * This exception makes no guarantees about immutability or thread-safety.
  *
+ * @author Anatole Tresch
+ * @author Werner Keil
+ * @author Stephen Colebourne
  */
-public class TestAmountFormatterFactory implements AmountFormatterFactory {
+public class ParseException extends Exception {
 
-	@Override
-	public AmountFormatterBuilder createFormatterBuilder() {
-		// empty implementation
-		return null;
-	}
+    /** Serialization lock. */
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public AmountFormatter getAmountFormatter(Locale locale) {
-		// empty implementation
-		return null;
-	}
+    /**
+     * Constructor taking a message.
+     * 
+     * @param message  the message
+     */
+    public ParseException(String message) {
+    	// TODO Not Implemented yet
+    }
 
-	@Override
-	public AmountFormatter getAmountFormatter(LocalizationStyle style) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public StylableAmountFormatter getLocalizableAmountFormatter() {
-		// empty implementation
-		return null;
-	}
+    /**
+     * Constructor taking a message and cause.
+     * 
+     * @param message  the message
+     * @param cause  the exception cause
+     */
+    public ParseException(String message, Throwable cause) {
+    	// TODO Not Implemented yet
+    	super(message, cause);
+    }
 
 }

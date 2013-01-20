@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format;
+package javax.money.format.common;
 
 import java.util.Locale;
 
@@ -38,7 +38,7 @@ import java.util.Locale;
  * type T.
  * TODO check if this class can be moved to {@code java.util}.
  */
-public interface LocalizableParser<T> extends Targeted{
+public interface StylableItemParser<T> extends Targeted{
 
 	/**
 	 * Fully parses the text into an instance of T.

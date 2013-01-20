@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format;
+package javax.money.format.common;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -42,7 +42,7 @@ import java.util.Locale;
  * 
  * @author Anatole Tresch
  */
-public interface Localizable {
+public interface Stylable {
 
 	/**
 	 * Formats a value to a {@code String}. This method uses a {@link Locale} as

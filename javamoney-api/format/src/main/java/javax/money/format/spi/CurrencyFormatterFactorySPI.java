@@ -35,8 +35,8 @@ import java.util.ServiceLoader;
 
 import javax.money.format.AmountFormatter;
 import javax.money.format.CurrencyFormatter;
-import javax.money.format.ItemFormatter;
-import javax.money.format.LocalizationStyle;
+import javax.money.format.common.ItemFormatter;
+import javax.money.format.common.LocalizationStyle;
 
 /**
  * Instances of this class can be registered using the {@link ServiceLoader}

@@ -29,41 +29,10 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format;
+package javax.money.format.common;
 
+public interface Targeted {
 
-/**
- * Exception thrown during parsing of an item.
- * <p>
- * This exception makes no guarantees about immutability or thread-safety.
- *
- * @author Anatole Tresch
- * @author Werner Keil
- * @author Stephen Colebourne
- */
-public class ParseException extends Exception {
-
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Constructor taking a message.
-     * 
-     * @param message  the message
-     */
-    public ParseException(String message) {
-    	// TODO Not Implemented yet
-    }
-
-    /**
-     * Constructor taking a message and cause.
-     * 
-     * @param message  the message
-     * @param cause  the exception cause
-     */
-    public ParseException(String message, Throwable cause) {
-    	// TODO Not Implemented yet
-    	super(message, cause);
-    }
+	public Class<?> getTargetClass();
 
 }

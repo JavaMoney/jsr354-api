@@ -35,8 +35,8 @@ import java.util.Locale;
 
 import javax.money.format.AmountParser;
 import javax.money.format.AmountParserFactory;
-import javax.money.format.LocalizableAmountParser;
-import javax.money.format.LocalizationStyle;
+import javax.money.format.StylableAmountParser;
+import javax.money.format.common.LocalizationStyle;
 
 /**
  * Empty pseudo implementation for testing only.
@@ -58,7 +58,7 @@ public class TestAmountParseFactory implements AmountParserFactory {
 	}
 
 	@Override
-	public LocalizableAmountParser getLocalizableAmountParser() {
+	public StylableAmountParser getLocalizableAmountParser() {
 		// empty implementation
 		return null;
 	}

@@ -34,8 +34,8 @@ package javax.money.format.spi;
 import java.util.ServiceLoader;
 
 import javax.money.format.AmountParser;
-import javax.money.format.LocalizationStyle;
-import javax.money.format.ItemParser;
+import javax.money.format.common.ItemParser;
+import javax.money.format.common.LocalizationStyle;
 
 /**
  * Instances of this class can be registered using the {@link ServiceLoader}

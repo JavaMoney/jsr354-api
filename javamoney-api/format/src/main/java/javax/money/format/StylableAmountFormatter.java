@@ -35,6 +35,9 @@ import java.io.IOException;
 import java.util.Locale;
 
 import javax.money.MonetaryAmount;
+import javax.money.format.common.FormatException;
+import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.StylableItemFormatter;
 
 /**
  * Formats instances of {@link MonetaryAmount}, by default the full amount is printed,
@@ -46,7 +49,7 @@ import javax.money.MonetaryAmount;
  * 
  * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
  */
-public interface LocalizableAmountFormatter extends LocalizableFormatter<MonetaryAmount> {
+public interface StylableAmountFormatter extends StylableItemFormatter<MonetaryAmount> {
 
 	/**
 	 * Formats a amount's numeric value to a {@code String}, the currency is

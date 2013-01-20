@@ -34,6 +34,9 @@ package javax.money.format;
 import java.util.Locale;
 
 import javax.money.MonetaryAmount;
+import javax.money.format.common.ItemFormatter;
+import javax.money.format.common.ItemFormatterBuilder;
+import javax.money.format.common.LocalizationStyle;
 
 /**
  * Provides the ability to build a formatter for amount values.
@@ -44,7 +47,7 @@ import javax.money.MonetaryAmount;
  * 
  * TODO see Formatter, maybe rename to *Printer* like suggested by Joda sandbox
  */
-public interface AmountFormatterBuilder extends FormatterBuilder<MonetaryAmount>{
+public interface AmountFormatterBuilder extends ItemFormatterBuilder<MonetaryAmount>{
 
 	/**
 	 * Appends the amount to the builder using the default format. The default

@@ -8,9 +8,9 @@ import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import javax.money.format.AmountFormatter;
 import javax.money.format.AmountParser;
-import javax.money.format.LocalizableAmountFormatter;
-import javax.money.format.LocalizableAmountParser;
-import javax.money.format.ParseException;
+import javax.money.format.StylableAmountFormatter;
+import javax.money.format.StylableAmountParser;
+import javax.money.format.common.ParseException;
 
 public class Samples {
 
@@ -27,7 +27,7 @@ public class Samples {
 					.getAmountParser(Locale.GERMANY);
 			MonetaryAmount amount1 = parser.parse("CFH 123.45");
 
-			LocalizableAmountParser locParser = Monetary
+			StylableAmountParser locParser = Monetary
 					.getAmountParserFactory().getLocalizableAmountParser();
 
 			MonetaryAmount amount2 = locParser
@@ -42,7 +42,7 @@ public class Samples {
 			AmountFormatter formatter = Monetary.getAmountFormatterFactory()
 					.getAmountFormatter(Locale.GERMANY);
 			String formatted = formatter.print(amount);
-			LocalizableAmountFormatter locFormatter = Monetary
+			StylableAmountFormatter locFormatter = Monetary
 					.getAmountFormatterFactory()
 					.getLocalizableAmountFormatter();
 

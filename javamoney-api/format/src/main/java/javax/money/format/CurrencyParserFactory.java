@@ -33,6 +33,8 @@ package javax.money.format;
 
 import java.util.Locale;
 
+import javax.money.format.common.LocalizationStyle;
+
 /**
  * This class represent the singleton for money related formatting and parsing
  * functionality. It is provided by the Money singleton.
@@ -65,13 +67,13 @@ public interface CurrencyParserFactory {
 	public CurrencyParser getCurrencyParser(String namespace, Locale locale);
 
 	/**
-	 * This method returns an instance of a {@link LocalizableCurrencyParser}.
+	 * This method returns an instance of a {@link StylableCurrencyParser}.
 	 * 
 	 * @param namespace
 	 *            the target name space of currencies.
 	 * @return a currency formatter.
 	 */
-	public LocalizableCurrencyParser getLocalizableCurrencyParser(
+	public StylableCurrencyParser getLocalizableCurrencyParser(
 			String namespace);
 
 }

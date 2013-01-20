@@ -33,6 +33,9 @@ package javax.money.format;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.format.common.FormatException;
+import javax.money.format.common.ItemParser;
+import javax.money.format.common.ParseException;
 
 /**
  * Formats instances of money to and from a String.

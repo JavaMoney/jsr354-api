@@ -34,6 +34,9 @@ package javax.money.format;
 import java.util.Locale;
 
 import javax.money.MonetaryAmount;
+import javax.money.format.common.ItemParser;
+import javax.money.format.common.ItemParserBuilder;
+import javax.money.format.common.LocalizationStyle;
 
 /**
  * Provides the ability to build a parser for amount values.
@@ -42,7 +45,7 @@ import javax.money.MonetaryAmount;
  * should be created for each use. The parsers produced by the builder are
  * immutable and thread-safe.
  */
-public interface AmountParserBuilder extends ParserBuilder<MonetaryAmount> {
+public interface AmountParserBuilder extends ItemParserBuilder<MonetaryAmount> {
 
 	/**
 	 * Appends the amount to the builder using the default format. The default

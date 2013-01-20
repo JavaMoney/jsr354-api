@@ -35,6 +35,9 @@ import java.io.IOException;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
+import javax.money.format.common.FormatException;
+import javax.money.format.common.ItemFormatter;
+import javax.money.format.common.LocalizationStyle;
 
 /**
  * Formats instances of {@link CurrencyUnit} to and from a String.

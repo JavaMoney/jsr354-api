@@ -782,6 +782,9 @@ public final class Currency implements LocalizableCurrencyUnit, Serializable {
 		return 0;
 	}
 
+	/**
+	 * @since 1.9
+	 */
 	@Override
 	public boolean isVirtual() {
 		return false;
@@ -789,30 +792,52 @@ public final class Currency implements LocalizableCurrencyUnit, Serializable {
 
 	/**
 	 * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
+	 * @since 1.9
 	 */
 	@Override
 	public String getNamespace() {
 		return "ISO-4217";
 	}
 
+	/**
+	 * @since 1.9
+	 */
 	@Override
 	public long getValidFrom() {
 		return -1;
 	}
 
+	/**
+	 * @since 1.9
+	 */
 	@Override
 	public long getValidUntil() {
 		return -1;
 	}
 
+	/**
+	 * @since 1.9
+	 */
 	@Override
-	public Object getAttribute(String key) {
+	public <T> T getAttribute(String key, Class<T> type) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * @since 1.9
+	 */
 	@Override
-	public String[] getAttributeKeys() {
+	public Class<?> getAttributeType(String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	@Override
+	public Enumeration<String> getAttributeKeys() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -42,7 +42,7 @@ import java.util.Locale;
  * 
  * @author Anatole Tresch
  */
-public interface Stylable {
+public interface StylableItem {
 
 	/**
 	 * Formats a value to a {@code String}. This method uses a {@link Locale} as
@@ -58,7 +58,7 @@ public interface Stylable {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getLocalized(Locale locale);
+	public String format(Locale locale);
 
 	/**
 	 * Formats a value to a {@code String}. This method uses a
@@ -72,7 +72,7 @@ public interface Stylable {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getLocalized(LocalizationStyle style);
+	public String format(LocalizationStyle style);
 
 	/**
 	 * Prints a item value to an {@code Appendable}.

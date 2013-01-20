@@ -69,7 +69,7 @@ public interface ItemParserBuilder<T> {
 	 * 
 	 * @return the {@link StylableItemParser} built from this builder, never null
 	 */
-	public StylableItemParser<T> toLocalizableParser();
+	public StylableItemParser<T> toStylableItemParser();
 
 	/**
 	 * Builds the parser from the builder setting the locale.
@@ -87,7 +87,7 @@ public interface ItemParserBuilder<T> {
 	 * @return the {@link Styled} {@link ItemParser} built from this builder, never
 	 *         null
 	 */
-	public ItemParser<T> toParser(Locale locale);
+	public ItemParser<T> toItemParser(Locale locale);
 
 	/**
 	 * Builds the parser from the builder setting the {@link LocalizationStyle}.
@@ -102,6 +102,6 @@ public interface ItemParserBuilder<T> {
 	 * @return the {@link Styled} {@link ItemParser} built from this builder, never
 	 *         null
 	 */
-	public ItemParser<T> toParser(LocalizationStyle style);
+	public ItemParser<T> toItemParser(LocalizationStyle style);
 
 }

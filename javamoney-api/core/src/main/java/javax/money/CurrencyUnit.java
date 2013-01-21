@@ -31,7 +31,6 @@
  */
 package javax.money;
 
-import java.util.Currency;
 import java.util.ServiceLoader;
 
 import javax.money.util.AttributeProvider;
@@ -54,7 +53,7 @@ public interface CurrencyUnit extends AttributeProvider, Comparable<CurrencyUnit
 
 	/**
 	 * Defines the name space for the currency code. If the CurrencyUnit is an
-	 * instance of {@link java.util.Currency} this method returns 'ISO-4217',
+	 * instance of <type>java.util.Currency</type> this method returns 'ISO-4217',
 	 * whereas for other currency schemes, e.g. virtual currencies or internal
 	 * legacy currencies different values are possible.
 	 * 
@@ -69,7 +68,7 @@ public interface CurrencyUnit extends AttributeProvider, Comparable<CurrencyUnit
 	 * <p>
 	 * Each currency is uniquely identified within its name space by this code.
 	 * 
-	 * @return the currency code. Instances of {@link java.util.Currency} return
+	 * @return the currency code. Instances of <type>java.util.Currency</type> return
 	 *         the three letter ISO-4217 or equivalent currency code, never
 	 *         null.
 	 */
@@ -96,8 +95,8 @@ public interface CurrencyUnit extends AttributeProvider, Comparable<CurrencyUnit
 	 * default. * For example, 'GBP' has 2 fractional digits, but 'JPY' has
 	 * zero. * Pseudo-currencies are indicated by -1. *
 	 * <p>
-	 * This method matches the API of {@link Currency}. * The alternative method
-	 * {@link #getDecimalPlaces()} may be more useful. * *
+	 * This method matches the API of <type>java.util.Currency</type>
+	 * The alternative method {@link #getDecimalPlaces()} may be more useful.
 	 * 
 	 * @return the fractional digits, from 0 to 9 (normally 0, 2 or 3), or -1
 	 *         for pseudo-currencies

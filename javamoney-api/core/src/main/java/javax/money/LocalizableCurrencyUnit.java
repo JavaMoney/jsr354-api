@@ -31,12 +31,11 @@
  */
 package javax.money;
 
-import java.util.Currency;
 import java.util.Locale;
 
 /**
  * This interface extends a {@link CurrencyUnit} by the most common localization
- * methods, similar to the ones defined in {@link Currency}.
+ * methods, similar to the ones defined in java.util.Currency.
  * 
  * @author Anatole Tresch
  */

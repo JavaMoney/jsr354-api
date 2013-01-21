@@ -31,9 +31,9 @@
  */
 package javax.money.ext;
 
-import javax.money.CurrencyMismatchException;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.convert.CurrencyConversionException;
 import javax.money.spi.MonetaryExtension;
 
 /**
@@ -57,7 +57,7 @@ public interface AmountUtils extends MonetaryExtension {
 	 * @return the total, never null
 	 * @throws IllegalArgumentException
 	 *             if the array is empty
-	 * @throws CurrencyMismatchException
+	 * @throws CurrencyConversionException
 	 *             if the currencies differ
 	 */
 	public MonetaryAmount total(MonetaryAmount... monies);
@@ -75,7 +75,7 @@ public interface AmountUtils extends MonetaryExtension {
 	 * @return the total, never null
 	 * @throws IllegalArgumentException
 	 *             if the iterable is empty
-	 * @throws CurrencyMismatchException
+	 * @throws CurrencyConversionException
 	 *             if the currencies differ
 	 */
 	public MonetaryAmount total(Iterable<MonetaryAmount> monies);
@@ -92,7 +92,7 @@ public interface AmountUtils extends MonetaryExtension {
 	 * @param monies
 	 *            the monetary values to total, no null elements, not null
 	 * @return the total, never null
-	 * @throws CurrencyMismatchException
+	 * @throws CurrencyConversionException
 	 *             if the currencies differ
 	 */
 	public MonetaryAmount total(CurrencyUnit currency, MonetaryAmount... monies);
@@ -109,7 +109,7 @@ public interface AmountUtils extends MonetaryExtension {
 	 * @param monies
 	 *            the monetary values to total, no null elements, not null
 	 * @return the total, never null
-	 * @throws CurrencyMismatchException
+	 * @throws  CurrencyConversionException
 	 *             if the currencies differ
 	 */
 	public MonetaryAmount total(CurrencyUnit currency,
@@ -127,7 +127,7 @@ public interface AmountUtils extends MonetaryExtension {
 	 * @param currency
 	 *            the currency to use, not null
 	 * @return the input amount or zero in the specified currency, never null
-	 * @throws CurrencyMismatchException
+	 * @throws CurrencyConversionException
 	 *             if the input money is non-null and the currencies differ
 	 */
 	public MonetaryAmount nonNull(MonetaryAmount amount, CurrencyUnit currency);

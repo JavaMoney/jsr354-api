@@ -13,5 +13,10 @@
   		<artifactId>javamoney-api-core</artifactId>
   		<version>${project.version}</version>
   	</dependency>
+  	     <dependency>
+        <groupId>javax.money</groupId>
+        <artifactId>javamoney-api-convert</artifactId>
+        <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>

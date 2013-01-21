@@ -40,7 +40,7 @@ package javax.money.convert;
  * @author Anatole Tresch
  */
 public interface ExchangeRateType {
-
+// TODO if this type is shared between ExchangeRate and CurrencyConversion, maybe ConversionType could be more neutral?
 	/**
 	 * Get the identifier of this instance.
 	 * 

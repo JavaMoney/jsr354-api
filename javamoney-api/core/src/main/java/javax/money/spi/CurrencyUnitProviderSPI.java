@@ -93,19 +93,6 @@ public interface CurrencyUnitProviderSPI {
 	public CurrencyUnit[] getCurrencies(long timestamp);
 
 	/**
-	 * This method maps the given {@link CurrencyUnit} to another
-	 * {@link CurrencyUnit} with the given target namespace.
-	 * 
-	 * @param unit
-	 *            The source unit, never {@code null}. Hereby the unit will
-	 *            match the namespace as defined by {@link #getNamespace()}.
-	 * @param targetNamespace
-	 *            the target namespace, never {@code null}.
-	 * @return The mapped {@link CurrencyUnit}, or null.
-	 */
-	public CurrencyUnit map(CurrencyUnit unit, String targetNamespace);
-
-	/**
 	 * Method that allows to check if a currency is available for a given time
 	 * range.
 	 * 

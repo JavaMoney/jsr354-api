@@ -32,8 +32,8 @@ import java.util.Set;
 import javax.money.CurrencyUnit;
 import javax.money.CurrencyUnitProvider;
 import javax.money.UnknownCurrencyException;
-import javax.money.ext.Region;
 import javax.money.ext.RegionType;
+import javax.money.spi.CurrencyUnitMappingSPI;
 import javax.money.spi.CurrencyUnitProviderSPI;
 
 import net.java.javamoney.ri.AbstractSPIComponent;
@@ -48,8 +48,10 @@ public final class CurrencyUnitProviderImpl extends AbstractSPIComponent
 		implements CurrencyUnitProvider {
 	/** Singleton instance. */
 	private static final CurrencyUnitProviderImpl INSTANCE = new CurrencyUnitProviderImpl();
-	/** Loaded region providers. */
+	/** Loaded currency providers. */
 	private Map<String, List<CurrencyUnitProviderSPI>> currencyProviders = new HashMap<String, List<CurrencyUnitProviderSPI>>();
+	/** Loaded currency mappers. */
+	private Set<CurrencyUnitMappingSPI> mappers = new HashSet<CurrencyUnitMappingSPI>();
 
 	/**
 	 * Singleton constructor.
@@ -79,6 +81,10 @@ public final class CurrencyUnitProviderImpl extends AbstractSPIComponent
 						provList);
 			}
 			provList.add(currencyProviderSPI);
+		}
+		List<CurrencyUnitMappingSPI> loadedMapperList = getSPIProviders(CurrencyUnitMappingSPI.class);
+		for (CurrencyUnitMappingSPI currencyMappingSPI : loadedMapperList) {
+			mappers.add(currencyMappingSPI);
 		}
 	}
 
@@ -174,7 +180,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSPIComponent
 			return false;
 		}
 		for (CurrencyUnitProviderSPI prov : provList) {
-			if(prov.isAvailable(code, start, end)){
+			if (prov.isAvailable(code, start, end)) {
 				return true;
 			}
 		}
@@ -215,7 +221,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSPIComponent
 		if (provList == null) {
 			return null;
 		}
-		for (CurrencyUnitProviderSPI prov : provList) {
+		for (CurrencyUnitMappingSPI prov : mappers) {
 			CurrencyUnit mappedUnit = prov.map(unit, targetNamespace);
 			if (mappedUnit != null) {
 				return mappedUnit;

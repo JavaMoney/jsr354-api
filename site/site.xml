@@ -24,7 +24,7 @@
     </menu>
 
     <menu name="Development">
-      <item name="GitHub (Source code)" href="https://github.com/JavaMoney/javamoney-examples"/>
+      <item name="GitHub (Source code)" href="https://github.com/JavaMoney/javamoney"/>
       <item name="Java.net" href="http://java.net/projects/javamoney/"/>
       <item name="Test results" href="surefire-report.html"/>
       <item name="Test coverage" href="/cobertura/index.html"/>

@@ -44,6 +44,11 @@ public class SmokeTests {
 		currencies = Monetary.getCurrencyUnitProvider().getAll(Locale.ROOT);
 		System.out.println("Currencies for ROOT (undefined): " + Arrays.toString(currencies));
 	}
+	
+	@Test
+	public void testExchange(){
+//		Monetary.getExchangeRateProvider(ExchangeRateType.)
+	}
 
 	@Test
 	@Ignore

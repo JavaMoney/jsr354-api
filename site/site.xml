@@ -4,27 +4,27 @@
   <bannerLeft>
     <name>JCP.org</name>
     <!--src>images/joda.png</src-->
-    <href>http://joda.sourceforge.net/</href>
+    <href>http://javamoney.java.net/</href>
   </bannerLeft>
   <bannerRight>
     <name>Java Money</name>
     <!--src>images/jodamoney.png</src-->
-    <href>http://joda-money.sourceforge.net/</href>
+    <href>http://javamoney.java.net/</href>
   </bannerRight>
 
   <body>
-    <menu name="Joda Money">
+    <menu name="Java Money">
       <item name="Overview" href="index.html"/>
       <item name="User guide" href="userguide.html"/>
       <!--item name="FAQ" href="faq.html"/-->
       <item name="Javadoc" href="apidocs/index.html"/>
       <item name="License" href="licensecover.html"/>
       <item name="Release notes" href="changes-report.html"/>
-      <item name="Download" href="http://sourceforge.net/projects/joda-money/files/joda-money/0.6/"/>
+      <item name="Download" href="http://java.net/projects/javamoney/downloads"/>
     </menu>
 
     <menu name="Development">
-      <item name="GitHub (Source code)" href="https://github.com/JavaMoney/javamoney"/>
+      <item name="GitHub (Source code)" href="https://github.com/JavaMoney/javamoney-examples"/>
       <item name="Java.net" href="http://java.net/projects/javamoney/"/>
       <item name="Test results" href="surefire-report.html"/>
       <item name="Test coverage" href="/cobertura/index.html"/>
@@ -38,7 +38,7 @@
   </body>
 
   <poweredBy>
-    <logo name="Sourceforge" href="http://sourceforge.net/projects/joda-money/"
+    <logo name="Java.net" href="http://java.net/projects/javamoney/"
         img="http://sourceforge.net/sflogo.php?group_id=274452&amp;type=2" width="125" height="37" />
   </poweredBy>
 </project>

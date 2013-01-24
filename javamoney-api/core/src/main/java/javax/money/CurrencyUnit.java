@@ -49,13 +49,19 @@ import javax.money.util.AttributeProvider;
  * @author Stephen Colebourne
  * @author Anatole Tresch
  */
-public interface CurrencyUnit extends AttributeProvider, Comparable<CurrencyUnit> {
+public interface CurrencyUnit extends AttributeProvider,
+		Comparable<CurrencyUnit> {
+
+	/**
+	 * The predefined namespace for ISO 4217 currencies.
+	 */
+	public static final String ISO_NAMESPACE = "ISO-4217";
 
 	/**
 	 * Defines the name space for the currency code. If the CurrencyUnit is an
-	 * instance of <type>java.util.Currency</type> this method returns 'ISO-4217',
-	 * whereas for other currency schemes, e.g. virtual currencies or internal
-	 * legacy currencies different values are possible.
+	 * instance of <type>java.util.Currency</type> this method returns
+	 * 'ISO-4217', whereas for other currency schemes, e.g. virtual currencies
+	 * or internal legacy currencies different values are possible.
 	 * 
 	 * @return the name space of the currency, never null.
 	 */
@@ -68,9 +74,9 @@ public interface CurrencyUnit extends AttributeProvider, Comparable<CurrencyUnit
 	 * <p>
 	 * Each currency is uniquely identified within its name space by this code.
 	 * 
-	 * @return the currency code. Instances of <type>java.util.Currency</type> return
-	 *         the three letter ISO-4217 or equivalent currency code, never
-	 *         null.
+	 * @return the currency code. Instances of <type>java.util.Currency</type>
+	 *         return the three letter ISO-4217 or equivalent currency code,
+	 *         never null.
 	 */
 	public String getCurrencyCode();
 
@@ -86,8 +92,6 @@ public interface CurrencyUnit extends AttributeProvider, Comparable<CurrencyUnit
 	 */
 	public int getNumericCode();
 
-	
-
 	/**
 	 * Gets the number of fractional digits typically used by this currency.
 	 * <p>
@@ -95,8 +99,8 @@ public interface CurrencyUnit extends AttributeProvider, Comparable<CurrencyUnit
 	 * default. * For example, 'GBP' has 2 fractional digits, but 'JPY' has
 	 * zero. * Pseudo-currencies are indicated by -1. *
 	 * <p>
-	 * This method matches the API of <type>java.util.Currency</type>
-	 * The alternative method {@link #getDecimalPlaces()} may be more useful.
+	 * This method matches the API of <type>java.util.Currency</type> The
+	 * alternative method {@link #getDecimalPlaces()} may be more useful.
 	 * 
 	 * @return the fractional digits, from 0 to 9 (normally 0, 2 or 3), or -1
 	 *         for pseudo-currencies

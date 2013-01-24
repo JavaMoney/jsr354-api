@@ -1,1 +1,2 @@
 net.java.javamoney.ri.core.JDKCurrencyProvider
+net.java.javamoney.ri.convert.providers.ISOCurrencyOnlineProvider

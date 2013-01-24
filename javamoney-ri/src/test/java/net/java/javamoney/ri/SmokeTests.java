@@ -1,6 +1,7 @@
 package net.java.javamoney.ri;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
@@ -32,6 +33,16 @@ public class SmokeTests {
 		System.out.print(amount2);
 		System.out.print(" = ");
 		System.out.println(amount3);
+	}
+	
+	@Test
+	public void testGettingCurrenciesPerLocale() {
+		CurrencyUnit[] currencies = Monetary.getCurrencyUnitProvider().getAll(Locale.US);
+		System.out.println("Currencies for US: " + Arrays.toString(currencies));
+		currencies = Monetary.getCurrencyUnitProvider().getAll(Locale.CHINA);
+		System.out.println("Currencies for CHINA: " + Arrays.toString(currencies));
+		currencies = Monetary.getCurrencyUnitProvider().getAll(Locale.ROOT);
+		System.out.println("Currencies for ROOT (undefined): " + Arrays.toString(currencies));
 	}
 
 	@Test

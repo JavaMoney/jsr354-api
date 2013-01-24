@@ -61,7 +61,7 @@ public class JDKCurrencyProvider implements CurrencyUnitProviderSPI {
 	}
 
 	public CurrencyUnit[] getCurrencies(Locale locale, long timestamp) {
-		if (timestamp == -1) {
+		if (timestamp == -1 &&  locale !=null && locale.getCountry().length()==2) {
 			Currency currency = Currency.getInstance(locale);
 			if (currency != null) {
 				return new CurrencyUnit[] { this.currencies.get(currency

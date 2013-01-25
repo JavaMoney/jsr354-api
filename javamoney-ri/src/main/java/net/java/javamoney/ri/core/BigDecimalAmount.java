@@ -76,7 +76,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 
 	public MonetaryAmount min(MonetaryAmount amount) {
 		if (amount == null) {
-			throw new IllegalArgumentException("Amount rewuired.");
+			throw new IllegalArgumentException("Amount required.");
 		}
 		if (amount.lessThan(this)) {
 			return amount;
@@ -86,7 +86,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 
 	public MonetaryAmount max(MonetaryAmount amount) {
 		if (amount == null) {
-			throw new IllegalArgumentException("Amount rewuired.");
+			throw new IllegalArgumentException("Amount required.");
 		}
 		if (amount.greaterThan(this)) {
 			return amount;
@@ -100,10 +100,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount must not be null.");
 		}
-		if (!this.currency.equals(amount.getCurrency())) {
-			throw new IllegalArgumentException("Currency mismatch: required : "
-					+ this.currency + ", but was " + amount.getCurrency());
-		}
+		failIfDifferentCurrency(amount);
 		return new BigDecimalAmount(this.currency, this.number.add(amount
 				.asType(BigDecimal.class)));
 	}
@@ -127,9 +124,9 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public MonetaryAmount[] divideAndRemainder(MonetaryAmount divisor) {
-//		BigDecimal[] dec = this.number.divideAndRemainder(BigDecimal
-//				.valueOf(divisor.doubleValue()));
-		BigDecimal[] dec = this.number.divideAndRemainder(divisor.asType(BigDecimal.class));
+		// TODO is division OK with different currencies?
+		BigDecimal[] dec = this.number.divideAndRemainder(divisor
+				.asType(BigDecimal.class));
 		return new MonetaryAmount[] {
 				new BigDecimalAmount(this.currency, dec[0]),
 				new BigDecimalAmount(this.currency, dec[1]) };
@@ -144,7 +141,9 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public MonetaryAmount divideToIntegralValue(MonetaryAmount divisor) {
-		BigDecimal dec = this.number.divideToIntegralValue(divisor.asType(BigDecimal.class));
+		// TODO is division OK with different currencies?
+		BigDecimal dec = this.number.divideToIntegralValue(divisor
+				.asType(BigDecimal.class));
 		return new BigDecimalAmount(this.currency, dec);
 	}
 
@@ -155,6 +154,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public MonetaryAmount multiply(MonetaryAmount multiplicand) {
+		// TODO is multiplication OK with different currencies?
 		BigDecimal dec = this.number.multiply(multiplicand
 				.asType(BigDecimal.class));
 		return new BigDecimalAmount(this.currency, dec);
@@ -175,6 +175,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public MonetaryAmount subtract(MonetaryAmount subtrahend) {
+		failIfDifferentCurrency(subtrahend);
 		return new BigDecimalAmount(this.currency,
 				this.number.subtract(subtrahend.asType(BigDecimal.class)));
 	}
@@ -194,6 +195,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public MonetaryAmount remainder(MonetaryAmount divisor) {
+		// TODO is division OK with different currencies?
 		return new BigDecimalAmount(this.currency,
 				this.number.remainder(divisor.asType(BigDecimal.class)));
 	}
@@ -232,13 +234,11 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public boolean isPositive() {
-		// TODO Auto-generated method stub
 		return signum() == 1;
 	}
 
 	public boolean isPositiveOrZero() {
-		// TODO Auto-generated method stub
-		return false;
+		return signum() >= 0;
 	}
 
 	public boolean isNegative() {
@@ -246,8 +246,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public boolean isNegativeOrZero() {
-		// TODO Auto-generated method stub
-		return false;
+		return signum() <= 0;
 	}
 
 	public MonetaryAmount with(Number amount) {
@@ -256,8 +255,11 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public MonetaryAmount with(AmountAdjuster... adjuster) {
-		// TODO Auto-generated method stub
-		return null;
+		MonetaryAmount amount = this;
+		for (AmountAdjuster amountAdjuster : adjuster) {
+			amount = amountAdjuster.adjust(amount);
+		}
+		return amount;
 	}
 
 	public int getScale() {
@@ -301,8 +303,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public short shortValueExact() {
-		// TODO Auto-generated method stub
-		return 0;
+		return number.shortValueExact();
 	}
 
 	public int signum() {
@@ -315,68 +316,62 @@ public class BigDecimalAmount implements MonetaryAmount {
 	}
 
 	public String toPlainString() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO consider currency or not?
+		return this.number.toPlainString();
 	}
 
 	public boolean lessThan(MonetaryAmount amount) {
-		// TODO Auto-generated method stub
-		return false;
+		failIfDifferentCurrency(amount);
+		return number.compareTo(amount.asType(BigDecimal.class)) < 0;
 	}
 
 	public boolean lessThan(Number number) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) < 0;
 	}
 
 	public boolean lessThanOrEqualTo(MonetaryAmount amount) {
-		// TODO Auto-generated method stub
-		return false;
+		failIfDifferentCurrency(amount);
+		return number.compareTo(amount.asType(BigDecimal.class)) <= 0;
 	}
 
 	public boolean lessThanOrEqualTo(Number number) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) <= 0;
 	}
 
 	public boolean greaterThan(MonetaryAmount amount) {
-		// TODO Auto-generated method stub
-		return false;
+		failIfDifferentCurrency(amount);
+		return number.compareTo(amount.asType(BigDecimal.class)) > 0;
 	}
 
 	public boolean greaterThan(Number number) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) > 0;
 	}
 
 	public boolean greaterThanOrEqualTo(MonetaryAmount amount) {
-		// TODO Auto-generated method stub
-		return false;
+		failIfDifferentCurrency(amount);
+		return number.compareTo(amount.asType(BigDecimal.class)) >= 0;
 	}
 
 	public boolean greaterThanOrEqualTo(Number number) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) >= 0;
 	}
 
 	public boolean isEqualTo(MonetaryAmount amount) {
-		// TODO Auto-generated method stub
-		return false;
+		failIfDifferentCurrency(amount);
+		return number.compareTo(amount.asType(BigDecimal.class)) == 0;
 	}
 
 	public boolean isEqualTo(Number number) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) == 0;
 	}
 
 	public boolean isNotEqualTo(MonetaryAmount amount) {
-		// TODO Auto-generated method stub
-		return false;
+		failIfDifferentCurrency(amount);
+		return number.compareTo(amount.asType(BigDecimal.class)) != 0;
 	}
 
 	public boolean isNotEqualTo(Number number) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) != 0;
 	}
 
 	public MonetaryAmount getMajorPart() {
@@ -443,13 +438,33 @@ public class BigDecimalAmount implements MonetaryAmount {
 		return new BigDecimalAmount(currency, number);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return currency.toString() + ' ' + number;
 	}
-	
-	
+
+
+	// Internal helper methods
+
+	/**
+	 * Checks if amount has same currency.
+	 * 
+	 * @param amount
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the given amount is in another currency than this amount.
+	 */
+	private void failIfDifferentCurrency(MonetaryAmount amount) {
+		if (!this.currency.equals(amount.getCurrency())) {
+			throw new IllegalArgumentException("Currency mismatch: required : "
+					+ this.currency + ", but was " + amount.getCurrency());
+		}
+	}
+
+
 }

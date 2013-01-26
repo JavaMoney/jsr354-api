@@ -14,8 +14,9 @@
  *  limitations under the License.
  *
  * Contributors:
- *    Anatole Tresch - initial implementation
- *    Wernner Keil - extensions and adaptions.
+ *    Anatole Tresch
+ *    Wernner Keil
+ *    Claus Nielsen
  */
 package net.java.javamoney.ri.core;
 

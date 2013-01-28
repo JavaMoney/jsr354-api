@@ -15,7 +15,7 @@
  *
  * Contributors:
  *    Anatole Tresch
- *    Wernner Keil
+ *    Werner Keil
  *    Claus Nielsen
  */
 package net.java.javamoney.ri.core;

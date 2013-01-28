@@ -46,13 +46,26 @@ public class UnknownCurrencyException extends IllegalArgumentException {
     /** Serialization lock. */
     private static final long serialVersionUID = 1L;
 
+    /** A currency to store, may be null if the exception is simply given a string message */
+    private CurrencyUnit currency;
+
+    /**
+     * Constructor.
+     * 
+     * @param currency the currency, may be null
+     */
+    public UnknownCurrencyException(CurrencyUnit currency) {
+        super("Unknown Currency " + String.valueOf(currency));
+        this.currency = currency;
+    }
+
     /**
      * Constructor.
      * 
      * @param message  the message, may be null
      */
     public UnknownCurrencyException(String message) {
-    	// TODO Not Implemented yet
+    	super(message);
     }
 
 }

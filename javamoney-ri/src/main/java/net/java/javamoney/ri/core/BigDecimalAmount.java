@@ -478,7 +478,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 	 * @throws IllegalArgumentException
 	 *             If the number is null
 	 */
-	public void checkNumber(Number number) {
+	private void checkNumber(Number number) {
 		if (number == null) {
 			throw new IllegalArgumentException("Number is required.");
 		}
@@ -498,10 +498,11 @@ public class BigDecimalAmount implements MonetaryAmount {
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount must not be null.");
 		}
-		if (!(this.currency.getNamespace().equals(currency.getNamespace()) || !(this.currency
-				.getCurrencyCode().equals(currency.getCurrencyCode())))) {
+		CurrencyUnit otherCurrency = amount.getCurrency();
+		if (!(this.currency.getNamespace().equals(otherCurrency.getNamespace()) || !(this.currency
+				.getCurrencyCode().equals(otherCurrency.getCurrencyCode())))) {
 			throw new IllegalArgumentException("Currency mismatch: "
-					+ this.currency + '/' + currency);
+					+ this.currency + '/' + otherCurrency);
 		}
 	}
 

@@ -44,22 +44,57 @@ public class CurrencyConversionException extends IllegalArgumentException {
 	/** Serialization lock. */
 	private static final long serialVersionUID = -7743240650686883450L;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param firstCurrency
-	 *            the first currency, may be null
+    /**
+     * Constructs an <code>CurrencyConversionException</code> with the
+     * specified detail message, source and target currency.
+     *
+	 * @param source
+	 *            the source currency, may be null.
+	 *            
+	 * @param target
+	 *            the target currency, may be null.
+	 *            
+	 * @param message
+	 * 			   the detail message.
 	 */
 	public CurrencyConversionException(CurrencyUnit source,
 			CurrencyUnit target, String message) {
 		super(message);
 	}
+	
+    /**
+     * Constructs an <code>CurrencyConversionException</code> with the
+     * specified source and target currency.
+     *
+	 * @param source
+	 *            the source currency, may be null.
+	 *            
+	 * @param target
+	 *            the target currency, may be null.
+	 */
+	public CurrencyConversionException(CurrencyUnit source,
+			CurrencyUnit target) {
+		super("Cannot convert " + String.valueOf(source) + " into " + String.valueOf(target));
+	}
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param firstCurrency
-	 *            the first currency, may be null
+    /**
+     * Constructs a new exception with the specified source and target currency, detail message and
+     * cause.
+     *
+     * <p>Note that the detail message associated with <code>cause</code> is
+     * <i>not</i> automatically incorporated in this exception's detail
+     * message.
+     *
+     * @param source
+	 *            the source currency, may be null.            
+	 * @param target
+	 *            the target currency, may be null.         
+     * @param  message the detail message (which is saved for later retrieval
+     *         by the {@link Throwable#getMessage()} method).
+     * @param  cause the cause (which is saved for later retrieval by the
+     *         {@link Throwable#getCause()} method).  (A <tt>null</tt> value
+     *         is permitted, and indicates that the cause is nonexistent or
+     *         unknown.)
 	 */
 	public CurrencyConversionException(CurrencyUnit source,
 			CurrencyUnit target, String message, Throwable cause) {

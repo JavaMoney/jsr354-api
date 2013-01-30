@@ -108,7 +108,6 @@ public final class Monetary {
 	 * Loads and registers the {@link MonetaryExtension} instances. It also
 	 * checks for the types exposed.
 	 */
-	@SuppressWarnings("unchecked")
 	private void loadExtensions() {
 		for (MonetaryExtension t : extensionsLoader) {
 			try {

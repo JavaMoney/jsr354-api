@@ -148,11 +148,11 @@ public class MonetaryTest {
 
 	@Test
 	public void testGetExtensions() {
-		Enumeration<Class<? extends MonetaryExtension>> types = Monetary.getLoadedExtensions();
+		Enumeration<Class<?>> types = Monetary.getLoadedExtensions();
 		assertNotNull(types);
 		int count = 0;
 		while (types.hasMoreElements()) {
-			Class<? extends MonetaryExtension> clazz = types.nextElement();
+			Class<?> clazz = types.nextElement();
 			assertSame(clazz, TestExtension.class);
 			count++;
 		}

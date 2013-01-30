@@ -64,7 +64,7 @@ public final class Monetary {
 	private final RoundingProvider roundingProvider;
 	private final Map<ExchangeRateType, ExchangeRateProvider> exchangeRateProviders = new HashMap<ExchangeRateType, ExchangeRateProvider>();
 	private final Map<ExchangeRateType, CurrencyConverter> currencyConverters = new HashMap<ExchangeRateType, CurrencyConverter>();
-	private final Map<Class<? extends MonetaryExtension>, MonetaryExtension> extensions = new HashMap<Class<? extends MonetaryExtension>, MonetaryExtension>();
+	private final Map<Class<?>, MonetaryExtension> extensions = new HashMap<Class<?>, MonetaryExtension>();
 	private final AmountParserFactory amountParserFactory;
 	private final AmountFormatterFactory amountFormatterFactory;
 	private final CurrencyParserFactory currencyParserFactory;
@@ -389,7 +389,7 @@ public final class Monetary {
 	 * @return the enumeration containing the types of extensions loaded, never
 	 *         null.
 	 */
-	public static Enumeration<Class<? extends MonetaryExtension>> getLoadedExtensions() {
+	public static Enumeration<Class<?>> getLoadedExtensions() {
 		return Collections.enumeration(INSTANCE.extensions.keySet());
 	}
 }

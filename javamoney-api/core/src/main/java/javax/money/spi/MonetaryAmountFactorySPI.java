@@ -42,7 +42,7 @@ import javax.money.CurrencyUnit;
  * 
  * @author Anatole Tresch
  */
-public interface MonetaryAmountFactorySPI {
+public interface MonetaryAmountFactorySpi {
 
 	/**
 	 * The representation type used by this factory instance, e.g.

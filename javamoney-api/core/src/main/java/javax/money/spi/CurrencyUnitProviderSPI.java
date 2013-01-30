@@ -46,7 +46,7 @@ import javax.money.CurrencyUnit;
  * 
  * @author Anatole Tresch
  */
-public interface CurrencyUnitProviderSPI {
+public interface CurrencyUnitProviderSpi {
 
 	/**
 	 * The currency namespace provided by this instance.

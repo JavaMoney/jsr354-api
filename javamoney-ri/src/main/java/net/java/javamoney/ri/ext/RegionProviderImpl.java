@@ -46,23 +46,12 @@ public final class RegionProviderImpl extends AbstractSPIComponent implements
 	private List<RegionProviderSPI> regionProviders;
 
 	/**
-	 * Constructor.
-	 */
-	public RegionProviderImpl() {
-		try {
-			reload();
-		} catch (Exception e) {
-			// TODO log excetion!
-		}
-	}
-
-	/**
 	 * This method defined that this implementation is exposed as
 	 * {@link RegionProvider}.
 	 * 
 	 * @return {@link RegionProvider}.class
 	 */
-	public Class getExposedType() {
+	public Class<RegionProvider> getExposedType() {
 		return RegionProvider.class;
 	}
 

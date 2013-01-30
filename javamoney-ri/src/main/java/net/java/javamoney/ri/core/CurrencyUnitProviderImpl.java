@@ -54,18 +54,6 @@ public final class CurrencyUnitProviderImpl extends AbstractSPIComponent
 	private Set<CurrencyUnitMappingSPI> mappers = new HashSet<CurrencyUnitMappingSPI>();
 
 	/**
-	 * Singleton constructor.
-	 */
-	public CurrencyUnitProviderImpl() {
-		try {
-			reload();
-		} catch (Exception e) {
-			// TODO log excetion!
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * This method reloads the providers available from the
 	 * {@link ServiceLoader}. This adds providers that were not yet visible
 	 * before.

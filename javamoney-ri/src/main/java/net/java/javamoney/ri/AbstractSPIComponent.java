@@ -35,6 +35,18 @@ public abstract class AbstractSPIComponent {
 	/**
 	 * Singleton constructor.
 	 */
+	public AbstractSPIComponent() {
+		try {
+			reload();
+		} catch (Exception e) {
+			// TODO log exception!
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Singleton constructor.
+	 */
 	protected <T> List<T> getSPIProviders(Class<T> providerClass) {
 		List<T> providers = new ArrayList<T>();
 		Iterator<T> providerIter = ServiceLoader.load(providerClass).iterator();
@@ -45,4 +57,5 @@ public abstract class AbstractSPIComponent {
 		return providers;
 	}
 
+	public abstract void reload();
 }

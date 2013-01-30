@@ -41,9 +41,10 @@ import net.java.javamoney.ri.AbstractSpiComponent;
  */
 public final class RegionalCurrencyUnitProviderImpl extends
 		AbstractSpiComponent implements RegionalCurrencyUnitProvider {
-	
-	/** Singleton instance. */
-	private static final RegionalCurrencyUnitProviderImpl INSTANCE = new RegionalCurrencyUnitProviderImpl();
+
+// TODO Remove the singleton if it is not used
+//	/** Singleton instance. */
+//	private static final RegionalCurrencyUnitProviderImpl INSTANCE = new RegionalCurrencyUnitProviderImpl();
 	
 	/** Loaded region providers. */
 	private List<RegionalCurrencyUnitProviderSpi> regionalCurrencyProviders = new ArrayList<RegionalCurrencyUnitProviderSpi>();

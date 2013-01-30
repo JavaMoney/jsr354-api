@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.ext.Region;
 import javax.money.spi.CurrencyUnitProviderSpi;
 
 /**

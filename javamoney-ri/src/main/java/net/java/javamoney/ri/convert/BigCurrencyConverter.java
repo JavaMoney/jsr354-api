@@ -19,19 +19,18 @@
  */
 package net.java.javamoney.ri.convert;
 
-
-import static java.util.FormattableFlags.LEFT_JUSTIFY;
-
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.util.Formatter;
-import java.util.Locale;
-
-import java.util.Currency;
-
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmount;
-import javax.money.convert.ExchangeRate;
+//import static java.util.FormattableFlags.LEFT_JUSTIFY;
+//
+//import java.math.BigDecimal;
+//import java.math.MathContext;
+//import java.util.Formatter;
+//import java.util.Locale;
+//
+//import java.util.Currency;
+//
+//import javax.money.CurrencyUnit;
+//import javax.money.MonetaryAmount;
+//import javax.money.convert.ExchangeRate;
 //
 ///**
 // * <p>

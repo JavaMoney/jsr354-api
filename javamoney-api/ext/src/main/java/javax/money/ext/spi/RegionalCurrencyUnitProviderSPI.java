@@ -41,7 +41,7 @@ import javax.money.ext.Region;
  * 
  * @author Anatole Tresch
  */
-public interface RegionalCurrencyUnitProviderSPI{
+public interface RegionalCurrencyUnitProviderSpi{
 
 	/**
 	 * Access all currencies matching a {@link Region}.

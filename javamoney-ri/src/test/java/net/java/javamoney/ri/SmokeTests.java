@@ -11,8 +11,8 @@ import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import javax.money.format.AmountFormatter;
 import javax.money.format.AmountParser;
-import javax.money.format.StylableAmountFormatter;
-import javax.money.format.StylableAmountParser;
+import javax.money.format.StyleableAmountFormatter;
+import javax.money.format.StyleableAmountParser;
 import javax.money.format.common.ParseException;
 
 import org.junit.Ignore;
@@ -64,7 +64,7 @@ public class SmokeTests {
 					.getAmountParser(Locale.GERMANY);
 			MonetaryAmount amount1 = parser.parse("CFH 123.45");
 
-			StylableAmountParser locParser = Monetary
+			StyleableAmountParser locParser = Monetary
 					.getAmountParserFactory().getLocalizableAmountParser();
 
 			MonetaryAmount amount2 = locParser
@@ -88,7 +88,7 @@ public class SmokeTests {
 					.getAmountFormatter(Locale.GERMANY);
 			String formatted = formatter.print(amount);
 			assertEquals(1.0d, amount.doubleValue(), 0);
-			StylableAmountFormatter locFormatter = Monetary
+			StyleableAmountFormatter locFormatter = Monetary
 					.getAmountFormatterFactory()
 					.getLocalizableAmountFormatter();
 

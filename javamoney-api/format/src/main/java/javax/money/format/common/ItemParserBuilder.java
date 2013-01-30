@@ -55,21 +55,21 @@ import java.util.Locale;
  * are immutable and thread-safe.
  * 
  * @see ItemParser
- * @see StylableItemParser
+ * @see StyleableItemParser
  */
 public interface ItemParserBuilder<T> {
 
 	/**
-	 * Builds the {@link StylableItemParser} from this builder.
+	 * Builds the {@link StyleableItemParser} from this builder.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code Formatter} of {@link StylableItemFormatter} to be used. Calling
+	 * {@code Formatter} of {@link StyleableItemFormatter} to be used. Calling
 	 * this method does not change the state of this instance, so it can still
 	 * be used.
 	 * 
-	 * @return the {@link StylableItemParser} built from this builder, never null
+	 * @return the {@link StyleableItemParser} built from this builder, never null
 	 */
-	public StylableItemParser<T> toStylableItemParser();
+	public StyleableItemParser<T> toStylableItemParser();
 
 	/**
 	 * Builds the parser from the builder setting the locale.
@@ -78,7 +78,7 @@ public interface ItemParserBuilder<T> {
 	 * still be used.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code Formatter} of {@link StylableItemFormatter} to be used. This method
+	 * {@code Formatter} of {@link StyleableItemFormatter} to be used. This method
 	 * uses the specified locale. For extended style parameters use
 	 * {@link ItemParserBuilder#toParser(LocalizationStyle)} instead of.
 	 * 
@@ -93,7 +93,7 @@ public interface ItemParserBuilder<T> {
 	 * Builds the parser from the builder setting the {@link LocalizationStyle}.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code Formatter} of {@link StylableItemFormatter} to be used. Calling
+	 * {@code Formatter} of {@link StyleableItemFormatter} to be used. Calling
 	 * this method does not change the state of this instance, so it can still
 	 * be used.
 	 * 

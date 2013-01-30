@@ -37,7 +37,7 @@ import java.io.IOException;
  * Formats instances of T to a {@link String} or an {@link Appendable}.
  * @TODO check if this class can be moved to {@code java.util}.
  */
-public interface ItemFormatter<T> extends Targeted, Styled {
+public interface ItemFormatter<T> extends Targeted<T>, Styled {
 
 	/**
 	 * Formats a value of T to a {@code String}. This method uses a

@@ -23,17 +23,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.ServiceLoader;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.ext.Region;
 import javax.money.ext.RegionalCurrencyUnitProvider;
-import javax.money.ext.spi.RegionalCurrencyUnitProviderSPI;
-import javax.money.spi.CurrencyUnitProviderSPI;
+import javax.money.ext.spi.RegionalCurrencyUnitProviderSpi;
 
-import net.java.javamoney.ri.AbstractSPIComponent;
+import net.java.javamoney.ri.AbstractSpiComponent;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -42,23 +40,14 @@ import net.java.javamoney.ri.AbstractSPIComponent;
  * @author Anatole Tresch
  */
 public final class RegionalCurrencyUnitProviderImpl extends
-		AbstractSPIComponent implements RegionalCurrencyUnitProvider {
-	/** Singleton instance. */
-	private static final RegionalCurrencyUnitProviderImpl INSTANCE = new RegionalCurrencyUnitProviderImpl();
-	/** Loaded region providers. */
-	private List<RegionalCurrencyUnitProviderSPI> regionalCurrencyProviders = new ArrayList<RegionalCurrencyUnitProviderSPI>();
+		AbstractSpiComponent implements RegionalCurrencyUnitProvider {
 
-	/**
-	 * Constructor.
-	 */
-	public RegionalCurrencyUnitProviderImpl() {
-		try {
-			reload();
-		} catch (Exception e) {
-			// TODO log excetion!
-			e.printStackTrace();
-		}
-	}
+// TODO Remove the singleton if it is not used
+//	/** Singleton instance. */
+//	private static final RegionalCurrencyUnitProviderImpl INSTANCE = new RegionalCurrencyUnitProviderImpl();
+	
+	/** Loaded region providers. */
+	private List<RegionalCurrencyUnitProviderSpi> regionalCurrencyProviders = new ArrayList<RegionalCurrencyUnitProviderSpi>();
 
 	/**
 	 * This method defined that this implementation is exposed as
@@ -66,7 +55,7 @@ public final class RegionalCurrencyUnitProviderImpl extends
 	 * 
 	 * @return {@link RegionalCurrencyUnitProvider}.class
 	 */
-	public Class getExposedType() {
+	public Class<RegionalCurrencyUnitProvider> getExposedType() {
 		return RegionalCurrencyUnitProvider.class;
 	}
 
@@ -76,8 +65,8 @@ public final class RegionalCurrencyUnitProviderImpl extends
 	 * before.
 	 */
 	public void reload() {
-		List<RegionalCurrencyUnitProviderSPI> loadedList = getSPIProviders(RegionalCurrencyUnitProviderSPI.class);
-		for (RegionalCurrencyUnitProviderSPI provSPI : loadedList) {
+		List<RegionalCurrencyUnitProviderSpi> loadedList = getSPIProviders(RegionalCurrencyUnitProviderSpi.class);
+		for (RegionalCurrencyUnitProviderSpi provSPI : loadedList) {
 			if (!regionalCurrencyProviders.contains(provSPI)) {
 				this.regionalCurrencyProviders.add(provSPI);
 			}
@@ -96,7 +85,7 @@ public final class RegionalCurrencyUnitProviderImpl extends
 
 	public CurrencyUnit[] getAll(Region region, long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		for (RegionalCurrencyUnitProviderSPI prov : regionalCurrencyProviders) {
+		for (RegionalCurrencyUnitProviderSpi prov : regionalCurrencyProviders) {
 			CurrencyUnit[] currencies = prov.getAll(region);
 			if (currencies != null) {
 				result.addAll(Arrays.asList(currencies));
@@ -104,20 +93,4 @@ public final class RegionalCurrencyUnitProviderImpl extends
 		}
 		return result.toArray(new CurrencyUnit[result.size()]);
 	}
-
-	// public CurrencyUnit[] getAll(Locale locale, long timestamp) {
-	// Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-	// for (List<CurrencyUnitProviderSPI> provList : INSTANCE.currencyProviders
-	// .values()) {
-	// for (CurrencyUnitProviderSPI prov : provList) {
-	// CurrencyUnit[] currencies = prov.getCurrencies(locale,
-	// timestamp);
-	// if (currencies != null) {
-	// result.addAll(Arrays.asList(currencies));
-	// }
-	// }
-	// }
-	// return result.toArray(new CurrencyUnit[result.size()]);
-	// }
-
 }

@@ -415,7 +415,10 @@ public class BigDecimalAmount implements MonetaryAmount {
 
 	public <T> T asType(Class<T> type) {
 		if (BigDecimal.class.equals(type)) {
-			return (T) this.number;
+			
+			@SuppressWarnings("unchecked")
+			final T asType = (T) this.number;
+			return asType;
 		}
 		// TODO add Number types...
 		throw new IllegalArgumentException("Unsupported representation type: "

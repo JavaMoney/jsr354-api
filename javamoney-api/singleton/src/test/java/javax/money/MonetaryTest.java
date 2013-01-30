@@ -43,6 +43,7 @@ import java.util.Enumeration;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
+import javax.money.spi.MonetaryExtension;
 
 import org.junit.Test;
 
@@ -147,12 +148,11 @@ public class MonetaryTest {
 
 	@Test
 	public void testGetExtensions() {
-		@SuppressWarnings("rawtypes")
-		Enumeration<Class> types = Monetary.getLoadedExtensions();
+		Enumeration<Class<? extends MonetaryExtension>> types = Monetary.getLoadedExtensions();
 		assertNotNull(types);
 		int count = 0;
 		while (types.hasMoreElements()) {
-			Class clazz = (Class) types.nextElement();
+			Class<? extends MonetaryExtension> clazz = types.nextElement();
 			assertSame(clazz, TestExtension.class);
 			count++;
 		}

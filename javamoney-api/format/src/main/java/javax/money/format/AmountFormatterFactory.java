@@ -77,13 +77,13 @@ public interface AmountFormatterFactory {
 	public AmountFormatter getAmountFormatter(LocalizationStyle style);
 
 	/**
-	 * This method returns an instance of a {@link StylableAmountFormatter}
+	 * This method returns an instance of a {@link StyleableAmountFormatter}
 	 * that is provided the registered AmountFormatterFactory SPI
 	 * implementation.
 	 * 
 	 * @return the formatter required, if available.
 	 * @throws
 	 */
-	public StylableAmountFormatter getLocalizableAmountFormatter();
+	public StyleableAmountFormatter getLocalizableAmountFormatter();
 
 }

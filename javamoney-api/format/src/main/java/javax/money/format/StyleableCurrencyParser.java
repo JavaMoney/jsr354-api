@@ -33,47 +33,58 @@ package javax.money.format;
 
 import java.util.Locale;
 
+import javax.money.CurrencyUnit;
+import javax.money.UnknownCurrencyException;
 import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.ParseException;
+import javax.money.format.common.StyleableItemParser;
 
 /**
- * This class represent the singleton for money related formatting and parsing
- * functionality. It is provided by the Money singleton.
- * 
- * @author Anatole Tresch
+ * Parses instances of {@link CurrencyUnit} to and from a {@link CharSequence}.
+ * <p>
+ * Instances of {@code CurrencyParser} can be obtained by calling
+ * {@code MoneyFormat#getCurrencyParser(Locale)} or
+ * {@code MoneyFormat#getCurrencyParser(LocalizationStyle)}.
  */
-public interface CurrencyParserFactory {
+public interface StyleableCurrencyParser extends StyleableItemParser<CurrencyUnit> {
 
 	/**
-	 * This method returns an instance of a {@link CurrencyParser}.
+	 * Get the name space this parser is working on.
 	 * 
-	 * @param namespace
-	 *            the target name space of currencies.
-	 * @param style
-	 *            The target localization style.
-	 * @return a currency formatter.
+	 * @return the name space, never null.
 	 */
-	public CurrencyParser getCurrencyParser(String namespace,
-			LocalizationStyle style);
+	public String getNamespace();
 
 	/**
-	 * This method returns an instance of a {@link CurrencyParser}.
+	 * Parses a {@link CurrencyUnit} based on the localized symbol.
 	 * 
-	 * @param namespace
-	 *            the target name space of currencies.
+	 * @param symbol
+	 *            the input data.
 	 * @param locale
-	 *            The target locale.
-	 * @return a currency formatter.
+	 *            the target locale
+	 * @return parsed {@link CurrencyUnit}, never null.
+	 * @throws UnknownCurrencyException
+	 *             if the required symbol can be mapped to a
+	 *             {@link CurrencyUnit} on the given namespace.
+	 * @throws ParseException
+	 *             if there is a problem while parsing
 	 */
-	public CurrencyParser getCurrencyParser(String namespace, Locale locale);
+	public CurrencyUnit parseSymbol(CharSequence symbol, Locale locale);
 
 	/**
-	 * This method returns an instance of a {@link StyleableCurrencyParser}.
+	 * Parses a {@link CurrencyUnit} based on the localized symbol.
 	 * 
-	 * @param namespace
-	 *            the target name space of currencies.
-	 * @return a currency formatter.
+	 * @param symbol
+	 *            the input data.
+	 * @param style
+	 *            the target style.
+	 * @return parsed {@link CurrencyUnit}, never null.
+	 * @throws UnknownCurrencyException
+	 *             if the required symbol can be mapped to a
+	 *             {@link CurrencyUnit} on the given namespace.
+	 * @throws ParseException
+	 *             if there is a problem while parsing
 	 */
-	public StyleableCurrencyParser getLocalizableCurrencyParser(
-			String namespace);
+	public CurrencyUnit parseSymbol(CharSequence symbol, LocalizationStyle style);
 
 }

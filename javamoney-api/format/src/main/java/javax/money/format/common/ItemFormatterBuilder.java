@@ -55,28 +55,28 @@ import java.util.Locale;
  * builder are immutable and thread-safe.
  * 
  * @see ItemFormatter
- * @see StylableItemFormatter
+ * @see StyleableItemFormatter
  */
 public interface ItemFormatterBuilder<T> {
 
 	/**
-	 * Builds a {@link StylableItemFormatter} from the builder.
+	 * Builds a {@link StyleableItemFormatter} from the builder.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code Formatter} or {@link StylableItemFormatter} to be used. Calling
+	 * {@code Formatter} or {@link StyleableItemFormatter} to be used. Calling
 	 * this method does not change the state of this instance, so it can still
 	 * be used.
 	 * 
-	 * @return the {@link StylableItemFormatter} built from this builder, never
+	 * @return the {@link StyleableItemFormatter} built from this builder, never
 	 *         null
 	 */
-	public StylableItemFormatter<T> toLocalizableFormatter();
+	public StyleableItemFormatter<T> toLocalizableFormatter();
 
 	/**
 	 * Builds the formatter from the builder setting the locale.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code Formatter} or {@link StylableItemFormatter} to be used. Calling
+	 * {@code Formatter} or {@link StyleableItemFormatter} to be used. Calling
 	 * this method does not change the state of this instance, so it can still
 	 * be used.
 	 * <p>
@@ -95,7 +95,7 @@ public interface ItemFormatterBuilder<T> {
 	 * {@link LocalizationStyle}.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
-	 * {@code Formatter} or {@link StylableItemFormatter} to be used. Calling
+	 * {@code Formatter} or {@link StyleableItemFormatter} to be used. Calling
 	 * this method does not change the state of this instance, so it can still
 	 * be used.
 	 * 

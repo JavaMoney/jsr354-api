@@ -35,7 +35,7 @@ import java.util.Locale;
 
 import javax.money.format.CurrencyParser;
 import javax.money.format.CurrencyParserFactory;
-import javax.money.format.StylableCurrencyParser;
+import javax.money.format.StyleableCurrencyParser;
 import javax.money.format.common.LocalizationStyle;
 
 /**
@@ -59,7 +59,7 @@ public class TestCurrencyParserFactory implements CurrencyParserFactory {
 	}
 
 	@Override
-	public StylableCurrencyParser getLocalizableCurrencyParser(
+	public StyleableCurrencyParser getLocalizableCurrencyParser(
 			String namespace) {
 		// empty implementation
 		return null;

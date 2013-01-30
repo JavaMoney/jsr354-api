@@ -62,11 +62,11 @@ public interface CurrencyFormatterFactory {
 	public CurrencyFormatter getCurrencyFormatter(Locale locale);
 
 	/**
-	 * This method returns an instance of a {@link StylableCurrencyFormatter}
+	 * This method returns an instance of a {@link StyleableCurrencyFormatter}
 	 * .
 	 * 
 	 * @return a currency formatter.
 	 */
-	public StylableCurrencyFormatter getLocalizableCurrencyFormatter();
+	public StyleableCurrencyFormatter getLocalizableCurrencyFormatter();
 
 }

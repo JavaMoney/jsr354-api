@@ -29,62 +29,61 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format;
+package javax.money.format.common;
 
 import java.util.Locale;
 
-import javax.money.CurrencyUnit;
-import javax.money.UnknownCurrencyException;
-import javax.money.format.common.LocalizationStyle;
-import javax.money.format.common.ParseException;
-import javax.money.format.common.StylableItemParser;
-
 /**
- * Parses instances of {@link CurrencyUnit} to and from a {@link CharSequence}.
- * <p>
- * Instances of {@code CurrencyParser} can be obtained by calling
- * {@code MoneyFormat#getCurrencyParser(Locale)} or
- * {@code MoneyFormat#getCurrencyParser(LocalizationStyle)}.
+ * Instance that implement this interface parse Strings into instances of of
+ * type T.
+ * TODO check if this class can be moved to {@code java.util}.
  */
-public interface StylableCurrencyParser extends StylableItemParser<CurrencyUnit> {
+public interface StyleableItemParser<T> extends Targeted<T> {
 
 	/**
-	 * Get the name space this parser is working on.
+	 * Fully parses the text into an instance of T.
+	 * <p>
+	 * The parse must complete normally and parse the entire text. If the parse
+	 * completes without reading the entire length of the text, an exception is
+	 * thrown. If any other problem occurs during parsing, an exception is
+	 * thrown.
+	 * <p>
+	 * This method uses a {@link LocalizationStyle} as an input parameter.
+	 * Styles allows to define detailed and customized formatting input
+	 * parameters. This allows to implement also complex formatting requirements
+	 * using this interface.
 	 * 
-	 * @return the name space, never null.
-	 */
-	public String getNamespace();
-
-	/**
-	 * Parses a {@link CurrencyUnit} based on the localized symbol.
-	 * 
-	 * @param symbol
-	 *            the input data.
-	 * @param locale
-	 *            the target locale
-	 * @return parsed {@link CurrencyUnit}, never null.
-	 * @throws UnknownCurrencyException
-	 *             if the required symbol can be mapped to a
-	 *             {@link CurrencyUnit} on the given namespace.
-	 * @throws ParseException
-	 *             if there is a problem while parsing
-	 */
-	public CurrencyUnit parseSymbol(CharSequence symbol, Locale locale);
-
-	/**
-	 * Parses a {@link CurrencyUnit} based on the localized symbol.
-	 * 
-	 * @param symbol
-	 *            the input data.
+	 * @param text
+	 *            the text to parse, not null
 	 * @param style
-	 *            the target style.
-	 * @return parsed {@link CurrencyUnit}, never null.
-	 * @throws UnknownCurrencyException
-	 *             if the required symbol can be mapped to a
-	 *             {@link CurrencyUnit} on the given namespace.
+	 *            the localization style to be used for parsing
+	 * @return the parsed value, never null
+	 * @throws UnsupportedOperationException
+	 *             if the formatter is unable to parse
 	 * @throws ParseException
 	 *             if there is a problem while parsing
 	 */
-	public CurrencyUnit parseSymbol(CharSequence symbol, LocalizationStyle style);
+	public T parse(CharSequence text, LocalizationStyle locale)
+			throws ParseException;
+
+	/**
+	 * Fully parses the text into an instance of T.
+	 * <p>
+	 * The parse must complete normally and parse the entire text (currency and
+	 * amount). If the parse completes without reading the entire length of the
+	 * text, an exception is thrown. If any other problem occurs during parsing,
+	 * an exception is thrown.
+	 * 
+	 * @param text
+	 *            the text to parse, not null
+	 * @param locale
+	 *            The locale to be used for parsing, nnot null.
+	 * @return the parsed value, never null
+	 * @throws UnsupportedOperationException
+	 *             if the formatter is unable to parse
+	 * @throws ParseException
+	 *             if there is a problem while parsing
+	 */
+	public T parse(CharSequence text, Locale locale) throws ParseException;
 
 }

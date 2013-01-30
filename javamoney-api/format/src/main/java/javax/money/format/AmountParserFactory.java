@@ -72,11 +72,11 @@ public interface AmountParserFactory {
 	public AmountParser getAmountParser(LocalizationStyle style);
 
 	/**
-	 * This method returns a {@link StylableAmountParser} instance.
+	 * This method returns a {@link StyleableAmountParser} instance.
 	 * 
 	 * @return the according parser, if available.
 	 * @throws
 	 */
-	public StylableAmountParser getLocalizableAmountParser();
+	public StyleableAmountParser getLocalizableAmountParser();
 
 }

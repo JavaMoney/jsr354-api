@@ -31,11 +31,7 @@
  */
 package javax.money.ext;
 
-import java.util.Date;
-import java.util.Locale;
-
 import javax.money.CurrencyUnit;
-import javax.money.UnknownCurrencyException;
 import javax.money.spi.MonetaryExtension;
 
 /**

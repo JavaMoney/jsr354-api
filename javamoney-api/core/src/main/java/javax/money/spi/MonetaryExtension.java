@@ -50,6 +50,6 @@ public interface MonetaryExtension {
 	 * 
 	 * @return The exposed type, never null.
 	 */
-	public Class getExposedType();
+	public Class<? extends MonetaryExtension> getExposedType();
 
 }

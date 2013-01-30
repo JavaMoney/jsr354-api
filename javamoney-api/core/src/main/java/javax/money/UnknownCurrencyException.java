@@ -36,30 +36,14 @@ package javax.money;
  * <p>
  * For example, this exception would be thrown when trying to obtain a
  * currency using an unrecognized currency code or locale.
- * <p>
- * This exception makes no guarantees about immutability or thread-safety.
  *
  * @author Werner Keil
  */
 public class UnknownCurrencyException extends IllegalArgumentException {
 
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3277879391197687869L;
 
-    /** A currency to store, may be null if the exception is simply given a string message */
-    private CurrencyUnit currency;
-
-    /**
-     * Constructor.
-     * 
-     * @param currency the currency, may be null
-     */
-    public UnknownCurrencyException(CurrencyUnit currency) {
-        super("Unknown Currency " + String.valueOf(currency));
-        this.currency = currency;
-    }
-
-    /**
+	/**
      * Constructor.
      * 
      * @param message  the message, may be null

@@ -11,7 +11,7 @@
 	<properties>
 		<moduleDir>.</moduleDir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jdkVersion>1.6</jdkVersion>
+		<jdkVersion>1.7</jdkVersion>
 		<maven.compile.targetLevel>${jdkVersion}</maven.compile.targetLevel>
 		<maven.compile.sourceLevel>${jdkVersion}</maven.compile.sourceLevel>
 		<basedir>.</basedir>
@@ -105,6 +105,34 @@
 		</extensions>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>1.1.1</version>
+					<executions>
+						<execution>
+							<id>enforce-versions</id>
+							<goals>
+								<goal>enforce</goal>
+							</goals>
+							<configuration>
+								<rules>
+									<requireMavenVersion>
+										<version>3.0.4</version>
+									</requireMavenVersion>
+									<requireJavaVersion>
+										<version>1.7.0</version>
+									</requireJavaVersion>
+									<requirePluginVersions>
+										<banLatest>true</banLatest>
+										<banRelease>true</banRelease>								
+										<banSnapshots>true</banSnapshots>
+									</requirePluginVersions>
+								</rules>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>

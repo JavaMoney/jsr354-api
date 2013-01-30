@@ -40,7 +40,7 @@ import javax.money.convert.ExchangeRateType;
  * @author Anatole Tresch
  * @version 0.1.1
  */
-public interface ExchangeRateProviderSPI {
+public interface ExchangeRateProviderSpi {
 
 	/**
 	 * Get an exchange rate for the given parameters.

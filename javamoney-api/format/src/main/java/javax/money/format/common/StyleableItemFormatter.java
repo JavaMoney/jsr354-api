@@ -35,44 +35,52 @@ import java.io.IOException;
 import java.util.Locale;
 
 /**
- * This interface is implemented by types that require to be represented as
- * {@link String} objects, e.g. for displaying.
- * 
- * @TODO check if this class can be moved to {@code java.util}.
- * 
- * @author Anatole Tresch
+ * Formats instances of T to a {@link String} or an {@link Appendable}.
  */
-public interface StylableItem {
+public interface StyleableItemFormatter<T> extends Targeted<T> {
 
 	/**
-	 * Formats a value to a {@code String}. This method uses a {@link Locale} as
-	 * an input parameter.
+	 * Prints a item value to an {@code Appendable}.
+	 * <p>
+	 * Example implementations of {@code Appendable} are {@code StringBuilder},
+	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
+	 * and {@code StringBuffer} never throw an {@code IOException}.
 	 * 
+	 * @param item
+	 *            the item to print, not null
 	 * @param locale
-	 *            the target {@link Locale}
-	 * @return the string printed using the settings of this formatter
+	 *            The target locale used for formatting. The locale can be
+	 *            converted into an according {@link LocalizationStyle} by using
+	 *            the static factory method {@link LocalizationStyle#of(Locale)}
+	 * @return the formatted {@link String}.
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
 	 *             if there is a problem while printing
-	 * @throws FormatException
-	 *             if there is a problem while printing
 	 */
-	public String format(Locale locale);
+	public String print(T item, Locale locale) throws IOException;
 
 	/**
-	 * Formats a value to a {@code String}. This method uses a
+	 * Prints a value to an {@code Appendable}. This method uses a
 	 * {@link LocalizationStyle} as an input parameter. Styles allows to define
 	 * detailed and customized formatting input parameters. This allows to
 	 * implement also complex formatting requirements using this interface.
+	 * <p>
+	 * Example implementations of {@code Appendable} are {@code StringBuilder},
+	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
+	 * and {@code StringBuffer} never throw an {@code IOException}.
 	 * 
+	 * @param item
+	 *            the item to print, not null
 	 * @param style
-	 *            The {@link LocalizationStyle} to be used.
-	 * @return the formatted {@link String}
+	 *            the style to be used for formatting.
+	 * @return the formatted {@link String}.
+	 * @throws UnsupportedOperationException
+	 *             if the formatter is unable to print
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String format(LocalizationStyle style);
+	public String print(T item, LocalizationStyle style) throws IOException;
 
 	/**
 	 * Prints a item value to an {@code Appendable}.
@@ -83,8 +91,12 @@ public interface StylableItem {
 	 * 
 	 * @param appendable
 	 *            the appendable to add to, not null
+	 * @param item
+	 *            the item to print, not null
 	 * @param locale
-	 *            the locale to be used.
+	 *            The target locale used for formatting. The locale can be
+	 *            converted into an according {@link LocalizationStyle} by using
+	 *            the static factory method {@link LocalizationStyle#of(Locale)}
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
@@ -92,10 +104,14 @@ public interface StylableItem {
 	 * @throws IOException
 	 *             if an IO error occurs
 	 */
-	public void print(Appendable appendable, Locale locale) throws IOException;
+	public void print(Appendable appendable, T item, Locale locale)
+			throws IOException;
 
 	/**
-	 * Prints a item value to an {@code Appendable}.
+	 * Prints a value to an {@code Appendable}. This method uses a
+	 * {@link LocalizationStyle} as an input parameter. Styles allows to define
+	 * detailed and customized formatting input parameters. This allows to
+	 * implement also complex formatting requirements using this interface.
 	 * <p>
 	 * Example implementations of {@code Appendable} are {@code StringBuilder},
 	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
@@ -103,8 +119,10 @@ public interface StylableItem {
 	 * 
 	 * @param appendable
 	 *            the appendable to add to, not null
+	 * @param item
+	 *            the item to print, not null
 	 * @param style
-	 *            the {@link LocalizationStyle} to be used.
+	 *            the style to be used for formatting.
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
@@ -112,6 +130,7 @@ public interface StylableItem {
 	 * @throws IOException
 	 *             if an IO error occurs
 	 */
-	public void print(Appendable appendable, LocalizationStyle style)
+	public void print(Appendable appendable, T item, LocalizationStyle style)
 			throws IOException;
+
 }

@@ -77,7 +77,6 @@ public class ExchangeRateImpl implements ExchangeRate {
 	 * @param factor
 	 *            the exchange rate factor from source to target currency.
 	 */
-	@SuppressWarnings("unchecked")
 	public ExchangeRateImpl(CurrencyUnit source, CurrencyUnit target,
 			BigDecimal factor) {
 		this.source = source;
@@ -101,7 +100,6 @@ public class ExchangeRateImpl implements ExchangeRate {
 	 * @param validityDuration
 	 *            duration how long this rate is considered valid.
 	 */
-	@SuppressWarnings("unchecked")
 	public ExchangeRateImpl(CurrencyUnit source, CurrencyUnit target,
 			BigDecimal factor, long quoteTS, long validdityDuration) {
 		super();

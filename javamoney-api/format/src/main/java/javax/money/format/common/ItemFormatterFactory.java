@@ -38,10 +38,10 @@ import java.util.Locale;
  * formatters.
  * 
  * @see ItemFormatter
- * @see StylableItemFormatter
+ * @see StyleableItemFormatter
  * @author Anatole Tresch
  */
-public interface ItemFormatterFactory<T> extends Targeted {
+public interface ItemFormatterFactory<T> extends Targeted<T> {
 
 	/**
 	 * This method returns an instance of a fixed styled {@link ItemFormatter}.
@@ -66,11 +66,11 @@ public interface ItemFormatterFactory<T> extends Targeted {
 	public ItemFormatter<T> getFormatter(LocalizationStyle style);
 
 	/**
-	 * This method returns an instance of a {@link StylableItemFormatter}.
+	 * This method returns an instance of a {@link StyleableItemFormatter}.
 	 * 
 	 * @return the formatter required, if available.
 	 * @throws
 	 */
-	public StylableItemFormatter<T> getLocalizableFormatter();
+	public StyleableItemFormatter<T> getLocalizableFormatter();
 
 }

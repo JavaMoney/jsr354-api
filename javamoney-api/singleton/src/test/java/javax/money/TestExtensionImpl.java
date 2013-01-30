@@ -40,7 +40,7 @@ import javax.money.spi.MonetaryExtension;
  * @author Anatole Tresch
  * 
  */
-public class TestExtensionImpl implements TestExtension, MonetaryExtension {
+public class TestExtensionImpl implements TestExtension {
 
 	@Override
 	public Class<TestExtension> getExposedType() {

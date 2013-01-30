@@ -31,12 +31,14 @@
  */
 package javax.money;
 
+import javax.money.spi.MonetaryExtension;
+
 /**
  * Extension interface, hust for testing!
  * 
  * @author Anatole Tresch
  */
-public interface TestExtension {
+public interface TestExtension extends MonetaryExtension {
 
 	public String sayHello();
 	

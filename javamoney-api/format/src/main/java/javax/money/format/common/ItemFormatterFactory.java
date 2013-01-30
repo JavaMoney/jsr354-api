@@ -41,7 +41,7 @@ import java.util.Locale;
  * @see StylableItemFormatter
  * @author Anatole Tresch
  */
-public interface ItemFormatterFactory<T> extends Targeted {
+public interface ItemFormatterFactory<T> extends Targeted<T> {
 
 	/**
 	 * This method returns an instance of a fixed styled {@link ItemFormatter}.

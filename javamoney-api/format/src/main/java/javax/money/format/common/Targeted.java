@@ -31,8 +31,8 @@
  */
 package javax.money.format.common;
 
-public interface Targeted {
+public interface Targeted<T> {
 
-	public Class<?> getTargetClass();
+	public Class<T> getTargetClass();
 
 }

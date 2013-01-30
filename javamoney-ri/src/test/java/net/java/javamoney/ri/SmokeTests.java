@@ -1,5 +1,7 @@
 package net.java.javamoney.ri;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
@@ -16,7 +18,11 @@ import javax.money.format.common.ParseException;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SmokeTests {
+	private static final Logger logger = LoggerFactory.getLogger(SmokeTests.class);
 
 	@Test
 	public void testCreateAmounts() {
@@ -28,21 +34,20 @@ public class SmokeTests {
 		MonetaryAmount amount2 = Monetary.getMonetaryAmountFactory().get(
 				currency, 1.0d);
 		MonetaryAmount amount3 = amount1.add(amount2);
-		System.out.print(amount1);
-		System.out.print(" + ");
-		System.out.print(amount2);
-		System.out.print(" = ");
-		System.out.println(amount3);
+		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
+		assertEquals(1.0d, amount1.doubleValue(), 0);
+		assertEquals(1.0d, amount2.doubleValue(), 0);
+		assertEquals(2.0d, amount3.doubleValue(), 0);
 	}
 	
 	@Test
 	public void testGettingCurrenciesPerLocale() {
 		CurrencyUnit[] currencies = Monetary.getCurrencyUnitProvider().getAll(Locale.US);
-		System.out.println("Currencies for US: " + Arrays.toString(currencies));
+		logger.debug("Currencies for US: " + Arrays.toString(currencies));
 		currencies = Monetary.getCurrencyUnitProvider().getAll(Locale.CHINA);
-		System.out.println("Currencies for CHINA: " + Arrays.toString(currencies));
+		logger.debug("Currencies for CHINA: " + Arrays.toString(currencies));
 		currencies = Monetary.getCurrencyUnitProvider().getAll(Locale.ROOT);
-		System.out.println("Currencies for ROOT (undefined): " + Arrays.toString(currencies));
+		logger.debug("Currencies for ROOT (undefined): " + Arrays.toString(currencies));
 	}
 	
 	@Test
@@ -82,6 +87,7 @@ public class SmokeTests {
 			AmountFormatter formatter = Monetary.getAmountFormatterFactory()
 					.getAmountFormatter(Locale.GERMANY);
 			String formatted = formatter.print(amount);
+			assertEquals(1.0d, amount.doubleValue(), 0);
 			StylableAmountFormatter locFormatter = Monetary
 					.getAmountFormatterFactory()
 					.getLocalizableAmountFormatter();

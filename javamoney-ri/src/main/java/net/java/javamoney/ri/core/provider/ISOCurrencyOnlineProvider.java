@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.money.CurrencyUnit;
+import javax.money.LocalizableCurrencyUnit;
 import javax.money.spi.CurrencyUnitProviderSPI;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -36,8 +37,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSPI {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSPI {
+	private static final Logger logger = LoggerFactory.getLogger(ISOCurrencyOnlineProvider.class);
+	
 	private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 
 	private Map<String, String> countryCodeMap = new ConcurrentHashMap<String, String>();
@@ -49,8 +54,7 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSPI {
 		saxParserFactory.setValidating(false);
 		loadCountries();
 		loadCurrencies();
-		System.out.println("Currencies loaded from ISO:");
-		System.out.println(this.currencies.values());
+		logger.debug("Currencies loaded from ISO:" + this.currencies.values());
 	}
 
 	public void loadCurrencies() {
@@ -72,11 +76,11 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSPI {
 			SAXParser parser = saxParserFactory.newSAXParser();
 			parser.parse(url.openStream(), new CountryHandler());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error", e);
 		}
 	}
 
-	private final class ISOCurrency implements CurrencyUnit {
+	private final class ISOCurrency implements LocalizableCurrencyUnit {
 		private Locale country;
 		private String currencyName;
 		private String currencyCode;
@@ -142,6 +146,17 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSPI {
 		@Override
 		public String toString() {
 			return getNamespace() + ':' + this.currencyCode;
+		}
+
+		@Override
+		public String getDisplayName(Locale locale) {
+			// TODO use Locale and add getDisplayName(), too
+			return currencyName;
+		}
+
+		@Override
+		public String getSymbol(Locale locale) {
+			return currencyCode;
 		}
 	}
 

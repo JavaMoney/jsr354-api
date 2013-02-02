@@ -61,7 +61,7 @@ import javax.money.format.common.LocalizationStyle;
  * 
  * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
  */
-public interface AmountFormatterFactorySpi {
+public interface AmountFormatterFactorySPI {
 
 	/**
 	 * Creates a new instance of the formatter defined by the passed localization

@@ -42,7 +42,7 @@ import javax.money.CurrencyUnit;
  * 
  * @author Anatole Tresch
  */
-public interface CurrencyUnitMappingSpi {
+public interface CurrencyUnitMappingSPI {
 
 	/**
 	 * This method maps the given {@link CurrencyUnit} to another

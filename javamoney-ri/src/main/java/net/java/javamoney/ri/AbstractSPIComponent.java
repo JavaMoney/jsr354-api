@@ -30,12 +30,12 @@ import java.util.ServiceLoader;
  * 
  * @author Anatole Tresch
  */
-public abstract class AbstractSpiComponent {
+public abstract class AbstractSPIComponent {
 
 	/**
 	 * Singleton constructor.
 	 */
-	public AbstractSpiComponent() {
+	public AbstractSPIComponent() {
 		try {
 			reload();
 		} catch (Exception e) {

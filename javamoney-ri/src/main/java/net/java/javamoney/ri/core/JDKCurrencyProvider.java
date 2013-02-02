@@ -26,15 +26,15 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.spi.CurrencyUnitProviderSpi;
+import javax.money.spi.CurrencyUnitProviderSPI;
 
 /**
- * Basic implementation of a {@link CurrencyUnitProviderSpi} that provides the
+ * Basic implementation of a {@link CurrencyUnitProviderSPI} that provides the
  * ISO 4217 currencies available from the JDK {@link Currency} class.
  * 
  * @author Anatole Tresch
  */
-public class JDKCurrencyProvider implements CurrencyUnitProviderSpi {
+public class JDKCurrencyProvider implements CurrencyUnitProviderSPI {
 
 	public static final String ISO4217_NAMESPACE = "ISO4217";
 

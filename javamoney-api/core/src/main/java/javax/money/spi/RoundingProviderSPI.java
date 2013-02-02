@@ -41,7 +41,7 @@ import javax.money.Rounding;
  * 
  * @author Anatole Tresch
  */
-public interface RoundingProviderSpi {
+public interface RoundingProviderSPI {
 
 	/**
 	 * Access the {@link Rounding} by id.

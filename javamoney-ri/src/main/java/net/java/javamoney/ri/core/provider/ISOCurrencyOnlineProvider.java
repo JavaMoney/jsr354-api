@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.money.CurrencyUnit;
 import javax.money.LocalizableCurrencyUnit;
-import javax.money.spi.CurrencyUnitProviderSpi;
+import javax.money.spi.CurrencyUnitProviderSPI;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -40,8 +40,8 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
-	private static final Logger logger = LoggerFactory.getLogger(ISOCurrencyOnlineProvider.class);
+public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSPI {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ISOCurrencyOnlineProvider.class);
 	
 	private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 
@@ -54,7 +54,7 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 		saxParserFactory.setValidating(false);
 		loadCountries();
 		loadCurrencies();
-		logger.debug("Currencies loaded from ISO:" + this.currencies.values());
+		LOGGER.debug("Currencies loaded from ISO:" + this.currencies.values());
 	}
 
 	public void loadCurrencies() {
@@ -76,7 +76,7 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 			SAXParser parser = saxParserFactory.newSAXParser();
 			parser.parse(url.openStream(), new CountryHandler());
 		} catch (Exception e) {
-			logger.error("Error", e);
+			LOGGER.error("Error", e);
 		}
 	}
 

@@ -44,7 +44,7 @@ import javax.money.ext.RegionType;
  * 
  * @author Anatole Tresch
  */
-public interface RegionProviderSpi {
+public interface RegionProviderSPI {
 
 	/**
 	 * Returns all {@link RegionType}s defined by this {@link RegionProviderSpi}

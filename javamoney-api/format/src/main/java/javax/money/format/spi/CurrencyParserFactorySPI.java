@@ -58,7 +58,7 @@ import javax.money.format.common.LocalizationStyle;
  * 
  * @author Anatole Tresch
  */
-public interface CurrencyParserFactorySpi {
+public interface CurrencyParserFactorySPI {
 
 	/**
 	 * Creates a new instance of the parser defined by the passed localization

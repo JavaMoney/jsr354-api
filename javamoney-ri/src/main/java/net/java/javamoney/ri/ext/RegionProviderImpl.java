@@ -28,9 +28,9 @@ import java.util.Set;
 import javax.money.ext.Region;
 import javax.money.ext.RegionProvider;
 import javax.money.ext.RegionType;
-import javax.money.ext.spi.RegionProviderSpi;
+import javax.money.ext.spi.RegionProviderSPI;
 
-import net.java.javamoney.ri.AbstractSpiComponent;
+import net.java.javamoney.ri.AbstractSPIComponent;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -38,12 +38,12 @@ import net.java.javamoney.ri.AbstractSpiComponent;
  * 
  * @author Anatole Tresch
  */
-public final class RegionProviderImpl extends AbstractSpiComponent implements
+public final class RegionProviderImpl extends AbstractSPIComponent implements
 		RegionProvider {
 	/** Singleton instance. */
 	private static final RegionProviderImpl INSTANCE = new RegionProviderImpl();
 	/** Loaded region providers. */
-	private List<RegionProviderSpi> regionProviders;
+	private List<RegionProviderSPI> regionProviders;
 
 	/**
 	 * This method defined that this implementation is exposed as
@@ -59,13 +59,13 @@ public final class RegionProviderImpl extends AbstractSpiComponent implements
 	 * Access all defined {@link RegionType}.
 	 * 
 	 * @see Region#getRegionType() #see
-	 *      {@link RegionProviderSpi#getRegionTypes()}
+	 *      {@link RegionProviderSPI#getRegionTypes()}
 	 * @return all defined region types, never null.
 	 */
 	@Override
 	public RegionType[] getRegionTypes() {
 		Set<RegionType> result = new HashSet<RegionType>();
-		for (RegionProviderSpi prov : INSTANCE.regionProviders) {
+		for (RegionProviderSPI prov : INSTANCE.regionProviders) {
 			RegionType[] regionTypes = prov.getRegionTypes();
 			if (regionTypes == null) {
 				continue;
@@ -89,7 +89,7 @@ public final class RegionProviderImpl extends AbstractSpiComponent implements
 	 * before.
 	 */
 	public void reload() {
-		regionProviders = getSPIProviders(RegionProviderSpi.class);
+		regionProviders = getSPIProviders(RegionProviderSPI.class);
 	}
 
 	/**
@@ -104,7 +104,7 @@ public final class RegionProviderImpl extends AbstractSpiComponent implements
 	 *             if the region does not exist.
 	 */
 	public Region get(String identifier, RegionType type) {
-		for (RegionProviderSpi prov : INSTANCE.regionProviders) {
+		for (RegionProviderSPI prov : INSTANCE.regionProviders) {
 			Region reg = prov.getRegion(identifier, type);
 			if (reg != null) {
 				return reg;
@@ -123,7 +123,7 @@ public final class RegionProviderImpl extends AbstractSpiComponent implements
 	 */
 	public Region[] getAll(RegionType type) {
 		Set<Region> result = new HashSet<Region>();
-		for (RegionProviderSpi prov : INSTANCE.regionProviders) {
+		for (RegionProviderSPI prov : INSTANCE.regionProviders) {
 			Region[] regions = prov.getRegions(type);
 			if (regions == null) {
 				// TODO Log warning
@@ -140,7 +140,7 @@ public final class RegionProviderImpl extends AbstractSpiComponent implements
 	 */
 	public Region[] getAll() {
 		Set<Region> result = new HashSet<Region>();
-		for (RegionProviderSpi prov : INSTANCE.regionProviders) {
+		for (RegionProviderSPI prov : INSTANCE.regionProviders) {
 			Region[] regions = prov.getRegions();
 			if (regions == null) {
 				// TODO Log warning

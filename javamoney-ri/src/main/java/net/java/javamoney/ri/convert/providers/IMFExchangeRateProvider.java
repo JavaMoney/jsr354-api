@@ -21,9 +21,9 @@ package net.java.javamoney.ri.convert.providers;
 import javax.money.CurrencyUnit;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.ExchangeRateProviderSpi;
+import javax.money.convert.spi.ExchangeRateProviderSPI;
 
-public class IMFExchangeRateProvider implements ExchangeRateProviderSpi {
+public class IMFExchangeRateProvider implements ExchangeRateProviderSPI {
 
 	 // TSV: http://www.imf.org/external/np/fin/data/rms_five.aspx?tsvflag=Y
 	

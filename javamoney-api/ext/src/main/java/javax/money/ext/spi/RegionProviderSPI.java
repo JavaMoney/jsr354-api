@@ -47,7 +47,7 @@ import javax.money.ext.RegionType;
 public interface RegionProviderSPI {
 
 	/**
-	 * Returns all {@link RegionType}s defined by this {@link RegionProviderSPI}
+	 * Returns all {@link RegionType}s defined by this {@link RegionProviderSpi}
 	 * instance.
 	 * 
 	 * @return the {@link RegionType}s to be defined.

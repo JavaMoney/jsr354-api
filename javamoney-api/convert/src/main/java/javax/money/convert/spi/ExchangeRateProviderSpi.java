@@ -29,57 +29,54 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.ext.spi;
+package javax.money.convert.spi;
 
-import java.util.ServiceLoader;
-
-import javax.money.ext.Region;
-import javax.money.ext.RegionType;
+import javax.money.CurrencyUnit;
+import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 
 /**
- * Implementation of this interface define the regions supported in the system.
- * Each provider may hereby serve several region types.
- * <p>
- * Registration is done using the {@link ServiceLoader} features.
- * 
+ * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
  * @author Anatole Tresch
+ * @version 0.1.1
  */
-public interface RegionProviderSPI {
+public interface ExchangeRateProviderSpi {
 
 	/**
-	 * Returns all {@link RegionType}s defined by this {@link RegionProviderSpi}
-	 * instance.
+	 * Get an exchange rate for the given parameters.
 	 * 
-	 * @return the {@link RegionType}s to be defined.
-	 */
-	public RegionType[] getRegionTypes();
-
-	/**
-	 * Access a region.
-	 * 
-	 * @param identifier
-	 *            The region's id.
+	 * @param source
+	 *            the source currency.
+	 * @param target
+	 *            the target currency.
 	 * @param type
-	 *            The required region type.
-	 * @return The corresponding region, or null.
+	 *            Allows to determine the kind of rate to returned. {@code null}
+	 *            means any type.
+	 * @param deferred
+	 *            If the quote should be deferred.
+	 * @return the according exchange rate, or null.
 	 */
-	public Region getRegion(String identifier, RegionType type);
+	public ExchangeRate getExchangeRate(CurrencyUnit source,
+			CurrencyUnit target, ExchangeRateType type, boolean deferred);
 
 	/**
-	 * Access all regions provided for {@link RegionType} by this region
-	 * provider.
+	 * Get an exchange rate for the given parameters.
 	 * 
+	 * @param source
+	 *            the source currency.
+	 * @param target
+	 *            the target currency.
 	 * @param type
-	 *            The required region type.
-	 * @return the regions to be added, not null.
+	 *            Allows to determine the kind of rate to returned. {@code null}
+	 *            means any type.
+	 * @param timestamp
+	 *            the required target UTC timestamp for the rate, or {@code null} for the
+	 *            latest available.
+	 * @param validityDuration
+	 *            how long the quote should be considered valid.
+	 * @return the according exchange rate, or null.
 	 */
-	public Region[] getRegions(RegionType type);
-
-	/**
-	 * Access all regions provided by this region provider.
-	 * 
-	 * @return the regions to be added, not null.
-	 */
-	public Region[] getRegions();
+	public ExchangeRate getExchangeRate(CurrencyUnit source,
+			CurrencyUnit target, ExchangeRateType type, Long timestamp);
 
 }

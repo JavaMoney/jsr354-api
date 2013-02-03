@@ -29,32 +29,57 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.spi;
+package javax.money.ext.spi;
 
 import java.util.ServiceLoader;
 
-import javax.money.CurrencyUnit;
+import javax.money.ext.Region;
+import javax.money.ext.RegionType;
 
 /**
- * Implementation of this interface define the mappings available for currencies.
+ * Implementation of this interface define the regions supported in the system.
+ * Each provider may hereby serve several region types.
  * <p>
- * Registration of the implementations is done using the {@link ServiceLoader}.
+ * Registration is done using the {@link ServiceLoader} features.
  * 
  * @author Anatole Tresch
  */
-public interface CurrencyUnitMappingSPI {
+public interface RegionProviderSpi {
 
 	/**
-	 * This method maps the given {@link CurrencyUnit} to another
-	 * {@link CurrencyUnit} with the given target namespace.
+	 * Returns all {@link RegionType}s defined by this {@link RegionProviderSpi}
+	 * instance.
 	 * 
-	 * @param unit
-	 *            The source unit, never {@code null}. Hereby the unit will
-	 *            match the namespace as defined by {@link #getNamespace()}.
-	 * @param targetNamespace
-	 *            the target namespace, never {@code null}.
-	 * @return The mapped {@link CurrencyUnit}, or null.
+	 * @return the {@link RegionType}s to be defined.
 	 */
-	public CurrencyUnit map(CurrencyUnit unit, String targetNamespace);
+	public RegionType[] getRegionTypes();
+
+	/**
+	 * Access a region.
+	 * 
+	 * @param identifier
+	 *            The region's id.
+	 * @param type
+	 *            The required region type.
+	 * @return The corresponding region, or null.
+	 */
+	public Region getRegion(String identifier, RegionType type);
+
+	/**
+	 * Access all regions provided for {@link RegionType} by this region
+	 * provider.
+	 * 
+	 * @param type
+	 *            The required region type.
+	 * @return the regions to be added, not null.
+	 */
+	public Region[] getRegions(RegionType type);
+
+	/**
+	 * Access all regions provided by this region provider.
+	 * 
+	 * @return the regions to be added, not null.
+	 */
+	public Region[] getRegions();
 
 }

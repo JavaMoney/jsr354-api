@@ -33,38 +33,34 @@ package javax.money.format.spi;
 
 import java.util.ServiceLoader;
 
-import javax.money.format.AmountFormatter;
-import javax.money.format.common.ItemFormatter;
+import javax.money.format.AmountParser;
+import javax.money.format.common.ItemParser;
 import javax.money.format.common.LocalizationStyle;
 
 /**
  * Instances of this class can be registered using the {@link ServiceLoader}
- * API. The formatter runtime will ask each registered instance for a formatter
- * given the style provided, until an instance will return a non-null instance
- * of {@link AmountFormatter}. This instance finally will be returned to the
- * client.
+ * API. The parser runtime will ask each registered instance for a parser given
+ * the style provided, until an instance will return a non-null instance of
+ * {@link AmountParser}. This instance finally will be returned to the client.
  * <p>
- * Note that the formatter runtime does not perform any caching of instances
+ * Note that the parser runtime does not perform any caching of instances
  * returned. It is the responsibility of the implementations of this interface,
- * to implement reuse of resource, where useful. Nevertheless keep in mind that
+ * to implement reuse of resources, where useful. Nevertheless keep in mind that
  * synchronization of shared resources can lead to severe performance issues.
  * Therefore in most of the cases it is reasonable to create a new formatter
  * instance on each access and to delegate caching aspects to the client using
  * this API. Similarly it is not required that the instances returned by the SPI
  * must be thread safe. If a thread safe instance of a formatter is required,
- * one of {@link MoneyFormat#synchronizedFormatter(ItemFormatter)},
- * {@link MoneyFormat#synchronizedAmountFormatter(AmountFormatter)} can be used
- * to obtain a synchronized instance of a {@link ItemFormatter} or
- * {@link AmountFormatter}.
+ * one of {@link MoneyFormat#synchronizedParser(ItemParser)},
+ * {@link MoneyFormat#synchronizedAmountParser(AmountParser)} can be used to
+ * obtain a synchronized instance of a {@link ItemParser} or {@link AmountParser}.
  * 
  * @author Anatole Tresch
- * 
- * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
  */
-public interface AmountFormatterFactorySPI {
+public interface AmountParserFactorySpi {
 
 	/**
-	 * Creates a new instance of the formatter defined by the passed localization
+	 * Creates a new instance of the parser defined by the passed localization
 	 * style instance, if the style (style id, one of the style locales or
 	 * additional attributes) required are not supported by this factory, null
 	 * should be returned.
@@ -73,6 +69,6 @@ public interface AmountFormatterFactorySPI {
 	 *            the localization settings.
 	 * @return a formatter instance representing the given style, or null.
 	 */
-	AmountFormatter getAmountFormatter(LocalizationStyle style);
+	AmountParser getAmountParser(LocalizationStyle style);
 
 }

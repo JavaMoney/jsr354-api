@@ -29,54 +29,51 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.convert.spi;
+package javax.money.spi;
+
+import java.util.Enumeration;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
+import javax.money.Rounding;
 
 /**
- * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
+ * This instance provides default {@link Rounding}, e.g. for ISO currencies.
+ * 
  * @author Anatole Tresch
- * @version 0.1.1
  */
-public interface ExchangeRateProviderSPI {
+public interface RoundingProviderSpi {
 
 	/**
-	 * Get an exchange rate for the given parameters.
+	 * Access the {@link Rounding} by id.
 	 * 
-	 * @param source
-	 *            the source currency.
-	 * @param target
-	 *            the target currency.
-	 * @param type
-	 *            Allows to determine the kind of rate to returned. {@code null}
-	 *            means any type.
-	 * @param deferred
-	 *            If the quote should be deferred.
-	 * @return the according exchange rate, or null.
+	 * @param name
+	 *            the rounding's id. not null.
+	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
+	 *         {@code null} is returned.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, ExchangeRateType type, boolean deferred);
+	public Rounding getRounding(String name);
 
 	/**
-	 * Get an exchange rate for the given parameters.
+	 * Access the ids, defined by this provider SPI implementation.
 	 * 
-	 * @param source
-	 *            the source currency.
-	 * @param target
-	 *            the target currency.
-	 * @param type
-	 *            Allows to determine the kind of rate to returned. {@code null}
-	 *            means any type.
+	 * @return the its provided, or {@code null}, when no named {@link Rounding}
+	 *         instances are provided by this implementation.
+	 */
+	public Enumeration<String> getRoundingIds();
+
+	/**
+	 * Access the {@link Rounding} for a given {@link CurrencyUnit} and
+	 * timestamp.
+	 * 
+	 * @param currency
+	 *            the currency instance. not null.
 	 * @param timestamp
-	 *            the required target UTC timestamp for the rate, or {@code null} for the
-	 *            latest available.
-	 * @param validityDuration
-	 *            how long the quote should be considered valid.
-	 * @return the according exchange rate, or null.
+	 *            the target timestamp for the {@link Rounding}, or -1 for the
+	 *            current UTC time.
+	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
+	 *         it should be created/registered based on
+	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, ExchangeRateType type, Long timestamp);
+	public Rounding getRounding(CurrencyUnit currency, long timestamp);
 
 }

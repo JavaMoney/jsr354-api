@@ -29,9 +29,9 @@ import java.util.Set;
 import javax.money.CurrencyUnit;
 import javax.money.ext.Region;
 import javax.money.ext.RegionalCurrencyUnitProvider;
-import javax.money.ext.spi.RegionalCurrencyUnitProviderSPI;
+import javax.money.ext.spi.RegionalCurrencyUnitProviderSpi;
 
-import net.java.javamoney.ri.AbstractSPIComponent;
+import net.java.javamoney.ri.AbstractSpiComponent;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -40,14 +40,14 @@ import net.java.javamoney.ri.AbstractSPIComponent;
  * @author Anatole Tresch
  */
 public final class RegionalCurrencyUnitProviderImpl extends
-		AbstractSPIComponent implements RegionalCurrencyUnitProvider {
+		AbstractSpiComponent implements RegionalCurrencyUnitProvider {
 
 // TODO Remove the singleton if it is not used
 //	/** Singleton instance. */
 //	private static final RegionalCurrencyUnitProviderImpl INSTANCE = new RegionalCurrencyUnitProviderImpl();
 	
 	/** Loaded region providers. */
-	private List<RegionalCurrencyUnitProviderSPI> regionalCurrencyProviders = new ArrayList<RegionalCurrencyUnitProviderSPI>();
+	private List<RegionalCurrencyUnitProviderSpi> regionalCurrencyProviders = new ArrayList<RegionalCurrencyUnitProviderSpi>();
 
 	/**
 	 * This method defined that this implementation is exposed as
@@ -65,8 +65,8 @@ public final class RegionalCurrencyUnitProviderImpl extends
 	 * before.
 	 */
 	public void reload() {
-		List<RegionalCurrencyUnitProviderSPI> loadedList = getSPIProviders(RegionalCurrencyUnitProviderSPI.class);
-		for (RegionalCurrencyUnitProviderSPI provSPI : loadedList) {
+		List<RegionalCurrencyUnitProviderSpi> loadedList = getSPIProviders(RegionalCurrencyUnitProviderSpi.class);
+		for (RegionalCurrencyUnitProviderSpi provSPI : loadedList) {
 			if (!regionalCurrencyProviders.contains(provSPI)) {
 				this.regionalCurrencyProviders.add(provSPI);
 			}
@@ -85,7 +85,7 @@ public final class RegionalCurrencyUnitProviderImpl extends
 
 	public CurrencyUnit[] getAll(Region region, long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		for (RegionalCurrencyUnitProviderSPI prov : regionalCurrencyProviders) {
+		for (RegionalCurrencyUnitProviderSpi prov : regionalCurrencyProviders) {
 			CurrencyUnit[] currencies = prov.getAll(region);
 			if (currencies != null) {
 				result.addAll(Arrays.asList(currencies));

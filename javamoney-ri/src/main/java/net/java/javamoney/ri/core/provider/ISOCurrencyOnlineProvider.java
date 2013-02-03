@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.money.CurrencyUnit;
 import javax.money.LocalizableCurrencyUnit;
-import javax.money.spi.CurrencyUnitProviderSPI;
+import javax.money.spi.CurrencyUnitProviderSpi;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -40,7 +40,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSPI {
+public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ISOCurrencyOnlineProvider.class);
 

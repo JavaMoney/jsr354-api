@@ -31,49 +31,30 @@
  */
 package javax.money.spi;
 
-import java.util.Enumeration;
+import java.util.ServiceLoader;
 
 import javax.money.CurrencyUnit;
-import javax.money.Rounding;
 
 /**
- * This instance provides default {@link Rounding}, e.g. for ISO currencies.
+ * Implementation of this interface define the mappings available for currencies.
+ * <p>
+ * Registration of the implementations is done using the {@link ServiceLoader}.
  * 
  * @author Anatole Tresch
  */
-public interface RoundingProviderSPI {
+public interface CurrencyUnitMappingSpi {
 
 	/**
-	 * Access the {@link Rounding} by id.
+	 * This method maps the given {@link CurrencyUnit} to another
+	 * {@link CurrencyUnit} with the given target namespace.
 	 * 
-	 * @param name
-	 *            the rounding's id. not null.
-	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
-	 *         {@code null} is returned.
+	 * @param unit
+	 *            The source unit, never {@code null}. Hereby the unit will
+	 *            match the namespace as defined by {@link #getNamespace()}.
+	 * @param targetNamespace
+	 *            the target namespace, never {@code null}.
+	 * @return The mapped {@link CurrencyUnit}, or null.
 	 */
-	public Rounding getRounding(String name);
-
-	/**
-	 * Access the ids, defined by this provider SPI implementation.
-	 * 
-	 * @return the its provided, or {@code null}, when no named {@link Rounding}
-	 *         instances are provided by this implementation.
-	 */
-	public Enumeration<String> getRoundingIds();
-
-	/**
-	 * Access the {@link Rounding} for a given {@link CurrencyUnit} and
-	 * timestamp.
-	 * 
-	 * @param currency
-	 *            the currency instance. not null.
-	 * @param timestamp
-	 *            the target timestamp for the {@link Rounding}, or -1 for the
-	 *            current UTC time.
-	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
-	 *         it should be created/registered based on
-	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
-	 */
-	public Rounding getRounding(CurrencyUnit currency, long timestamp);
+	public CurrencyUnit map(CurrencyUnit unit, String targetNamespace);
 
 }

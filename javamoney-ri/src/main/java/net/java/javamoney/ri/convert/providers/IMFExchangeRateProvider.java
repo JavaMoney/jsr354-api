@@ -31,12 +31,12 @@ import java.util.Map;
 import javax.money.CurrencyUnit;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.ExchangeRateProviderSPI;
+import javax.money.convert.spi.ExchangeRateProviderSpi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IMFExchangeRateProvider implements ExchangeRateProviderSPI {
+public class IMFExchangeRateProvider implements ExchangeRateProviderSpi {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IMFExchangeRateProvider.class);
 	

@@ -43,7 +43,7 @@ import javax.money.convert.ExchangeRateType;
 public interface ExchangeRateProviderSPI {
 
 	/**
-	 * Get an exchange rate for the given parameters.
+	 * Get exchange rates for the given parameters.
 	 * 
 	 * @param source
 	 *            the source currency.
@@ -60,7 +60,7 @@ public interface ExchangeRateProviderSPI {
 			CurrencyUnit target, ExchangeRateType type, boolean deferred);
 
 	/**
-	 * Get an exchange rate for the given parameters.
+	 * Get exchange rates for the given parameters.
 	 * 
 	 * @param source
 	 *            the source currency.
@@ -70,13 +70,13 @@ public interface ExchangeRateProviderSPI {
 	 *            Allows to determine the kind of rate to returned. {@code null}
 	 *            means any type.
 	 * @param timestamp
-	 *            the required target UTC timestamp for the rate, or -1 for the
+	 *            the required target UTC timestamp for the rate, or {@code null} for the
 	 *            latest available.
 	 * @param validityDuration
 	 *            how long the quote should be considered valid.
 	 * @return the according exchange rate, or null.
 	 */
 	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, ExchangeRateType type, long timestamp);
+			CurrencyUnit target, ExchangeRateType type, Long timestamp);
 
 }

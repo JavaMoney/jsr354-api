@@ -43,7 +43,7 @@ import javax.money.convert.ExchangeRateType;
 public interface ExchangeRateProviderSPI {
 
 	/**
-	 * Get exchange rates for the given parameters.
+	 * Get an exchange rate for the given parameters.
 	 * 
 	 * @param source
 	 *            the source currency.
@@ -60,7 +60,7 @@ public interface ExchangeRateProviderSPI {
 			CurrencyUnit target, ExchangeRateType type, boolean deferred);
 
 	/**
-	 * Get exchange rates for the given parameters.
+	 * Get an exchange rate for the given parameters.
 	 * 
 	 * @param source
 	 *            the source currency.

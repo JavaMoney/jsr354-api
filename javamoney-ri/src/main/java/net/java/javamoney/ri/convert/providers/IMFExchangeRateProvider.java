@@ -33,8 +33,6 @@ import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
 import javax.money.convert.spi.ExchangeRateProviderSPI;
 
-import net.java.javamoney.ri.convert.ExchangeRateImpl;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

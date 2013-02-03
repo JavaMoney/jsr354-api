@@ -41,7 +41,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSPI {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ISOCurrencyOnlineProvider.class);
+
 	
 	private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 

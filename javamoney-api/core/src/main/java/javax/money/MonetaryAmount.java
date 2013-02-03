@@ -36,9 +36,8 @@ package javax.money;
  * of an amount may vary depending on the implementation used. Nevertheless
  * basically an amount provides a functionality similar to {@link BigDecimal}.
  * <p>
- * Unfortunately, since {@link Number} is not an interface this class can not
- * extend {@link Number}. TODO discuss if we want to extend Number as an
- * abstract class, instead of using a plain interface.
+ * Since {@link Number} is not an interface this class is not extending
+ * {@link Number}.
  * 
  * @author Anatole Tresch
  */
@@ -63,9 +62,9 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	public MonetaryAmount abs();
 
 	/**
-	 * Returns the minimum of this {@code MonetaryAmount} and {@code val}.
+	 * Returns the minimum of this {@code MonetaryAmount} and {@code amount}.
 	 * 
-	 * @param val
+	 * @param amount
 	 *            value with which the minimum is to be computed.
 	 * @return the {@code MonetaryAmount} whose value is the lesser of this
 	 *         {@code MonetaryAmount} and {@code val}. If they are equal, as
@@ -76,9 +75,9 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	public MonetaryAmount min(MonetaryAmount amount);
 
 	/**
-	 * Returns the maximum of this {@code MonetaryAmount} and {@code val}.
+	 * Returns the maximum of this {@code MonetaryAmount} and {@code amount}.
 	 * 
-	 * @param val
+	 * @param amount
 	 *            value with which the maximum is to be computed.
 	 * @return the {@code MonetaryAmount} whose value is the greater of this
 	 *         {@code MonetaryAmount} and {@code val}. If they are equal, as
@@ -97,7 +96,7 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 *            value to be added to this {@code MonetaryAmount}.
 	 * @return {@code this + augend}
 	 */
-	public MonetaryAmount add(MonetaryAmount amount);
+	public MonetaryAmount add(MonetaryAmount augend);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this +
@@ -108,7 +107,7 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 *            value to be added to this {@code MonetaryAmount}.
 	 * @return {@code this + augend}
 	 */
-	public MonetaryAmount add(Number number);
+	public MonetaryAmount add(Number augend);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this /
@@ -369,7 +368,7 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 * <p>
 	 * This instance is immutable and unaffected by this method.
 	 * 
-	 * @param adjusterss
+	 * @param adjusters
 	 *            the adjusters to use, not null
 	 * @return the adjusted instance, never null
 	 * @throws ArithmeticException
@@ -750,8 +749,8 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	/**
 	 * Checks if this amount is not the same compared to the amount passed.
 	 * 
-	 * @param number
-	 *            The number to compare to.
+	 * @param amount
+	 *            The amount to compare to.
 	 * @return TRUE, if this amount's value is not the same compared to the
 	 *         number passed.
 	 */
@@ -815,9 +814,6 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 * scale, the string resulting from this method will have a scale of zero
 	 * when processed by the string constructor.
 	 * 
-	 * (This method behaves analogously to the {@code toString} method in 1.4
-	 * and earlier releases.)
-	 * 
 	 * @return a string representation of this {@code MonetaryAmount} without an
 	 *         exponent field.
 	 * @see #toString()
@@ -828,7 +824,7 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	/**
 	 * Returns an {@code MonetaryAmount} rounded according to the
 	 * {@code Rounding} settings accessible from the
-	 * {@link RoundingSupport#getRounding(CurrencyUnit)}.
+	 * {@link RoundingProvider#getRounding(CurrencyUnit)}.
 	 * 
 	 * @return a {@code MonetaryAmount} rounded according to the
 	 *         {@code Rounding}.
@@ -840,9 +836,9 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	/**
 	 * * Gets the monetary amount using the passed target type. This method
 	 * allows to support different return types, depending of the concrete
-	 * implementation. E.g. {@link BigDecimal} should be supported within SE
-	 * environments, whereas on ME environments {@link Double} will be more
-	 * likely.
+	 * implementation. E.g. {@link BigDecimal}, {@link java.lang.Number} and the
+	 * all numeric wrapper types should be supported within SE environments,
+	 * whereas on other environments it may be different.
 	 * <p>
 	 * This returns the monetary value as a {@code T}. No scaling will be
 	 * affected. for additional scaling based on the currency use
@@ -884,10 +880,14 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 * 
 	 * @param type
 	 *            the required target type
+	 * @param adjustments
+	 *            The adjustments to be applied. Hereby the order of the 
+	 *            {@link AmountAdjuster} instances within (@code adjustments) implies to
+	 *            order of adjustments performed.
 	 * @return the representation of this amount, adjusted using the given
 	 *         adjustment.
 	 */
-	public <T> T asType(Class<T> type, AmountAdjuster... adjustment);
+	public <T> T asType(Class<T> type, AmountAdjuster... adjustments);
 
 	/**
 	 * Access the class that models the representation of the numeric part of
@@ -899,7 +899,7 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	public Class<?> getNumberType();
 
 	/**
-	 * This method divides this amount into a number of subamounts determined by
+	 * This method divides this amount into a number of sub-amounts determined by
 	 * the divisor passed.
 	 * 
 	 * @param divisor

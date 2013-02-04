@@ -101,4 +101,11 @@ public interface CompoundItem<T> {
 	 */
 	public Map<Object, T> getAll();
 
+	/**
+	 * Creates an instance of a {@link CompoundItemBuilder} initialized with
+	 * this instance.
+	 * 
+	 * @return a new builoder instance, never null.
+	 */
+	public CompoundItemBuilder<T> toBuilder();
 }

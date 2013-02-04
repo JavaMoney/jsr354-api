@@ -18,7 +18,9 @@
  */
 package net.java.javamoney.ri.convert;
 
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.money.convert.CompoundItem;
@@ -40,70 +42,112 @@ import javax.money.convert.CompoundItemBuilder;
 public abstract class AbstractCompoundItemBuilder<T> implements
 		CompoundItemBuilder<T> {
 
+	private String type;
+
+	private Map<Object, T> items = new HashMap<Object, T>();
+
+	private T leadingItem;
+
+	public AbstractCompoundItemBuilder(String type) {
+		setType(type);
+	}
+	
+	public AbstractCompoundItemBuilder(CompoundItem<T> baseItem) {
+		if (baseItem != null) {
+			this.type = baseItem.getType();
+			this.items.putAll(baseItem.getAll());
+			this.leadingItem = baseItem.getLeadingItem();
+		}
+	}
+
+	@Override
+	public T getLeadingItem() {
+		return this.leadingItem;
+	}
+
+	@Override
+	public T setLeadingItem(Object key, T item) {
+		if (item == null) {
+			throw new IllegalArgumentException("item may not be null.");
+		}
+		if (key == null) {
+			throw new IllegalArgumentException("key may not be null.");
+		}
+		T oldLeadingItem = this.leadingItem;
+		this.leadingItem = item;
+		return oldLeadingItem;
+	}
+
+	@Override
+	public T removeLeadingItem() {
+		T oldLeadingItem = this.leadingItem;
+		this.leadingItem = null;
+		return oldLeadingItem;
+	}
+
 	@Override
 	public String getType() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.type;
 	}
 
 	@Override
 	public void setType(String type) {
-		// TODO Auto-generated method stub
-
+		if (type == null) {
+			throw new IllegalArgumentException("type may not be null.");
+		}
+		this.type = type;
 	}
 
 	@Override
 	public Enumeration<Object> getKeys() {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.enumeration(this.items.keySet());
 	}
 
 	@Override
 	public boolean isKeyDefined(Object key) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.items.containsKey(key);
 	}
 
 	@Override
 	public T get(Object key) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.items.get(key);
 	}
 
 	@Override
 	public Map<Object, T> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.unmodifiableMap(this.items);
 	}
 
 	@Override
 	public T set(Object key, T item) {
-		// TODO Auto-generated method stub
-		return null;
+		if (item == null) {
+			throw new IllegalArgumentException("item may not be null.");
+		}
+		if (key == null) {
+			throw new IllegalArgumentException("key may not be null.");
+		}
+		return this.items.put(key, item);
 	}
 
 	@Override
 	public void set(Map<Object, T> items) {
-		// TODO Auto-generated method stub
-
+		if (items == null) {
+			throw new IllegalArgumentException("items may not be null.");
+		}
+		this.items.putAll(items);
 	}
 
 	@Override
 	public T remove(Object key) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.items.remove(key);
 	}
 
 	@Override
-	public Map<Object, T> removeAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public void removeAll() {
+		this.items.clear();
 	}
 
 	@Override
-	public CompoundItem<T> toCompoundItem() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract CompoundItem<T> toCompoundItem();
 
 }

@@ -23,26 +23,28 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.money.convert.CompoundItem;
 import javax.money.convert.CompoundItemBuilder;
-import javax.money.convert.ExchangeRate;
 
 /**
- * Defines a {@link AbstractCompoundItem} containing {@link ExchangeRate}
+ * Defines a {@link AbstractCompoundItem} containing T
  * instances.
  * 
- * @see AbstractCompoundItem
+ * @see CompoundItem
  * @author Anatole Tresch
  */
-public abstract class AbstractCompoundItem<T> {
+public abstract class AbstractCompoundItem<T> implements CompoundItem<T> {
 
 	private final String type;
-	private Map<Object, T> items = new HashMap<Object, T>();
+	private final T leadingItem;
+	private final Map<Object, T> items = new HashMap<Object, T>();
 
 	protected AbstractCompoundItem(String type) {
 		if (type == null) {
 			throw new IllegalArgumentException("type can not bve null.");
 		}
 		this.type = type;
+		this.leadingItem = null;
 	}
 
 	protected AbstractCompoundItem(String type, Map<Object, T> items) {
@@ -50,6 +52,17 @@ public abstract class AbstractCompoundItem<T> {
 			throw new IllegalArgumentException("type can not bve null.");
 		}
 		this.type = type;
+		this.items.putAll(items);
+		this.leadingItem = null;
+	}
+
+	protected AbstractCompoundItem(String type, Map<Object, T> items,
+			T leadingItem) {
+		if (type == null) {
+			throw new IllegalArgumentException("type can not bve null.");
+		}
+		this.type = type;
+		this.leadingItem = leadingItem;
 		this.items.putAll(items);
 	}
 
@@ -83,6 +96,10 @@ public abstract class AbstractCompoundItem<T> {
 		return Collections.unmodifiableMap(this.items);
 	}
 
-	public abstract CompoundItemBuilder<T> getBuilder();
+	@Override
+	public T getLeadingItem() {
+		return this.leadingItem;
+	}
 
+	public abstract CompoundItemBuilder<T> toBuilder();
 }

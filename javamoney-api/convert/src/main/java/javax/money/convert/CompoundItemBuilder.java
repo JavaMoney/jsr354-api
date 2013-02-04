@@ -157,7 +157,7 @@ public interface CompoundItemBuilder<T> {
 	 * @return an immutable map fo the instances previously defined (can be
 	 *         empty).
 	 */
-	public Map<Object, T> removeAll();
+	public void removeAll();
 
 	/**
 	 * Creates an immutable {@link CompoundMonetaryAmount} from this builder.

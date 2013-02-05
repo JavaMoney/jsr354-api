@@ -19,6 +19,8 @@
  */
 package net.java.javamoney.ri.core;
 
+import static javax.money.CurrencyUnit.ISO_NAMESPACE;
+
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
@@ -33,12 +35,11 @@ import javax.money.spi.CurrencyUnitProviderSpi;
  * ISO 4217 currencies available from the JDK {@link Currency} class.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public class JDKCurrencyProvider implements CurrencyUnitProviderSpi {
 
-	public static final String ISO4217_NAMESPACE = "ISO-4217";
-
-	private final Map<String, JDKCurrencyAdapter> currencies = new HashMap<String, JDKCurrencyAdapter>();
+	private final Map<String, CurrencyUnit> currencies = new HashMap<String, CurrencyUnit>();
 
 	public JDKCurrencyProvider() {
 		Set<Currency> jdkCurrencies = Currency.getAvailableCurrencies();
@@ -49,7 +50,7 @@ public class JDKCurrencyProvider implements CurrencyUnitProviderSpi {
 	}
 
 	public String getNamespace() {
-		return ISO4217_NAMESPACE;
+		return ISO_NAMESPACE;
 	}
 
 	public CurrencyUnit getCurrency(String code, Long timestamp) {

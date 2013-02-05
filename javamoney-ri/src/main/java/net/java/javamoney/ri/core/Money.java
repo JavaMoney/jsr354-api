@@ -34,14 +34,15 @@ import javax.money.RoundingProvider;
  * Default immutable implementation of {@link MonetaryAmount}.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public class Money implements MonetaryAmount {
 
 	/** The numeric part of this amount. */
-	private BigDecimal number;
+	private final BigDecimal number;
 
 	/** The currency of this amount. */
-	private CurrencyUnit currency;
+	private final CurrencyUnit currency;
 
 	/**
 	 * Creates a new instance os {@link Money}.
@@ -77,7 +78,7 @@ public class Money implements MonetaryAmount {
 	 *            The numeric part, not null.
 	 * @return A new instance of {@link Money}.
 	 */
-	public static Money of(CurrencyUnit currency, Number number) {
+	public static Money valueOf(CurrencyUnit currency, Number number) {
 		// TODO caching
 		return new Money(currency, number);
 	}
@@ -91,7 +92,7 @@ public class Money implements MonetaryAmount {
 	 *            The numeric part, not null.
 	 * @return A new instance of {@link Money}.
 	 */
-	public static Money of(String isoCurrencyCode, Number number) {
+	public static Money valueOf(String isoCurrencyCode, Number number) {
 		// TODO caching
 		return new Money(JDKCurrencyAdapter.getInstance(isoCurrencyCode),
 				number);

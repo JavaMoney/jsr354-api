@@ -44,8 +44,8 @@ public class SmokeTests {
 	@Test
 	public void testCreateMoney() {
 		// Creating one
-		Money amount1 = Money.of("CHF", 1.0d);
-		Money amount2 = Money.of("CHF", 1.0d);
+		Money amount1 = Money.valueOf("CHF", 1.0d);
+		Money amount2 = Money.valueOf("CHF", 1.0d);
 		MonetaryAmount amount3 = amount1.add(amount2);
 		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
 		assertEquals(1.0d, amount1.doubleValue(), 0);

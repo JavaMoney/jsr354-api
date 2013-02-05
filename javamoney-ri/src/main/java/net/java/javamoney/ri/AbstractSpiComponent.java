@@ -24,6 +24,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class provides a shared implementation that loads a set of provider
  * instances using the {@link ServiceLoader}.
@@ -31,7 +34,8 @@ import java.util.ServiceLoader;
  * @author Anatole Tresch
  */
 public abstract class AbstractSpiComponent {
-
+	private static final Logger logger = LoggerFactory.getLogger(AbstractSpiComponent.class);
+	
 	/**
 	 * Singleton constructor.
 	 */
@@ -40,7 +44,7 @@ public abstract class AbstractSpiComponent {
 			reload();
 		} catch (Exception e) {
 			// TODO log exception!
-			e.printStackTrace();
+			logger.debug("Error", e);
 		}
 	}
 	

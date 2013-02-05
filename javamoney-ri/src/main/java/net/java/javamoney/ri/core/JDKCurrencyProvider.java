@@ -36,7 +36,7 @@ import javax.money.spi.CurrencyUnitProviderSpi;
  */
 public class JDKCurrencyProvider implements CurrencyUnitProviderSpi {
 
-	public static final String ISO4217_NAMESPACE = "ISO4217";
+	public static final String ISO4217_NAMESPACE = "ISO-4217";
 
 	private final Map<String, JDKCurrencyAdapter> currencies = new HashMap<String, JDKCurrencyAdapter>();
 
@@ -52,15 +52,15 @@ public class JDKCurrencyProvider implements CurrencyUnitProviderSpi {
 		return ISO4217_NAMESPACE;
 	}
 
-	public CurrencyUnit getCurrency(String code, long timestamp) {
-		if (timestamp == -1) {
+	public CurrencyUnit getCurrency(String code, Long timestamp) {
+		if (timestamp == null) {
 			return this.currencies.get(code);
 		}
 		return null;
 	}
 
-	public CurrencyUnit[] getCurrencies(Locale locale, long timestamp) {
-		if (timestamp == -1 &&  locale !=null && locale.getCountry().length()==2) {
+	public CurrencyUnit[] getCurrencies(Locale locale, Long timestamp) {
+		if (timestamp == null &&  locale !=null && locale.getCountry().length()==2) {
 			Currency currency = Currency.getInstance(locale);
 			if (currency != null) {
 				return new CurrencyUnit[] { this.currencies.get(currency
@@ -70,21 +70,17 @@ public class JDKCurrencyProvider implements CurrencyUnitProviderSpi {
 		return null;
 	}
 
-	public CurrencyUnit[] getCurrencies(long timestamp) {
-		if (timestamp == -1) {
+	public CurrencyUnit[] getCurrencies(Long timestamp) {
+		if (timestamp == null) {
 			return this.currencies.values().toArray(
 					new CurrencyUnit[this.currencies.size()]);
 		}
 		return null;
 	}
 
-	public CurrencyUnit map(CurrencyUnit unit, String targetNamespace) {
-		// not supported by the JDK.
-		return null;
-	}
 
-	public boolean isAvailable(String code, long start, long end) {
-		if (start == -1L && end == -1L) {
+	public boolean isAvailable(String code, Long start, Long end) {
+		if (start == null && end == null) {
 			return this.currencies.containsKey(code);
 		}
 		return false;

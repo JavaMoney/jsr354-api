@@ -19,7 +19,6 @@
  */
 package net.java.javamoney.ri.core;
 
-
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Currency;
@@ -60,11 +59,16 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 	}
 
 	// TODO could we harmonize this like in Currency by calling getInstance()?
-	public static CurrencyUnit valueOf(Currency currency) {
+	public static CurrencyUnit getInstance(Currency currency) {
 		// TODO implement caching!
 		return new JDKCurrencyAdapter(currency);
 	}
 
+	// TODO could we harmonize this like in Currency by calling getInstance()?
+	public static CurrencyUnit getInstance(String isoCurrency) {
+		// TODO implement caching!
+		return new JDKCurrencyAdapter(Currency.getInstance(isoCurrency));
+	}
 
 	public boolean isVirtual() {
 		return false;
@@ -78,16 +82,13 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 		return "ISO-4217";
 	}
 
-
-	public long getValidFrom() {
-		return -1;
+	public Long getValidFrom() {
+		return null;
 	}
 
-
-	public long getValidUntil() {
-		return -1;
+	public Long getValidUntil() {
+		return null;
 	}
-
 
 	public int compareTo(CurrencyUnit currency) {
 		// TODO Auto-generated method stub
@@ -99,22 +100,19 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 		return compare;
 	}
 
-
 	public String getCurrencyCode() {
 		return this.currency.getCurrencyCode();
 	}
-
 
 	public int getNumericCode() {
 		return this.currency.getNumericCode();
 	}
 
-
 	public int getDefaultFractionDigits() {
 		return this.currency.getDefaultFractionDigits();
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return this.currency.toString();
 	}
 

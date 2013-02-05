@@ -30,31 +30,76 @@ import javax.money.MonetaryAmount;
 import javax.money.Rounding;
 import javax.money.RoundingProvider;
 
-public class BigDecimalAmount implements MonetaryAmount {
+/**
+ * Default immutable implementation of {@link MonetaryAmount}.
+ * 
+ * @author Anatole Tresch
+ */
+public class Money implements MonetaryAmount {
 
+	/** The numeric part of this amount. */
 	private BigDecimal number;
+
+	/** The currency of this amount. */
 	private CurrencyUnit currency;
 
-	BigDecimalAmount(CurrencyUnit currency, BigDecimal number) {
+	/**
+	 * Creates a new instance os {@link Money}.
+	 * 
+	 * @param currency
+	 *            the currency, not null.
+	 * @param number
+	 *            the amount, not null.
+	 */
+	Money(CurrencyUnit currency, Number number) {
 		if (currency == null) {
 			throw new IllegalArgumentException("Currency is required.");
 		}
-		checkNumber(number);
-		this.currency = currency;
-		this.number = number;
-		// TODO ensure internal precision!
-	}
-
-	public BigDecimalAmount(CurrencyUnit currency, Number number) {
-		if (currency == null) {
-			throw new IllegalArgumentException("Currency is required.");
+		if (number == null) {
+			throw new IllegalArgumentException("Number is required.");
 		}
 		checkNumber(number);
 		this.currency = currency;
-		this.number = BigDecimal.valueOf(number.doubleValue());
+		if (BigDecimal.class.isAssignableFrom(number.getClass())) {
+			this.number = (BigDecimal) number;
+		} else {
+			this.number = BigDecimal.valueOf(number.doubleValue());
+		}
 		// TODO ensure internal precision!
 	}
 
+	/**
+	 * Static factory method for creating a new instance of {@link Money}.
+	 * 
+	 * @param currency
+	 *            The target currency, not null.
+	 * @param number
+	 *            The numeric part, not null.
+	 * @return A new instance of {@link Money}.
+	 */
+	public static Money of(CurrencyUnit currency, Number number) {
+		// TODO caching
+		return new Money(currency, number);
+	}
+
+	/**
+	 * Static factory method for creating a new instance of {@link Money}.
+	 * 
+	 * @param isoCurrencyCode
+	 *            The target currency as ISO currency code.
+	 * @param number
+	 *            The numeric part, not null.
+	 * @return A new instance of {@link Money}.
+	 */
+	public static Money of(String isoCurrencyCode, Number number) {
+		// TODO caching
+		return new Money(JDKCurrencyAdapter.getInstance(isoCurrencyCode),
+				number);
+	}
+
+	/*
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
 	public int compareTo(MonetaryAmount o) {
 		int compare = this.currency.compareTo(o.getCurrency());
 		if (compare == 0) {
@@ -94,7 +139,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 
 	public MonetaryAmount add(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		return new BigDecimalAmount(this.currency, this.number.add(amount
+		return new Money(this.currency, this.number.add(amount
 				.asType(BigDecimal.class)));
 	}
 
@@ -102,113 +147,108 @@ public class BigDecimalAmount implements MonetaryAmount {
 		checkNumber(number);
 		BigDecimal dec = this.number.add(BigDecimal.valueOf(number
 				.doubleValue()));
-		return new BigDecimalAmount(this.currency, dec);
+		return new Money(this.currency, dec);
 	}
 
 	public MonetaryAmount divide(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
 		BigDecimal dec = this.number.divide(divisor.asType(BigDecimal.class));
-		return new BigDecimalAmount(this.currency, dec);
+		return new Money(this.currency, dec);
 	}
 
 	public MonetaryAmount divide(Number divisor) {
 		checkNumber(divisor);
 		BigDecimal dec = this.number.divide(BigDecimal.valueOf(divisor
 				.doubleValue()));
-		return new BigDecimalAmount(this.currency, dec);
+		return new Money(this.currency, dec);
 	}
 
 	public MonetaryAmount[] divideAndRemainder(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
 		BigDecimal[] dec = this.number.divideAndRemainder(divisor
 				.asType(BigDecimal.class));
-		return new MonetaryAmount[] {
-				new BigDecimalAmount(this.currency, dec[0]),
-				new BigDecimalAmount(this.currency, dec[1]) };
+		return new MonetaryAmount[] { new Money(this.currency, dec[0]),
+				new Money(this.currency, dec[1]) };
 	}
 
 	public MonetaryAmount[] divideAndRemainder(Number divisor) {
 		checkNumber(divisor);
 		BigDecimal[] dec = this.number.divideAndRemainder(BigDecimal
 				.valueOf(divisor.doubleValue()));
-		return new MonetaryAmount[] {
-				new BigDecimalAmount(this.currency, dec[0]),
-				new BigDecimalAmount(this.currency, dec[1]) };
+		return new MonetaryAmount[] { new Money(this.currency, dec[0]),
+				new Money(this.currency, dec[1]) };
 	}
 
 	public MonetaryAmount divideToIntegralValue(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
 		BigDecimal dec = this.number.divideToIntegralValue(divisor
 				.asType(BigDecimal.class));
-		return new BigDecimalAmount(this.currency, dec);
+		return new Money(this.currency, dec);
 	}
 
 	public MonetaryAmount divideToIntegralValue(Number divisor) {
 		checkNumber(divisor);
 		BigDecimal dec = this.number.divideToIntegralValue(BigDecimal
 				.valueOf(divisor.doubleValue()));
-		return new BigDecimalAmount(this.currency, dec);
+		return new Money(this.currency, dec);
 	}
 
 	public MonetaryAmount multiply(MonetaryAmount multiplicand) {
 		checkAmountParameter(multiplicand);
 		BigDecimal dec = this.number.multiply(multiplicand
 				.asType(BigDecimal.class));
-		return new BigDecimalAmount(this.currency, dec);
+		return new Money(this.currency, dec);
 	}
 
 	public MonetaryAmount multiply(Number multiplicand) {
 		checkNumber(multiplicand);
 		BigDecimal dec = this.number.multiply(BigDecimal.valueOf(multiplicand
 				.doubleValue()));
-		return new BigDecimalAmount(this.currency, dec);
+		return new Money(this.currency, dec);
 	}
 
 	public MonetaryAmount negate() {
-		return new BigDecimalAmount(this.currency, this.number.negate());
+		return new Money(this.currency, this.number.negate());
 	}
 
 	public MonetaryAmount plus() {
-		return new BigDecimalAmount(this.currency, this.number.plus());
+		return new Money(this.currency, this.number.plus());
 	}
 
 	public MonetaryAmount subtract(MonetaryAmount subtrahend) {
 		checkAmountParameter(subtrahend);
-		return new BigDecimalAmount(this.currency,
-				this.number.subtract(subtrahend.asType(BigDecimal.class)));
+		return new Money(this.currency, this.number.subtract(subtrahend
+				.asType(BigDecimal.class)));
 	}
 
 	public MonetaryAmount subtract(Number subtrahend) {
 		checkNumber(subtrahend);
-		return new BigDecimalAmount(this.currency,
-				this.number.subtract(BigDecimal.valueOf(subtrahend
-						.doubleValue())));
+		return new Money(this.currency, this.number.subtract(BigDecimal
+				.valueOf(subtrahend.doubleValue())));
 	}
 
 	public MonetaryAmount pow(int n) {
-		return new BigDecimalAmount(this.currency, this.number.pow(n));
+		return new Money(this.currency, this.number.pow(n));
 	}
 
 	public MonetaryAmount ulp() {
-		return new BigDecimalAmount(this.currency, this.number.ulp());
+		return new Money(this.currency, this.number.ulp());
 	}
 
 	public MonetaryAmount remainder(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
-		return new BigDecimalAmount(this.currency,
-				this.number.remainder(divisor.asType(BigDecimal.class)));
+		return new Money(this.currency, this.number.remainder(divisor
+				.asType(BigDecimal.class)));
 	}
 
 	public MonetaryAmount remainder(Number divisor) {
 		checkNumber(divisor);
-		return new BigDecimalAmount(
-				this.currency,
-				this.number.remainder(BigDecimal.valueOf(divisor.doubleValue())));
+		return new Money(this.currency, this.number.remainder(BigDecimal
+				.valueOf(divisor.doubleValue())));
 	}
 
 	public MonetaryAmount scaleByPowerOfTen(int n) {
-		return new BigDecimalAmount(this.currency,
-				this.number.scaleByPowerOfTen(n));
+		return new Money(this.currency, this.number.scaleByPowerOfTen(n));
 	}
 
 	public long getMajorLong() {
@@ -251,8 +291,8 @@ public class BigDecimalAmount implements MonetaryAmount {
 
 	public MonetaryAmount with(Number amount) {
 		checkNumber(amount);
-		return new BigDecimalAmount(this.currency, BigDecimal.valueOf(amount
-				.doubleValue()));
+		return new Money(this.currency,
+				BigDecimal.valueOf(amount.doubleValue()));
 	}
 
 	public MonetaryAmount with(AmountAdjuster... adjuster) {
@@ -415,7 +455,7 @@ public class BigDecimalAmount implements MonetaryAmount {
 
 	public <T> T asType(Class<T> type) {
 		if (BigDecimal.class.equals(type)) {
-			
+
 			@SuppressWarnings("unchecked")
 			final T asType = (T) this.number;
 			return asType;
@@ -448,18 +488,16 @@ public class BigDecimalAmount implements MonetaryAmount {
 	// Static Factory Methods
 	/**
 	 * Translates a {@code BigDecimal} value and a {@code CurrencyUnit} currency
-	 * into a {@code BigDecimalAmount}.
+	 * into a {@code Money}.
 	 * 
 	 * @param number
-	 *            numeric value of the {@code BigDecimalAmount}.
+	 *            numeric value of the {@code Money}.
 	 * @param currency
-	 *            currency unit of the {@code BigDecimalAmount}.
-	 * @return a {@code BigDecimalAmount} combining the numeric value and
-	 *         currency unit.
+	 *            currency unit of the {@code Money}.
+	 * @return a {@code Money} combining the numeric value and currency unit.
 	 */
-	public static BigDecimalAmount valueOf(BigDecimal number,
-			CurrencyUnit currency) {
-		return new BigDecimalAmount(currency, number);
+	public static Money valueOf(BigDecimal number, CurrencyUnit currency) {
+		return new Money(currency, number);
 	}
 
 	/*

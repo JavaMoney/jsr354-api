@@ -67,12 +67,12 @@ public interface CurrencyUnitProvider {
 	 *            The code that, together with the namespace identifies the
 	 *            currency.
 	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 *            The target UTC timestamp, or {@code null} for the current UTC timestamp.
 	 * @return The currency found, never null.
 	 * @throws UnknownCurrencyException
 	 *             if the required currency is not defined.
 	 */
-	public CurrencyUnit get(String namespace, String code, long timestamp);
+	public CurrencyUnit get(String namespace, String code, Long timestamp);
 
 	/**
 	 * Access all currencies currently available.
@@ -85,10 +85,10 @@ public interface CurrencyUnitProvider {
 	 * Access all currencies available for the given UTC timestamp.
 	 * 
 	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 *            The target UTC timestamp, or {@code null} for the current UTC timestamp.
 	 * @return the list of currencies available, never null.
 	 */
-	public CurrencyUnit[] getAll(long timstamp);
+	public CurrencyUnit[] getAll(Long timstamp);
 
 	/**
 	 * Access all currencies available for a given namespace, timestamp.
@@ -96,10 +96,10 @@ public interface CurrencyUnitProvider {
 	 * @param namespace
 	 *            The target namespace, not null.
 	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for current.
+	 *            The target UTC timestamp, or {@code null} for current.
 	 * @return the currencies found.
 	 */
-	public CurrencyUnit[] getAll(String namespace, long timestamp);
+	public CurrencyUnit[] getAll(String namespace, Long timestamp);
 
 	/**
 	 * Access all current currencies for a given namespace.
@@ -131,10 +131,10 @@ public interface CurrencyUnitProvider {
 	 *            The code that, together with the namespace identifies the
 	 *            currency.
 	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 *            The target UTC timestamp, or {@code null} for the current UTC timestamp.
 	 * @return true, if the currency is defined.
 	 */
-	public boolean isAvailable(String namespace, String code, long timestamp);
+	public boolean isAvailable(String namespace, String code, Long timestamp);
 
 	/**
 	 * Checks if a currency is defined using its name space and code for the
@@ -146,14 +146,14 @@ public interface CurrencyUnitProvider {
 	 *            The code that, together with the namespace identifies the
 	 *            currency.
 	 * @param start
-	 *            The starting UTC timestamp, or -1 for the current UTC
+	 *            The starting UTC timestamp, or {@code null} for the current UTC
 	 *            timestamp.
 	 * @param end
-	 *            The ending UTC timestamp, or -1 for the current UTC timestamp.
+	 *            The ending UTC timestamp, or {@code null} for the current UTC timestamp.
 	 * @return true, if the currency is defined.
 	 */
-	public boolean isAvailable(String namespace, String code, long start,
-			long end);
+	public boolean isAvailable(String namespace, String code, Long start,
+			Long end);
 
 	/**
 	 * This method allows to evaluate, if the given currency name space is
@@ -189,10 +189,10 @@ public interface CurrencyUnitProvider {
 	 * @param locale
 	 *            the target locale, not null.
 	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 *            The target UTC timestamp, or {@code null} for the current UTC timestamp.
 	 * @return the currencies found, never null.
 	 */
-	public CurrencyUnit[] getAll(Locale locale, long timestamp);
+	public CurrencyUnit[] getAll(Locale locale, Long timestamp);
 
 	/**
 	 * This method maps the given {@link CurrencyUnit} to another

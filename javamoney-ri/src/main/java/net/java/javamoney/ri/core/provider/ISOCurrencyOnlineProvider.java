@@ -136,13 +136,13 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 		}
 
 		@Override
-		public long getValidFrom() {
-			return -1L;
+		public Long getValidFrom() {
+			return null;
 		}
 
 		@Override
-		public long getValidUntil() {
-			return -1L;
+		public Long getValidUntil() {
+			return null;
 		}
 
 		@Override
@@ -303,16 +303,16 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 	}
 
 	@Override
-	public CurrencyUnit getCurrency(String code, long timestamp) {
-		if (timestamp < 0) {
+	public CurrencyUnit getCurrency(String code, Long timestamp) {
+		if (timestamp == null) {
 			return this.currencies.get(code);
 		}
 		return null;
 	}
 
 	@Override
-	public CurrencyUnit[] getCurrencies(Locale locale, long timestamp) {
-		if (locale!=null && timestamp < 0) {
+	public CurrencyUnit[] getCurrencies(Locale locale, Long timestamp) {
+		if (locale!=null && timestamp == null) {
 			List<CurrencyUnit> result = new ArrayList<CurrencyUnit>();
 			for (ISOCurrency currency : currencies.values()) {
 				if (locale.equals(currency.country)) {
@@ -325,8 +325,8 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 	}
 
 	@Override
-	public CurrencyUnit[] getCurrencies(long timestamp) {
-		if (timestamp < 0) {
+	public CurrencyUnit[] getCurrencies(Long timestamp) {
+		if (timestamp == null) {
 			return currencies.values().toArray(
 					new CurrencyUnit[currencies.size()]);
 		}
@@ -334,8 +334,8 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 	}
 
 	@Override
-	public boolean isAvailable(String code, long start, long end) {
-		if (start < 0 && end < 0) {
+	public boolean isAvailable(String code, Long start, Long end) {
+		if (start == null && end == null) {
 			return this.currencies.containsKey(code);
 		}
 		return false;

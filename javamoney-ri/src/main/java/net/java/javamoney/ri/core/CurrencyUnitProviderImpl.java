@@ -54,6 +54,13 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 	private Set<CurrencyUnitMappingSpi> mappers = new HashSet<CurrencyUnitMappingSpi>();
 
 	/**
+	 * COnstructor, also loading the registered spi's.
+	 */
+	public CurrencyUnitProviderImpl() {
+		reload();
+	}
+
+	/**
 	 * This method reloads the providers available from the
 	 * {@link ServiceLoader}. This adds providers that were not yet visible
 	 * before.
@@ -82,7 +89,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 	 * @see javax.money.CurrencyUnitProvider#get(java.lang.String,
 	 * java.lang.String, long)
 	 */
-	public CurrencyUnit get(String namespace, String code, long timestamp) {
+	public CurrencyUnit get(String namespace, String code, Long timestamp) {
 		List<CurrencyUnitProviderSpi> provList = INSTANCE.currencyProviders
 				.get(namespace);
 		if (provList == null) {
@@ -106,10 +113,10 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 	 * @return the regions found, never null.
 	 */
 	public CurrencyUnit[] getAll(String namespace) {
-		return getAll(namespace, -1);
+		return getAll(namespace, null);
 	}
 
-	public CurrencyUnit[] getAll(String namespace, long timestamp) {
+	public CurrencyUnit[] getAll(String namespace, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		List<CurrencyUnitProviderSpi> provList = INSTANCE.currencyProviders
 				.get(namespace);
@@ -117,7 +124,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 			return null;
 		}
 		for (CurrencyUnitProviderSpi prov : provList) {
-			CurrencyUnit[] currencies = prov.getCurrencies(-1);
+			CurrencyUnit[] currencies = prov.getCurrencies(null);
 			if (currencies != null) {
 				result.addAll(Arrays.asList(currencies));
 			}
@@ -131,10 +138,10 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 	 * @return the regions found, never null.
 	 */
 	public CurrencyUnit[] getAll() {
-		return getAll(-1);
+		return getAll((Long) null);
 	}
 
-	public CurrencyUnit[] getAll(long timestamp) {
+	public CurrencyUnit[] getAll(Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		for (List<CurrencyUnitProviderSpi> provList : INSTANCE.currencyProviders
 				.values()) {
@@ -149,19 +156,19 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 	}
 
 	public CurrencyUnit get(String namespace, String code) {
-		return get(namespace, code, -1L);
+		return get(namespace, code, null);
 	}
 
 	public boolean isAvailable(String namespace, String code) {
-		return isAvailable(namespace, code, -1L, -1L);
+		return isAvailable(namespace, code, null, null);
 	}
 
-	public boolean isAvailable(String namespace, String code, long timestamp) {
-		return isAvailable(namespace, code, timestamp, -1L);
+	public boolean isAvailable(String namespace, String code, Long timestamp) {
+		return isAvailable(namespace, code, timestamp, null);
 	}
 
-	public boolean isAvailable(String namespace, String code, long start,
-			long end) {
+	public boolean isAvailable(String namespace, String code, Long start,
+			Long end) {
 		List<CurrencyUnitProviderSpi> provList = INSTANCE.currencyProviders
 				.get(namespace);
 		if (provList == null) {
@@ -185,10 +192,10 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 	}
 
 	public CurrencyUnit[] getAll(Locale locale) {
-		return getAll(locale, -1);
+		return getAll(locale, null);
 	}
 
-	public CurrencyUnit[] getAll(Locale locale, long timestamp) {
+	public CurrencyUnit[] getAll(Locale locale, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		for (List<CurrencyUnitProviderSpi> provList : INSTANCE.currencyProviders
 				.values()) {

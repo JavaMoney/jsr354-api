@@ -129,17 +129,17 @@ public interface CurrencyUnit extends AttributeProvider,
 	 * This is useful for historic currencies.
 	 * 
 	 * @return the UTC timestamp from where this instance is valid. If not
-	 *         defined -1 should be returned.
+	 *         defined {@code null} should be returned.
 	 */
-	public long getValidFrom();
+	public Long getValidFrom();
 
 	/**
 	 * Get the timestamp until when this currency instance is valid from.<br/>
 	 * This is useful for historic currencies.
 	 * 
 	 * @return the UTC timestamp until when this instance is valid. If not
-	 *         defined -1 should be returned.
+	 *         defined {@code null} should be returned.
 	 */
-	public long getValidUntil();
+	public Long getValidUntil();
 
 }

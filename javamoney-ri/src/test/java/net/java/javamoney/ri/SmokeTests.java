@@ -15,9 +15,10 @@ import javax.money.format.StyleableAmountFormatter;
 import javax.money.format.StyleableAmountParser;
 import javax.money.format.common.ParseException;
 
+import net.java.javamoney.ri.core.Money;
+
 import org.junit.Ignore;
 import org.junit.Test;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,18 @@ public class SmokeTests {
 				currency, 1.0d);
 		MonetaryAmount amount2 = Monetary.getMonetaryAmountFactory().get(
 				currency, 1.0d);
+		MonetaryAmount amount3 = amount1.add(amount2);
+		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
+		assertEquals(1.0d, amount1.doubleValue(), 0);
+		assertEquals(1.0d, amount2.doubleValue(), 0);
+		assertEquals(2.0d, amount3.doubleValue(), 0);
+	}
+	
+	@Test
+	public void testCreateMoney() {
+		// Creating one
+		Money amount1 = Money.of("CHF", 1.0d);
+		Money amount2 = Money.of("CHF", 1.0d);
 		MonetaryAmount amount3 = amount1.add(amount2);
 		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
 		assertEquals(1.0d, amount1.doubleValue(), 0);

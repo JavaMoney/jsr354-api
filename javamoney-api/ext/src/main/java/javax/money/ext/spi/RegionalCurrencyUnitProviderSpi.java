@@ -59,9 +59,9 @@ public interface RegionalCurrencyUnitProviderSpi{
 	 * @param locale
 	 *            the target locale, not null.
 	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 *            The target UTC timestamp, or {@code null} for the current UTC timestamp.
 	 * @return the currencies found, or null.
 	 */
-	public CurrencyUnit[] getAll(Region region, long timestamp);
+	public CurrencyUnit[] getAll(Region region, Long timestamp);
 
 }

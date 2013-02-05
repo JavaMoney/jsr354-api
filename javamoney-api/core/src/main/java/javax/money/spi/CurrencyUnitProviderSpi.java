@@ -63,14 +63,15 @@ public interface CurrencyUnitProviderSpi {
 	 *            The code of the currency required. This code with the name
 	 *            space uniquely identify a currency instance.
 	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 *            The target UTC timestamp, or {@code null} for the current UTC
+	 *            timestamp.
 	 * @return The currency unit to used, or null. Hereby the implementation
 	 *         should return immutable and final instances of
 	 *         {@link CurrencyUnit}. It is the responsibility of the
 	 *         implementation to implement caching of currency instances
 	 *         (recommended).
 	 */
-	public CurrencyUnit getCurrency(String code, long timestamp);
+	public CurrencyUnit getCurrency(String code, Long timestamp);
 
 	/**
 	 * Get the available currencies for the given {@link Locale}.
@@ -78,19 +79,21 @@ public interface CurrencyUnitProviderSpi {
 	 * @param locale
 	 *            the target {@link Locale}
 	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 *            The target UTC timestamp, or {@code null} for the current UTC
+	 *            timestamp.
 	 * @return the currencies found, or null.
 	 */
-	public CurrencyUnit[] getCurrencies(Locale locale, long timestamp);
+	public CurrencyUnit[] getCurrencies(Locale locale, Long timestamp);
 
 	/**
 	 * Get the currencies available.
 	 * 
 	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
+	 *            The target UTC timestamp, or {@code null} for the current UTC
+	 *            timestamp.
 	 * @return the currencies found, or null.
 	 */
-	public CurrencyUnit[] getCurrencies(long timestamp);
+	public CurrencyUnit[] getCurrencies(Long timestamp);
 
 	/**
 	 * Method that allows to check if a currency is available for a given time
@@ -99,11 +102,11 @@ public interface CurrencyUnitProviderSpi {
 	 * @param code
 	 *            the required code within this namespace, never null.
 	 * @param start
-	 *            the start UTC timestamp, or -1
+	 *            the start UTC timestamp, or {@code null}
 	 * @param end
-	 *            the end UTC timestamp, or -1
+	 *            the end UTC timestamp, or {@code null}
 	 * @return true, if the code is defined.
 	 */
-	public boolean isAvailable(String code, long start, long end);
+	public boolean isAvailable(String code, Long start, Long end);
 
 }

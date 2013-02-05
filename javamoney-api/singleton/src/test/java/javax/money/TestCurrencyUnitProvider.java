@@ -47,7 +47,7 @@ public class TestCurrencyUnitProvider implements CurrencyUnitProvider {
 	}
 
 	@Override
-	public CurrencyUnit get(String namespace, String code, long timestamp) {
+	public CurrencyUnit get(String namespace, String code, Long timestamp) {
 		// empty implementation
 		return null;
 	}
@@ -59,13 +59,13 @@ public class TestCurrencyUnitProvider implements CurrencyUnitProvider {
 	}
 
 	@Override
-	public CurrencyUnit[] getAll(long timstamp) {
+	public CurrencyUnit[] getAll(Long timstamp) {
 		// empty implementation
 		return null;
 	}
 
 	@Override
-	public CurrencyUnit[] getAll(String namespace, long timestamp) {
+	public CurrencyUnit[] getAll(String namespace, Long timestamp) {
 		// empty implementation
 		return null;
 	}
@@ -83,14 +83,14 @@ public class TestCurrencyUnitProvider implements CurrencyUnitProvider {
 	}
 
 	@Override
-	public boolean isAvailable(String namespace, String code, long timestamp) {
+	public boolean isAvailable(String namespace, String code, Long timestamp) {
 		// empty implementation
 		return false;
 	}
 
 	@Override
-	public boolean isAvailable(String namespace, String code, long start,
-			long end) {
+	public boolean isAvailable(String namespace, String code, Long start,
+			Long end) {
 		// empty implementation
 		return false;
 	}
@@ -113,7 +113,7 @@ public class TestCurrencyUnitProvider implements CurrencyUnitProvider {
 	}
 
 	@Override
-	public CurrencyUnit[] getAll(Locale locale, long timestamp) {
+	public CurrencyUnit[] getAll(Locale locale, Long timestamp) {
 		// empty implementation
 		return null;
 	}

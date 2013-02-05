@@ -84,12 +84,12 @@ public interface RoundingProvider {
 	 * @param currency
 	 *            the currency instance. not null.
 	 * @param timestamp
-	 *            the target timestamp for the {@link Rounding}, or -1 for the
-	 *            current UTC time.
+	 *            the target timestamp for the {@link Rounding}, or {@code null}
+	 *            for the current UTC time.
 	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
 	 *         it should be created/registered based on
 	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
 	 */
-	public Rounding getRounding(CurrencyUnit currency, long timestamp);
+	public Rounding getRounding(CurrencyUnit currency, Long timestamp);
 
 }

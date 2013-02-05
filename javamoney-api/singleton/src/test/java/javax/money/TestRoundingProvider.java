@@ -47,7 +47,7 @@ public class TestRoundingProvider implements RoundingProvider {
 	}
 
 	@Override
-	public Rounding getRounding(CurrencyUnit currency, long timestamp) {
+	public Rounding getRounding(CurrencyUnit currency, Long timestamp) {
 		// empty implementation
 		return null;
 	}

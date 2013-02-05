@@ -54,7 +54,7 @@ public class TestCurrencyConverter implements CurrencyConverter {
 
 	@Override
 	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
-			long timestamp) {
+			Long timestamp) {
 		// empty implementation
 		return null;
 	}
@@ -68,7 +68,7 @@ public class TestCurrencyConverter implements CurrencyConverter {
 
 	@Override
 	public double convert(double amount, CurrencyUnit source,
-			CurrencyUnit target, long timestamp) {
+			CurrencyUnit target, Long timestamp) {
 		// empty implementation
 		return 0;
 	}

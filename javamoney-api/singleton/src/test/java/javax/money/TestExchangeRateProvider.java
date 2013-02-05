@@ -62,14 +62,14 @@ public class TestExchangeRateProvider implements ExchangeRateProvider {
 
 	@Override
 	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
-			long timestamp) {
+			Long timestamp) {
 		// empty implementation
 		return false;
 	}
 
 	@Override
 	public ExchangeRate get(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, long timestamp) {
+			CurrencyUnit targetCurrency, Long timestamp) {
 		// empty implementation
 		return null;
 	}
@@ -95,7 +95,7 @@ public class TestExchangeRateProvider implements ExchangeRateProvider {
 
 	@Override
 	public boolean isLinear(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, long timestamp) {
+			CurrencyUnit targetCurrency, Long timestamp) {
 		// empty implementation
 		return false;
 	}
@@ -109,7 +109,7 @@ public class TestExchangeRateProvider implements ExchangeRateProvider {
 
 	@Override
 	public boolean isIdentity(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, long timestamp) {
+			CurrencyUnit targetCurrency, Long timestamp) {
 		// empty implementation
 		return false;
 	}

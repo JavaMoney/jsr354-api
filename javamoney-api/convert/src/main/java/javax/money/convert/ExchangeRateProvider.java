@@ -70,11 +70,11 @@ public interface ExchangeRateProvider {
 	 * @param target
 	 *            the target currency
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried.
+	 *            the target timestamp for which the exchange rate is queried, or {@code null}.
 	 * @return true, if such an exchange is currently defined.
 	 */
 	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
-			long timestamp);
+			Long timestamp);
 
 	/**
 	 * Get an {@link ExchangeRate} for a given timestamp (including historic
@@ -85,11 +85,11 @@ public interface ExchangeRateProvider {
 	 * @param targetCurrency
 	 *            The target currency
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried.
+	 *            the target timestamp for which the exchange rate is queried, or {@code null}.
 	 * @return the matching {@link ExchangeRate}, or null.
 	 */
 	public ExchangeRate get(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, long timestamp);
+			CurrencyUnit targetCurrency, Long timestamp);
 
 	/**
 	 * Access a exchange rate using the given currencies. The rate may be,
@@ -144,13 +144,13 @@ public interface ExchangeRateProvider {
 	 * @param targetCurrency
 	 *            The target currency
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried.
+	 *            the target timestamp for which the exchange rate is queried, or{@code null}
 	 * @return true, if the conversion is linear.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public boolean isLinear(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, long timestamp);
+			CurrencyUnit targetCurrency, Long timestamp);
 
 	/**
 	 * Checks if a conversion is an identity.
@@ -174,12 +174,12 @@ public interface ExchangeRateProvider {
 	 * @param targetCurrency
 	 *            The target currency
 	 * @param timestamp
-	 *            the target timestamp for which the identity check is queried.
+	 *            the target timestamp for which the identity check is queried, or {@code null}.
 	 * @return true, if the conversion is linear.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public boolean isIdentity(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, long timestamp);
+			CurrencyUnit targetCurrency, Long timestamp);
 
 }

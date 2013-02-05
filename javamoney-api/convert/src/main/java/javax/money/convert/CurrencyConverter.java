@@ -66,7 +66,6 @@ public interface CurrencyConverter {
 	 */
 	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target);
 
-
 	/**
 	 * Method that converts the source {@link MonetaryAmount} to an
 	 * {@link MonetaryAmount} with the given target {@link CurrencyUnit}.
@@ -76,13 +75,14 @@ public interface CurrencyConverter {
 	 * @param target
 	 *            The target currency
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried.
+	 *            the target timestamp for which the exchange rate is queried,
+	 *            or {@code null}.
 	 * @return The converted amount, never null.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
-			long timestamp);
+			Long timestamp);
 
 	/**
 	 * Method that converts the source {@code double} amount in source
@@ -116,12 +116,13 @@ public interface CurrencyConverter {
 	 * @param targetCurrency
 	 *            The target currency
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried.
+	 *            the target timestamp for which the exchange rate is queried,
+	 *            or {@code null}.
 	 * @return the converted {@code value} as {@code double}.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public double convert(double amount, CurrencyUnit source,
-			CurrencyUnit target, long timestamp);
+			CurrencyUnit target, Long timestamp);
 
 }

@@ -30,7 +30,7 @@ import net.java.javamoney.ri.core.Money;
 
 import org.junit.Test;
 
-public class BigDecimalAmountTest extends RITestBase {
+public class MoneyTest extends RITestBase {
 
 	@Test
 	public void testGetCurrency() {

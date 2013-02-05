@@ -34,8 +34,8 @@ package javax.money.util;
 import java.util.Enumeration;
 
 /**
- * This interface is used by several parts within JSR 354, since many othe the
- * artifacts defined must be extendable by arbitrary attributes.
+ * This interface is used by several parts within JSR 354, since many other the
+ * artifacts defined must be extensible by arbitrary attributes.
  * 
  * @author Anatole Tresch
  */

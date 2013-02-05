@@ -36,6 +36,7 @@ public class SmokeTests {
 				currency, 1.0d);
 		MonetaryAmount amount3 = amount1.add(amount2);
 		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
+		assertEquals("ISO-4217", currency.getNamespace());
 		assertEquals(1.0d, amount1.doubleValue(), 0);
 		assertEquals(1.0d, amount2.doubleValue(), 0);
 		assertEquals(2.0d, amount3.doubleValue(), 0);

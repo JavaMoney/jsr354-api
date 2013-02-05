@@ -36,7 +36,7 @@ import javax.money.RoundingProvider;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public class Money implements MonetaryAmount {
+public final class Money implements MonetaryAmount {
 
 	/** The numeric part of this amount. */
 	private final BigDecimal number;

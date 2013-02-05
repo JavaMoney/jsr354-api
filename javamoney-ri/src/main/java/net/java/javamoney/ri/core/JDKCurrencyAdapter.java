@@ -31,6 +31,7 @@ import javax.money.CurrencyUnit;
  * JDK's {@link Currency}.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 
@@ -44,7 +45,7 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 	 * 
 	 * @serial
 	 */
-	private Currency currency;
+	private final Currency currency;
 
 	/**
 	 * Private constructor.
@@ -79,7 +80,7 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 	 */
 
 	public String getNamespace() {
-		return "ISO-4217";
+		return ISO_NAMESPACE;
 	}
 
 	public Long getValidFrom() {

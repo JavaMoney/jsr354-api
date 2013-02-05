@@ -34,15 +34,13 @@ package javax.money.convert;
 import java.util.Enumeration;
 import java.util.Map;
 
-import javax.money.MonetaryAmount;
-
 /**
  * A {@link CompoundItemBuilder} T is an builder for building a {@link CompoundItem}.
  * 
  * @author Anatole Tresch
  */
 public interface CompoundItemBuilder<T> {
-
+// TODO consider moving this to ext
 	/**
 	 * A {@link CompoundItem} may have a type identifier that helps to identify,
 	 * what type of items object is returned.
@@ -122,18 +120,16 @@ public interface CompoundItemBuilder<T> {
 	public Map<Object, T> getAll();
 
 	/**
-	 * Map a {@link MonetaryAmount} to the given target key passed.
+	 * Map a {@link T} to the given target key passed.
 	 * 
 	 * @param key
 	 *            The target key, never null.
-	 * @param MonetaryAmount
-	 *            the {@link MonetaryAmount} instance, never null.
 	 * @return the instance previously set, or null.
 	 */
 	public T set(Object key, T item);
 
 	/**
-	 * Set all {@link MonetaryAmount} instances for this builder, hereby the
+	 * Set all {@link T} instances for this builder, hereby the
 	 * items passed extend or overriden items already registered.
 	 * 
 	 * @param MonetaryAmounts
@@ -142,17 +138,17 @@ public interface CompoundItemBuilder<T> {
 	public void set(Map<Object, T> items);
 
 	/**
-	 * Remove a {@link MonetaryAmount} registered.
+	 * Remove a {@link T} registered.
 	 * 
 	 * @param key
 	 *            The target key, never null.
-	 * @return the {@link MonetaryAmount} instance removed, or null.
+	 * @return the {@link T} instance removed, or null.
 	 */
 	public T remove(Object key);
 
 	/**
-	 * Remove all {@link MonetaryAmount} instances registered, rendering this
-	 * instance to an empty {@link CompoundMonetaryAmount}.
+	 * Remove all {@link T} instances registered, rendering this
+	 * instance to an empty {@link T}.
 	 * 
 	 * @return an immutable map fo the instances previously defined (can be
 	 *         empty).
@@ -160,7 +156,7 @@ public interface CompoundItemBuilder<T> {
 	public void removeAll();
 
 	/**
-	 * Creates an immutable {@link CompoundMonetaryAmount} from this builder.
+	 * Creates an immutable {@link T} from this builder.
 	 * 
 	 * @return the corresponding immutable type, never null.
 	 */

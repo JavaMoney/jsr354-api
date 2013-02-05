@@ -18,6 +18,8 @@
  */
 package net.java.javamoney.ri.core.provider;
 
+import static javax.money.CurrencyUnit.ISO_NAMESPACE;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -299,7 +301,7 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
 	@Override
 	public String getNamespace() {
-		return "ISO-4217";
+		return ISO_NAMESPACE;
 	}
 
 	@Override

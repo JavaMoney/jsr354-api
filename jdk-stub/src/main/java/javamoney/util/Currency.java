@@ -803,16 +803,16 @@ public final class Currency implements LocalizableCurrencyUnit, Serializable {
 	 * @since 1.9
 	 */
 	@Override
-	public long getValidFrom() {
-		return -1;
+	public Long getValidFrom() {
+		return null;
 	}
 
 	/**
 	 * @since 1.9
 	 */
 	@Override
-	public long getValidUntil() {
-		return -1;
+	public Long getValidUntil() {
+		return null;
 	}
 
 	/**

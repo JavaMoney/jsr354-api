@@ -125,7 +125,7 @@
 									</requireJavaVersion>
 									<requirePluginVersions>
 										<banLatest>true</banLatest>
-										<banRelease>true</banRelease>								
+										<banRelease>true</banRelease>
 										<banSnapshots>true</banSnapshots>
 									</requirePluginVersions>
 								</rules>
@@ -585,4 +585,45 @@
 		<developerConnection>scm:git:https://github.com/JavaMoney/javamoney.git</developerConnection>
 		<url>https://github.com/JavaMoney/javamoney</url>
 	</scm>
+
+	<profiles>
+		<profile>
+			<activation>
+				<property>
+					<name>sign</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-gpg-plugin</artifactId>
+							<version>1.4</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+				<plugins>
+					<plugin>
+						<!-- Usage: mvn clean deploy -Dgpg.passphrase=yourpassphrase ; Or sign 
+							already deployed artifact: $ mvn gpg:sign-and-deploy-file > -DpomFile=target/myapp-1.0.pom 
+							> -Dfile=target/myapp-1.0.jar > -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ 
+							> -DrepositoryId=sonatype-nexus-staging -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

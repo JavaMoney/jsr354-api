@@ -107,12 +107,6 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 		}
 
 		@Override
-		public int compareTo(CurrencyUnit o) {
-			// TODO implement correctly here
-			return toString().compareTo(o.toString());
-		}
-
-		@Override
 		public String getNamespace() {
 			return CurrencyUnit.ISO_NAMESPACE;
 		}
@@ -161,6 +155,16 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 		@Override
 		public String getSymbol(Locale locale) {
 			return currencyCode;
+		}
+
+		@Override
+		public String getSymbol() {
+			return currencyCode;
+		}
+
+		@Override
+		public String getDisplayName() {
+			return currencyName;
 		}
 	}
 

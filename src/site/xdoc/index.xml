@@ -40,7 +40,7 @@ As a flavour of JavaMoney, here's some example code:
   boolean bigAmount = money.isGreaterThan(dailyWage);
   
   <span class="comment">// convert to GBP using a supplied rate</span>
-  BigDecimal conversionRate = ...;  <span class="comment">// obtained from code outside Joda-Money</span>
+  BigDecimal conversionRate = ...;  <span class="comment">// obtained from code outside JavaMoney</span>
   Money moneyGBP = money.convertTo(Currency.GBP, conversionRate);
   
   <span class="comment">// use a BigMoney for more complex calculations where scale matters</span>
@@ -52,8 +52,8 @@ Users are reminded that this software, like all open source software, is <a href
 on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND.
 </p>
 <p>
-Version 0.1 was released on 2012-12-01 -
-<a href="https://sourceforge.net/projects/joda-money/files/joda-money/0.6/">Download now</a><br />
+Version 0.1 was released on 2013-01-01 -
+<a href="http://java.net/projects/javamoney/downloads/">Download now</a><br />
 Java Money RI is licensed under the business-friendly <a href="license.html">Apache 2.0 licence</a>.
 </p>
 </section>
@@ -66,8 +66,8 @@ Various documentation is available:
 <li>The javadoc for the <a href="apidocs/index.html">current release</a></li>
 <li>The <a href="userguide.html">user guide</a></li>
 <!--li>A <a href="faq.html">FAQ</a> list</li-->
-<!--li>Information on <a href="installation.html">downloading and installing</a> Joda-Money</li-->
-<li>The <a href="https://github.com/JodaOrg/joda-money">GitHub</a> source repository</li>
+<!--li>Information on <a href="installation.html">downloading and installing</a> JavaMoney</li-->
+<li>The <a href="https://github.com/JavaMoney/javamoney">GitHub</a> source repository</li>
 </ul>
 </p>
 </section>
@@ -76,15 +76,13 @@ Various documentation is available:
 <section name="Releases">
 <p>
 There are no full releases yet!
-<a href="https://sourceforge.net/projects/joda-money/files/joda-money/0.6/">Release 0.6</a>
+<a href="http://java.net/projects/javamoney/downloads/">Release 0.6</a>
 is the current development release intended for feedback.
 The code is fully tested, but there may yet be bugs and the API may yet change.
 There should be no great reason why it cannot be used in production if you can cope with future API change.
 </p>
 <p>
 There are no runtime dependencies beyond JDK 1.5.<br />
-Joda-Money does have a <i>compile-time</i> dependency on Joda-Convert, but this is not required at runtime
-thanks to the magic of annotations.
 </p>
 </section>
 
@@ -94,11 +92,11 @@ thanks to the magic of annotations.
 Support on bugs, library usage or enhancement requests is available on a best efforts basis via:
 </p>
 <ul>
-<li>the joda-money-interest <a href="mail-lists.html">mailing list</a>. Due to spam, you must be subscribed to post to the mailing list.</li>
-<li>the joda-money sourceforge <a href="http://sourceforge.net/projects/joda-money/forums/forum/996056">forum</a>.</li>
+<li>the JavaMoney <a href="http://java.net/projects/javamoney/lists">mailing list</a>. Due to spam, you must be subscribed to post to the mailing list.</li>
+<li>the JavaMoney <a href="http://java.net/projects/javamoney/forums">forums</a>.</li>
 </ul>
 <p>
-To suggest enhancements or contribute, please <a href="https://github.com/JodaOrg/joda-money">fork the source code</a> on GitHub.
+To suggest enhancements or contribute, please <a href="https://github.com/JavaMoney/javamoney">fork the source code</a> on GitHub.
 </p>
 <p>
 <br />

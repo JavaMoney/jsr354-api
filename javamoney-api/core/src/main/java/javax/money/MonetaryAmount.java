@@ -831,7 +831,7 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 * @throws ArithmeticException
 	 *             if rounding fails.
 	 */
-	public MonetaryAmount getAdjusted();
+	//public MonetaryAmount getAdjusted(); // FIXME should probably be called getRounded
 
 	/**
 	 * * Gets the monetary amount using the passed target type. This method

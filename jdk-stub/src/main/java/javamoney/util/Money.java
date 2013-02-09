@@ -14,29 +14,27 @@
  *  limitations under the License.
  *
  * Contributors:
- *    Anatole Tresch
  *    Werner Keil
- *    Claus Nielsen
  */
-package net.java.javamoney.ri.core;
+package javamoney.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import javax.money.AmountAdjuster;
 import javax.money.CurrencyUnit;
-import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import javax.money.Rounding;
 import javax.money.RoundingProvider;
 
 /**
- * Default immutable implementation of {@link MonetaryAmount}.
+ * Represents a {@link MonetaryAmount}.
  * 
- * @author Anatole Tresch
  * @author Werner Keil
+ * 
+ * @since 1.9
  */
-public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
+public final class Money implements MonetaryAmount {
 
 	/** The numeric part of this amount. */
 	private final BigDecimal number;
@@ -94,7 +92,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 */
 	public static Money valueOf(String isoCurrencyCode, Number number) {
 		// TODO caching
-		return new Money(JDKCurrencyAdapter.getInstance(isoCurrencyCode),
+		return new Money(Currency.getInstance(isoCurrencyCode),
 				number);
 	}
 
@@ -440,15 +438,15 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @throws IllegalStateException
 	 *             if no Rounding could be evaluated.
 	 */
-	public MonetaryAmount getAdjusted() {
-		Rounding rounding = Monetary.getRoundingProvider().getRounding(
-				this.currency);
-		if (rounding != null) {
-			return rounding.adjust(this);
-		}
-		throw new IllegalStateException("No Rounding available for currency: "
-				+ this.currency);
-	}
+//	public MonetaryAmount getAdjusted() {
+//		Rounding rounding = Monetary.getRoundingProvider().getRounding(
+//				this.currency);
+//		if (rounding != null) {
+//			return rounding.adjust(this);
+//		}
+//		throw new IllegalStateException("No Rounding available for currency: "
+//				+ this.currency);
+//	}
 
 	public Class<?> getNumberType() {
 		return BigDecimal.class;
@@ -547,4 +545,11 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		}
 	}
 
+	/**
+	 * Returns the value of this {@link MonetaryAmount}
+	 * @return the number value
+	 */
+	public BigDecimal getValue() {
+		return number;
+	}
 }

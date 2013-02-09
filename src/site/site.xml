@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="Joda-Money">
+<project name="JavaMoney">
   <publishDate position="navigation-bottom" format="yyyy-MM-dd"/>
   <bannerLeft>
     <name>JCP.org</name>
@@ -30,7 +30,6 @@
       <item name="Test coverage" href="/cobertura/index.html"/>
       <item name="Mailing lists" href="mail-lists.html"/>
       <item name="Tasks" href="tasks.html"/>
-      <!--item name="Subversion" href="http://joda-money.svn.sourceforge.net/viewvc/joda-money/JodaMoney/trunk/"/-->
       <item name="Javadoc (Latest)" href="apidocs/index.html"/>
     </menu>
 
@@ -38,7 +37,7 @@
   </body>
 
   <poweredBy>
-    <logo name="Java.net" href="http://java.net/projects/javamoney/"
-        img="http://sourceforge.net/sflogo.php?group_id=274452&amp;type=2" width="125" height="37" />
+    <logo name="Java.net" href="http://java.net"
+        img="http://www.java.net/sites/all/themes/java_adaptive/images/logo.png" width="154" height="60" />
   </poweredBy>
 </project>

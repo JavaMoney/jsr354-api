@@ -49,8 +49,7 @@ import javax.money.util.AttributeProvider;
  * @author Stephen Colebourne
  * @author Anatole Tresch
  */
-public interface CurrencyUnit extends AttributeProvider,
-		Comparable<CurrencyUnit> {
+public interface CurrencyUnit extends AttributeProvider {
 
 	/**
 	 * The predefined namespace for ISO 4217 currencies.

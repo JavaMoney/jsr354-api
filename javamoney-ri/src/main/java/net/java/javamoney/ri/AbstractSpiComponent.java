@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
  * @author Anatole Tresch
  */
 public abstract class AbstractSpiComponent {
-	private static final Logger logger = LoggerFactory.getLogger(AbstractSpiComponent.class);
+	private static final Logger log = LoggerFactory.getLogger(AbstractSpiComponent.class);
 	
 	/**
 	 * Singleton constructor.
@@ -44,7 +44,7 @@ public abstract class AbstractSpiComponent {
 			reload();
 		} catch (Exception e) {
 			// TODO log exception!
-			logger.debug("Error", e);
+			log.debug("Error", e);
 		}
 	}
 	

@@ -4,14 +4,14 @@
 
  <properties>
   <title>User guide</title>
-  <author>Stephen Colebourne</author>
+  <author>Werner Keil</author>
  </properties>
 
  <body>
 
 <section name="User guide">
 <p>
-Joda-Money is a small Java library providing classes to store, format and parse amounts of money.
+JavaMoney is a small Java library providing classes to store, format and parse amounts of money.
 This is a brief user guide to the features available.
 </p>
 </section>
@@ -19,10 +19,10 @@ This is a brief user guide to the features available.
 
 <section name="Main classes">
 <p>
-There are two main classes which are both based on <code>BigDecimal</code>:
+There are two main classes:
 <ul>
 <li><b><code>Money</code></b> - an amount in a single currency where the decimal places is determined by the currency</li>
-<li><b><code>BigMoney</code></b> - an amount in a single currency where there is no restriction on the scale</li>
+<li><b><code>Currency</code></b></li>
 </ul>
 </p>
 <p>
@@ -41,7 +41,7 @@ handle the case where information must be lost.
 </p>
 <p>
 Both classes implement the <code>BigMoneyProvider</code> interface.
-This allows many different classes, including user supplied classes, to interoperate with Joda-Money.
+This allows many different classes, including user supplied classes, to interoperate with JavaMoney.
 A common pattern when writing flexible methods for handling money is to accept this interface.
 The formatting code is a good example of this.
 </p>
@@ -50,8 +50,8 @@ The formatting code is a good example of this.
 
 <section name="Currency information">
 <p>
-Joda-Money includes its own currency class as the implementation in the JDK is too restrictive.
-The data for the Joda-Money class is provided by a single configuration file.
+JavaMoney includes its own currency class as the implementation in the JDK is too restrictive.
+The data for the JavaMoney class is provided by a single configuration file.
 </p>
 <p>
 The file <code>MoneyData.csv</code> holds a list of all the valid currencies.
@@ -66,7 +66,7 @@ adjacent to one another and without separators</li>
 </p>
 <p>
 The library will load the first version of this file it finds in the classpath based on the
-class loader that Joda-Money is loaded in.
+class loader that JavaMoney is loaded in.
 </p>
 </section>
 

@@ -39,7 +39,7 @@ import java.util.Enumeration;
  * @author Anatole Tresch
  */
 public interface RoundingProvider {
-
+// FIXME this should probably go to SPI
 	/**
 	 * Access the {@link Rounding} by id.
 	 * 

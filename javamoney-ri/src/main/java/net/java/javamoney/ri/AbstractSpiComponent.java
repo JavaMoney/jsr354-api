@@ -44,7 +44,7 @@ public abstract class AbstractSpiComponent {
 			reload();
 		} catch (Exception e) {
 			// TODO log exception!
-			log.debug("Error", e);
+			log.trace("Error", e);
 		}
 	}
 	

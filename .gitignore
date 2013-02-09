@@ -3,5 +3,10 @@
 /.classpath
 
 /.project
-
+/jdk-stub/bin
 /target
+/javamoney-api/core/bin
+/javamoney-api/convert/bin
+/javamoney-api/ext/bin
+/javamoney-api/format/bin
+/javamoney-api/singleton/bin

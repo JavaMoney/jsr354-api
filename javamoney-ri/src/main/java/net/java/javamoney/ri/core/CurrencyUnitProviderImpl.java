@@ -48,15 +48,26 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 		implements CurrencyUnitProvider {
 	/** Singleton instance. */
 	private static final CurrencyUnitProviderImpl INSTANCE = new CurrencyUnitProviderImpl();
+	/**
+	 * System property used to redefine the default namespace for
+	 * {@link CurrencyUnit} instances.
+	 */
+	private static final String DEFAULT_NAMESPACE_PROP = "javax.money.defaultCurrencyNamespace";
 	/** Loaded currency providers. */
 	private Map<String, List<CurrencyUnitProviderSpi>> currencyProviders = new HashMap<String, List<CurrencyUnitProviderSpi>>();
 	/** Loaded currency mappers. */
 	private Set<CurrencyUnitMappingSpi> mappers = new HashSet<CurrencyUnitMappingSpi>();
+	/** The default namespace used. */
+	private String defaultNamespace = CurrencyUnit.ISO_NAMESPACE;
 
 	/**
 	 * COnstructor, also loading the registered spi's.
 	 */
 	public CurrencyUnitProviderImpl() {
+		String ns = System.getProperty(DEFAULT_NAMESPACE_PROP);
+		if (ns != null) {
+			this.defaultNamespace = ns;
+		}
 		reload();
 	}
 
@@ -231,6 +242,21 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 			result[i] = map(units[i], targetNamespace);
 		}
 		return result;
+	}
+
+	@Override
+	public String getDefaultNamespace() {
+		return this.defaultNamespace;
+	}
+
+	@Override
+	public CurrencyUnit get(String code) {
+		return get(this.defaultNamespace, code);
+	}
+
+	@Override
+	public CurrencyUnit get(String code, Long timestamp) {
+		return get(this.defaultNamespace, code, timestamp);
 	}
 
 }

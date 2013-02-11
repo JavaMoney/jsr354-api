@@ -130,4 +130,22 @@ public class TestCurrencyUnitProvider implements CurrencyUnitProvider {
 		return null;
 	}
 
+	@Override
+	public String getDefaultNamespace() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CurrencyUnit get(String code) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CurrencyUnit get(String code, Long timestamp) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

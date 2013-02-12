@@ -1,4 +1,4 @@
-package net.java.javamoney.ri.format;
+package net.java.javamoney.ri.format.common;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,6 @@ import javax.money.format.common.StyleableFormatter;
 import javax.money.format.common.StyledFormatter;
 import javax.money.format.common.StyledFormatterBuilder;
 
-import net.java.javamoney.ri.format.common.AbstractTargeted;
 import net.java.javamoney.ri.format.token.Literal;
 
 public class TokenizedFormatterBuilder<T> extends AbstractTargeted<T> implements

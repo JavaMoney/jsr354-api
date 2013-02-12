@@ -22,8 +22,6 @@ import java.io.IOException;
 
 import javax.money.format.common.LocalizationStyle;
 
-import net.java.javamoney.ri.format.FormatDecorator;
-import net.java.javamoney.ri.format.FormatToken;
 
 /**
  * Base class when implementing a {@link FormatToken}.

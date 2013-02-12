@@ -20,8 +20,8 @@ package net.java.javamoney.ri.format.token;
 
 import javax.money.format.common.LocalizationStyle;
 
-import net.java.javamoney.ri.format.FormatDecorator;
 import net.java.javamoney.ri.format.common.AbstractFormatDecorator;
+import net.java.javamoney.ri.format.common.FormatDecorator;
 
 /**
  * {@link FormatDecorator} that allows to replace the representation of a zero

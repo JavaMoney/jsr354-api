@@ -1,4 +1,4 @@
-package net.java.javamoney.ri.format;
+package net.java.javamoney.ri.format.common;
 
 public interface Decoratable<T> {
 	

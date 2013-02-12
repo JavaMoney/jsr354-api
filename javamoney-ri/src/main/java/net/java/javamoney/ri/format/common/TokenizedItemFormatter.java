@@ -1,4 +1,4 @@
-package net.java.javamoney.ri.format;
+package net.java.javamoney.ri.format.common;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -7,7 +7,6 @@ import javax.money.format.common.FormatException;
 import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.StyleableFormatter;
 
-import net.java.javamoney.ri.format.common.AbstractTargeted;
 
 public class TokenizedItemFormatter<T> extends AbstractTargeted<T> implements
 		StyleableFormatter<T> {

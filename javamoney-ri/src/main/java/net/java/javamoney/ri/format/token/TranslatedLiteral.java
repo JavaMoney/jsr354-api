@@ -20,8 +20,8 @@ package net.java.javamoney.ri.format.token;
 
 import java.util.ResourceBundle;
 
-import net.java.javamoney.ri.format.FormatToken;
 import net.java.javamoney.ri.format.common.AbstractFormatToken;
+import net.java.javamoney.ri.format.common.FormatToken;
 
 /**
  * {@link FormatToken} that adds a localizable {@link String}, read by key from

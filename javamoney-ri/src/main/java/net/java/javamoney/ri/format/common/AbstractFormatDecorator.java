@@ -20,7 +20,6 @@ package net.java.javamoney.ri.format.common;
 
 import javax.money.format.common.LocalizationStyle;
 
-import net.java.javamoney.ri.format.FormatDecorator;
 
 /**
  * Base class when implementing a {@link FormatDecorator}.

@@ -20,8 +20,8 @@ package net.java.javamoney.ri.format.token;
 
 import javax.money.format.common.LocalizationStyle;
 
-import net.java.javamoney.ri.format.FormatToken;
 import net.java.javamoney.ri.format.common.AbstractFormatToken;
+import net.java.javamoney.ri.format.common.FormatToken;
 
 /**
  * {@link FormatToken} which adds an arbitrary literal constant value to the

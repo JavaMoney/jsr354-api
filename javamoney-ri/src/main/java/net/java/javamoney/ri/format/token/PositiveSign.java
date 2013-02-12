@@ -21,8 +21,8 @@ package net.java.javamoney.ri.format.token;
 import javax.money.format.SignPlacement;
 import javax.money.format.common.LocalizationStyle;
 
-import net.java.javamoney.ri.format.FormatDecorator;
 import net.java.javamoney.ri.format.common.AbstractFormatDecorator;
+import net.java.javamoney.ri.format.common.FormatDecorator;
 
 /**
  * {@link FormatDecorator} that models the representation of an arbitrary sign

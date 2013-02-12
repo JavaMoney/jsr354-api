@@ -1,4 +1,4 @@
-package net.java.javamoney.ri.format;
+package net.java.javamoney.ri.format.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -13,6 +13,8 @@ import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.StyleableFormatter;
 import javax.money.format.common.StyledFormatter;
 
+import net.java.javamoney.ri.format.common.FormatToken;
+import net.java.javamoney.ri.format.common.TokenizedFormatterBuilder;
 import net.java.javamoney.ri.format.token.FormattedNumber;
 import net.java.javamoney.ri.format.token.Literal;
 import net.java.javamoney.ri.format.token.PositiveSign;

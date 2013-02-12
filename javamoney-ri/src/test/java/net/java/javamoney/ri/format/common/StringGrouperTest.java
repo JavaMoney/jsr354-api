@@ -1,4 +1,4 @@
-package net.java.javamoney.ri.format.impl;
+package net.java.javamoney.ri.format.common;
 
 import junit.framework.Assert;
 

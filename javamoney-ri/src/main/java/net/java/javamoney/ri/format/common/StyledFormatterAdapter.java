@@ -1,4 +1,4 @@
-package net.java.javamoney.ri.format;
+package net.java.javamoney.ri.format.common;
 
 import java.io.IOException;
 
@@ -6,7 +6,6 @@ import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.StyleableFormatter;
 import javax.money.format.common.StyledFormatter;
 
-import net.java.javamoney.ri.format.common.AbstractTargeted;
 
 public class StyledFormatterAdapter<T> extends AbstractTargeted<T> implements
 		StyledFormatter<T> {

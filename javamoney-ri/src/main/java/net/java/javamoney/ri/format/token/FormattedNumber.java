@@ -23,9 +23,9 @@ import java.text.DecimalFormatSymbols;
 
 import javax.money.format.common.LocalizationStyle;
 
-import net.java.javamoney.ri.format.FormatDecorator;
-import net.java.javamoney.ri.format.FormatToken;
 import net.java.javamoney.ri.format.common.AbstractFormatToken;
+import net.java.javamoney.ri.format.common.FormatDecorator;
+import net.java.javamoney.ri.format.common.FormatToken;
 import net.java.javamoney.ri.format.common.StringGrouper;
 
 /**

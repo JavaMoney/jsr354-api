@@ -34,7 +34,7 @@ package javax.money.format;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.format.common.FormatException;
-import javax.money.format.common.ItemParser;
+import javax.money.format.common.StyledParser;
 import javax.money.format.common.ParseException;
 
 /**
@@ -45,7 +45,7 @@ import javax.money.format.common.ParseException;
  * <p>
  * This class is immutable and thread-safe.
  */
-public interface AmountParser extends ItemParser<MonetaryAmount> {
+public interface AmountParser extends StyledParser<MonetaryAmount> {
 
 	/**
 	 * Fully parses a number and combines it with a {@link CurrencyUnit} to an

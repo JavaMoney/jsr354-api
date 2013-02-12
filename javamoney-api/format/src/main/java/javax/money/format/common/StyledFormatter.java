@@ -31,36 +31,48 @@
  */
 package javax.money.format.common;
 
+import java.io.IOException;
+
 /**
- * Instance that implement this interface parse Strings into instances of of
- * type T.
- * TODO check if this class can be moved to {@code java.util}.
+ * Formats instances of T to a {@link String} or an {@link Appendable}.
+ * @TODO check if this class can be moved to {@code java.util}.
  */
-public interface ItemParser<T>  extends Targeted<T>, Styled{
+public interface StyledFormatter<T> extends Targeted<T>, Styled {
 
 	/**
-	 * Fully parses the text into an instance of T.
-	 * <p>
-	 * The parse must complete normally and parse the entire text. If the parse
-	 * completes without reading the entire length of the text, an exception is
-	 * thrown. If any other problem occurs during parsing, an exception is
-	 * thrown.
-	 * <p>
-	 * This method uses a {@link LocalizationStyle} as an input parameter.
-	 * Styles allows to define detailed and customized formatting input
-	 * parameters. This allows to implement also complex formatting requirements
-	 * using this interface.
+	 * Formats a value of T to a {@code String}. This method uses a
+	 * {@link LocalizationStyle} as an input parameter. Styles allows to define
+	 * detailed and customized formatting input parameters. This allows to
+	 * implement also complex formatting requirements using this interface.
 	 * 
-	 * @param text
-	 *            the text to parse, not null
-	 * @return the parsed value, never null
+	 * @param item
+	 *            the item to print, not null
+	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to parse
-	 * @throws ParseException
-	 *             if there is a problem while parsing
+	 *             if the formatter is unable to print
+	 * @throws FormatException
+	 *             if there is a problem while printing
 	 */
-	public T parse(CharSequence text)
-			throws ParseException;
+	public String print(T item);
 
+	/**
+	 * Prints a item value to an {@code Appendable}.
+	 * <p>
+	 * Example implementations of {@code Appendable} are {@code StringBuilder},
+	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
+	 * and {@code StringBuffer} never throw an {@code IOException}.
+	 * 
+	 * @param appendable
+	 *            the appendable to add to, not null
+	 * @param item
+	 *            the item to print, not null
+	 * @throws UnsupportedOperationException
+	 *             if the formatter is unable to print
+	 * @throws FormatException
+	 *             if there is a problem while printing
+	 * @throws IOException
+	 *             if an IO error occurs
+	 */
+	public void print(Appendable appendable, T item) throws IOException;
 
 }

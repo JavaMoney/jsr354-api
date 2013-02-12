@@ -29,24 +29,40 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format.common;
+package net.java.javamoney.ri.format;
+
+import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.ParseException;
+import javax.money.format.common.Targeted;
+
 
 /**
- * This interface models the fact that an artifact is bound to a instance of
- * {@link LocalizationStyle}. It depends on the artifact's implementation, if
- * the style has an efective impact on the behaviour. As an example a simple
- * constant literal token in dynamically built parser is not affected by a
- * style, whereas a number parsing token is.
+ * Formats instances of T to a {@link String} or an {@link Appendable}.
  * 
- * @author Anatole Tresch
+ * @TODO check if this class can be moved to {@code java.util}.
  */
-public interface Styled {
-	
-	/**
-	 * The according {@link LocalizationStyle} of the instance.
-	 * 
-	 * @return the {@link LocalizationStyle}, never {@code null}.
-	 */
-	public LocalizationStyle getStyle();
+public interface ParseToken<T> extends Targeted<T> {
 
+	/**
+	 * Fully parses the text into an instance of T.
+	 * <p>
+	 * The parse must complete normally and parse the entire text. If the parse
+	 * completes without reading the entire length of the text, an exception is
+	 * thrown. If any other problem occurs during parsing, an exception is
+	 * thrown.
+	 * <p>
+	 * This method uses a {@link LocalizationStyle} as an input parameter.
+	 * Styles allows to define detailed and customized formatting input
+	 * parameters. This allows to implement also complex formatting requirements
+	 * using this interface.
+	 * 
+	 * @param text
+	 *            the text to parse, not null
+	 * @return the parsed value, never null
+	 * @throws UnsupportedOperationException
+	 *             if the formatter is unable to parse
+	 * @throws ParseException
+	 *             if there is a problem while parsing
+	 */
+	public void parse(ParseContext<T> context) throws ParseException;
 }

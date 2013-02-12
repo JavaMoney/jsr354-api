@@ -125,6 +125,12 @@ public class LocalizationStyle implements Serializable {
 			throw new IllegalArgumentException("ID must not be null.");
 		}
 		this.id = id;
+		if (translationLocale != null) {
+			setTranslationLocale(translationLocale);
+		}
+		if (numberLocale != null) {
+			setNumberLocale(numberLocale);
+		}
 	}
 
 	/**
@@ -233,6 +239,18 @@ public class LocalizationStyle implements Serializable {
 			return locale;
 		}
 		return getTranslationLocale();
+	}
+
+	/**
+	 * Set the style's locale for formatting/parsing of numbers.
+	 * 
+	 * @param locale
+	 *            The number locale to be used, or null for falling back to the
+	 *            number locale.
+	 * @return the number locale previously set, or null.
+	 */
+	public final Locale setTranslationLocale(Locale locale) {
+		return (Locale) setAttribute(TRANSLATION_LOCALE, locale);
 	}
 
 	/**

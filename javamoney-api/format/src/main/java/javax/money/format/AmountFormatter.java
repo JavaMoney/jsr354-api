@@ -35,7 +35,7 @@ import java.io.IOException;
 
 import javax.money.MonetaryAmount;
 import javax.money.format.common.FormatException;
-import javax.money.format.common.ItemFormatter;
+import javax.money.format.common.StyledFormatter;
 import javax.money.format.common.LocalizationStyle;
 
 /**
@@ -48,7 +48,7 @@ import javax.money.format.common.LocalizationStyle;
  * 
  * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
  */
-public interface AmountFormatter extends ItemFormatter<MonetaryAmount> {
+public interface AmountFormatter extends StyledFormatter<MonetaryAmount> {
 
 	/**
 	 * Formats a amount's numeric value to a {@code String}, the currency is

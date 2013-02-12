@@ -57,7 +57,6 @@ public class TokenizedFormatterBuilder<T> extends AbstractTargeted<T> implements
 		return toFormatter(LocalizationStyle.of(locale));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public StyledFormatter<T> toFormatter(LocalizationStyle style) {
 		return new StyledFormatterAdapter<>(getTargetClass(),

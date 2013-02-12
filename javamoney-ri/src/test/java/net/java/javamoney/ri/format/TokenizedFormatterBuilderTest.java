@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -21,17 +23,20 @@ public class TokenizedFormatterBuilderTest {
 
 	@Test
 	public void testTokenizedFormatterBuilder() {
-		TokenizedFormatterBuilder b = new TokenizedFormatterBuilder(
-				Double.class);
+		new TokenizedFormatterBuilder<Double>(Double.class);
 	}
 
 	@Test
 	public void testAddTokenFormatTokenOfT() {
-		TokenizedFormatterBuilder b = new TokenizedFormatterBuilder(
+		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken(new Literal<Double>("test- "));
-		b.addToken(new FormattedNumber<Double>().setDecimalSeparator(':')
-				.setNumberGroupChars(',', '\'').setNumberGroupSizes(2, 2, 3));
+		DecimalFormat df = new DecimalFormat("#0.0#");
+		DecimalFormatSymbols syms = df.getDecimalFormatSymbols();
+		syms.setDecimalSeparator(':');
+		df.setDecimalFormatSymbols(syms);
+		b.addToken(new FormattedNumber<Double>(df).setNumberGroupChars(',', '\'')
+				.setNumberGroupSizes(2, 2, 3));
 		StyledFormatter<Double> f = b.toFormatter(Locale.FRENCH);
 		assertNotNull(f);
 		assertEquals("test- 12'345'67,89:12", f.print(123456789.123456789d));
@@ -43,29 +48,34 @@ public class TokenizedFormatterBuilderTest {
 
 	@Test
 	public void testAddTokenString() {
-		TokenizedFormatterBuilder b = new TokenizedFormatterBuilder(
+		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken("test- ");
-		b.addToken(new FormattedNumber<Double>().setDecimalSeparator(':')
+		DecimalFormat f = new DecimalFormat("#0.0#");
+		DecimalFormatSymbols symbols = f.getDecimalFormatSymbols();
+		symbols.setDecimalSeparator(':');
+		f.setDecimalFormatSymbols(symbols);
+		b.addToken(new FormattedNumber<Double>(f)
 				.setNumberGroupChars(',', '\'').setNumberGroupSizes(2, 2, 3)
-				.decorate(new PositiveSign().setBeforeSign("BEF+")));
-		StyledFormatter<Double> f = b.toFormatter(Locale.FRENCH);
-		assertNotNull(f);
-		assertEquals("test- BEF+12'345'67,89:12", f.print(123456789.123456789d));
-		StyleableFormatter<Double> sf = b.toStyleableFormatter();
+				.decorate(new PositiveSign<Double>().setBeforeSign("BEF+")));
+		StyledFormatter<Double> sf = b.toFormatter(Locale.FRENCH);
 		assertNotNull(sf);
 		assertEquals("test- BEF+12'345'67,89:12",
-				sf.print(123456789.123456789d, Locale.FRENCH));
+				sf.print(123456789.123456789d));
+		StyleableFormatter<Double> stf = b.toStyleableFormatter();
+		assertNotNull(stf);
+		assertEquals("test- BEF+12'345'67,89:12",
+				stf.print(123456789.123456789d, Locale.FRENCH));
 	}
 
 	@Test
 	public void testGetTokens() {
-		TokenizedFormatterBuilder b = new TokenizedFormatterBuilder(
+		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken("1");
 		b.addToken("2");
 		b.addToken("3");
-		Enumeration<FormatToken> tokens = b.getTokens();
+		Enumeration<FormatToken<Double>> tokens = b.getTokens();
 		int size = 0;
 		while (tokens.hasMoreElements()) {
 			FormatToken<?> token = (FormatToken<?>) tokens.nextElement();
@@ -78,7 +88,7 @@ public class TokenizedFormatterBuilderTest {
 
 	@Test
 	public void testGetTokenCount() {
-		TokenizedFormatterBuilder b = new TokenizedFormatterBuilder(
+		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken("1");
 		b.addToken("2");
@@ -87,7 +97,7 @@ public class TokenizedFormatterBuilderTest {
 
 	@Test
 	public void testClear() {
-		TokenizedFormatterBuilder b = new TokenizedFormatterBuilder(
+		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken("1");
 		b.addToken("2");
@@ -98,7 +108,7 @@ public class TokenizedFormatterBuilderTest {
 
 	@Test
 	public void testToStyleableFormatter() {
-		TokenizedFormatterBuilder b = new TokenizedFormatterBuilder(
+		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken(new Literal<Double>("test"));
 		StyleableFormatter<Double> sf = b.toStyleableFormatter();
@@ -108,31 +118,37 @@ public class TokenizedFormatterBuilderTest {
 
 	@Test
 	public void testToFormatterLocale() {
-		TokenizedFormatterBuilder b = new TokenizedFormatterBuilder(
+		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken(new Literal<Double>("test "));
-		b.addToken(new FormattedNumber<>().setUsingtyle(true));
+		b.addToken(new FormattedNumber<Double>());
 		StyledFormatter<Double> f = b.toFormatter(Locale.CHINESE);
 		assertNotNull(f);
-		assertEquals("test 123,456,789.12", f.print(123456789.123456789d));
+		assertEquals("test 123,456,789.123", f.print(123456789.123456789d));
 		f = b.toFormatter(Locale.GERMAN);
 		assertNotNull(f);
-		assertEquals("test 123.456.789,12", f.print(123456789.123456789d));
+		assertEquals("test 123.456.789,123", f.print(123456789.123456789d));
+		f = b.toFormatter(Locale.CANADA);
+		assertNotNull(f);
+		assertEquals("test 123,456,789.123", f.print(123456789.123456789d));
+		f = b.toFormatter(Locale.JAPAN);
+		assertNotNull(f);
+		assertEquals("test 123,456,789.123", f.print(123456789.123456789d));
 	}
 
 	@Test
 	public void testToFormatterLocalizationStyle() {
-		TokenizedFormatterBuilder b = new TokenizedFormatterBuilder(
+		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken(new Literal<Double>("test "));
-		b.addToken(new FormattedNumber<>().setUsingtyle(true));
+		b.addToken(new FormattedNumber<Double>());
 		StyledFormatter<Double> f = b.toFormatter(LocalizationStyle
 				.of(Locale.CHINESE));
 		assertNotNull(f);
-		assertEquals("test 123,456,789.12", f.print(123456789.123456789d));
+		assertEquals("test 123,456,789.123", f.print(123456789.123456789d));
 		f = b.toFormatter(LocalizationStyle.of(Locale.GERMAN));
 		assertNotNull(f);
-		assertEquals("test 123.456.789,12", f.print(123456789.123456789d));
+		assertEquals("test 123.456.789,123", f.print(123456789.123456789d));
 	}
 
 }

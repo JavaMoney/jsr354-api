@@ -38,54 +38,100 @@ import net.java.javamoney.ri.format.common.StringGrouper;
  */
 public class FormattedNumber<T extends Number> extends AbstractFormatToken<T> {
 
-	private StringGrouper numberGroup = new StringGrouper();
-	private StringGrouper fractionGroup = new StringGrouper();
-	private Character decimalSeparator;
-	private boolean groupCharsSet = false;
-	private boolean useStyle;
-	private boolean signOmited = false;
-	private boolean fractionOmited = false;
+	private static final char[] EMPTY_CHAR_ARRAY = new char[0];
+	private static final int[] EMPTY_INT_ARRAY = new int[0];
+	private DecimalFormat format;
+	private StringGrouper numberGroup;
+
+	// private StringGrouper fractionGroup;
 
 	public FormattedNumber() {
 	}
 
-	public FormattedNumber(char decimcalSep) {
-		setDecimalSeparator(decimcalSep);
+	public FormattedNumber(DecimalFormat format) {
+		if (format == null) {
+			throw new IllegalArgumentException("Format is required.");
+		}
+		this.format = (DecimalFormat) format.clone();
 	}
 
-	public FormattedNumber setUsingtyle(boolean useStyle) {
-		this.useStyle = useStyle;
+	public FormattedNumber<T> setNumberGroupSizes(int... groupSizes) {
+		if (this.numberGroup == null) {
+			this.numberGroup = new StringGrouper();
+		}
+		this.numberGroup.setGroupSizes(groupSizes);
 		return this;
 	}
 
-	public boolean isUsingStyle() {
-		return this.useStyle;
-	}
-
-	public boolean isFractionOmited() {
-		return this.fractionOmited;
-	}
-
-	public FormattedNumber setFractionOmited(boolean fractionOmited) {
-		this.fractionOmited = fractionOmited;
+	public FormattedNumber<T> setNumberGroupChars(char... groupChars) {
+		if (this.numberGroup == null) {
+			this.numberGroup = new StringGrouper();
+		}
+		this.numberGroup.setGroupChars(groupChars);
 		return this;
 	}
 
-	public boolean isSignOmited() {
-		return this.signOmited;
+	public char[] getNumberGroupChars() {
+		if (this.numberGroup == null) {
+			return EMPTY_CHAR_ARRAY;
+		}
+		return this.numberGroup.getGroupChars();
 	}
 
-	public FormattedNumber setSignOmited(boolean signOmited) {
-		this.signOmited = signOmited;
+	// public FormattedNumber<T> setFractionGroupSizes(int... groupSizes) {
+	// if(this.fractionGroup == null){
+	// this.fractionGroup = new StringGrouper();
+	// this.fractionGroup.setReverse(true);
+	// }
+	// this.fractionGroup.setGroupSizes(groupSizes);
+	// return this;
+	// }
+	//
+	// public int[] getFractionGroupSizes() {
+	// if(this.fractionGroup == null){
+	// return EMPTY_INT_ARRAY;
+	// }
+	// return this.fractionGroup.getGroupSizes();
+	// }
+
+	public int[] getNumberGroupSizes() {
+		if (this.numberGroup == null) {
+			return EMPTY_INT_ARRAY;
+		}
+		return this.numberGroup.getGroupSizes();
+	}
+
+	// public FormattedNumber<T> setFractionGroupChars(char... groupChars) {
+	// if(this.fractionGroup == null){
+	// this.fractionGroup = new StringGrouper();
+	// this.fractionGroup.setReverse(true);
+	// }
+	// this.fractionGroup.setGroupChars(groupChars);
+	// return this;
+	// }
+	//
+	// public char[] getFractionGroupChars() {
+	// if(this.fractionGroup == null){
+	// return EMPTY_CHAR_ARRAY;
+	// }
+	// return this.fractionGroup.getGroupChars();
+	// }
+
+	public FormattedNumber<T> setPattern(String pattern) {
+		if (this.format == null) {
+			this.format = new DecimalFormat(pattern);
+		} else {
+			this.format.applyPattern(pattern);
+		}
 		return this;
 	}
 
-	public FormattedNumber setDecimalSeparator(char sep) {
-		this.decimalSeparator = Character.valueOf(sep);
+	public FormattedNumber<T> setDecimalFormat(DecimalFormat format) {
+		this.format = format;
 		return this;
 	}
 
-	public FormattedNumber decorate(FormatDecorator<T> decorator) {
+	public FormattedNumber<T> decorate(FormatDecorator<T> decorator) {
 		FormatDecorator<T> existing = getDecorator();
 		if (decorator == null) {
 			setDecorator(null);
@@ -99,74 +145,59 @@ public class FormattedNumber<T extends Number> extends AbstractFormatToken<T> {
 		return this;
 	}
 
-	public Character getDecimalSeparator() {
-		return this.decimalSeparator;
+	public DecimalFormat getDecimalFormat() {
+		return this.format;
 	}
 
-	public FormattedNumber setNumberGroupSizes(int... groupSizes) {
-		this.numberGroup.setGroupSizes(groupSizes);
+	public DecimalFormatSymbols getSymbols() {
+		if (this.format != null) {
+			return this.format.getDecimalFormatSymbols();
+		}
+		return null;
+	}
+
+	public FormattedNumber<T> setSymbols(DecimalFormatSymbols symbols) {
+		if (this.format == null) {
+			this.format = (DecimalFormat) DecimalFormat.getInstance();
+			this.format.setDecimalFormatSymbols(symbols);
+		} else {
+			this.format.setDecimalFormatSymbols(symbols);
+		}
 		return this;
 	}
 
-	public FormattedNumber setNumberGroupChars(char... groupChars) {
-		this.numberGroup.setGroupChars(groupChars);
-		this.groupCharsSet = true;
-		return this;
-	}
-
-	public char[] getNumberGroupChars() {
-		return this.numberGroup.getGroupChars();
-	}
-
-	public FormattedNumber setFractionGroupSizes(int... groupSizes) {
-		this.fractionGroup.setGroupSizes(groupSizes);
-		return this;
-	}
-
-	public int[] getFractionGroupSizes() {
-		return this.fractionGroup.getGroupSizes();
-	}
-
-	public int[] getNumberGroupSizes() {
-		return this.numberGroup.getGroupSizes();
-	}
-
-	public FormattedNumber setFractionGroupChars(char... groupChars) {
-		this.fractionGroup.setGroupChars(groupChars);
-		return this;
-	}
-
-	public char[] getFractionGroupChars() {
-		return this.fractionGroup.getGroupChars();
+	protected DecimalFormat getNumberFormat(LocalizationStyle style) {
+		DecimalFormat formatUsed = this.format;
+		if (formatUsed == null) {
+			formatUsed = (DecimalFormat) DecimalFormat.getInstance(style
+					.getNumberLocale());
+		}
+		if (this.numberGroup != null) { // this.fractionGroup!=null ||
+			formatUsed.setGroupingUsed(false);
+		}
+		return formatUsed;
 	}
 
 	@Override
 	protected String getToken(Number item, LocalizationStyle style) {
-		Character decimalSep = getDecimalSeparator();
-		if (useStyle || this.decimalSeparator == null || !this.groupCharsSet) {
-			DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(style
-					.getNumberLocale());
-			DecimalFormatSymbols symbols = df.getDecimalFormatSymbols();
-			if (this.decimalSeparator == null) {
-				decimalSep = symbols.getDecimalSeparator();
-			}
-			if (!this.groupCharsSet) {
-				numberGroup.setGroupChars(symbols.getGroupingSeparator());
-			}
+		DecimalFormat format = getNumberFormat(style);
+		if (this.numberGroup == null) { // || this.fractionGroup==null
+			return format.format(item);
 		}
-		DecimalFormat splitDF = null;
-		if (!signOmited) {
-			splitDF = new DecimalFormat("#0.0#");
-		} else {
-			splitDF = new DecimalFormat("#0.0#"
-					+ DecimalFormatSymbols.getInstance().getPatternSeparator()
-					+ "#0.0#");
+		String preformattedValue = format.format(item);
+		String[] numberParts = splitNumberParts(item, format, style,
+				preformattedValue);
+		if (numberParts.length != 2) {
+			return preformattedValue;
 		}
-		String[] parts = splitDF.format(item).split("\\.");
-		if (fractionOmited) {
-			return numberGroup.group(parts[0]);
-		}
-		return numberGroup.group(parts[0]) + decimalSep
-				+ fractionGroup.group(parts[1]);
+		return numberGroup.group(numberParts[0])
+				+ format.getDecimalFormatSymbols().getDecimalSeparator()
+				+ numberParts[1];
+	}
+
+	private String[] splitNumberParts(Number item, DecimalFormat format,
+			LocalizationStyle style, String preformattedValue) {
+		return preformattedValue.split(String.valueOf(format
+				.getDecimalFormatSymbols().getDecimalSeparator()));
 	}
 }

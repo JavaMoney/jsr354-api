@@ -34,25 +34,25 @@ import net.java.javamoney.ri.format.common.AbstractFormatDecorator;
  * @param <T>
  *            The concrete {@link Number} type.
  */
-public class NegativeSign extends AbstractFormatDecorator<Number> {
+public class NegativeSign<T extends Number> extends AbstractFormatDecorator<T> {
 
 	private String beforeSign;
 	private String afterSign;
 	private SignPlacement signPlacement = SignPlacement.BEFORE;
 
-	public NegativeSign setBeforeSign(String sign) {
+	public NegativeSign<T> setBeforeSign(String sign) {
 		this.beforeSign = sign;
 		this.signPlacement = SignPlacement.BEFORE;
 		return this;
 	}
 
-	public NegativeSign setAfterSign(String sign) {
+	public NegativeSign<T> setAfterSign(String sign) {
 		this.beforeSign = sign;
 		this.signPlacement = SignPlacement.AFTER;
 		return this;
 	}
 
-	public NegativeSign setAroundSigns(String beforeSign, String afterSign) {
+	public NegativeSign<T> setAroundSigns(String beforeSign, String afterSign) {
 		this.beforeSign = beforeSign;
 		this.afterSign = afterSign;
 		this.signPlacement = SignPlacement.AROUND;

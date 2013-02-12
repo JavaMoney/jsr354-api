@@ -36,7 +36,7 @@ public class ZeroValue<T extends Number> extends AbstractFormatDecorator<T> {
 
 	private String zeroValue;
 
-	public ZeroValue setZeroValue(String value) {
+	public ZeroValue<T> setZeroValue(String value) {
 		this.zeroValue = value;
 		return this;
 	}

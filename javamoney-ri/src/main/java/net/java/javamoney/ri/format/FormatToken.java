@@ -35,7 +35,6 @@ import java.io.IOException;
 
 import javax.money.format.common.FormatException;
 import javax.money.format.common.LocalizationStyle;
-import javax.money.format.common.Targeted;
 
 /**
  * Formats instances of T to a {@link String} or an {@link Appendable}.

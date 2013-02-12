@@ -146,7 +146,7 @@ public final class MoneyAmountStyle implements Serializable {
 	 *            the locale to use, not null
 	 * @return the new instance, never null
 	 */
-	public MoneyAmountStyle of(Locale locale) {
+	public MoneyAmountStyle valueOf(Locale locale) {
 		// TODO Not Implemented yet
 		return null;
 	}

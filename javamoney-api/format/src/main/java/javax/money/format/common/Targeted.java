@@ -31,8 +31,22 @@
  */
 package javax.money.format.common;
 
+/**
+ * This interface models runtime availability of the target type of the given
+ * formatting/parsing artifact, which would be lost by type erasure.
+ * 
+ * @author Anatole tRESCH
+ * 
+ * @param <T>
+ *            the template type.
+ */
 public interface Targeted<T> {
-
+	
+	/**
+	 * Return the target type the owning artifact can be applied to.
+	 * 
+	 * @return the target type, never {@code null}.
+	 */
 	public Class<T> getTargetClass();
 
 }

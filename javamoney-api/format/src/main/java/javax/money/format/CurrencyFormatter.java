@@ -36,14 +36,14 @@ import java.util.Locale;
 
 import javax.money.CurrencyUnit;
 import javax.money.format.common.FormatException;
-import javax.money.format.common.ItemFormatter;
+import javax.money.format.common.StyledFormatter;
 import javax.money.format.common.LocalizationStyle;
 
 /**
  * Formats instances of {@link CurrencyUnit} to and from a String.
  * TODO see Formatter, maybe rename to *Printer like suggested by Joda sandbox
  */
-public interface CurrencyFormatter extends ItemFormatter<CurrencyUnit> {
+public interface CurrencyFormatter extends StyledFormatter<CurrencyUnit> {
 
 	/**
 	 * Formats a currency's symbol value to a {@code String}.

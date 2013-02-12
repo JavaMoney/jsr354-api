@@ -34,7 +34,7 @@ package javax.money.format.spi;
 import java.util.ServiceLoader;
 
 import javax.money.format.AmountParser;
-import javax.money.format.common.ItemParser;
+import javax.money.format.common.StyledParser;
 import javax.money.format.common.LocalizationStyle;
 
 /**
@@ -51,9 +51,9 @@ import javax.money.format.common.LocalizationStyle;
  * instance on each access and to delegate caching aspects to the client using
  * this API. Similarly it is not required that the instances returned by the SPI
  * must be thread safe. If a thread safe instance of a formatter is required,
- * one of {@link MoneyFormat#synchronizedParser(ItemParser)},
+ * one of {@link MoneyFormat#synchronizedParser(StyledParser)},
  * {@link MoneyFormat#synchronizedAmountParser(AmountParser)} can be used to
- * obtain a synchronized instance of a {@link ItemParser} or {@link AmountParser}.
+ * obtain a synchronized instance of a {@link StyledParser} or {@link AmountParser}.
  * 
  * @author Anatole Tresch
  */

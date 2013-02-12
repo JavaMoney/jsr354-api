@@ -29,50 +29,36 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format.common;
+package net.java.javamoney.ri.format;
 
 import java.io.IOException;
-import java.util.Locale;
+
+import javax.money.format.common.FormatException;
+import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.Targeted;
 
 /**
- * This interface is implemented by types that require to be represented as
- * {@link String} objects, e.g. for displaying.
+ * Formats instances of T to a {@link String} or an {@link Appendable}.
  * 
  * @TODO check if this class can be moved to {@code java.util}.
- * 
- * @author Anatole Tresch
  */
-public interface StyleableItem {
+public interface FormatToken<T> extends Decoratable<T> {
 
 	/**
-	 * Formats a value to a {@code String}. This method uses a {@link Locale} as
-	 * an input parameter.
+	 * Formats a value of T to a {@code String}. This method uses a
+	 * {@link LocalizationStyle} as an input parameter. Styles allows to define
+	 * detailed and customized formatting input parameters. This allows to
+	 * implement also complex formatting requirements using this interface.
 	 * 
-	 * @param locale
-	 *            the target {@link Locale}
+	 * @param item
+	 *            the item to print, not null
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
 	 *             if there is a problem while printing
-	 * @throws FormatException
-	 *             if there is a problem while printing
 	 */
-	public String format(Locale locale);
-
-	/**
-	 * Formats a value to a {@code String}. This method uses a
-	 * {@link LocalizationStyle} as an input parameter. Styles allows to define
-	 * detailed and customized formatting input parameters. This allows to
-	 * implement also complex formatting requirements using this interface.
-	 * 
-	 * @param style
-	 *            The {@link LocalizationStyle} to be used.
-	 * @return the formatted {@link String}
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 */
-	public String format(LocalizationStyle style);
+	public String print(T item, LocalizationStyle style);
 
 	/**
 	 * Prints a item value to an {@code Appendable}.
@@ -83,8 +69,8 @@ public interface StyleableItem {
 	 * 
 	 * @param appendable
 	 *            the appendable to add to, not null
-	 * @param locale
-	 *            the locale to be used.
+	 * @param item
+	 *            the item to print, not null
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws FormatException
@@ -92,26 +78,7 @@ public interface StyleableItem {
 	 * @throws IOException
 	 *             if an IO error occurs
 	 */
-	public void print(Appendable appendable, Locale locale) throws IOException;
-
-	/**
-	 * Prints a item value to an {@code Appendable}.
-	 * <p>
-	 * Example implementations of {@code Appendable} are {@code StringBuilder},
-	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
-	 * and {@code StringBuffer} never throw an {@code IOException}.
-	 * 
-	 * @param appendable
-	 *            the appendable to add to, not null
-	 * @param style
-	 *            the {@link LocalizationStyle} to be used.
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 * @throws IOException
-	 *             if an IO error occurs
-	 */
-	public void print(Appendable appendable, LocalizationStyle style)
+	public void print(Appendable appendable, T item, LocalizationStyle style)
 			throws IOException;
+
 }

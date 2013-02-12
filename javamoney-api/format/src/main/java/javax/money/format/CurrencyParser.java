@@ -33,7 +33,7 @@ package javax.money.format;
 
 import javax.money.CurrencyUnit;
 import javax.money.UnknownCurrencyException;
-import javax.money.format.common.ItemParser;
+import javax.money.format.common.StyledParser;
 import javax.money.format.common.ParseException;
 
 /**
@@ -43,7 +43,7 @@ import javax.money.format.common.ParseException;
  * {@code MoneyFormat#getCurrencyParser(Locale)} or
  * {@code MoneyFormat#getCurrencyParser(LocalizationStyle)}.
  */
-public interface CurrencyParser extends ItemParser<CurrencyUnit> {
+public interface CurrencyParser extends StyledParser<CurrencyUnit> {
 
 	/**
 	 * Get the name space this parser is working on.

@@ -31,58 +31,46 @@
  */
 package javax.money.format.common;
 
-import java.io.IOException;
+import java.util.Locale;
 
 /**
- * Exception thrown during monetary formatting.
- *
- * @author Stephen Colebourne, Werner Keil
+ * This class represent the accessor interface for creating different kind of
+ * formatters.
+ * 
+ * @see StyledFormatter
+ * @see StyleableFormatter
+ * @author Anatole Tresch
  */
-public class FormatException extends RuntimeException {
+public interface StyledFormatterFactory<T> extends Targeted<T> {
 
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
+	/**
+	 * This method returns an instance of a fixed styled {@link StyledFormatter}.
+	 * 
+	 * @param locale
+	 *            The target locale. The locale will be converted into an
+	 *            according {@link LocalizationStyle} using
+	 *            {@link LocalizationStyle#of(Locale)}.
+	 * @return the formatter required, if available.
+	 * @throws
+	 */
+	public StyledFormatter<T> getFormatter(Locale locale);
 
-    /**
-     * Constructor taking a message.
-     * 
-     * @param message  the message
-     */
-    public FormatException(String message) {
-    	super(message);
-    }
+	/**
+	 * This method returns an instance of a fixed styled {@link StyledFormatter}.
+	 * 
+	 * @param style
+	 *            The target localization style.
+	 * @return the formatter required, if available.
+	 * @throws
+	 */
+	public StyledFormatter<T> getFormatter(LocalizationStyle style);
 
-    /**
-     * Constructor taking a message and cause.
-     * 
-     * @param message  the message
-     * @param cause  the exception cause
-     */
-    public FormatException(String message, Throwable cause) {
-    	super(message, cause);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Checks if the cause of this exception was an IOException, and if so re-throws it
-     * <p>
-     * This method is useful if you call a printer with an open stream or
-     * writer and want to ensure that IOExceptions are not lost.
-     * <pre>
-     * try {
-     *   printer.print(writer, money);
-     * } catch (CalendricalFormatException ex) {
-     *   ex.rethrowIOException();
-     *   // if code reaches here exception was caused by issues other than IO
-     * }
-     * </pre>
-     * Note that calling this method will re-throw the original IOException,
-     * causing this MoneyFormatException to be lost.
-     *
-     * @throws IOException if the cause of this exception is an IOException
-     */
-    public void rethrowIOException() throws IOException {
-    	// TODO Not Implemented yet
-    }
+	/**
+	 * This method returns an instance of a {@link StyleableFormatter}.
+	 * 
+	 * @return the formatter required, if available.
+	 * @throws
+	 */
+	public StyleableFormatter<T> getLocalizableFormatter();
 
 }

@@ -101,9 +101,9 @@ public interface CurrencyUnitProvider {
 	public CurrencyUnit get(String namespace, String code, Long timestamp);
 
 	/**
-	 * Access a currency using its name space and code.  This is a convenience method for
-	 * {@link #getCurrency(String, String)}, where as namespace the default
-	 * namespace is assumed.
+	 * Access a currency using its name space and code. This is a convenience
+	 * method for {@link #getCurrency(String, String)}, where as namespace the
+	 * default namespace is assumed.
 	 * 
 	 * @see #getDefaultNamespace()
 	 * @param code
@@ -117,7 +117,7 @@ public interface CurrencyUnitProvider {
 	 *             if the required currency is not defined.
 	 */
 	public CurrencyUnit get(String code, Long timestamp);
-	
+
 	/**
 	 * Access all currencies currently available.
 	 * 
@@ -201,6 +201,55 @@ public interface CurrencyUnitProvider {
 	 */
 	public boolean isAvailable(String namespace, String code, Long start,
 			Long end);
+
+	/**
+	 * Checks if a currency is defined using its name space and code. This is a convenience method for
+	 * {@link #getCurrency(String, String)}, where as namespace the default
+	 * namespace is assumed.
+	 * 
+	 * @see #getDefaultNamespace()
+	 * @param code
+	 *            The code that, together with the namespace identifies the
+	 *            currency.
+	 * @return true, if the currency is defined.
+	 */
+	public boolean isAvailable(String code);
+
+	/**
+	 * Checks if a currency is defined using its name space and code. This is a
+	 * convenience method for {@link #getCurrency(String, String)}, where as
+	 * namespace the default namespace is assumed.
+	 * 
+	 * @see #getDefaultNamespace()
+	 * @param code
+	 *            The code that, together with the namespace identifies the
+	 *            currency.
+	 * @param timestamp
+	 *            The target UTC timestamp, or {@code null} for the current UTC
+	 *            timestamp.
+	 * @return true, if the currency is defined.
+	 */
+	public boolean isAvailable(String code, Long timestamp);
+
+	/**
+	 * Checks if a currency is defined using its name space and code for the
+	 * given time period. This is a convenience method for
+	 * {@link #getCurrency(String, String)}, where as namespace the default
+	 * namespace is assumed.
+	 * 
+	 * @see #getDefaultNamespace()
+	 * @param code
+	 *            The code that, together with the namespace identifies the
+	 *            currency.
+	 * @param start
+	 *            The starting UTC timestamp, or {@code null} for the current
+	 *            UTC timestamp.
+	 * @param end
+	 *            The ending UTC timestamp, or {@code null} for the current UTC
+	 *            timestamp.
+	 * @return true, if the currency is defined.
+	 */
+	public boolean isAvailable(String code, Long start, Long end);
 
 	/**
 	 * This method allows to evaluate, if the given currency name space is

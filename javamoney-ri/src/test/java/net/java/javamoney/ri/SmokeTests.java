@@ -107,7 +107,7 @@ public class SmokeTests {
 					.getLocalizableAmountFormatter();
 
 			String formatted2 = locFormatter.print(amount, Locale.CHINA);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

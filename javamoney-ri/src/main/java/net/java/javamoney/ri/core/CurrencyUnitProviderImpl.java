@@ -259,4 +259,19 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 		return get(this.defaultNamespace, code, timestamp);
 	}
 
+	@Override
+	public boolean isAvailable(String code) {
+		return isAvailable(getDefaultNamespace(), code);
+	}
+
+	@Override
+	public boolean isAvailable(String code, Long timestamp) {
+		return isAvailable(getDefaultNamespace(), code, timestamp);
+	}
+
+	@Override
+	public boolean isAvailable(String code, Long start, Long end) {
+		return isAvailable(getDefaultNamespace(), code, start, end);
+	}
+
 }

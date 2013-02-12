@@ -148,4 +148,22 @@ public class TestCurrencyUnitProvider implements CurrencyUnitProvider {
 		return null;
 	}
 
+	@Override
+	public boolean isAvailable(String code) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAvailable(String code, Long timestamp) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAvailable(String code, Long start, Long end) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

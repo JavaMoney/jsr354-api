@@ -33,7 +33,7 @@ package javax.money.format;
 
 /**
  * Enumeration for the different placement of a currency when formatting an amount.
- * 
+ * TODO could be renamed to CurrencyPosition, especially in trading Placement might sound misleading...
  * @author Anatole Tresch
  */
 public enum CurrencyPlacement {

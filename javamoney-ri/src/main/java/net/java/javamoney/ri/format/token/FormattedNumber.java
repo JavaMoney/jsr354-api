@@ -78,44 +78,12 @@ public class FormattedNumber<T extends Number> extends AbstractFormatToken<T> {
 		return this.numberGroup.getGroupChars();
 	}
 
-	// public FormattedNumber<T> setFractionGroupSizes(int... groupSizes) {
-	// if(this.fractionGroup == null){
-	// this.fractionGroup = new StringGrouper();
-	// this.fractionGroup.setReverse(true);
-	// }
-	// this.fractionGroup.setGroupSizes(groupSizes);
-	// return this;
-	// }
-	//
-	// public int[] getFractionGroupSizes() {
-	// if(this.fractionGroup == null){
-	// return EMPTY_INT_ARRAY;
-	// }
-	// return this.fractionGroup.getGroupSizes();
-	// }
-
 	public int[] getNumberGroupSizes() {
 		if (this.numberGroup == null) {
 			return EMPTY_INT_ARRAY;
 		}
 		return this.numberGroup.getGroupSizes();
 	}
-
-	// public FormattedNumber<T> setFractionGroupChars(char... groupChars) {
-	// if(this.fractionGroup == null){
-	// this.fractionGroup = new StringGrouper();
-	// this.fractionGroup.setReverse(true);
-	// }
-	// this.fractionGroup.setGroupChars(groupChars);
-	// return this;
-	// }
-	//
-	// public char[] getFractionGroupChars() {
-	// if(this.fractionGroup == null){
-	// return EMPTY_CHAR_ARRAY;
-	// }
-	// return this.fractionGroup.getGroupChars();
-	// }
 
 	public FormattedNumber<T> setPattern(String pattern) {
 		if (this.format == null) {

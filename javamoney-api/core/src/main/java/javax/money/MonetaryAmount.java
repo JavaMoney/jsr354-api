@@ -402,6 +402,8 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 * @return the major units part of the amount
 	 * @throws ArithmeticException
 	 *             if the amount is too large for a {@code long}
+	 *             
+	 *             FIXME isn't this same as getMajorPart().longValue()?
 	 */
 	public long getMajorLong();
 
@@ -415,6 +417,8 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 * @return the major units part of the amount
 	 * @throws ArithmeticException
 	 *             if the amount is too large for an {@code int}
+	 *             
+	 *             FIXME isn't this same as getMajorPart().intValue()?
 	 */
 	public int getMajorInt();
 
@@ -444,6 +448,8 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 * @return the minor units part of the amount
 	 * @throws ArithmeticException
 	 *             if the amount is too large for a {@code long}
+	 *             
+	 *             FIXME isn't this same as getMinorPart().longValue()?
 	 */
 	public long getMinorLong();
 
@@ -457,6 +463,8 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 * @return the minor units part of the amount
 	 * @throws ArithmeticException
 	 *             if the amount is too large for an {@code int}
+	 *             
+	 *             FIXME isn't this same as getMinorPart().intValue()?
 	 */
 	public int getMinorInt();
 

@@ -43,8 +43,6 @@ import java.util.Enumeration;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ConversionType;
-import javax.money.spi.MonetaryExtension;
-
 import org.junit.Test;
 
 /**

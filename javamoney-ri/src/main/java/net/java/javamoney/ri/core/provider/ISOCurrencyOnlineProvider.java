@@ -68,8 +68,7 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 			SAXParser parser = saxParserFactory.newSAXParser();
 			parser.parse(url.openStream(), new CurrencyHandler());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.debug("Error", e);
 		}
 	}
 

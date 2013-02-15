@@ -37,6 +37,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateProvider;
@@ -51,10 +53,11 @@ import javax.money.spi.MonetaryExtension;
  * This is the main accessor component for Java Money.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  * 
  */
 public final class Monetary {
-
+	private static final Logger LOGGER = Logger.getLogger(Monetary.class.getName());
 	private static final Monetary INSTANCE = new Monetary();
 
 	private Class<?> defaultNumberClass;
@@ -145,8 +148,7 @@ public final class Monetary {
 					defaultNumberClass = null;
 				}
 			} catch (ClassNotFoundException e) {
-				// TODO log!
-				e.printStackTrace();
+				LOGGER.log(Level.FINE, "Class not found", e);
 			}
 		}
 		if (defaultNumberClass == null) {

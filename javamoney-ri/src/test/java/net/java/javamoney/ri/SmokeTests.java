@@ -84,8 +84,7 @@ public class SmokeTests {
 			MonetaryAmount amount2 = locParser
 					.parse("CFH 123.45", Locale.CHINA);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.debug("Error", e);
 		}
 	}
 
@@ -108,8 +107,7 @@ public class SmokeTests {
 
 			String formatted2 = locFormatter.format(amount, Locale.CHINA);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.debug("Error", e);
 		}
 	}
 

@@ -16,7 +16,7 @@
  * Contributors:
  *    Anatole Tresch - initial version.
  */
-package net.java.javamoney.ri.convert;
+package net.java.javamoney.ri.ext;
 
 import java.util.Map;
 
@@ -24,7 +24,7 @@ import javax.money.convert.ExchangeRate;
 import javax.money.ext.CompoundItem;
 import javax.money.ext.CompoundItemBuilder;
 
-import net.java.javamoney.ri.convert.common.AbstractCompoundItem;
+import net.java.javamoney.ri.ext.common.AbstractCompoundItem;
 
 /**
  * Defines a {@link CompoundItem} containing {@link ConversionRate} instances.

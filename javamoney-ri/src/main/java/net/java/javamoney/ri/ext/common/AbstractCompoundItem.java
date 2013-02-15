@@ -16,7 +16,7 @@
  * Contributors:
  *    Anatole Tresch - initial version.
  */
-package net.java.javamoney.ri.convert.common;
+package net.java.javamoney.ri.ext.common;
 
 import java.util.Collections;
 import java.util.Enumeration;

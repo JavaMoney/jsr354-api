@@ -16,22 +16,22 @@
  * Contributors:
  *    Anatole Tresch - initial version.
  */
-package net.java.javamoney.ri.convert;
+package net.java.javamoney.ri.ext;
 
-import javax.money.CurrencyUnit;
+import javax.money.MonetaryAmount;
 import javax.money.ext.CompoundItem;
 import javax.money.ext.CompoundItemBuilder;
 
-import net.java.javamoney.ri.convert.common.AbstractCompoundItemBuilder;
+import net.java.javamoney.ri.ext.common.AbstractCompoundItemBuilder;
 
 /**
  * Defines a {@link CompoundItemBuilder} for creating
- * {@link CompoundCurrencyUnit} instances.
+ * {@link CompoundMonetaryAmount} instances.
  * 
  * @author Anatole Tresch
  */
-public final class CompoundCurrencyUnitBuilder extends
-		AbstractCompoundItemBuilder<CurrencyUnit> {
+public final class CompoundMonetaryAmountBuilder extends
+		AbstractCompoundItemBuilder<MonetaryAmount> {
 
 	/**
 	 * Creates a new builder instance.
@@ -40,7 +40,7 @@ public final class CompoundCurrencyUnitBuilder extends
 	 *            the type of the {@link CompoundItem} to be created by the
 	 *            builder.
 	 */
-	public CompoundCurrencyUnitBuilder(String type) {
+	public CompoundMonetaryAmountBuilder(String type) {
 		super(type);
 	}
 
@@ -51,7 +51,7 @@ public final class CompoundCurrencyUnitBuilder extends
 	 *            Use the items, leading item and type from the given
 	 *            {@code baseItem}.
 	 */
-	public CompoundCurrencyUnitBuilder(CompoundCurrencyUnit baseItem) {
+	public CompoundMonetaryAmountBuilder(CompoundMonetaryAmount baseItem) {
 		super(baseItem);
 	}
 
@@ -60,7 +60,8 @@ public final class CompoundCurrencyUnitBuilder extends
 	 * within this builder instace.
 	 */
 	@Override
-	public CompoundCurrencyUnit toCompoundItem() {
-		return new CompoundCurrencyUnit(getType(), getAll(), getLeadingItem());
+	public CompoundMonetaryAmount toCompoundItem() {
+		return new CompoundMonetaryAmount(getType(), getAll(), getLeadingItem());
 	}
+
 }

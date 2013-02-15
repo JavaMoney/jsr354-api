@@ -16,27 +16,26 @@
  * Contributors:
  *    Anatole Tresch - initial version.
  */
-package net.java.javamoney.ri.convert;
+package net.java.javamoney.ri.ext;
 
 import java.util.Map;
 
-import javax.money.CurrencyUnit;
+import javax.money.MonetaryAmount;
 import javax.money.ext.CompoundItem;
 import javax.money.ext.CompoundItemBuilder;
 
-import net.java.javamoney.ri.convert.common.AbstractCompoundItem;
+import net.java.javamoney.ri.ext.common.AbstractCompoundItem;
 
 /**
- * Defines a {@link CompoundItem} containing {@link CurrencyUnit} instances.
- * This is very useful for provding multiple currencies, e.g. provided by
- * different data providers, for different time periods, regions or other
- * classification types.
+ * Defines a {@link CompoundItem} containing {@link MonetaryAmount} instances.
+ * This is useful for modeling result object or input parameters for more
+ * complex financial functionalities.
  * 
  * @see CompoundItem
  * @author Anatole Tresch
  */
-public final class CompoundCurrencyUnit extends
-		AbstractCompoundItem<CurrencyUnit> {
+public final class CompoundMonetaryAmount extends
+		AbstractCompoundItem<MonetaryAmount> {
 
 	/**
 	 * Creates a new (empty) compound item of the given {@code type}.
@@ -44,7 +43,7 @@ public final class CompoundCurrencyUnit extends
 	 * @param type
 	 *            The item^s target type, not {@code null}.
 	 */
-	public CompoundCurrencyUnit(String type) {
+	public CompoundMonetaryAmount(String type) {
 		super(type);
 	}
 
@@ -57,7 +56,7 @@ public final class CompoundCurrencyUnit extends
 	 * @param items
 	 *            The items to be included int the instance.
 	 */
-	public CompoundCurrencyUnit(String type, Map<Object, CurrencyUnit> items) {
+	public CompoundMonetaryAmount(String type, Map<Object, MonetaryAmount> items) {
 		super(type, items);
 	}
 
@@ -69,8 +68,8 @@ public final class CompoundCurrencyUnit extends
 	 * @param leadingItem
 	 *            The leading item to be set.
 	 */
-	public CompoundCurrencyUnit(String type, Map<Object, CurrencyUnit> items,
-			CurrencyUnit leadingItem) {
+	public CompoundMonetaryAmount(String type,
+			Map<Object, MonetaryAmount> items, MonetaryAmount leadingItem) {
 		super(type, items, leadingItem);
 	}
 
@@ -80,8 +79,8 @@ public final class CompoundCurrencyUnit extends
 	 * @return a new {@link CompoundItemBuilder}, never null.
 	 */
 	@Override
-	public CompoundCurrencyUnitBuilder toBuilder() {
-		return new CompoundCurrencyUnitBuilder(this);
+	public CompoundMonetaryAmountBuilder toBuilder() {
+		return new CompoundMonetaryAmountBuilder(this);
 	}
 
 	/**
@@ -89,7 +88,7 @@ public final class CompoundCurrencyUnit extends
 	 * 
 	 * @return a new {@link CompoundItemBuilder}, never null.
 	 */
-	public static CompoundCurrencyUnitBuilder getBuilder(String type) {
-		return new CompoundCurrencyUnitBuilder(type);
+	public static CompoundMonetaryAmountBuilder getBuilder(String type) {
+		return new CompoundMonetaryAmountBuilder(type);
 	}
 }

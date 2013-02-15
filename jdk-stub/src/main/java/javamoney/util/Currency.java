@@ -101,6 +101,7 @@ import sun.util.logging.PlatformLogger;
  *
  * @since 1.4
  */
+@SuppressWarnings("restriction")
 public final class Currency implements Serializable, LocalizableCurrencyUnit {
 
     private static final long serialVersionUID = -158308464356906721L;

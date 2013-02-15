@@ -5,7 +5,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.money.convert.ConversionType;
+import javax.money.convert.ExchangeRateType;
 
 
 
@@ -14,12 +14,12 @@ public abstract class AbstractConversionRate<S, T> {
 	private final S source;
 	private final T target;
 	private final Number factor;
-	private final ConversionType<S, T> conversionType;
+	private final ExchangeRateType exchangeRateType;
 	private Map<String, Object> attributes;
 	private boolean readOnly;
 
 
-	public AbstractConversionRate(ConversionType<S, T> conversionType,
+	public AbstractConversionRate(ExchangeRateType conversionType,
 			S source, T target, Number factor) {
 		if (source == null) {
 			throw new IllegalArgumentException("source may not be null.");
@@ -32,12 +32,12 @@ public abstract class AbstractConversionRate<S, T> {
 		}
 		if (conversionType == null) {
 			throw new IllegalArgumentException(
-					"conversionType may not be null.");
+					"exchangeRateType may not be null.");
 		}
 		this.source = source;
 		this.target = target;
 		this.factor = factor;
-		this.conversionType = conversionType;
+		this.exchangeRateType = conversionType;
 	}
 
 	public boolean isReadOnloy() {
@@ -88,7 +88,7 @@ public abstract class AbstractConversionRate<S, T> {
 		if(other==null){
 			return -1;
 		}
-		return this.conversionType.compareTo(other.getConversionType());
+		return this.exchangeRateType.compareTo(other.getExchangeRateType());
 	}
 
 	public final S getSource() {
@@ -103,8 +103,8 @@ public abstract class AbstractConversionRate<S, T> {
 		return factor;
 	}
 
-	public final ConversionType<S, T> getConversionType() {
-		return conversionType;
+	public final ExchangeRateType getExchangeRateType() {
+		return exchangeRateType;
 	}
 
 }

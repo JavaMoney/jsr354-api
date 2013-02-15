@@ -32,7 +32,7 @@
 package javax.money.convert.spi;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.ConversionType;
+import javax.money.convert.ExchangeRateType;
 import javax.money.convert.ExchangeRate;
 
 /**
@@ -46,9 +46,9 @@ public interface ExchangeRateProviderSpi {
 	 * Get the exchange rate type that this provider instance is providing data
 	 * for.
 	 * 
-	 * @return the {@link ConversionType} supported, never null.
+	 * @return the {@link ExchangeRateType} supported, never null.
 	 */
-	public ConversionType<CurrencyUnit, CurrencyUnit> getConversionType();
+	public ExchangeRateType getExchangeRateType();
 
 	/**
 	 * Get an exchange rate for the given parameters.

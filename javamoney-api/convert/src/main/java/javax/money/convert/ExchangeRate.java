@@ -48,7 +48,7 @@ public interface ExchangeRate extends AttributeProvider {
 	 * 
 	 * @return the type of this rate, never null.
 	 */
-	public ConversionType<CurrencyUnit, CurrencyUnit> getConversionType();
+	public ExchangeRateType getExchangeRateType();
 
 	/**
 	 * Get the source currency.

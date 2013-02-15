@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.ConversionType;
+import javax.money.convert.ExchangeRateType;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.spi.ExchangeRateProviderSpi;
 
@@ -131,16 +131,15 @@ public class IMFExchangeRateProvider implements ExchangeRateProviderSpi {
 	}
 
 	@Override
-	public ExchangeRate getExchangeRate(
-			CurrencyUnit source, CurrencyUnit target, Long timestamp) {
+	public ExchangeRate getExchangeRate(CurrencyUnit source,
+			CurrencyUnit target, Long timestamp) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ConversionType<CurrencyUnit, CurrencyUnit> getConversionType() {
-		return ConversionType.of(CurrencyUnit.class, CurrencyUnit.class,
-				"public");
+	public ExchangeRateType getExchangeRateType() {
+		return ExchangeRateType.of("public");
 	}
 
 	public static void main(String[] args) {

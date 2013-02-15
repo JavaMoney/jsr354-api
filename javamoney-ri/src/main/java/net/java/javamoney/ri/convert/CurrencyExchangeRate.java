@@ -1,7 +1,7 @@
 package net.java.javamoney.ri.convert;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.ConversionType;
+import javax.money.convert.ExchangeRateType;
 import javax.money.convert.ExchangeRate;
 
 import net.java.javamoney.ri.convert.common.AbstractConversionRate;
@@ -17,13 +17,13 @@ public final class CurrencyExchangeRate extends
 	private ExchangeRate[] chain = new ExchangeRate[] { this };
 
 	public CurrencyExchangeRate(
-			ConversionType<CurrencyUnit, CurrencyUnit> conversionType,
+			ExchangeRateType conversionType,
 			CurrencyUnit source, CurrencyUnit target, Number factor) {
 		super(conversionType, source, target, factor);
 	}
 
 	public CurrencyExchangeRate(
-			ConversionType<CurrencyUnit, CurrencyUnit> conversionType,
+			ExchangeRateType conversionType,
 			CurrencyUnit source, CurrencyUnit target, Number factor,
 			ExchangeRate[] chain) {
 		super(conversionType, source, target, factor);
@@ -31,7 +31,7 @@ public final class CurrencyExchangeRate extends
 	}
 
 	public CurrencyExchangeRate(
-			ConversionType<CurrencyUnit, CurrencyUnit> conversionType,
+			ExchangeRateType conversionType,
 			CurrencyUnit source, CurrencyUnit target, Number factor,
 			ExchangeRate[] chain, Long timestamp,
 			Long validUntil) {
@@ -42,7 +42,7 @@ public final class CurrencyExchangeRate extends
 	}
 
 	public CurrencyExchangeRate(
-			ConversionType<CurrencyUnit, CurrencyUnit> conversionType,
+			ExchangeRateType conversionType,
 			CurrencyUnit source, CurrencyUnit target, Number factor,
 			Long timestamp, Long validUntil) {
 		super(conversionType, source, target, factor);
@@ -119,7 +119,7 @@ public final class CurrencyExchangeRate extends
 		if(o==null){
 			return -1;
 		}
-		int compare = this.getConversionType().compareTo(o.getConversionType());
+		int compare = this.getExchangeRateType().compareTo(o.getExchangeRateType());
 		if (compare == 0) {
 			if (location != null) {
 				compare = this.location.compareTo(o.getLocation());

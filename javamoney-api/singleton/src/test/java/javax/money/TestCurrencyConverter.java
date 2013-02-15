@@ -32,7 +32,7 @@
 package javax.money;
 
 import javax.money.convert.CurrencyConverter;
-import javax.money.convert.ConversionType;
+import javax.money.convert.ExchangeRateType;
 
 /**
  * Empty pseudo implementation for testing only.
@@ -43,7 +43,7 @@ import javax.money.convert.ConversionType;
 public class TestCurrencyConverter implements CurrencyConverter {
 
 	@Override
-	public ConversionType getConversionType() {
+	public ExchangeRateType getExchangeRateType() {
 		return TestExchangeRateProvider.EXCHANGE_RATE_TYPE;
 	}
 

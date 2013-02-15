@@ -66,7 +66,7 @@ public class SmokeTests {
 	
 	@Test
 	public void testExchange(){
-//		Monetary.getExchangeRateProvider(ConversionType.)
+//		Monetary.getExchangeRateProvider(ExchangeRateType.)
 	}
 
 	@Test

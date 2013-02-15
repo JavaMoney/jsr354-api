@@ -71,17 +71,17 @@ public interface ExchangeRateBuilder {
 	 * Get the exchange rate types that this provider instance is providing data
 	 * for.
 	 * 
-	 * @return the {@link ConversionType} instances available.
+	 * @return the {@link ExchangeRateType} instances available.
 	 */
 	public ExchangeRateBuilder setConversionType(
-			ConversionType<CurrencyUnit, CurrencyUnit> type);
+			ExchangeRateType type);
 
 	/**
-	 * Access the {@link ConversionType} of the rate to be created.
+	 * Access the {@link ExchangeRateType} of the rate to be created.
 	 * 
 	 * @return
 	 */
-	public ConversionType<CurrencyUnit, CurrencyUnit> getConversionType();
+	public ExchangeRateType getExchangeRateType();
 
 	/**
 	 * Set the source item.

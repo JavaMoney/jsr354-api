@@ -45,71 +45,45 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author Anatole Tresch
  */
-public final class ConversionType<S, T> implements Serializable,
-		Comparable<ConversionType<?, ?>> {
+public final class ExchangeRateType implements Serializable,
+		Comparable<ExchangeRateType> {
 	/**
 	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = -7505497771490888058L;
 	/** The id of this type. */
 	private final String id;
-	/** The source type. */
-	private Class<S> sourceType;
-	/** The target type. */
-	private Class<T> targetType;
 	/** The cache of types. */
-	private static final Map<String, ConversionType<?, ?>> CACHED_INSTANCES = new ConcurrentHashMap<String, ConversionType<?, ?>>();
+	private static final Map<String, ExchangeRateType> CACHED_INSTANCES = new ConcurrentHashMap<String, ExchangeRateType>();
 
-	public static <A> ConversionType<A, A> of(Class<A> type, String id) {
-		return of(type, type, id);
-	}
-
-	public static <A, B> ConversionType<A, B> of(Class<A> sourceType,
-			Class<B> targetType, String id) {
-		if (sourceType == null) {
-			throw new IllegalArgumentException("sourceType required.");
-		}
-		if (targetType == null) {
-			throw new IllegalArgumentException("targetType required.");
-		}
+	public static ExchangeRateType of(String id) {
 		if (id == null) {
 			throw new IllegalArgumentException("id required.");
 		}
-		String key = sourceType.getName() + '_' + targetType.getName() + ':'
-				+ id;
-		@SuppressWarnings("unchecked")
-		ConversionType<A, B> instance = (ConversionType<A, B>) CACHED_INSTANCES
-				.get(key);
+		ExchangeRateType instance = (ExchangeRateType) CACHED_INSTANCES
+				.get(id);
 		if (instance == null) {
-			instance = new ConversionType<A, B>(sourceType, targetType, id);
-			CACHED_INSTANCES.put(key, instance);
+			instance = new ExchangeRateType(id);
+			CACHED_INSTANCES.put(id, instance);
 		}
 		return instance;
 	}
 
-	public static Enumeration<ConversionType<?, ?>> getTypes() {
+	public static Enumeration<ExchangeRateType> getTypes() {
 		return Collections.enumeration(CACHED_INSTANCES.values());
 	}
 
 	/**
-	 * Constructs a new instance of an ConversionType..
+	 * Constructs a new instance of an ExchangeRateType..
 	 * 
 	 * @param id
 	 *            The id of this type instance, never null.
 	 */
-	public ConversionType(Class<S> sourceType, Class<T> targetType, String id) {
+	public ExchangeRateType(String id) {
 		if (id == null) {
 			throw new IllegalArgumentException("Id must not be null.");
 		}
 		this.id = id;
-		if (sourceType == null) {
-			throw new IllegalArgumentException("sourceType must not be null.");
-		}
-		this.sourceType = sourceType;
-		if (targetType == null) {
-			throw new IllegalArgumentException("targetType must not be null.");
-		}
-		this.targetType = targetType;
 	}
 
 	/**
@@ -119,14 +93,6 @@ public final class ConversionType<S, T> implements Serializable,
 	 */
 	public String getId() {
 		return this.id;
-	}
-
-	public Class<S> getSourceType() {
-		return sourceType;
-	}
-
-	public Class<T> getTargetType() {
-		return targetType;
 	}
 
 	/*
@@ -139,10 +105,6 @@ public final class ConversionType<S, T> implements Serializable,
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((sourceType == null) ? 0 : sourceType.hashCode());
-		result = prime * result
-				+ ((targetType == null) ? 0 : targetType.hashCode());
 		return result;
 	}
 
@@ -159,21 +121,11 @@ public final class ConversionType<S, T> implements Serializable,
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ConversionType<?,?> other = (ConversionType<?,?>) obj;
+		ExchangeRateType other = (ExchangeRateType) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
-		if (sourceType == null) {
-			if (other.sourceType != null)
-				return false;
-		} else if (!sourceType.equals(other.sourceType))
-			return false;
-		if (targetType == null) {
-			if (other.targetType != null)
-				return false;
-		} else if (!targetType.equals(other.targetType))
 			return false;
 		return true;
 	}
@@ -185,22 +137,15 @@ public final class ConversionType<S, T> implements Serializable,
 	 */
 	@Override
 	public String toString() {
-		return "ConversionType [sourceType=" + sourceType + ", targetType="
-				+ targetType + ", id=" + id + "]";
+		return "ExchangeRateType [id=" + id + "]";
 	}
 
 	@Override
-	public int compareTo(ConversionType<?, ?> o) {
+	public int compareTo(ExchangeRateType o) {
 		if (o == null) {
 			return -1;
 		}
-		int compare = sourceType.getName().compareTo(o.sourceType.getName());
-		if (compare == 0) {
-			compare = targetType.getName().compareTo(o.targetType.getName());
-		}
-		if (compare == 0) {
-			compare = id.compareTo(o.id);
-		}
+		int compare = id.compareTo(o.id);
 		return compare;
 	}
 

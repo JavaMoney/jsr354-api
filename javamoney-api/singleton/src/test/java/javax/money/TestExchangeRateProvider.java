@@ -31,7 +31,7 @@
  */
 package javax.money;
 
-import javax.money.convert.ConversionType;
+import javax.money.convert.ExchangeRateType;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
 
@@ -40,13 +40,13 @@ import javax.money.convert.ExchangeRateProvider;
  * 
  * @author Anatole Tresch
  */
-public class TestExchangeRateProvider implements ExchangeRateProvider{
+public class TestExchangeRateProvider implements ExchangeRateProvider {
 
-	static final ConversionType<CurrencyUnit, CurrencyUnit> EXCHANGE_RATE_TYPE = ConversionType
-			.of(CurrencyUnit.class, "TEST");
+	static final ExchangeRateType EXCHANGE_RATE_TYPE = ExchangeRateType
+			.of("TEST");
 
 	@Override
-	public ConversionType<CurrencyUnit, CurrencyUnit> getConversionType() {
+	public ExchangeRateType getExchangeRateType() {
 		return EXCHANGE_RATE_TYPE;
 	}
 

@@ -23,15 +23,14 @@ import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 
-import javax.money.CurrencyUnit;
-import javax.money.convert.ConversionType;
+import javax.money.convert.ExchangeRateType;
 
 import org.junit.Test;
 
 public class CuirrencyExchangeRateTest extends ConvertTestBase {
 
-	private static final ConversionType<CurrencyUnit, CurrencyUnit> TYPE = ConversionType
-			.of(CurrencyUnit.class, CurrencyUnit.class, "test");
+	private static final ExchangeRateType TYPE = ExchangeRateType
+			.of("test");
 
 	@Test
 	public void testGetSourceCurrency() {

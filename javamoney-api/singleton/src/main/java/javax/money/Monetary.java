@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateProvider;
-import javax.money.convert.ConversionType;
+import javax.money.convert.ExchangeRateType;
 import javax.money.format.AmountFormatterFactory;
 import javax.money.format.AmountParserFactory;
 import javax.money.format.CurrencyFormatterFactory;
@@ -57,7 +57,8 @@ import javax.money.spi.MonetaryExtension;
  * 
  */
 public final class Monetary {
-	private static final Logger LOGGER = Logger.getLogger(Monetary.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Monetary.class
+			.getName());
 	private static final Monetary INSTANCE = new Monetary();
 
 	private Class<?> defaultNumberClass;
@@ -65,8 +66,8 @@ public final class Monetary {
 	private final CurrencyUnitProvider currencyUnitProvider;
 	private final Map<Class<?>, MonetaryAmountFactory> monetaryAmountFactories = new HashMap<Class<?>, MonetaryAmountFactory>();
 	private final RoundingProvider roundingProvider;
-	private final Map<ConversionType, ExchangeRateProvider> exchangeRateProviders = new HashMap<ConversionType, ExchangeRateProvider>();
-	private final Map<ConversionType, CurrencyConverter> currencyConverters = new HashMap<ConversionType, CurrencyConverter>();
+	private final Map<ExchangeRateType, ExchangeRateProvider> exchangeRateProviders = new HashMap<ExchangeRateType, ExchangeRateProvider>();
+	private final Map<ExchangeRateType, CurrencyConverter> currencyConverters = new HashMap<ExchangeRateType, CurrencyConverter>();
 	private final Map<Class<?>, MonetaryExtension> extensions = new HashMap<Class<?>, MonetaryExtension>();
 	private final AmountParserFactory amountParserFactory;
 	private final AmountFormatterFactory amountFormatterFactory;
@@ -94,10 +95,10 @@ public final class Monetary {
 		currencyFormatterFactory = loadService(CurrencyFormatterFactory.class);
 		// TODO define how to handle and handle duplicate registrations!
 		for (ExchangeRateProvider t : exchangeRateProviderLoader) {
-			this.exchangeRateProviders.put(t.getConversionType(), t);
+			this.exchangeRateProviders.put(t.getExchangeRateType(), t);
 		}
 		for (CurrencyConverter t : currencyConverterLoader) {
-			this.currencyConverters.put(t.getConversionType(), t);
+			this.currencyConverters.put(t.getExchangeRateType(), t);
 		}
 		for (MonetaryAmountFactory t : amountFactoryLoader) {
 			this.monetaryAmountFactories.put(t.getNumberClass(), t);
@@ -128,7 +129,7 @@ public final class Monetary {
 				}
 				this.extensions.put(t.getExposedType(), t);
 			} catch (Exception e) {
-
+				LOGGER.log(Level.WARNING, "Error loading MonetaryExtension.", e);
 			}
 		}
 	}
@@ -241,13 +242,13 @@ public final class Monetary {
 	 * Access the {@link ExchangeRateProvider} component.
 	 * 
 	 * @param type
-	 *            the target {@link ConversionType}.
+	 *            the target {@link ExchangeRateType}.
 	 * @return the {@link ExchangeRateProvider} component, never {@code null}.
 	 * @throws IllegalArgumentException
 	 *             if no such provider is registered.
 	 */
 	public static ExchangeRateProvider getExchangeRateProvider(
-			ConversionType type) {
+			ExchangeRateType type) {
 		ExchangeRateProvider prov = INSTANCE.exchangeRateProviders.get(type);
 		if (prov == null) {
 			throw new IllegalArgumentException(
@@ -261,12 +262,12 @@ public final class Monetary {
 	 * Access the {@link ExchangeRateProvider} component.
 	 * 
 	 * @param type
-	 *            the target {@link ConversionType}.
+	 *            the target {@link ExchangeRateType}.
 	 * @return the {@link ExchangeRateProvider} component, never {@code null}.
 	 * @throws IllegalArgumentException
 	 *             if no such provider is registered.
 	 */
-	public static CurrencyConverter getCurrencyConverter(ConversionType type) {
+	public static CurrencyConverter getCurrencyConverter(ExchangeRateType type) {
 		CurrencyConverter prov = INSTANCE.currencyConverters.get(type);
 		if (prov == null) {
 			throw new IllegalArgumentException(
@@ -277,14 +278,14 @@ public final class Monetary {
 	}
 
 	/**
-	 * Access the defined {@link ConversionType} currently registered.
+	 * Access the defined {@link ExchangeRateType} currently registered.
 	 * 
-	 * @see #getCurrencyConverter(ConversionType)
-	 * @see #getExchangeRateProvider(ConversionType)
+	 * @see #getCurrencyConverter(ExchangeRateType)
+	 * @see #getExchangeRateProvider(ExchangeRateType)
 	 * @return The exchange rate types allow to access a
 	 *         {@link CurrencyConverter} or an {@link ExchangeRateProvider}.
 	 */
-	public static Enumeration<ConversionType> getSupportedExchangeRateTypes() {
+	public static Enumeration<ExchangeRateType> getSupportedExchangeRateTypes() {
 		return Collections.enumeration(INSTANCE.exchangeRateProviders.keySet());
 	}
 

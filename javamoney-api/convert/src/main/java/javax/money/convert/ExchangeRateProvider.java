@@ -45,9 +45,9 @@ public interface ExchangeRateProvider {
 	 * Get the exchange rate types that this provider instance is providing data
 	 * for.
 	 * 
-	 * @return the {@link ConversionType} delivered by this provider.
+	 * @return the {@link ExchangeRateType} delivered by this provider.
 	 */
-	public ConversionType<CurrencyUnit, CurrencyUnit> getConversionType();
+	public ExchangeRateType getExchangeRateType();
 
 	/**
 	 * Checks if an exchange of a currency is defined.

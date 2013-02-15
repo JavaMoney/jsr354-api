@@ -241,4 +241,8 @@ public interface ExchangeRateBuilder {
 	 */
 	public boolean isBuildeable();
 
+	public Long getValidUntil();
+
+	public ExchangeRateBuilder setValidUntil(Long validUntil);
+
 }

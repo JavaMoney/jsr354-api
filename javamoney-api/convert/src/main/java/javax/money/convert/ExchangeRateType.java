@@ -38,10 +38,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * This class models the type of a given exchange rate. Basically the types
- * possible are determined by the concrete use cases and implementations.
- * Typical use cases is that exchange rates for different credit card systems or
- * debit/credit may differ. This class allows to distinguish these rates.
+ * This class models the type of a given exchange rate as immutable value type.
+ * Basically the types possible are determined by the concrete use cases and
+ * implementations. Typical use cases is that exchange rates for different
+ * credit card systems or debit/credit may differ. This class allows to
+ * distinguish these rates.
  * 
  * @author Anatole Tresch
  */
@@ -60,8 +61,7 @@ public final class ExchangeRateType implements Serializable,
 		if (id == null) {
 			throw new IllegalArgumentException("id required.");
 		}
-		ExchangeRateType instance = (ExchangeRateType) CACHED_INSTANCES
-				.get(id);
+		ExchangeRateType instance = (ExchangeRateType) CACHED_INSTANCES.get(id);
 		if (instance == null) {
 			instance = new ExchangeRateType(id);
 			CACHED_INSTANCES.put(id, instance);

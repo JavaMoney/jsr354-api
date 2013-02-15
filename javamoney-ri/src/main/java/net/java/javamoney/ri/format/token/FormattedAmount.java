@@ -23,21 +23,23 @@ import java.text.DecimalFormatSymbols;
 
 import javax.money.MonetaryAmount;
 import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.ParseException;
 
-import net.java.javamoney.ri.format.common.AbstractFormatToken;
+import net.java.javamoney.ri.format.common.AbstractToken;
 import net.java.javamoney.ri.format.common.FormatDecorator;
-import net.java.javamoney.ri.format.common.FormatToken;
+import net.java.javamoney.ri.format.common.FormatterToken;
+import net.java.javamoney.ri.format.common.ParseContext;
 import net.java.javamoney.ri.format.common.StringGrouper;
 
 /**
- * {@link FormatToken} which allows to format a {@link Number} type.
+ * {@link FormatterToken} which allows to format a {@link Number} type.
  * 
  * @author Anatole Tresch
  * 
  * @param <T>
  *            The item type.
  */
-public class FormattedAmount<T extends MonetaryAmount> extends AbstractFormatToken<T> {
+public class FormattedAmount<T extends MonetaryAmount> extends AbstractToken<T> {
 
 	private static final char[] EMPTY_CHAR_ARRAY = new char[0];
 	private static final int[] EMPTY_INT_ARRAY = new int[0];
@@ -101,14 +103,14 @@ public class FormattedAmount<T extends MonetaryAmount> extends AbstractFormatTok
 	}
 
 	public FormattedAmount<T> decorate(FormatDecorator<T> decorator) {
-		FormatDecorator<T> existing = getDecorator();
+		FormatDecorator<T> existing = getFormatDecorator();
 		if (decorator == null) {
-			setDecorator(null);
+			setFormatDecorator(null);
 		} else {
 			if (existing == null) {
-				setDecorator(decorator);
+				setFormatDecorator(decorator);
 			} else {
-				existing.setDecorator(decorator);
+				existing.setFormatDecorator(decorator);
 			}
 		}
 		return this;
@@ -168,5 +170,11 @@ public class FormattedAmount<T extends MonetaryAmount> extends AbstractFormatTok
 			LocalizationStyle style, String preformattedValue) {
 		return preformattedValue.split(String.valueOf(format
 				.getDecimalFormatSymbols().getDecimalSeparator()));
+	}
+
+	@Override
+	public void parse(ParseContext context) throws ParseException {
+		// TODO Auto-generated method stub
+		
 	}
 }

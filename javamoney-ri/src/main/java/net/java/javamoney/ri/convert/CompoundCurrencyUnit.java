@@ -21,8 +21,10 @@ package net.java.javamoney.ri.convert;
 import java.util.Map;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.CompoundItem;
-import javax.money.convert.CompoundItemBuilder;
+import javax.money.ext.CompoundItem;
+import javax.money.ext.CompoundItemBuilder;
+
+import net.java.javamoney.ri.convert.common.AbstractCompoundItem;
 
 /**
  * Defines a {@link CompoundItem} containing {@link CurrencyUnit} instances.

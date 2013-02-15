@@ -70,7 +70,7 @@ public interface CurrencyFormatter extends StyledFormatter<CurrencyUnit> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String formatName(CurrencyUnit currency); // formatName ?
+	public String formatDisplayName(CurrencyUnit currency); 
 
 
 	/**
@@ -113,7 +113,7 @@ public interface CurrencyFormatter extends StyledFormatter<CurrencyUnit> {
 	 * @throws IOException
 	 *             if an IO error occurs
 	 */
-	public void printName(Appendable appendable, CurrencyUnit currency) throws IOException;
+	public void printDisplayName(Appendable appendable, CurrencyUnit currency) throws IOException;
 
 
 }

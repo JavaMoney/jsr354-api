@@ -70,7 +70,7 @@ public interface StyleableAmountFormatter extends StyleableFormatter<MonetaryAmo
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String printNumber(MonetaryAmount amount, LocalizationStyle style);
+	public String formatNumber(MonetaryAmount amount, LocalizationStyle style);
 
 	/**
 	 * Formats a amount's numeric value to a {@code String}, the currency is
@@ -88,7 +88,7 @@ public interface StyleableAmountFormatter extends StyleableFormatter<MonetaryAmo
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String printNumber(MonetaryAmount item, Locale locale);
+	public String formatNumber(MonetaryAmount item, Locale locale);
 
 	/**
 	 * Formats a amount's numeric value to a {@code Appendable}, the currency is

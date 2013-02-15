@@ -13,11 +13,8 @@ import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.StyleableFormatter;
 import javax.money.format.common.StyledFormatter;
 
-import net.java.javamoney.ri.format.common.FormatToken;
-import net.java.javamoney.ri.format.common.TokenizedFormatterBuilder;
 import net.java.javamoney.ri.format.token.FormattedNumber;
 import net.java.javamoney.ri.format.token.Literal;
-import net.java.javamoney.ri.format.token.PositiveSign;
 
 import org.junit.Test;
 
@@ -41,11 +38,11 @@ public class TokenizedFormatterBuilderTest {
 				.setNumberGroupSizes(2, 2, 3));
 		StyledFormatter<Double> f = b.toFormatter(Locale.FRENCH);
 		assertNotNull(f);
-		assertEquals("test- 12'345'67,89:12", f.print(123456789.123456789d));
+		assertEquals("test- 12'345'67,89:12", f.format(123456789.123456789d));
 		StyleableFormatter<Double> sf = b.toStyleableFormatter();
 		assertNotNull(sf);
 		assertEquals("test- 12'345'67,89:12",
-				sf.print(123456789.123456789d, Locale.FRENCH));
+				sf.format(123456789.123456789d, Locale.FRENCH));
 	}
 
 	@Test
@@ -53,21 +50,21 @@ public class TokenizedFormatterBuilderTest {
 		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken("test- ");
+		b.addToken("BEF+ ");
 		DecimalFormat f = new DecimalFormat("#0.0#");
 		DecimalFormatSymbols symbols = f.getDecimalFormatSymbols();
 		symbols.setDecimalSeparator(':');
 		f.setDecimalFormatSymbols(symbols);
 		b.addToken(new FormattedNumber<Double>(f)
-				.setNumberGroupChars(',', '\'').setNumberGroupSizes(2, 2, 3)
-				.decorate(new PositiveSign<Double>().setBeforeSign("BEF+")));
+				.setNumberGroupChars(',', '\'').setNumberGroupSizes(2, 2, 3));
 		StyledFormatter<Double> sf = b.toFormatter(Locale.FRENCH);
 		assertNotNull(sf);
-		assertEquals("test- BEF+12'345'67,89:12",
-				sf.print(123456789.123456789d));
+		assertEquals("test- BEF+ 12'345'67,89:12",
+				sf.format(123456789.123456789d));
 		StyleableFormatter<Double> stf = b.toStyleableFormatter();
 		assertNotNull(stf);
-		assertEquals("test- BEF+12'345'67,89:12",
-				stf.print(123456789.123456789d, Locale.FRENCH));
+		assertEquals("test- BEF+ 12'345'67,89:12",
+				stf.format(123456789.123456789d, Locale.FRENCH));
 	}
 
 	@Test
@@ -77,10 +74,10 @@ public class TokenizedFormatterBuilderTest {
 		b.addToken("1");
 		b.addToken("2");
 		b.addToken("3");
-		Enumeration<FormatToken<Double>> tokens = b.getTokens();
+		Enumeration<FormatterToken<Double>> tokens = b.getTokens();
 		int size = 0;
 		while (tokens.hasMoreElements()) {
-			FormatToken<?> token = (FormatToken<?>) tokens.nextElement();
+			FormatterToken<?> token = (FormatterToken<?>) tokens.nextElement();
 			assertNotNull(token);
 			assertTrue(token instanceof Literal<?>);
 			size++;
@@ -115,7 +112,7 @@ public class TokenizedFormatterBuilderTest {
 		b.addToken(new Literal<Double>("test"));
 		StyleableFormatter<Double> sf = b.toStyleableFormatter();
 		assertNotNull(sf);
-		assertEquals("test", sf.print(123456789.123456789d, Locale.CHINESE));
+		assertEquals("test", sf.format(123456789.123456789d, Locale.CHINESE));
 	}
 
 	@Test
@@ -126,16 +123,16 @@ public class TokenizedFormatterBuilderTest {
 		b.addToken(new FormattedNumber<Double>());
 		StyledFormatter<Double> f = b.toFormatter(Locale.CHINESE);
 		assertNotNull(f);
-		assertEquals("test 123,456,789.123", f.print(123456789.123456789d));
+		assertEquals("test 123,456,789.123", f.format(123456789.123456789d));
 		f = b.toFormatter(Locale.GERMAN);
 		assertNotNull(f);
-		assertEquals("test 123.456.789,123", f.print(123456789.123456789d));
+		assertEquals("test 123.456.789,123", f.format(123456789.123456789d));
 		f = b.toFormatter(Locale.CANADA);
 		assertNotNull(f);
-		assertEquals("test 123,456,789.123", f.print(123456789.123456789d));
+		assertEquals("test 123,456,789.123", f.format(123456789.123456789d));
 		f = b.toFormatter(Locale.JAPAN);
 		assertNotNull(f);
-		assertEquals("test 123,456,789.123", f.print(123456789.123456789d));
+		assertEquals("test 123,456,789.123", f.format(123456789.123456789d));
 	}
 
 	@Test
@@ -147,10 +144,10 @@ public class TokenizedFormatterBuilderTest {
 		StyledFormatter<Double> f = b.toFormatter(LocalizationStyle
 				.of(Locale.CHINESE));
 		assertNotNull(f);
-		assertEquals("test 123,456,789.123", f.print(123456789.123456789d));
+		assertEquals("test 123,456,789.123", f.format(123456789.123456789d));
 		f = b.toFormatter(LocalizationStyle.of(Locale.GERMAN));
 		assertNotNull(f);
-		assertEquals("test 123.456.789,123", f.print(123456789.123456789d));
+		assertEquals("test 123.456.789,123", f.format(123456789.123456789d));
 	}
 
 }

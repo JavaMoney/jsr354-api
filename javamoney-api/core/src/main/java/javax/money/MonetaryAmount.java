@@ -519,7 +519,7 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	/**
 	 * * Gets the scale of the amount.
 	 * <p>
-	 * The scale has the same meaning as in {@link MonetaryAmount}. Positive
+	 * The scale has the same meaning as in {@link java.math.BigDecimal}. Positive
 	 * values represent the number of decimal places in use. For example, a
 	 * scale of 2 means that the money will have two decimal places such as 'USD
 	 * 43.25'.
@@ -725,6 +725,17 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	public boolean greaterThanOrEqualTo(Number number);
 
 	/**
+	 * Allows to check, if the currency of the two amounts are the same. This
+	 * means that corresponding currency's namespace and code must match.
+	 * 
+	 * @param amount
+	 *            The amount to comapre to, not {@code null}.
+	 * @return true, if the {@link CurrencyUnit} of this instance has the same
+	 *         namespace and code.
+	 */
+	public boolean isSameCurrencyAs(MonetaryAmount amount);
+
+	/**
 	 * Checks if this amount is the same compared to the amount passed. This is
 	 * a convenience method to reflect {@link #same(Number)} also for amounts,
 	 * but basically should behave similarly as {@link #equals(Object)}.
@@ -831,7 +842,8 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 * @throws ArithmeticException
 	 *             if rounding fails.
 	 */
-	//public MonetaryAmount getAdjusted(); // FIXME should probably be called getRounded
+	// public MonetaryAmount getAdjusted(); // FIXME should probably be called
+	// getRounded
 
 	/**
 	 * * Gets the monetary amount using the passed target type. This method
@@ -881,9 +893,9 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 * @param type
 	 *            the required target type
 	 * @param adjustments
-	 *            The adjustments to be applied. Hereby the order of the 
-	 *            {@link AmountAdjuster} instances within (@code adjustments) implies to
-	 *            order of adjustments performed.
+	 *            The adjustments to be applied. Hereby the order of the
+	 *            {@link AmountAdjuster} instances within (@code adjustments)
+	 *            implies to order of adjustments performed.
 	 * @return the representation of this amount, adjusted using the given
 	 *         adjustment.
 	 */
@@ -899,8 +911,8 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	public Class<?> getNumberType();
 
 	/**
-	 * This method divides this amount into a number of sub-amounts determined by
-	 * the divisor passed.
+	 * This method divides this amount into a number of sub-amounts determined
+	 * by the divisor passed.
 	 * 
 	 * @param divisor
 	 *            Determines how many amounts should be divided based on this

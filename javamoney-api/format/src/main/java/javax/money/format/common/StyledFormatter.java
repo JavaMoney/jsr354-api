@@ -53,7 +53,7 @@ public interface StyledFormatter<T> extends Targeted<T>, Styled {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String print(T item);
+	public String format(T item);
 
 	/**
 	 * Prints a item value to an {@code Appendable}.

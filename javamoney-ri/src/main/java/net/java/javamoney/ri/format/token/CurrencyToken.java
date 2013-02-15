@@ -25,12 +25,14 @@ import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import javax.money.format.CurrencyFormatter;
+import javax.money.format.common.ParseException;
 
-import net.java.javamoney.ri.format.common.AbstractFormatToken;
-import net.java.javamoney.ri.format.common.FormatToken;
+import net.java.javamoney.ri.format.common.AbstractToken;
+import net.java.javamoney.ri.format.common.FormatterToken;
+import net.java.javamoney.ri.format.common.ParseContext;
 
 /**
- * {@link FormatToken} that adds a localizable {@link String}, read by key from
+ * {@link FormatterToken} that adds a localizable {@link String}, read by key from
  * a {@link ResourceBundle}..
  * 
  * @author Anatole Tresch
@@ -39,7 +41,7 @@ import net.java.javamoney.ri.format.common.FormatToken;
  *            The concrete type.
  */
 public class CurrencyToken<T extends MonetaryAmount> extends
-		AbstractFormatToken<T> {
+		AbstractToken<T> {
 
 	public static enum DisplayType {
 		NAMESPACE, FULLCODE, CODE, NAME, NUMERIC_CODE, SYMBOL
@@ -90,7 +92,7 @@ public class CurrencyToken<T extends MonetaryAmount> extends
 		case NAME:
 			CurrencyFormatter cf1 = Monetary.getCurrencyFormatterFactory()
 					.getCurrencyFormatter(localeUsed);
-			return cf1.formatName(unit);
+			return cf1.formatDisplayName(unit);
 		case SYMBOL:
 			CurrencyFormatter cf2 = Monetary.getCurrencyFormatterFactory()
 					.getCurrencyFormatter(localeUsed);
@@ -99,5 +101,11 @@ public class CurrencyToken<T extends MonetaryAmount> extends
 		default:
 			return unit.getNamespace() + ':' + unit.getCurrencyCode();
 		}
+	}
+
+	@Override
+	public void parse(ParseContext context) throws ParseException {
+		// TODO Auto-generated method stub
+		
 	};
 }

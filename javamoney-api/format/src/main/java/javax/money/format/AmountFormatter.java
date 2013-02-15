@@ -67,7 +67,7 @@ public interface AmountFormatter extends StyledFormatter<MonetaryAmount> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String printNumber(MonetaryAmount amount);
+	public String formatNumber(MonetaryAmount amount);
 
 	/**
 	 * Formats a amount's numeric value to a {@code Appendable}, the currency is

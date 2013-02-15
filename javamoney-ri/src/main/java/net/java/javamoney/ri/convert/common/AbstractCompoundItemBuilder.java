@@ -16,15 +16,15 @@
  * Contributors:
  *    Anatole Tresch - initial version.
  */
-package net.java.javamoney.ri.convert;
+package net.java.javamoney.ri.convert.common;
 
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.money.convert.CompoundItem;
-import javax.money.convert.CompoundItemBuilder;
+import javax.money.ext.CompoundItem;
+import javax.money.ext.CompoundItemBuilder;
 
 /**
  * A CompoundItemBuilder T is an CompoundItemBuilder that holds several

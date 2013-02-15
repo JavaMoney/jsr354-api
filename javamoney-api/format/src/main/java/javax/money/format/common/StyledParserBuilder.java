@@ -55,21 +55,21 @@ import java.util.Locale;
  * are immutable and thread-safe.
  * 
  * @see StyledParser
- * @see StyleableItemParser
+ * @see StyleableParser
  */
 public interface StyledParserBuilder<T> {
 	
 	/**
-	 * Builds the {@link StyleableItemParser} from this builder.
+	 * Builds the {@link StyleableParser} from this builder.
 	 * <p>
 	 * Once the builder is in the correct state it must be converted to a
 	 * {@code Formatter} of {@link StyleableFormatter} to be used. Calling
 	 * this method does not change the state of this instance, so it can still
 	 * be used.
 	 * 
-	 * @return the {@link StyleableItemParser} built from this builder, never null
+	 * @return the {@link StyleableParser} built from this builder, never null
 	 */
-	public StyleableItemParser<T> toStylableItemParser();
+	public StyleableParser<T> toStylableItemParser();
 
 	/**
 	 * Builds the parser from the builder setting the locale.

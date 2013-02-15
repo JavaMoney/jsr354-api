@@ -37,19 +37,17 @@ import javax.money.CurrencyUnit;
  * This interface defines access to the exchange conversion logic of JavaMoney.
  * It is provided by the Money singleton. It is provided by the Money singleton.
  * 
- * @author Anatole Tresch TODO should this probably be called CurrencyConverter?
- *         The main action is convert() Getters for ExchangeRate might remain
- *         here, separated from convert() methods in a *Converter interface...?
+ * @author Anatole Tresch
  */
 public interface ExchangeRateProvider {
 
 	/**
-	 * Get the exchange rate type that this provider instance is providing data
+	 * Get the exchange rate types that this provider instance is providing data
 	 * for.
 	 * 
-	 * @return the {@link ExchangeRateType} if this instance.
+	 * @return the {@link ConversionType} delivered by this provider.
 	 */
-	public ExchangeRateType getExchangeRateType();
+	public ConversionType<CurrencyUnit, CurrencyUnit> getConversionType();
 
 	/**
 	 * Checks if an exchange of a currency is defined.
@@ -70,14 +68,14 @@ public interface ExchangeRateProvider {
 	 * @param target
 	 *            the target currency
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried, or {@code null}.
+	 *            the target timestamp for which the exchange rate is queried,
+	 *            or {@code null}.
 	 * @return true, if such an exchange is currently defined.
 	 */
-	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
-			Long timestamp);
+	public boolean isAvailable(CurrencyUnit CurrencyUnit, CurrencyUnit target, Long timestamp);
 
 	/**
-	 * Get an {@link ExchangeRate} for a given timestamp (including historic
+	 * Get an {@link ConversionRate} for a given timestamp (including historic
 	 * rates).
 	 * 
 	 * @param sourceCurrency
@@ -85,11 +83,12 @@ public interface ExchangeRateProvider {
 	 * @param targetCurrency
 	 *            The target currency
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried, or {@code null}.
-	 * @return the matching {@link ExchangeRate}, or null.
+	 *            the target timestamp for which the exchange rate is queried,
+	 *            or {@code null}.
+	 * @return the matching {@link ConversionRate}, or null.
 	 */
-	public ExchangeRate get(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, Long timestamp);
+	public ExchangeRate get(CurrencyUnit sourceCurrency, CurrencyUnit targetCurrency,
+			Long timestamp);
 
 	/**
 	 * Access a exchange rate using the given currencies. The rate may be,
@@ -102,22 +101,6 @@ public interface ExchangeRateProvider {
 	 */
 	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target);
 
-	/**
-	 * Creates a derived {@link ExchangeRate} using the given chain of rates.
-	 * <p>
-	 * The method must validate that each target {@link CurrencyUnit} matches
-	 * the {@link CurrencyUnit} of the next {@link ExchangeRate} instance.
-	 * 
-	 * @param exchangeRates
-	 *            the chain of rates that define a derived exchange rate from
-	 *            the source currency of the first item in the chain to the
-	 *            target currency in the last item of the chain. In between
-	 *            every target currency must match the source currency of the
-	 *            next rate within the chain.
-	 * @throws IllegalArgumentException
-	 *             if the chain passed is inconsistent.
-	 */
-	public ExchangeRate get(ExchangeRate... exchangeRates);
 
 	/**
 	 * Checks if a conversion is linear.
@@ -126,15 +109,11 @@ public interface ExchangeRateProvider {
 	 *            The source currency
 	 * @param targetCurrency
 	 *            The target currency
-	 * @param deferred
-	 *            if the required exchange rate may be deferred, or a real time
-	 *            rate is required.
 	 * @return true, if the conversion is linear.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public boolean isLinear(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency);
+	public boolean isLinear(CurrencyUnit sourceCurrency, CurrencyUnit targetCurrency);
 
 	/**
 	 * Checks if a conversion is linear.
@@ -144,13 +123,13 @@ public interface ExchangeRateProvider {
 	 * @param targetCurrency
 	 *            The target currency
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried, or{@code null}
+	 *            the target timestamp for which the exchange rate is queried,
+	 *            or{@code null}
 	 * @return true, if the conversion is linear.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public boolean isLinear(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, Long timestamp);
+	public boolean isLinear(CurrencyUnit sourceCurrency, CurrencyUnit targetCurrency, Long timestamp);
 
 	/**
 	 * Checks if a conversion is an identity.
@@ -163,8 +142,7 @@ public interface ExchangeRateProvider {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public boolean isIdentity(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency);
+	public boolean isIdentity(CurrencyUnit sourceCurrency, CurrencyUnit targetCurrency);
 
 	/**
 	 * Checks if a conversion is an identity.
@@ -174,12 +152,12 @@ public interface ExchangeRateProvider {
 	 * @param targetCurrency
 	 *            The target currency
 	 * @param timestamp
-	 *            the target timestamp for which the identity check is queried, or {@code null}.
+	 *            the target timestamp for which the identity check is queried,
+	 *            or {@code null}.
 	 * @return true, if the conversion is linear.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public boolean isIdentity(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, Long timestamp);
+	public boolean isIdentity(CurrencyUnit sourceCurrency, CurrencyUnit targetCurrency, Long timestamp);
 
 }

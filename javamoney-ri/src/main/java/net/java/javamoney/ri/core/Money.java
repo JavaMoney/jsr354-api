@@ -547,4 +547,24 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		}
 	}
 
+	/**
+	 * Allows to check, if the currency of the two amounts are the same. This
+	 * means that corresponding currency's namespace and code must match.
+	 * 
+	 * @param amount
+	 *            The amount to comapre to, not {@code null}.
+	 * @return true, if the {@link CurrencyUnit} of this instance has the same
+	 *         namespace and code.
+	 */
+	@Override
+	public boolean isSameCurrencyAs(MonetaryAmount amount) {
+		if (amount == null) {
+			throw new IllegalArgumentException("Amount must not be null.");
+		}
+		return this.currency.getNamespace().equals(
+				amount.getCurrency().getNamespace())
+				&& this.currency.getCurrencyCode().equals(
+						amount.getCurrency().getCurrencyCode());
+	}
+
 }

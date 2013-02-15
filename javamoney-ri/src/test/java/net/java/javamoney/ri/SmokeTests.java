@@ -66,7 +66,7 @@ public class SmokeTests {
 	
 	@Test
 	public void testExchange(){
-//		Monetary.getExchangeRateProvider(ExchangeRateType.)
+//		Monetary.getExchangeRateProvider(ConversionType.)
 	}
 
 	@Test
@@ -100,13 +100,13 @@ public class SmokeTests {
 		try {
 			AmountFormatter formatter = Monetary.getAmountFormatterFactory()
 					.getAmountFormatter(Locale.GERMANY);
-			String formatted = formatter.print(amount);
+			String formatted = formatter.format(amount);
 			assertEquals(1.0d, amount.doubleValue(), 0);
 			StyleableAmountFormatter locFormatter = Monetary
 					.getAmountFormatterFactory()
 					.getLocalizableAmountFormatter();
 
-			String formatted2 = locFormatter.print(amount, Locale.CHINA);
+			String formatted2 = locFormatter.format(amount, Locale.CHINA);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

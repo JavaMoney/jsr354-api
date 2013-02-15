@@ -46,9 +46,9 @@ public interface CurrencyConverter {
 	 * Get the exchange rate type that this provider instance is providing data
 	 * for.
 	 * 
-	 * @return the {@link ExchangeRateType} if this instance.
+	 * @return the {@link ConversionType} if this instance.
 	 */
-	public ExchangeRateType getExchangeRateType();
+	public ConversionType<CurrencyUnit,CurrencyUnit> getConversionType();
 
 	/**
 	 * Method that converts the source {@link MonetaryAmount} to an
@@ -101,7 +101,7 @@ public interface CurrencyConverter {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public double convert(double amount, CurrencyUnit sourceCurrency,
+	public MonetaryAmount convert(Number amount, CurrencyUnit sourceCurrency,
 			CurrencyUnit targetCurrency);
 
 	/**
@@ -122,7 +122,7 @@ public interface CurrencyConverter {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public double convert(double amount, CurrencyUnit source,
+	public MonetaryAmount convert(Number amount, CurrencyUnit source,
 			CurrencyUnit target, Long timestamp);
 
 }

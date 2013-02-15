@@ -29,8 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.money.CurrencyUnit;
+import javax.money.convert.ConversionType;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
 import javax.money.convert.spi.ExchangeRateProviderSpi;
 
 import org.slf4j.Logger;
@@ -38,13 +38,13 @@ import org.slf4j.LoggerFactory;
 
 public class IMFExchangeRateProvider implements ExchangeRateProviderSpi {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(IMFExchangeRateProvider.class);
-	
-	private Map<CurrencyUnit,ExchangeRate> currencyToSDRMap = new HashMap<CurrencyUnit,ExchangeRate>();
-	
-	private Map<CurrencyUnit,ExchangeRate> sDRToCurrency = new HashMap<CurrencyUnit,ExchangeRate>();
-	
-	
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(IMFExchangeRateProvider.class);
+
+	private Map<CurrencyUnit, ExchangeRate> currencyToSDRMap = new HashMap<CurrencyUnit, ExchangeRate>();
+
+	private Map<CurrencyUnit, ExchangeRate> sDRToCurrency = new HashMap<CurrencyUnit, ExchangeRate>();
+
 	public void loadRates() {
 		InputStream is = null;
 		try {
@@ -54,9 +54,8 @@ public class IMFExchangeRateProvider implements ExchangeRateProviderSpi {
 			loadRates(is);
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
-		}
-		finally{
-			if(is!=null){
+		} finally {
+			if (is != null) {
 				try {
 					is.close();
 				} catch (IOException e) {
@@ -65,51 +64,55 @@ public class IMFExchangeRateProvider implements ExchangeRateProviderSpi {
 			}
 		}
 	}
-	
+
 	private void loadRates(InputStream inputStream) throws IOException {
 		CurrencyUnit sdr = getCurrency("SDR");
 		NumberFormat f = new DecimalFormat("#0.0000000000");
 		f.setGroupingUsed(false);
-		BufferedReader pr = new BufferedReader(new InputStreamReader(inputStream));
+		BufferedReader pr = new BufferedReader(new InputStreamReader(
+				inputStream));
 		String line = pr.readLine();
 		int sdrToCurrency = 0;
-		while(line!=null){
+		while (line != null) {
 			Long[] timestamps = null;
-			if(line.startsWith("SDRs per Currency unit")){
+			if (line.startsWith("SDRs per Currency unit")) {
 				sdrToCurrency = 1;
-			}
-			else if(line.startsWith("Currency units per SDR")){
+			} else if (line.startsWith("Currency units per SDR")) {
 				sdrToCurrency = 2;
-			}
-			else if(line.startsWith("Currency ")){
+			} else if (line.startsWith("Currency ")) {
 				timestamps = readTimestamps(line);
 			}
 			String[] parts = line.split("\\t");
 			CurrencyUnit currency = getCurrency(parts[0]);
 			Double[] values = parseValues(f, parts, 1);
-//			for(int i=0;i<values.length;i++){
-//				if(values[i]!=null){
-//					if(sdrToCurrency==1){ // Currency -> SDR
-//						currencyToSDRMap.put(currency, new ExchangeRateImpl(currency, sdr, values[i]));
-//					}
-//					else if(sdrToCurrency==2){ // SDR -> Currency
-//						sDRToCurrency.put(currency, new ExchangeRateImpl(sdr, currency, values[i]));
-//					}
-//				}
-//			}
+			// for(int i=0;i<values.length;i++){
+			// if(values[i]!=null){
+			// if(sdrToCurrency==1){ // Currency -> SDR
+			// currencyToSDRMap.put(currency, new ExchangeRateImpl(currency,
+			// sdr, values[i]));
+			// }
+			// else if(sdrToCurrency==2){ // SDR -> Currency
+			// sDRToCurrency.put(currency, new ExchangeRateImpl(sdr, currency,
+			// values[i]));
+			// }
+			// }
+			// }
 			// SDRs per Currency unit (2)
-			// 
-			// Currency	January 31, 2013	January 30, 2013	January 29, 2013	January 28, 2013	January 25, 2013
-			// Euro	0.8791080000	0.8789170000	0.8742470000	0.8752180000	0.8768020000
-			
-//			Currency units per SDR(3)
-//
-//			Currency	January 31, 2013	January 30, 2013	January 29, 2013	January 28, 2013	January 25, 2013
-//			Euro	1.137520	1.137760	1.143840	1.142570	1.140510
-			
+			//
+			// Currency January 31, 2013 January 30, 2013 January 29, 2013
+			// January 28, 2013 January 25, 2013
+			// Euro 0.8791080000 0.8789170000 0.8742470000 0.8752180000
+			// 0.8768020000
+
+			// Currency units per SDR(3)
+			//
+			// Currency January 31, 2013 January 30, 2013 January 29, 2013
+			// January 28, 2013 January 25, 2013
+			// Euro 1.137520 1.137760 1.143840 1.142570 1.140510
+
 			line = pr.readLine();
 		}
-		
+
 	}
 
 	private Double[] parseValues(NumberFormat f, String[] parts, int i) {
@@ -127,23 +130,20 @@ public class IMFExchangeRateProvider implements ExchangeRateProviderSpi {
 		return null;
 	}
 
+	@Override
+	public ExchangeRate getExchangeRate(
+			CurrencyUnit source, CurrencyUnit target, Long timestamp) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ConversionType<CurrencyUnit, CurrencyUnit> getConversionType() {
+		return ConversionType.of(CurrencyUnit.class, CurrencyUnit.class,
+				"public");
+	}
+
 	public static void main(String[] args) {
 		new IMFExchangeRateProvider().loadRates();
 	}
-	
-	@Override
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, ExchangeRateType type, boolean deferred) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, ExchangeRateType type, Long timestamp) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 }

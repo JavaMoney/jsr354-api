@@ -31,9 +31,14 @@
  */
 package javax.money.format;
 
+import java.text.NumberFormat;
+import java.text.spi.NumberFormatProvider;
 import java.util.Locale;
 
 import javax.money.MonetaryAmount;
+import javax.money.format.common.StyleableFormatter;
+import javax.money.format.common.StyleableParser;
+import javax.money.format.common.StyledFormatter;
 import javax.money.format.common.StyledParser;
 import javax.money.format.common.StyledParserBuilder;
 import javax.money.format.common.LocalizationStyle;
@@ -55,7 +60,16 @@ public interface AmountParserBuilder extends StyledParserBuilder<MonetaryAmount>
 	 * @return this, for chaining, never null
 	 */
 	public AmountParserBuilder appendAmount();
-
+	
+	/**
+	 * Appends the amount to the builder using the default format. The default
+	 * format equals to the format that is used by the {@link AmountFormatter}
+	 * instance returned for the current default {@link Locale}.
+	 * 
+	 * @return this, for chaining, never null
+	 */
+	public AmountParserBuilder appendAmount(NumberFormat format);
+	
 	/**
 	 * Appends the amount to the builder using the given {@link Locale}. The
 	 * format equals to the format that is used by the {@link AmountFormatter}
@@ -68,20 +82,6 @@ public interface AmountParserBuilder extends StyledParserBuilder<MonetaryAmount>
 	 * @return this, for chaining, never null
 	 */
 	public AmountParserBuilder appendAmountLocalized();
-
-	/**
-	 * Appends the amount to the builder using the specified amount style.
-	 * <p>
-	 * The amount is the value itself, such as '12.34'.
-	 * <p>
-	 * The amount style allows the formatting of the number to be controlled in
-	 * detail. See {@link MoneyAmountStyle} for more details.
-	 * 
-	 * @param style
-	 *            the required style to use, not null.
-	 * @return this, for chaining, never null
-	 */
-	public AmountParserBuilder appendAmount(MoneyAmountStyle style);
 
 	// -----------------------------------------------------------------------
 	/**

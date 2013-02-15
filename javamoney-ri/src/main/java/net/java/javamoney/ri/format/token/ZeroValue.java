@@ -54,4 +54,5 @@ public class ZeroValue<T extends Number> extends AbstractFormatDecorator<T> {
 		return formattedString;
 	}
 
+	
 }

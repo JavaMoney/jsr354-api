@@ -21,41 +21,60 @@ package net.java.javamoney.ri.format.common;
 import java.io.IOException;
 
 import javax.money.format.common.LocalizationStyle;
-
+import javax.money.format.common.ParseException;
 
 /**
- * Base class when implementing a {@link FormatToken}.
+ * Base class when implementing a {@link FormatterToken}.
  * 
  * @author Anatole Tresch
  * 
  * @param <T>
  *            The target type.
  */
-public abstract class AbstractFormatToken<T>
-		implements FormatToken<T> {
+public abstract class AbstractToken<T> implements FormatterToken<T>, ParserToken<T> {
 
-	private FormatDecorator<T> decorator;
-	
+	private FormatDecorator<T> formatDecorator;
+	private ParseDecorator<T> parseDecorator;
+	private boolean optional;
+
 	protected abstract String getToken(T item, LocalizationStyle style);
 
+	public abstract void parse(ParseContext context) throws ParseException;
+
 	@Override
-	public String print(T item, LocalizationStyle style) {
+	public String format(T item, LocalizationStyle style) {
 		String token = getToken(item, style);
 		if (token == null) {
 			throw new IllegalStateException("Token may not be null.");
 		}
-		if(this.decorator!=null){
-			return this.decorator.decorate(item, token, style);
+		if (this.formatDecorator != null) {
+			return this.formatDecorator.decorateFormat(item, token, style);
 		}
 		return token;
 	}
-	
-	public void setDecorator(FormatDecorator<T> decorator){
-		this.decorator = decorator;
+
+	public void setOptional(boolean optional) {
+		this.optional = optional;
+	}
+
+	public boolean isOptional() {
+		return this.optional;
+	}
+
+	public void setFormatDecorator(FormatDecorator<T> formatDecorator) {
+		this.formatDecorator = formatDecorator;
+	}
+
+	public FormatDecorator<T> getFormatDecorator() {
+		return this.formatDecorator;
 	}
 	
-	public FormatDecorator<T> getDecorator(){
-		return this.decorator;
+	public void setParseDecorator(ParseDecorator<T> parseDecorator) {
+		this.parseDecorator = parseDecorator;
+	}
+
+	public ParseDecorator<T> getParseDecorator() {
+		return this.parseDecorator;
 	}
 
 	@Override
@@ -65,10 +84,9 @@ public abstract class AbstractFormatToken<T>
 		if (token == null) {
 			throw new IllegalStateException("Token may not be null.");
 		}
-		if(this.decorator!=null){
-			appendable.append(this.decorator.decorate(item, token, style));
-		}
-		else{
+		if (this.formatDecorator != null) {
+			appendable.append(this.formatDecorator.decorateFormat(item, token, style));
+		} else {
 			appendable.append(token);
 		}
 	}
@@ -80,4 +98,5 @@ public abstract class AbstractFormatToken<T>
 	protected String adjustPreformatted(String preformattedValue) {
 		return preformattedValue;
 	}
+
 }

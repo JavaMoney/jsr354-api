@@ -38,7 +38,7 @@ import javax.money.CurrencyUnit;
 import javax.money.format.common.FormatException;
 import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.ParseException;
-import javax.money.format.common.StyleableItemParser;
+import javax.money.format.common.StyleableParser;
 
 /**
  * Formats instances of money to and from a String.
@@ -48,7 +48,7 @@ import javax.money.format.common.StyleableItemParser;
  * <p>
  * This class is immutable and thread-safe.
  */
-public interface StyleableAmountParser extends StyleableItemParser<MonetaryAmount> {
+public interface StyleableAmountParser extends StyleableParser<MonetaryAmount> {
 
 	/**
 	 * Fully parses a number and combines it with a {@link CurrencyUnit} to an

@@ -58,7 +58,7 @@ public interface StyleableFormatter<T> extends Targeted<T> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String print(T item, Locale locale) throws FormatException;
+	public String format(T item, Locale locale) throws FormatException;
 
 	/**
 	 * Prints a value to an {@code Appendable}. This method uses a
@@ -80,7 +80,7 @@ public interface StyleableFormatter<T> extends Targeted<T> {
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String print(T item, LocalizationStyle style) throws IOException;
+	public String format(T item, LocalizationStyle style) throws IOException;
 
 	/**
 	 * Prints a item value to an {@code Appendable}.

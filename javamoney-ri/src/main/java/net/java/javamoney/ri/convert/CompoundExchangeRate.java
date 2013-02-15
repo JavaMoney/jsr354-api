@@ -20,12 +20,14 @@ package net.java.javamoney.ri.convert;
 
 import java.util.Map;
 
-import javax.money.convert.CompoundItem;
-import javax.money.convert.CompoundItemBuilder;
 import javax.money.convert.ExchangeRate;
+import javax.money.ext.CompoundItem;
+import javax.money.ext.CompoundItemBuilder;
+
+import net.java.javamoney.ri.convert.common.AbstractCompoundItem;
 
 /**
- * Defines a {@link CompoundItem} containing {@link ExchangeRate} instances.
+ * Defines a {@link CompoundItem} containing {@link ConversionRate} instances.
  * This is very useful for provding multiple exchange rates, e.g. provided by
  * different data providers or for different time periods.
  * 

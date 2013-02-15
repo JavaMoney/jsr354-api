@@ -22,21 +22,23 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.ParseException;
 
-import net.java.javamoney.ri.format.common.AbstractFormatToken;
+import net.java.javamoney.ri.format.common.AbstractToken;
 import net.java.javamoney.ri.format.common.FormatDecorator;
-import net.java.javamoney.ri.format.common.FormatToken;
+import net.java.javamoney.ri.format.common.FormatterToken;
+import net.java.javamoney.ri.format.common.ParseContext;
 import net.java.javamoney.ri.format.common.StringGrouper;
 
 /**
- * {@link FormatToken} which allows to format a {@link Number} type.
+ * {@link FormatterToken} which allows to format a {@link Number} type.
  * 
  * @author Anatole Tresch
  * 
  * @param <T>
  *            The item type.
  */
-public class FormattedNumber<T extends Number> extends AbstractFormatToken<T> {
+public class FormattedNumber<T extends Number> extends AbstractToken<T> {
 
 	private static final char[] EMPTY_CHAR_ARRAY = new char[0];
 	private static final int[] EMPTY_INT_ARRAY = new int[0];
@@ -100,14 +102,14 @@ public class FormattedNumber<T extends Number> extends AbstractFormatToken<T> {
 	}
 
 	public FormattedNumber<T> decorate(FormatDecorator<T> decorator) {
-		FormatDecorator<T> existing = getDecorator();
+		FormatDecorator<T> existing = getFormatDecorator();
 		if (decorator == null) {
-			setDecorator(null);
+			setFormatDecorator(null);
 		} else {
 			if (existing == null) {
-				setDecorator(decorator);
+				setFormatDecorator(decorator);
 			} else {
-				existing.setDecorator(decorator);
+				existing.setFormatDecorator(decorator);
 			}
 		}
 		return this;
@@ -147,7 +149,7 @@ public class FormattedNumber<T extends Number> extends AbstractFormatToken<T> {
 	}
 
 	@Override
-	protected String getToken(Number item, LocalizationStyle style) {
+	protected String getToken(T item, LocalizationStyle style) {
 		DecimalFormat format = getNumberFormat(style);
 		if (this.numberGroup == null) { // || this.fractionGroup==null
 			return format.format(item);
@@ -163,9 +165,29 @@ public class FormattedNumber<T extends Number> extends AbstractFormatToken<T> {
 				+ numberParts[1];
 	}
 
-	private String[] splitNumberParts(Number item, DecimalFormat format,
+	private String[] splitNumberParts(T item, DecimalFormat format,
 			LocalizationStyle style, String preformattedValue) {
 		return preformattedValue.split(String.valueOf(format
 				.getDecimalFormatSymbols().getDecimalSeparator()));
+	}
+
+	@Override
+	public void parse(ParseContext context) throws ParseException {
+		DecimalFormat df = getNumberFormat(context.getLocalizationStyle());
+		if("true".equals(context.getLocalizationStyle().getAttribute("enforceGrouping"))){
+			df.setGroupingUsed(true);
+		}
+		else{
+			df.setGroupingUsed(false);
+		}
+		String token = context.getNextToken();
+		Number num;
+		try {
+			num = df.parse(token);
+		} catch (java.text.ParseException e) {
+			throw new ParseException("Failed to parse number.", e);
+		}
+		context.setAttribute(Number.class, num);
+		context.consume(token);
 	}
 }

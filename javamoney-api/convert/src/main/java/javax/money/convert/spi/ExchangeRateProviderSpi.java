@@ -32,8 +32,8 @@
 package javax.money.convert.spi;
 
 import javax.money.CurrencyUnit;
+import javax.money.convert.ConversionType;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
 
 /**
  * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
@@ -43,21 +43,12 @@ import javax.money.convert.ExchangeRateType;
 public interface ExchangeRateProviderSpi {
 
 	/**
-	 * Get an exchange rate for the given parameters.
+	 * Get the exchange rate type that this provider instance is providing data
+	 * for.
 	 * 
-	 * @param source
-	 *            the source currency.
-	 * @param target
-	 *            the target currency.
-	 * @param type
-	 *            Allows to determine the kind of rate to returned. {@code null}
-	 *            means any type.
-	 * @param deferred
-	 *            If the quote should be deferred.
-	 * @return the according exchange rate, or null.
+	 * @return the {@link ConversionType} supported, never null.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, ExchangeRateType type, boolean deferred);
+	public ConversionType<CurrencyUnit, CurrencyUnit> getConversionType();
 
 	/**
 	 * Get an exchange rate for the given parameters.
@@ -70,13 +61,10 @@ public interface ExchangeRateProviderSpi {
 	 *            Allows to determine the kind of rate to returned. {@code null}
 	 *            means any type.
 	 * @param timestamp
-	 *            the required target UTC timestamp for the rate, or {@code null} for the
-	 *            latest available.
-	 * @param validityDuration
-	 *            how long the quote should be considered valid.
+	 *            the required target UTC timestamp for the rate, or
+	 *            {@code null} for the latest available.
 	 * @return the according exchange rate, or null.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, ExchangeRateType type, Long timestamp);
+	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target, Long timestamp);
 
 }

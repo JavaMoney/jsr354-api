@@ -42,7 +42,7 @@ import java.util.Enumeration;
 
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateProvider;
-import javax.money.convert.ExchangeRateType;
+import javax.money.convert.ConversionType;
 import javax.money.spi.MonetaryExtension;
 
 import org.junit.Test;
@@ -73,15 +73,15 @@ public class MonetaryTest {
 
 	@Test
 	public void testGetCurrencyConverter_ExchangeRateType() {
-		Enumeration<ExchangeRateType> types = Monetary
+		Enumeration<ConversionType> types = Monetary
 				.getSupportedExchangeRateTypes();
-		ExchangeRateType exchangeRateType = types.nextElement();
+		ConversionType conversionType = types.nextElement();
 		CurrencyConverter prov = Monetary
-				.getCurrencyConverter(exchangeRateType);
-		assertTrue(prov == Monetary.getCurrencyConverter(exchangeRateType));
-		assertSame(Monetary.getCurrencyConverter(exchangeRateType).getClass(),
+				.getCurrencyConverter(conversionType);
+		assertTrue(prov == Monetary.getCurrencyConverter(conversionType));
+		assertSame(Monetary.getCurrencyConverter(conversionType).getClass(),
 				TestCurrencyConverter.class);
-		assertTrue(prov.getExchangeRateType() == exchangeRateType);
+		assertTrue(prov.getConversionType() == conversionType);
 	}
 
 	@Test
@@ -113,16 +113,16 @@ public class MonetaryTest {
 
 	@Test
 	public void testGetExchangeRateProvider_ExchangeRateType() {
-		Enumeration<ExchangeRateType> types = Monetary
+		Enumeration<ConversionType> types = Monetary
 				.getSupportedExchangeRateTypes();
-		ExchangeRateType exchangeRateType = types.nextElement();
+		ConversionType conversionType = types.nextElement();
 		ExchangeRateProvider prov = Monetary
-				.getExchangeRateProvider(exchangeRateType);
-		assertTrue(prov == Monetary.getExchangeRateProvider(exchangeRateType));
-		assertSame(Monetary.getExchangeRateProvider(exchangeRateType)
+				.getExchangeRateProvider(conversionType);
+		assertTrue(prov == Monetary.getExchangeRateProvider(conversionType));
+		assertSame(Monetary.getExchangeRateProvider(conversionType)
 				.getClass(), TestExchangeRateProvider.class);
-		assertTrue(Monetary.getExchangeRateProvider(exchangeRateType)
-				.getExchangeRateType() == exchangeRateType);
+		assertTrue(Monetary.getExchangeRateProvider(conversionType)
+				.getConversionType() == conversionType);
 	}
 
 	@Test
@@ -175,15 +175,15 @@ public class MonetaryTest {
 
 	@Test
 	public void testGetSupportedExchangeRateTypes() {
-		Enumeration<ExchangeRateType> types = Monetary
+		Enumeration<ConversionType> types = Monetary
 				.getSupportedExchangeRateTypes();
 		assertNotNull(types);
 		int count = 0;
 		while (types.hasMoreElements()) {
-			ExchangeRateType exchangeRateType = (ExchangeRateType) types
+			ConversionType conversionType = (ConversionType) types
 					.nextElement();
 			count++;
-			assertEquals("TEST", exchangeRateType.getId());
+			assertEquals("TEST", conversionType.getId());
 		}
 		assertTrue(count == 1);
 	}

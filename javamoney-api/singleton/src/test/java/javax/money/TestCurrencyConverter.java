@@ -32,17 +32,18 @@
 package javax.money;
 
 import javax.money.convert.CurrencyConverter;
-import javax.money.convert.ExchangeRateType;
+import javax.money.convert.ConversionType;
 
 /**
  * Empty pseudo implementation for testing only.
+ * 
  * @author Anatole Tresch
- *
+ * 
  */
 public class TestCurrencyConverter implements CurrencyConverter {
 
 	@Override
-	public ExchangeRateType getExchangeRateType() {
+	public ConversionType getConversionType() {
 		return TestExchangeRateProvider.EXCHANGE_RATE_TYPE;
 	}
 
@@ -60,17 +61,16 @@ public class TestCurrencyConverter implements CurrencyConverter {
 	}
 
 	@Override
-	public double convert(double amount, CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency) {
-		// empty implementation
-		return 0;
+	public MonetaryAmount convert(Number amount, CurrencyUnit source,
+			CurrencyUnit target) {
+		return convert(amount, source, target, null);
 	}
 
 	@Override
-	public double convert(double amount, CurrencyUnit source,
+	public MonetaryAmount convert(Number amount, CurrencyUnit source,
 			CurrencyUnit target, Long timestamp) {
 		// empty implementation
-		return 0;
+		return null;
 	}
 
 }

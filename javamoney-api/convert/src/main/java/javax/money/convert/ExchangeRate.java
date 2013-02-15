@@ -41,31 +41,28 @@ import javax.money.util.AttributeProvider;
  * @author Anatole Tresch
  * @version 0.2.2
  */
-public interface ExchangeRate extends AttributeProvider, Comparable<ExchangeRate> {
+public interface ExchangeRate extends AttributeProvider {
+
+	/**
+	 * Access the type of exchange rate.
+	 * 
+	 * @return the type of this rate, never null.
+	 */
+	public ConversionType<CurrencyUnit, CurrencyUnit> getConversionType();
 
 	/**
 	 * Get the source currency.
 	 * 
 	 * @return the source currency.
 	 */
-	public CurrencyUnit getSourceCurrency();
+	public CurrencyUnit getSource();
 
 	/**
 	 * Get the target currency.
 	 * 
 	 * @return the target currency.
 	 */
-	public CurrencyUnit getTargetCurrency();
-
-	/**
-	 * Get the exchange factor converted to the given target type. This allows
-	 * to use different exchange rate implementations.
-	 * 
-	 * @param targetClass
-	 *            The target type required.
-	 * @return the exchange factor, as instance of T.
-	 */
-	public <T> T getFactorAsType(Class<T> targetClass);
+	public CurrencyUnit getTarget();
 
 	/**
 	 * Access the rate's factor.
@@ -73,18 +70,37 @@ public interface ExchangeRate extends AttributeProvider, Comparable<ExchangeRate
 	 * @return the factor for this exchange rate.
 	 */
 	public Number getFactor();
-
+	
 	/**
 	 * Returns the UTC timestamp of the rate.
 	 * 
 	 * @return The UTC timestamp of the rate.
 	 */
-	public long getTimestamp();
+	public Long getTimestamp();
 
 	/**
-	 * Get the location of this quote. TODO model this as an object?
+	 * Get the data validity timestamp of this rate in milliseconds. This can be
+	 * useful, when a rate in a system only should be used within some specified
+	 * time.
 	 * 
-	 * @return the stock exchange name, or location.
+	 * @return the duration of validity in milliseconds, or {@code null} if no
+	 *         validity constraints apply.
+	 */
+	public Long getValidUntil();
+
+	/**
+	 * Allows to check if a rate is still valid according to its data validity
+	 * timestamp.
+	 * 
+	 * @see #getValidUntil()
+	 * @return true, if the rate is valid for use.
+	 */
+	public boolean isValid();
+
+	/**
+	 * Get the location of this quote.
+	 * 
+	 * @return the stock exchange or location.
 	 */
 	public String getLocation();
 
@@ -94,13 +110,13 @@ public interface ExchangeRate extends AttributeProvider, Comparable<ExchangeRate
 	 * @return the name of the data provider.
 	 */
 	public String getDataProvider();
-
+	
 	/**
 	 * Access the chain of exchange rates.
 	 * 
 	 * @return the chain of rates, in case of a derived rate, this may be
 	 *         several instances. For a direct exchange rate, this equals to
-	 *         <code>new ExchangeRate[]{this}</code>.
+	 *         <code>new ConversionRate[]{this}</code>.
 	 */
 	public ExchangeRate[] getExchangeRateChain();
 
@@ -113,12 +129,4 @@ public interface ExchangeRate extends AttributeProvider, Comparable<ExchangeRate
 	 * @return true, if the exchange rate is derived.
 	 */
 	public boolean isDerived();
-
-	/**
-	 * Access the type of exchange rate.
-	 * 
-	 * @return the type of this rate, never null.
-	 */
-	public ExchangeRateType getExchangeRateType();
-
 }

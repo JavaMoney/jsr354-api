@@ -31,12 +31,14 @@
  */
 package javax.money.format;
 
+import java.text.NumberFormat;
 import java.util.Locale;
 
 import javax.money.MonetaryAmount;
+import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.StyleableFormatter;
 import javax.money.format.common.StyledFormatter;
 import javax.money.format.common.StyledFormatterBuilder;
-import javax.money.format.common.LocalizationStyle;
 
 /**
  * Provides the ability to build a formatter for amount values.
@@ -47,7 +49,8 @@ import javax.money.format.common.LocalizationStyle;
  * 
  * TODO see Formatter, maybe rename to *Printer* like suggested by Joda sandbox
  */
-public interface AmountFormatterBuilder extends StyledFormatterBuilder<MonetaryAmount>{
+public interface AmountFormatterBuilder extends
+		StyledFormatterBuilder<MonetaryAmount> {
 
 	/**
 	 * Appends the amount to the builder using the default format. The default
@@ -79,11 +82,26 @@ public interface AmountFormatterBuilder extends StyledFormatterBuilder<MonetaryA
 	 * The amount style allows the formatting of the number to be controlled in
 	 * detail. See {@link MoneyAmountStyle} for more details.
 	 * 
-	 * @param style
-	 *            the required style to use, not null.
+	 * @param formatter
+	 *            the required formatter to use, not null.
 	 * @return this, for chaining, never null
 	 */
-	public AmountFormatterBuilder appendAmount(MoneyAmountStyle style);
+	public AmountFormatterBuilder appendAmount(
+			StyleableFormatter<Number> formatter);
+
+	/**
+	 * Appends the amount to the builder using the specified amount style.
+	 * <p>
+	 * The amount is the value itself, such as '12.34'.
+	 * <p>
+	 * The amount style allows the formatting of the number to be controlled in
+	 * detail. See {@link MoneyAmountStyle} for more details.
+	 * 
+	 * @param format
+	 *            the required format to use, not null.
+	 * @return this, for chaining, never null
+	 */
+	public AmountFormatterBuilder appendAmount(NumberFormat format);
 
 	// -----------------------------------------------------------------------
 	/**
@@ -136,7 +154,8 @@ public interface AmountFormatterBuilder extends StyledFormatterBuilder<MonetaryA
 	 *            the formatter to append, not null
 	 * @return this for chaining, never null
 	 */
-	public AmountFormatterBuilder append(StyledFormatter<MonetaryAmount> formatter);
+	public AmountFormatterBuilder append(
+			StyledFormatter<MonetaryAmount> formatter);
 
 	// -----------------------------------------------------------------------
 	/**

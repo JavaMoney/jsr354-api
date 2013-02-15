@@ -30,7 +30,7 @@ package net.java.javamoney.ri.convert;
 //
 //import javax.money.CurrencyUnit;
 //import javax.money.MonetaryAmount;
-//import javax.money.convert.ExchangeRate;
+//import javax.money.convert.ConversionRate;
 //
 ///**
 // * <p>
@@ -56,7 +56,7 @@ package net.java.javamoney.ri.convert;
 //	/**
 //	 * Holds the exchange rate.
 //	 */
-//	private final ExchangeRate rate;
+//	private final ConversionRate rate;
 //
 //	private void checkFactor(Number factor) {
 //		if (factor == null)
@@ -200,7 +200,7 @@ package net.java.javamoney.ri.convert;
 //		return false;
 //	}
 //
-//	public ExchangeRate getExchangeRate() {
+//	public ConversionRate getExchangeRate() {
 //		return rate;
 //	}
 //

@@ -19,6 +19,7 @@
 package net.java.javamoney.ri.format.common;
 
 import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.ParseException;
 
 /**
  * This interface defines an item that may be set as a decorator to a
@@ -29,15 +30,13 @@ import javax.money.format.common.LocalizationStyle;
  * @param <T>
  *            The target type.
  */
-public interface FormatDecorator<T> {
+public interface ParseDecorator<T> {
 
 	/**
-	 * Method to call the decoration.
+	 * Method to call ancapsulate a parsing part into another.
 	 * 
-	 * @param item
-	 *            The target item being formatted.
-	 * @param formattedString
-	 *            the formatted value as formatted by the decorator's child.
+	 * @param context
+	 *            The current parsing context.
 	 * @param style
 	 *            The style passed.
 	 * @return the final result of this formatting operation. This may be equals
@@ -45,11 +44,11 @@ public interface FormatDecorator<T> {
 	 *         something completely different, return as the result of the
 	 *         decorated {@link FormatterToken} instance.
 	 */
-	public String decorateFormat(T item, String formattedString,
-			LocalizationStyle style);
-
-	public void setFormatDecorator(FormatDecorator<T> deocrator);
+	public void decorateParse(ParseContext context, LocalizationStyle style)
+			throws ParseException;
 	
-	public FormatDecorator<T> getFormatDecorator();
+	public void setParseDecorator(ParseDecorator<T> deocrator);
+	
+	public ParseDecorator<T> getParseDecorator();
 
 }

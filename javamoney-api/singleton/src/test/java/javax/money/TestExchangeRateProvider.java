@@ -31,26 +31,22 @@
  */
 package javax.money;
 
+import javax.money.convert.ConversionType;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
-import javax.money.convert.ExchangeRateType;
 
 /**
  * Empty pseudo implementation for testing only.
+ * 
  * @author Anatole Tresch
- *
  */
-public class TestExchangeRateProvider implements ExchangeRateProvider {
+public class TestExchangeRateProvider implements ExchangeRateProvider{
 
-	static final ExchangeRateType EXCHANGE_RATE_TYPE = new ExchangeRateType(){
+	static final ConversionType<CurrencyUnit, CurrencyUnit> EXCHANGE_RATE_TYPE = ConversionType
+			.of(CurrencyUnit.class, "TEST");
 
-		@Override
-		public String getId() {
-			return "TEST";
-		}};
-	
 	@Override
-	public ExchangeRateType getExchangeRateType() {
+	public ConversionType<CurrencyUnit, CurrencyUnit> getConversionType() {
 		return EXCHANGE_RATE_TYPE;
 	}
 
@@ -76,12 +72,6 @@ public class TestExchangeRateProvider implements ExchangeRateProvider {
 
 	@Override
 	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public ExchangeRate get(ExchangeRate... exchangeRates) {
 		// empty implementation
 		return null;
 	}

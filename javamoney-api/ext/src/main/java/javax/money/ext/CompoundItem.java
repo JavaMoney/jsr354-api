@@ -29,59 +29,34 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.convert;
+package javax.money.ext;
 
 import java.util.Enumeration;
 import java.util.Map;
 
 /**
- * A {@link CompoundItemBuilder} T is an builder for building a {@link CompoundItem}.
+ * Defines a {@link CompoundItem} containing several instances of type T. Hereby
+ * the different instances are identified by arbitrary keys. Additionally each
+ * {@link CompoundItem} can optionally have one special instance of T that is
+ * denoted as the <i>leading</i> item. <br/>
+ * A {@link CompoundItem} instance is defined to be implemented as immutable
+ * object and therefore is very useful for modeling multidimensional results
+ * objects or input parameters as they are common in financial applications.<br/>
+ * {@link CompoundItem} instances can be created or adapted using a
+ * {@link CompoundItemBuilder} intance.
  * 
+ * @see CompoundItemBuilder
  * @author Anatole Tresch
  */
-public interface CompoundItemBuilder<T> {
-// TODO consider moving this to ext
+public interface CompoundItem<T> {
+	// TODO consider moving this to ext
 	/**
-	 * A {@link CompoundItem} may have a type identifier that helps to identify,
+	 * A {@link CompoundItem}may have a type identifier that helps to identify,
 	 * what type of items object is returned.
 	 * 
 	 * @return the {@link CompoundItem}'s type, never null.
 	 */
 	public String getType();
-
-	/**
-	 * Allows to set the type of the new {@link CompoundItem} created with this
-	 * builder.
-	 * 
-	 * @param type
-	 *            The new type.
-	 */
-	public void setType(String type);
-
-	/**
-	 * Access an instance of T with the leading item.
-	 * 
-	 * @return the leading instance of type T, or {@code null}.
-	 */
-	public T getLeadingItem();
-
-	/**
-	 * Sets the new leading item of this instance.
-	 * 
-	 * @param key
-	 *            the leading key.
-	 * @param item
-	 *            the leading item, not {@code null}.
-	 * @return The previously defined leading item, or {@code null}.
-	 */
-	public T setLeadingItem(Object key, T item);
-
-	/**
-	 * Removes the leading item from this instance.
-	 * 
-	 * @return The previously defined leading item, or {@code null}.
-	 */
-	public T removeLeadingItem();
 
 	/**
 	 * Get the available keys in this {@link CompoundItem}.
@@ -99,6 +74,13 @@ public interface CompoundItemBuilder<T> {
 	 * @return true, if an instance can be accessed given this key
 	 */
 	public boolean isKeyDefined(Object key);
+
+	/**
+	 * Access an instance of T with the leading item.
+	 * 
+	 * @return the leading instance of type T, or {@code null}.
+	 */
+	public T getLeadingItem();
 
 	/**
 	 * Access an instance of T with the given key.
@@ -120,46 +102,10 @@ public interface CompoundItemBuilder<T> {
 	public Map<Object, T> getAll();
 
 	/**
-	 * Map a {@link T} to the given target key passed.
+	 * Creates an instance of a {@link CompoundItemBuilder} initialized with
+	 * this instance.
 	 * 
-	 * @param key
-	 *            The target key, never null.
-	 * @return the instance previously set, or null.
+	 * @return a new builoder instance, never null.
 	 */
-	public T set(Object key, T item);
-
-	/**
-	 * Set all {@link T} instances for this builder, hereby the
-	 * items passed extend or overriden items already registered.
-	 * 
-	 * @param MonetaryAmounts
-	 *            the instances to be applied.
-	 */
-	public void set(Map<Object, T> items);
-
-	/**
-	 * Remove a {@link T} registered.
-	 * 
-	 * @param key
-	 *            The target key, never null.
-	 * @return the {@link T} instance removed, or null.
-	 */
-	public T remove(Object key);
-
-	/**
-	 * Remove all {@link T} instances registered, rendering this
-	 * instance to an empty {@link T}.
-	 * 
-	 * @return an immutable map fo the instances previously defined (can be
-	 *         empty).
-	 */
-	public void removeAll();
-
-	/**
-	 * Creates an immutable {@link T} from this builder.
-	 * 
-	 * @return the corresponding immutable type, never null.
-	 */
-	public CompoundItem<T> toCompoundItem();
-
+	public CompoundItemBuilder<T> toBuilder();
 }

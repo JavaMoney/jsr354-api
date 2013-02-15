@@ -20,11 +20,15 @@ package net.java.javamoney.ri.format.token;
 
 import java.util.ResourceBundle;
 
-import net.java.javamoney.ri.format.common.AbstractFormatToken;
-import net.java.javamoney.ri.format.common.FormatToken;
+import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.ParseException;
+
+import net.java.javamoney.ri.format.common.AbstractToken;
+import net.java.javamoney.ri.format.common.FormatterToken;
+import net.java.javamoney.ri.format.common.ParseContext;
 
 /**
- * {@link FormatToken} that adds a localizable {@link String}, read by key from
+ * {@link FormatterToken} that adds a localizable {@link String}, read by key from
  * a {@link ResourceBundle}..
  * 
  * @author Anatole Tresch
@@ -32,7 +36,7 @@ import net.java.javamoney.ri.format.common.FormatToken;
  * @param <T>
  *            The concrete type.
  */
-public class TranslatedLiteral<T> extends AbstractFormatToken<T> {
+public class TranslatedLiteral<T> extends AbstractToken<T> {
 
 	private String bundle;
 	private String key;
@@ -75,6 +79,10 @@ public class TranslatedLiteral<T> extends AbstractFormatToken<T> {
 
 	protected String getToken(T item,
 			javax.money.format.common.LocalizationStyle style) {
+		return getTokenInternal(style);
+	};
+	
+	private String getTokenInternal(LocalizationStyle style) {
 		if (bundle == null) {
 			return String.valueOf(key);
 		}
@@ -85,5 +93,16 @@ public class TranslatedLiteral<T> extends AbstractFormatToken<T> {
 		} catch (Exception e) {
 			return String.valueOf(key);
 		}
-	};
+	}
+
+	@Override
+	public void parse(ParseContext context) throws ParseException {
+		javax.money.format.common.LocalizationStyle style = context.getLocalizationStyle();
+		String token = getTokenInternal(style);
+		if(!context.consume(token)){
+			if(!isOptional()){
+				throw new ParseException("Expected: " + token);
+			}
+		}
+	}
 }

@@ -59,8 +59,7 @@ public interface StyleableCurrencyFormatter extends
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getSymbol(CurrencyUnit currency, Locale locale); // formatSymbol
-																	// ?
+	public String formatSymbol(CurrencyUnit currency, Locale locale); 
 
 	/**
 	 * Formats a currency's symbol value to a {@code String}.
@@ -76,8 +75,7 @@ public interface StyleableCurrencyFormatter extends
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getSymbol(CurrencyUnit currency, LocalizationStyle style); // formatSymbol
-																				// ?
+	public String formatSymbol(CurrencyUnit currency, LocalizationStyle style); 
 
 	/**
 	 * Formats a currency's display name to a {@code String}.
@@ -92,7 +90,7 @@ public interface StyleableCurrencyFormatter extends
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getDisplayName(CurrencyUnit currency, Locale locale);
+	public String formatDisplayName(CurrencyUnit currency, Locale locale);
 
 	/**
 	 * Formats a currency's display name to a {@code String}.
@@ -105,8 +103,7 @@ public interface StyleableCurrencyFormatter extends
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getDisplayName(CurrencyUnit currency, LocalizationStyle style); // formatName
-																					// ?
+	public String formatDisplayName(CurrencyUnit currency, LocalizationStyle style); 
 
 	/**
 	 * Formats a currency minor unit name to a {@code String}.
@@ -121,7 +118,7 @@ public interface StyleableCurrencyFormatter extends
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getMinorUnitName(CurrencyUnit currency, Locale locale);
+	public String formatMinorUnitName(CurrencyUnit currency, Locale locale);
 
 	/**
 	 * Formats a currency's minor unit name to a {@code String}.
@@ -134,8 +131,8 @@ public interface StyleableCurrencyFormatter extends
 	 * @throws FormatException
 	 *             if there is a problem while printing
 	 */
-	public String getMinorUnitName(CurrencyUnit currency,
-			LocalizationStyle style); // formatName ?
+	public String formatMinorUnitName(CurrencyUnit currency,
+			LocalizationStyle style);
 
 	/**
 	 * Prints an currency's symbol value to an {@code Appendable} converting any

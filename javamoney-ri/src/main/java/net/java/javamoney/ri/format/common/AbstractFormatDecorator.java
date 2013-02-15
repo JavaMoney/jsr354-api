@@ -31,17 +31,18 @@ import javax.money.format.common.LocalizationStyle;
  */
 public abstract class AbstractFormatDecorator<T> implements FormatDecorator<T> {
 
-	private FormatDecorator<T> decorator;
+	private FormatDecorator<T> formatDecorator;
+	private ParseDecorator<T> parseDecorator;
 
 	@Override
-	public String decorate(T item, String formattedString,
+	public String decorateFormat(T item, String formattedString,
 			LocalizationStyle style) {
 		String token = decorateInternal(item, formattedString, style);
 		if (token == null) {
 			throw new IllegalStateException("Token may not be null.");
 		}
-		if (this.decorator != null) {
-			return this.decorator.decorate(item, token, style);
+		if (this.formatDecorator != null) {
+			return this.formatDecorator.decorateFormat(item, token, style);
 		}
 		return token;
 	}
@@ -49,12 +50,20 @@ public abstract class AbstractFormatDecorator<T> implements FormatDecorator<T> {
 	protected abstract String decorateInternal(T item, String formattedString,
 			LocalizationStyle style);
 
-	public void setDecorator(FormatDecorator<T> decorator) {
-		this.decorator = decorator;
+	public void setFormatDecorator(FormatDecorator<T> decorator) {
+		this.formatDecorator = decorator;
 	}
 
-	public FormatDecorator<T> getDecorator() {
-		return this.decorator;
+	public FormatDecorator<T> getFormatDecorator() {
+		return this.formatDecorator;
+	}
+	
+	public void setParseDecorator(ParseDecorator<T> decorator) {
+		this.parseDecorator = decorator;
+	}
+
+	public ParseDecorator<T> getParseDecorator() {
+		return this.parseDecorator;
 	}
 
 }

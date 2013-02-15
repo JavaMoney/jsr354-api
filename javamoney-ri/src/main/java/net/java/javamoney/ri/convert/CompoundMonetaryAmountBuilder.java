@@ -19,8 +19,10 @@
 package net.java.javamoney.ri.convert;
 
 import javax.money.MonetaryAmount;
-import javax.money.convert.CompoundItem;
-import javax.money.convert.CompoundItemBuilder;
+import javax.money.ext.CompoundItem;
+import javax.money.ext.CompoundItemBuilder;
+
+import net.java.javamoney.ri.convert.common.AbstractCompoundItemBuilder;
 
 /**
  * Defines a {@link CompoundItemBuilder} for creating

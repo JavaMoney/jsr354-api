@@ -19,12 +19,15 @@
 package net.java.javamoney.ri.format.token;
 
 import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.ParseException;
 
-import net.java.javamoney.ri.format.common.AbstractFormatToken;
-import net.java.javamoney.ri.format.common.FormatToken;
+import net.java.javamoney.ri.format.common.AbstractToken;
+import net.java.javamoney.ri.format.common.FormatterToken;
+import net.java.javamoney.ri.format.common.ParseContext;
+import net.java.javamoney.ri.format.common.ParserToken;
 
 /**
- * {@link FormatToken} which adds an arbitrary literal constant value to the
+ * {@link FormatterToken} which adds an arbitrary literal constant value to the
  * output.
  * 
  * @author Anatole Tresch
@@ -32,7 +35,7 @@ import net.java.javamoney.ri.format.common.FormatToken;
  * @param <T>
  *            The item type.
  */
-public class Literal<T> extends AbstractFormatToken<T> {
+public class Literal<T> extends AbstractToken<T>{
 
 	private String token;
 
@@ -46,6 +49,15 @@ public class Literal<T> extends AbstractFormatToken<T> {
 	@Override
 	protected String getToken(T item, LocalizationStyle style) {
 		return this.token;
+	}
+
+	@Override
+	public void parse(ParseContext context) throws ParseException {
+		if(!context.consume(token)){
+			if(!isOptional()){
+				throw new ParseException("Expected: " + token);
+			}
+		}
 	}
 
 }

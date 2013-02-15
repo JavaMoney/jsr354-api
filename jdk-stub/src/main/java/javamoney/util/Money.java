@@ -26,6 +26,7 @@ import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.Rounding;
 import javax.money.RoundingProvider;
+import javax.money.UnknownCurrencyException;
 
 /**
  * Represents a {@link MonetaryAmount}.
@@ -551,5 +552,19 @@ public final class Money implements MonetaryAmount {
 	 */
 	public BigDecimal getValue() {
 		return number;
+	}
+
+	@Override
+	public boolean isSameCurrencyAs(MonetaryAmount amount) {
+		if (amount == null) {
+			throw new IllegalArgumentException("Amount must not be null.");
+		}
+		if (currency == null) {
+			throw new UnknownCurrencyException("Currency must not be null.");
+		}
+		return this.currency.getNamespace().equals(
+				amount.getCurrency().getNamespace())
+				&& this.currency.getCurrencyCode().equals(
+						amount.getCurrency().getCurrencyCode());
 	}
 }

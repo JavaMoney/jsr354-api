@@ -29,6 +29,7 @@ import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import javax.money.Rounding;
 import javax.money.RoundingProvider;
+import javax.money.UnknownCurrencyException;
 
 /**
  * Default immutable implementation of {@link MonetaryAmount}.
@@ -560,6 +561,9 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	public boolean isSameCurrencyAs(MonetaryAmount amount) {
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount must not be null.");
+		}
+		if (currency == null) {
+			throw new UnknownCurrencyException("Currency must not be null.");
 		}
 		return this.currency.getNamespace().equals(
 				amount.getCurrency().getNamespace())

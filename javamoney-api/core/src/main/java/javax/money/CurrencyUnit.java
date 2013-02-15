@@ -38,7 +38,7 @@ import javax.money.util.AttributeProvider;
 /**
  * * A unit of currency.
  * <p>
- * * This class represents a unit of currency such as the British Pound, Euro or
+ * * This class represents a unit of currency such as the British Pound, Euro,
  * US Dollar, BitCoins or other.
  * <p>
  * * The set of loaded currencies is provided by an instances of

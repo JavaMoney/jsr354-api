@@ -744,6 +744,8 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 */
 	public boolean isEqualTo(MonetaryAmount amount);
 	
+	/* FIXME the naming of these 2 methods should be coordinated. isSameCurrencyAs() could be hasSameCurrencyAs() though there might be room for freedom.
+	         isEqualTo(Number) must however be something better, e.g. isSameNumberAs(N) or hasSameNumberAs(N) */
 	/**
 	 * Allows to check, if the currency of the two amounts are the same. This
 	 * means that corresponding currency's namespace and code must match.
@@ -850,8 +852,8 @@ public interface MonetaryAmount extends Comparable<MonetaryAmount> {
 	 * @throws ArithmeticException
 	 *             if rounding fails.
 	 */
-	// public MonetaryAmount getAdjusted(); // FIXME should probably be called
-	// getRounded
+	// public MonetaryAmount getAdjusted();
+	// FIXME should probably be called getRounded or scrapped
 
 	/**
 	 * * Gets the monetary amount using the passed target type. This method

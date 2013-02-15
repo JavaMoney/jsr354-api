@@ -32,8 +32,9 @@ import org.slf4j.LoggerFactory;
  * instances using the {@link ServiceLoader}.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
-public abstract class AbstractSpiComponent {
+public abstract class AbstractSpiComponent { // TODO why is this called SpiComponent, not RiComponent?
 	private static final Logger log = LoggerFactory.getLogger(AbstractSpiComponent.class);
 	
 	/**
@@ -43,7 +44,6 @@ public abstract class AbstractSpiComponent {
 		try {
 			reload();
 		} catch (Exception e) {
-			// TODO log exception!
 			log.trace("Error", e);
 		}
 	}

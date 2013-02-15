@@ -35,7 +35,7 @@ import javax.money.UnknownCurrencyException;
  * 
  * @since 1.9
  */
-public final class Money implements MonetaryAmount {
+public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 
 	/** The numeric part of this amount. */
 	private final BigDecimal number;

@@ -36,12 +36,14 @@ package javax.money;
  * of an amount may vary depending on the implementation used. Nevertheless
  * basically an amount provides a functionality similar to {@link BigDecimal}.
  * <p>
- * Since {@link Number} is not an interface this class is not extending
+ * Since {@link Number} is not an interface this type is not extending
  * {@link Number}.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
+ * 
  */
-public interface MonetaryAmount extends Comparable<MonetaryAmount> {
+public interface MonetaryAmount {
 
 	/**
 	 * Gets the currency.

@@ -27,7 +27,7 @@ import javax.money.convert.ExchangeRateType;
 
 import org.junit.Test;
 
-public class CuirrencyExchangeRateTest extends ConvertTestBase {
+public class CurrencyExchangeRateTest extends ConvertTestBase {
 
 	private static final ExchangeRateType TYPE = ExchangeRateType
 			.of("test");

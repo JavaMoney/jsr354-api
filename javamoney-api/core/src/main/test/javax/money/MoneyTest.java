@@ -1,6 +1,7 @@
 package javax.money;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -22,7 +23,7 @@ public class MoneyTest extends RITestBase{
 	@Test
 	public void testGetInstanceCurrencyDouble() {
 		Money m = Money.valueOf(MoneyCurrency.getInstance("EUR"), 10.0d);
-		assertEquals(TEN, m.asType(BigDecimal.class));
+		assertTrue(TEN.doubleValue() == m.doubleValue());
 	}
 
 	@Test

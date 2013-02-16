@@ -18,5 +18,10 @@
   		<artifactId>money-api-format</artifactId>
   		<version>${project.version}</version>
   	</dependency>
+  	<dependency>
+  		<groupId>javax.money</groupId>
+  		<artifactId>money-api-ext</artifactId>
+  		<version>${project.version}</version>
+  	</dependency>
   </dependencies>
 </project>

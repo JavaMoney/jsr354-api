@@ -112,8 +112,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 				return currency;
 			}
 		}
-		throw new UnknownCurrencyException("So such currency " + namespace
-				+ ':' + code);
+		throw new UnknownCurrencyException(namespace, code);
 	}
 
 	/**

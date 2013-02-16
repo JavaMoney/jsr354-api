@@ -31,37 +31,36 @@
  */
 package javax.money.ext;
 
-import javax.money.CurrencyUnit;
-import javax.money.ext.spi.MonetaryExtension;
+import java.util.Locale;
+
+import javax.money.format.CurrencyFormatter;
+import javax.money.format.CurrencyFormatterFactory;
+import javax.money.format.StyleableCurrencyFormatter;
+import javax.money.format.common.LocalizationStyle;
 
 /**
- * This class models the component defined by JSR 354 that provides accessors
- * for {@link CurrencyUnit} using {@link Region}s. It is provided by the
- * Monetary singleton.
- * 
+ * Empty pseudo implementation for testing only.
  * @author Anatole Tresch
+ *
  */
-public interface RegionalCurrencyUnitProvider extends MonetaryExtension{
+public class TestCurrencyFormatterFactory implements CurrencyFormatterFactory {
 
-	/**
-	 * Access all currencies matching a {@link Region}.
-	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @return the currencies found, never null.
-	 */
-	public CurrencyUnit[] getAll(Region region);
+	@Override
+	public CurrencyFormatter getCurrencyFormatter(LocalizationStyle style) {
+		// empty implementation
+		return null;
+	}
 
-	/**
-	 * Access all currencies matching a {@link Region}, valid at the given
-	 * timestamp.
-	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
-	 * @return the currencies found, never null.
-	 */
-	public CurrencyUnit[] getAll(Region region, long timestamp);
+	@Override
+	public CurrencyFormatter getCurrencyFormatter(Locale locale) {
+		// empty implementation
+		return null;
+	}
+
+	@Override
+	public StyleableCurrencyFormatter getLocalizableCurrencyFormatter() {
+		// empty implementation
+		return null;
+	}
 
 }

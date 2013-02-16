@@ -35,7 +35,7 @@ import java.util.Locale;
 
 /**
  * This interface extends a {@link CurrencyUnit} by the most common localization
- * methods, similar to the ones defined in java.util.Currency.
+ * methods, similar to the ones defined in <code>java.util.Currency</code>.
  * 
  * @author Anatole Tresch
  * @author Werner Keil
@@ -46,7 +46,7 @@ public interface LocalizableCurrencyUnit extends CurrencyUnit {
      * Gets the symbol of this currency for the default locale.
      * For example, for the US Dollar, the symbol is "$" if the default
      * locale is the US, while for other locales it may be "US$". If no
-     * symbol can be determined, the ISO 4217 currency code is returned.
+     * symbol can be determined, the currency code is returned.
      *
      * @return the symbol of this currency for the default locale
      */
@@ -56,7 +56,7 @@ public interface LocalizableCurrencyUnit extends CurrencyUnit {
 	 * Gets the symbol of this currency for the specified locale. For example,
 	 * for the US Dollar, the symbol is "$" if the specified locale is the US,
 	 * while for other locales it may be "US$". If no symbol can be determined,
-	 * the ISO 4217 currency code is returned.
+	 * the currency code is returned.
 	 * 
 	 * @param locale
 	 *            the locale for which a display name for this currency is
@@ -70,7 +70,7 @@ public interface LocalizableCurrencyUnit extends CurrencyUnit {
     /**
      * Gets the name that is suitable for displaying this currency for
      * the default locale.  If there is no suitable display name found
-     * for the default locale, the ISO 4217 currency code is returned.
+     * for the default locale, the currency code is returned.
      *
      * @return the display name of this currency for the default locale
      * @since 1.7
@@ -80,7 +80,7 @@ public interface LocalizableCurrencyUnit extends CurrencyUnit {
 	/**
 	 * Gets the name that is suitable for displaying this currency for the
 	 * specified locale. If there is no suitable display name found for the
-	 * specified locale, the ISO 4217 currency code is returned.
+	 * specified locale, the currency code is returned.
 	 * 
 	 * @param locale
 	 *            the locale for which a display name for this currency is

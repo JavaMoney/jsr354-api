@@ -35,7 +35,7 @@ import javax.money.AmountAdjuster;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.convert.CurrencyConversionException;
-import javax.money.spi.MonetaryExtension;
+import javax.money.ext.spi.MonetaryExtension;
 
 /**
  * Component for accessing {@link MonetaryAmount} instances. It is provided by

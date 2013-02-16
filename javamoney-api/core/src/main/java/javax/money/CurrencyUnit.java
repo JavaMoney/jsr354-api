@@ -31,9 +31,8 @@
  */
 package javax.money;
 
+import java.util.Enumeration;
 import java.util.ServiceLoader;
-
-import javax.money.util.AttributeProvider;
 
 /**
  * * A unit of currency.
@@ -49,7 +48,7 @@ import javax.money.util.AttributeProvider;
  * @author Stephen Colebourne
  * @author Anatole Tresch
  */
-public interface CurrencyUnit extends AttributeProvider {
+public interface CurrencyUnit {
 
 	/**
 	 * The predefined namespace for ISO 4217 currencies.
@@ -72,6 +71,8 @@ public interface CurrencyUnit extends AttributeProvider {
 	 * code, but different name spaces.
 	 * <p>
 	 * Each currency is uniquely identified within its name space by this code.
+	 * <p>
+	 * This method matches the API of <type>java.util.Currency</type>.
 	 * 
 	 * @return the currency code. Instances of <type>java.util.Currency</type>
 	 *         return the three letter ISO-4217 or equivalent currency code,
@@ -86,6 +87,8 @@ public interface CurrencyUnit extends AttributeProvider {
 	 * <p>
 	 * The numeric code is an optional alternative to the standard currency
 	 * code.
+	 * <p>
+	 * This method matches the API of <type>java.util.Currency</type>.
 	 * 
 	 * @return the numeric currency code
 	 */
@@ -98,11 +101,10 @@ public interface CurrencyUnit extends AttributeProvider {
 	 * default. * For example, 'GBP' has 2 fractional digits, but 'JPY' has
 	 * zero. * Pseudo-currencies are indicated by -1. *
 	 * <p>
-	 * This method matches the API of <type>java.util.Currency</type> The
-	 * alternative method {@link #getDecimalPlaces()} may be more useful.
+	 * This method matches the API of <type>java.util.Currency</type>.
 	 * 
 	 * @return the fractional digits, from 0 to 9 (normally 0, 2 or 3), or -1
-	 *         for pseudo-currencies
+	 *         for pseudo-currencies.
 	 * 
 	 */
 	public int getDefaultFractionDigits();
@@ -115,6 +117,13 @@ public interface CurrencyUnit extends AttributeProvider {
 	 * 
 	 *         public double getRoundingIncrement();
 	 */
+
+	/**
+	 * Checks if this is a currency that has a legal tender.
+	 * 
+	 * @return true if this currency has a legal tender.
+	 */
+	public boolean isLegalTender();
 
 	/**
 	 * Checks if this is a virtual currency, such as BitCoins or Linden Dollars.
@@ -140,5 +149,34 @@ public interface CurrencyUnit extends AttributeProvider {
 	 *         defined {@code null} should be returned.
 	 */
 	public Long getValidUntil();
+
+	/**
+	 * Access additional attributes of this currency instance. This allows to
+	 * add additional codes or extended information by SPI providers. For
+	 * instance there are ISO currency codes existing that may represented by
+	 * different country specific currencies. The detailed country can be added
+	 * as an attribute here.
+	 * 
+	 * @param key
+	 *            The attribute's key, never null.
+	 * @return the according attribute value, or null.
+	 */
+	public <T> T getAttribute(String key, Class<T> type);
+
+	/**
+	 * Access the extended attributes defined.
+	 * 
+	 * @return the attribute key available, never null.
+	 */
+	public Enumeration<String> getAttributeKeys();
+
+	/**
+	 * Access the type of an attribute.
+	 * 
+	 * @param key
+	 *            The attribute key
+	 * @return the attribute's value class, or null.
+	 */
+	public Class<?> getAttributeType(String key);
 
 }

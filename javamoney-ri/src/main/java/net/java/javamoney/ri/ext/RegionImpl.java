@@ -18,7 +18,7 @@
  */
 package net.java.javamoney.ri.ext;
 
-import javax.money.Monetary;
+import javax.money.ext.Monetary;
 import javax.money.ext.Region;
 import javax.money.ext.RegionType;
 

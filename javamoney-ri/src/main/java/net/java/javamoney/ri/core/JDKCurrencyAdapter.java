@@ -131,4 +131,12 @@ public final class JDKCurrencyAdapter implements CurrencyUnit, Serializable {
 	public Class<?> getAttributeType(String key) {
 		return null;
 	}
+
+	@Override
+	public boolean isLegalTender() {
+		if(getCurrencyCode().startsWith("X")){
+			return false;
+		}
+		return true;
+	}
 }

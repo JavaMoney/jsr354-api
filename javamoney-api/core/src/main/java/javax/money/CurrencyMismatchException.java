@@ -29,39 +29,36 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.ext;
-
-import javax.money.CurrencyUnit;
-import javax.money.ext.spi.MonetaryExtension;
+package javax.money;
 
 /**
- * This class models the component defined by JSR 354 that provides accessors
- * for {@link CurrencyUnit} using {@link Region}s. It is provided by the
- * Monetary singleton.
+ * Exception thrown when the requested currency is unknown to the currency
+ * system in use.
+ * <p>
+ * For example, this exception would be thrown when trying to obtain a currency
+ * using an unrecognized currency code or locale.
  * 
- * @author Anatole Tresch
+ * @author Werner Keil
  */
-public interface RegionalCurrencyUnitProvider extends MonetaryExtension{
+public class CurrencyMismatchException extends IllegalArgumentException {
 
-	/**
-	 * Access all currencies matching a {@link Region}.
-	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @return the currencies found, never null.
-	 */
-	public CurrencyUnit[] getAll(Region region);
+	private static final long serialVersionUID = 3277879391197687869L;
+	/** The source currrency */
+	private CurrencyUnit source;
+	/** The target currrency */
+	private CurrencyUnit target;
 
-	/**
-	 * Access all currencies matching a {@link Region}, valid at the given
-	 * timestamp.
-	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
-	 * @return the currencies found, never null.
-	 */
-	public CurrencyUnit[] getAll(Region region, long timestamp);
+	public CurrencyMismatchException(CurrencyUnit source, CurrencyUnit target) {
+		super("Currency mismatch: " + source + " != " + target);
+		this.source = source;
+		this.target = target;
+	}
 
+	public CurrencyUnit getSourceCurrency() {
+		return source;
+	}
+
+	public CurrencyUnit getTargetCurrency() {
+		return target;
+	}
 }

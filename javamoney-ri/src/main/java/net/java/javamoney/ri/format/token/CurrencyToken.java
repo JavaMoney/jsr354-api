@@ -22,8 +22,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.money.CurrencyUnit;
-import javax.money.Monetary;
 import javax.money.MonetaryAmount;
+import javax.money.ext.Monetary;
 import javax.money.format.CurrencyFormatter;
 import javax.money.format.common.ParseException;
 

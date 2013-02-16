@@ -19,14 +19,14 @@
 package net.java.javamoney.ri.convert.providers;
 
 import javax.money.CurrencyUnit;
-import javax.money.Monetary;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryAmountFactory;
 import javax.money.convert.CurrencyConversionException;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
+import javax.money.ext.Monetary;
+import javax.money.ext.MonetaryAmountFactory;
 
 /**
  * Implementation of a {@link CurrencyConverter} that is simply adapting an

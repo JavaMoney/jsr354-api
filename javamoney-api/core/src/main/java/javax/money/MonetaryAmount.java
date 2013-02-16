@@ -41,7 +41,6 @@ package javax.money;
  * 
  * @author Anatole Tresch
  * @author Werner Keil
- * 
  */
 public interface MonetaryAmount {
 
@@ -400,12 +399,12 @@ public interface MonetaryAmount {
 	 * This returns the monetary amount in terms of the major units of the
 	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
 	 * will return 2, and 'BHD -1.345' will return -1.
+	 * <p>
+	 * This method matches the API of {@link java.math.BigDecimal}.
 	 * 
 	 * @return the major units part of the amount
 	 * @throws ArithmeticException
 	 *             if the amount is too large for a {@code long}
-	 *             
-	 *             FIXME isn't this same as getMajorPart().longValue()?
 	 */
 	public long getMajorLong();
 
@@ -415,12 +414,12 @@ public interface MonetaryAmount {
 	 * This returns the monetary amount in terms of the major units of the
 	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
 	 * will return 2, and 'BHD -1.345' will return -1.
+	 * <p>
+	 * This method matches the API of {@link java.math.BigDecimal}.
 	 * 
 	 * @return the major units part of the amount
 	 * @throws ArithmeticException
 	 *             if the amount is too large for an {@code int}
-	 *             
-	 *             FIXME isn't this same as getMajorPart().intValue()?
 	 */
 	public int getMajorInt();
 
@@ -435,6 +434,8 @@ public interface MonetaryAmount {
 	 * {@code BigInteger} . This is to allow further calculations to be
 	 * performed on the result. Should you need a {@code BigInteger}, simply
 	 * call {@link BigDecimal#toBigInteger()}.
+	 * <p>
+	 * This method matches the API of {@link java.math.BigDecimal}.
 	 * 
 	 * @return the minor units part of the amount, never null
 	 */
@@ -446,12 +447,12 @@ public interface MonetaryAmount {
 	 * This returns the monetary amount in terms of the minor units of the
 	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
 	 * will return 235, and 'BHD -1.345' will return -1345.
+	 * <p>
+	 * This method matches the API of {@link java.math.BigDecimal}.
 	 * 
 	 * @return the minor units part of the amount
 	 * @throws ArithmeticException
 	 *             if the amount is too large for a {@code long}
-	 *             
-	 *             FIXME isn't this same as getMinorPart().longValue()?
 	 */
 	public long getMinorLong();
 
@@ -461,12 +462,12 @@ public interface MonetaryAmount {
 	 * This returns the monetary amount in terms of the minor units of the
 	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
 	 * will return 235, and 'BHD -1.345' will return -1345.
+	 * <p>
+	 * This method matches the API of {@link java.math.BigDecimal}.
 	 * 
 	 * @return the minor units part of the amount
 	 * @throws ArithmeticException
 	 *             if the amount is too large for an {@code int}
-	 *             
-	 *             FIXME isn't this same as getMinorPart().intValue()?
 	 */
 	public int getMinorInt();
 
@@ -746,8 +747,6 @@ public interface MonetaryAmount {
 	 */
 	public boolean isEqualTo(MonetaryAmount amount);
 	
-	/* FIXME the naming of these 2 methods should be coordinated. isSameCurrencyAs() could be hasSameCurrencyAs() though there might be room for freedom.
-	         isEqualTo(Number) must however be something better, e.g. isSameNumberAs(N) or hasSameNumberAs(N) */
 	/**
 	 * Allows to check, if the currency of the two amounts are the same. This
 	 * means that corresponding currency's namespace and code must match.
@@ -757,7 +756,7 @@ public interface MonetaryAmount {
 	 * @return true, if the {@link CurrencyUnit} of this instance has the same
 	 *         namespace and code.
 	 */
-	public boolean isSameCurrencyAs(MonetaryAmount amount);
+	public boolean hasSameCurrencyAs(MonetaryAmount amount);
 
 	/**
 	 * Checks if this amount's value is the same compared to the number passed.
@@ -767,7 +766,7 @@ public interface MonetaryAmount {
 	 * @return TRUE, if this amount's value is the same compared to the number
 	 *         passed.
 	 */
-	public boolean isEqualTo(Number number);
+	public boolean hasSameNumberAs(Number number);
 
 	/**
 	 * Checks if this amount is not the same compared to the amount passed.
@@ -843,19 +842,6 @@ public interface MonetaryAmount {
 	 * @see #toEngineeringString()
 	 */
 	public String toPlainString();
-
-	/**
-	 * Returns an {@code MonetaryAmount} rounded according to the
-	 * {@code Rounding} settings accessible from the
-	 * {@link RoundingProvider#getRounding(CurrencyUnit)}.
-	 * 
-	 * @return a {@code MonetaryAmount} rounded according to the
-	 *         {@code Rounding}.
-	 * @throws ArithmeticException
-	 *             if rounding fails.
-	 */
-	// public MonetaryAmount getAdjusted();
-	// FIXME should probably be called getRounded or scrapped
 
 	/**
 	 * * Gets the monetary amount using the passed target type. This method

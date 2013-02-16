@@ -31,8 +31,9 @@
  */
 package javax.money.convert;
 
+import java.util.Enumeration;
+
 import javax.money.CurrencyUnit;
-import javax.money.util.AttributeProvider;
 
 /**
  * This interface models a exchange rate between two currencies.
@@ -41,7 +42,7 @@ import javax.money.util.AttributeProvider;
  * @author Anatole Tresch
  * @version 0.2.2
  */
-public interface ExchangeRate extends AttributeProvider {
+public interface ExchangeRate {
 
 	/**
 	 * Access the type of exchange rate.
@@ -129,4 +130,33 @@ public interface ExchangeRate extends AttributeProvider {
 	 * @return true, if the exchange rate is derived.
 	 */
 	public boolean isDerived();
+	
+	/**
+	 * Access additional attributes of this currency instance. This allows to
+	 * add additional codes or extended information by SPI providers. For
+	 * instance there are ISO currency codes existing that may represented by
+	 * different country specific currencies. The detailed country can be added
+	 * as an attribute here.
+	 * 
+	 * @param key
+	 *            The attribute's key, never null.
+	 * @return the according attribute value, or null.
+	 */
+	public <T> T getAttribute(String key, Class<T> type);
+
+	/**
+	 * Access the extended attributes defined.
+	 * 
+	 * @return the attribute key available, never null.
+	 */
+	public Enumeration<String> getAttributeKeys();
+
+	/**
+	 * Access the type of an attribute.
+	 * 
+	 * @param key
+	 *            The attribute key
+	 * @return the attribute's value class, or null.
+	 */
+	public Class<?> getAttributeType(String key);
 }

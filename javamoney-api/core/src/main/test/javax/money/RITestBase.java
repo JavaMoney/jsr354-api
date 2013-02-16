@@ -16,16 +16,16 @@
  * Contributors:
  *    Werner Keil - initial implementation.
  */
-package net.java.javamoney.ri.convert;
+package javax.money;
 
-import javax.money.RITestBase;
+import javax.money.CurrencyUnit;
+import javax.money.MoneyCurrency;
 
 /**
  * @author Werner Keil
  *
  */
-abstract class ConvertTestBase extends RITestBase {	
-	protected static final long SECOND_IN_MILLIS = 1000;
-	protected static final long MINUTE_IN_MILLIS = 60 * SECOND_IN_MILLIS;
-	protected static final long TEN_MINUTES_IN_MILLIS = 10 * MINUTE_IN_MILLIS;
+public abstract class RITestBase {
+	protected static final CurrencyUnit EURO = MoneyCurrency.getInstance("EUR");
+	protected static final CurrencyUnit DOLLAR = MoneyCurrency.getInstance("USD");
 }

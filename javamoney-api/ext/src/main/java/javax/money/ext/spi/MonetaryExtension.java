@@ -29,39 +29,27 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.ext;
+package javax.money.ext.spi;
 
-import javax.money.CurrencyUnit;
-import javax.money.ext.spi.MonetaryExtension;
+import java.util.ServiceLoader;
 
 /**
- * This class models the component defined by JSR 354 that provides accessors
- * for {@link CurrencyUnit} using {@link Region}s. It is provided by the
- * Monetary singleton.
+ * This is a marker interface that allows to load additional extension hooks
+ * into the Monetary singleton. Extensions must be registered using the
+ * {@link ServiceLoader} functionality. This allows to keep all money related
+ * functionality bundled within one central catalog.
  * 
  * @author Anatole Tresch
  */
-public interface RegionalCurrencyUnitProvider extends MonetaryExtension{
+public interface MonetaryExtension {
 
 	/**
-	 * Access all currencies matching a {@link Region}.
+	 * This method allows an extension to define the type that is exposed as
+	 * API. It is highly recommended that extensions provide an according usage
+	 * interface instead of returning implementation classes.
 	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @return the currencies found, never null.
+	 * @return The exposed type, never null.
 	 */
-	public CurrencyUnit[] getAll(Region region);
-
-	/**
-	 * Access all currencies matching a {@link Region}, valid at the given
-	 * timestamp.
-	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
-	 * @return the currencies found, never null.
-	 */
-	public CurrencyUnit[] getAll(Region region, long timestamp);
+	public Class<?> getExposedType();
 
 }

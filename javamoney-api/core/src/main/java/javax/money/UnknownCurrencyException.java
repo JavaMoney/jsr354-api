@@ -32,24 +32,38 @@
 package javax.money;
 
 /**
- * Exception thrown when the requested currency is unknown to the currency system in use.
+ * Exception thrown when the requested currency is unknown to the currency
+ * system in use.
  * <p>
- * For example, this exception would be thrown when trying to obtain a
- * currency using an unrecognized currency code or locale.
- *
+ * For example, this exception would be thrown when trying to obtain a currency
+ * using an unrecognized currency code or locale.
+ * 
  * @author Werner Keil
  */
 public class UnknownCurrencyException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 3277879391197687869L;
+	/** The requested namespace. */
+	private String namespace;
+	/** The requested currency code. */
+	private String currencyCode;
 
 	/**
-     * Constructor.
-     * 
-     * @param message  the message, may be null
-     */
-    public UnknownCurrencyException(String message) {
-    	super(message);
-    }
+	 * Constructor.
+	 * 
+	 * @param message
+	 *            the message, may be null
+	 */
+	public UnknownCurrencyException(String namespace, String currencyCode) {
+		super("Unknown currency - " + namespace + ':' + currencyCode);
+	}
+
+	public String getNamespace() {
+		return this.namespace;
+	}
+
+	public String getCurrencyCode() {
+		return this.currencyCode;
+	}
 
 }

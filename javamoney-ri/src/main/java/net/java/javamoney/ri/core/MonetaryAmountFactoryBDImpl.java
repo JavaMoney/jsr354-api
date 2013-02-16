@@ -22,7 +22,9 @@ import java.math.BigDecimal;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryAmountFactory;
+import javax.money.Money;
+import javax.money.ext.MonetaryAmountFactory;
+
 import net.java.javamoney.ri.qualifiers.*;
 
 @Amount

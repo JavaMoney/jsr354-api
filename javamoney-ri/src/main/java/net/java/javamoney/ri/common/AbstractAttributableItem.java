@@ -23,8 +23,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.money.util.AttributeProvider;
-
 /**
  * Base class that provides functionalities as defined by
  * {@link AttributeProvider}, additionally allowing attributes to be set, until
@@ -33,8 +31,7 @@ import javax.money.util.AttributeProvider;
  * 
  * @author Anatole Tresch
  */
-public abstract class AbstractAttributableItem extends AbstractConfigurableItem
-		implements AttributeProvider {
+public abstract class AbstractAttributableItem extends AbstractConfigurableItem {
 	/** Attributes, initialized as required lazily. */
 	private Map<String, Object> attributes;
 

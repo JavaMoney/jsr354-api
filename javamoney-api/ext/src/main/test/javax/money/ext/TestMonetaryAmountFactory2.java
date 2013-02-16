@@ -31,37 +31,76 @@
  */
 package javax.money.ext;
 
+import java.math.BigDecimal;
+
 import javax.money.CurrencyUnit;
-import javax.money.ext.spi.MonetaryExtension;
+import javax.money.MonetaryAmount;
+import javax.money.ext.MonetaryAmountFactory;
 
 /**
- * This class models the component defined by JSR 354 that provides accessors
- * for {@link CurrencyUnit} using {@link Region}s. It is provided by the
- * Monetary singleton.
- * 
+ * Empty pseudo implementation for testing only.
  * @author Anatole Tresch
+ *
  */
-public interface RegionalCurrencyUnitProvider extends MonetaryExtension{
+public class TestMonetaryAmountFactory2 implements MonetaryAmountFactory {
 
-	/**
-	 * Access all currencies matching a {@link Region}.
-	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @return the currencies found, never null.
-	 */
-	public CurrencyUnit[] getAll(Region region);
+	@Override
+	public Class<?> getNumberClass() {
+		return BigDecimal.class;
+	}
 
-	/**
-	 * Access all currencies matching a {@link Region}, valid at the given
-	 * timestamp.
-	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
-	 * @return the currencies found, never null.
-	 */
-	public CurrencyUnit[] getAll(Region region, long timestamp);
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, Number number) {
+		// empty implementation
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, byte value) {
+		// empty implementation
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, short value) {
+		// empty implementation
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, int value) {
+		// empty implementation
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, long value) {
+		// empty implementation
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, long major, long minor) {
+		// empty implementation
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, float value) {
+		// empty implementation
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, double value) {
+		// empty implementation
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount zero(CurrencyUnit currency) {
+		// empty implementation
+		return null;
+	}
 
 }

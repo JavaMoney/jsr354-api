@@ -2,20 +2,18 @@ package net.java.javamoney.ri;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
-import javax.money.Monetary;
 import javax.money.MonetaryAmount;
+import javax.money.Money;
+import javax.money.ext.Monetary;
 import javax.money.format.AmountFormatter;
 import javax.money.format.AmountParser;
 import javax.money.format.StyleableAmountFormatter;
 import javax.money.format.StyleableAmountParser;
 import javax.money.format.common.ParseException;
-
-import net.java.javamoney.ri.core.Money;
 
 import org.junit.Ignore;
 import org.junit.Test;

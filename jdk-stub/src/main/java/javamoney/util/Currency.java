@@ -811,7 +811,6 @@ public final class Currency implements Serializable, LocalizableCurrencyUnit {
 	 */
 	@Override
 	public <T> T getAttribute(String key, Class<T> type) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -820,7 +819,6 @@ public final class Currency implements Serializable, LocalizableCurrencyUnit {
 	 */
 	@Override
 	public Class<?> getAttributeType(String key) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -829,7 +827,14 @@ public final class Currency implements Serializable, LocalizableCurrencyUnit {
 	 */
 	@Override
 	public Enumeration<String> getAttributeKeys() {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyEnumeration();
+	}
+
+	@Override
+	public boolean isLegalTender() {
+		if(getCurrencyCode().startsWith("X")){
+			return false;
+		}
+		return true;
 	}
 }

@@ -165,6 +165,14 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 		public String getDisplayName() {
 			return currencyName;
 		}
+
+		@Override
+		public boolean isLegalTender() {
+			if(getCurrencyCode().startsWith("X")){
+				return false;
+			}
+			return true;
+		}
 	}
 
 	private class CountryHandler extends DefaultHandler {

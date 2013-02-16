@@ -31,37 +31,14 @@
  */
 package javax.money.ext;
 
-import javax.money.CurrencyUnit;
-import javax.money.ext.spi.MonetaryExtension;
 
 /**
- * This class models the component defined by JSR 354 that provides accessors
- * for {@link CurrencyUnit} using {@link Region}s. It is provided by the
- * Monetary singleton.
+ * Extension interface, hust for testing!
  * 
  * @author Anatole Tresch
  */
-public interface RegionalCurrencyUnitProvider extends MonetaryExtension{
+public interface TestExtension {
 
-	/**
-	 * Access all currencies matching a {@link Region}.
-	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @return the currencies found, never null.
-	 */
-	public CurrencyUnit[] getAll(Region region);
-
-	/**
-	 * Access all currencies matching a {@link Region}, valid at the given
-	 * timestamp.
-	 * 
-	 * @param locale
-	 *            the target locale, not null.
-	 * @param timestamp
-	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
-	 * @return the currencies found, never null.
-	 */
-	public CurrencyUnit[] getAll(Region region, long timestamp);
-
+	public String sayHello();
+	
 }

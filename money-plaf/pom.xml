@@ -13,7 +13,7 @@
 
 	<modules>
 		<module>core</module>
-		<module>jdk-stub</module>
+		<!-- module>jdk-stub</module -->
 	</modules>
 
 	<dependencies>

@@ -36,7 +36,7 @@
  *
  */
 
-package java.text;
+package javamoney.text;
 
 import java.io.InvalidObjectException;
 import java.io.IOException;

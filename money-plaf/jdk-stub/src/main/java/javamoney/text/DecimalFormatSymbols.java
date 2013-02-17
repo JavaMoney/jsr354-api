@@ -36,7 +36,7 @@
  *
  */
 
-package java.text;
+package javamoney.text;
 //
 //import java.io.IOException;
 //import java.io.ObjectInputStream;

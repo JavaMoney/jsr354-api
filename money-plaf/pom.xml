@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>jsr354</artifactId>
+		<groupId>javax.money</groupId>
+		<version>0.3-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<artifactId>money-plaf</artifactId>
+	<packaging>pom</packaging>
+	<name>Java Money and Currency API - SE platform</name>
+
+	<modules>
+		<module>core</module>
+		<module>jdk-stub</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<description>Platform extensions and JDK adaptations for JSR 354.</description>
+</project>

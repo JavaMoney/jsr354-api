@@ -20,9 +20,10 @@
 	</properties>
 
 	<modules>
-		<!-- module>jdk-stub</module -->
-		<module>javamoney-ri</module>
-		<module>javamoney-api</module>
+		<module>money-plaf</module>
+		<module>money-api</module>
+		<module>money-ri</module>
+		<module>money-tck</module>
 	</modules>
 
 	<licenses>

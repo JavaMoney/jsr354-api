@@ -38,7 +38,7 @@ import javax.money.MonetaryAmount;
 import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.StyleableFormatter;
 import javax.money.format.common.StyledFormatter;
-import javax.money.format.common.StyledFormatterBuilder;
+import javax.money.format.common.FormatterBuilder;
 
 /**
  * Provides the ability to build a formatter for amount values.
@@ -50,7 +50,7 @@ import javax.money.format.common.StyledFormatterBuilder;
  * TODO see Formatter, maybe rename to *Printer* like suggested by Joda sandbox
  */
 public interface AmountFormatterBuilder extends
-		StyledFormatterBuilder<MonetaryAmount> {
+		FormatterBuilder<MonetaryAmount> {
 
 	/**
 	 * Appends the amount to the builder using the default format. The default
@@ -172,22 +172,6 @@ public interface AmountFormatterBuilder extends
 	 * @return the formatter built from this builder, never null
 	 */
 	public AmountFormatter toFormatter();
-
-	/**
-	 * Builds the formatter from the builder setting the locale.
-	 * <p>
-	 * Once the builder is in the correct state it must be converted to a
-	 * {@code AmountFormatter} to be used. Calling this method does not change
-	 * the state of this instance, so it can still be used.
-	 * <p>
-	 * This method uses the specified locale. FOr extended style parameters use
-	 * {@link AmountFormatter#toFormatter(LocalizationStyle)} instead of.
-	 * 
-	 * @param locale
-	 *            the locale for the formatter, not null
-	 * @return the formatter built from this builder, never null
-	 */
-	public AmountFormatter toFormatter(Locale locale);
 
 	/**
 	 * Builds the formatter from the builder setting the locale.

@@ -80,32 +80,4 @@ public interface StyleableAmountParser extends StyleableParser<MonetaryAmount> {
 	public MonetaryAmount parseNumber(CharSequence text, CurrencyUnit currency,
 			LocalizationStyle style) throws ParseException;
 
-	/**
-	 * Fully parses the text into a {@code Money} requiring that the parsed
-	 * amount has the correct number of decimal places.
-	 * <p>
-	 * The parse must complete normally and parse the entire text (currency and
-	 * amount). If the parse completes without reading the entire length of the
-	 * text, an exception is thrown. If any other problem occurs during parsing,
-	 * an exception is thrown.
-	 * 
-	 * @param text
-	 *            the text to parse, not null
-	 * @param currency
-	 *            the target currency to be used (not the text to parse contains
-	 *            only a number).
-	 * @param locale
-	 *            The target locale determining the input format.
-	 * @return the parsed monetary value, never null
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to parse
-	 * @throws FormatException
-	 *             if there is a problem while parsing
-	 * @throws ArithmeticException
-	 *             if the scale of the parsed money exceeds the scale of the
-	 *             currency
-	 */
-	public MonetaryAmount parseNumber(CharSequence text, CurrencyUnit currency,
-			Locale locale) throws ParseException;
-
 }

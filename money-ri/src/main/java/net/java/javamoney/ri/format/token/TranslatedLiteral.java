@@ -101,7 +101,7 @@ public class TranslatedLiteral<T> extends AbstractToken<T> {
 		String token = getTokenInternal(style);
 		if(!context.consume(token)){
 			if(!isOptional()){
-				throw new ParseException("Expected: " + token);
+				throw new ParseException("Expected: " + token, context.getCurrentText().toString(), -1);
 			}
 		}
 	}

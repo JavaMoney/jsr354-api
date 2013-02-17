@@ -7,7 +7,7 @@
 		<version>0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>money-api-ext</artifactId>
-	<name>Java Money and Currency API Predefined Extensions</name>
+	<name>JSR 354 (Money and Currency) - Standalone Extensions API </name>
 	<dependencies>
 		<dependency>
 			<groupId>javax.money</groupId>

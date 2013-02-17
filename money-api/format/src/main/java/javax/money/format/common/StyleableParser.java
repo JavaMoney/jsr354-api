@@ -31,7 +31,6 @@
  */
 package javax.money.format.common;
 
-import java.util.Locale;
 
 /**
  * Instance that implement this interface parse Strings into instances of of
@@ -65,25 +64,5 @@ public interface StyleableParser<T> extends Targeted<T> {
 	 */
 	public T parse(CharSequence text, LocalizationStyle locale)
 			throws ParseException;
-
-	/**
-	 * Fully parses the text into an instance of T.
-	 * <p>
-	 * The parse must complete normally and parse the entire text (currency and
-	 * amount). If the parse completes without reading the entire length of the
-	 * text, an exception is thrown. If any other problem occurs during parsing,
-	 * an exception is thrown.
-	 * 
-	 * @param text
-	 *            the text to parse, not null
-	 * @param locale
-	 *            The locale to be used for parsing, nnot null.
-	 * @return the parsed value, never null
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to parse
-	 * @throws ParseException
-	 *             if there is a problem while parsing
-	 */
-	public T parse(CharSequence text, Locale locale) throws ParseException;
 
 }

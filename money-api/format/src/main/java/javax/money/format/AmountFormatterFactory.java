@@ -56,19 +56,6 @@ public interface AmountFormatterFactory {
 	 * This method returns an instance of a {@link AmountFormatter} that is
 	 * provided the registered AmountFormatterFactory SPI implementation.
 	 * 
-	 * @param locale
-	 *            The target locale. The locale will be converted into an
-	 *            according {@link LocalizationStyle} using
-	 *            {@link LocalizationStyle#of(Locale)}.
-	 * @return the formatter required, if available.
-	 * @throws
-	 */
-	public AmountFormatter getAmountFormatter(Locale locale);
-
-	/**
-	 * This method returns an instance of a {@link AmountFormatter} that is
-	 * provided the registered AmountFormatterFactory SPI implementation.
-	 * 
 	 * @param style
 	 *            The target localization style.
 	 * @return the formatter required, if available.

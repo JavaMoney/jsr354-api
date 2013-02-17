@@ -27,12 +27,12 @@ import java.util.Locale;
 import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.StyleableFormatter;
 import javax.money.format.common.StyledFormatter;
-import javax.money.format.common.StyledFormatterBuilder;
+import javax.money.format.common.FormatterBuilder;
 
 import net.java.javamoney.ri.format.token.Literal;
 
 /**
- * This class implements a {@link StyledFormatterBuilder} based on an ordered
+ * This class implements a {@link FormatterBuilder} based on an ordered
  * and {@link Decoratable} list of {@link FormatterToken} instances.
  * 
  * @author Anatole Tresch
@@ -41,7 +41,7 @@ import net.java.javamoney.ri.format.token.Literal;
  *            The target type.
  */
 public class TokenizedFormatterBuilder<T> extends AbstractTargeted<T> implements
-		StyledFormatterBuilder<T> {
+		FormatterBuilder<T> {
 
 	private List<FormatterToken<T>> tokens = new ArrayList<FormatterToken<T>>();
 
@@ -76,11 +76,6 @@ public class TokenizedFormatterBuilder<T> extends AbstractTargeted<T> implements
 	public StyleableFormatter<T> toStyleableFormatter() {
 		return new TokenizedItemFormatter<>(getTargetClass(),
 				tokens.toArray(new FormatterToken[tokens.size()]));
-	}
-
-	@Override
-	public StyledFormatter<T> toFormatter(Locale locale) {
-		return toFormatter(LocalizationStyle.of(locale));
 	}
 
 	@Override

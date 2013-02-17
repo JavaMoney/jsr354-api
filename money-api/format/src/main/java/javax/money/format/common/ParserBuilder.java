@@ -31,7 +31,6 @@
  */
 package javax.money.format.common;
 
-import java.util.Locale;
 
 /**
  * Provides the ability to build a parser by programmatic defining the parsing
@@ -57,7 +56,7 @@ import java.util.Locale;
  * @see StyledParser
  * @see StyleableParser
  */
-public interface StyledParserBuilder<T> {
+public interface ParserBuilder<T> {
 	
 	/**
 	 * Builds the {@link StyleableParser} from this builder.
@@ -70,24 +69,6 @@ public interface StyledParserBuilder<T> {
 	 * @return the {@link StyleableParser} built from this builder, never null
 	 */
 	public StyleableParser<T> toStylableItemParser();
-
-	/**
-	 * Builds the parser from the builder setting the locale.
-	 * <p>
-	 * Calling this method does not change the state of this instance, so it can
-	 * still be used.
-	 * <p>
-	 * Once the builder is in the correct state it must be converted to a
-	 * {@code Formatter} of {@link StyleableFormatter} to be used. This method
-	 * uses the specified locale. For extended style parameters use
-	 * {@link StyledParserBuilder#toParser(LocalizationStyle)} instead of.
-	 * 
-	 * @param locale
-	 *            the locale for the parser, not null
-	 * @return the {@link Styled} {@link StyledParser} built from this builder, never
-	 *         null
-	 */
-	public StyledParser<T> toItemParser(Locale locale);
 
 	/**
 	 * Builds the parser from the builder setting the {@link LocalizationStyle}.

@@ -862,29 +862,6 @@ public interface MonetaryAmount {
 	public <T> T asType(Class<T> type);
 
 	/**
-	 * * Gets the monetary amount using the passed target type. This method
-	 * allows to support different return types, depending of the concrete
-	 * implementation. E.g. {@link BigDecimal} should be supported within SE
-	 * environments, whereas on ME environments {@link Double} will be more
-	 * likely.
-	 * <p>
-	 * This returns the monetary value as a {@code T}. No scaling will be
-	 * affected. for additional scaling based on the currency use
-	 * {@link #getAdjusted()}.
-	 * 
-	 * @param type
-	 *            The target type, not null.
-	 * @param performRounding
-	 *            if true, {@link #getAdjusted()} is called, before adapting to
-	 *            the target type, which performs adjustments or rounding. #see
-	 *            {@link #getAdjusted()}
-	 * @return the amount represented as T, never null
-	 * @throws IllegalArgumentException
-	 *             if the representation type is not supported.
-	 */
-	public <T> T asType(Class<T> type, boolean performRounding);
-
-	/**
 	 * Get the amount's value, without any modification. By default, a numeric
 	 * value of an Amount will be rounded as defined by
 	 * {@link CurrencyUnit#getDefaultFractionDigits()}.
@@ -909,27 +886,4 @@ public interface MonetaryAmount {
 	 */
 	public Class<?> getNumberType();
 
-	/**
-	 * This method divides this amount into a number of sub-amounts determined
-	 * by the divisor passed.
-	 * 
-	 * @param divisor
-	 *            Determines how many amounts should be divided based on this
-	 *            amount (which represents the total amount).
-	 * @param addDifferenceToLastValue
-	 *            if true, the rounding difference between the sum of the
-	 *            divided amounts and this total amount value, is simply added
-	 *            to the last amount, otherwise the last element of the array
-	 *            returned contains the rounding difference (note: this element
-	 *            may be 0!).<br/>
-	 *            For example dividing 100 by 3, when set to true, a three
-	 *            element array is returned, containing 33.33, 33.33 and 33.34.<br/>
-	 *            If set to false, a 4 elements array would be returned,
-	 *            containing 3.33, 3.33, 3.33, 0.01.
-	 * @return the divided and separated amounts, and, if
-	 *         addDifferenceToLastValue is false, an additional amount instance
-	 *         containing the rounding difference.
-	 */
-	public MonetaryAmount[] divideAndSeparate(Number divisor,
-			boolean addDifferenceToLastValue);
 }

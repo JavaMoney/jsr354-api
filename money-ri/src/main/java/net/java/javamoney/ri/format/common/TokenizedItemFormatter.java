@@ -46,17 +46,6 @@ public class TokenizedItemFormatter<T> extends AbstractTargeted<T> implements
 	}
 
 	@Override
-	public void print(Appendable appendable, T item, Locale locale)
-			throws IOException {
-		print(appendable, item, LocalizationStyle.of(locale));
-	}
-
-	@Override
-	public String format(T item, Locale locale) throws FormatException {
-		return format(item, LocalizationStyle.of(locale));
-	}
-
-	@Override
 	public void print(Appendable appendable, T item, LocalizationStyle style)
 			throws IOException {
 		for (int i = 0; i < tokens.length; i++) {

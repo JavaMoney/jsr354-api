@@ -60,22 +60,6 @@ public interface StyleableCurrencyParser extends StyleableParser<CurrencyUnit> {
 	 * 
 	 * @param symbol
 	 *            the input data.
-	 * @param locale
-	 *            the target locale
-	 * @return parsed {@link CurrencyUnit}, never null.
-	 * @throws UnknownCurrencyException
-	 *             if the required symbol can be mapped to a
-	 *             {@link CurrencyUnit} on the given namespace.
-	 * @throws ParseException
-	 *             if there is a problem while parsing
-	 */
-	public CurrencyUnit parseSymbol(CharSequence symbol, Locale locale);
-
-	/**
-	 * Parses a {@link CurrencyUnit} based on the localized symbol.
-	 * 
-	 * @param symbol
-	 *            the input data.
 	 * @param style
 	 *            the target style.
 	 * @return parsed {@link CurrencyUnit}, never null.

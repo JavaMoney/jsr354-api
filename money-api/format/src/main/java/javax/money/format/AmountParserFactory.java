@@ -49,21 +49,6 @@ public interface AmountParserFactory {
 	 * must be provided by the registered AmountParserFactory SPI
 	 * implementation.
 	 * 
-	 * @param locale
-	 *            The target locale. The locale will be converted into an
-	 *            according {@link LocalizationStyle} using
-	 *            {@link LocalizationStyle#of(Locale)}.
-	 * @return the according parser, if available.
-	 * @throws
-	 */
-	public AmountParser getAmountParser(Locale locale);
-
-	/**
-	 * This method returns a parser instance for {@link MonetaryAmount}
-	 * instances formatted in the given {@link Locale}. The instance returned
-	 * must be provided by the registered AmountParserFactory SPI
-	 * implementation.
-	 * 
 	 * @param style
 	 *            The target localization style.
 	 * @return the according parser, if available.

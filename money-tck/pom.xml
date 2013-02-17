@@ -7,8 +7,8 @@
 		<version>0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>money-tck</artifactId>
-	<name>Java Money and Currency RI</name>
-	<description>Reference Implementation of JSR 354</description>
+	<name>JSR 354 (Money and Currency) - TCK</name>
+	<description>Technical Compatibility Kit (TCK) of JSR 354</description>
 
 	<properties>
 		<javax.money.version>0.3-SNAPSHOT</javax.money.version>

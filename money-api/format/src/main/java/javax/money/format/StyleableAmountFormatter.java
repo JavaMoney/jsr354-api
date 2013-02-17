@@ -73,45 +73,6 @@ public interface StyleableAmountFormatter extends StyleableFormatter<MonetaryAmo
 	public String formatNumber(MonetaryAmount amount, LocalizationStyle style);
 
 	/**
-	 * Formats a amount's numeric value to a {@code String}, the currency is
-	 * omitted.
-	 * 
-	 * @param amount
-	 *            the amount to print, not null
-	 * @param locale
-	 *            The {@link Locale} to be used. This instance is used to create
-	 *            a simple {@link LocalizationStyle} using
-	 *            {@link LocalizationStyle#of(Locale)}.
-	 * @return the string printed using the settings of this formatter
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 */
-	public String formatNumber(MonetaryAmount item, Locale locale);
-
-	/**
-	 * Formats a amount's numeric value to a {@code Appendable}, the currency is
-	 * omitted.
-	 * 
-	 * @param appendable
-	 *            the appendable to print to, not null
-	 * @param amount
-	 *            the amount to print, not null
-	 * @param locale
-	 *            The {@link Locale} to be used. This instance is used to create
-	 *            a simple {@link LocalizationStyle} using
-	 *            {@link LocalizationStyle#of(Locale)}.
-	 * @return the string printed using the settings of this formatter
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 */
-	public void printNumber(Appendable appendable, MonetaryAmount amount, Locale locale)
-			throws IOException;
-
-	/**
 	 * Formats a amount's numeric value to a {@code Appendable}, the currency is
 	 * omitted.
 	 * <p>

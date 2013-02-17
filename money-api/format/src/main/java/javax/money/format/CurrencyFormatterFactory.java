@@ -53,15 +53,6 @@ public interface CurrencyFormatterFactory {
 	public CurrencyFormatter getCurrencyFormatter(LocalizationStyle style);
 
 	/**
-	 * This method returns an instance of a {@link CurrencyFormatter}.
-	 * 
-	 * @param locale
-	 *            The target locale.
-	 * @return a currency formatter.
-	 */
-	public CurrencyFormatter getCurrencyFormatter(Locale locale);
-
-	/**
 	 * This method returns an instance of a {@link StyleableCurrencyFormatter}
 	 * .
 	 * 

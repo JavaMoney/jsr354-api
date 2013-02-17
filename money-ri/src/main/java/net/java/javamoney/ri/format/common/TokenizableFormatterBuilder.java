@@ -18,10 +18,10 @@
  */
 package net.java.javamoney.ri.format.common;
 
-import javax.money.format.common.StyledFormatterBuilder;
+import javax.money.format.common.FormatterBuilder;
 
 /**
- * This interface defines a {@link StyledFormatterBuilder} that is using an
+ * This interface defines a {@link FormatterBuilder} that is using an
  * ordered list of {@link FormatterToken} instances. Additionally each
  * {@link FormatterToken} instance can also be decorated using a
  * {@link FormatDecorator} instance.
@@ -32,7 +32,7 @@ import javax.money.format.common.StyledFormatterBuilder;
  *            The target type.
  */
 public interface TokenizableFormatterBuilder<T> extends
-		StyledFormatterBuilder<T> {
+		FormatterBuilder<T> {
 
 	/**
 	 * Adds a format part representing by the given {@link AbstractToken}.

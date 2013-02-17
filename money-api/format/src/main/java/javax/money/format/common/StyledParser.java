@@ -62,5 +62,4 @@ public interface StyledParser<T>  extends Targeted<T>, Styled{
 	public T parse(CharSequence text)
 			throws ParseException;
 
-
 }

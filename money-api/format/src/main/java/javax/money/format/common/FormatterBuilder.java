@@ -57,7 +57,7 @@ import java.util.Locale;
  * @see StyledFormatter
  * @see StyleableFormatter
  */
-public interface StyledFormatterBuilder<T> {
+public interface FormatterBuilder<T> {
 	
 	/**
 	 * Builds a {@link StyleableFormatter} from the builder.
@@ -71,24 +71,6 @@ public interface StyledFormatterBuilder<T> {
 	 *         null
 	 */
 	public StyleableFormatter<T> toStyleableFormatter();
-
-	/**
-	 * Builds the formatter from the builder setting the locale.
-	 * <p>
-	 * Once the builder is in the correct state it must be converted to a
-	 * {@code Formatter} or {@link StyleableFormatter} to be used. Calling
-	 * this method does not change the state of this instance, so it can still
-	 * be used.
-	 * <p>
-	 * This method uses the specified locale. For extended style parameters use
-	 * {@link StyledFormatterBuilder#toFormatter(LocalizationStyle)} instead of.
-	 * 
-	 * @param locale
-	 *            the locale for the formatter, not null
-	 * @return the {@link Styled} {@link StyledFormatter} built from this builder,
-	 *         never null
-	 */
-	public StyledFormatter<T> toFormatter(Locale locale);
 
 	/**
 	 * Builds the formatter from the builder setting the

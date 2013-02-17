@@ -56,17 +56,6 @@ public interface CurrencyParserFactory {
 			LocalizationStyle style);
 
 	/**
-	 * This method returns an instance of a {@link CurrencyParser}.
-	 * 
-	 * @param namespace
-	 *            the target name space of currencies.
-	 * @param locale
-	 *            The target locale.
-	 * @return a currency formatter.
-	 */
-	public CurrencyParser getCurrencyParser(String namespace, Locale locale);
-
-	/**
 	 * This method returns an instance of a {@link StyleableCurrencyParser}.
 	 * 
 	 * @param namespace

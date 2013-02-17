@@ -31,7 +31,6 @@
  */
 package javax.money.format.common;
 
-import java.util.Locale;
 
 /**
  * This class represent the accessor interface for creating different kind of
@@ -41,19 +40,7 @@ import java.util.Locale;
  * @see StyleableFormatter
  * @author Anatole Tresch
  */
-public interface StyledFormatterFactory<T> extends Targeted<T> {
-
-	/**
-	 * This method returns an instance of a fixed styled {@link StyledFormatter}.
-	 * 
-	 * @param locale
-	 *            The target locale. The locale will be converted into an
-	 *            according {@link LocalizationStyle} using
-	 *            {@link LocalizationStyle#of(Locale)}.
-	 * @return the formatter required, if available.
-	 * @throws
-	 */
-	public StyledFormatter<T> getFormatter(Locale locale);
+public interface FormatterFactory<T> extends Targeted<T> {
 
 	/**
 	 * This method returns an instance of a fixed styled {@link StyledFormatter}.
@@ -71,6 +58,6 @@ public interface StyledFormatterFactory<T> extends Targeted<T> {
 	 * @return the formatter required, if available.
 	 * @throws
 	 */
-	public StyleableFormatter<T> getLocalizableFormatter();
+	public StyleableFormatter<T> getStyleableFormatter();
 
 }

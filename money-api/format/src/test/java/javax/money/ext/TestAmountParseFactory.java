@@ -46,12 +46,6 @@ import javax.money.format.common.LocalizationStyle;
 public class TestAmountParseFactory implements AmountParserFactory {
 
 	@Override
-	public AmountParser getAmountParser(Locale locale) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
 	public AmountParser getAmountParser(LocalizationStyle style) {
 		// empty implementation
 		return null;

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Enumeration;
@@ -26,7 +27,7 @@ public class TokenizedFormatterBuilderTest {
 	}
 
 	@Test
-	public void testAddTokenFormatTokenOfT() {
+	public void testAddTokenFormatTokenOfT() throws IOException {
 		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken(new Literal<Double>("test- "));
@@ -34,19 +35,22 @@ public class TokenizedFormatterBuilderTest {
 		DecimalFormatSymbols syms = df.getDecimalFormatSymbols();
 		syms.setDecimalSeparator(':');
 		df.setDecimalFormatSymbols(syms);
-		b.addToken(new FormattedNumber<Double>(df).setNumberGroupChars(',', '\'')
-				.setNumberGroupSizes(2, 2, 3));
-		StyledFormatter<Double> f = b.toFormatter(Locale.FRENCH);
+		b.addToken(new FormattedNumber<Double>(df).setNumberGroupChars(',',
+				'\'').setNumberGroupSizes(2, 2, 3));
+		StyledFormatter<Double> f = b.toFormatter(LocalizationStyle
+				.of(Locale.FRENCH));
 		assertNotNull(f);
 		assertEquals("test- 12'345'67,89:12", f.format(123456789.123456789d));
 		StyleableFormatter<Double> sf = b.toStyleableFormatter();
 		assertNotNull(sf);
-		assertEquals("test- 12'345'67,89:12",
-				sf.format(123456789.123456789d, Locale.FRENCH));
+		assertEquals(
+				"test- 12'345'67,89:12",
+				sf.format(123456789.123456789d,
+						LocalizationStyle.of(Locale.FRENCH)));
 	}
 
 	@Test
-	public void testAddTokenString() {
+	public void testAddTokenString() throws IOException {
 		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken("test- ");
@@ -57,14 +61,17 @@ public class TokenizedFormatterBuilderTest {
 		f.setDecimalFormatSymbols(symbols);
 		b.addToken(new FormattedNumber<Double>(f)
 				.setNumberGroupChars(',', '\'').setNumberGroupSizes(2, 2, 3));
-		StyledFormatter<Double> sf = b.toFormatter(Locale.FRENCH);
+		StyledFormatter<Double> sf = b.toFormatter(LocalizationStyle
+				.of(Locale.FRENCH));
 		assertNotNull(sf);
 		assertEquals("test- BEF+ 12'345'67,89:12",
 				sf.format(123456789.123456789d));
 		StyleableFormatter<Double> stf = b.toStyleableFormatter();
 		assertNotNull(stf);
-		assertEquals("test- BEF+ 12'345'67,89:12",
-				stf.format(123456789.123456789d, Locale.FRENCH));
+		assertEquals(
+				"test- BEF+ 12'345'67,89:12",
+				stf.format(123456789.123456789d,
+						LocalizationStyle.of(Locale.FRENCH)));
 	}
 
 	@Test
@@ -106,13 +113,16 @@ public class TokenizedFormatterBuilderTest {
 	}
 
 	@Test
-	public void testToStyleableFormatter() {
+	public void testToStyleableFormatter() throws IOException {
 		TokenizedFormatterBuilder<Double> b = new TokenizedFormatterBuilder<Double>(
 				Double.class);
 		b.addToken(new Literal<Double>("test"));
 		StyleableFormatter<Double> sf = b.toStyleableFormatter();
 		assertNotNull(sf);
-		assertEquals("test", sf.format(123456789.123456789d, Locale.CHINESE));
+		assertEquals(
+				"test",
+				sf.format(123456789.123456789d,
+						LocalizationStyle.of(Locale.CHINESE)));
 	}
 
 	@Test
@@ -121,16 +131,17 @@ public class TokenizedFormatterBuilderTest {
 				Double.class);
 		b.addToken(new Literal<Double>("test "));
 		b.addToken(new FormattedNumber<Double>());
-		StyledFormatter<Double> f = b.toFormatter(Locale.CHINESE);
+		StyledFormatter<Double> f = b.toFormatter(LocalizationStyle
+				.of(Locale.CHINESE));
 		assertNotNull(f);
 		assertEquals("test 123,456,789.123", f.format(123456789.123456789d));
-		f = b.toFormatter(Locale.GERMAN);
+		f = b.toFormatter(LocalizationStyle.of(Locale.GERMAN));
 		assertNotNull(f);
 		assertEquals("test 123.456.789,123", f.format(123456789.123456789d));
-		f = b.toFormatter(Locale.CANADA);
+		f = b.toFormatter(LocalizationStyle.of(Locale.CANADA));
 		assertNotNull(f);
 		assertEquals("test 123,456,789.123", f.format(123456789.123456789d));
-		f = b.toFormatter(Locale.JAPAN);
+		f = b.toFormatter(LocalizationStyle.of(Locale.JAPAN));
 		assertNotNull(f);
 		assertEquals("test 123,456,789.123", f.format(123456789.123456789d));
 	}

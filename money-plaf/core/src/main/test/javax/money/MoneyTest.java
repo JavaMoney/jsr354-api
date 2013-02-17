@@ -13,19 +13,19 @@ import org.junit.Test;
 public class MoneyTest {
 
 	private static final BigDecimal TEN = new BigDecimal(10.0d);
-	protected static final CurrencyUnit EURO = MoneyCurrency.getInstance("EUR");
+	protected static final CurrencyUnit EURO = MoneyCurrency.valueOf("EUR");
 	protected static final CurrencyUnit DOLLAR = MoneyCurrency
-			.getInstance("USD");
+			.valueOf("USD");
 
 	@Test
 	public void testGetInstanceCurrencyBigDecimal() {
-		Money m = Money.valueOf(MoneyCurrency.getInstance("EUR"), TEN);
+		Money m = Money.valueOf(MoneyCurrency.valueOf("EUR"), TEN);
 		assertEquals(TEN, m.asType(BigDecimal.class));
 	}
 
 	@Test
 	public void testGetInstanceCurrencyDouble() {
-		Money m = Money.valueOf(MoneyCurrency.getInstance("EUR"), 10.0d);
+		Money m = Money.valueOf(MoneyCurrency.valueOf("EUR"), 10.0d);
 		assertTrue(TEN.doubleValue() == m.doubleValue());
 	}
 

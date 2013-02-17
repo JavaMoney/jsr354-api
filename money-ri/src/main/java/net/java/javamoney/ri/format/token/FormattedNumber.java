@@ -185,7 +185,7 @@ public class FormattedNumber<T extends Number> extends AbstractToken<T> {
 		try {
 			num = df.parse(token);
 		} catch (java.text.ParseException e) {
-			throw new ParseException("Failed to parse number.", e);
+			throw new ParseException("Failed to parse number.", token, e.getErrorOffset(), e);
 		}
 		context.setAttribute(Number.class, num);
 		context.consume(token);

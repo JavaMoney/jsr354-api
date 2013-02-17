@@ -7,7 +7,7 @@
 		<version>0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>money-plaf-jdk-stub</artifactId>
-	<name>Java Money and Currency - Platform JDK Stub</name>
+	<name>JSR 354 (Money and Currency) - Platform JDK Stub</name>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

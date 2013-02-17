@@ -31,12 +31,9 @@
  */
 package javax.money;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.Collections;
-import java.util.Currency;
-import java.util.Enumeration;
 
 /**
  * Default immutable implementation of {@link MonetaryAmount}.
@@ -102,7 +99,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 */
 	public static Money valueOf(String isoCurrencyCode, Number number) {
 		// TODO caching
-		return new Money(JDKCurrencyAdapter.getInstance(isoCurrencyCode),
+		return new Money(MoneyCurrency.valueOf(isoCurrencyCode),
 				number);
 	}
 
@@ -470,14 +467,37 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		return BigDecimal.class;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T asType(Class<T> type) {
 		if (BigDecimal.class.equals(type)) {
-
-			@SuppressWarnings("unchecked")
 			final T asType = (T) this.number;
 			return asType;
 		}
-		// TODO add Number types...
+		if (Number.class.equals(type)) {
+			final T asType = (T) this.number;
+			return asType;
+		}
+		if (Double.class.equals(type)) {
+			return (T) Double.valueOf(this.number.doubleValue());
+		}
+		if (Float.class.equals(type)) {
+			return (T) Float.valueOf(this.number.floatValue());
+		}
+		if (Long.class.equals(type)) {
+			return (T) Long.valueOf(this.number.longValue());
+		}
+		if (Integer.class.equals(type)) {
+			return (T) Integer.valueOf(this.number.intValue());
+		}
+		if (Short.class.equals(type)) {
+			return (T) Short.valueOf(this.number.shortValue());
+		}
+		if (Byte.class.equals(type)) {
+			return (T) Byte.valueOf(this.number.byteValue());
+		}
+		if (BigInteger.class.equals(type)) {
+			return (T) this.number.toBigInteger();
+		}
 		throw new IllegalArgumentException("Unsupported representation type: "
 				+ type);
 	}
@@ -488,18 +508,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 			amount = adjustment[i].adjust(amount);
 		}
 		return amount.asType(type);
-	}
-
-	public <T> T asType(Class<T> type, boolean performRounding) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public MonetaryAmount[] divideAndSeparate(Number divisor,
-			boolean addDifferenceToLastValue) {
-		checkNumber(divisor);
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	// Static Factory Methods
@@ -581,127 +589,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 				amount.getCurrency().getNamespace())
 				&& this.currency.getCurrencyCode().equals(
 						amount.getCurrency().getCurrencyCode());
-	}
-
-	/**
-	 * Adapter that implements the new {@link CurrencyUnit} interface using the
-	 * JDK's {@link Currency}.
-	 * <p>
-	 * This adapter will be removed in the final platform implementation.
-	 * 
-	 * @author Anatole Tresch
-	 * @author Werner Keil
-	 */
-	public final static class JDKCurrencyAdapter implements CurrencyUnit,
-			Serializable {
-
-		/**
-		 * serialVersionUID.
-		 */
-		private static final long serialVersionUID = -2523936311372374236L;
-
-		/**
-		 * ISO 4217 currency code for this currency.
-		 * 
-		 * @serial
-		 */
-		private final Currency currency;
-
-		/**
-		 * Private constructor.
-		 * 
-		 * @param currency
-		 */
-		JDKCurrencyAdapter(Currency currency) {
-			if (currency == null) {
-				throw new IllegalArgumentException("Currency required.");
-			}
-			this.currency = currency;
-		}
-
-		// TODO could we harmonize this like in Currency by calling
-		// getInstance()?
-		public static CurrencyUnit getInstance(Currency currency) {
-			// TODO implement caching!
-			return new JDKCurrencyAdapter(currency);
-		}
-
-		// TODO could we harmonize this like in Currency by calling
-		// getInstance()?
-		public static CurrencyUnit getInstance(String isoCurrency) {
-			// TODO implement caching!
-			return new JDKCurrencyAdapter(Currency.getInstance(isoCurrency));
-		}
-
-		public boolean isVirtual() {
-			return false;
-		}
-
-		/**
-		 * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
-		 */
-
-		public String getNamespace() {
-			return ISO_NAMESPACE;
-		}
-
-		public Long getValidFrom() {
-			return null;
-		}
-
-		public Long getValidUntil() {
-			return null;
-		}
-
-		public int compareTo(CurrencyUnit currency) {
-			// TODO Auto-generated method stub
-			int compare = getNamespace().compareTo(currency.getNamespace());
-			if (compare == 0) {
-				compare = getCurrencyCode().compareTo(
-						currency.getCurrencyCode());
-			}
-			// TODO check for validFrom, until
-			return compare;
-		}
-
-		public String getCurrencyCode() {
-			return this.currency.getCurrencyCode();
-		}
-
-		public int getNumericCode() {
-			return this.currency.getNumericCode();
-		}
-
-		public int getDefaultFractionDigits() {
-			return this.currency.getDefaultFractionDigits();
-		}
-
-		public String toString() {
-			return this.currency.toString();
-		}
-
-		@Override
-		public <T> T getAttribute(String key, Class<T> type) {
-			return null;
-		}
-
-		@Override
-		public Enumeration<String> getAttributeKeys() {
-			return Collections.emptyEnumeration();
-		}
-
-		@Override
-		public Class<?> getAttributeType(String key) {
-			return null;
-		}
-
-		@Override
-		public boolean isLegalTender() {
-			if (getCurrencyCode().startsWith("X")) {
-				return false;
-			}
-			return true;
-		}
 	}
 
 }

@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>money-plaf</artifactId>
 	<packaging>pom</packaging>
-	<name>Java Money and Currency API - SE platform</name>
+	<name>JSR 354 (Money and Currency) - Platform</name>
 
 	<modules>
 		<module>core</module>

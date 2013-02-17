@@ -31,39 +31,65 @@
  */
 package javax.money.format.common;
 
-
 /**
  * Exception thrown during parsing of an item.
  * <p>
  * This exception makes no guarantees about immutability or thread-safety.
- *
+ * 
  * @author Anatole Tresch
  * @author Werner Keil
  * @author Stephen Colebourne
  */
 public class ParseException extends Exception {
 
-    /** Serialization lock. */
-    private static final long serialVersionUID = 1L;
+	/** Serialization lock. */
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructor taking a message.
-     * 
-     * @param message  the message
-     */
-    public ParseException(String message) {
-    	// TODO Not Implemented yet
-    }
+	private String input;
+	private int position;
 
-    /**
-     * Constructor taking a message and cause.
-     * 
-     * @param message  the message
-     * @param cause  the exception cause
-     */
-    public ParseException(String message, Throwable cause) {
-    	// TODO Not Implemented yet
-    	super(message, cause);
-    }
+	/**
+	 * Constructor taking a message.
+	 * 
+	 * @param message
+	 *            the message
+	 */
+	public ParseException(String message, String input, int pos) {
+		super(message);
+		this.input = input;
+		this.position = pos;
+	}
+
+	/**
+	 * Constructor taking a message and cause.
+	 * 
+	 * @param message
+	 *            the message
+	 * @param cause
+	 *            the exception cause
+	 */
+	public ParseException(String message, String input, int pos, Throwable cause) {
+		super(message, cause);
+		this.input = input;
+		this.position = pos;
+	}
+
+	/**
+	 * Access the input, that failed to parse.
+	 * 
+	 * @return the input String.
+	 */
+	public String getInput() {
+		return this.input;
+	}
+
+	/**
+	 * Access the position within the input where parsing failed.
+	 * 
+	 * @return the failing position within the input String, or -1.
+	 */
+	public int getPosition() {
+		return this.position;
+	}
 
 }

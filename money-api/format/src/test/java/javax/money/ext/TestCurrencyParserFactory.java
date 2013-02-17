@@ -53,12 +53,6 @@ public class TestCurrencyParserFactory implements CurrencyParserFactory {
 	}
 
 	@Override
-	public CurrencyParser getCurrencyParser(String namespace, Locale locale) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
 	public StyleableCurrencyParser getLocalizableCurrencyParser(
 			String namespace) {
 		// empty implementation

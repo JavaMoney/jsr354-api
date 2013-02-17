@@ -53,12 +53,6 @@ public class TestAmountFormatterFactory implements AmountFormatterFactory {
 	}
 
 	@Override
-	public AmountFormatter getAmountFormatter(Locale locale) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
 	public AmountFormatter getAmountFormatter(LocalizationStyle style) {
 		// empty implementation
 		return null;

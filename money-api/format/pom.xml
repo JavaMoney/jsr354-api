@@ -6,7 +6,7 @@
     <version>0.3-SNAPSHOT</version>
   </parent>
   <artifactId>money-api-format</artifactId>
-  <name>Java Money and Currency API Formatting</name>
+  <name>JSR 354 (Money and Currency) - Standalone Format API </name>
   <dependencies>
   	<dependency>
   		<groupId>javax.money</groupId>

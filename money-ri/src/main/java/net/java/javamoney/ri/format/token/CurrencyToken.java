@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.format.CurrencyFormatter;
+import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.ParseException;
 import javax.money.provider.Monetary;
 
@@ -48,22 +49,26 @@ public class CurrencyToken<T extends MonetaryAmount> extends
 	}
 
 	private DisplayType displayType = DisplayType.CODE;
-	private Locale locale;
+	private LocalizationStyle style;
 
 	public CurrencyToken() {
 	}
 
+	public CurrencyToken(LocalizationStyle style) {
+		setLocalizationStyle(style);
+	}
+	
 	public CurrencyToken(Locale locale) {
-		setLocale(locale);
+		setLocalizationStyle(LocalizationStyle.of(locale));
 	}
 
-	public CurrencyToken setLocale(Locale locale2) {
-		this.locale = locale;
+	public CurrencyToken<?> setLocalizationStyle(LocalizationStyle style) {
+		this.style = style;
 		return this;
 	}
 
-	public Locale getLocale() {
-		return this.locale;
+	public LocalizationStyle getLocalizationStyle() {
+		return this.style;
 	}
 
 	public CurrencyToken<T> setDisplayType(DisplayType displayType) {
@@ -75,27 +80,26 @@ public class CurrencyToken<T extends MonetaryAmount> extends
 	}
 
 	protected String getToken(T item,
-			javax.money.format.common.LocalizationStyle style) {
+			javax.money.format.common.LocalizationStyle targetStyle) {
 		CurrencyUnit unit = item.getCurrency();
-		Locale localeUsed = this.locale;
-		if (localeUsed == null) {
-			localeUsed = style.getTranslationLocale();
+		LocalizationStyle styleUsed = this.style;
+		if (styleUsed == null) {
+			styleUsed = targetStyle;
 		}
 		switch (displayType) {
 		case CODE:
 			return unit.getCurrencyCode();
-
 		case NAMESPACE:
 			return unit.getNamespace();
 		case NUMERIC_CODE:
 			return String.valueOf(unit.getNumericCode());
 		case NAME:
 			CurrencyFormatter cf1 = Monetary.getCurrencyFormatterFactory()
-					.getCurrencyFormatter(localeUsed);
+					.getCurrencyFormatter(styleUsed);
 			return cf1.formatDisplayName(unit);
 		case SYMBOL:
 			CurrencyFormatter cf2 = Monetary.getCurrencyFormatterFactory()
-					.getCurrencyFormatter(localeUsed);
+					.getCurrencyFormatter(styleUsed);
 			return cf2.formatSymbol(unit);
 		case FULLCODE:
 		default:

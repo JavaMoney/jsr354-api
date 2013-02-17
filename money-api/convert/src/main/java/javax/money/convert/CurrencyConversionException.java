@@ -36,7 +36,7 @@ import javax.money.CurrencyUnit;
 /**
  * Exception thrown when a monetary conversion operation fails.
  * 
- * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
+ * @author Werner Keil
  * @author Stephen Colebourne
  */
 public class CurrencyConversionException extends IllegalArgumentException {
@@ -44,6 +44,11 @@ public class CurrencyConversionException extends IllegalArgumentException {
 	/** Serialization lock. */
 	private static final long serialVersionUID = -7743240650686883450L;
 
+	/** Source currency. */
+	private CurrencyUnit source;
+	/** Target currency. */
+	private CurrencyUnit target;
+	
     /**
      * Constructs an <code>CurrencyConversionException</code> with the
      * specified detail message, source and target currency.
@@ -60,6 +65,8 @@ public class CurrencyConversionException extends IllegalArgumentException {
 	public CurrencyConversionException(CurrencyUnit source,
 			CurrencyUnit target, String message) {
 		super(message);
+		this.source = source;
+		this.target = target;
 	}
 	
     /**
@@ -75,6 +82,8 @@ public class CurrencyConversionException extends IllegalArgumentException {
 	public CurrencyConversionException(CurrencyUnit source,
 			CurrencyUnit target) {
 		super("Cannot convert " + String.valueOf(source) + " into " + String.valueOf(target));
+		this.source = source;
+		this.target = target;
 	}
 
     /**
@@ -99,17 +108,17 @@ public class CurrencyConversionException extends IllegalArgumentException {
 	public CurrencyConversionException(CurrencyUnit source,
 			CurrencyUnit target, String message, Throwable cause) {
 		super(message, cause);
+		this.source = source;
+		this.target = target;
 	}
 
-	// -----------------------------------------------------------------------
 	/**
 	 * Gets the first currency at fault.
 	 * 
 	 * @return the currency at fault, may be null
 	 */
 	public CurrencyUnit getSource() {
-		// TODO Not Implemented yet
-		return null;
+		return source;
 	}
 
 	/**
@@ -118,8 +127,7 @@ public class CurrencyConversionException extends IllegalArgumentException {
 	 * @return the currency at fault, may be null
 	 */
 	public CurrencyUnit getTarget() {
-		// TODO Not Implemented yet
-		return null;
+		return target;
 	}
 
 }

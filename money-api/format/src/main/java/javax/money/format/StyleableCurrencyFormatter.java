@@ -51,21 +51,6 @@ public interface StyleableCurrencyFormatter extends
 	 * 
 	 * @param currency
 	 *            the currency to print, not null
-	 * @param locale
-	 *            The target {@link Locale}.
-	 * @return the string printed using the settings of this formatter
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 */
-	public String formatSymbol(CurrencyUnit currency, Locale locale); 
-
-	/**
-	 * Formats a currency's symbol value to a {@code String}.
-	 * 
-	 * @param currency
-	 *            the currency to print, not null
 	 * @param style
 	 *            The target {@link LocaliazationStyle}.
 	 * @param locale
@@ -81,21 +66,6 @@ public interface StyleableCurrencyFormatter extends
 	 * Formats a currency's display name to a {@code String}.
 	 * 
 	 * @param currency
-	 *            the currency to print, not null
-	 * @param locale
-	 *            The target {@link Locale}.
-	 * @return the string printed using the settings of this formatter
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 */
-	public String formatDisplayName(CurrencyUnit currency, Locale locale);
-
-	/**
-	 * Formats a currency's display name to a {@code String}.
-	 * 
-	 * @param currency
 	 *            's the currency to print, not null
 	 * @return the string printed using the settings of this formatter
 	 * @throws UnsupportedOperationException
@@ -104,21 +74,6 @@ public interface StyleableCurrencyFormatter extends
 	 *             if there is a problem while printing
 	 */
 	public String formatDisplayName(CurrencyUnit currency, LocalizationStyle style); 
-
-	/**
-	 * Formats a currency minor unit name to a {@code String}.
-	 * 
-	 * @param currency
-	 *            the currency to print, not null
-	 * @param locale
-	 *            The target {@link Locale}.
-	 * @return the string printed using the settings of this formatter
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 */
-	public String formatMinorUnitName(CurrencyUnit currency, Locale locale);
 
 	/**
 	 * Formats a currency's minor unit name to a {@code String}.
@@ -133,30 +88,6 @@ public interface StyleableCurrencyFormatter extends
 	 */
 	public String formatMinorUnitName(CurrencyUnit currency,
 			LocalizationStyle style);
-
-	/**
-	 * Prints an currency's symbol value to an {@code Appendable} converting any
-	 * {@code IOException} to a {@code MoneyFormatException}.
-	 * <p>
-	 * Example implementations of {@code Appendable} are {@code StringBuilder},
-	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
-	 * and {@code StringBuffer} never throw an {@code IOException}.
-	 * 
-	 * @param appendable
-	 *            the appendable to add to, not null
-	 * @param currency
-	 *            the currency to print, not null
-	 * @param locale
-	 *            The target locale.
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 * @throws IOException
-	 *             if an IO error occurs
-	 */
-	public void printSymbol(Appendable appendable, CurrencyUnit currency,
-			Locale locale) throws IOException;
 
 	/**
 	 * Prints a currency's symbol value to an {@code Appendable} converting any
@@ -179,28 +110,6 @@ public interface StyleableCurrencyFormatter extends
 	 */
 	public void printSymbol(Appendable appendable, CurrencyUnit currency,
 			LocalizationStyle style) throws IOException;
-
-	/**
-	 * Prints a currency's name to an {@code Appendable} converting any
-	 * {@code IOException} to a {@code MoneyFormatException}.
-	 * <p>
-	 * Example implementations of {@code Appendable} are {@code StringBuilder},
-	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
-	 * and {@code StringBuffer} never throw an {@code IOException}.
-	 * 
-	 * @param appendable
-	 *            the appendable to add to, not null
-	 * @param moneyProvider
-	 *            the money to print, not null
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws FormatException
-	 *             if there is a problem while printing
-	 * @throws IOException
-	 *             if an IO error occurs
-	 */
-	public void printName(Appendable appendable, CurrencyUnit currency,
-			Locale locale) throws IOException;
 
 	/**
 	 * Prints a currency's name to an {@code Appendable} converting any

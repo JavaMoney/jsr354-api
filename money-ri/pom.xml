@@ -7,7 +7,7 @@
 		<version>0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>money-ri</artifactId>
-	<name>Java Money and Currency RI</name>
+	<name>JSR 354 (Money and Currency) - Reference Implementation</name>
 	<description>Reference Implementation of JSR 354 - standalone part</description>
 
 	<properties>

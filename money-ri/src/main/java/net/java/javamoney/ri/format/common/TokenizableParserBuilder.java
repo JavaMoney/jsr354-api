@@ -18,10 +18,10 @@
  */
 package net.java.javamoney.ri.format.common;
 
-import javax.money.format.common.StyledParserBuilder;
+import javax.money.format.common.ParserBuilder;
 
 /**
- * This interface defines a {@link StyledParserBuilder} that is using an ordered
+ * This interface defines a {@link ParserBuilder} that is using an ordered
  * list of {@link ParserToken} instances.
  * 
  * @author Anatole Tresch
@@ -29,7 +29,7 @@ import javax.money.format.common.StyledParserBuilder;
  * @param <T>
  *            The target type.
  */
-public interface TokenizableParserBuilder<T> extends StyledParserBuilder<T> {
+public interface TokenizableParserBuilder<T> extends ParserBuilder<T> {
 
 	/**
 	 * Adds a parsing part representing by the given {@link ParserToken}.

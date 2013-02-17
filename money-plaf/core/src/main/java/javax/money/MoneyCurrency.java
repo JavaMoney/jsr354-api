@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.Currency;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -72,7 +73,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable {
 	/** true, if it is a virtual currency. */
 	private final boolean virtual;
 
-	private static final Map<String, MoneyCurrency> CACHED = new ConcurrentHashMap<String, MoneyCurrency>();
+	private static final Map<String, CurrencyUnit> CACHED = new ConcurrentHashMap<String, CurrencyUnit>();
 
 	/**
 	 * Private constructor.
@@ -93,25 +94,22 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable {
 		this.attributes = attributes;
 	}
 
-	public static CurrencyUnit getInstance(Currency currency) {
+	public static CurrencyUnit valueOf(Currency currency) {
 		String key = CurrencyUnit.ISO_NAMESPACE + ':'
 				+ currency.getCurrencyCode();
-		MoneyCurrency cachedItem = CACHED.get(key);
+		CurrencyUnit cachedItem = CACHED.get(key);
 		if (cachedItem == null) {
-			cachedItem = new MoneyCurrency(CurrencyUnit.ISO_NAMESPACE,
-					currency.getCurrencyCode(), currency.getNumericCode(),
-					currency.getDefaultFractionDigits(), null, null, true,
-					false, null);
+			cachedItem = new JDKCurrencyAdapter(currency);
 			CACHED.put(key, cachedItem);
 		}
 		return cachedItem;
 	}
 
-	public static CurrencyUnit getInstance(String isoCurrency) {
-		return getInstance(Currency.getInstance(isoCurrency));
+	public static CurrencyUnit valueOf(String isoCurrency) {
+		return valueOf(Currency.getInstance(isoCurrency));
 	}
 
-	public static CurrencyUnit getInstance(String namespace, String currencyCode) {
+	public static CurrencyUnit valueOf(String namespace, String currencyCode) {
 		String key = namespace + ':' + currencyCode;
 		return CACHED.get(key);
 	}
@@ -392,17 +390,17 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable {
 			return namespace != null && currencyCode != null;
 		}
 
-		public MoneyCurrency build() {
+		public CurrencyUnit build() {
 			return build(true);
 		}
 
-		public MoneyCurrency build(boolean cache) {
+		public CurrencyUnit build(boolean cache) {
 			if (!isBuildable()) {
 				throw new IllegalStateException("Can not build MoneyCurrency.");
 			}
 			if (cache && validFrom == null && validUntil == null) {
 				String key = namespace + ':' + currencyCode;
-				MoneyCurrency current = CACHED.get(key);
+				CurrencyUnit current = CACHED.get(key);
 				if (current == null) {
 					current = new MoneyCurrency(namespace, currencyCode,
 							numericCode, defaultFractionDigits, validFrom,
@@ -416,4 +414,145 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable {
 					virtual, attributes);
 		}
 	}
+
+	/**
+	 * Adapter that implements the new {@link CurrencyUnit} interface using the
+	 * JDK's {@link Currency}.
+	 * <p>
+	 * This adapter will be removed in the final platform implementation.
+	 * 
+	 * @author Anatole Tresch
+	 * @author Werner Keil
+	 */
+	private final static class JDKCurrencyAdapter implements
+			LocalizableCurrencyUnit, Serializable {
+
+		/**
+		 * serialVersionUID.
+		 */
+		private static final long serialVersionUID = -2523936311372374236L;
+
+		/**
+		 * ISO 4217 currency code for this currency.
+		 * 
+		 * @serial
+		 */
+		private final Currency currency;
+
+		/**
+		 * Private constructor.
+		 * 
+		 * @param currency
+		 */
+		JDKCurrencyAdapter(Currency currency) {
+			if (currency == null) {
+				throw new IllegalArgumentException("Currency required.");
+			}
+			this.currency = currency;
+		}
+
+		// TODO could we harmonize this like in Currency by calling
+		// getInstance()?
+		public static CurrencyUnit getInstance(Currency currency) {
+			// TODO implement caching!
+			return new JDKCurrencyAdapter(currency);
+		}
+
+		// TODO could we harmonize this like in Currency by calling
+		// getInstance()?
+		public static CurrencyUnit getInstance(String isoCurrency) {
+			// TODO implement caching!
+			return new JDKCurrencyAdapter(Currency.getInstance(isoCurrency));
+		}
+
+		public boolean isVirtual() {
+			return false;
+		}
+
+		/**
+		 * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
+		 */
+
+		public String getNamespace() {
+			return ISO_NAMESPACE;
+		}
+
+		public Long getValidFrom() {
+			return null;
+		}
+
+		public Long getValidUntil() {
+			return null;
+		}
+
+		public int compareTo(CurrencyUnit currency) {
+			int compare = getNamespace().compareTo(currency.getNamespace());
+			if (compare == 0) {
+				compare = getCurrencyCode().compareTo(
+						currency.getCurrencyCode());
+			}
+			// TODO check for validFrom, until
+			return compare;
+		}
+
+		public String getCurrencyCode() {
+			return this.currency.getCurrencyCode();
+		}
+
+		public int getNumericCode() {
+			return this.currency.getNumericCode();
+		}
+
+		public int getDefaultFractionDigits() {
+			return this.currency.getDefaultFractionDigits();
+		}
+
+		public String toString() {
+			return this.currency.toString();
+		}
+
+		@Override
+		public <T> T getAttribute(String key, Class<T> type) {
+			return null;
+		}
+
+		@Override
+		public Enumeration<String> getAttributeKeys() {
+			return Collections.emptyEnumeration();
+		}
+
+		@Override
+		public Class<?> getAttributeType(String key) {
+			return null;
+		}
+
+		@Override
+		public boolean isLegalTender() {
+			if (getCurrencyCode().startsWith("X")) {
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		public String getSymbol() {
+			return this.currency.getSymbol();
+		}
+
+		@Override
+		public String getSymbol(Locale locale) {
+			return this.currency.getSymbol(locale);
+		}
+
+		@Override
+		public String getDisplayName() {
+			return this.currency.getDisplayName();
+		}
+
+		@Override
+		public String getDisplayName(Locale locale) {
+			return this.currency.getDisplayName(locale);
+		}
+	}
+
 }

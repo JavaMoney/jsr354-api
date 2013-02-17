@@ -40,7 +40,7 @@ import javax.money.format.common.StyleableFormatter;
 import javax.money.format.common.StyleableParser;
 import javax.money.format.common.StyledFormatter;
 import javax.money.format.common.StyledParser;
-import javax.money.format.common.StyledParserBuilder;
+import javax.money.format.common.ParserBuilder;
 import javax.money.format.common.LocalizationStyle;
 
 /**
@@ -50,7 +50,7 @@ import javax.money.format.common.LocalizationStyle;
  * should be created for each use. The parsers produced by the builder are
  * immutable and thread-safe.
  */
-public interface AmountParserBuilder extends StyledParserBuilder<MonetaryAmount> {
+public interface AmountParserBuilder extends ParserBuilder<MonetaryAmount> {
 
 	/**
 	 * Appends the amount to the builder using the default format. The default
@@ -151,22 +151,6 @@ public interface AmountParserBuilder extends StyledParserBuilder<MonetaryAmount>
 	 * @return the parser built from this builder, never null
 	 */
 	public AmountParser toParser();
-
-	/**
-	 * Builds the parser from the builder setting the locale.
-	 * <p>
-	 * Once the builder is in the correct state it must be converted to a
-	 * {@code AmountParser} to be used. Calling this method does not change the
-	 * state of this instance, so it can still be used.
-	 * <p>
-	 * This method uses the specified locale. FOr extended style parameters use
-	 * {@link AmountFormatter#toFormatter(LocalizationStyle)} instead of.
-	 * 
-	 * @param locale
-	 *            the locale for the formatter, not null
-	 * @return the parser built from this builder, never null
-	 */
-	public AmountParser toParser(Locale locale);
 
 	/**
 	 * Builds the parser from the builder setting the locale.

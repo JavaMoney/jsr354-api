@@ -12,6 +12,7 @@ import javax.money.format.AmountFormatter;
 import javax.money.format.AmountParser;
 import javax.money.format.StyleableAmountFormatter;
 import javax.money.format.StyleableAmountParser;
+import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.ParseException;
 import javax.money.provider.Monetary;
 
@@ -21,7 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SmokeTests {
-	private static final Logger logger = LoggerFactory.getLogger(SmokeTests.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(SmokeTests.class);
 
 	@Test
 	public void testCreateAmounts() {
@@ -39,7 +41,7 @@ public class SmokeTests {
 		assertEquals(1.0d, amount2.doubleValue(), 0);
 		assertEquals(2.0d, amount3.doubleValue(), 0);
 	}
-	
+
 	@Test
 	public void testCreateMoney() {
 		// Creating one
@@ -51,20 +53,22 @@ public class SmokeTests {
 		assertEquals(1.0d, amount2.doubleValue(), 0);
 		assertEquals(2.0d, amount3.doubleValue(), 0);
 	}
-	
+
 	@Test
 	public void testGettingCurrenciesPerLocale() {
-		CurrencyUnit[] currencies = Monetary.getCurrencyUnitProvider().getAll(Locale.US);
+		CurrencyUnit[] currencies = Monetary.getCurrencyUnitProvider().getAll(
+				Locale.US);
 		logger.debug("Currencies for US: " + Arrays.toString(currencies));
 		currencies = Monetary.getCurrencyUnitProvider().getAll(Locale.CHINA);
 		logger.debug("Currencies for CHINA: " + Arrays.toString(currencies));
 		currencies = Monetary.getCurrencyUnitProvider().getAll(Locale.ROOT);
-		logger.debug("Currencies for ROOT (undefined): " + Arrays.toString(currencies));
+		logger.debug("Currencies for ROOT (undefined): "
+				+ Arrays.toString(currencies));
 	}
-	
+
 	@Test
-	public void testExchange(){
-//		Monetary.getExchangeRateProvider(ExchangeRateType.)
+	public void testExchange() {
+		// Monetary.getExchangeRateProvider(ExchangeRateType.)
 	}
 
 	@Test
@@ -73,14 +77,14 @@ public class SmokeTests {
 		// Using parsers
 		try {
 			AmountParser parser = Monetary.getAmountParserFactory()
-					.getAmountParser(Locale.GERMANY);
+					.getAmountParser(LocalizationStyle.of(Locale.GERMANY));
 			MonetaryAmount amount1 = parser.parse("CFH 123.45");
 
-			StyleableAmountParser locParser = Monetary
-					.getAmountParserFactory().getLocalizableAmountParser();
+			StyleableAmountParser locParser = Monetary.getAmountParserFactory()
+					.getLocalizableAmountParser();
 
-			MonetaryAmount amount2 = locParser
-					.parse("CFH 123.45", Locale.CHINA);
+			MonetaryAmount amount2 = locParser.parse("CFH 123.45",
+					LocalizationStyle.of(Locale.CHINA));
 		} catch (ParseException e) {
 			logger.debug("Error", e);
 		}
@@ -96,17 +100,16 @@ public class SmokeTests {
 				currency, 1.0d);
 		try {
 			AmountFormatter formatter = Monetary.getAmountFormatterFactory()
-					.getAmountFormatter(Locale.GERMANY);
+					.getAmountFormatter(LocalizationStyle.of(Locale.GERMANY));
 			String formatted = formatter.format(amount);
 			assertEquals(1.0d, amount.doubleValue(), 0);
 			StyleableAmountFormatter locFormatter = Monetary
 					.getAmountFormatterFactory()
 					.getLocalizableAmountFormatter();
 
-			String formatted2 = locFormatter.format(amount, Locale.CHINA);
+			String formatted2 = locFormatter.format(amount, LocalizationStyle.of(Locale.CHINA));
 		} catch (Exception e) {
 			logger.debug("Error", e);
 		}
 	}
-
 }

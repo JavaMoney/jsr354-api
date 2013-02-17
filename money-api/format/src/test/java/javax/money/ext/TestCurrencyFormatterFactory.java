@@ -52,12 +52,6 @@ public class TestCurrencyFormatterFactory implements CurrencyFormatterFactory {
 	}
 
 	@Override
-	public CurrencyFormatter getCurrencyFormatter(Locale locale) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
 	public StyleableCurrencyFormatter getLocalizableCurrencyFormatter() {
 		// empty implementation
 		return null;

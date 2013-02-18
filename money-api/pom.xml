@@ -22,7 +22,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>javax.money</groupId>
-			<artifactId>money-plaf-core</artifactId>
+			<artifactId>money-api-core</artifactId>
 			<version>0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>

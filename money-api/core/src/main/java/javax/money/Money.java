@@ -99,7 +99,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 */
 	public static Money valueOf(String isoCurrencyCode, Number number) {
 		// TODO caching
-		return new Money(MoneyCurrency.valueOf(isoCurrencyCode),
+		return new Money(MoneyCurrency.getInstance(isoCurrencyCode),
 				number);
 	}
 
@@ -435,33 +435,12 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	}
 
 	public MonetaryAmount getMajorPart() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Money(this.currency, getMajorLong());
 	}
 
 	public MonetaryAmount getMinorPart() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Money(this.currency, getMinorLong());
 	}
-
-//	/**
-//	 * Access the rounded value corresponding to the current
-//	 * {@link CurrencyUnit}. The {@link Rounding} must be provided by the
-//	 * {@link RoundingProvider}.
-//	 * 
-//	 * @return the rounded value, never null.
-//	 * @throws IllegalStateException
-//	 *             if no Rounding could be evaluated.
-//	 */
-//	public MonetaryAmount getRounded() {
-//		Rounding rounding = Monetary.getRoundingProvider().getRounding(
-//				this.currency);
-//		if (rounding != null) {
-//			return rounding.adjust(this);
-//		}
-//		throw new IllegalStateException("No Rounding available for currency: "
-//				+ this.currency);
-//	}
 
 	public Class<?> getNumberType() {
 		return BigDecimal.class;

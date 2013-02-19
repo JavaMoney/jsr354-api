@@ -94,7 +94,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable {
 		this.attributes = attributes;
 	}
 
-	public static CurrencyUnit valueOf(Currency currency) {
+	public static CurrencyUnit getInstance(Currency currency) {
 		String key = CurrencyUnit.ISO_NAMESPACE + ':'
 				+ currency.getCurrencyCode();
 		CurrencyUnit cachedItem = CACHED.get(key);
@@ -105,11 +105,11 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable {
 		return cachedItem;
 	}
 
-	public static CurrencyUnit valueOf(String isoCurrency) {
-		return valueOf(Currency.getInstance(isoCurrency));
+	public static CurrencyUnit getInstance(String isoCurrency) {
+		return getInstance(Currency.getInstance(isoCurrency));
 	}
 
-	public static CurrencyUnit valueOf(String namespace, String currencyCode) {
+	public static CurrencyUnit getInstance(String namespace, String currencyCode) {
 		String key = namespace + ':' + currencyCode;
 		return CACHED.get(key);
 	}
@@ -444,25 +444,11 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable {
 		 * 
 		 * @param currency
 		 */
-		JDKCurrencyAdapter(Currency currency) {
+		private JDKCurrencyAdapter(Currency currency) {
 			if (currency == null) {
 				throw new IllegalArgumentException("Currency required.");
 			}
 			this.currency = currency;
-		}
-
-		// TODO could we harmonize this like in Currency by calling
-		// getInstance()?
-		public static CurrencyUnit getInstance(Currency currency) {
-			// TODO implement caching!
-			return new JDKCurrencyAdapter(currency);
-		}
-
-		// TODO could we harmonize this like in Currency by calling
-		// getInstance()?
-		public static CurrencyUnit getInstance(String isoCurrency) {
-			// TODO implement caching!
-			return new JDKCurrencyAdapter(Currency.getInstance(isoCurrency));
 		}
 
 		public boolean isVirtual() {
@@ -491,7 +477,12 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable {
 				compare = getCurrencyCode().compareTo(
 						currency.getCurrencyCode());
 			}
-			// TODO check for validFrom, until
+			if (currency.getValidFrom() != null) {
+				compare = 1;
+			}
+			else if (currency.getValidUntil() != null) {
+				compare = 1;
+			}
 			return compare;
 		}
 

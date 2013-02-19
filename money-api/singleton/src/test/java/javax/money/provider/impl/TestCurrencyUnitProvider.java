@@ -42,7 +42,7 @@ import javax.money.provider.CurrencyUnitProvider;
  *
  */
 public class TestCurrencyUnitProvider implements CurrencyUnitProvider {
-
+// TODO try mocking, could use mock framework for test code
 	@Override
 	public CurrencyUnit get(String namespace, String code) {
 		// empty implementation

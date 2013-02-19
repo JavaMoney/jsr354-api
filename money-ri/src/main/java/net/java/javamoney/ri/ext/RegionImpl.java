@@ -18,6 +18,7 @@
  */
 package net.java.javamoney.ri.ext;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -38,7 +39,7 @@ import javax.money.provider.Monetary;
  * 
  * @author Anatole Tresch
  */
-public class RegionImpl implements Region {
+public class RegionImpl implements Region, Serializable {
 	/**
 	 * serialID.
 	 */

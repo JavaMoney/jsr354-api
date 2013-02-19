@@ -16,7 +16,7 @@
  * Contributors:
  *    Anatole Tresch - initial implementation.
  */
-package net.java.javamoney.ri.convert.providers;
+package net.java.javamoney.ri.convert.provider;
 
 import java.io.BufferedReader;
 import java.io.IOException;

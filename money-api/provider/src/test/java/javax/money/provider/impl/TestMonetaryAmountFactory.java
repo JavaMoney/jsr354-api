@@ -33,14 +33,14 @@ package javax.money.provider.impl;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
-import javax.money.provider.MonetaryAmountFactory;
+import javax.money.provider.MonetaryAmountProvider;
 
 /**
  * Empty pseudo implementation for testing only.
  * @author Anatole Tresch
  *
  */
-public class TestMonetaryAmountFactory implements MonetaryAmountFactory {
+public class TestMonetaryAmountFactory implements MonetaryAmountProvider {
 
 	@Override
 	public Class<?> getNumberClass() {

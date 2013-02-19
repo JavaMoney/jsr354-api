@@ -16,7 +16,7 @@
  * Contributors:
  *    Anatole Tresch - initial implementation
  */
-package net.java.javamoney.ri.ext;
+package net.java.javamoney.ri.ext.provider;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,6 +28,8 @@ import javax.money.ext.RegionProvider;
 import javax.money.ext.RegionType;
 import javax.money.provider.Monetary;
 import javax.money.provider.spi.MonetaryExtension;
+
+import net.java.javamoney.ri.ext.RegionImpl;
 
 /**
  * Regions can be used to segregate or access artifacts (e.g. currencies) either

@@ -1,1 +1,1 @@
-net.java.javamoney.ri.core.CurrencyUnitProviderImpl
+net.java.javamoney.ri.core.provider.CurrencyUnitProviderImpl

@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation
  *    Wernner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri.ext;
+package net.java.javamoney.ri.ext.provider;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -31,6 +31,7 @@ import javax.money.ext.RegionType;
 import javax.money.ext.spi.RegionProviderSpi;
 
 import net.java.javamoney.ri.AbstractSpiComponent;
+import net.java.javamoney.ri.ext.RegionImpl;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors

@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation.
  *    Werner Keil - extension and adjustment.
  */
-package net.java.javamoney.ri.core;
+package net.java.javamoney.ri.core.provider;
 
 import static javax.money.CurrencyUnit.ISO_NAMESPACE;
 
@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
+import javax.money.MoneyCurrency;
 import javax.money.provider.spi.CurrencyUnitProviderSpi;
 
 /**
@@ -37,15 +38,15 @@ import javax.money.provider.spi.CurrencyUnitProviderSpi;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public class JDKCurrencyProvider implements CurrencyUnitProviderSpi {
+public class MonetaryCurrencyProvider implements CurrencyUnitProviderSpi {
 
 	private final Map<String, CurrencyUnit> currencies = new HashMap<String, CurrencyUnit>();
 
-	public JDKCurrencyProvider() {
+	public MonetaryCurrencyProvider() {
 		Set<Currency> jdkCurrencies = Currency.getAvailableCurrencies();
-		for (Currency currency : jdkCurrencies) {
-			this.currencies.put(currency.getCurrencyCode(),
-					new JDKCurrencyAdapter(currency));
+		for (Currency jdkCurrency : jdkCurrencies) {
+			CurrencyUnit currency = MoneyCurrency.getInstance(jdkCurrency);
+			this.currencies.put(currency.getCurrencyCode(), currency);
 		}
 	}
 
@@ -61,7 +62,8 @@ public class JDKCurrencyProvider implements CurrencyUnitProviderSpi {
 	}
 
 	public CurrencyUnit[] getCurrencies(Locale locale, Long timestamp) {
-		if (timestamp == null &&  locale !=null && locale.getCountry().length()==2) {
+		if (timestamp == null && locale != null
+				&& locale.getCountry().length() == 2) {
 			Currency currency = Currency.getInstance(locale);
 			if (currency != null) {
 				return new CurrencyUnit[] { this.currencies.get(currency
@@ -78,7 +80,6 @@ public class JDKCurrencyProvider implements CurrencyUnitProviderSpi {
 		}
 		return null;
 	}
-
 
 	public boolean isAvailable(String code, Long start, Long end) {
 		if (start == null && end == null) {

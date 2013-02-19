@@ -1,1 +1,1 @@
-net.java.javamoney.ri.convert.providers.IMFExchangeRateProvider
+net.java.javamoney.ri.convert.provider.IMFExchangeRateProvider

@@ -16,7 +16,7 @@
  * Contributors:
  *    Anatole Tresch - initial implementation.
  */
-package net.java.javamoney.ri.convert.providers;
+package net.java.javamoney.ri.convert.provider;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
@@ -26,7 +26,7 @@ import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
 import javax.money.provider.Monetary;
-import javax.money.provider.MonetaryAmountFactory;
+import javax.money.provider.MonetaryAmountProvider;
 
 import net.java.javamoney.ri.convert.SingletonExchangeRateType;
 
@@ -69,7 +69,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 		if (rate == null) {
 			throw new CurrencyConversionException(amount.getCurrency(), target);
 		}
-		MonetaryAmountFactory amountFactory = Monetary
+		MonetaryAmountProvider amountFactory = Monetary
 				.getMonetaryAmountFactory(amount.getNumberType());
 		return amountFactory.get(target, amount.multiply(rate.getFactor())
 				.asType(Number.class));
@@ -90,7 +90,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
 					"Timestamp: " + timestamp);
 		}
-		MonetaryAmountFactory amountFactory = Monetary
+		MonetaryAmountProvider amountFactory = Monetary
 				.getMonetaryAmountFactory(amount.getNumberType());
 		return amountFactory.get(target, amount.multiply(rate.getFactor())
 				.asType(Number.class));
@@ -111,7 +111,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 			throw new CurrencyConversionException(sourceCurrency,
 					targetCurrency);
 		}
-		MonetaryAmountFactory amountFactory = Monetary
+		MonetaryAmountProvider amountFactory = Monetary
 				.getMonetaryAmountFactory();
 		return amountFactory.get(targetCurrency, amount).multiply(
 				rate.getFactor());
@@ -133,7 +133,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 			throw new CurrencyConversionException(sourceCurrency,
 					targetCurrency, "Timestamp: " + timestamp);
 		}
-		MonetaryAmountFactory amountFactory = Monetary
+		MonetaryAmountProvider amountFactory = Monetary
 				.getMonetaryAmountFactory();
 		return amountFactory.get(targetCurrency, amount).multiply(
 				rate.getFactor());

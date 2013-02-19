@@ -40,7 +40,7 @@ import javax.money.MonetaryAmount;
  * 
  * @author Anatole Tresch
  */
-public interface MonetaryAmountFactory {
+public interface MonetaryAmountProvider {
 
 	/**
 	 * This method defines the number class used by this factory instances. The

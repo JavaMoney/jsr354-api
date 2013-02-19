@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation
  *    Wernner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri.core;
+package net.java.javamoney.ri.core.provider;
 
 import java.util.ArrayList;
 import java.util.Arrays;

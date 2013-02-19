@@ -16,62 +16,67 @@
  * Contributors:
  *    Anatole Tresch - initial implementation.
  */
-package net.java.javamoney.ri.core;
+package net.java.javamoney.ri.core.provider;
 
 import java.math.BigDecimal;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.Money;
-import javax.money.provider.MonetaryAmountFactory;
+import javax.money.provider.MonetaryAmountProvider;
 
 import net.java.javamoney.ri.qualifiers.Amount;
 
 @Amount
-public class MonetaryAmountFactoryBDImpl implements MonetaryAmountFactory {
-
-	public MonetaryAmount get(CurrencyUnit currency, Number number) {
-		return new Money(currency, number);
-	}
-
-	public MonetaryAmount get(CurrencyUnit currency, byte value) {
-		return new Money(currency, new Byte(value));
-	}
-
-	public MonetaryAmount get(CurrencyUnit currency, short value) {
-		return new Money(currency, new Short(value));
-	}
-
-	public MonetaryAmount get(CurrencyUnit currency, int value) {
-		return new Money(currency, new Integer(value));
-	}
-
-	public MonetaryAmount get(CurrencyUnit currency, long value) {
-		return new Money(currency, new Long(value));
-	}
-
-	public MonetaryAmount get(CurrencyUnit currency, long major, long minor) {
-		if(minor < 0){
-			throw new IllegalArgumentException("Minor value must not be < 0.");
-		}
-		return new Money(currency, new BigDecimal(
-				String.valueOf(major) + '.' + minor));
-	}
-
-	public MonetaryAmount get(CurrencyUnit currency, float value) {
-		return new Money(currency, new Float(value));
-	}
-
-	public MonetaryAmount get(CurrencyUnit currency, double value) {
-		return new Money(currency, new Double(value));
-	}
-
-	public MonetaryAmount zero(CurrencyUnit currency) {
-		return new Money(currency, new Double(0.0d));
-	}
+public class MonetaryAmountMoneyProvider implements MonetaryAmountProvider {
 
 	public Class<?> getNumberClass() {
-		return BigDecimal.class;
+		return Money.getNumberClass();
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, Number number) {
+		return Money.valueOf(currency, number);
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, byte value) {
+		return Money.valueOf(currency, value);
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, short value) {
+		return Money.valueOf(currency, value);
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, int value) {
+		return Money.valueOf(currency, value);
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, float value) {
+		return Money.valueOf(currency, value);
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, double value) {
+		return Money.valueOf(currency, value);
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, long value) {
+		return Money.valueOf(currency, value);
+	}
+
+	@Override
+	public MonetaryAmount get(CurrencyUnit currency, long major, long minor) {
+		return Money.valueOf(currency, new BigDecimal(major + '.' + minor));
+	}
+
+	@Override
+	public MonetaryAmount zero(CurrencyUnit currency) {
+		return Money.zero(currency);
 	}
 
 }

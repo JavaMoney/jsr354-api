@@ -64,7 +64,7 @@ public final class Monetary {
 	private Class<?> defaultNumberClass;
 
 	private final CurrencyUnitProvider currencyUnitProvider;
-	private final Map<Class<?>, MonetaryAmountFactory> monetaryAmountFactories = new HashMap<Class<?>, MonetaryAmountFactory>();
+	private final Map<Class<?>, MonetaryAmountProvider> monetaryAmountProviders = new HashMap<Class<?>, MonetaryAmountProvider>();
 	private final RoundingProvider roundingProvider;
 	private final Map<ExchangeRateType, ExchangeRateProvider> exchangeRateProviders = new HashMap<ExchangeRateType, ExchangeRateProvider>();
 	private final Map<ExchangeRateType, CurrencyConverter> currencyConverters = new HashMap<ExchangeRateType, CurrencyConverter>();
@@ -74,8 +74,8 @@ public final class Monetary {
 	private final CurrencyParserFactory currencyParserFactory;
 	private final CurrencyFormatterFactory currencyFormatterFactory;
 
-	private final ServiceLoader<MonetaryAmountFactory> amountFactoryLoader = ServiceLoader
-			.load(MonetaryAmountFactory.class);
+	private final ServiceLoader<MonetaryAmountProvider> amountFactoryLoader = ServiceLoader
+			.load(MonetaryAmountProvider.class);
 	private final ServiceLoader<ExchangeRateProvider> exchangeRateProviderLoader = ServiceLoader
 			.load(ExchangeRateProvider.class);
 	private final ServiceLoader<CurrencyConverter> currencyConverterLoader = ServiceLoader
@@ -100,8 +100,8 @@ public final class Monetary {
 		for (CurrencyConverter t : currencyConverterLoader) {
 			this.currencyConverters.put(t.getExchangeRateType(), t);
 		}
-		for (MonetaryAmountFactory t : amountFactoryLoader) {
-			this.monetaryAmountFactories.put(t.getNumberClass(), t);
+		for (MonetaryAmountProvider t : amountFactoryLoader) {
+			this.monetaryAmountProviders.put(t.getNumberClass(), t);
 		}
 		loadExtensions();
 		initDefaultNumberClass();
@@ -144,7 +144,7 @@ public final class Monetary {
 		if (defaultClassName != null) {
 			try {
 				defaultNumberClass = Class.forName(defaultClassName);
-				if (!this.monetaryAmountFactories
+				if (!this.monetaryAmountProviders
 						.containsKey(defaultNumberClass)) {
 					defaultNumberClass = null;
 				}
@@ -183,28 +183,28 @@ public final class Monetary {
 	}
 
 	/**
-	 * Access the {@link MonetaryAmountFactory} component.
+	 * Access the {@link MonetaryAmountFactorySpi} component.
 	 * 
-	 * @return the {@link MonetaryAmountFactory} component, never {@code null}.
+	 * @return the {@link MonetaryAmountFactorySpi} component, never {@code null}.
 	 */
-	public static MonetaryAmountFactory getMonetaryAmountFactory(
+	public static MonetaryAmountProvider getMonetaryAmountFactory(
 			Class<?> numberClass) {
-		MonetaryAmountFactory factory = INSTANCE.monetaryAmountFactories
+		MonetaryAmountProvider factory = INSTANCE.monetaryAmountProviders
 				.get(numberClass);
 		if (factory == null) {
 			throw new UnsupportedOperationException(
-					"No MonetaryAmountFactory for number class '"
+					"No MonetaryAmountFactorySpi for number class '"
 							+ numberClass.getName() + "' loaded.");
 		}
 		return factory;
 	}
 
 	/**
-	 * Access the {@link MonetaryAmountFactory} default component.
+	 * Access the {@link MonetaryAmountFactorySpi} default component.
 	 * 
-	 * @return the {@link MonetaryAmountFactory} component, never {@code null}.
+	 * @return the {@link MonetaryAmountFactorySpi} component, never {@code null}.
 	 */
-	public static MonetaryAmountFactory getMonetaryAmountFactory() {
+	public static MonetaryAmountProvider getMonetaryAmountFactory() {
 		return getMonetaryAmountFactory(getDefaultNumberClass());
 	}
 
@@ -215,7 +215,7 @@ public final class Monetary {
 	 * <p>
 	 * <code>-Djavax.money.defaultNumberClass=a.b.c.MyClass</code>.
 	 * <p>
-	 * It is required that a registered {@link MonetaryAmountFactory} matches
+	 * It is required that a registered {@link MonetaryAmountFactorySpi} matches
 	 * the default class configured, if not a warning is written and the
 	 * implementation's default is used.
 	 * 

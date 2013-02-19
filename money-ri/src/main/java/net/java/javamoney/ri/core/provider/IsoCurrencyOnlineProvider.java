@@ -42,10 +42,9 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
-	// TODO consider renaming to IsoCurrencyOnlineProvider
-	private static final Logger LOGGER = LoggerFactory.getLogger(ISOCurrencyOnlineProvider.class);
+public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(IsoCurrencyOnlineProvider.class);
 	
 	private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 
@@ -53,7 +52,7 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
 	private Map<String, ISOCurrency> currencies = new ConcurrentHashMap<String, ISOCurrency>();
 
-	public ISOCurrencyOnlineProvider() {
+	public IsoCurrencyOnlineProvider() {
 		saxParserFactory.setNamespaceAware(false);
 		saxParserFactory.setValidating(false);
 		loadCountries();
@@ -355,6 +354,6 @@ public class ISOCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 	}
 
 	public static void main(String[] args) {
-		new ISOCurrencyOnlineProvider();
+		new IsoCurrencyOnlineProvider();
 	}
 }

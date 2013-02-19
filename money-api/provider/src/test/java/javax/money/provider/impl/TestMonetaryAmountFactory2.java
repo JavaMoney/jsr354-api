@@ -35,14 +35,14 @@ import java.math.BigDecimal;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
-import javax.money.provider.MonetaryAmountFactory;
+import javax.money.provider.MonetaryAmountProvider;
 
 /**
  * Empty pseudo implementation for testing only.
  * @author Anatole Tresch
  *
  */
-public class TestMonetaryAmountFactory2 implements MonetaryAmountFactory {
+public class TestMonetaryAmountFactory2 implements MonetaryAmountProvider {
 
 	@Override
 	public Class<?> getNumberClass() {

@@ -20,7 +20,7 @@
 	</properties>
 
 	<modules>
-		<module>money-plaf</module>
+		<!-- module>jdk-stub</module  -->
 		<module>money-api</module>
 		<module>money-ri</module>
 		<module>money-tck</module>

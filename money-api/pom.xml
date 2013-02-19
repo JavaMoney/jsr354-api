@@ -12,19 +12,15 @@
 	<name>Java Money and Currency Standalone API</name>
 
 	<modules>
+	    <module>core</module>
 		<module>convert</module>
 		<module>ext</module>
 		<module>format</module>
-		<module>singleton</module>
+		<module>provider</module>
 	</modules>
 	<description>JSR 354 (Money and Currency) - Standalone API</description>
 
 	<dependencies>
-		<dependency>
-			<groupId>javax.money</groupId>
-			<artifactId>money-api-core</artifactId>
-			<version>0.3-SNAPSHOT</version>
-		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

@@ -5,6 +5,6 @@
     <groupId>javax.money</groupId>
     <version>0.3-SNAPSHOT</version>
   </parent>
-  <artifactId>money-plaf-core</artifactId>
+  <artifactId>money-api-core</artifactId>
   <name>JSR 354 (Money and Currency) - Platform Core</name>
 </project>

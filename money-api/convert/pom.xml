@@ -10,7 +10,7 @@
   <dependencies>
   	<dependency>
   		<groupId>javax.money</groupId>
-  		<artifactId>money-plaf-core</artifactId>
+  		<artifactId>money-api-core</artifactId>
   		<version>${project.version}</version>
   	</dependency>
   </dependencies>

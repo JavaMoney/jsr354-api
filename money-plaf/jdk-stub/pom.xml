@@ -6,13 +6,13 @@
 		<groupId>javax.money</groupId>
 		<version>0.3-SNAPSHOT</version>
 	</parent>
-	<artifactId>money-plaf-jdk-stub</artifactId>
+	<artifactId>money-jdk-stub</artifactId>
 	<name>JSR 354 (Money and Currency) - Platform JDK Stub</name>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>javax.money</groupId>
-				<artifactId>money-plaf-core</artifactId>
+				<artifactId>money-api-core</artifactId>
 				<version>0.3-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
@@ -20,7 +20,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>javax.money</groupId>
-			<artifactId>money-plaf-core</artifactId>
+			<artifactId>money-api-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

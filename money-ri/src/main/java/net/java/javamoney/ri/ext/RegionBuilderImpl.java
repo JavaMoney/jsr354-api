@@ -18,16 +18,16 @@
  */
 package net.java.javamoney.ri.ext;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.money.ext.Region;
+import javax.money.ext.RegionBuilder;
 import javax.money.ext.RegionProvider;
 import javax.money.ext.RegionType;
 import javax.money.provider.Monetary;
+import javax.money.provider.spi.MonetaryExtension;
 
 /**
  * Regions can be used to segregate or access artifacts (e.g. currencies) either
@@ -38,11 +38,7 @@ import javax.money.provider.Monetary;
  * 
  * @author Anatole Tresch
  */
-public class RegionImpl implements Region {
-	/**
-	 * serialID.
-	 */
-	private static final long serialVersionUID = -8957470024522944264L;
+public class RegionBuilderImpl implements RegionBuilder, MonetaryExtension {
 
 	/** The unique id of a region. */
 	private String id;
@@ -58,8 +54,8 @@ public class RegionImpl implements Region {
 	private Set<Region> childRegions = new HashSet<Region>();
 
 	/**
-	 * Creates a region. Regions should only be accessed using the accessor
-	 * method {@link Monetary#getExtension(Class)}, passing
+	 * Creates a {@link RegionBuilder}. Regions should only be accessed using
+	 * the accessor method {@link Monetary#getExtension(Class)}, passing
 	 * {@link RegionProvider} as type.
 	 * 
 	 * @param id
@@ -67,13 +63,12 @@ public class RegionImpl implements Region {
 	 * @param type
 	 *            the region's type, not null.
 	 */
-	public RegionImpl(String id, RegionType regionType) {
-		this(id, regionType, null, null);
+	public RegionBuilderImpl() {
 	}
 
 	/**
-	 * Creates a region. Regions should only be accessed using the accessor
-	 * method {@link Monetary#getExtension(Class)}, passing
+	 * Creates a {@link RegionBuilder}. Regions should only be accessed using
+	 * the accessor method {@link Monetary#getExtension(Class)}, passing
 	 * {@link RegionProvider} as type.
 	 * 
 	 * @param id
@@ -81,34 +76,9 @@ public class RegionImpl implements Region {
 	 * @param type
 	 *            the region's type, not null.
 	 */
-	public RegionImpl(String id, RegionType regionType, Region parent) {
-		this(id, regionType, parent, null);
-	}
-
-	/**
-	 * Creates a region. Regions should only be accessed using the accessor
-	 * method {@link Monetary#getExtension(Class)}, passing
-	 * {@link RegionProvider} as type.
-	 * 
-	 * @param id
-	 *            the region's id, not null.
-	 * @param type
-	 *            the region's type, not null.
-	 */
-	public RegionImpl(String id, RegionType regionType, Region parent,
-			Collection<Region> childRegions) {
-		if(id==null){
-			throw new IllegalArgumentException("id is required.");
-		}
-		if(regionType==null){
-			throw new IllegalArgumentException("regionType is required.");
-		}
+	public RegionBuilderImpl(String id, RegionType regionType) {
 		this.id = id;
 		this.regionType = regionType;
-		this.parent = parent;
-		if(childRegions!=null){
-			this.childRegions.addAll(childRegions);
-		}
 	}
 
 	/**
@@ -173,7 +143,7 @@ public class RegionImpl implements Region {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RegionImpl other = (RegionImpl) obj;
+		RegionBuilderImpl other = (RegionBuilderImpl) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -187,54 +157,11 @@ public class RegionImpl implements Region {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.lang.Object#toString()
+	 * @see javax.money.ext.Region#getChildRegions()
 	 */
 	@Override
-	public String toString() {
-		return "Region [regionType=" + regionType + ", id=" + id + "]";
-	}
-
-	@Override
-	public boolean contains(Region region) {
-		if (this.childRegions.contains(region)) {
-			return true;
-		}
-		for (Region current : childRegions) {
-			if (current.contains(region)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public Enumeration<Region> getChildRegions() {
-		return Collections.enumeration(childRegions);
-	}
-
-	@Override
-	public Enumeration<Region> getChildRegions(RegionType type) {
-		return getChildRegions(type, false);
-	}
-
-	@Override
-	public Enumeration<Region> getChildRegions(RegionType type,
-			boolean recursive) {
-		Set<Region> constraintRegions = new HashSet<Region>();
-		for (Region region : childRegions) {
-			if (region.getRegionType().equals(type)) {
-				constraintRegions.add(region);
-				if (recursive) {
-					Enumeration<Region> subs = region.getChildRegions(type,
-							recursive);
-					while (subs.hasMoreElements()) {
-						Region subRegion = (Region) subs.nextElement();
-						constraintRegions.add(subRegion);
-					}
-				}
-			}
-		}
-		return Collections.enumeration(constraintRegions);
+	public Set<Region> getChildRegions() {
+		return childRegions;
 	}
 
 	@Override
@@ -243,15 +170,71 @@ public class RegionImpl implements Region {
 	}
 
 	@Override
-	public Region getParentRegion(RegionType type) {
-		Region parent = this.parent;
-		while (parent != null) {
-			if (parent.getRegionType().equals(type)) {
-				return parent;
-			}
-			parent = parent.getParentRegion();
-		}
-		return null;
+	public RegionBuilder setId(String id) {
+		this.id = id;
+		return this;
 	}
 
+	@Override
+	public RegionBuilder setRegionType(RegionType type) {
+		if (type == null) {
+			throw new IllegalArgumentException("Type may not be null.");
+		}
+		this.regionType = type;
+		return this;
+	}
+
+	@Override
+	public RegionBuilder addChildRegions(Region... regions) {
+		this.childRegions.addAll(Arrays.asList(regions));
+		return this;
+	}
+
+	@Override
+	public RegionBuilder removeChildRegions(Region... regions) {
+		this.childRegions.removeAll(Arrays.asList(regions));
+		return this;
+	}
+
+	@Override
+	public void clearChildren() {
+		this.childRegions.clear();
+	}
+
+	@Override
+	public RegionBuilder setParentRegion(Region parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	public boolean isBuildable() {
+		return this.id != null && this.regionType != null;
+	}
+
+	@Override
+	public Region build() {
+		return new RegionImpl(this.id, this.regionType, this.parent,
+				this.childRegions);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "RegionBuilderImpl [id=" + id + ", regionType=" + regionType
+				+ ", parent=" + parent + ", childRegions=" + childRegions + "]";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.provider.spi.MonetaryExtension#getExposedType()
+	 */
+	@Override
+	public Class<?> getExposedType() {
+		return RegionBuilder.class;
+	}
 }

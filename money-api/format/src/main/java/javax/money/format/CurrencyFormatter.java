@@ -32,6 +32,7 @@
 package javax.money.format;
 
 import java.io.IOException;
+
 import javax.money.CurrencyUnit;
 import javax.money.format.common.FormatException;
 import javax.money.format.common.StyledFormatter;

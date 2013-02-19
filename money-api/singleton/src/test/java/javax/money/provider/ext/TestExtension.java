@@ -29,16 +29,19 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.provider.impl;
-
+package javax.money.provider.ext;
 
 /**
- * Extension interface, hust for testing!
+ * Extension interface, just for testing!
  * 
  * @author Anatole Tresch
  */
 public interface TestExtension {
-
+	/**
+	 * Generates a greeting String.
+	 * 
+	 * @return a greeting String.
+	 */
 	public String sayHello();
-	
+
 }

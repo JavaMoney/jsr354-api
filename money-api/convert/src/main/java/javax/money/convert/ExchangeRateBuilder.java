@@ -43,6 +43,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Access an attribute.
 	 * 
+	 * @see ExchangeRate#getAttribute(String, Class)
 	 * @param key
 	 *            The attribute's key
 	 * @param type
@@ -54,6 +55,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Sets an attribute.
 	 * 
+	 * @see ExchangeRate#getAttribute(String, Class)
 	 * @param key
 	 *            The attribute's key, not {@code null}.
 	 * @param value
@@ -64,6 +66,10 @@ public interface ExchangeRateBuilder {
 
 	/**
 	 * Removes all attributes currently defined.
+	 * 
+	 * @see ExchangeRate#getAttribute(String, Class)
+	 * @see ExchangeRate#getAttributeType(String)
+	 * @see ExchangeRate#getAttributeKeys()
 	 */
 	public void clearAttributes();
 
@@ -71,21 +77,23 @@ public interface ExchangeRateBuilder {
 	 * Get the exchange rate types that this provider instance is providing data
 	 * for.
 	 * 
+	 * @see ExchangeRate#getExchangeRateType()
 	 * @return the {@link ExchangeRateType} instances available.
 	 */
-	public ExchangeRateBuilder setConversionType(
-			ExchangeRateType type);
+	public ExchangeRateBuilder setExchangeRateType(ExchangeRateType type);
 
 	/**
 	 * Access the {@link ExchangeRateType} of the rate to be created.
 	 * 
-	 * @return
+	 * @see ExchangeRate#getExchangeRateType()
+	 * @return the rate type currently set, or {@code null}.
 	 */
 	public ExchangeRateType getExchangeRateType();
 
 	/**
 	 * Set the source item.
 	 * 
+	 * @see ExchangeRate#getSource()
 	 * @param currency
 	 *            the source item
 	 * @return the builder instance
@@ -95,6 +103,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Sets the rate's timestamp.
 	 * 
+	 * @see ExchangeRate#getTimestamp()
 	 * @param timestamp
 	 *            The timestamp.
 	 * @return This builder instance.
@@ -104,9 +113,28 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Get the timestamp used for the {@link ConversionRate} created.
 	 * 
+	 * @see ExchangeRate#getTimestamp()
 	 * @return
 	 */
 	public Long getTimestamp();
+
+	/**
+	 * Sets the {@link ExchangeRate}'s validUntil property.
+	 * 
+	 * @see ExchangeRate#getValidUntil()
+	 * @param validUntil
+	 *            the validUntil value, or {@code null}.
+	 * @return the builder instance
+	 */
+	public ExchangeRateBuilder setValidUntil(Long validUntil);
+
+	/**
+	 * Access the current validUntil property used.
+	 * 
+	 * @see ExchangeRate#getValidUntil()
+	 * @return the validUntil property used by this builder.
+	 */
+	public Long getValidUntil();
 
 	/**
 	 * Creates a derived {@link ExchangeRate} using the given chain of rates.
@@ -114,6 +142,7 @@ public interface ExchangeRateBuilder {
 	 * The method must validate that each target {@link CurrencyUnit} matches
 	 * the {@link CurrencyUnit} of the next {@link ExchangeRate} instance.
 	 * 
+	 * @see ExchangeRate#getExchangeRateChain()
 	 * @param exchangeRates
 	 *            the chain of rates that define a derived exchange rate from
 	 *            the source currency of the first item in the chain to the
@@ -129,6 +158,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Get the exchange rate chain, for a chained rate.
 	 * 
+	 * @see ExchangeRate#getExchangeRateChain()
 	 * @return the rate chain, may also be an empty array, but never
 	 *         {@code null}.
 	 */
@@ -140,6 +170,7 @@ public interface ExchangeRateBuilder {
 	 * currencies. The builder will map this factor, so it is appropriate for
 	 * mapping the source currency to the target currency.
 	 * 
+	 * @see ExchangeRate#getFactor()
 	 * @param number
 	 *            The factor, never null.
 	 * @return the builder instance.
@@ -152,6 +183,7 @@ public interface ExchangeRateBuilder {
 	 * currencies. The builder will map this factor, so it is appropriate for
 	 * mapping the source currency to the target currency.
 	 * 
+	 * @see ExchangeRate#getFactor()
 	 * @param number
 	 *            The factor, never null.
 	 * @return the builder instance.
@@ -161,6 +193,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Set the location.
 	 * 
+	 * @see ExchangeRate#getLocation()
 	 * @param location
 	 *            the location
 	 * @return the builder instance
@@ -170,6 +203,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Get the location of the rate to be built.
 	 * 
+	 * @see ExchangeRate#getLocation()
 	 * @return the location, or null.
 	 */
 	public String getLocation();
@@ -177,6 +211,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Set the data provider.
 	 * 
+	 * @see ExchangeRate#getDataProvider()
 	 * @param dataProvider
 	 *            the data provider
 	 * @return the builder instance
@@ -184,21 +219,9 @@ public interface ExchangeRateBuilder {
 	public ExchangeRateBuilder setDataProvider(String dataProvider);
 
 	/**
-	 * Builds a new instance of {@link ConversionRate} using the attributes
-	 * defines within this builder instance. The method {@link #isBuildeable()}
-	 * allows to check if a rate can be build.
-	 * 
-	 * @see #isBuildeable()
-	 * @return the created {@link ConversionRate}, never null.
-	 * @throws IllegalStateException
-	 *             if the builder can not create a valid {@link ConversionRate}
-	 *             instance, e.g. beacause required properties are not defined.
-	 */
-	public ExchangeRate build();
-
-	/**
 	 * Get the source item of the rate to be built.
 	 * 
+	 * @see ExchangeRate#getSource()
 	 * @return the source item
 	 */
 	public CurrencyUnit getSource();
@@ -206,6 +229,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Set the target item.
 	 * 
+	 * @see ExchangeRate#getTarget()
 	 * @param currency
 	 *            the target item.
 	 * @return the builder instance
@@ -215,6 +239,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Get the target item of the rate to be built.
 	 * 
+	 * @see ExchangeRate#getTarget()
 	 * @return the target item.
 	 */
 	public CurrencyUnit getTarget();
@@ -241,8 +266,17 @@ public interface ExchangeRateBuilder {
 	 */
 	public boolean isBuildeable();
 
-	public Long getValidUntil();
-
-	public ExchangeRateBuilder setValidUntil(Long validUntil);
+	/**
+	 * Builds a new instance of {@link ConversionRate} using the attributes
+	 * defines within this builder instance. The method {@link #isBuildeable()}
+	 * allows to check if a rate can be build.
+	 * 
+	 * @see #isBuildeable()
+	 * @return the created {@link ConversionRate}, never null.
+	 * @throws IllegalStateException
+	 *             if the builder can not create a valid {@link ConversionRate}
+	 *             instance, e.g. beacause required properties are not defined.
+	 */
+	public ExchangeRate build();
 
 }

@@ -35,10 +35,10 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import javax.money.MonetaryAmount;
+import javax.money.format.common.FormatterBuilder;
 import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.StyleableFormatter;
 import javax.money.format.common.StyledFormatter;
-import javax.money.format.common.FormatterBuilder;
 
 /**
  * Provides the ability to build a formatter for amount values.

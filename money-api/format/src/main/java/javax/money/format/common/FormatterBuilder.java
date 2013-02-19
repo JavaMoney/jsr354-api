@@ -31,7 +31,6 @@
  */
 package javax.money.format.common;
 
-import java.util.Locale;
 
 /**
  * Provides the ability to build a formatter by programmatic defining the

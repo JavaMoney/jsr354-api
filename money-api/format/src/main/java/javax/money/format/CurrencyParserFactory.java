@@ -31,8 +31,6 @@
  */
 package javax.money.format;
 
-import java.util.Locale;
-
 import javax.money.format.common.LocalizationStyle;
 
 /**

@@ -32,7 +32,6 @@
 package javax.money.format;
 
 import java.io.IOException;
-import java.util.Locale;
 
 import javax.money.MonetaryAmount;
 import javax.money.format.common.FormatException;

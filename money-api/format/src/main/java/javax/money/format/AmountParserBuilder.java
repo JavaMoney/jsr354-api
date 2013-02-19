@@ -32,16 +32,12 @@
 package javax.money.format;
 
 import java.text.NumberFormat;
-import java.text.spi.NumberFormatProvider;
 import java.util.Locale;
 
 import javax.money.MonetaryAmount;
-import javax.money.format.common.StyleableFormatter;
-import javax.money.format.common.StyleableParser;
-import javax.money.format.common.StyledFormatter;
-import javax.money.format.common.StyledParser;
-import javax.money.format.common.ParserBuilder;
 import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.ParserBuilder;
+import javax.money.format.common.StyledParser;
 
 /**
  * Provides the ability to build a parser for amount values.

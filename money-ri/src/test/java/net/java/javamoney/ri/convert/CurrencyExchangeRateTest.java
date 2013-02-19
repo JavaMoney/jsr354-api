@@ -29,7 +29,7 @@ import org.junit.Test;
 
 public class CurrencyExchangeRateTest extends ConvertTestBase {
 
-	private static final ExchangeRateType TYPE = ExchangeRateType
+	private static final ExchangeRateType TYPE = SingletonExchangeRateType
 			.of("test");
 
 	@Test

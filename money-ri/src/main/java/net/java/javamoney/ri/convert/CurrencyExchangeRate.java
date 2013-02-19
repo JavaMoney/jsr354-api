@@ -177,8 +177,9 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		if (o == null) {
 			return -1;
 		}
-		int compare = this.getExchangeRateType().compareTo(
-				o.getExchangeRateType());
+		@SuppressWarnings("unchecked")
+		int compare = ((Comparable<ExchangeRateType>) this
+				.getExchangeRateType()).compareTo(o.getExchangeRateType());
 		if (compare == 0) {
 			if (location != null) {
 				compare = this.location.compareTo(o.getLocation());
@@ -208,13 +209,6 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		private ExchangeRate[] rateChain;
 		private Map<String, Object> attributes = new HashMap<String, Object>();
 
-		@Override
-		public ExchangeRateBuilder setConversionType(
-				ExchangeRateType exchangeRateType) {
-			this.exchangeRateType = exchangeRateType;
-			return this;
-		}
-
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T getAttribute(String key, Class<T> type) {
@@ -233,6 +227,13 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		}
 
 		@Override
+		public ExchangeRateBuilder setExchangeRateType(
+				ExchangeRateType exchangeRateType) {
+			this.exchangeRateType = exchangeRateType;
+			return this;
+		}
+
+		@Override
 		public ExchangeRateType getExchangeRateType() {
 			return exchangeRateType;
 		}
@@ -241,6 +242,22 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		public ExchangeRateBuilder setSource(CurrencyUnit currency) {
 			this.source = currency;
 			return this;
+		}
+
+		@Override
+		public CurrencyUnit getSource() {
+			return source;
+		}
+
+		@Override
+		public ExchangeRateBuilder setTarget(CurrencyUnit currency) {
+			this.target = currency;
+			return this;
+		}
+
+		@Override
+		public CurrencyUnit getTarget() {
+			return target;
 		}
 
 		@Override
@@ -315,28 +332,6 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		}
 
 		@Override
-		public ExchangeRate build() {
-			return new CurrencyExchangeRate(exchangeRateType, source, target,
-					factor, rateChain, timestamp, validUntil);
-		}
-
-		@Override
-		public CurrencyUnit getSource() {
-			return source;
-		}
-
-		@Override
-		public ExchangeRateBuilder setTarget(CurrencyUnit currency) {
-			this.target = currency;
-			return this;
-		}
-
-		@Override
-		public CurrencyUnit getTarget() {
-			return target;
-		}
-
-		@Override
 		public Number getFactor() {
 			return factor;
 		}
@@ -357,6 +352,11 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 			}
 		}
 
+		@Override
+		public ExchangeRate build() {
+			return new CurrencyExchangeRate(exchangeRateType, source, target,
+					factor, rateChain, timestamp, validUntil);
+		}
 	}
 
 }

@@ -31,7 +31,7 @@
  */
 package javax.money.ext;
 
-import java.util.Enumeration;
+import java.util.Set;
 
 /**
  * Regions can be used to segregate or access artifacts (e.g. currencies) either
@@ -42,7 +42,7 @@ import java.util.Enumeration;
  * 
  * @author Anatole Tresch
  */
-public interface Region {
+public interface RegionBuilder {
 
 	/**
 	 * Access the region's identifier. The identifier is unique in combination
@@ -53,29 +53,60 @@ public interface Region {
 	public String getId();
 
 	/**
+	 * Sets the given {@link RegionType} instance's identifier for this builder.
+	 * 
+	 * @param type
+	 *            the {@link RegionType} instance.s identifier, not {@code null}
+	 *            .
+	 * @return this builder
+	 */
+	public RegionBuilder setId(String id);
+
+	/**
 	 * Get the region's type.
 	 * 
 	 * @return the region's type, never {@code null}.
 	 */
 	public RegionType getRegionType();
 
-	boolean contains(Region other);
+	/**
+	 * Sets the given {@link RegionType} instance for this builder.
+	 * 
+	 * @param type
+	 *            the {@link RegionType} instance to be used, not {@code null}.
+	 * @return this builder
+	 */
+	public RegionBuilder setRegionType(RegionType type);
 
 	/**
 	 * access the child regions of this region.
 	 * 
 	 * @return the child regions, never {@code null}.
 	 */
-	public Enumeration<Region> getChildRegions();
+	public Set<Region> getChildRegions();
 
 	/**
-	 * Access all direct (non-recursive) child regions of this region, hereby
-	 * filtering for the given type only.
+	 * Adds the given {@link Region} instances as child to this builder.
 	 * 
-	 * @param type
-	 *            the required type, not {@code null}.
+	 * @param regions
+	 *            the {@link Region} instance to be added, never {@code null}.
+	 * @return this builder
 	 */
-	public Enumeration<Region> getChildRegions(RegionType type);
+	public RegionBuilder addChildRegions(Region... regions);
+
+	/**
+	 * Removes the given {@link Region} instances as child to this builder.
+	 * 
+	 * @param regions
+	 *            the {@link Region} instance to be added, never {@code null}.
+	 * @return this builder
+	 */
+	public RegionBuilder removeChildRegions(Region... regions);
+
+	/**
+	 * Removes all child {@link Region} from this builder.
+	 */
+	public void clearChildren();
 
 	/**
 	 * Access the parent region of the give region.
@@ -86,28 +117,30 @@ public interface Region {
 	public Region getParentRegion();
 
 	/**
-	 * Access the direct child region of the given type. If multiple parent
-	 * regions match, the nearest regions relative to this region is returned.
+	 * Sets the parent {@link Region} of the {@link Region} to be built.
 	 * 
-	 * @param type
-	 *            the target RegionType
-	 * @return the parent region that matches the given type, or {@code null}.
+	 * @param region
+	 *            the parent {@link Region}, or {@code null}.
+	 * @return this builder
 	 */
-	public Region getParentRegion(RegionType type);
+	public RegionBuilder setParentRegion(Region region);
 
 	/**
-	 * Access the direct or indirect parent region of the given type. If
-	 * multiple parent regions match, the nearest regions relative to this
-	 * region is returned.
+	 * Allows to check if the builder can create an item to be built.
 	 * 
-	 * @param type
-	 *            the target RegionType
-	 * @param recursive
-	 *            if true, all child regions are checked for inclusion
-	 *            recursively.
-	 * @return the parent region that matches the given type, or {@code null}.
+	 * @return true, if {@link #build()} succeeds.
 	 */
-	public Enumeration<Region> getChildRegions(RegionType type,
-			boolean recursive);
+	public boolean isBuildable();
+
+	/**
+	 * Creates the unmodificale instance of {@link Region} using the setting of
+	 * this {@link RegionBuilder}.
+	 * 
+	 * @throws IllegalStateException
+	 *             when the {@link Region} can not be built (
+	 *             {@link #isBuildable()}==false.
+	 * @return an according {@link Region} instance, never {@code null}.
+	 */
+	public Region build();
 
 }

@@ -29,9 +29,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.ExchangeRateType;
 import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 import javax.money.convert.spi.ExchangeRateProviderSpi;
+
+import net.java.javamoney.ri.convert.SingletonExchangeRateType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -139,7 +141,7 @@ public class IMFExchangeRateProvider implements ExchangeRateProviderSpi {
 
 	@Override
 	public ExchangeRateType getExchangeRateType() {
-		return ExchangeRateType.of("public");
+		return SingletonExchangeRateType.of("public");
 	}
 
 	public static void main(String[] args) {

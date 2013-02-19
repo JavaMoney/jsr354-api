@@ -32,7 +32,6 @@
 package javax.money.format.common;
 
 import java.io.IOException;
-import java.util.Locale;
 
 /**
  * Formats instances of T to a {@link String} or an {@link Appendable}.

@@ -40,7 +40,7 @@ import java.util.Map;
  * @author Anatole Tresch
  */
 public interface CompoundItemBuilder<T> {
-// TODO consider moving this to ext
+
 	/**
 	 * A {@link CompoundItem} may have a type identifier that helps to identify,
 	 * what type of items object is returned.

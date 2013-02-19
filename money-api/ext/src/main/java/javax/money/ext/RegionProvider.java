@@ -33,7 +33,6 @@ package javax.money.ext;
 
 import javax.money.provider.spi.MonetaryExtension;
 
-
 /**
  * This class models the component defined by JSR 354 that provides accessors
  * for {@link Region}. It is provided by the Money singleton.
@@ -48,6 +47,13 @@ public interface RegionProvider extends MonetaryExtension {
 	 * @return all {@link RegionType}s available, never null.
 	 */
 	public RegionType[] getRegionTypes();
+
+	/**
+	 * Access all regions available, that have no parent region.
+	 * 
+	 * @return all {@link Region}s available without a parent, never null.
+	 */
+	public Region[] getRootRegions();
 
 	/**
 	 * Access a region.

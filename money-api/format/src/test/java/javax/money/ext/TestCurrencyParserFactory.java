@@ -31,8 +31,6 @@
  */
 package javax.money.ext;
 
-import java.util.Locale;
-
 import javax.money.format.CurrencyParser;
 import javax.money.format.CurrencyParserFactory;
 import javax.money.format.StyleableCurrencyParser;

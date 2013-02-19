@@ -32,9 +32,9 @@
 package javax.money.provider.impl;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.ExchangeRateType;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
+import javax.money.convert.ExchangeRateType;
 
 /**
  * Empty pseudo implementation for testing only.
@@ -43,8 +43,11 @@ import javax.money.convert.ExchangeRateProvider;
  */
 public class TestExchangeRateProvider implements ExchangeRateProvider {
 
-	static final ExchangeRateType EXCHANGE_RATE_TYPE = ExchangeRateType
-			.of("TEST");
+	static final ExchangeRateType EXCHANGE_RATE_TYPE = new ExchangeRateType(){
+		@Override
+		public String getId() {
+			return "TEST";
+		}};
 
 	@Override
 	public ExchangeRateType getExchangeRateType() {

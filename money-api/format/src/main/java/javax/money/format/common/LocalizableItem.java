@@ -32,7 +32,6 @@
 package javax.money.format.common;
 
 import java.io.IOException;
-import java.util.Locale;
 
 /**
  * This interface is implemented by types that require to be represented as

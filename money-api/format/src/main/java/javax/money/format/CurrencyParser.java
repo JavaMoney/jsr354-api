@@ -33,8 +33,8 @@ package javax.money.format;
 
 import javax.money.CurrencyUnit;
 import javax.money.UnknownCurrencyException;
-import javax.money.format.common.StyledParser;
 import javax.money.format.common.ParseException;
+import javax.money.format.common.StyledParser;
 
 /**
  * Parses instances of {@link CurrencyUnit} to and from a {@link CharSequence}.

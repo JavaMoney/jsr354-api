@@ -71,11 +71,13 @@ public final class RegionProviderImpl extends AbstractSpiComponent implements
 				continue;
 			}
 			for (int i = 0; i < regionTypes.length; i++) {
-				if(regionTypes[i]==null){
-					// TODO log Warning: "Found null element in RegionType array returned from "+prov.getClass().getName()
+				if (regionTypes[i] == null) {
+					// TODO log Warning:
+					// "Found null element in RegionType array returned from "+prov.getClass().getName()
 				}
-				if(result.contains(regionTypes[i])){
-					// TODO log Warning: "Ignoring ambigous RegionType in RegionType array returned from "+prov.getClass().getName()
+				if (result.contains(regionTypes[i])) {
+					// TODO log Warning:
+					// "Ignoring ambigous RegionType in RegionType array returned from "+prov.getClass().getName()
 				}
 				result.add(regionTypes[i]);
 			}
@@ -146,6 +148,23 @@ public final class RegionProviderImpl extends AbstractSpiComponent implements
 				// TODO Log warning
 			}
 			result.addAll(Arrays.asList(regions));
+		}
+		return result.toArray(new Region[result.size()]);
+	}
+
+	/**
+	 * Access all region that have no parent.
+	 * 
+	 * @return the regions found, never null.
+	 */
+	@Override
+	public Region[] getRootRegions() {
+		Region[] regions = getAll();
+		Set<Region> result = new HashSet<Region>();
+		for (Region region : regions) {
+			if (region.getParentRegion() == null) {
+				result.add(region);
+			}
 		}
 		return result.toArray(new Region[result.size()]);
 	}

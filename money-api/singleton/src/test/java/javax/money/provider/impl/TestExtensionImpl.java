@@ -31,6 +31,7 @@
  */
 package javax.money.provider.impl;
 
+import javax.money.provider.ext.TestExtension;
 import javax.money.provider.spi.MonetaryExtension;
 
 /**

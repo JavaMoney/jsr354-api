@@ -35,8 +35,8 @@ import java.io.IOException;
 
 import javax.money.MonetaryAmount;
 import javax.money.format.common.FormatException;
-import javax.money.format.common.StyledFormatter;
 import javax.money.format.common.LocalizationStyle;
+import javax.money.format.common.StyledFormatter;
 
 /**
  * Formats instances of {@link MonetaryAmount}, by default the full amount is printed,

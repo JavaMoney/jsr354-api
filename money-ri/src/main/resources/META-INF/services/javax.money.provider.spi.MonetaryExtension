@@ -1,2 +1,3 @@
 net.java.javamoney.ri.ext.RegionProviderImpl
 net.java.javamoney.ri.ext.RegionalCurrencyUnitProviderImpl
+net.java.javamoney.ri.ext.RegionBuilderImpl

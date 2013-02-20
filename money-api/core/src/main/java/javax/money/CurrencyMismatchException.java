@@ -41,24 +41,62 @@ package javax.money;
  * @author Werner Keil
  */
 public class CurrencyMismatchException extends IllegalArgumentException {
-
+	/**
+	 * serialVersionUID.
+	 */
 	private static final long serialVersionUID = 3277879391197687869L;
+
 	/** The source currrency */
 	private CurrencyUnit source;
+
 	/** The target currrency */
 	private CurrencyUnit target;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param source
+	 *            the source currency, not {@code null}.
+	 * @param target
+	 *            the target currency, not {@code null}.
+	 */
 	public CurrencyMismatchException(CurrencyUnit source, CurrencyUnit target) {
 		super("Currency mismatch: " + source + " != " + target);
+		if (source == null || target == null) {
+			throw new IllegalArgumentException(
+					"Source or target currency may not be null.");
+		}
 		this.source = source;
 		this.target = target;
 	}
 
+	/**
+	 * Access the source {@link CurrencyUnit} instance.
+	 * 
+	 * @return the source currency, not {@code null}
+	 */
 	public CurrencyUnit getSourceCurrency() {
 		return source;
 	}
 
+	/**
+	 * Access the target {@link CurrencyUnit} instance.
+	 * 
+	 * @return the target currency, not {@code null}
+	 */
 	public CurrencyUnit getTargetCurrency() {
 		return target;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "CurrencyMismatchException [source=" + source + ", target="
+				+ target + "]";
+	}
+
 }

@@ -47,7 +47,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public final class MoneyCurrency implements CurrencyUnit, Serializable {
+public final class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<CurrencyUnit> {
 
 	/**
 	 * serialVersionUID.
@@ -425,7 +425,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable {
 	 * @author Werner Keil
 	 */
 	private final static class JDKCurrencyAdapter implements
-			LocalizableCurrencyUnit, Serializable {
+			LocalizableCurrencyUnit, Serializable, Comparable<CurrencyUnit> {
 
 		/**
 		 * serialVersionUID.
@@ -477,10 +477,10 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable {
 				compare = getCurrencyCode().compareTo(
 						currency.getCurrencyCode());
 			}
-			if (currency.getValidFrom() != null) {
+			if (compare == 0 && currency.getValidFrom() != null) {
 				compare = 1;
 			}
-			else if (currency.getValidUntil() != null) {
+			else if (compare == 0 && currency.getValidUntil() != null) {
 				compare = 1;
 			}
 			return compare;

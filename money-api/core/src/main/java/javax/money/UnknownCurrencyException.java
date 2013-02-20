@@ -51,19 +51,50 @@ public class UnknownCurrencyException extends IllegalArgumentException {
 	/**
 	 * Constructor.
 	 * 
-	 * @param message
-	 *            the message, may be null
+	 * @param namespace
+	 *            the namespace, not {@code null}.
+	 * @param currencyCode
+	 *            the currencyCode, not {@code null}.
 	 */
 	public UnknownCurrencyException(String namespace, String currencyCode) {
 		super("Unknown currency - " + namespace + ':' + currencyCode);
+		if (namespace == null) {
+			throw new IllegalArgumentException("namespace may not be null.");
+		}
+		if (currencyCode == null) {
+			throw new IllegalArgumentException("currencyCode may not be null.");
+		}
+		this.namespace = namespace;
+		this.currencyCode = currencyCode;
 	}
 
+	/**
+	 * Access the namespace of the unknown currency.
+	 * 
+	 * @return the namespace of the unknown currency.
+	 */
 	public String getNamespace() {
 		return this.namespace;
 	}
 
+	/**
+	 * Access the currency code of the unknown currency.
+	 * 
+	 * @return the currency code of the unknown currency.
+	 */
 	public String getCurrencyCode() {
 		return this.currencyCode;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "UnknownCurrencyException [namespace=" + namespace
+				+ ", currencyCode=" + currencyCode + "]";
 	}
 
 }

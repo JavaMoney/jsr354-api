@@ -31,6 +31,8 @@
  */
 package javax.money;
 
+import java.math.BigDecimal;
+
 
 /**
  * Interface defining a monetary amount. The effective internal representation
@@ -885,5 +887,7 @@ public interface MonetaryAmount {
 	 * @return The class that represents the numeric representation, never null.
 	 */
 	public Class<?> getNumberType();
+
+	public MonetaryAmount setValue(Number number);
 
 }

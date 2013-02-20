@@ -28,8 +28,9 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.MoneyCurrency;
 import javax.money.provider.spi.CurrencyUnitProviderSpi;
+
+import net.java.javamoney.ri.MoneyCurrency;
 
 /**
  * Basic implementation of a {@link CurrencyUnitProviderSpi} that provides the

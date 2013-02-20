@@ -31,8 +31,6 @@
  */
 package javax.money;
 
-import java.util.Arrays;
-
 /**
  * Exception thrown when the requested currency is illegal.
  * This is the base exception for all illegal arguments in JSR 354, 
@@ -44,6 +42,11 @@ import java.util.Arrays;
  * @author Stephen Colebourne
  */
 public class IllegalCurrencyException extends IllegalArgumentException {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2295538564436783042L;
 
     /**
      * Constructs an <code>IllegalCurrencyException</code> with the
@@ -73,28 +76,4 @@ public class IllegalCurrencyException extends IllegalArgumentException {
     public IllegalCurrencyException(String message, Throwable cause) {
         super(message, cause);
     }
-	
-	@Override
-	public String toString() {
-		return "IllegalCurrencyException [getLocalizedMessage()="
-				+ getLocalizedMessage() + ", getCause()=" + getCause()
-				+ ", toString()=" + super.toString() + ", fillInStackTrace()="
-				+ fillInStackTrace() + ", getStackTrace()="
-				+ Arrays.toString(getStackTrace()) + ", getSuppressed()="
-				+ Arrays.toString(getSuppressed()) + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + "]";
-	}
-
-	@Override
-	public String getMessage() {
-		// TODO Auto-generated method stub
-		return super.getMessage();
-	}
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2295538564436783042L;
-
-
 }

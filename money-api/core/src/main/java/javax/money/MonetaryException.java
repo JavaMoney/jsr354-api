@@ -29,64 +29,50 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format.common;
-
-import java.io.IOException;
-
-import javax.money.MonetaryException;
+package javax.money;
 
 /**
- * Exception thrown during monetary formatting.
+ * General Monetary exception.
+ * A base exception for JSR 354, 
+ * extending {@link RuntimeException}
+ * <p>
+ * This exception makes no guarantees about immutability or thread-safety.
  *
- * @author Stephen Colebourne, Werner Keil
+ * @author Werner Keil
  */
-public class FormatException extends MonetaryException {
+public class MonetaryException extends RuntimeException {
 
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = -2966663514205132233L;
+	private static final long serialVersionUID = -9039026008242959369L;
 
 	/**
-     * Constructor taking a message.
-     * 
-     * @param message  the message
-     */
-    public FormatException(String message) {
-    	super(message);
-    }
-
-    /**
-     * Constructor taking a message and cause.
-     * 
-     * @param message  the message
-     * @param cause  the exception cause
-     */
-    public FormatException(String message, Throwable cause) {
-    	super(message, cause);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Checks if the cause of this exception was an IOException, and if so re-throws it
-     * <p>
-     * This method is useful if you call a printer with an open stream or
-     * writer and want to ensure that IOExceptions are not lost.
-     * <pre>
-     * try {
-     *   printer.print(writer, money);
-     * } catch (CalendricalFormatException ex) {
-     *   ex.rethrowIOException();
-     *   // if code reaches here exception was caused by issues other than IO
-     * }
-     * </pre>
-     * Note that calling this method will re-throw the original IOException,
-     * causing this MoneyFormatException to be lost.
+     * Constructs a <code>MonetaryException</code> with the
+     * specified detail message.
      *
-     * @throws IOException if the cause of this exception is an IOException
+     * @param   s   the detail message.
      */
-    public void rethrowIOException() throws IOException {
-    	// TODO Not Implemented yet
+    public MonetaryException(String s) {
+        super(s);
     }
 
+    /**
+     * Constructs a new exception with the specified detail message and
+     * cause.
+     *
+     * <p>Note that the detail message associated with <code>cause</code> is
+     * <i>not</i> automatically incorporated in this exception's detail
+     * message.
+     *
+     * @param  message the detail message (which is saved for later retrieval
+     *         by the {@link Throwable#getMessage()} method).
+     * @param  cause the cause (which is saved for later retrieval by the
+     *         {@link Throwable#getCause()} method).  (A <tt>null</tt> value
+     *         is permitted, and indicates that the cause is nonexistent or
+     *         unknown.)
+     */
+    public MonetaryException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

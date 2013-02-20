@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 /**
  * Adapter that implements the new {@link CurrencyUnit} interface using the
@@ -47,7 +48,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public final class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<CurrencyUnit> {
+public final class MoneyCurrency implements CurrencyUnit, Serializable,
+		Comparable<CurrencyUnit> {
 
 	/**
 	 * serialVersionUID.
@@ -74,6 +76,8 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable, Comparab
 	private final boolean virtual;
 
 	private static final Map<String, CurrencyUnit> CACHED = new ConcurrentHashMap<String, CurrencyUnit>();
+
+	private static final Logger LOGGER = Logger.getLogger(MoneyCurrency.class.getName());
 
 	/**
 	 * Private constructor.
@@ -121,7 +125,6 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable, Comparab
 	/**
 	 * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
 	 */
-
 	public String getNamespace() {
 		return namespace;
 	}
@@ -358,6 +361,10 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable, Comparab
 			return (T) this.attributes.get(key);
 		}
 
+		public String getNamespace() {
+			return this.namespace;
+		}
+
 		public String getCurrencyCode() {
 			return this.currencyCode;
 		}
@@ -378,7 +385,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable, Comparab
 			return this.validUntil;
 		}
 
-		public boolean hasLegalTender() {
+		public boolean isLegalTender() {
 			return this.legalTender;
 		}
 
@@ -398,7 +405,19 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable, Comparab
 			if (!isBuildable()) {
 				throw new IllegalStateException("Can not build MoneyCurrency.");
 			}
-			if (cache && validFrom == null && validUntil == null) {
+			if (cache) {
+				if (validUntil != null) {
+					LOGGER.warning("CurrencyUnit build: Can only cache currencies that have no validity constraints.");
+					cache = false;
+				}
+				if (validFrom != null) {
+					if (validFrom.longValue() > System.currentTimeMillis()) {
+						LOGGER.warning("CurrencyUnit build: Can only cache currencies that are already valid.");
+						cache = false;
+					}
+				}
+			}
+			if (cache) {
 				String key = namespace + ':' + currencyCode;
 				CurrencyUnit current = CACHED.get(key);
 				if (current == null) {
@@ -479,8 +498,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable, Comparab
 			}
 			if (compare == 0 && currency.getValidFrom() != null) {
 				compare = 1;
-			}
-			else if (compare == 0 && currency.getValidUntil() != null) {
+			} else if (compare == 0 && currency.getValidUntil() != null) {
 				compare = 1;
 			}
 			return compare;

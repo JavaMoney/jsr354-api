@@ -40,7 +40,7 @@ package javax.money;
  * 
  * @author Werner Keil
  */
-public class CurrencyMismatchException extends IllegalArgumentException {
+public class CurrencyMismatchException extends IllegalCurrencyException {
 	/**
 	 * serialVersionUID.
 	 */
@@ -75,7 +75,7 @@ public class CurrencyMismatchException extends IllegalArgumentException {
 	 * 
 	 * @return the source currency, not {@code null}
 	 */
-	public CurrencyUnit getSourceCurrency() {
+	public CurrencyUnit getSource() {
 		return source;
 	}
 
@@ -84,7 +84,7 @@ public class CurrencyMismatchException extends IllegalArgumentException {
 	 * 
 	 * @return the target currency, not {@code null}
 	 */
-	public CurrencyUnit getTargetCurrency() {
+	public CurrencyUnit getTarget() {
 		return target;
 	}
 

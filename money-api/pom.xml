@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>money-api</artifactId>
 	<packaging>pom</packaging>
-	<name>Java Money and Currency Standalone API</name>
+	<name>Java Money and Currency API</name>
 
 	<modules>
 	    <module>core</module>
@@ -18,7 +18,7 @@
 		<module>format</module>
 		<module>provider</module>
 	</modules>
-	<description>JSR 354 (Money and Currency) - Standalone API</description>
+	<description>JSR 354 (Money and Currency) - Public API</description>
 
 	<dependencies>
 		<dependency>

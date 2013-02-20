@@ -29,106 +29,72 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.convert;
+package javax.money;
 
-import javax.money.CurrencyUnit;
-import javax.money.IllegalCurrencyException;
+import java.util.Arrays;
 
 /**
- * Exception thrown when a monetary conversion operation fails.
- * 
+ * Exception thrown when the requested currency is illegal.
+ * This is the base exception for all illegal arguments in JSR 354, 
+ * extending {@link IllegalArgumentException}
+ * <p>
+ * This exception makes no guarantees about immutability or thread-safety.
+ *
  * @author Werner Keil
  * @author Stephen Colebourne
  */
-public class CurrencyConversionException extends IllegalCurrencyException {
+public class IllegalCurrencyException extends IllegalArgumentException {
 
-	/** Serialization lock. */
-	private static final long serialVersionUID = -7743240650686883450L;
-
-	/** Source currency. */
-	private CurrencyUnit source;
-	/** Target currency. */
-	private CurrencyUnit target;
-	
     /**
-     * Constructs an <code>CurrencyConversionException</code> with the
-     * specified detail message, source and target currency.
+     * Constructs an <code>IllegalCurrencyException</code> with the
+     * specified detail message.
      *
-	 * @param source
-	 *            the source currency, may be null.
-	 *            
-	 * @param target
-	 *            the target currency, may be null.
-	 *            
-	 * @param message
-	 * 			   the detail message.
-	 */
-	public CurrencyConversionException(CurrencyUnit source,
-			CurrencyUnit target, String message) {
-		super(message);
-		this.source = source;
-		this.target = target;
-	}
-	
-    /**
-     * Constructs an <code>CurrencyConversionException</code> with the
-     * specified source and target currency.
-     *
-	 * @param source
-	 *            the source currency, may be null.
-	 *            
-	 * @param target
-	 *            the target currency, may be null.
-	 */
-	public CurrencyConversionException(CurrencyUnit source,
-			CurrencyUnit target) {
-		super("Cannot convert " + String.valueOf(source) + " into " + String.valueOf(target));
-		this.source = source;
-		this.target = target;
-	}
+     * @param   s   the detail message.
+     */
+    public IllegalCurrencyException(String s) {
+        super(s);
+    }
 
     /**
-     * Constructs a new exception with the specified source and target currency, detail message and
+     * Constructs a new exception with the specified detail message and
      * cause.
      *
      * <p>Note that the detail message associated with <code>cause</code> is
      * <i>not</i> automatically incorporated in this exception's detail
      * message.
      *
-     * @param source
-	 *            the source currency, may be null.            
-	 * @param target
-	 *            the target currency, may be null.         
      * @param  message the detail message (which is saved for later retrieval
      *         by the {@link Throwable#getMessage()} method).
      * @param  cause the cause (which is saved for later retrieval by the
      *         {@link Throwable#getCause()} method).  (A <tt>null</tt> value
      *         is permitted, and indicates that the cause is nonexistent or
      *         unknown.)
-	 */
-	public CurrencyConversionException(CurrencyUnit source,
-			CurrencyUnit target, String message, Throwable cause) {
-		super(message, cause);
-		this.source = source;
-		this.target = target;
+     */
+    public IllegalCurrencyException(String message, Throwable cause) {
+        super(message, cause);
+    }
+	
+	@Override
+	public String toString() {
+		return "IllegalCurrencyException [getLocalizedMessage()="
+				+ getLocalizedMessage() + ", getCause()=" + getCause()
+				+ ", toString()=" + super.toString() + ", fillInStackTrace()="
+				+ fillInStackTrace() + ", getStackTrace()="
+				+ Arrays.toString(getStackTrace()) + ", getSuppressed()="
+				+ Arrays.toString(getSuppressed()) + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + "]";
+	}
+
+	@Override
+	public String getMessage() {
+		// TODO Auto-generated method stub
+		return super.getMessage();
 	}
 
 	/**
-	 * Gets the first currency at fault.
 	 * 
-	 * @return the currency at fault, may be null
 	 */
-	public CurrencyUnit getSource() {
-		return source;
-	}
+	private static final long serialVersionUID = -2295538564436783042L;
 
-	/**
-	 * Gets the second currency at fault.
-	 * 
-	 * @return the currency at fault, may be null
-	 */
-	public CurrencyUnit getTarget() {
-		return target;
-	}
 
 }

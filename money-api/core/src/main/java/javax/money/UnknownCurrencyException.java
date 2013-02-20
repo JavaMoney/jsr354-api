@@ -40,13 +40,13 @@ package javax.money;
  * 
  * @author Werner Keil
  */
-public class UnknownCurrencyException extends IllegalArgumentException {
+public class UnknownCurrencyException extends IllegalCurrencyException {
 
 	private static final long serialVersionUID = 3277879391197687869L;
 	/** The requested namespace. */
-	private String namespace;
+	private final String namespace;
 	/** The requested currency code. */
-	private String currencyCode;
+	private final String currencyCode;
 
 	/**
 	 * Constructor.

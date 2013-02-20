@@ -19,7 +19,6 @@
 package net.java.javamoney.ri;
 
 import javax.money.CurrencyUnit;
-import javax.money.MoneyCurrency;
 
 /**
  * @author Werner Keil

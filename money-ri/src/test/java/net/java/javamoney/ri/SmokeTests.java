@@ -7,7 +7,6 @@ import java.util.Locale;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
-import javax.money.Money;
 import javax.money.format.AmountFormatter;
 import javax.money.format.AmountParser;
 import javax.money.format.StyleableAmountFormatter;

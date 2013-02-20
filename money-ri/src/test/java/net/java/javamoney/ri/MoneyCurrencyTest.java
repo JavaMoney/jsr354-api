@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package net.java.javamoney.ri;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -39,6 +39,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Currency;
 import java.util.Locale;
+
+import javax.money.CurrencyUnit;
+import javax.money.LocalizableCurrencyUnit;
+
+import net.java.javamoney.ri.MoneyCurrency;
 
 import org.junit.Test;
 
@@ -51,7 +56,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency#getInstance(java.util.Currency)}.
+	 * {@link net.java.javamoney.ri.MoneyCurrency#getInstance(java.util.Currency)}.
 	 */
 	@Test
 	public void testGetInstanceCurrency() {
@@ -75,7 +80,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency#getInstance(java.lang.String)}.
+	 * {@link net.java.javamoney.ri.MoneyCurrency#getInstance(java.lang.String)}.
 	 */
 	@Test
 	public void testGetInstanceString() {
@@ -99,7 +104,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency#getInstance(java.lang.String, java.lang.String)}
+	 * {@link net.java.javamoney.ri.MoneyCurrency#getInstance(java.lang.String, java.lang.String)}
 	 * .
 	 */
 	@Test
@@ -126,7 +131,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency#isVirtual()}.
+	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#isVirtual()}.
 	 */
 	@Test
 	public void testIsVirtual() {
@@ -137,7 +142,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency#getNamespace()}.
+	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getNamespace()}.
 	 */
 	@Test
 	public void testGetNamespace() {
@@ -146,7 +151,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency#getValidFrom()}.
+	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getValidFrom()}.
 	 */
 	@Test
 	public void testGetValidFrom() {
@@ -155,7 +160,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency#getValidUntil()}.
+	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getValidUntil()}.
 	 */
 	@Test
 	public void testGetValidUntil() {
@@ -164,7 +169,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency#getCurrencyCode()}.
+	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getCurrencyCode()}.
 	 */
 	@Test
 	public void testGetCurrencyCode() {
@@ -175,7 +180,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency#getNumericCode()}.
+	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getNumericCode()}.
 	 */
 	@Test
 	public void testGetNumericCode() {
@@ -187,7 +192,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency#getDefaultFractionDigits()}.
+	 * {@link net.java.javamoney.ri.MoneyCurrency#getDefaultFractionDigits()}.
 	 */
 	@Test
 	public void testGetDefaultFractionDigits() {
@@ -199,7 +204,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency#getAttribute(java.lang.String, java.lang.Class)}
+	 * {@link net.java.javamoney.ri.MoneyCurrency#getAttribute(java.lang.String, java.lang.Class)}
 	 * .
 	 */
 	@Test
@@ -209,7 +214,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency#getAttributeKeys()}.
+	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getAttributeKeys()}.
 	 */
 	@Test
 	public void testGetAttributeKeys() {
@@ -220,7 +225,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency#getAttributeType(java.lang.String)}.
+	 * {@link net.java.javamoney.ri.MoneyCurrency#getAttributeType(java.lang.String)}.
 	 */
 	@Test
 	public void testGetAttributeType() {
@@ -229,7 +234,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency#isLegalTender()}.
+	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#isLegalTender()}.
 	 */
 	@Test
 	public void testIsLegalTender() {
@@ -241,7 +246,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency#compareTo(javax.money.CurrencyUnit)}.
+	 * {@link net.java.javamoney.ri.MoneyCurrency#compareTo(javax.money.CurrencyUnit)}.
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
@@ -267,7 +272,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency#toString()}.
+	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#toString()}.
 	 */
 	@Test
 	public void testToString() {

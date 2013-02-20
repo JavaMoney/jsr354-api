@@ -47,7 +47,7 @@ import javax.money.CurrencyUnit;
 import javax.money.LocalizableCurrencyUnit;
 
 import sun.util.LocaleServiceProviderPool;
-//import sun.util.locale.provider.LocaleServiceProviderPool; JDK 8
+//import sun.util.locale.provider.LocaleServiceProviderPool; //JDK 8
 import sun.util.logging.PlatformLogger;
 
 

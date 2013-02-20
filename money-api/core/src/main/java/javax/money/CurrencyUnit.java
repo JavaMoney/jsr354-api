@@ -32,7 +32,6 @@
 package javax.money;
 
 import java.util.Enumeration;
-import java.util.ServiceLoader;
 
 /**
  * * A unit of currency.

@@ -42,7 +42,7 @@ import javax.money.provider.MonetaryAmountProvider;
  * @author Anatole Tresch
  *
  */
-public class TestMonetaryAmountFactory2 implements MonetaryAmountProvider {
+public class TestMonetaryAmountProvider2 implements MonetaryAmountProvider {
 
 	@Override
 	public Class<?> getNumberClass() {

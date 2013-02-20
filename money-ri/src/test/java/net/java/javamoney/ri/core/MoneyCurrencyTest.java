@@ -1,35 +1,23 @@
 /*
- * Copyright (c) 2012-2013, Credit Suisse
+ *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
  *
- * All rights reserved.
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *  * Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  *
- *  * Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- *  * Neither the name of JSR-354 nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Contributors:
+ *    Anatole Tresch - initial implementation
+ *    Wernner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri;
+package net.java.javamoney.ri.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -41,14 +29,13 @@ import java.util.Currency;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
+import javax.money.CurrencyUnitImpl;
 import javax.money.LocalizableCurrencyUnit;
-
-import net.java.javamoney.ri.MoneyCurrency;
 
 import org.junit.Test;
 
 /**
- * Tests for the {@link MoneyCurrency} class.
+ * Tests for the {@link CurrencyUnitImpl} class.
  * 
  * @author Anatole Tresch
  */
@@ -56,7 +43,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.MoneyCurrency#getInstance(java.util.Currency)}.
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getInstance(java.util.Currency)}.
 	 */
 	@Test
 	public void testGetInstanceCurrency() {
@@ -80,7 +67,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.MoneyCurrency#getInstance(java.lang.String)}.
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getInstance(java.lang.String)}.
 	 */
 	@Test
 	public void testGetInstanceString() {
@@ -104,7 +91,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.MoneyCurrency#getInstance(java.lang.String, java.lang.String)}
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getInstance(java.lang.String, java.lang.String)}
 	 * .
 	 */
 	@Test
@@ -131,7 +118,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#isVirtual()}.
+	 * Test method for {@link net.java.javamoney.ri.CurrencyUnitImpl#isVirtual()}.
 	 */
 	@Test
 	public void testIsVirtual() {
@@ -142,7 +129,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getNamespace()}.
+	 * Test method for {@link net.java.javamoney.ri.CurrencyUnitImpl#getNamespace()}.
 	 */
 	@Test
 	public void testGetNamespace() {
@@ -151,7 +138,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getValidFrom()}.
+	 * Test method for {@link net.java.javamoney.ri.CurrencyUnitImpl#getValidFrom()}.
 	 */
 	@Test
 	public void testGetValidFrom() {
@@ -160,7 +147,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getValidUntil()}.
+	 * Test method for {@link net.java.javamoney.ri.CurrencyUnitImpl#getValidUntil()}.
 	 */
 	@Test
 	public void testGetValidUntil() {
@@ -169,7 +156,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getCurrencyCode()}.
+	 * Test method for {@link net.java.javamoney.ri.CurrencyUnitImpl#getCurrencyCode()}.
 	 */
 	@Test
 	public void testGetCurrencyCode() {
@@ -180,7 +167,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getNumericCode()}.
+	 * Test method for {@link net.java.javamoney.ri.CurrencyUnitImpl#getNumericCode()}.
 	 */
 	@Test
 	public void testGetNumericCode() {
@@ -192,7 +179,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.MoneyCurrency#getDefaultFractionDigits()}.
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getDefaultFractionDigits()}.
 	 */
 	@Test
 	public void testGetDefaultFractionDigits() {
@@ -204,7 +191,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.MoneyCurrency#getAttribute(java.lang.String, java.lang.Class)}
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getAttribute(java.lang.String, java.lang.Class)}
 	 * .
 	 */
 	@Test
@@ -214,7 +201,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#getAttributeKeys()}.
+	 * Test method for {@link net.java.javamoney.ri.CurrencyUnitImpl#getAttributeKeys()}.
 	 */
 	@Test
 	public void testGetAttributeKeys() {
@@ -225,7 +212,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.MoneyCurrency#getAttributeType(java.lang.String)}.
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getAttributeType(java.lang.String)}.
 	 */
 	@Test
 	public void testGetAttributeType() {
@@ -234,7 +221,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#isLegalTender()}.
+	 * Test method for {@link net.java.javamoney.ri.CurrencyUnitImpl#isLegalTender()}.
 	 */
 	@Test
 	public void testIsLegalTender() {
@@ -246,7 +233,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.MoneyCurrency#compareTo(javax.money.CurrencyUnit)}.
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#compareTo(javax.money.CurrencyUnit)}.
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
@@ -272,7 +259,7 @@ public class MoneyCurrencyTest {
 	}
 
 	/**
-	 * Test method for {@link net.java.javamoney.ri.MoneyCurrency#toString()}.
+	 * Test method for {@link net.java.javamoney.ri.CurrencyUnitImpl#toString()}.
 	 */
 	@Test
 	public void testToString() {

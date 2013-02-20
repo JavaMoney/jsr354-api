@@ -1,1 +1,1 @@
-javax.money.provider.impl.TestAmountParseFactory
+javax.money.provider.impl.TestAmountParserFactory

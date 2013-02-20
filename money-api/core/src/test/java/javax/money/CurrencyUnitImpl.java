@@ -1,23 +1,35 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * Copyright (c) 2012-2013, Credit Suisse
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * All rights reserved.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *  * Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
  *
- * Contributors:
- *    Anatole Tresch - initial implementation
- *    Wernner Keil - extensions and adaptions.
+ *  * Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  * Neither the name of JSR-354 nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.java.javamoney.ri;
+package javax.money;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -29,8 +41,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-import javax.money.CurrencyUnit;
-import javax.money.LocalizableCurrencyUnit;
 
 /**
  * Adapter that implements the new {@link CurrencyUnit} interface using the
@@ -39,7 +49,7 @@ import javax.money.LocalizableCurrencyUnit;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public final class MoneyCurrency implements CurrencyUnit, Serializable,
+public final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 		Comparable<CurrencyUnit> {
 
 	/**
@@ -68,14 +78,14 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 
 	private static final Map<String, CurrencyUnit> CACHED = new ConcurrentHashMap<String, CurrencyUnit>();
 
-	private static final Logger LOGGER = Logger.getLogger(MoneyCurrency.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(CurrencyUnitImpl.class.getName());
 
 	/**
 	 * Private constructor.
 	 * 
 	 * @param currency
 	 */
-	private MoneyCurrency(String namespace, String code, int numCode,
+	private CurrencyUnitImpl(String namespace, String code, int numCode,
 			int fractionDigits, Long validFrom, Long validUntil, boolean legal,
 			boolean virtual, Map<String, Object> attributes) {
 		this.namespace = namespace;
@@ -394,7 +404,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 
 		public CurrencyUnit build(boolean cache) {
 			if (!isBuildable()) {
-				throw new IllegalStateException("Can not build MoneyCurrency.");
+				throw new IllegalStateException("Can not build CurrencyUnitImpl.");
 			}
 			if (cache) {
 				if (validUntil != null) {
@@ -412,14 +422,14 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 				String key = namespace + ':' + currencyCode;
 				CurrencyUnit current = CACHED.get(key);
 				if (current == null) {
-					current = new MoneyCurrency(namespace, currencyCode,
+					current = new CurrencyUnitImpl(namespace, currencyCode,
 							numericCode, defaultFractionDigits, validFrom,
 							validUntil, legalTender, virtual, attributes);
 					CACHED.put(key, current);
 				}
 				return current;
 			}
-			return new MoneyCurrency(namespace, currencyCode, numericCode,
+			return new CurrencyUnitImpl(namespace, currencyCode, numericCode,
 					defaultFractionDigits, validFrom, validUntil, legalTender,
 					virtual, attributes);
 		}

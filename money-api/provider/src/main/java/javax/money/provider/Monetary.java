@@ -136,7 +136,7 @@ public final class Monetary {
 
 	/**
 	 * Initializes the default numeric representation class, used when calling
-	 * {@link #getMonetaryAmountFactory()}.
+	 * {@link #getMonetaryAmountProvider()}.
 	 */
 	private void initDefaultNumberClass() {
 		String defaultClassName = System
@@ -187,7 +187,7 @@ public final class Monetary {
 	 * 
 	 * @return the {@link MonetaryAmountFactorySpi} component, never {@code null}.
 	 */
-	public static MonetaryAmountProvider getMonetaryAmountFactory(
+	public static MonetaryAmountProvider getMonetaryAmountProvider(
 			Class<?> numberClass) {
 		MonetaryAmountProvider factory = INSTANCE.monetaryAmountProviders
 				.get(numberClass);
@@ -204,8 +204,8 @@ public final class Monetary {
 	 * 
 	 * @return the {@link MonetaryAmountFactorySpi} component, never {@code null}.
 	 */
-	public static MonetaryAmountProvider getMonetaryAmountFactory() {
-		return getMonetaryAmountFactory(getDefaultNumberClass());
+	public static MonetaryAmountProvider getMonetaryAmountProvider() {
+		return getMonetaryAmountProvider(getDefaultNumberClass());
 	}
 
 	/**

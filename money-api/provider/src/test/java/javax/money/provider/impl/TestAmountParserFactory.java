@@ -31,72 +31,26 @@
  */
 package javax.money.provider.impl;
 
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmount;
-import javax.money.provider.MonetaryAmountProvider;
+import javax.money.format.AmountParser;
+import javax.money.format.AmountParserFactory;
+import javax.money.format.StyleableAmountParser;
+import javax.money.format.common.LocalizationStyle;
 
 /**
  * Empty pseudo implementation for testing only.
  * @author Anatole Tresch
  *
  */
-public class TestMonetaryAmountFactory implements MonetaryAmountProvider {
+public class TestAmountParserFactory implements AmountParserFactory {
 
 	@Override
-	public Class<?> getNumberClass() {
-		return String.class;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, Number number) {
+	public AmountParser getAmountParser(LocalizationStyle style) {
 		// empty implementation
 		return null;
 	}
 
 	@Override
-	public MonetaryAmount get(CurrencyUnit currency, byte value) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, short value) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, int value) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, long value) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, long major, long minor) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, float value) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, double value) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount zero(CurrencyUnit currency) {
+	public StyleableAmountParser getLocalizableAmountParser() {
 		// empty implementation
 		return null;
 	}

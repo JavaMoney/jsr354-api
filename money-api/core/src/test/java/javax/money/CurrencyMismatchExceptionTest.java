@@ -31,7 +31,9 @@
  */
 package javax.money;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -49,8 +51,8 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test
 	public void testCurrencyMismatchException() {
-		new CurrencyMismatchException(MoneyCurrency.getInstance("CHF"),
-				MoneyCurrency.getInstance("USD"));
+		new CurrencyMismatchException(CurrencyUnitImpl.getInstance("CHF"),
+				CurrencyUnitImpl.getInstance("USD"));
 	}
 
 	/**
@@ -60,7 +62,7 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testCurrencyMismatchException_FirstParamNull() {
-		new CurrencyMismatchException(null, MoneyCurrency.getInstance("USD"));
+		new CurrencyMismatchException(null, CurrencyUnitImpl.getInstance("USD"));
 	}
 
 	/**
@@ -70,7 +72,7 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testCurrencyMismatchException_SecondParamNull() {
-		new CurrencyMismatchException(MoneyCurrency.getInstance("CHF"), null);
+		new CurrencyMismatchException(CurrencyUnitImpl.getInstance("CHF"), null);
 	}
 
 	/**
@@ -89,8 +91,8 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test
 	public void testGetSourceCurrency() {
-		CurrencyUnit src = MoneyCurrency.getInstance("CHF");
-		CurrencyUnit tgt = MoneyCurrency.getInstance("USD");
+		CurrencyUnit src = CurrencyUnitImpl.getInstance("CHF");
+		CurrencyUnit tgt = CurrencyUnitImpl.getInstance("USD");
 		CurrencyMismatchException ex = new CurrencyMismatchException(src, tgt);
 		assertEquals(src, ex.getSource());
 	}
@@ -101,8 +103,8 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test
 	public void testGetTargetCurrency() {
-		CurrencyUnit src = MoneyCurrency.getInstance("CHF");
-		CurrencyUnit tgt = MoneyCurrency.getInstance("USD");
+		CurrencyUnit src = CurrencyUnitImpl.getInstance("CHF");
+		CurrencyUnit tgt = CurrencyUnitImpl.getInstance("USD");
 		CurrencyMismatchException ex = new CurrencyMismatchException(src, tgt);
 		assertEquals(tgt, ex.getTarget());
 	}
@@ -112,8 +114,8 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test
 	public void testToString() {
-		CurrencyUnit src = MoneyCurrency.getInstance("CHF");
-		CurrencyUnit tgt = MoneyCurrency.getInstance("USD");
+		CurrencyUnit src = CurrencyUnitImpl.getInstance("CHF");
+		CurrencyUnit tgt = CurrencyUnitImpl.getInstance("USD");
 		CurrencyMismatchException ex = new CurrencyMismatchException(src, tgt);
 		String toString = ex.toString();
 		assertNotNull(toString);

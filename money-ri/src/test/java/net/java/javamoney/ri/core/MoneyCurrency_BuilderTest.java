@@ -1,39 +1,23 @@
-                                                                     
-                                                                     
-                                                                     
-                                             
 /*
- * Copyright (c) 2012-2013, Credit Suisse
+ *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
  *
- * All rights reserved.
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *  * Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  *
- *  * Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- *  * Neither the name of JSR-354 nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Contributors:
+ *    Anatole Tresch - initial implementation
+ *    Wernner Keil - extensions and adaptions.
  */
-package javax.money;
+package net.java.javamoney.ri.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -43,17 +27,20 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Enumeration;
 
+import javax.money.CurrencyUnit;
+import javax.money.CurrencyUnitImpl;
+
 import org.junit.Test;
 
 /**
- * Tests for {@link MoneyCurrency.Builder}
+ * Tests for {@link CurrencyUnitImpl.Builder}
  * 
  * @author Anatole Tresch
  */
 public class MoneyCurrency_BuilderTest {
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency.Builder#Builder()}.
+	 * Test method for {@link javax.money.CurrencyUnitImpl.Builder#Builder()}.
 	 */
 	@Test
 	public void testBuilder() {
@@ -62,7 +49,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#Builder(java.lang.String)}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#Builder(java.lang.String)}.
 	 */
 	@Test
 	public void testBuilderString() {
@@ -72,7 +59,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#Builder(java.lang.String)}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#Builder(java.lang.String)}.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testBuilderString_BadCase() {
@@ -81,7 +68,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#Builder(java.lang.String, java.lang.String)}
+	 * {@link javax.money.CurrencyUnitImpl.Builder#Builder(java.lang.String, java.lang.String)}
 	 * .
 	 */
 	@Test
@@ -93,7 +80,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#setNamespace(java.lang.String)}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setNamespace(java.lang.String)}.
 	 */
 	@Test
 	public void testGetSetNamespace() {
@@ -104,8 +91,8 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#setCurrencyCode(java.lang.String)}
-	 * and {@link javax.money.MoneyCurrency.Builder#getCurrencyCode()} .
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setCurrencyCode(java.lang.String)}
+	 * and {@link javax.money.CurrencyUnitImpl.Builder#getCurrencyCode()} .
 	 */
 	@Test
 	public void testGetSetCurrencyCode() {
@@ -116,8 +103,8 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#setDefaultFractionDigits(int)}
-	 * and {@link javax.money.MoneyCurrency.Builder#getDefaultFractionDigits()}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setDefaultFractionDigits(int)}
+	 * and {@link javax.money.CurrencyUnitImpl.Builder#getDefaultFractionDigits()}.
 	 */
 	@Test
 	public void testGetSetDefaultFractionDigits() {
@@ -130,7 +117,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#setDefaultFractionDigits(int)}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setDefaultFractionDigits(int)}.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetSetDefaultFractionDigits_InvalidInput() {
@@ -139,8 +126,8 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#setNumericCode(int)} and
-	 * {@link javax.money.MoneyCurrency.Builder#getNumericCode()}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setNumericCode(int)} and
+	 * {@link javax.money.CurrencyUnitImpl.Builder#getNumericCode()}.
 	 */
 	@Test
 	public void testGetSetNumericCode() {
@@ -153,7 +140,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#setNumericCode(int)}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setNumericCode(int)}.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetSetNumericCode_InvalidInput() {
@@ -162,8 +149,8 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#setValidFrom(java.lang.Long)}
-	 * and {@link javax.money.MoneyCurrency.Builder#getValidFrom()}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setValidFrom(java.lang.Long)}
+	 * and {@link javax.money.CurrencyUnitImpl.Builder#getValidFrom()}.
 	 */
 	@Test
 	public void testGetSetValidFrom() {
@@ -176,7 +163,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#setValidUntil(java.lang.Long)}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setValidUntil(java.lang.Long)}.
 	 */
 	@Test
 	public void testSetValidUntil() {
@@ -189,8 +176,8 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#setLegalTender(boolean)} and
-	 * {@link javax.money.MoneyCurrency.Builder#hasLegalTender()}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setLegalTender(boolean)} and
+	 * {@link javax.money.CurrencyUnitImpl.Builder#hasLegalTender()}.
 	 */
 	@Test
 	public void testGetSetLegalTender() {
@@ -203,8 +190,8 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#setVirtual(boolean)} and
-	 * {@link javax.money.MoneyCurrency.Builder#isVirtual()}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setVirtual(boolean)} and
+	 * {@link javax.money.CurrencyUnitImpl.Builder#isVirtual()}.
 	 */
 	@Test
 	public void testGetSetVirtual() {
@@ -217,9 +204,9 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#setAttribute(java.lang.String, java.lang.Object)}
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setAttribute(java.lang.String, java.lang.Object)}
 	 * and
-	 * {@link javax.money.MoneyCurrency.Builder#getAttribute(java.lang.String, java.lang.Class)}
+	 * {@link javax.money.CurrencyUnitImpl.Builder#getAttribute(java.lang.String, java.lang.Class)}
 	 * . .
 	 */
 	@Test
@@ -236,7 +223,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#removeAttribute(java.lang.String)}
+	 * {@link javax.money.CurrencyUnitImpl.Builder#removeAttribute(java.lang.String)}
 	 * .
 	 */
 	@Test
@@ -252,7 +239,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#getAttributeKeys()}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#getAttributeKeys()}.
 	 */
 	@Test
 	public void testGetAttributeKeys() {
@@ -280,7 +267,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MoneyCurrency.Builder#getAttributeType(java.lang.String)}
+	 * {@link javax.money.CurrencyUnitImpl.Builder#getAttributeType(java.lang.String)}
 	 * .
 	 */
 	@Test
@@ -296,7 +283,7 @@ public class MoneyCurrency_BuilderTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency.Builder#getValidUntil()}
+	 * Test method for {@link javax.money.CurrencyUnitImpl.Builder#getValidUntil()}
 	 * .
 	 */
 	@Test
@@ -309,7 +296,7 @@ public class MoneyCurrency_BuilderTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency.Builder#isBuildable()}.
+	 * Test method for {@link javax.money.CurrencyUnitImpl.Builder#isBuildable()}.
 	 */
 	@Test
 	public void testIsBuildable() {
@@ -325,7 +312,7 @@ public class MoneyCurrency_BuilderTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency.Builder#build()}.
+	 * Test method for {@link javax.money.CurrencyUnitImpl.Builder#build()}.
 	 */
 	@Test
 	public void testBuild() {
@@ -347,7 +334,7 @@ public class MoneyCurrency_BuilderTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MoneyCurrency.Builder#build(boolean)}.
+	 * Test method for {@link javax.money.CurrencyUnitImpl.Builder#build(boolean)}.
 	 */
 	@Test
 	public void testBuildBoolean() {

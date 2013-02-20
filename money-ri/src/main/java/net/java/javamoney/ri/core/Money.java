@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation
  *    Wernner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri;
+package net.java.javamoney.ri.core;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -26,6 +26,7 @@ import java.math.RoundingMode;
 import javax.money.AmountAdjuster;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+
 
 /**
  * Default immutable implementation of {@link MonetaryAmount}.

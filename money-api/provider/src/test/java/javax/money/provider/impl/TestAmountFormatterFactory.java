@@ -31,81 +31,35 @@
  */
 package javax.money.provider.impl;
 
-import javax.money.CurrencyUnit;
-import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateProvider;
-import javax.money.convert.ExchangeRateType;
+import javax.money.format.AmountFormatter;
+import javax.money.format.AmountFormatterBuilder;
+import javax.money.format.AmountFormatterFactory;
+import javax.money.format.StyleableAmountFormatter;
+import javax.money.format.common.LocalizationStyle;
 
 /**
  * Empty pseudo implementation for testing only.
- * 
  * @author Anatole Tresch
+ *
  */
-public class TestExchangeRateProvider implements ExchangeRateProvider {
-
-	public static final ExchangeRateType EXCHANGE_RATE_TYPE = new ExchangeRateType(){
-		@Override
-		public String getId() {
-			return "TEST";
-		}};
+public class TestAmountFormatterFactory implements AmountFormatterFactory {
 
 	@Override
-	public ExchangeRateType getExchangeRateType() {
-		return EXCHANGE_RATE_TYPE;
-	}
-
-	@Override
-	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target) {
-		// empty implementation
-		return false;
-	}
-
-	@Override
-	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
-			Long timestamp) {
-		// empty implementation
-		return false;
-	}
-
-	@Override
-	public ExchangeRate get(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, Long timestamp) {
+	public AmountFormatterBuilder createFormatterBuilder() {
 		// empty implementation
 		return null;
 	}
 
 	@Override
-	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target) {
+	public AmountFormatter getAmountFormatter(LocalizationStyle style) {
 		// empty implementation
 		return null;
 	}
 
 	@Override
-	public boolean isLinear(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency) {
+	public StyleableAmountFormatter getLocalizableAmountFormatter() {
 		// empty implementation
-		return false;
-	}
-
-	@Override
-	public boolean isLinear(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, Long timestamp) {
-		// empty implementation
-		return false;
-	}
-
-	@Override
-	public boolean isIdentity(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency) {
-		// empty implementation
-		return false;
-	}
-
-	@Override
-	public boolean isIdentity(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, Long timestamp) {
-		// empty implementation
-		return false;
+		return null;
 	}
 
 }

@@ -29,11 +29,11 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.ext;
+package javax.money.provider.impl;
 
-import javax.money.format.AmountParser;
-import javax.money.format.AmountParserFactory;
-import javax.money.format.StyleableAmountParser;
+import javax.money.format.CurrencyParser;
+import javax.money.format.CurrencyParserFactory;
+import javax.money.format.StyleableCurrencyParser;
 import javax.money.format.common.LocalizationStyle;
 
 /**
@@ -41,16 +41,18 @@ import javax.money.format.common.LocalizationStyle;
  * @author Anatole Tresch
  *
  */
-public class TestAmountParseFactory implements AmountParserFactory {
+public class TestCurrencyParserFactory implements CurrencyParserFactory {
 
 	@Override
-	public AmountParser getAmountParser(LocalizationStyle style) {
+	public CurrencyParser getCurrencyParser(String namespace,
+			LocalizationStyle style) {
 		// empty implementation
 		return null;
 	}
 
 	@Override
-	public StyleableAmountParser getLocalizableAmountParser() {
+	public StyleableCurrencyParser getLocalizableCurrencyParser(
+			String namespace) {
 		// empty implementation
 		return null;
 	}

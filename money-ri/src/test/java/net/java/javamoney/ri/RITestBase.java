@@ -19,12 +19,13 @@
 package net.java.javamoney.ri;
 
 import javax.money.CurrencyUnit;
+import javax.money.CurrencyUnitImpl;
 
 /**
  * @author Werner Keil
  *
  */
 public abstract class RITestBase {
-	protected static final CurrencyUnit EURO = MoneyCurrency.getInstance("EUR");
-	protected static final CurrencyUnit DOLLAR = MoneyCurrency.getInstance("USD");
+	protected static final CurrencyUnit EURO = CurrencyUnitImpl.getInstance("EUR");
+	protected static final CurrencyUnit DOLLAR = CurrencyUnitImpl.getInstance("USD");
 }

@@ -15,6 +15,8 @@ import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.ParseException;
 import javax.money.provider.Monetary;
 
+import net.java.javamoney.ri.core.Money;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -29,9 +31,9 @@ public class SmokeTests {
 		// Creating one
 		CurrencyUnit currency = Monetary.getCurrencyUnitProvider().get(
 				"ISO-4217", "CHF");
-		MonetaryAmount amount1 = Monetary.getMonetaryAmountFactory().get(
+		MonetaryAmount amount1 = Monetary.getMonetaryAmountProvider().get(
 				currency, 1.0d);
-		MonetaryAmount amount2 = Monetary.getMonetaryAmountFactory().get(
+		MonetaryAmount amount2 = Monetary.getMonetaryAmountProvider().get(
 				currency, 1.0d);
 		MonetaryAmount amount3 = amount1.add(amount2);
 		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
@@ -95,7 +97,7 @@ public class SmokeTests {
 		// Using formatters
 		CurrencyUnit currency = Monetary.getCurrencyUnitProvider().get(
 				"ISO4217", "CHF");
-		MonetaryAmount amount = Monetary.getMonetaryAmountFactory().get(
+		MonetaryAmount amount = Monetary.getMonetaryAmountProvider().get(
 				currency, 1.0d);
 		try {
 			AmountFormatter formatter = Monetary.getAmountFormatterFactory()

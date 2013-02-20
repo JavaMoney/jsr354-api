@@ -70,7 +70,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 			throw new CurrencyConversionException(amount.getCurrency(), target);
 		}
 		MonetaryAmountProvider amountFactory = Monetary
-				.getMonetaryAmountFactory(amount.getNumberType());
+				.getMonetaryAmountProvider(amount.getNumberType());
 		return amountFactory.get(target, amount.multiply(rate.getFactor())
 				.asType(Number.class));
 	}
@@ -91,7 +91,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 					"Timestamp: " + timestamp);
 		}
 		MonetaryAmountProvider amountFactory = Monetary
-				.getMonetaryAmountFactory(amount.getNumberType());
+				.getMonetaryAmountProvider(amount.getNumberType());
 		return amountFactory.get(target, amount.multiply(rate.getFactor())
 				.asType(Number.class));
 	}
@@ -112,7 +112,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 					targetCurrency);
 		}
 		MonetaryAmountProvider amountFactory = Monetary
-				.getMonetaryAmountFactory();
+				.getMonetaryAmountProvider();
 		return amountFactory.get(targetCurrency, amount).multiply(
 				rate.getFactor());
 	}
@@ -134,7 +134,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 					targetCurrency, "Timestamp: " + timestamp);
 		}
 		MonetaryAmountProvider amountFactory = Monetary
-				.getMonetaryAmountFactory();
+				.getMonetaryAmountProvider();
 		return amountFactory.get(targetCurrency, amount).multiply(
 				rate.getFactor());
 	}

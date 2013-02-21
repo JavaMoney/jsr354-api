@@ -32,7 +32,7 @@ import javax.money.MonetaryAmount;
 
 import org.junit.Test;
 
-public class MoneyTest {
+public class IntegralMoneyTest {
 
 	private static final BigDecimal TEN = new BigDecimal(10.0d);
 	protected static final CurrencyUnit EURO = MoneyCurrency.getInstance("EUR");
@@ -41,27 +41,28 @@ public class MoneyTest {
 
 	@Test
 	public void testGetInstanceCurrencyBigDecimal() {
-		Money m = Money.valueOf(MoneyCurrency.getInstance("EUR"), TEN);
+		IntegralMoney m = IntegralMoney.valueOf(MoneyCurrency.getInstance("EUR"), TEN);
 		assertEquals(TEN, m.asType(BigDecimal.class));
+		assertEquals(Long.valueOf(10L), m.asType(Long.class));
 	}
 
 	@Test
 	public void testGetInstanceCurrencyDouble() {
-		Money m = Money.valueOf(MoneyCurrency.getInstance("EUR"), 10.0d);
+		IntegralMoney m = IntegralMoney.valueOf(MoneyCurrency.getInstance("EUR"), 10.0d);
 		assertTrue(TEN.doubleValue() == m.doubleValue());
 	}
 
 	@Test
 	public void testGetCurrency() {
-		MonetaryAmount money = Money.valueOf(EURO, BigDecimal.TEN);
+		MonetaryAmount money = IntegralMoney.valueOf(EURO, BigDecimal.TEN);
 		assertNotNull(money.getCurrency());
 		assertEquals("EUR", money.getCurrency().getCurrencyCode());
 	}
 
 	@Test
 	public void testAddNumber() {
-		MonetaryAmount money1 = Money.valueOf(EURO, BigDecimal.TEN);
-		MonetaryAmount money2 = Money.valueOf(EURO, BigDecimal.ONE);
+		MonetaryAmount money1 = IntegralMoney.valueOf(EURO, BigDecimal.TEN);
+		MonetaryAmount money2 = IntegralMoney.valueOf(EURO, BigDecimal.ONE);
 		MonetaryAmount moneyResult = money1.add(money2);
 		assertNotNull(moneyResult);
 		assertEquals(11d, moneyResult.doubleValue(), 0d);
@@ -69,58 +70,27 @@ public class MoneyTest {
 
 	@Test
 	public void testSubtractMonetaryAmount() {
-		MonetaryAmount money1 = Money.valueOf(EURO, BigDecimal.TEN);
-		MonetaryAmount money2 = Money.valueOf(EURO, BigDecimal.ONE);
+		MonetaryAmount money1 = IntegralMoney.valueOf(EURO, BigDecimal.TEN);
+		MonetaryAmount money2 = IntegralMoney.valueOf(EURO, BigDecimal.ONE);
 		MonetaryAmount moneyResult = money1.subtract(money2);
 		assertNotNull(moneyResult);
 		assertEquals(9d, moneyResult.doubleValue(), 0d);
 	}
 
 	@Test
-	public void testDivideAndRemainder_BigDecimal() {
-		MonetaryAmount money1 = Money.valueOf(EURO, BigDecimal.ONE);
-		MonetaryAmount money2 = Money.valueOf(EURO, new BigDecimal(
-				"0.50000000000000000001"));
+	public void testDivideAndRemainder() {
+		MonetaryAmount money1 = IntegralMoney.valueOf(EURO, 1000);
+		MonetaryAmount money2 = IntegralMoney.valueOf(EURO, 11);
 		MonetaryAmount[] divideAndRemainder = money1.divideAndRemainder(money2);
-		assertThat(divideAndRemainder[0].asType(BigDecimal.class),
-				equalTo(BigDecimal.ONE));
-		assertThat(divideAndRemainder[1].asType(BigDecimal.class),
-				equalTo(new BigDecimal("0.49999999999999999999")));
+		assertEquals(90L, divideAndRemainder[0].longValue());
+		assertEquals(10L, divideAndRemainder[1].longValue());
 	}
 
 	@Test
-	public void testDivideToIntegralValue_BigDecimal() {
-		MonetaryAmount money1 = Money.valueOf(EURO, BigDecimal.ONE);
-		MonetaryAmount money2 = Money.valueOf(EURO, new BigDecimal(
-				"0.50000000000000000001"));
+	public void testDivideToIntegralValue() {
+		MonetaryAmount money1 = IntegralMoney.valueOf(EURO, 1000);
+		MonetaryAmount money2 = IntegralMoney.valueOf(EURO, 5);
 		MonetaryAmount result = money1.divideToIntegralValue(money2);
-		assertThat(result.asType(BigDecimal.class), equalTo(BigDecimal.ONE));
-	}
-	
-	@Test
-	public void comparePerformance(){
-		MonetaryAmount money1 = Money.valueOf(EURO, BigDecimal.ONE);
-		long start = System.currentTimeMillis();
-		for(int i=0; i<100000;i++){
-			money1 = money1.add(1234567);
-			money1 = money1.subtract(232323);
-			money1 = money1.multiply(3);
-			money1 = money1.divide(3);
-		}
-		long end = System.currentTimeMillis();
-		long duration = end - start;
-		System.out.println("Duration for 100000 multiplications (Money/BD): " + duration + " ms ("+(duration/100) + " ns per loop) -> " + money1);
-		
-		MonetaryAmount money2 = IntegralMoney.valueOf(EURO, BigDecimal.ONE);
-		start = System.currentTimeMillis();
-		for(int i=0; i<100000;i++){
-			money2 = money2.add(1234567);
-			money2 = money2.subtract(232323);
-			money2 = money2.multiply(3);
-			money2 = money2.divide(3);
-		}
-		end = System.currentTimeMillis();
-		duration = end - start;
-		System.out.println("Duration for 100000 multiplications (Money/BD): " + duration + " ms ("+(duration/100) + " ns per loop) -> " + money2);
+		assertEquals(200L, result.longValue());
 	}
 }

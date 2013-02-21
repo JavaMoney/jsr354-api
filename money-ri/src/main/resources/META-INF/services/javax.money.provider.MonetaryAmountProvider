@@ -1,1 +1,2 @@
 net.java.javamoney.ri.core.provider.MonetaryAmountMoneyProvider
+net.java.javamoney.ri.core.provider.MonetaryAmountIntegralMoneyProvider

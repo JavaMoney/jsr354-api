@@ -28,8 +28,9 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.CurrencyUnitImpl;
 import javax.money.provider.spi.CurrencyUnitProviderSpi;
+
+import net.java.javamoney.ri.core.MoneyCurrency;
 
 
 /**
@@ -46,7 +47,7 @@ public class MonetaryCurrencyProvider implements CurrencyUnitProviderSpi {
 	public MonetaryCurrencyProvider() {
 		Set<Currency> jdkCurrencies = Currency.getAvailableCurrencies();
 		for (Currency jdkCurrency : jdkCurrencies) {
-			CurrencyUnit currency = CurrencyUnitImpl.getInstance(jdkCurrency);
+			CurrencyUnit currency = MoneyCurrency.getInstance(jdkCurrency);
 			this.currencies.put(currency.getCurrencyCode(), currency);
 		}
 	}

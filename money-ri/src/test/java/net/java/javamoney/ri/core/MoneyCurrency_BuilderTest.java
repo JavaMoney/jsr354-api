@@ -28,7 +28,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Enumeration;
 
 import javax.money.CurrencyUnit;
-import javax.money.CurrencyUnitImpl;
 
 import org.junit.Test;
 

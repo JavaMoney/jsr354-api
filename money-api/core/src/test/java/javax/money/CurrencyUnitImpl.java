@@ -44,12 +44,12 @@ import java.util.logging.Logger;
 
 /**
  * Adapter that implements the new {@link CurrencyUnit} interface using the
- * JDK's {@link Currency}.
+ * JDK's {@link Currency}, for test only used here.
  * 
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
+final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 		Comparable<CurrencyUnit> {
 
 	/**

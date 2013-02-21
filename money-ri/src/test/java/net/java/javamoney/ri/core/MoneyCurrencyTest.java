@@ -29,7 +29,6 @@ import java.util.Currency;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
-import javax.money.CurrencyUnitImpl;
 import javax.money.LocalizableCurrencyUnit;
 
 import org.junit.Test;

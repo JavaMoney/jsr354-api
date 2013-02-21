@@ -126,7 +126,7 @@ public final class SingletonExchangeRateType implements ExchangeRateType, Serial
 	 */
 	@Override
 	public String toString() {
-		return "ExchangeRateType [id=" + id + ", class=" + getClass().getName() + "]";
+		return "ExchangeRateType [id=" + id + ", type=" + getClass().getSimpleName() + "]";
 	}
 
 	@Override

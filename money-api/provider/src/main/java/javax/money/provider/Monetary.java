@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
+import javax.money.convert.spi.ExchangeRateProviderFactorySpi;
 import javax.money.format.AmountFormatterFactory;
 import javax.money.format.AmountParserFactory;
 import javax.money.format.CurrencyFormatterFactory;
@@ -66,6 +67,7 @@ public final class Monetary {
 	private final CurrencyUnitProvider currencyUnitProvider;
 	private final Map<Class<?>, MonetaryAmountProvider> monetaryAmountProviders = new HashMap<Class<?>, MonetaryAmountProvider>();
 	private final RoundingProvider roundingProvider;
+	private final ExchangeRateProviderFactorySpi exchangeRateProviderFactorySpi;
 	private final Map<ExchangeRateType, ExchangeRateProvider> exchangeRateProviders = new HashMap<ExchangeRateType, ExchangeRateProvider>();
 	private final Map<ExchangeRateType, CurrencyConverter> currencyConverters = new HashMap<ExchangeRateType, CurrencyConverter>();
 	private final Map<Class<?>, MonetaryExtension> extensions = new HashMap<Class<?>, MonetaryExtension>();
@@ -76,8 +78,6 @@ public final class Monetary {
 
 	private final ServiceLoader<MonetaryAmountProvider> amountFactoryLoader = ServiceLoader
 			.load(MonetaryAmountProvider.class);
-	private final ServiceLoader<ExchangeRateProvider> exchangeRateProviderLoader = ServiceLoader
-			.load(ExchangeRateProvider.class);
 	private final ServiceLoader<CurrencyConverter> currencyConverterLoader = ServiceLoader
 			.load(CurrencyConverter.class);
 	private final ServiceLoader<MonetaryExtension> extensionsLoader = ServiceLoader
@@ -93,10 +93,8 @@ public final class Monetary {
 		amountFormatterFactory = loadService(AmountFormatterFactory.class);
 		currencyParserFactory = loadService(CurrencyParserFactory.class);
 		currencyFormatterFactory = loadService(CurrencyFormatterFactory.class);
+		exchangeRateProviderFactorySpi = loadService(ExchangeRateProviderFactorySpi.class);
 		// TODO define how to handle and handle duplicate registrations!
-		for (ExchangeRateProvider t : exchangeRateProviderLoader) {
-			this.exchangeRateProviders.put(t.getExchangeRateType(), t);
-		}
 		for (CurrencyConverter t : currencyConverterLoader) {
 			this.currencyConverters.put(t.getExchangeRateType(), t);
 		}
@@ -185,7 +183,8 @@ public final class Monetary {
 	/**
 	 * Access the {@link MonetaryAmountFactorySpi} component.
 	 * 
-	 * @return the {@link MonetaryAmountFactorySpi} component, never {@code null}.
+	 * @return the {@link MonetaryAmountFactorySpi} component, never
+	 *         {@code null}.
 	 */
 	public static MonetaryAmountProvider getMonetaryAmountProvider(
 			Class<?> numberClass) {
@@ -202,7 +201,8 @@ public final class Monetary {
 	/**
 	 * Access the {@link MonetaryAmountFactorySpi} default component.
 	 * 
-	 * @return the {@link MonetaryAmountFactorySpi} component, never {@code null}.
+	 * @return the {@link MonetaryAmountFactorySpi} component, never
+	 *         {@code null}.
 	 */
 	public static MonetaryAmountProvider getMonetaryAmountProvider() {
 		return getMonetaryAmountProvider(getDefaultNumberClass());
@@ -251,9 +251,16 @@ public final class Monetary {
 			ExchangeRateType type) {
 		ExchangeRateProvider prov = INSTANCE.exchangeRateProviders.get(type);
 		if (prov == null) {
-			throw new IllegalArgumentException(
+			ExchangeRateProviderFactorySpi provFactory = INSTANCE.exchangeRateProviderFactorySpi;
+			prov = provFactory.createExchangeRateProvider(type);
+			if(prov==null){
+				throw new IllegalArgumentException(
 					"No ExchangeRateProvider for the required type registered: "
 							+ type);
+			}
+			else{
+				INSTANCE.exchangeRateProviders.put(type, prov);
+			}
 		}
 		return prov;
 	}

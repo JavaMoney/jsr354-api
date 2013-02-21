@@ -31,53 +31,21 @@
  */
 package javax.money.provider.impl;
 
-import javax.money.CurrencyUnit;
-import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
+import javax.money.convert.spi.ExchangeRateProviderFactorySpi;
 
 /**
  * Empty pseudo implementation for testing only.
  * 
  * @author Anatole Tresch
  */
-public class TestExchangeRateProvider implements ExchangeRateProvider {
-
-	public static final ExchangeRateType EXCHANGE_RATE_TYPE = new ExchangeRateType(){
-		@Override
-		public String getId() {
-			return "TEST";
-		}};
+public class TestExchangeRateProviderFactorySpi implements ExchangeRateProviderFactorySpi {
 
 	@Override
-	public ExchangeRateType getExchangeRateType() {
-		return EXCHANGE_RATE_TYPE;
+	public ExchangeRateProvider createExchangeRateProvider(ExchangeRateType type) {
+		return new TestExchangeRateProvider();
 	}
 
-	@Override
-	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target) {
-		// empty implementation
-		return false;
-	}
-
-	@Override
-	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
-			Long timestamp) {
-		// empty implementation
-		return false;
-	}
-
-	@Override
-	public ExchangeRate get(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, Long timestamp) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target) {
-		// empty implementation
-		return null;
-	}
 
 }

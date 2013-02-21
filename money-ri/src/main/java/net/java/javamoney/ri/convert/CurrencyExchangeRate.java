@@ -79,7 +79,9 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 			CurrencyUnit source, CurrencyUnit target, Number factor,
 			ExchangeRate[] chain, Long timestamp, Long validUntil) {
 		this(conversionType, source, target, factor);
-		setExchangeRateChain(chain);
+		if (chain != null) {
+			setExchangeRateChain(chain);
+		}
 		setTimestamp(timestamp);
 		setValidUntil(validUntil);
 	}
@@ -173,6 +175,21 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	}
 
 	@Override
+	public boolean isIdentity() {
+		return getFactor().doubleValue() == 1.0d;
+	}
+
+	@Override
+	public ExchangeRate reverse() {
+		if (factor instanceof BigDecimal) {
+			return new CurrencyExchangeRate(this.exchangeRateType, source,
+					target, BigDecimal.ONE.divide((BigDecimal) factor));
+		}
+		return new CurrencyExchangeRate(this.exchangeRateType, target, source,
+				1.0d / factor.doubleValue());
+	}
+
+	@Override
 	public int compareTo(ExchangeRate o) {
 		if (o == null) {
 			return -1;
@@ -188,6 +205,20 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 			}
 		}
 		return compare;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "CurrencyExchangeRate [exchangeRateType=" + exchangeRateType
+				+ ", source=" + source + ", target=" + target + ", factor="
+				+ factor + ", timestamp=" + timestamp + ", validUntil="
+				+ validUntil + ", dataProvider=" + dataProvider + ", location="
+				+ location + "]";
 	}
 
 	/**
@@ -309,8 +340,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 
 		@Override
 		public ExchangeRateBuilder setTargetLeadingFactor(Number factor) {
-			this.factor = BigDecimal.ONE.divide(new BigDecimal(factor
-					.toString()));
+			this.factor = 1.0d / factor.doubleValue();
 			return this;
 		}
 
@@ -354,8 +384,13 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 
 		@Override
 		public ExchangeRate build() {
-			return new CurrencyExchangeRate(exchangeRateType, source, target,
-					factor, rateChain, timestamp, validUntil);
+			CurrencyExchangeRate rate = new CurrencyExchangeRate(
+					exchangeRateType, source, target, factor, rateChain,
+					timestamp, validUntil);
+			rate.setDataProvider(this.dataProvider);
+			rate.setLocation(this.location);
+			rate.setReadOnly();
+			return rate;
 		}
 	}
 

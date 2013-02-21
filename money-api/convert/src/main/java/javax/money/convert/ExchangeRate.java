@@ -71,7 +71,7 @@ public interface ExchangeRate {
 	 * @return the factor for this exchange rate.
 	 */
 	public Number getFactor();
-	
+
 	/**
 	 * Returns the UTC timestamp of the rate.
 	 * 
@@ -111,7 +111,7 @@ public interface ExchangeRate {
 	 * @return the name of the data provider.
 	 */
 	public String getDataProvider();
-	
+
 	/**
 	 * Access the chain of exchange rates.
 	 * 
@@ -131,6 +131,21 @@ public interface ExchangeRate {
 	 */
 	public boolean isDerived();
 	
+
+	/**
+	 * Checks if a conversion is an identity.
+	 * 
+	 * @param sourceCurrency
+	 *            The source currency
+	 * @param targetCurrency
+	 *            The target currency
+	 * @return true, if the conversion is linear.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public boolean isIdentity();
+
+
 	/**
 	 * Access additional attributes of this currency instance. This allows to
 	 * add additional codes or extended information by SPI providers. For
@@ -159,4 +174,15 @@ public interface ExchangeRate {
 	 * @return the attribute's value class, or null.
 	 */
 	public Class<?> getAttributeType(String key);
+
+	/**
+	 * The method reverses the exchange rate to a rate mapping from target to
+	 * source. Hereby the factor must be (by default) recalculated as
+	 * {@code 1/oldFactor}.
+	 * 
+	 * @return the reversed exchange rate.
+	 * @throws UnsupportedOperationException
+	 *             if the rate is not reversible.
+	 */
+	public ExchangeRate reverse();
 }

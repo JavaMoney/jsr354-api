@@ -1,12 +1,15 @@
 package net.java.javamoney.ri;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateProvider;
 import javax.money.format.AmountFormatter;
 import javax.money.format.AmountParser;
 import javax.money.format.StyleableAmountFormatter;
@@ -15,7 +18,9 @@ import javax.money.format.common.LocalizationStyle;
 import javax.money.format.common.ParseException;
 import javax.money.provider.Monetary;
 
+import net.java.javamoney.ri.convert.SingletonExchangeRateType;
 import net.java.javamoney.ri.core.Money;
+import net.java.javamoney.ri.core.MoneyCurrency;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -69,7 +74,17 @@ public class SmokeTests {
 
 	@Test
 	public void testExchange() {
-		// Monetary.getExchangeRateProvider(ExchangeRateType.)
+		ExchangeRateProvider prov = Monetary
+				.getExchangeRateProvider(SingletonExchangeRateType.of("EZB"));
+		assertNotNull(prov);
+		ExchangeRate rate1 = prov.get(MoneyCurrency.getInstance("CHF"),MoneyCurrency.getInstance("EUR"));
+		ExchangeRate rate2 = prov.get(MoneyCurrency.getInstance("EUR"),MoneyCurrency.getInstance("CHF"));
+		ExchangeRate rate3 = prov.get(MoneyCurrency.getInstance("CHF"),MoneyCurrency.getInstance("USD"));
+		ExchangeRate rate4 = prov.get(MoneyCurrency.getInstance("USD"),MoneyCurrency.getInstance("CHF"));
+		System.out.println(rate1);
+		System.out.println(rate2);
+		System.out.println(rate3);
+		System.out.println(rate4);
 	}
 
 	@Test
@@ -108,7 +123,8 @@ public class SmokeTests {
 					.getAmountFormatterFactory()
 					.getLocalizableAmountFormatter();
 
-			String formatted2 = locFormatter.format(amount, LocalizationStyle.of(Locale.CHINA));
+			String formatted2 = locFormatter.format(amount,
+					LocalizationStyle.of(Locale.CHINA));
 		} catch (Exception e) {
 			logger.debug("Error", e);
 		}

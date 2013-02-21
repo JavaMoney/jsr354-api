@@ -29,55 +29,25 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.provider.impl;
+package javax.money.convert.spi;
 
-import javax.money.CurrencyUnit;
-import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
 
 /**
- * Empty pseudo implementation for testing only.
+ * This SPI defines the factory that determines the effective implementations of
+ * {@link ExchangeRateProvider} to be used for a given {@link ExchangeRateType}.
  * 
  * @author Anatole Tresch
  */
-public class TestExchangeRateProvider implements ExchangeRateProvider {
+public interface ExchangeRateProviderFactorySpi {
 
-	public static final ExchangeRateType EXCHANGE_RATE_TYPE = new ExchangeRateType(){
-		@Override
-		public String getId() {
-			return "TEST";
-		}};
-
-	@Override
-	public ExchangeRateType getExchangeRateType() {
-		return EXCHANGE_RATE_TYPE;
-	}
-
-	@Override
-	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target) {
-		// empty implementation
-		return false;
-	}
-
-	@Override
-	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
-			Long timestamp) {
-		// empty implementation
-		return false;
-	}
-
-	@Override
-	public ExchangeRate get(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, Long timestamp) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target) {
-		// empty implementation
-		return null;
-	}
+	/**
+	 * Get the exchange rate type that this provider instance is providing data
+	 * for.
+	 * 
+	 * @return the {@link ExchangeRateType} supported, never null.
+	 */
+	public ExchangeRateProvider createExchangeRateProvider(ExchangeRateType type);
 
 }

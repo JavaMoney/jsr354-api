@@ -35,6 +35,10 @@ public class SingletonRegionTypeTest {
 
 	@Test
 	public void testGetTypes() {
+		SingletonRegionType.of("");
+		SingletonRegionType.of("1");
+		SingletonRegionType.of("1");
+		SingletonRegionType.of("2");
 		Enumeration<RegionType> types = SingletonRegionType.getTypes();
 		int count = 0;
 		Set<String> ids = new HashSet<String>();

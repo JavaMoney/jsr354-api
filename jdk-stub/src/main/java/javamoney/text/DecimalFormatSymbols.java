@@ -43,6 +43,8 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.text.spi.DecimalFormatSymbolsProvider;
 import javamoney.util.Currency;
+
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
@@ -174,14 +176,17 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
     /**
      * Gets the character used for thousands separator. Different for French, etc.
      */
-    public char getGroupingSeparator() {
+    public char[] getGroupingSeparator() {
+    	if(groupingSeparator!=null){
+    		return groupingSeparator.clone();
+    	}
         return groupingSeparator;
     }
     
     /**
      * Sets the character used for thousands separator. Different for French, etc.
      */
-    public void setGroupingSeparator(char groupingSeparator) {
+    public void setGroupingSeparator(char... groupingSeparator) {
         this.groupingSeparator = groupingSeparator;
     }
     
@@ -528,7 +533,7 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
      */
     public int hashCode() {
             int result = zeroDigit;
-            result = result * 37 + groupingSeparator;
+            result = result * 37 + Arrays.hashCode(groupingSeparator);
             result = result * 37 + decimalSeparator;
             return result;
     }
@@ -559,7 +564,7 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
         String[] numberElements = (String[]) data[0];
 
         decimalSeparator = numberElements[0].charAt(0);
-        groupingSeparator = numberElements[1].charAt(0);
+        groupingSeparator = new char[]{numberElements[1].charAt(0)};
         patternSeparator = numberElements[2].charAt(0);
         percent = numberElements[3].charAt(0);
         zeroDigit = numberElements[4].charAt(0); //different for Arabic,etc.
@@ -669,7 +674,7 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
      * @serial
      * @see #getGroupingSeparator
      */
-    private  char    groupingSeparator;
+    private  char[]    groupingSeparator;
     
     /**
      * Flag to inverse the evaluation of the grouping size from a pattern.

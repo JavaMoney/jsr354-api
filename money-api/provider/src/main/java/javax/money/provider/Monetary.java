@@ -43,7 +43,8 @@ import java.util.logging.Logger;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.ExchangeRateProviderFactorySpi;
+import javax.money.convert.spi.CurrencyConverterDefaultFactorySpi;
+import javax.money.convert.spi.ExchangeRateProviderDefaultFactorySpi;
 import javax.money.format.AmountFormatterFactory;
 import javax.money.format.AmountParserFactory;
 import javax.money.format.CurrencyFormatterFactory;
@@ -67,8 +68,9 @@ public final class Monetary {
 	private final CurrencyUnitProvider currencyUnitProvider;
 	private final Map<Class<?>, MonetaryAmountProvider> monetaryAmountProviders = new HashMap<Class<?>, MonetaryAmountProvider>();
 	private final RoundingProvider roundingProvider;
-	private final ExchangeRateProviderFactorySpi exchangeRateProviderFactorySpi;
+	private final ExchangeRateProviderDefaultFactorySpi exchangeRateProviderDefaultFactorySpi;
 	private final Map<ExchangeRateType, ExchangeRateProvider> exchangeRateProviders = new HashMap<ExchangeRateType, ExchangeRateProvider>();
+	private final CurrencyConverterDefaultFactorySpi currencyConverterDefaultFactorySpi;
 	private final Map<ExchangeRateType, CurrencyConverter> currencyConverters = new HashMap<ExchangeRateType, CurrencyConverter>();
 	private final Map<Class<?>, MonetaryExtension> extensions = new HashMap<Class<?>, MonetaryExtension>();
 	private final AmountParserFactory amountParserFactory;
@@ -93,7 +95,8 @@ public final class Monetary {
 		amountFormatterFactory = loadService(AmountFormatterFactory.class);
 		currencyParserFactory = loadService(CurrencyParserFactory.class);
 		currencyFormatterFactory = loadService(CurrencyFormatterFactory.class);
-		exchangeRateProviderFactorySpi = loadService(ExchangeRateProviderFactorySpi.class);
+		exchangeRateProviderDefaultFactorySpi = loadService(ExchangeRateProviderDefaultFactorySpi.class);
+		currencyConverterDefaultFactorySpi = loadService(CurrencyConverterDefaultFactorySpi.class);
 		// TODO define how to handle and handle duplicate registrations!
 		for (CurrencyConverter t : currencyConverterLoader) {
 			this.currencyConverters.put(t.getExchangeRateType(), t);
@@ -251,7 +254,7 @@ public final class Monetary {
 			ExchangeRateType type) {
 		ExchangeRateProvider prov = INSTANCE.exchangeRateProviders.get(type);
 		if (prov == null) {
-			ExchangeRateProviderFactorySpi provFactory = INSTANCE.exchangeRateProviderFactorySpi;
+			ExchangeRateProviderDefaultFactorySpi provFactory = INSTANCE.exchangeRateProviderDefaultFactorySpi;
 			prov = provFactory.createExchangeRateProvider(type);
 			if(prov==null){
 				throw new IllegalArgumentException(
@@ -277,9 +280,16 @@ public final class Monetary {
 	public static CurrencyConverter getCurrencyConverter(ExchangeRateType type) {
 		CurrencyConverter prov = INSTANCE.currencyConverters.get(type);
 		if (prov == null) {
-			throw new IllegalArgumentException(
-					"No CurrencyConverter for the required type registered: "
+			CurrencyConverterDefaultFactorySpi provFactory = INSTANCE.currencyConverterDefaultFactorySpi;
+			prov = provFactory.createCurrencyConverter(type);
+			if(prov==null){
+				throw new IllegalArgumentException(
+					"No CurrencyConverters for the required type registered: "
 							+ type);
+			}
+			else{
+				INSTANCE.currencyConverters.put(type, prov);
+			}
 		}
 		return prov;
 	}

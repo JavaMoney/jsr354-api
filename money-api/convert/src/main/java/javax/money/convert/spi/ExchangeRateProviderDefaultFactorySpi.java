@@ -35,12 +35,13 @@ import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
 
 /**
- * This SPI defines the factory that determines the effective implementations of
- * {@link ExchangeRateProvider} to be used for a given {@link ExchangeRateType}.
+ * This SPI defines the factory that determines the default implementations of
+ * {@link ExchangeRateProvider} to be used for a given {@link ExchangeRateType},
+ * if no explicit {@link ExchangeRateProvider} was configured.
  * 
  * @author Anatole Tresch
  */
-public interface ExchangeRateProviderFactorySpi {
+public interface ExchangeRateProviderDefaultFactorySpi {
 
 	/**
 	 * Get the exchange rate type that this provider instance is providing data

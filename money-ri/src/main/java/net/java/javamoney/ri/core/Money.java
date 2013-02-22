@@ -111,6 +111,46 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	public static Class<?> getNumberClass() {
 		return BigDecimal.class;
 	}
+	
+	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((currency == null) ? 0 : currency.hashCode());
+		result = prime * result + ((number == null) ? 0 : number.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Money other = (Money) obj;
+		if (currency == null) {
+			if (other.currency != null)
+				return false;
+		} else if (!currency.equals(other.currency))
+			return false;
+		if (number == null) {
+			if (other.number != null)
+				return false;
+		} else if (!number.equals(other.number))
+			return false;
+		return true;
+	}
 
 	/*
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)

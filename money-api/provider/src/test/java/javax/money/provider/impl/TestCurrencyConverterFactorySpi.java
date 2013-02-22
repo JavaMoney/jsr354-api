@@ -31,20 +31,20 @@
  */
 package javax.money.provider.impl;
 
-import javax.money.convert.ExchangeRateProvider;
+import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.ExchangeRateProviderDefaultFactorySpi;
+import javax.money.convert.spi.CurrencyConverterDefaultFactorySpi;
 
 /**
  * Empty pseudo implementation for testing only.
  * 
  * @author Anatole Tresch
  */
-public class TestExchangeRateProviderFactorySpi implements ExchangeRateProviderDefaultFactorySpi {
+public class TestCurrencyConverterFactorySpi implements CurrencyConverterDefaultFactorySpi {
 
 	@Override
-	public ExchangeRateProvider createExchangeRateProvider(ExchangeRateType type) {
-		return new TestExchangeRateProvider();
+	public CurrencyConverter createCurrencyConverter(ExchangeRateType type) {
+		return new TestCurrencyConverter();
 	}
 
 

@@ -136,8 +136,19 @@ public class MonetaryTest {
 	 */
 	@Test
 	public void testGetCurrencyConverter() {
+		// this instance is registered directly
 		CurrencyConverter prov = Monetary
 				.getCurrencyConverter(TestExchangeRateProvider.EXCHANGE_RATE_TYPE);
+		assertNotNull(prov);
+		assertEquals(TestCurrencyConverter.class, prov.getClass());
+		// this instance is created by the registered
+		// CurrencyConverterFactorySpi
+		prov = Monetary.getCurrencyConverter(new ExchangeRateType() {
+			@Override
+			public String getId() {
+				return "blabla";
+			}
+		});
 		assertNotNull(prov);
 		assertEquals(TestCurrencyConverter.class, prov.getClass());
 	}

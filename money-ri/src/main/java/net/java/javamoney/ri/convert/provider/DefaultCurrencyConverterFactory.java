@@ -20,27 +20,26 @@ package net.java.javamoney.ri.convert.provider;
 
 import java.util.ServiceLoader;
 
-import javax.money.convert.ExchangeRateProvider;
+import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.ExchangeRateProviderFactorySpi;
+import javax.money.convert.spi.CurrencyConverterDefaultFactorySpi;
 import javax.money.convert.spi.ExchangeRateProviderSpi;
 
 /**
  * This class provides the default implementation for the
- * {@link ExchangeRateProviderFactorySpi}, which always returns instances of
+ * {@link DefaultCurrencyConverterFactory}, which always returns instances of
  * {@link DefaultExchangeRateProvider}, which are relying on the
  * {@link ServiceLoader} to load according {@link ExchangeRateProviderSpi}
  * instances.
  * 
  * @author Anatole Tresch
- * 
  */
-public class DefaultExchangeRateProviderFactorySpi implements
-		ExchangeRateProviderFactorySpi {
+public class DefaultCurrencyConverterFactory implements
+		CurrencyConverterDefaultFactorySpi {
 
 	@Override
-	public ExchangeRateProvider createExchangeRateProvider(ExchangeRateType type) {
-		return new DefaultExchangeRateProvider(type);
+	public CurrencyConverter createCurrencyConverter(ExchangeRateType type) {
+		return new DefaultCurrencyConverter(type);
 	}
 
 }

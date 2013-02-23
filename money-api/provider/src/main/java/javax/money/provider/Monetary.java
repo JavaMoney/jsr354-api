@@ -82,6 +82,8 @@ public final class Monetary {
 			.load(MonetaryAmountProvider.class);
 	private final ServiceLoader<CurrencyConverter> currencyConverterLoader = ServiceLoader
 			.load(CurrencyConverter.class);
+	private final ServiceLoader<ExchangeRateProvider> exchangeRateProviderLoader = ServiceLoader
+			.load(ExchangeRateProvider.class);
 	private final ServiceLoader<MonetaryExtension> extensionsLoader = ServiceLoader
 			.load(MonetaryExtension.class);
 
@@ -98,6 +100,9 @@ public final class Monetary {
 		exchangeRateProviderDefaultFactorySpi = loadService(ExchangeRateProviderDefaultFactorySpi.class);
 		currencyConverterDefaultFactorySpi = loadService(CurrencyConverterDefaultFactorySpi.class);
 		// TODO define how to handle and handle duplicate registrations!
+		for (ExchangeRateProvider t : exchangeRateProviderLoader) {
+			this.exchangeRateProviders.put(t.getExchangeRateType(), t);
+		}
 		for (CurrencyConverter t : currencyConverterLoader) {
 			this.currencyConverters.put(t.getExchangeRateType(), t);
 		}
@@ -255,7 +260,9 @@ public final class Monetary {
 		ExchangeRateProvider prov = INSTANCE.exchangeRateProviders.get(type);
 		if (prov == null) {
 			ExchangeRateProviderDefaultFactorySpi provFactory = INSTANCE.exchangeRateProviderDefaultFactorySpi;
-			prov = provFactory.createExchangeRateProvider(type);
+			if(provFactory!=null){
+				prov = provFactory.createExchangeRateProvider(type);
+			}
 			if(prov==null){
 				throw new IllegalArgumentException(
 					"No ExchangeRateProvider for the required type registered: "
@@ -281,7 +288,9 @@ public final class Monetary {
 		CurrencyConverter prov = INSTANCE.currencyConverters.get(type);
 		if (prov == null) {
 			CurrencyConverterDefaultFactorySpi provFactory = INSTANCE.currencyConverterDefaultFactorySpi;
-			prov = provFactory.createCurrencyConverter(type);
+			if(provFactory!=null){
+				prov = provFactory.createCurrencyConverter(type);
+			}
 			if(prov==null){
 				throw new IllegalArgumentException(
 					"No CurrencyConverters for the required type registered: "

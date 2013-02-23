@@ -92,7 +92,7 @@ public class SmokeTests {
 	
 	@Test
 	public void testCurrencyConverter() {
-		AmountAdjuster rounding = StandardRoundings.getRounding(5, RoundingMode.HALF_UP);
+		AmountAdjuster rounding = StandardRoundings.getRounding(2, RoundingMode.HALF_UP);
 		
 		CurrencyConverter conv = Monetary
 				.getCurrencyConverter(SingletonExchangeRateType.of("EZB"));

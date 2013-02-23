@@ -49,18 +49,6 @@ import javax.money.MonetaryAmount;
 public class StandardRoundings {
 
 	/**
-	 * Creates an {@link AmountAdjuster} that rounds a value given the
-	 * {@link MathContext} provided.
-	 * 
-	 * @param mathContext
-	 *            The precision and {@link RoundingMode}.
-	 * @return the {@link AmountAdjuster} that implements the required rounding.
-	 */
-	public static AmountAdjuster getRounding(MathContext mathContext) {
-		return new MathRounder(mathContext);
-	}
-
-	/**
 	 * Creates an {@link AmountAdjuster} for rounding {@link MonetaryAmount}
 	 * instances given a currency.
 	 * 
@@ -71,28 +59,23 @@ public class StandardRoundings {
 	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
 	 */
 	public static AmountAdjuster getRounding(CurrencyUnit currency) {
-		int precision = currency.getDefaultFractionDigits();
-		if (precision < 0) {
-			// or throw an Exception?
-			precision = 2;
-		}
+		int scale = currency.getDefaultFractionDigits();
 		// TODO get according rounding mode
-		return getRounding(precision, RoundingMode.HALF_UP);
+		return getRounding(scale, RoundingMode.HALF_UP);
 	}
 
 	/**
 	 * Creates an {@link AmountAdjuster} for rounding given a precision and a
 	 * {@link RoundingMode}.
 	 * 
-	 * @param precision
-	 *            the precision
+	 * @param scale
+	 *            the required scale
 	 * @param rounding
 	 *            the {@link RoundingMode}, not null.
 	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
 	 */
-	public static AmountAdjuster getRounding(int precision,
-			RoundingMode rounding) {
-		return new MathRounder(new MathContext(precision, rounding));
+	public static AmountAdjuster getRounding(int scale, RoundingMode rounding) {
+		return new MathRounder(scale, rounding);
 	}
 
 	/**
@@ -102,8 +85,10 @@ public class StandardRoundings {
 	 * @author Anatole Tresch
 	 */
 	private final static class MathRounder implements AmountAdjuster {
-		/** The {@link MathContext} used. */
-		private MathContext mathContext;
+		/** The {@link RoundingMode} used. */
+		private RoundingMode roundingMode;
+		/** The scale to be applied. */
+		private int scale;
 
 		/**
 		 * Creates an rounder instance.
@@ -111,8 +96,15 @@ public class StandardRoundings {
 		 * @param mathContext
 		 *            The {@link MathContext} to be used, not {@code null}.
 		 */
-		public MathRounder(MathContext mathContext) {
-			this.mathContext = mathContext;
+		public MathRounder(int scale, RoundingMode roundingMode) {
+			if (scale < 0) {
+				throw new IllegalArgumentException("scale < 0");
+			}
+			if (roundingMode == null) {
+				throw new IllegalArgumentException("roundingMode missing");
+			}
+			this.scale = scale;
+			this.roundingMode = roundingMode;
 		}
 
 		/*
@@ -123,7 +115,7 @@ public class StandardRoundings {
 		@Override
 		public MonetaryAmount adjust(MonetaryAmount amount) {
 			BigDecimal dec = amount.asType(BigDecimal.class);
-			dec = dec.round(this.mathContext);
+			dec = dec.setScale(this.scale, this.roundingMode);
 			return amount.setValue(dec);
 		}
 

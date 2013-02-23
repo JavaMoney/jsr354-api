@@ -130,12 +130,12 @@ public class SmokeTests {
 		try {
 			AmountParser parser = Monetary.getAmountParserFactory()
 					.getAmountParser(LocalizationStyle.of(Locale.GERMANY));
-			MonetaryAmount amount1 = parser.parse("CFH 123.45");
+			MonetaryAmount amount1 = parser.parse("CHF 123.45");
 
 			StyleableAmountParser locParser = Monetary.getAmountParserFactory()
 					.getLocalizableAmountParser();
 
-			MonetaryAmount amount2 = locParser.parse("CFH 123.45",
+			MonetaryAmount amount2 = locParser.parse("CHF 123.45",
 					LocalizationStyle.of(Locale.CHINA));
 		} catch (ParseException e) {
 			logger.debug("Error", e);

@@ -254,16 +254,15 @@ public final class Monetary {
 		ExchangeRateProvider prov = INSTANCE.exchangeRateProviders.get(type);
 		if (prov == null) {
 			ExchangeRateProviderDefaultFactorySpi provFactory = INSTANCE.exchangeRateProviderDefaultFactorySpi;
-			if (provFactory != null) {
+			if(provFactory!=null){
 				prov = provFactory.createExchangeRateProvider(type);
 			}
 			if (prov == null) {
 				throw new IllegalArgumentException(
 						"No ExchangeRateProvider for the required type registered: "
 								+ type);
-			} else {
-				INSTANCE.exchangeRateProviders.put(type, prov);
 			}
+			INSTANCE.exchangeRateProviders.put(type, prov);
 		}
 		return prov;
 	}
@@ -281,16 +280,15 @@ public final class Monetary {
 		CurrencyConverter prov = INSTANCE.currencyConverters.get(type);
 		if (prov == null) {
 			CurrencyConverterDefaultFactorySpi provFactory = INSTANCE.currencyConverterDefaultFactorySpi;
-			if (provFactory != null) {
+			if(provFactory!=null){
 				prov = provFactory.createCurrencyConverter(type);
 			}
 			if (prov == null) {
 				throw new IllegalArgumentException(
 						"No CurrencyConverters for the required type registered: "
 								+ type);
-			} else {
-				INSTANCE.currencyConverters.put(type, prov);
-			}
+			} 
+			INSTANCE.currencyConverters.put(type, prov);
 		}
 		return prov;
 	}

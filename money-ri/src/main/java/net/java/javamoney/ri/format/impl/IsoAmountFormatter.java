@@ -2,6 +2,7 @@ package net.java.javamoney.ri.format.impl;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Currency;
 
@@ -33,8 +34,6 @@ public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
 			currencyRendering = "CODE";
 		}
 		this.style = style;
-		currencyStyle = new LocalizationStyle(currencyRendering,
-				style.getTranslationLocale());
 	}
 
 	public IsoAmountFormatter(LocalizationStyle amountStyle,
@@ -71,12 +70,15 @@ public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
 			String currencyString = "";
 			ItemFormatter<CurrencyUnit> cf = Monetary.getItemFormatterFactory()
 					.getItemFormatter(CurrencyUnit.class,
-							style.getTranslationLocale());
+							currencyStyle);
 			// TODO fix grouping for Lakhs and similar
 			DecimalFormat df = (DecimalFormat) DecimalFormat
-					.getNumberInstance(style.getNumberLocale());
+					.getCurrencyInstance(style.getNumberLocale());
+			DecimalFormatSymbols syms = df.getDecimalFormatSymbols();
+			syms.setCurrencySymbol("");
+			df.setDecimalFormatSymbols(syms);
 			Number number = item.asType(Number.class);
-			String numberString = df.format(number);
+			String numberString = df.format(number).trim();
 			String sep = (String) style.getAttribute("separator", String.class);
 			if (sep == null) {
 				sep = " ";
@@ -85,8 +87,10 @@ public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
 			case NONE:
 				return numberString;
 			case LEADING:
+				currencyString = cf.format(item.getCurrency());
 				return currencyString + sep + numberString;
 			case TRAILING:
+				currencyString = cf.format(item.getCurrency());
 				return numberString + sep + currencyString;
 			}
 		}

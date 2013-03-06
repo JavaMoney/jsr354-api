@@ -37,6 +37,9 @@ public class IsoCurrencyParserFactorySpi implements
 	@Override
 	public ItemParser<CurrencyUnit> getItemParser(LocalizationStyle style) {
 		String namespace = style.getAttribute("namespace", String.class);
+		if (namespace == null) {
+			namespace = CurrencyUnit.ISO_NAMESPACE;
+		}
 		if (CurrencyUnit.ISO_NAMESPACE.equals(namespace)
 				&& style.isDefaultStyle()) {
 			return new IsoCurrencyParser(style);

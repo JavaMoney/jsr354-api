@@ -425,10 +425,25 @@ public class LocalizationStyle implements Serializable {
 	 * {@link Locale}.
 	 * 
 	 * @param locale
-	 * @return
+	 *            The target {@link Locale}
+	 * @return the {@link LocalizationStyle} created.
 	 */
 	public static LocalizationStyle of(Locale locale) {
 		return new LocalizationStyle(DEFAULT_ID, locale);
+	}
+
+	/**
+	 * Factory method to create a {@link LocalizationStyle} using a single
+	 * {@link Locale}.
+	 * 
+	 * @param styleId
+	 *            The style's id.
+	 * @param locale
+	 *            The target {@link Locale}
+	 * @return the {@link LocalizationStyle} created.
+	 */
+	public static LocalizationStyle of(String styleId, Locale locale) {
+		return new LocalizationStyle(styleId, locale);
 	}
 
 	/**

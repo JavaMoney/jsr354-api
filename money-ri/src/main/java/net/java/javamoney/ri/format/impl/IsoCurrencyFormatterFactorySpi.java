@@ -48,6 +48,9 @@ public class IsoCurrencyFormatterFactorySpi implements
 					+ Arrays.toString(RenderedField.values()));
 		}
 		String namespace = style.getAttribute("namespace", String.class);
+		if(namespace==null){
+			namespace = CurrencyUnit.ISO_NAMESPACE;
+		}
 		if (CurrencyUnit.ISO_NAMESPACE.equals(namespace)) {
 			return new IsoCurrencyFormatter(style);
 		}

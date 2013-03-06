@@ -98,7 +98,7 @@ public class DefaultItemParserFactory implements ItemParserFactory {
 	private void loadExtensions() {
 		for (ItemParserFactorySpi<?> t : parserFactorySpiLoader) {
 			try {
-				if (t.getTargetClass() != null) {
+				if (t.getTargetClass() == null) {
 					throw new IllegalArgumentException(
 							"ItemFormatterFactorySpi of type: "
 									+ t.getClass().getName()
@@ -110,6 +110,7 @@ public class DefaultItemParserFactory implements ItemParserFactory {
 					spis = new HashSet<ItemParserFactorySpi>();
 					this.factoriesMap.put(t.getTargetClass(), spis);
 				}
+				spis.add(t);
 			} catch (Exception e) {
 				LOGGER.warn("Error loading MonetaryExtension.", e);
 			}

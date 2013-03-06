@@ -24,7 +24,6 @@ import net.java.javamoney.ri.core.Money;
 import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.core.StandardRoundings;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,36 +137,32 @@ public class SmokeTests {
 	}
 
 	@Test
-	@Ignore
 	public void testGettingParsers() {
 		// Using parsers
 		try {
-			ItemParser<MonetaryAmount> parser = Monetary.getItemParserFactory()
-					.getItemParser(MonetaryAmount.class,
-							LocalizationStyle.of(Locale.GERMANY));
-			MonetaryAmount amount1 = parser.parse("CHF 123.45");
+			ItemParser<CurrencyUnit> parser = Monetary.getItemParserFactory()
+					.getItemParser(CurrencyUnit.class,
+							LocalizationStyle.of(Locale.ENGLISH));
+			CurrencyUnit cur = parser.parse("CHF");
+			assertNotNull(cur);
+			assertEquals("CHF", cur.getCurrencyCode());
 		} catch (ItemParseException e) {
 			logger.debug("Error", e);
 		}
 	}
 
 	@Test
-	@Ignore
 	public void testGettingFormatters() {
 		// Using formatters
 		CurrencyUnit currency = Monetary.getCurrencyUnitProvider().get(
-				"ISO4217", "CHF");
+				"ISO-4217", "CHF");
 		MonetaryAmount amount = Monetary.getMonetaryAmountProvider().get(
 				currency, 1.0d);
-		try {
-			ItemFormatter<MonetaryAmount> formatter = Monetary
-					.getItemFormatterFactory().getItemFormatter(
-							MonetaryAmount.class,
-							LocalizationStyle.of(Locale.GERMANY));
-			String formatted = formatter.format(amount);
-			assertEquals(1.0d, amount.doubleValue(), 0);
-		} catch (Exception e) {
-			logger.debug("Error", e);
-		}
+		ItemFormatter<MonetaryAmount> formatter = Monetary
+				.getItemFormatterFactory().getItemFormatter(
+						MonetaryAmount.class,
+						LocalizationStyle.of("CODE", Locale.GERMANY));
+		System.out.println("Formatted amount: " + formatter.format(amount));
+		assertEquals(1.0d, amount.doubleValue(), 0);
 	}
 }

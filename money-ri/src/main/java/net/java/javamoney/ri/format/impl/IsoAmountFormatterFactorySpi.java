@@ -37,6 +37,9 @@ public class IsoAmountFormatterFactorySpi implements
 	public ItemFormatter<MonetaryAmount> getItemFormatter(
 			LocalizationStyle style) {
 		String namespace = style.getAttribute("namespace", String.class);
+		if(namespace==null){
+			namespace = CurrencyUnit.ISO_NAMESPACE;
+		}
 		if (!CurrencyUnit.ISO_NAMESPACE.equals(namespace)) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Not able to return a amount formatter for " + style);
@@ -49,7 +52,7 @@ public class IsoAmountFormatterFactorySpi implements
 			renderedFieldValue = "CODE";
 		}
 		LocalizationStyle currencyStyle = new LocalizationStyle(
-				LocalizationStyle.DEFAULT_ID, style.getTranslationLocale());
+				renderedFieldValue, style.getNumberLocale());
 		return new IsoAmountFormatter(style, currencyStyle);
 	}
 

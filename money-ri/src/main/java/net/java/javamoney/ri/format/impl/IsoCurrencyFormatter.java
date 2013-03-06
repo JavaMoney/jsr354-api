@@ -26,7 +26,7 @@ public class IsoCurrencyFormatter implements ItemFormatter<CurrencyUnit> {
 	public IsoCurrencyFormatter(LocalizationStyle style) {
 		String field = style.getId();
 		try {
-			renderedField = RenderedField.valueOf(field.toLowerCase());
+			renderedField = RenderedField.valueOf(field.toUpperCase());
 		} catch (Exception e) {
 			throw new IllegalArgumentException("style's id must be one of "
 					+ Arrays.toString(RenderedField.values()));

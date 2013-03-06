@@ -20,11 +20,10 @@ package net.java.javamoney.ri.format.token;
 
 import java.util.ResourceBundle;
 
-import javax.money.format.common.LocalizationStyle;
-import javax.money.format.common.ParseException;
+import javax.money.format.ItemParseException;
+import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.format.common.AbstractToken;
-import net.java.javamoney.ri.format.common.FormatterToken;
+import net.java.javamoney.ri.format.FormatterToken;
 import net.java.javamoney.ri.format.common.ParseContext;
 
 /**
@@ -78,7 +77,7 @@ public class TranslatedLiteral<T> extends AbstractToken<T> {
 	}
 
 	protected String getToken(T item,
-			javax.money.format.common.LocalizationStyle style) {
+			javax.money.format.LocalizationStyle style) {
 		return getTokenInternal(style);
 	};
 	
@@ -96,12 +95,12 @@ public class TranslatedLiteral<T> extends AbstractToken<T> {
 	}
 
 	@Override
-	public void parse(ParseContext context) throws ParseException {
-		javax.money.format.common.LocalizationStyle style = context.getLocalizationStyle();
+	public void parse(ParseContext context) throws ItemParseException {
+		javax.money.format.LocalizationStyle style = context.getLocalizationStyle();
 		String token = getTokenInternal(style);
 		if(!context.consume(token)){
 			if(!isOptional()){
-				throw new ParseException("Expected: " + token, context.getCurrentText().toString(), -1);
+				throw new ItemParseException("Expected: " + token, context.getCurrentText().toString(), -1);
 			}
 		}
 	}

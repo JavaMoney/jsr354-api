@@ -21,14 +21,13 @@ package net.java.javamoney.ri.format.token;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import javax.money.format.common.LocalizationStyle;
-import javax.money.format.common.ParseException;
+import javax.money.format.ItemParseException;
+import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.format.common.AbstractToken;
-import net.java.javamoney.ri.format.common.FormatDecorator;
-import net.java.javamoney.ri.format.common.FormatterToken;
+import net.java.javamoney.ri.format.FormatDecorator;
+import net.java.javamoney.ri.format.FormatterToken;
+import net.java.javamoney.ri.format.StringGrouper;
 import net.java.javamoney.ri.format.common.ParseContext;
-import net.java.javamoney.ri.format.common.StringGrouper;
 
 /**
  * {@link FormatterToken} which allows to format a {@link Number} type.
@@ -172,9 +171,9 @@ public class FormattedNumber<T extends Number> extends AbstractToken<T> {
 	}
 
 	@Override
-	public void parse(ParseContext context) throws ParseException {
+	public void parse(ParseContext context) throws ItemParseException {
 		DecimalFormat df = getNumberFormat(context.getLocalizationStyle());
-		if("true".equals(context.getLocalizationStyle().getAttribute("enforceGrouping"))){
+		if(context.getLocalizationStyle().getAttribute("enforceGrouping", Boolean.class)){
 			df.setGroupingUsed(true);
 		}
 		else{
@@ -185,7 +184,7 @@ public class FormattedNumber<T extends Number> extends AbstractToken<T> {
 		try {
 			num = df.parse(token);
 		} catch (java.text.ParseException e) {
-			throw new ParseException("Failed to parse number.", token, e.getErrorOffset(), e);
+			throw new ItemParseException("Failed to parse number.", token, e.getErrorOffset(), e);
 		}
 		context.setAttribute(Number.class, num);
 		context.consume(token);

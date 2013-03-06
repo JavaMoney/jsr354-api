@@ -18,7 +18,6 @@
  */
 package net.java.javamoney.ri.format.common;
 
-import javax.money.format.common.Targeted;
 
 /**
  * Base class when implementing {@link Targeted}.
@@ -28,7 +27,7 @@ import javax.money.format.common.Targeted;
  * @param <T>
  *            The target type.
  */
-public abstract class AbstractTargeted<T> implements Targeted<T> {
+public abstract class AbstractTargeted<T> {
 
 	private final Class<T> type;
 
@@ -39,7 +38,6 @@ public abstract class AbstractTargeted<T> implements Targeted<T> {
 		this.type = type;
 	}
 
-	@Override
 	public final Class<T> getTargetClass() {
 		return this.type;
 	}

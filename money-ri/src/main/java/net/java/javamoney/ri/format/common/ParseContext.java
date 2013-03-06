@@ -23,8 +23,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javax.money.format.common.LocalizationStyle;
-import javax.money.format.common.ParseException;
+import javax.money.format.ItemParseException;
+import javax.money.format.LocalizationStyle;
+
+import net.java.javamoney.ri.format.ParserToken;
 
 /**
  * This class contains the parsing context for parsing a value. Each ParserToken
@@ -39,7 +41,7 @@ public final class ParseContext {
 	private int position;
 	private CharSequence text;
 	private int errorPosition;
-	private ParseException error;
+	private ItemParseException error;
 	private Map<Object, Object> attributes = new HashMap<Object, Object>();
 	private LocalizationStyle style;
 
@@ -96,11 +98,11 @@ public final class ParseContext {
 		return this.errorPosition;
 	}
 
-	public ParseException getError() {
+	public ItemParseException getError() {
 		return this.error;
 	}
 
-	public void setError(int position, ParseException error) {
+	public void setError(int position, ItemParseException error) {
 		this.position = position;
 		if (error == null) {
 			throw new IllegalArgumentException(

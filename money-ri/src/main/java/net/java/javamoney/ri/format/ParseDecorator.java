@@ -16,46 +16,41 @@
  * Contributors:
  *    Anatole Tresch - initial implementation
  */
-package net.java.javamoney.ri.format.token;
+package net.java.javamoney.ri.format;
 
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.format.FormatterToken;
 import net.java.javamoney.ri.format.common.ParseContext;
 
 /**
- * {@link FormatterToken} which adds an arbitrary literal constant value to the
- * output.
+ * This interface defines an item that may be set as a decorator to a
+ * {@link FormatterToken}.
  * 
  * @author Anatole Tresch
  * 
  * @param <T>
- *            The item type.
+ *            The target type.
  */
-public class Literal<T> extends AbstractToken<T>{
+public interface ParseDecorator<T> {
 
-	private String token;
-
-	public Literal(String token) {
-		if (token == null) {
-			throw new IllegalArgumentException("Token is required.");
-		}
-		this.token = token;
-	}
-
-	@Override
-	protected String getToken(T item, LocalizationStyle style) {
-		return this.token;
-	}
-
-	@Override
-	public void parse(ParseContext context) throws ItemParseException {
-		if(!context.consume(token)){
-			if(!isOptional()){
-				throw new ItemParseException("Expected: " + token, context.getCurrentText().toString(), -1);
-			}
-		}
-	}
+	/**
+	 * Method to call ancapsulate a parsing part into another.
+	 * 
+	 * @param context
+	 *            The current parsing context.
+	 * @param style
+	 *            The style passed.
+	 * @return the final result of this formatting operation. This may be equals
+	 *         to {@code formattedString}, when no decoration is effective, or
+	 *         something completely different, return as the result of the
+	 *         decorated {@link FormatterToken} instance.
+	 */
+	public void decorateParse(ParseContext context, LocalizationStyle style)
+			throws ItemParseException;
+	
+	public void setParseDecorator(ParseDecorator<T> deocrator);
+	
+	public ParseDecorator<T> getParseDecorator();
 
 }

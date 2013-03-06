@@ -42,19 +42,15 @@ import java.util.Enumeration;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
-import javax.money.format.AmountFormatterFactory;
-import javax.money.format.AmountParserFactory;
-import javax.money.format.CurrencyFormatterFactory;
-import javax.money.format.CurrencyParserFactory;
+import javax.money.format.ItemFormatterFactory;
+import javax.money.format.ItemParserFactory;
 import javax.money.provider.ext.TestExtension;
-import javax.money.provider.impl.TestAmountFormatterFactory;
-import javax.money.provider.impl.TestAmountParserFactory;
 import javax.money.provider.impl.TestCurrencyConverter;
-import javax.money.provider.impl.TestCurrencyFormatterFactory;
-import javax.money.provider.impl.TestCurrencyParserFactory;
 import javax.money.provider.impl.TestCurrencyUnitProvider;
 import javax.money.provider.impl.TestExchangeRateProvider;
 import javax.money.provider.impl.TestExtensionImpl;
+import javax.money.provider.impl.TestItemFormatterFactory;
+import javax.money.provider.impl.TestItemParserFactory;
 import javax.money.provider.impl.TestMonetaryAmountProvider;
 import javax.money.provider.impl.TestMonetaryAmountProvider2;
 import javax.money.provider.impl.TestRoundingProvider;
@@ -179,10 +175,10 @@ public class MonetaryTest {
 	 * {@link javax.money.provider.Monetary#getAmountFormatterFactory()}.
 	 */
 	@Test
-	public void testGetAmountFormatterFactory() {
-		AmountFormatterFactory f = Monetary.getAmountFormatterFactory();
+	public void testGetItemFormatterFactory() {
+		ItemFormatterFactory f = Monetary.getItemFormatterFactory();
 		assertNotNull(f);
-		assertEquals(TestAmountFormatterFactory.class, f.getClass());
+		assertEquals(TestItemFormatterFactory.class, f.getClass());
 	}
 
 	/**
@@ -190,33 +186,13 @@ public class MonetaryTest {
 	 * {@link javax.money.provider.Monetary#getAmountParserFactory()}.
 	 */
 	@Test
-	public void testGetAmountParserFactory() {
-		AmountParserFactory f = Monetary.getAmountParserFactory();
+	public void testGetItemParserFactory() {
+		ItemParserFactory f = Monetary
+				.getItemParserFactory();
 		assertNotNull(f);
-		assertEquals(TestAmountParserFactory.class, f.getClass());
+		assertEquals(TestItemParserFactory.class, f.getClass());
 	}
 
-	/**
-	 * Test method for
-	 * {@link javax.money.provider.Monetary#getCurrencyFormatterFactory()}.
-	 */
-	@Test
-	public void testGetCurrencyFormatterFactory() {
-		CurrencyFormatterFactory f = Monetary.getCurrencyFormatterFactory();
-		assertNotNull(f);
-		assertEquals(TestCurrencyFormatterFactory.class, f.getClass());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.provider.Monetary#getCurrencyParserFactory()}.
-	 */
-	@Test
-	public void testGetCurrencyParserFactory() {
-		CurrencyParserFactory f = Monetary.getCurrencyParserFactory();
-		assertNotNull(f);
-		assertEquals(TestCurrencyParserFactory.class, f.getClass());
-	}
 
 	/**
 	 * Test method for

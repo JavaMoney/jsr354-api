@@ -18,7 +18,10 @@
  */
 package net.java.javamoney.ri.format.common;
 
-import javax.money.format.common.LocalizationStyle;
+import javax.money.format.LocalizationStyle;
+
+import net.java.javamoney.ri.format.FormatDecorator;
+import net.java.javamoney.ri.format.ParseDecorator;
 
 
 /**

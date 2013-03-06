@@ -13,17 +13,16 @@ import javax.money.MonetaryAmount;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
-import javax.money.format.AmountFormatter;
-import javax.money.format.AmountParser;
-import javax.money.format.StyleableAmountFormatter;
-import javax.money.format.StyleableAmountParser;
-import javax.money.format.common.LocalizationStyle;
-import javax.money.format.common.ParseException;
+import javax.money.format.ItemFormatter;
+import javax.money.format.ItemParseException;
+import javax.money.format.ItemParser;
+import javax.money.format.LocalizationStyle;
 import javax.money.provider.Monetary;
 
 import net.java.javamoney.ri.convert.SingletonExchangeRateType;
 import net.java.javamoney.ri.core.Money;
 import net.java.javamoney.ri.core.MoneyCurrency;
+import net.java.javamoney.ri.core.StandardRoundings;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -80,44 +79,59 @@ public class SmokeTests {
 		ExchangeRateProvider prov = Monetary
 				.getExchangeRateProvider(SingletonExchangeRateType.of("EZB"));
 		assertNotNull(prov);
-		ExchangeRate rate1 = prov.get(MoneyCurrency.getInstance("CHF"),MoneyCurrency.getInstance("EUR"));
-		ExchangeRate rate2 = prov.get(MoneyCurrency.getInstance("EUR"),MoneyCurrency.getInstance("CHF"));
-		ExchangeRate rate3 = prov.get(MoneyCurrency.getInstance("CHF"),MoneyCurrency.getInstance("USD"));
-		ExchangeRate rate4 = prov.get(MoneyCurrency.getInstance("USD"),MoneyCurrency.getInstance("CHF"));
+		ExchangeRate rate1 = prov.get(MoneyCurrency.getInstance("CHF"),
+				MoneyCurrency.getInstance("EUR"));
+		ExchangeRate rate2 = prov.get(MoneyCurrency.getInstance("EUR"),
+				MoneyCurrency.getInstance("CHF"));
+		ExchangeRate rate3 = prov.get(MoneyCurrency.getInstance("CHF"),
+				MoneyCurrency.getInstance("USD"));
+		ExchangeRate rate4 = prov.get(MoneyCurrency.getInstance("USD"),
+				MoneyCurrency.getInstance("CHF"));
 		System.out.println(rate1);
 		System.out.println(rate2);
 		System.out.println(rate3);
 		System.out.println(rate4);
 	}
-	
+
 	@Test
 	public void testCurrencyConverter() {
-		AmountAdjuster rounding = StandardRoundings.getRounding(2, RoundingMode.HALF_UP);
-		
+		AmountAdjuster rounding = StandardRoundings.getRounding(2,
+				RoundingMode.HALF_UP);
+
 		CurrencyConverter conv = Monetary
 				.getCurrencyConverter(SingletonExchangeRateType.of("EZB"));
 		assertNotNull(conv);
-		MonetaryAmount srcCHF = Money.valueOf(MoneyCurrency.getInstance("CHF"), 100.15);
-		MonetaryAmount srcUSD = Money.valueOf(MoneyCurrency.getInstance("USD"), 100.15);
-		MonetaryAmount srcEUR = Money.valueOf(MoneyCurrency.getInstance("EUR"), 100.15);
-		
-		MonetaryAmount tgt = conv.convert(srcCHF, MoneyCurrency.getInstance("EUR"));
-		MonetaryAmount tgt2 = conv.convert(100.15d, MoneyCurrency.getInstance("CHF"), MoneyCurrency.getInstance("EUR"));
-		MonetaryAmount tgt3 = conv.convert(tgt2, MoneyCurrency.getInstance("CHF"));
+		MonetaryAmount srcCHF = Money.valueOf(MoneyCurrency.getInstance("CHF"),
+				100.15);
+		MonetaryAmount srcUSD = Money.valueOf(MoneyCurrency.getInstance("USD"),
+				100.15);
+		MonetaryAmount srcEUR = Money.valueOf(MoneyCurrency.getInstance("EUR"),
+				100.15);
+
+		MonetaryAmount tgt = conv.convert(srcCHF,
+				MoneyCurrency.getInstance("EUR"));
+		MonetaryAmount tgt2 = conv.convert(100.15d,
+				MoneyCurrency.getInstance("CHF"),
+				MoneyCurrency.getInstance("EUR"));
+		MonetaryAmount tgt3 = conv.convert(tgt2,
+				MoneyCurrency.getInstance("CHF"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcCHF, rounding.adjust(tgt3));
-		tgt = conv.convert(srcEUR,MoneyCurrency.getInstance("CHF"));
-		tgt2 = conv.convert(100.15d, MoneyCurrency.getInstance("EUR"), MoneyCurrency.getInstance("CHF"));
+		tgt = conv.convert(srcEUR, MoneyCurrency.getInstance("CHF"));
+		tgt2 = conv.convert(100.15d, MoneyCurrency.getInstance("EUR"),
+				MoneyCurrency.getInstance("CHF"));
 		tgt3 = conv.convert(tgt, MoneyCurrency.getInstance("EUR"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcEUR, rounding.adjust(tgt3));
-		tgt = conv.convert(srcCHF,MoneyCurrency.getInstance("USD"));
-		tgt2 = conv.convert(100.15d, MoneyCurrency.getInstance("CHF"), MoneyCurrency.getInstance("USD"));
+		tgt = conv.convert(srcCHF, MoneyCurrency.getInstance("USD"));
+		tgt2 = conv.convert(100.15d, MoneyCurrency.getInstance("CHF"),
+				MoneyCurrency.getInstance("USD"));
 		tgt3 = conv.convert(tgt2, MoneyCurrency.getInstance("CHF"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcCHF, rounding.adjust(tgt3));
-		tgt = conv.convert(srcUSD,MoneyCurrency.getInstance("CHF"));
-		tgt2 = conv.convert(100.15d, MoneyCurrency.getInstance("USD"), MoneyCurrency.getInstance("CHF"));
+		tgt = conv.convert(srcUSD, MoneyCurrency.getInstance("CHF"));
+		tgt2 = conv.convert(100.15d, MoneyCurrency.getInstance("USD"),
+				MoneyCurrency.getInstance("CHF"));
 		tgt3 = conv.convert(tgt2, MoneyCurrency.getInstance("USD"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcUSD, rounding.adjust(tgt3));
@@ -128,16 +142,11 @@ public class SmokeTests {
 	public void testGettingParsers() {
 		// Using parsers
 		try {
-			AmountParser parser = Monetary.getAmountParserFactory()
-					.getAmountParser(LocalizationStyle.of(Locale.GERMANY));
+			ItemParser<MonetaryAmount> parser = Monetary.getItemParserFactory()
+					.getItemParser(MonetaryAmount.class,
+							LocalizationStyle.of(Locale.GERMANY));
 			MonetaryAmount amount1 = parser.parse("CHF 123.45");
-
-			StyleableAmountParser locParser = Monetary.getAmountParserFactory()
-					.getLocalizableAmountParser();
-
-			MonetaryAmount amount2 = locParser.parse("CHF 123.45",
-					LocalizationStyle.of(Locale.CHINA));
-		} catch (ParseException e) {
+		} catch (ItemParseException e) {
 			logger.debug("Error", e);
 		}
 	}
@@ -151,16 +160,12 @@ public class SmokeTests {
 		MonetaryAmount amount = Monetary.getMonetaryAmountProvider().get(
 				currency, 1.0d);
 		try {
-			AmountFormatter formatter = Monetary.getAmountFormatterFactory()
-					.getAmountFormatter(LocalizationStyle.of(Locale.GERMANY));
+			ItemFormatter<MonetaryAmount> formatter = Monetary
+					.getItemFormatterFactory().getItemFormatter(
+							MonetaryAmount.class,
+							LocalizationStyle.of(Locale.GERMANY));
 			String formatted = formatter.format(amount);
 			assertEquals(1.0d, amount.doubleValue(), 0);
-			StyleableAmountFormatter locFormatter = Monetary
-					.getAmountFormatterFactory()
-					.getLocalizableAmountFormatter();
-
-			String formatted2 = locFormatter.format(amount,
-					LocalizationStyle.of(Locale.CHINA));
 		} catch (Exception e) {
 			logger.debug("Error", e);
 		}

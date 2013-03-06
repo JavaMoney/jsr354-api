@@ -22,14 +22,13 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import javax.money.MonetaryAmount;
-import javax.money.format.common.LocalizationStyle;
-import javax.money.format.common.ParseException;
+import javax.money.format.ItemParseException;
+import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.format.common.AbstractToken;
-import net.java.javamoney.ri.format.common.FormatDecorator;
-import net.java.javamoney.ri.format.common.FormatterToken;
+import net.java.javamoney.ri.format.FormatDecorator;
+import net.java.javamoney.ri.format.FormatterToken;
+import net.java.javamoney.ri.format.StringGrouper;
 import net.java.javamoney.ri.format.common.ParseContext;
-import net.java.javamoney.ri.format.common.StringGrouper;
 
 /**
  * {@link FormatterToken} which allows to format a {@link Number} type.
@@ -173,7 +172,7 @@ public class FormattedAmount<T extends MonetaryAmount> extends AbstractToken<T> 
 	}
 
 	@Override
-	public void parse(ParseContext context) throws ParseException {
+	public void parse(ParseContext context) throws ItemParseException {
 		// TODO Auto-generated method stub
 		
 	}

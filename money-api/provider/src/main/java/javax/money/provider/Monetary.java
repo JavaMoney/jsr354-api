@@ -45,10 +45,8 @@ import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
 import javax.money.convert.spi.CurrencyConverterDefaultFactorySpi;
 import javax.money.convert.spi.ExchangeRateProviderDefaultFactorySpi;
-import javax.money.format.AmountFormatterFactory;
-import javax.money.format.AmountParserFactory;
-import javax.money.format.CurrencyFormatterFactory;
-import javax.money.format.CurrencyParserFactory;
+import javax.money.format.ItemFormatterFactory;
+import javax.money.format.ItemParserFactory;
 import javax.money.provider.spi.MonetaryExtension;
 
 /**
@@ -73,15 +71,15 @@ public final class Monetary {
 	private final CurrencyConverterDefaultFactorySpi currencyConverterDefaultFactorySpi;
 	private final Map<ExchangeRateType, CurrencyConverter> currencyConverters = new HashMap<ExchangeRateType, CurrencyConverter>();
 	private final Map<Class<?>, MonetaryExtension> extensions = new HashMap<Class<?>, MonetaryExtension>();
-	private final AmountParserFactory amountParserFactory;
-	private final AmountFormatterFactory amountFormatterFactory;
-	private final CurrencyParserFactory currencyParserFactory;
-	private final CurrencyFormatterFactory currencyFormatterFactory;
+	private final ItemParserFactory itemParserFactory;
+	private final ItemFormatterFactory itemFormatterFactory;
 
 	private final ServiceLoader<MonetaryAmountProvider> amountFactoryLoader = ServiceLoader
 			.load(MonetaryAmountProvider.class);
 	private final ServiceLoader<CurrencyConverter> currencyConverterLoader = ServiceLoader
 			.load(CurrencyConverter.class);
+	private final ServiceLoader<ExchangeRateProvider> exchangeRateProviderLoader = ServiceLoader
+			.load(ExchangeRateProvider.class);
 	private final ServiceLoader<MonetaryExtension> extensionsLoader = ServiceLoader
 			.load(MonetaryExtension.class);
 
@@ -91,13 +89,14 @@ public final class Monetary {
 	private Monetary() {
 		currencyUnitProvider = loadService(CurrencyUnitProvider.class);
 		roundingProvider = loadService(RoundingProvider.class);
-		amountParserFactory = loadService(AmountParserFactory.class);
-		amountFormatterFactory = loadService(AmountFormatterFactory.class);
-		currencyParserFactory = loadService(CurrencyParserFactory.class);
-		currencyFormatterFactory = loadService(CurrencyFormatterFactory.class);
+		itemFormatterFactory = loadService(ItemFormatterFactory.class);
+		itemParserFactory = loadService(ItemParserFactory.class);
 		exchangeRateProviderDefaultFactorySpi = loadService(ExchangeRateProviderDefaultFactorySpi.class);
 		currencyConverterDefaultFactorySpi = loadService(CurrencyConverterDefaultFactorySpi.class);
 		// TODO define how to handle and handle duplicate registrations!
+		for (ExchangeRateProvider t : exchangeRateProviderLoader) {
+			this.exchangeRateProviders.put(t.getExchangeRateType(), t);
+		}
 		for (CurrencyConverter t : currencyConverterLoader) {
 			this.currencyConverters.put(t.getExchangeRateType(), t);
 		}
@@ -255,13 +254,14 @@ public final class Monetary {
 		ExchangeRateProvider prov = INSTANCE.exchangeRateProviders.get(type);
 		if (prov == null) {
 			ExchangeRateProviderDefaultFactorySpi provFactory = INSTANCE.exchangeRateProviderDefaultFactorySpi;
-			prov = provFactory.createExchangeRateProvider(type);
-			if(prov==null){
-				throw new IllegalArgumentException(
-					"No ExchangeRateProvider for the required type registered: "
-							+ type);
+			if (provFactory != null) {
+				prov = provFactory.createExchangeRateProvider(type);
 			}
-			else{
+			if (prov == null) {
+				throw new IllegalArgumentException(
+						"No ExchangeRateProvider for the required type registered: "
+								+ type);
+			} else {
 				INSTANCE.exchangeRateProviders.put(type, prov);
 			}
 		}
@@ -281,13 +281,14 @@ public final class Monetary {
 		CurrencyConverter prov = INSTANCE.currencyConverters.get(type);
 		if (prov == null) {
 			CurrencyConverterDefaultFactorySpi provFactory = INSTANCE.currencyConverterDefaultFactorySpi;
-			prov = provFactory.createCurrencyConverter(type);
-			if(prov==null){
-				throw new IllegalArgumentException(
-					"No CurrencyConverters for the required type registered: "
-							+ type);
+			if (provFactory != null) {
+				prov = provFactory.createCurrencyConverter(type);
 			}
-			else{
+			if (prov == null) {
+				throw new IllegalArgumentException(
+						"No CurrencyConverters for the required type registered: "
+								+ type);
+			} else {
 				INSTANCE.currencyConverters.put(type, prov);
 			}
 		}
@@ -307,56 +308,29 @@ public final class Monetary {
 	}
 
 	/**
-	 * Access the {@link AmountFormatterFactory} component.
+	 * Access the {@link ItemFormatterFactory} component.
 	 * 
-	 * @return the {@link AmountFormatterFactory} component, never {@code null}.
+	 * @return the {@link ItemFormatterFactory} component, never {@code null}.
 	 */
-	public static AmountFormatterFactory getAmountFormatterFactory() {
-		if (INSTANCE.amountFormatterFactory == null) {
+	public static ItemFormatterFactory getItemFormatterFactory() {
+		if (INSTANCE.itemFormatterFactory == null) {
 			throw new UnsupportedOperationException(
-					"No AmountFormatterFactory loaded");
+					"No ItemFormatterFactory loaded");
 		}
-		return INSTANCE.amountFormatterFactory;
+		return INSTANCE.itemFormatterFactory;
 	}
 
 	/**
-	 * Access the {@link AmountParserFactory} component.
+	 * Access the {@link ItemParserFactory} component.
 	 * 
-	 * @return the {@link AmountParserFactory} component, never {@code null}.
+	 * @return the {@link ItemParserFactory} component, never {@code null}.
 	 */
-	public static AmountParserFactory getAmountParserFactory() {
-		if (INSTANCE.amountParserFactory == null) {
+	public static ItemParserFactory getItemParserFactory() {
+		if (INSTANCE.itemParserFactory == null) {
 			throw new UnsupportedOperationException(
-					"No AmountParserFactory loaded");
+					"No ItemParserFactory loaded");
 		}
-		return INSTANCE.amountParserFactory;
-	}
-
-	/**
-	 * Access the {@link CurrencyFormatterFactory} component.
-	 * 
-	 * @return the {@link CurrencyFormatterFactory} component, never
-	 *         {@code null}.
-	 */
-	public static CurrencyFormatterFactory getCurrencyFormatterFactory() {
-		if (INSTANCE.currencyFormatterFactory == null) {
-			throw new UnsupportedOperationException(
-					"No CurrencyFormatterFactory loaded");
-		}
-		return INSTANCE.currencyFormatterFactory;
-	}
-
-	/**
-	 * Access the {@link CurrencyParserFactory} component.
-	 * 
-	 * @return the {@link CurrencyParserFactory} component, never {@code null}.
-	 */
-	public static CurrencyParserFactory getCurrencyParserFactory() {
-		if (INSTANCE.currencyParserFactory == null) {
-			throw new UnsupportedOperationException(
-					"No CurrencyParserFactory loaded");
-		}
-		return INSTANCE.currencyParserFactory;
+		return INSTANCE.itemParserFactory;
 	}
 
 	/**

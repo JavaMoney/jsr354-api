@@ -886,6 +886,4 @@ public interface MonetaryAmount {
 	 */
 	public Class<?> getNumberType();
 
-	public MonetaryAmount setValue(Number number);
-
 }

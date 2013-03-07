@@ -524,9 +524,9 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#with(java.lang.Number)
 	 */
-	public MonetaryAmount with(Number amount) {
-		checkNumber(amount);
-		return new IntegralMoney(this.currency, amount.longValue());
+	@Override
+	public MonetaryAmount with(Number number) {
+		return new IntegralMoney(this.currency, number.longValue());
 	}
 
 	/*
@@ -977,12 +977,6 @@ public final class IntegralMoney implements MonetaryAmount,
 						amount.getCurrency().getCurrencyCode());
 	}
 
-	@Override
-	public MonetaryAmount setValue(Number number) {
-		if (number instanceof BigDecimal) {
-			return new IntegralMoney(this.currency, number);
-		}
-		return new IntegralMoney(this.currency, number.longValue());
-	}
+	
 
 }

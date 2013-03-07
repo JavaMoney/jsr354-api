@@ -512,7 +512,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		return new Money(this.currency,
 				BigDecimal.valueOf(amount.doubleValue()));
 	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -935,14 +934,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 				amount.getCurrency().getNamespace())
 				&& this.currency.getCurrencyCode().equals(
 						amount.getCurrency().getCurrencyCode());
-	}
-
-	@Override
-	public MonetaryAmount setValue(Number number) {
-		if (number instanceof BigDecimal) {
-			return new Money(this.currency, number);
-		}
-		return null;
 	}
 
 }

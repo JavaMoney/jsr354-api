@@ -30,7 +30,7 @@ import java.util.ServiceLoader;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.UnknownCurrencyException;
+import javax.money.IllegalCurrencyException;
 import javax.money.ext.RegionType;
 import javax.money.provider.CurrencyUnitProvider;
 import javax.money.provider.spi.CurrencyUnitMappingSpi;
@@ -112,7 +112,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 				return currency;
 			}
 		}
-		throw new UnknownCurrencyException(namespace, code);
+		throw new IllegalCurrencyException(namespace, code);
 	}
 
 	/**

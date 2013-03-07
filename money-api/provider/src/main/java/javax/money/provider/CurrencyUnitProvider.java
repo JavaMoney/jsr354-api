@@ -35,7 +35,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
-import javax.money.UnknownCurrencyException;
 
 /**
  * This class models the component defined by JSR 354 that provides accessors

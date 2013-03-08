@@ -103,7 +103,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Sets the rate's timestamp.
 	 * 
-	 * @see ExchangeRate#getValidFrom()
+	 * @see ExchangeRate#getTimestamp()
 	 * @param timestamp
 	 *            The timestamp.
 	 * @return This builder instance.
@@ -113,7 +113,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Get the timestamp used for the {@link ConversionRate} created.
 	 * 
-	 * @see ExchangeRate#getValidFrom()
+	 * @see ExchangeRate#getTimestamp()
 	 * @return
 	 */
 	public Long getTimestamp();
@@ -191,6 +191,24 @@ public interface ExchangeRateBuilder {
 	public ExchangeRateBuilder setTargetLeadingFactor(Number factor);
 
 	/**
+	 * Set the location.
+	 * 
+	 * @see ExchangeRate#getLocation()
+	 * @param location
+	 *            the location
+	 * @return the builder instance
+	 */
+	public ExchangeRateBuilder setLocation(String location);
+
+	/**
+	 * Get the location of the rate to be built.
+	 * 
+	 * @see ExchangeRate#getLocation()
+	 * @return the location, or null.
+	 */
+	public String getLocation();
+
+	/**
 	 * Set the data provider.
 	 * 
 	 * @see ExchangeRate#getDataProvider()
@@ -198,7 +216,7 @@ public interface ExchangeRateBuilder {
 	 *            the data provider
 	 * @return the builder instance
 	 */
-	public ExchangeRateBuilder setProvider(String provider);
+	public ExchangeRateBuilder setDataProvider(String dataProvider);
 
 	/**
 	 * Get the source item of the rate to be built.
@@ -238,7 +256,7 @@ public interface ExchangeRateBuilder {
 	 * 
 	 * @return the data provider, or null.
 	 */
-	public String getProvider();
+	public String getDataProvider();
 
 	/**
 	 * This method allows to query if an {@link ConversionRate} can be build

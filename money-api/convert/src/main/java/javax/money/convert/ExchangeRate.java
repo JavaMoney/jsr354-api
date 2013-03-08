@@ -73,13 +73,11 @@ public interface ExchangeRate {
 	public Number getFactor();
 
 	/**
-	 * Returns the UTC timestamp defining from what date/time this rate is
-	 * valid.
+	 * Returns the UTC timestamp of the rate.
 	 * 
-	 * @return The UTC timestamp of the rate, defining valid from, or
-	 *         {@code null}.
+	 * @return The UTC timestamp of the rate.
 	 */
-	public Long getValidFrom();
+	public Long getTimestamp();
 
 	/**
 	 * Get the data validity timestamp of this rate in milliseconds. This can be
@@ -101,13 +99,18 @@ public interface ExchangeRate {
 	public boolean isValid();
 
 	/**
-	 * Get the provider of this rate. The provider of a rate can have different
-	 * contexts in different usage scenarios, such as the service type or the
-	 * stock exchange.
+	 * Get the location of this quote.
 	 * 
-	 * @return the provider, or {code null}.
+	 * @return the stock exchange or location.
 	 */
-	public String getProvider();
+	public String getLocation();
+
+	/**
+	 * Get the name of the data provider, that provided this rate.
+	 * 
+	 * @return the name of the data provider.
+	 */
+	public String getDataProvider();
 
 	/**
 	 * Access the chain of exchange rates.
@@ -127,6 +130,7 @@ public interface ExchangeRate {
 	 * @return true, if the exchange rate is derived.
 	 */
 	public boolean isDerived();
+	
 
 	/**
 	 * Checks if a conversion is an identity.
@@ -140,6 +144,7 @@ public interface ExchangeRate {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public boolean isIdentity();
+
 
 	/**
 	 * Access additional attributes of this currency instance. This allows to

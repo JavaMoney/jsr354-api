@@ -68,14 +68,14 @@ public class TestExchangeRateProvider implements ExchangeRateProvider {
 	}
 
 	@Override
-	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
+	public ExchangeRate get(CurrencyUnit sourceCurrency,
 			CurrencyUnit targetCurrency, Long timestamp) {
 		// empty implementation
 		return null;
 	}
 
 	@Override
-	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target) {
+	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target) {
 		// empty implementation
 		return null;
 	}

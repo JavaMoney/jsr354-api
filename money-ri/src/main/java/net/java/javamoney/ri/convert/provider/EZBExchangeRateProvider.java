@@ -162,7 +162,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProviderSpi {
 			return null;
 		}
 		CurrencyExchangeRate.Builder builder = new CurrencyExchangeRate.Builder();
-		builder.setProvider("European Central Bank");
+		builder.setDataProvider("European Central Bank");
 		builder.setExchangeRateType(RATE_TYPE);
 		builder.setSource(source);
 		builder.setTarget(target);
@@ -303,7 +303,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProviderSpi {
 		builder.setSource(SOURCE_CURRENCY);
 		builder.setTarget(tgtCurrency);
 		builder.setTimestamp(timestamp);
-		builder.setProvider("European Central Bank");
+		builder.setDataProvider("European Central Bank");
 		builder.setAttribute("dataloadTS", System.currentTimeMillis());
 		builder.setSourceLeadingFactor(rate);
 		builder.setExchangeRateType(RATE_TYPE);

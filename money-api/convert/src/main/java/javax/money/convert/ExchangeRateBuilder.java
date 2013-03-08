@@ -103,7 +103,7 @@ public interface ExchangeRateBuilder {
 	/**
 	 * Sets the rate's validFrom UTC timestamo.
 	 * 
-	 * @see ExchangeRate#getValidFrom()
+	 * @see ExchangeRate#getTimestamp()
 	 * @param timestamp
 	 *            The timestamp, or {@code nukk} for creating a unconstrainted,
 	 *            current instance.

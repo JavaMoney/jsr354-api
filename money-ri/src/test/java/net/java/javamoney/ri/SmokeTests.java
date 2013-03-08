@@ -78,13 +78,13 @@ public class SmokeTests {
 		ExchangeRateProvider prov = Monetary
 				.getExchangeRateProvider(SingletonExchangeRateType.of("EZB"));
 		assertNotNull(prov);
-		ExchangeRate rate1 = prov.getExchangeRate(MoneyCurrency.getInstance("CHF"),
+		ExchangeRate rate1 = prov.get(MoneyCurrency.getInstance("CHF"),
 				MoneyCurrency.getInstance("EUR"));
-		ExchangeRate rate2 = prov.getExchangeRate(MoneyCurrency.getInstance("EUR"),
+		ExchangeRate rate2 = prov.get(MoneyCurrency.getInstance("EUR"),
 				MoneyCurrency.getInstance("CHF"));
-		ExchangeRate rate3 = prov.getExchangeRate(MoneyCurrency.getInstance("CHF"),
+		ExchangeRate rate3 = prov.get(MoneyCurrency.getInstance("CHF"),
 				MoneyCurrency.getInstance("USD"));
-		ExchangeRate rate4 = prov.getExchangeRate(MoneyCurrency.getInstance("USD"),
+		ExchangeRate rate4 = prov.get(MoneyCurrency.getInstance("USD"),
 				MoneyCurrency.getInstance("CHF"));
 		System.out.println(rate1);
 		System.out.println(rate2);

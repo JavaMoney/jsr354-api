@@ -41,7 +41,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	private final CurrencyUnit target;
 	private final Number factor;
 	private final ExchangeRateType exchangeRateType;
-	private Long timestamp;
+	private Long validFrom;
 	private Long validUntil;
 	private String provider;
 	private ExchangeRate[] chain = new ExchangeRate[] { this };
@@ -76,20 +76,20 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 
 	public CurrencyExchangeRate(ExchangeRateType conversionType,
 			CurrencyUnit source, CurrencyUnit target, Number factor,
-			ExchangeRate[] chain, Long timestamp, Long validUntil) {
+			ExchangeRate[] chain, Long validFrom, Long validUntil) {
 		this(conversionType, source, target, factor);
 		if (chain != null) {
 			setExchangeRateChain(chain);
 		}
-		setTimestamp(timestamp);
+		setValidFrom(validFrom);
 		setValidUntil(validUntil);
 	}
 
 	public CurrencyExchangeRate(ExchangeRateType conversionType,
 			CurrencyUnit source, CurrencyUnit target, Number factor,
-			Long timestamp, Long validUntil) {
+			Long validFrom, Long validUntil) {
 		this(conversionType, source, target, factor);
-		setTimestamp(timestamp);
+		setValidFrom(validFrom);
 		setValidUntil(validUntil);
 	}
 
@@ -111,12 +111,12 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 
 	@Override
 	public final Long getValidFrom() {
-		return timestamp;
+		return validFrom;
 	}
 
-	public final void setTimestamp(Long timestamp) {
+	public final void setValidFrom(Long validFrom) {
 		ensureWritable();
-		this.timestamp = timestamp;
+		this.validFrom = validFrom;
 	}
 
 	@Override
@@ -205,7 +205,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	public String toString() {
 		return "CurrencyExchangeRate [exchangeRateType=" + exchangeRateType
 				+ ", source=" + source + ", target=" + target + ", factor="
-				+ factor + ", timestamp=" + timestamp + ", validUntil="
+				+ factor + ", validFrom=" + validFrom + ", validUntil="
 				+ validUntil + ", provider=" + provider + "]";
 	}
 
@@ -222,7 +222,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		private CurrencyUnit target;
 		private Number factor;
 		private String provider;
-		private Long timestamp;
+		private Long validFrom;
 		private Long validUntil;
 		private ExchangeRate[] rateChain;
 		private Map<String, Object> attributes = new HashMap<String, Object>();
@@ -279,14 +279,14 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		}
 
 		@Override
-		public ExchangeRateBuilder setValidFrom(Long timestamp) {
-			this.timestamp = timestamp;
+		public ExchangeRateBuilder setValidFrom(Long validFrom) {
+			this.validFrom = validFrom;
 			return this;
 		}
 
 		@Override
 		public Long getValidFrom() {
-			return timestamp;
+			return validFrom;
 		}
 
 		@Override
@@ -362,7 +362,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		public ExchangeRate build() {
 			CurrencyExchangeRate rate = new CurrencyExchangeRate(
 					exchangeRateType, source, target, factor, rateChain,
-					timestamp, validUntil);
+					validFrom, validUntil);
 			rate.setProvider(this.provider);
 			rate.setReadOnly();
 			return rate;

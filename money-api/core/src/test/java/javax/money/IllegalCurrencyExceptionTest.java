@@ -46,8 +46,7 @@ public class IllegalCurrencyExceptionTest {
 
 	@Test
 	public void testIsRuntimeException() {
-		assertTrue(RuntimeException.class
-				.isAssignableFrom(IllegalCurrencyException.class));
+		assertTrue(RuntimeException.class.isAssignableFrom(IllegalCurrencyException.class));
 	}
 
 	/**
@@ -66,9 +65,8 @@ public class IllegalCurrencyExceptionTest {
 	 * .
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testUnknownCurrencyException_NoNamespace()
-			throws IllegalArgumentException {
-		new IllegalCurrencyException(null, "code");
+	public void testUnknownCurrencyException_NoNamespace()  throws IllegalArgumentException{
+		new IllegalCurrencyException((String)null, "code");
 	}
 
 	/**
@@ -77,9 +75,8 @@ public class IllegalCurrencyExceptionTest {
 	 * .
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testUnknownCurrencyException_NoCode()
-			throws IllegalArgumentException {
-		new IllegalCurrencyException("ns", (String) null);
+	public void testUnknownCurrencyException_NoCode() throws IllegalArgumentException{
+		new IllegalCurrencyException("ns", (String)null);
 	}
 
 	/**
@@ -88,9 +85,8 @@ public class IllegalCurrencyExceptionTest {
 	 * .
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testUnknownCurrencyException_NoParams()
-			throws IllegalArgumentException {
-		new IllegalCurrencyException((String) null, (String) null);
+	public void testUnknownCurrencyException_NoParams()  throws IllegalArgumentException{
+		new IllegalCurrencyException((String)null, (String)null);
 	}
 
 	/**

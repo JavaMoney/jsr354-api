@@ -54,7 +54,7 @@ public class CurrencyConversionException extends IllegalCurrencyException {
 
 	/**
 	 * Constructs an <code>CurrencyConversionException</code> with the specified
-	 * detail message, source and target currency.
+	 * detail message, timestamp, source and target currency.
 	 * 
 	 * @param source
 	 *            the source currency, may be null.

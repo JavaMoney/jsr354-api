@@ -279,13 +279,13 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		}
 
 		@Override
-		public ExchangeRateBuilder setTimestamp(Long timestamp) {
+		public ExchangeRateBuilder setValidFrom(Long timestamp) {
 			this.timestamp = timestamp;
 			return this;
 		}
 
 		@Override
-		public Long getTimestamp() {
+		public Long getValidFrom() {
 			return timestamp;
 		}
 

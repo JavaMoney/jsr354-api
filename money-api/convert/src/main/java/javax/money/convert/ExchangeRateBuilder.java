@@ -101,22 +101,24 @@ public interface ExchangeRateBuilder {
 	public ExchangeRateBuilder setSource(CurrencyUnit currency);
 
 	/**
-	 * Sets the rate's timestamp.
+	 * Sets the rate's validFrom UTC timestamo.
 	 * 
 	 * @see ExchangeRate#getValidFrom()
 	 * @param timestamp
-	 *            The timestamp.
+	 *            The timestamp, or {@code nukk} for creating a unconstrainted,
+	 *            current instance.
 	 * @return This builder instance.
 	 */
-	public ExchangeRateBuilder setTimestamp(Long timestamp);
+	public ExchangeRateBuilder setValidFrom(Long timestamp);
 
 	/**
-	 * Get the timestamp used for the {@link ConversionRate} created.
+	 * Get the validFrom used for the {@link ConversionRate} created.
 	 * 
 	 * @see ExchangeRate#getValidFrom()
-	 * @return
+	 * @return the UTC timestamp from when this instance is valid, or
+	 *         {@code null}.
 	 */
-	public Long getTimestamp();
+	public Long getValidFrom();
 
 	/**
 	 * Sets the {@link ExchangeRate}'s validUntil property.

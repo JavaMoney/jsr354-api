@@ -188,7 +188,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProviderSpi {
 			cal.set(GregorianCalendar.SECOND, 0);
 			cal.set(GregorianCalendar.MILLISECOND, 0);
 			Long targetTS = Long.valueOf(cal.getTimeInMillis());
-			builder.setTimestamp(targetTS);
+			builder.setValidFrom(targetTS);
 			builder.setAttribute("requestedTS", timestamp);
 			Map<String, ExchangeRate> targetRates = this.historicRates
 					.get(targetTS);
@@ -302,7 +302,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProviderSpi {
 		CurrencyExchangeRate.Builder builder = new CurrencyExchangeRate.Builder();
 		builder.setSource(SOURCE_CURRENCY);
 		builder.setTarget(tgtCurrency);
-		builder.setTimestamp(timestamp);
+		builder.setValidFrom(timestamp);
 		builder.setProvider("European Central Bank");
 		builder.setAttribute("dataloadTS", System.currentTimeMillis());
 		builder.setSourceLeadingFactor(rate);

@@ -56,7 +56,7 @@ public class CurrencyExchangeRateTest extends ConvertTestBase {
 		CurrencyExchangeRate rate = new CurrencyExchangeRate(TYPE, EURO,
 				DOLLAR, BigDecimal.valueOf(1.30693d), timestamp,
 				TEN_MINUTES_IN_MILLIS);
-		assertEquals(Long.valueOf(timestamp), rate.getTimestamp());
+		assertEquals(Long.valueOf(timestamp), rate.getValidFrom());
 	}
 
 }

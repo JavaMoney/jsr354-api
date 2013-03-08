@@ -87,7 +87,7 @@ public interface ExchangeRateProvider {
 	 *            or {@code null}.
 	 * @return the matching {@link ConversionRate}, or null.
 	 */
-	public ExchangeRate get(CurrencyUnit sourceCurrency, CurrencyUnit targetCurrency,
+	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency, CurrencyUnit targetCurrency,
 			Long timestamp);
 
 	/**
@@ -99,6 +99,6 @@ public interface ExchangeRateProvider {
 	 * @param target
 	 *            target currency.
 	 */
-	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target);
+	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target);
 
 }

@@ -43,8 +43,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	private final ExchangeRateType exchangeRateType;
 	private Long timestamp;
 	private Long validUntil;
-	private String location;
-	private String dataProvider;
+	private String provider;
 	private ExchangeRate[] chain = new ExchangeRate[] { this };
 
 	public CurrencyExchangeRate(ExchangeRateType conversionType,
@@ -111,7 +110,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	}
 
 	@Override
-	public final Long getTimestamp() {
+	public final Long getValidFrom() {
 		return timestamp;
 	}
 
@@ -137,28 +136,18 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	}
 
 	@Override
-	public final String getLocation() {
-		return location;
+	public final String getProvider() {
+		return provider;
 	}
 
-	public final void setLocation(String location) {
+	public final void setProvider(String provider) {
 		ensureWritable();
-		this.location = location;
-	}
-
-	@Override
-	public final String getDataProvider() {
-		return dataProvider;
+		this.provider = provider;
 	}
 
 	@Override
 	public boolean isDerived() {
 		return this.chain.length > 1;
-	}
-
-	public final void setDataProvider(String dataProvider) {
-		ensureWritable();
-		this.dataProvider = dataProvider;
 	}
 
 	public void setExchangeRateChain(ExchangeRate[] chain) {
@@ -198,10 +187,10 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		int compare = ((Comparable<ExchangeRateType>) this
 				.getExchangeRateType()).compareTo(o.getExchangeRateType());
 		if (compare == 0) {
-			if (location != null) {
-				compare = this.location.compareTo(o.getLocation());
-			} else if (o.getLocation() != null) {
-				compare = o.getLocation().compareTo(this.location);
+			if (provider != null) {
+				compare = this.provider.compareTo(o.getProvider());
+			} else if (o.getProvider() != null) {
+				compare = o.getProvider().compareTo(this.provider);
 			}
 		}
 		return compare;
@@ -217,8 +206,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		return "CurrencyExchangeRate [exchangeRateType=" + exchangeRateType
 				+ ", source=" + source + ", target=" + target + ", factor="
 				+ factor + ", timestamp=" + timestamp + ", validUntil="
-				+ validUntil + ", dataProvider=" + dataProvider + ", location="
-				+ location + "]";
+				+ validUntil + ", provider=" + provider + "]";
 	}
 
 	/**
@@ -233,8 +221,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		private CurrencyUnit source;
 		private CurrencyUnit target;
 		private Number factor;
-		private String dataProvider;
-		private String location;
+		private String provider;
 		private Long timestamp;
 		private Long validUntil;
 		private ExchangeRate[] rateChain;
@@ -345,30 +332,19 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		}
 
 		@Override
-		public ExchangeRateBuilder setLocation(String location) {
-			this.location = location;
+		public ExchangeRateBuilder setProvider(String provider) {
+			this.provider = provider;
 			return this;
 		}
 
 		@Override
-		public String getLocation() {
-			return location;
-		}
-
-		@Override
-		public ExchangeRateBuilder setDataProvider(String dataProvider) {
-			this.dataProvider = dataProvider;
-			return this;
+		public String getProvider() {
+			return provider;
 		}
 
 		@Override
 		public Number getFactor() {
 			return factor;
-		}
-
-		@Override
-		public String getDataProvider() {
-			return dataProvider;
 		}
 
 		@Override
@@ -387,8 +363,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 			CurrencyExchangeRate rate = new CurrencyExchangeRate(
 					exchangeRateType, source, target, factor, rateChain,
 					timestamp, validUntil);
-			rate.setDataProvider(this.dataProvider);
-			rate.setLocation(this.location);
+			rate.setProvider(this.provider);
 			rate.setReadOnly();
 			return rate;
 		}

@@ -79,7 +79,7 @@ public class DefaultExchangeRateProvider implements ExchangeRateProvider {
 	}
 
 	@Override
-	public ExchangeRate get(CurrencyUnit source,
+	public ExchangeRate getExchangeRate(CurrencyUnit source,
 			CurrencyUnit target, Long timestamp) {
 		for (ExchangeRateProviderSpi rateProviderSpi : exchangeRateProviderSpis) {
 			ExchangeRate rate = rateProviderSpi.getExchangeRate(source, target, timestamp);
@@ -91,7 +91,7 @@ public class DefaultExchangeRateProvider implements ExchangeRateProvider {
 	}
 
 	@Override
-	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target) {
+	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target) {
 		for (ExchangeRateProviderSpi rateProviderSpi : exchangeRateProviderSpis) {
 			ExchangeRate rate = rateProviderSpi.getExchangeRate(source, target, null);
 			if(rate != null){

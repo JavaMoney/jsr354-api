@@ -63,9 +63,9 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 				.getExchangeRateProvider(exchangeRateType);
 		if (provider == null) {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
-					"Undefined exchange rate type: " + this.exchangeRateType);
+					"Undefined exchange rate type: " + this.exchangeRateType, null);
 		}
-		ExchangeRate rate = provider.get(amount.getCurrency(), target);
+		ExchangeRate rate = provider.getExchangeRate(amount.getCurrency(), target);
 		if (rate == null) {
 			throw new CurrencyConversionException(amount.getCurrency(), target);
 		}
@@ -81,13 +81,13 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 		ExchangeRateProvider provider = Monetary
 				.getExchangeRateProvider(exchangeRateType);
 		if (provider == null) {
-			throw new CurrencyConversionException(amount.getCurrency(), target,
+			throw new CurrencyConversionException(amount.getCurrency(), target, timestamp,
 					"Undefined exchange rate type: " + this.exchangeRateType);
 		}
-		ExchangeRate rate = provider.get(amount.getCurrency(), target,
+		ExchangeRate rate = provider.getExchangeRate(amount.getCurrency(), target,
 				timestamp);
 		if (rate == null) {
-			throw new CurrencyConversionException(amount.getCurrency(), target,
+			throw new CurrencyConversionException(amount.getCurrency(), target, timestamp,
 					"Timestamp: " + timestamp);
 		}
 		MonetaryAmountProvider amountFactory = Monetary
@@ -103,10 +103,10 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 				.getExchangeRateProvider(exchangeRateType);
 		if (provider == null) {
 			throw new CurrencyConversionException(sourceCurrency,
-					targetCurrency, "Undefined exchange rate type: "
+					targetCurrency, null, "Undefined exchange rate type: "
 							+ this.exchangeRateType);
 		}
-		ExchangeRate rate = provider.get(sourceCurrency, targetCurrency);
+		ExchangeRate rate = provider.getExchangeRate(sourceCurrency, targetCurrency);
 		if (rate == null) {
 			throw new CurrencyConversionException(sourceCurrency,
 					targetCurrency);
@@ -124,14 +124,14 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 				.getExchangeRateProvider(exchangeRateType);
 		if (provider == null) {
 			throw new CurrencyConversionException(sourceCurrency,
-					targetCurrency, "Undefined exchange rate type: "
+					targetCurrency, timestamp, "Undefined exchange rate type: "
 							+ this.exchangeRateType);
 		}
-		ExchangeRate rate = provider.get(sourceCurrency, targetCurrency,
+		ExchangeRate rate = provider.getExchangeRate(sourceCurrency, targetCurrency,
 				timestamp);
 		if (rate == null) {
 			throw new CurrencyConversionException(sourceCurrency,
-					targetCurrency, "Timestamp: " + timestamp);
+					targetCurrency, timestamp, "Timestamp: " + timestamp);
 		}
 		MonetaryAmountProvider amountFactory = Monetary
 				.getMonetaryAmountProvider();

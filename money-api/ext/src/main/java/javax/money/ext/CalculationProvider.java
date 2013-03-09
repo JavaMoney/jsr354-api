@@ -31,47 +31,38 @@
  */
 package javax.money.ext;
 
-import javax.money.MonetaryAmount;
+import java.util.Enumeration;
+import java.util.Locale;
 
 /**
- * This interface models a simple calculation that is based on a single
- * {@link MonetaryAmount}.
+ * Provider that serves calculations for financial algorithmic.
  * 
- * @author Anatole Tresch
- * 
- * @param <T>
- *            the result type of the calculation.
+ * @author Anatole Tresch Note: still experimental!
  */
-public interface MultiValuedCalculation<T> {
+public interface CalculationProvider {
 
-	/**
-	 * Returns an literal non localized name, that identifies this type of
-	 * calculation.
-	 * 
-	 * @return the identifier, not null.
-	 */
-	public String getId();
+	public Enumeration<Calculation<?>> getAvailableCalculations();
 
-	/**
-	 * Returns a result calculated using the given {@link MonetaryAmount}.
-	 * 
-	 * @param amount
-	 *            the amount to use, not null
-	 * @return the calculation result, never null
-	 * @throws ArithmeticException
-	 *             if the adjustment fails
-	 */
-	public T calculate(MonetaryAmount... amount);
+	public boolean isCalculationDefined(String calculationId);
 
-	/**
-	 * Returns a result calculated using the given {@link MonetaryAmount}.
-	 * 
-	 * @param amount
-	 *            the amount to use, not null
-	 * @return the calculation result, never null
-	 * @throws ArithmeticException
-	 *             if the adjustment fails
-	 */
-	public T calculate(Iterable<MonetaryAmount> amounts);
+	public <T> Calculation<T> getCalculation(String calculationId,
+			Class<T> resultType);
+
+	public Enumeration<ComplexCalculation> getComplexCalculations();
+
+	public boolean isComplexCalculationDefined(String calculationId);
+
+	public ComplexCalculation getComplexCalculation(String calculationId);
+
+	public String getCalculationName(Calculation<?> calculation, Locale locale);
+
+	public String getCalculationDescription(Calculation<?> calculation,
+			Locale locale);
+
+	public String getCalculationName(ComplexCalculation calculation,
+			Locale locale);
+
+	public String getCalculationDescription(ComplexCalculation calculation,
+			Locale locale);
 
 }

@@ -48,6 +48,22 @@ public interface ComplexCalculation {
 	public String getId();
 
 	/**
+	 * Returns a literal non localized name, that identifies this type of
+	 * calculation.
+	 * 
+	 * @return the identifier, not null.
+	 */
+	public CompoundValueTemplate getInputType();
+
+	/**
+	 * Returns a literal non localized name, that identifies this type of
+	 * calculation.
+	 * 
+	 * @return the identifier, not null.
+	 */
+	public CompoundValueTemplate getOutputType();
+
+	/**
 	 * Returns a complex {@link CompoundValue} as a result one another
 	 * {@link CompoundValue}.
 	 * 

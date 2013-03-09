@@ -53,6 +53,21 @@ public interface Calculation<T> {
 	public String getId();
 
 	/**
+	 * Result type of this {@link Calculation}, rewuired to evaluate the type
+	 * during runtime.
+	 * 
+	 * @return the result type.
+	 */
+	public Class<?> getResultType();
+
+	/**
+	 * Flag that defines if this calculation supports multiple input values.
+	 * 
+	 * @return true, if multiple input values are supported.
+	 */
+	public boolean isMultiValued();
+
+	/**
 	 * Returns a result calculated using the given {@link MonetaryAmount}.
 	 * 
 	 * @param amount
@@ -61,6 +76,6 @@ public interface Calculation<T> {
 	 * @throws ArithmeticException
 	 *             if the adjustment fails
 	 */
-	public T calculate(MonetaryAmount amount);
+	public T calculate(MonetaryAmount... amounts);
 
 }

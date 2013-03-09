@@ -34,21 +34,18 @@ import javax.money.ext.CompoundValue;
  */
 public class MultiValue implements CompoundValue {
 
-	private final Object type;
+	private final String id;
 	private final Map<Object, Object> items = new HashMap<Object, Object>();
 
-	protected MultiValue(String type) {
-		if (type == null) {
-			throw new IllegalArgumentException("type can not bve null.");
+	protected MultiValue(String id) {
+		if (id == null) {
+			throw new IllegalArgumentException("id can not bve null.");
 		}
-		this.type = type;
+		this.id = id;
 	}
 
-	protected MultiValue(Object type, Map<Object, Object> items) {
-		if (type == null) {
-			throw new IllegalArgumentException("type can not bve null.");
-		}
-		this.type = type;
+	protected MultiValue(String id, Map<Object, Object> items) {
+		this(id);
 		this.items.putAll(items);
 	}
 
@@ -58,8 +55,8 @@ public class MultiValue implements CompoundValue {
 	 * 
 	 * @return the compound item's type, never null.
 	 */
-	public Object getType() {
-		return this.type;
+	public String getId() {
+		return this.id;
 	}
 
 	public Enumeration<Object> getKeys() {
@@ -112,30 +109,30 @@ public class MultiValue implements CompoundValue {
 	 */
 	public static class Builder {
 
-		private Object type;
+		private String id;
 
 		private Map<Object, Object> items = new HashMap<Object, Object>();
 
-		public Builder(String type) {
-			setType(type);
+		public Builder(String id) {
+			setId(id);
 		}
 
 		public Builder(CompoundValue baseItem) {
 			if (baseItem != null) {
-				this.type = baseItem.getType();
+				setId(baseItem.getId());
 				this.items.putAll(baseItem.getAll());
 			}
 		}
 
-		public Object getType() {
-			return this.type;
+		public String getId() {
+			return this.id;
 		}
 
-		public void setType(Object type) {
-			if (type == null) {
-				throw new IllegalArgumentException("type may not be null.");
+		public void setId(String id) {
+			if (id == null) {
+				throw new IllegalArgumentException("id may not be null.");
 			}
-			this.type = type;
+			this.id = id;
 		}
 
 		public Enumeration<Object> getKeys() {
@@ -181,10 +178,9 @@ public class MultiValue implements CompoundValue {
 		}
 
 		public CompoundValue build(){
-			return new MultiValue(type, items);
+			return new MultiValue(this.id, this.items);
 		}
 
 	}
 
-	
 }

@@ -836,7 +836,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * javax.money.Rounding)
 	 */
 	public <T> T asType(Class<T> type, Rounding rounding) {
-		MonetaryAmount amount =  rounding.adjust(this);
+		MonetaryAmount amount =  rounding.round(this);
 		return amount.asType(type);
 	}
 

@@ -18,6 +18,7 @@
  */
 package net.java.javamoney.ri.convert.provider;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -203,16 +204,27 @@ public class EZBExchangeRateProvider implements ExchangeRateProviderSpi {
 			builder.setSourceLeadingFactor(1.0d);
 			return builder.build();
 		} else if ("EUR".equals(target.getCurrencyCode())) {
-			return sourceRate.reverse();
+			return reverse(sourceRate);
 		} else if ("EUR".equals(source.getCurrencyCode())) {
 			return targetRate;
 		} else {
-			sourceRate = sourceRate.reverse();
+			sourceRate = reverse(sourceRate);
 			builder.setExchangeRateChain(sourceRate, targetRate);
 			builder.setSourceLeadingFactor(sourceRate.getFactor().doubleValue()
 					* targetRate.getFactor().doubleValue());
 			return builder.build();
 		}
+	}
+
+	private static ExchangeRate reverse(ExchangeRate rate) {
+		if (rate.getFactor() instanceof BigDecimal) {
+			return new CurrencyExchangeRate(rate.getExchangeRateType(),
+					rate.getSource(), rate.getTarget(),
+					BigDecimal.ONE.divide((BigDecimal) rate.getFactor()));
+		}
+		return new CurrencyExchangeRate(rate.getExchangeRateType(),
+				rate.getTarget(), rate.getSource(), 1.0d / rate.getFactor()
+						.doubleValue());
 	}
 
 	/**

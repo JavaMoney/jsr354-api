@@ -18,13 +18,11 @@
  */
 package net.java.javamoney.ri.convert;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.money.CurrencyUnit;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateBuilder;
 import javax.money.convert.ExchangeRateType;
 
 import net.java.javamoney.ri.common.AbstractAttributableItem;
@@ -169,16 +167,6 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	}
 
 	@Override
-	public ExchangeRate reverse() {
-		if (factor instanceof BigDecimal) {
-			return new CurrencyExchangeRate(this.exchangeRateType, source,
-					target, BigDecimal.ONE.divide((BigDecimal) factor));
-		}
-		return new CurrencyExchangeRate(this.exchangeRateType, target, source,
-				1.0d / factor.doubleValue());
-	}
-
-	@Override
 	public int compareTo(ExchangeRate o) {
 		if (o == null) {
 			return -1;
@@ -215,7 +203,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	 * 
 	 * @author Anatole Tresch
 	 */
-	public static final class Builder implements ExchangeRateBuilder {
+	public static final class Builder {
 
 		private ExchangeRateType exchangeRateType;
 		private CurrencyUnit source;
@@ -228,81 +216,65 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		private Map<String, Object> attributes = new HashMap<String, Object>();
 
 		@SuppressWarnings("unchecked")
-		@Override
 		public <T> T getAttribute(String key, Class<T> type) {
 			return (T) this.attributes.get(key);
 		}
 
-		@Override
 		public void clearAttributes() {
 			this.attributes.clear();
 		}
 
-		@Override
-		public final ExchangeRateBuilder setAttribute(String key, Object value) {
+		public final Builder setAttribute(String key, Object value) {
 			this.attributes.put(key, value);
 			return this;
 		}
 
-		@Override
-		public ExchangeRateBuilder setExchangeRateType(
-				ExchangeRateType exchangeRateType) {
+		public Builder setExchangeRateType(ExchangeRateType exchangeRateType) {
 			this.exchangeRateType = exchangeRateType;
 			return this;
 		}
 
-		@Override
 		public ExchangeRateType getExchangeRateType() {
 			return exchangeRateType;
 		}
 
-		@Override
-		public ExchangeRateBuilder setSource(CurrencyUnit currency) {
+		public Builder setSource(CurrencyUnit currency) {
 			this.source = currency;
 			return this;
 		}
 
-		@Override
 		public CurrencyUnit getSource() {
 			return source;
 		}
 
-		@Override
-		public ExchangeRateBuilder setTarget(CurrencyUnit currency) {
+		public Builder setTarget(CurrencyUnit currency) {
 			this.target = currency;
 			return this;
 		}
 
-		@Override
 		public CurrencyUnit getTarget() {
 			return target;
 		}
 
-		@Override
-		public ExchangeRateBuilder setValidFrom(Long validFrom) {
+		public Builder setValidFrom(Long validFrom) {
 			this.validFrom = validFrom;
 			return this;
 		}
 
-		@Override
 		public Long getValidFrom() {
 			return validFrom;
 		}
 
-		@Override
-		public ExchangeRateBuilder setValidUntil(Long validUntil) {
+		public Builder setValidUntil(Long validUntil) {
 			this.validUntil = validUntil;
 			return this;
 		}
 
-		@Override
 		public Long getValidUntil() {
 			return validUntil;
 		}
 
-		@Override
-		public ExchangeRateBuilder setExchangeRateChain(
-				ExchangeRate... exchangeRates) {
+		public Builder setExchangeRateChain(ExchangeRate... exchangeRates) {
 			if (exchangeRates != null) {
 				this.rateChain = exchangeRates.clone();
 			} else {
@@ -311,7 +283,6 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 			return this;
 		}
 
-		@Override
 		public ExchangeRate[] getExchangeRateChain() {
 			if (rateChain != null) {
 				return rateChain.clone();
@@ -319,35 +290,29 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 			return null;
 		}
 
-		@Override
-		public ExchangeRateBuilder setSourceLeadingFactor(Number factor) {
+		public Builder setSourceLeadingFactor(Number factor) {
 			this.factor = factor;
 			return this;
 		}
 
-		@Override
-		public ExchangeRateBuilder setTargetLeadingFactor(Number factor) {
+		public Builder setTargetLeadingFactor(Number factor) {
 			this.factor = 1.0d / factor.doubleValue();
 			return this;
 		}
 
-		@Override
-		public ExchangeRateBuilder setProvider(String provider) {
+		public Builder setProvider(String provider) {
 			this.provider = provider;
 			return this;
 		}
 
-		@Override
 		public String getProvider() {
 			return provider;
 		}
 
-		@Override
 		public Number getFactor() {
 			return factor;
 		}
 
-		@Override
 		public boolean isBuildeable() {
 			// TODO improve this implementation!
 			try {
@@ -358,7 +323,6 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 			}
 		}
 
-		@Override
 		public ExchangeRate build() {
 			CurrencyExchangeRate rate = new CurrencyExchangeRate(
 					exchangeRateType, source, target, factor, rateChain,

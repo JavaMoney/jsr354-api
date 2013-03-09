@@ -72,7 +72,8 @@ public interface ExchangeRateProvider {
 	 *            or {@code null}.
 	 * @return true, if such an exchange is currently defined.
 	 */
-	public boolean isAvailable(CurrencyUnit CurrencyUnit, CurrencyUnit target, Long timestamp);
+	public boolean isAvailable(CurrencyUnit CurrencyUnit, CurrencyUnit target,
+			Long timestamp);
 
 	/**
 	 * Get an {@link ConversionRate} for a given timestamp (including historic
@@ -85,10 +86,10 @@ public interface ExchangeRateProvider {
 	 * @param timestamp
 	 *            the target timestamp for which the exchange rate is queried,
 	 *            or {@code null}.
-	 * @return the matching {@link ConversionRate}, or null.
+	 * @return the matching {@link ExchangeRate}, or {@code null}.
 	 */
-	public ExchangeRate get(CurrencyUnit sourceCurrency, CurrencyUnit targetCurrency,
-			Long timestamp);
+	public ExchangeRate get(CurrencyUnit sourceCurrency,
+			CurrencyUnit targetCurrency, Long timestamp);
 
 	/**
 	 * Access a exchange rate using the given currencies. The rate may be,
@@ -98,7 +99,18 @@ public interface ExchangeRateProvider {
 	 *            source currency.
 	 * @param target
 	 *            target currency.
+	 * @return the matching {@link ExchangeRate}, or {@code null}.
 	 */
 	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target);
+
+	/**
+	 * The method reverses the exchange rate to a rate mapping from target to
+	 * source. Hereby the factor must <b>not</b> be recalculated as
+	 * {@code 1/oldFactor}, since typically reverse rates are not symmetric in
+	 * most cases.
+	 * 
+	 * @return the matching reversed {@link ExchangeRate}, or {@code null}.
+	 */
+	public ExchangeRate getReversed(ExchangeRate rate);
 
 }

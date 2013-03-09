@@ -25,7 +25,7 @@ public interface Rounding {
 	 * @throws ArithmeticException
 	 *             if rounding fails.
 	 */
-	public MonetaryAmount adjust(MonetaryAmount amount);
+	public MonetaryAmount round(MonetaryAmount amount);
 	
 
 }

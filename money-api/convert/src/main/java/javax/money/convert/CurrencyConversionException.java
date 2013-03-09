@@ -49,7 +49,7 @@ public class CurrencyConversionException extends IllegalCurrencyException {
 	private CurrencyUnit source;
 	/** Target currency. */
 	private CurrencyUnit target;
-	
+
 	/** The acquired target timestamp. */
 	private Long timestamp;
 
@@ -59,61 +59,67 @@ public class CurrencyConversionException extends IllegalCurrencyException {
 	 * 
 	 * @param source
 	 *            the source currency, may be null.
-	 *            
+	 * 
 	 * @param target
 	 *            the target currency, may be null.
-	 *            
+	 * 
 	 * @param message
-	 * 			   the detail message.
+	 *            the detail message.
 	 */
 	public CurrencyConversionException(CurrencyUnit source,
-			CurrencyUnit target, String message) {
+			CurrencyUnit target, Long timestamp, String message) {
 		super(message);
 		this.source = source;
 		this.target = target;
+		this.timestamp = timestamp;
 	}
-	
-    /**
-     * Constructs an <code>CurrencyConversionException</code> with the
-     * specified source and target currency.
-     *
+
+	/**
+	 * Constructs an <code>CurrencyConversionException</code> with the specified
+	 * source and target currency.
+	 * 
 	 * @param source
 	 *            the source currency, may be null.
-	 *            
+	 * 
 	 * @param target
 	 *            the target currency, may be null.
 	 */
 	public CurrencyConversionException(CurrencyUnit source,
-			CurrencyUnit target) {
-		super("Cannot convert " + String.valueOf(source) + " into " + String.valueOf(target));
+			CurrencyUnit target, Long timestamp) {
+		super("Cannot convert " + String.valueOf(source) + " into "
+				+ String.valueOf(target));
 		this.source = source;
 		this.target = target;
+		this.timestamp = timestamp;
 	}
 
-    /**
-     * Constructs a new exception with the specified source and target currency, detail message and
-     * cause.
-     *
-     * <p>Note that the detail message associated with <code>cause</code> is
-     * <i>not</i> automatically incorporated in this exception's detail
-     * message.
-     *
-     * @param source
-	 *            the source currency, may be null.            
+	/**
+	 * Constructs a new exception with the specified source and target currency,
+	 * detail message and cause.
+	 * 
+	 * <p>
+	 * Note that the detail message associated with <code>cause</code> is
+	 * <i>not</i> automatically incorporated in this exception's detail message.
+	 * 
+	 * @param source
+	 *            the source currency, may be null.
 	 * @param target
-	 *            the target currency, may be null.         
-     * @param  message the detail message (which is saved for later retrieval
-     *         by the {@link Throwable#getMessage()} method).
-     * @param  cause the cause (which is saved for later retrieval by the
-     *         {@link Throwable#getCause()} method).  (A <tt>null</tt> value
-     *         is permitted, and indicates that the cause is nonexistent or
-     *         unknown.)
+	 *            the target currency, may be null.
+	 * @param message
+	 *            the detail message (which is saved for later retrieval by the
+	 *            {@link Throwable#getMessage()} method).
+	 * @param cause
+	 *            the cause (which is saved for later retrieval by the
+	 *            {@link Throwable#getCause()} method). (A <tt>null</tt> value
+	 *            is permitted, and indicates that the cause is nonexistent or
+	 *            unknown.)
 	 */
 	public CurrencyConversionException(CurrencyUnit source,
-			CurrencyUnit target, String message, Throwable cause) {
+			CurrencyUnit target, Long timestamp, String message, Throwable cause) {
 		super(message, cause);
 		this.source = source;
 		this.target = target;
+		this.timestamp = timestamp;
 	}
 
 	/**
@@ -132,6 +138,26 @@ public class CurrencyConversionException extends IllegalCurrencyException {
 	 */
 	public CurrencyUnit getTarget() {
 		return target;
+	}
+
+	/**
+	 * Gets the queried timestamp at fault.
+	 * 
+	 * @return the queried timestamp, or {@code null}.
+	 */
+	public Long getTimestamp() {
+		return this.timestamp;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "CurrencyConversionException [source=" + source + ", target="
+				+ target + ", timestamp=" + timestamp + "]";
 	}
 
 }

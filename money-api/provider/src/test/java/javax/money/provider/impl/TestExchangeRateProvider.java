@@ -80,4 +80,10 @@ public class TestExchangeRateProvider implements ExchangeRateProvider {
 		return null;
 	}
 
+	@Override
+	public ExchangeRate getReversed(ExchangeRate rate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

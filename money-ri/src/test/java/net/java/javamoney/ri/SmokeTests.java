@@ -115,25 +115,25 @@ public class SmokeTests {
 		MonetaryAmount tgt3 = conv.convert(tgt2,
 				MoneyCurrency.getInstance("CHF"));
 		assertEquals(tgt, tgt2);
-		assertEquals(srcCHF, rounding.adjust(tgt3));
+		assertEquals(srcCHF, rounding.round(tgt3));
 		tgt = conv.convert(srcEUR, MoneyCurrency.getInstance("CHF"));
 		tgt2 = conv.convert(100.15d, MoneyCurrency.getInstance("EUR"),
 				MoneyCurrency.getInstance("CHF"));
 		tgt3 = conv.convert(tgt, MoneyCurrency.getInstance("EUR"));
 		assertEquals(tgt, tgt2);
-		assertEquals(srcEUR, rounding.adjust(tgt3));
+		assertEquals(srcEUR, rounding.round(tgt3));
 		tgt = conv.convert(srcCHF, MoneyCurrency.getInstance("USD"));
 		tgt2 = conv.convert(100.15d, MoneyCurrency.getInstance("CHF"),
 				MoneyCurrency.getInstance("USD"));
 		tgt3 = conv.convert(tgt2, MoneyCurrency.getInstance("CHF"));
 		assertEquals(tgt, tgt2);
-		assertEquals(srcCHF, rounding.adjust(tgt3));
+		assertEquals(srcCHF, rounding.round(tgt3));
 		tgt = conv.convert(srcUSD, MoneyCurrency.getInstance("CHF"));
 		tgt2 = conv.convert(100.15d, MoneyCurrency.getInstance("USD"),
 				MoneyCurrency.getInstance("CHF"));
 		tgt3 = conv.convert(tgt2, MoneyCurrency.getInstance("USD"));
 		assertEquals(tgt, tgt2);
-		assertEquals(srcUSD, rounding.adjust(tgt3));
+		assertEquals(srcUSD, rounding.round(tgt3));
 	}
 
 	@Test

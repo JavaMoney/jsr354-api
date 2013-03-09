@@ -101,4 +101,10 @@ public class DefaultExchangeRateProvider implements ExchangeRateProvider {
 		return null;
 	}
 
+	@Override
+	public ExchangeRate getReversed(ExchangeRate rate) {
+		// TODO
+		return null;
+	}
+
 }

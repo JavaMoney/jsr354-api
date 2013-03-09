@@ -170,14 +170,4 @@ public interface ExchangeRate {
 	 */
 	public Class<?> getAttributeType(String key);
 
-	/**
-	 * The method reverses the exchange rate to a rate mapping from target to
-	 * source. Hereby the factor must be (by default) recalculated as
-	 * {@code 1/oldFactor}.
-	 * 
-	 * @return the reversed exchange rate.
-	 * @throws UnsupportedOperationException
-	 *             if the rate is not reversible.
-	 */
-	public ExchangeRate reverse();
 }

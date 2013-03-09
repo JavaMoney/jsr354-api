@@ -42,11 +42,11 @@ import org.junit.Test;
  * 
  * @author Anatole Tresch
  */
-public class IllegalCurrencyExceptionTest {
+public class UnknownCurrencyExceptionTest {
 
 	@Test
 	public void testIsRuntimeException() {
-		assertTrue(RuntimeException.class.isAssignableFrom(IllegalCurrencyException.class));
+		assertTrue(RuntimeException.class.isAssignableFrom(UnknownCurrencyException.class));
 	}
 
 	/**
@@ -55,8 +55,8 @@ public class IllegalCurrencyExceptionTest {
 	 * .
 	 */
 	@Test
-	public void testIllegalCurrencyException() {
-		new IllegalCurrencyException("ns", "code");
+	public void testUnknownCurrencyException() {
+		new UnknownCurrencyException("ns", "code");
 	}
 
 	/**
@@ -64,9 +64,9 @@ public class IllegalCurrencyExceptionTest {
 	 * {@link javax.money.UnknownCurrencyException#UnknownCurrencyException(java.lang.String, java.lang.String)}
 	 * .
 	 */
-	@Test
-	public void testIllegalCurrencyException_NoNamespace()  throws IllegalArgumentException{
-		new IllegalCurrencyException((String)null, "code");
+	@Test(expected = IllegalArgumentException.class)
+	public void testUnknownCurrencyException_NoNamespace()  throws IllegalArgumentException{
+		new UnknownCurrencyException((String)null, "code");
 	}
 
 	/**
@@ -74,9 +74,9 @@ public class IllegalCurrencyExceptionTest {
 	 * {@link javax.money.UnknownCurrencyException#UnknownCurrencyException(java.lang.String, java.lang.String)}
 	 * .
 	 */
-	@Test
-	public void tesIllegalCurrencyException_NoCode() throws IllegalArgumentException{
-		new IllegalCurrencyException("ns", (String)null);
+	@Test(expected = IllegalArgumentException.class)
+	public void testUnknownCurrencyException_NoCode() throws IllegalArgumentException{
+		new UnknownCurrencyException("ns", (String)null);
 	}
 
 	/**
@@ -84,9 +84,9 @@ public class IllegalCurrencyExceptionTest {
 	 * {@link javax.money.UnknownCurrencyException#UnknownCurrencyException(java.lang.String, java.lang.String)}
 	 * .
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalCurrencyException_NoParams()  throws IllegalArgumentException{
-		new IllegalCurrencyException((String)null, (String)null);
+		new UnknownCurrencyException((String)null, (String)null);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class IllegalCurrencyExceptionTest {
 	 */
 	@Test
 	public void testGetNamespace() {
-		IllegalCurrencyException ex = new IllegalCurrencyException("ns", "code");
+		UnknownCurrencyException ex = new UnknownCurrencyException("ns", "code");
 		assertNotNull(ex.getNamespace());
 		assertEquals("ns", ex.getNamespace());
 	}
@@ -106,7 +106,7 @@ public class IllegalCurrencyExceptionTest {
 	 */
 	@Test
 	public void testGetCurrencyCode() {
-		IllegalCurrencyException ex = new IllegalCurrencyException("ns",
+		UnknownCurrencyException ex = new UnknownCurrencyException("ns",
 				"code01");
 		assertNotNull(ex.getCurrencyCode());
 		assertEquals("code01", ex.getCurrencyCode());

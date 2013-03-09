@@ -29,29 +29,38 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money;
+package javax.money.ext;
 
+import javax.money.MonetaryAmount;
 
 /**
- * This instance defines a an adjuster for amounts. An adjuster basically can be
- * anything that is able to convert an amount of one type to another. So
- * adjusting may cover several use cases, such as {@link Rounding} or more
- * complex operations, such as calculating a net present value, given additional
- * settings such as timestamp and hypothetical interest rate.
+ * This interface models a simple calculation that is based on a single
+ * {@link MonetaryAmount}.
  * 
  * @author Anatole Tresch
+ * 
+ * @param <T>
+ *            the result type of the calculation.
  */
-public interface AmountAdjuster {
+public interface Calculation<T> {
 
 	/**
-	 * This method is called for adjusting an amount.
+	 * Returns an literal non localized name, that identifies this type of
+	 * calculation.
+	 * 
+	 * @return the identifier, not null.
+	 */
+	public String getId();
+
+	/**
+	 * Returns a result calculated using the given {@link MonetaryAmount}.
 	 * 
 	 * @param amount
-	 *            the amount to be adjusted
-	 * @return the adjusted amount.
+	 *            the amount to use, not null
+	 * @return the calculation result, never null
 	 * @throws ArithmeticException
-	 *             if adjustment fails.
+	 *             if the adjustment fails
 	 */
-	public MonetaryAmount adjust(MonetaryAmount amount);
+	public T calculate(MonetaryAmount amount);
 
 }

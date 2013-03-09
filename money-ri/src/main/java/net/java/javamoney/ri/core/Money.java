@@ -23,9 +23,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 
-import javax.money.AmountAdjuster;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.Rounding;
 
 
 /**
@@ -512,18 +512,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		return new Money(this.currency,
 				BigDecimal.valueOf(amount.doubleValue()));
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#with(javax.money.AmountAdjuster[])
-	 */
-	public MonetaryAmount with(AmountAdjuster... adjuster) {
-		MonetaryAmount amount = this;
-		for (AmountAdjuster amountAdjuster : adjuster) {
-			amount = amountAdjuster.adjust(amount);
-		}
-		return amount;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -845,13 +833,10 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * }(non-Javadoc)
 	 * 
 	 * @see javax.money.MonetaryAmount#asType(java.lang.Class,
-	 * javax.money.AmountAdjuster[])
+	 * javax.money.Rounding)
 	 */
-	public <T> T asType(Class<T> type, AmountAdjuster... adjustment) {
-		MonetaryAmount amount = this;
-		for (int i = 0; i < adjustment.length; i++) {
-			amount = adjustment[i].adjust(amount);
-		}
+	public <T> T asType(Class<T> type, Rounding rounding) {
+		MonetaryAmount amount =  rounding.adjust(this);
 		return amount.asType(type);
 	}
 

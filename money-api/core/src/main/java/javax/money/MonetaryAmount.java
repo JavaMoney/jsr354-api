@@ -364,19 +364,6 @@ public interface MonetaryAmount {
 	 */
 	public MonetaryAmount scaleByPowerOfTen(int n);
 
-	/**
-	 * Returns a copy of this amount adjusted by the {@link AmountAdjuster},
-	 * e.g. a {@link Rounding}.
-	 * <p>
-	 * This instance is immutable and unaffected by this method.
-	 * 
-	 * @param adjusters
-	 *            the adjusters to use, not null
-	 * @return the adjusted instance, never null
-	 * @throws ArithmeticException
-	 *             if the adjustment fails
-	 */
-	public MonetaryAmount with(AmountAdjuster... adjusters);
 
 	/**
 	 * Gets the amount in major units as a {@code MonetaryAmount} with scale 0.
@@ -860,22 +847,6 @@ public interface MonetaryAmount {
 	 *             if the representation type is not supported.
 	 */
 	public <T> T asType(Class<T> type);
-
-	/**
-	 * Get the amount's value, without any modification. By default, a numeric
-	 * value of an Amount will be rounded as defined by
-	 * {@link CurrencyUnit#getDefaultFractionDigits()}.
-	 * 
-	 * @param type
-	 *            the required target type
-	 * @param adjustments
-	 *            The adjustments to be applied. Hereby the order of the
-	 *            {@link AmountAdjuster} instances within (@code adjustments)
-	 *            implies to order of adjustments performed.
-	 * @return the representation of this amount, adjusted using the given
-	 *         adjustment.
-	 */
-	public <T> T asType(Class<T> type, AmountAdjuster... adjustments);
 
 	/**
 	 * Access the class that models the representation of the numeric part of

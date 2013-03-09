@@ -7,9 +7,9 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Locale;
 
-import javax.money.AmountAdjuster;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.Rounding;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
@@ -94,7 +94,7 @@ public class SmokeTests {
 
 	@Test
 	public void testCurrencyConverter() {
-		AmountAdjuster rounding = StandardRoundings.getRounding(2,
+		Rounding rounding = StandardRoundings.getRounding(2,
 				RoundingMode.HALF_UP);
 
 		CurrencyConverter conv = Monetary

@@ -29,15 +29,34 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.provider;
-
-import javax.money.AmountAdjuster;
+package javax.money.ext;
 
 /**
- * This instance defines a arbitrary rounding.
+ * This interface encapsulates a complex calculation that uses
+ * {@link CompoundValue} instances, both for input and result representation.
  * 
  * @author Anatole Tresch
  */
-public interface Rounding extends AmountAdjuster {
+public interface ComplexCalculation {
+
+	/**
+	 * Returns an literal non localized name, that identifies this type of
+	 * calculation.
+	 * 
+	 * @return the identifier, not null.
+	 */
+	public String getId();
+
+	/**
+	 * Returns a complex {@link CompoundValue} as a result one another
+	 * {@link CompoundValue}.
+	 * 
+	 * @param value
+	 *            the {@link CompoundValue} to use, not null
+	 * @return the calculation result as a {@link CompoundValue}, never null
+	 * @throws CalculationException
+	 *             if the calculation fails
+	 */
+	public CompoundValue calculate(CompoundValue value);
 
 }

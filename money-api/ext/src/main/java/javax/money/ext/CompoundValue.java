@@ -35,31 +35,29 @@ import java.util.Enumeration;
 import java.util.Map;
 
 /**
- * Defines a {@link CompoundItem} containing several instances of type T. Hereby
- * the different instances are identified by arbitrary keys. Additionally each
- * {@link CompoundItem} can optionally have one special instance of T that is
- * denoted as the <i>leading</i> item. <br/>
- * A {@link CompoundItem} instance is defined to be implemented as immutable
- * object and therefore is very useful for modeling multidimensional results
- * objects or input parameters as they are common in financial applications.<br/>
- * {@link CompoundItem} instances can be created or adapted using a
- * {@link CompoundItemBuilder} intance.
+ * Defines a {@link CompoundValue} containing several results. Hereby the
+ * different results are identified by arbitrary keys. Additionally each
+ * {@link CompoundValue} has a <i>leading</i> item that identifies the type
+ * of result.<br/>
+ * A {@link CompoundValue} instance is defined to be implemented as
+ * immutable object and therefore is very useful for modeling multidimensional
+ * results objects or input parameters as they are common in financial
+ * applications.
  * 
- * @see CompoundItemBuilder
  * @author Anatole Tresch
  */
-public interface CompoundItem<T> {
+public interface CompoundValue {
 
 	/**
-	 * A {@link CompoundItem}may have a type identifier that helps to identify,
-	 * what type of items object is returned.
+	 * A {@link CompoundValue}may have a type identifier that helps to
+	 * identify, what type of items object is returned.
 	 * 
-	 * @return the {@link CompoundItem}'s type, never null.
+	 * @return the {@link CompoundValue}'s type, never null.
 	 */
-	public String getType();
+	public Object getType();
 
 	/**
-	 * Get the available keys in this {@link CompoundItem}.
+	 * Get the available keys in this {@link CompoundValue}.
 	 * 
 	 * @return the keys defined, never null, but may empty.
 	 */
@@ -76,12 +74,17 @@ public interface CompoundItem<T> {
 	public boolean isKeyDefined(Object key);
 
 	/**
-	 * Access an instance of T with the leading item.
+	 * Access an instance of T with the given key.
 	 * 
-	 * @return the leading instance of type T, or {@code null}.
+	 * @see #isKeyDefined(Object)
+	 * @param key
+	 *            The key identifying the item T to be returned.
+	 * @return the instance of type T found.
+	 * @throws IllegalArgumentException
+	 *             if no such a instance is defined.
 	 */
-	public T getLeadingItem();
-
+	public <T> T get(Object key, Class<T> type);
+	
 	/**
 	 * Access an instance of T with the given key.
 	 * 
@@ -92,20 +95,13 @@ public interface CompoundItem<T> {
 	 * @throws IllegalArgumentException
 	 *             if no such a instance is defined.
 	 */
-	public T get(Object key);
+	public Class<?> getType(Object key);
 
 	/**
-	 * Access all items within this {@link CompoundItem}.
+	 * Access all items within this {@link CompoundValue}.
 	 * 
 	 * @return all items as an immutable {@link Map}.
 	 */
-	public Map<Object, T> getAll();
+	public Map<Object, ?> getAll();
 
-	/**
-	 * Creates an instance of a {@link CompoundItemBuilder} initialized with
-	 * this instance.
-	 * 
-	 * @return a new builoder instance, never null.
-	 */
-	public CompoundItemBuilder<T> toBuilder();
 }

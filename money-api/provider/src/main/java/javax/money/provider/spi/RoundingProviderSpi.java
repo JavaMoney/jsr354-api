@@ -34,7 +34,7 @@ package javax.money.provider.spi;
 import java.util.Enumeration;
 
 import javax.money.CurrencyUnit;
-import javax.money.provider.Rounding;
+import javax.money.Rounding;
 
 /**
  * This instance provides default {@link Rounding}, e.g. for ISO currencies.

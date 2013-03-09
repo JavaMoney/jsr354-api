@@ -29,49 +29,49 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.provider.impl;
+package javax.money.ext;
 
-import java.util.Enumeration;
-
-import javax.money.CurrencyUnit;
-import javax.money.Rounding;
-import javax.money.provider.RoundingProvider;
+import javax.money.MonetaryAmount;
 
 /**
- * Empty pseudo implementation for testing only.
+ * This interface models a simple calculation that is based on a single
+ * {@link MonetaryAmount}.
+ * 
  * @author Anatole Tresch
- *
+ * 
+ * @param <T>
+ *            the result type of the calculation.
  */
-public class TestRoundingProvider implements RoundingProvider {
+public interface MultiValuedCalculation<T> {
 
-	@Override
-	public Rounding getRounding(CurrencyUnit currency) {
-		// empty implementation
-		return null;
-	}
+	/**
+	 * Returns an literal non localized name, that identifies this type of
+	 * calculation.
+	 * 
+	 * @return the identifier, not null.
+	 */
+	public String getId();
 
-	@Override
-	public Rounding getRounding(CurrencyUnit currency, Long timestamp) {
-		// empty implementation
-		return null;
-	}
+	/**
+	 * Returns a result calculated using the given {@link MonetaryAmount}.
+	 * 
+	 * @param amount
+	 *            the amount to use, not null
+	 * @return the calculation result, never null
+	 * @throws ArithmeticException
+	 *             if the adjustment fails
+	 */
+	public T calculate(MonetaryAmount... amount);
 
-	@Override
-	public Rounding getRounding(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Enumeration<String> getRoundingIds() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isRoundingDefined(String id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	/**
+	 * Returns a result calculated using the given {@link MonetaryAmount}.
+	 * 
+	 * @param amount
+	 *            the amount to use, not null
+	 * @return the calculation result, never null
+	 * @throws ArithmeticException
+	 *             if the adjustment fails
+	 */
+	public T calculate(Iterable<MonetaryAmount> amounts);
 
 }

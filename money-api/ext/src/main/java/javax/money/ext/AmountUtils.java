@@ -31,9 +31,11 @@
  */
 package javax.money.ext;
 
-import javax.money.AmountAdjuster;
+import java.math.BigDecimal;
+
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.Rounding;
 import javax.money.convert.CurrencyConversionException;
 import javax.money.provider.spi.MonetaryExtension;
 
@@ -50,8 +52,8 @@ public interface AmountUtils extends MonetaryExtension {
 	 * adjusted array.
 	 * <p>
 	 * The array must contain at least one monetary value. Subsequent amounts
-	 * are adjusted and added as though using {@link #plus(MonetaryAmount)}. All amounts
-	 * must be in the same currency.
+	 * are adjusted and added as though using {@link #plus(MonetaryAmount)}. All
+	 * amounts must be in the same currency.
 	 * 
 	 * @param adjuster
 	 *            The {@link AmountAdjuster} to be used, not null.
@@ -64,7 +66,7 @@ public interface AmountUtils extends MonetaryExtension {
 	 * @throws CurrencyConversionException
 	 *             if the currencies differ
 	 */
-	public MonetaryAmount[] adjustAll(AmountAdjuster adjuster,
+	public <T> T[] calculateAll(Calculation<T> calculation,
 			MonetaryAmount... amounts);
 
 	/**
@@ -72,8 +74,8 @@ public interface AmountUtils extends MonetaryExtension {
 	 * adjusted array.
 	 * <p>
 	 * The array must contain at least one monetary value. Subsequent amounts
-	 * are adjusted and added as though using {@link #plus(MonetaryAmount)}. All amounts
-	 * must be in the same currency.
+	 * are adjusted and added as though using {@link #plus(MonetaryAmount)}. All
+	 * amounts must be in the same currency.
 	 * 
 	 * @param adjuster
 	 *            The {@link AmountAdjuster} to be used, not null.
@@ -86,9 +88,9 @@ public interface AmountUtils extends MonetaryExtension {
 	 * @throws CurrencyConversionException
 	 *             if the currencies differ
 	 */
-	public MonetaryAmount[] adjustAll(AmountAdjuster adjuster,
+	public <T> T[] calculateAll(Calculation<T> calculation,
 			Iterable<MonetaryAmount> amounts);
-	
+
 	/**
 	 * Obtains the minimal {@code MonetaryAmount} from the items passed.
 	 * <p>
@@ -122,6 +124,40 @@ public interface AmountUtils extends MonetaryExtension {
 	 *             if the currencies differ
 	 */
 	public MonetaryAmount min(Iterable<MonetaryAmount> amounts);
+
+	/**
+	 * Obtains the average {@code MonetaryAmount} from the items passed.
+	 * <p>
+	 * The array must contain at least one monetary value. All amounts must be
+	 * in the same currency.
+	 * 
+	 * @param amounts
+	 *            the monetary amounts to calculate the average from, not empty,
+	 *            no null elements, not null
+	 * @return the average amount, never null
+	 * @throws IllegalArgumentException
+	 *             if the array is empty or null.
+	 * @throws CurrencyConversionException
+	 *             if the currencies differ
+	 */
+	public MonetaryAmount average(MonetaryAmount... amounts);
+
+	/**
+	 * Obtains the average {@code MonetaryAmount} from the items passed.
+	 * <p>
+	 * The array must contain at least one monetary value. All amounts must be
+	 * in the same currency.
+	 * 
+	 * @param amounts
+	 *            the monetary amounts to calculate the average from, not empty,
+	 *            no null elements, not null
+	 * @return the average amount, never null
+	 * @throws IllegalArgumentException
+	 *             if the array is empty or null.
+	 * @throws CurrencyConversionException
+	 *             if the currencies differ
+	 */
+	public MonetaryAmount average(Iterable<MonetaryAmount> amounts);
 
 	/**
 	 * Obtains the maximal {@code MonetaryAmount} from the items passed.
@@ -165,30 +201,30 @@ public interface AmountUtils extends MonetaryExtension {
 	 * are adjusted and added as though using {@link #plus(Money)}. All amounts
 	 * must be in the same currency.
 	 * 
-	 * @param adjuster
-	 *            The {@link AmountAdjuster} to be used, not null.
+	 * @param rounding
+	 *            The {@link Rounding} to be used, not null.
 	 * @param amounts
-	 *            the monetary values to adjust and total, not empty, no null
+	 *            the monetary values to total and round, not empty, no null
 	 *            elements, not null
-	 * @return the adjusted total, never null
+	 * @return the rounded total, never null
 	 * @throws IllegalArgumentException
 	 *             if the array is empty
 	 * @throws CurrencyConversionException
 	 *             if the currencies differ
 	 */
-	public MonetaryAmount adjustedTotal(AmountAdjuster adjuster,
+	public MonetaryAmount roundedTotal(Rounding rounding,
 			MonetaryAmount... amounts);
 
 	/**
 	 * Obtains an instance of {@code MonetaryAmount} as the total value an
-	 * adjusted array.
+	 * rounded array.
 	 * <p>
 	 * The array must contain at least one monetary value. Subsequent amounts
-	 * are adjusted and added as though using {@link #plus(Money)}. All amounts
-	 * must be in the same currency.
+	 * are added as though using {@link #plus(Money)}, and finally rounded. All
+	 * amounts must be in the same currency.
 	 * 
-	 *  @param adjuster
-	 *            The {@link AmountAdjuster} to be used, not null.
+	 * @param rounding
+	 *            The {@link Rounding} to be used, not null.
 	 * @param amounts
 	 *            the monetary values to total, not empty, no null elements, not
 	 *            null
@@ -198,7 +234,7 @@ public interface AmountUtils extends MonetaryExtension {
 	 * @throws CurrencyConversionException
 	 *             if the currencies differ
 	 */
-	public MonetaryAmount adjustedTotal(AmountAdjuster adjuster,
+	public MonetaryAmount roundedTotal(Rounding rounding,
 			Iterable<MonetaryAmount> amounts);
 
 	/**
@@ -252,7 +288,8 @@ public interface AmountUtils extends MonetaryExtension {
 	 * @throws CurrencyConversionException
 	 *             if the currencies differ
 	 */
-	public MonetaryAmount total(CurrencyUnit currency, MonetaryAmount... amounts);
+	public MonetaryAmount total(CurrencyUnit currency,
+			MonetaryAmount... amounts);
 
 	/**
 	 * Obtains an instance of {@code Money} as the total value a possibly empty
@@ -310,12 +347,38 @@ public interface AmountUtils extends MonetaryExtension {
 	 *         addDifferenceToLastValue is false, an additional amount instance
 	 *         containing the rounding difference.
 	 */
-	public MonetaryAmount[] divideAndSeparate(MonetaryAmount total, Number divisor,
-			boolean addDifferenceToLastValue);
-	
+	public MonetaryAmount[] divideAndSeparate(MonetaryAmount total,
+			Number divisor, boolean addDifferenceToLastValue);
+
 	/**
-	 * Gets the monetary amount using the passed target type. This method
-	 * allows to support different return types, depending of the concrete
+	 * This method divides this amount into a number of sub-amounts determined
+	 * by the divisor passed.
+	 * 
+	 * @param divisor
+	 *            Determines how many amounts should be divided based on this
+	 *            amount (which represents the total amount).
+	 * @param rounding
+	 *            if set, apply this {@link Rounding} on the division results.
+	 * @param addDifferenceToLastValue
+	 *            if true, the rounding difference between the sum of the
+	 *            divided amounts and this total amount value, is simply added
+	 *            to the last amount, otherwise the last element of the array
+	 *            returned contains the rounding difference (note: this element
+	 *            may be 0!).<br/>
+	 *            For example dividing 100 by 3, when set to true, a three
+	 *            element array is returned, containing 33.33, 33.33 and 33.34.<br/>
+	 *            If set to false, a 4 elements array would be returned,
+	 *            containing 3.33, 3.33, 3.33, 0.01.
+	 * @return the divided and separated amounts, and, if
+	 *         addDifferenceToLastValue is false, an additional amount instance
+	 *         containing the rounding difference.
+	 */
+	public MonetaryAmount[] divideAndSeparate(MonetaryAmount total,
+			Number divisor, Rounding rounding, boolean addDifferenceToLastValue);
+
+	/**
+	 * Gets the monetary amount using the passed target type. This method allows
+	 * to support different return types, depending of the concrete
 	 * implementation. E.g. {@link BigDecimal} should be supported within SE
 	 * environments, whereas on ME environments {@link Double} will be more
 	 * likely.
@@ -326,14 +389,13 @@ public interface AmountUtils extends MonetaryExtension {
 	 * 
 	 * @param type
 	 *            The target type, not null.
-	 * @param performRounding
-	 *            if true, {@link #getAdjusted()} is called, before adapting to
-	 *            the target type, which performs adjustments or rounding. #see
-	 *            {@link #getAdjusted()}
+	 * @param rounding
+	 *            the {@link Rounding} to be applied.
 	 * @return the amount represented as T, never null
 	 * @throws IllegalArgumentException
 	 *             if the representation type is not supported.
 	 */
-	public <T> T convertAndRound(MonetaryAmount total, Class<T> type, boolean performRounding);
+	public <T> T roundAndConvert(MonetaryAmount total, Class<T> type,
+			Rounding rounding);
 
 }

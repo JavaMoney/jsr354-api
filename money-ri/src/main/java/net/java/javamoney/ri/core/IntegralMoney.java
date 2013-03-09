@@ -22,7 +22,6 @@ package net.java.javamoney.ri.core;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import javax.money.AmountAdjuster;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 
@@ -38,24 +37,10 @@ public final class IntegralMoney implements MonetaryAmount,
 	/** The numeric part of this amount. */
 	private final long number;
 
+	private int scale;
+
 	/** The currency of this amount. */
 	private final CurrencyUnit currency;
-
-	/**
-	 * Creates a new instance os {@link IntegralMoney}.
-	 * 
-	 * @param currency
-	 *            the currency, not null.
-	 * @param number
-	 *            the amount, not null.
-	 */
-	public IntegralMoney(CurrencyUnit currency, long number) {
-		if (currency == null) {
-			throw new IllegalArgumentException("Currency is required.");
-		}
-		this.currency = currency;
-		this.number = number;
-	}
 
 	/**
 	 * Creates a new instance os {@link IntegralMoney}.
@@ -76,6 +61,7 @@ public final class IntegralMoney implements MonetaryAmount,
 		this.currency = currency;
 		this.number = number.longValue();
 	}
+	
 
 	/**
 	 * Static factory method for creating a new instance of
@@ -153,7 +139,7 @@ public final class IntegralMoney implements MonetaryAmount,
 		int result = 1;
 		result = prime * result
 				+ ((currency == null) ? 0 : currency.hashCode());
-		result = prime * result + (int)number;
+		result = prime * result + (int) number;
 		return result;
 	}
 
@@ -237,8 +223,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public MonetaryAmount add(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		return new IntegralMoney(this.currency, this.number
-				+ amount.longValue());
+		return new IntegralMoney(this.currency, this.number + amount.longValue());
 	}
 
 	/*
@@ -532,23 +517,10 @@ public final class IntegralMoney implements MonetaryAmount,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#with(javax.money.AmountAdjuster[])
-	 */
-	public MonetaryAmount with(AmountAdjuster... adjuster) {
-		MonetaryAmount amount = this;
-		for (AmountAdjuster amountAdjuster : adjuster) {
-			amount = amountAdjuster.adjust(amount);
-		}
-		return amount;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see javax.money.MonetaryAmount#getScale()
 	 */
 	public int getScale() {
-		return String.valueOf(this.number).length();
+		return this.scale;
 	}
 
 	/*
@@ -557,7 +529,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * @see javax.money.MonetaryAmount#getPrecision()
 	 */
 	public int getPrecision() {
-		return 0;
+		return String.valueOf(this.number).length();
 	}
 
 	/*
@@ -882,20 +854,6 @@ public final class IntegralMoney implements MonetaryAmount,
 				+ type);
 	}
 
-	/*
-	 * }(non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#asType(java.lang.Class,
-	 * javax.money.AmountAdjuster[])
-	 */
-	public <T> T asType(Class<T> type, AmountAdjuster... adjustment) {
-		MonetaryAmount amount = this;
-		for (int i = 0; i < adjustment.length; i++) {
-			amount = adjustment[i].adjust(amount);
-		}
-		return amount.asType(type);
-	}
-
 	// Static Factory Methods
 	/**
 	 * Translates a {@code BigDecimal} value and a {@code CurrencyUnit} currency
@@ -976,7 +934,5 @@ public final class IntegralMoney implements MonetaryAmount,
 				&& this.currency.getCurrencyCode().equals(
 						amount.getCurrency().getCurrencyCode());
 	}
-
-	
 
 }

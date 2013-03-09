@@ -23,9 +23,9 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-import javax.money.AmountAdjuster;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.Rounding;
 
 /**
  * Factory class for creating {@link AmountAdjuster} instances that implement
@@ -46,7 +46,7 @@ public class StandardRoundings {
 	 *            is sued.
 	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
 	 */
-	public static AmountAdjuster getRounding(CurrencyUnit currency,
+	public static Rounding getRounding(CurrencyUnit currency,
 			RoundingMode roundingMode) {
 		int scale = currency.getDefaultFractionDigits();
 		return getRounding(scale, roundingMode);
@@ -62,7 +62,7 @@ public class StandardRoundings {
 	 *            is sued.
 	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
 	 */
-	public static AmountAdjuster getRounding(CurrencyUnit currency) {
+	public static Rounding getRounding(CurrencyUnit currency) {
 		int scale = currency.getDefaultFractionDigits();
 		// TODO get according rounding mode
 		return getRounding(scale, RoundingMode.HALF_UP);
@@ -78,7 +78,7 @@ public class StandardRoundings {
 	 *            the {@link RoundingMode}, not null.
 	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
 	 */
-	public static AmountAdjuster getRounding(int scale, RoundingMode rounding) {
+	public static Rounding getRounding(int scale, RoundingMode rounding) {
 		return new MathRounder(scale, rounding);
 	}
 
@@ -88,7 +88,7 @@ public class StandardRoundings {
 	 * 
 	 * @author Anatole Tresch
 	 */
-	private final static class MathRounder implements AmountAdjuster {
+	private final static class MathRounder implements Rounding {
 		/** The {@link RoundingMode} used. */
 		private RoundingMode roundingMode;
 		/** The scale to be applied. */

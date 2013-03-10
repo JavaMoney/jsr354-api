@@ -63,6 +63,7 @@ import org.junit.Test;
  * 
  * @author Anatole Tresch
  */
+@Ignore
 public class MonetaryTest {
 
 	/**

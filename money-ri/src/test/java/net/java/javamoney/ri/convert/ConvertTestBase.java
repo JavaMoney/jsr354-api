@@ -19,13 +19,13 @@
 package net.java.javamoney.ri.convert;
 
 import net.java.javamoney.ri.RITestBase;
-
-/**
- * @author Werner Keil
- *
- */
-abstract class ConvertTestBase extends RITestBase {	
-	protected static final long SECOND_IN_MILLIS = 1000;
-	protected static final long MINUTE_IN_MILLIS = 60 * SECOND_IN_MILLIS;
-	protected static final long TEN_MINUTES_IN_MILLIS = 10 * MINUTE_IN_MILLIS;
-}
+//
+///**
+// * @author Werner Keil
+// *
+// */
+//abstract class ConvertTestBase extends RITestBase {	
+//	protected static final long SECOND_IN_MILLIS = 1000;
+//	protected static final long MINUTE_IN_MILLIS = 60 * SECOND_IN_MILLIS;
+//	protected static final long TEN_MINUTES_IN_MILLIS = 10 * MINUTE_IN_MILLIS;
+//}

@@ -43,8 +43,8 @@ import java.util.logging.Logger;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.CurrencyConverterDefaultFactorySpi;
-import javax.money.convert.spi.ExchangeRateProviderDefaultFactorySpi;
+import javax.money.convert.spi.CurrencyConverterFactorySpi;
+import javax.money.convert.spi.ExchangeRateProviderFactorySpi;
 import javax.money.format.ItemFormatterFactory;
 import javax.money.format.ItemParserFactory;
 import javax.money.provider.spi.MonetaryExtension;
@@ -66,9 +66,7 @@ public final class Monetary {
 	private final CurrencyUnitProvider currencyUnitProvider;
 	private final Map<Class<?>, MonetaryAmountProvider> monetaryAmountProviders = new HashMap<Class<?>, MonetaryAmountProvider>();
 	private final RoundingProvider roundingProvider;
-	private final ExchangeRateProviderDefaultFactorySpi exchangeRateProviderDefaultFactorySpi;
 	private final Map<ExchangeRateType, ExchangeRateProvider> exchangeRateProviders = new HashMap<ExchangeRateType, ExchangeRateProvider>();
-	private final CurrencyConverterDefaultFactorySpi currencyConverterDefaultFactorySpi;
 	private final Map<ExchangeRateType, CurrencyConverter> currencyConverters = new HashMap<ExchangeRateType, CurrencyConverter>();
 	private final Map<Class<?>, MonetaryExtension> extensions = new HashMap<Class<?>, MonetaryExtension>();
 	private final ItemParserFactory itemParserFactory;
@@ -78,10 +76,13 @@ public final class Monetary {
 			.load(MonetaryAmountProvider.class);
 	private final ServiceLoader<CurrencyConverter> currencyConverterLoader = ServiceLoader
 			.load(CurrencyConverter.class);
-	private final ServiceLoader<ExchangeRateProvider> exchangeRateProviderLoader = ServiceLoader
-			.load(ExchangeRateProvider.class);
 	private final ServiceLoader<MonetaryExtension> extensionsLoader = ServiceLoader
 			.load(MonetaryExtension.class);
+
+	private final ServiceLoader<ExchangeRateProviderFactorySpi> exchangeRateProviderFactorySpiLoader = ServiceLoader
+			.load(ExchangeRateProviderFactorySpi.class);
+	private final ServiceLoader<CurrencyConverterFactorySpi> currencyConverterFactorySpis = ServiceLoader
+			.load(CurrencyConverterFactorySpi.class);
 
 	/**
 	 * Singleton constructor.
@@ -91,12 +92,7 @@ public final class Monetary {
 		roundingProvider = loadService(RoundingProvider.class);
 		itemFormatterFactory = loadService(ItemFormatterFactory.class);
 		itemParserFactory = loadService(ItemParserFactory.class);
-		exchangeRateProviderDefaultFactorySpi = loadService(ExchangeRateProviderDefaultFactorySpi.class);
-		currencyConverterDefaultFactorySpi = loadService(CurrencyConverterDefaultFactorySpi.class);
 		// TODO define how to handle and handle duplicate registrations!
-		for (ExchangeRateProvider t : exchangeRateProviderLoader) {
-			this.exchangeRateProviders.put(t.getExchangeRateType(), t);
-		}
 		for (CurrencyConverter t : currencyConverterLoader) {
 			this.currencyConverters.put(t.getExchangeRateType(), t);
 		}
@@ -253,16 +249,18 @@ public final class Monetary {
 			ExchangeRateType type) {
 		ExchangeRateProvider prov = INSTANCE.exchangeRateProviders.get(type);
 		if (prov == null) {
-			ExchangeRateProviderDefaultFactorySpi provFactory = INSTANCE.exchangeRateProviderDefaultFactorySpi;
-			if(provFactory!=null){
+			for (ExchangeRateProviderFactorySpi provFactory : INSTANCE.exchangeRateProviderFactorySpiLoader) {
 				prov = provFactory.createExchangeRateProvider(type);
+				if (prov != null) {
+					INSTANCE.exchangeRateProviders.put(type, prov);
+					return prov;
+				}
 			}
-			if (prov == null) {
-				throw new IllegalArgumentException(
-						"No ExchangeRateProvider for the required type registered: "
-								+ type);
-			}
-			INSTANCE.exchangeRateProviders.put(type, prov);
+		}
+		if (prov == null) {
+			throw new IllegalArgumentException(
+					"No ExchangeRateProvider for the required type registered: "
+							+ type);
 		}
 		return prov;
 	}
@@ -279,16 +277,18 @@ public final class Monetary {
 	public static CurrencyConverter getCurrencyConverter(ExchangeRateType type) {
 		CurrencyConverter prov = INSTANCE.currencyConverters.get(type);
 		if (prov == null) {
-			CurrencyConverterDefaultFactorySpi provFactory = INSTANCE.currencyConverterDefaultFactorySpi;
-			if(provFactory!=null){
+			for (CurrencyConverterFactorySpi provFactory : INSTANCE.currencyConverterFactorySpis) {
 				prov = provFactory.createCurrencyConverter(type);
+				if (prov != null) {
+					INSTANCE.currencyConverters.put(type, prov);
+					return prov;
+				}
 			}
-			if (prov == null) {
-				throw new IllegalArgumentException(
-						"No CurrencyConverters for the required type registered: "
-								+ type);
-			} 
-			INSTANCE.currencyConverters.put(type, prov);
+		}
+		if (prov == null) {
+			throw new IllegalArgumentException(
+					"No CurrencyConverters for the required type registered: "
+							+ type);
 		}
 		return prov;
 	}

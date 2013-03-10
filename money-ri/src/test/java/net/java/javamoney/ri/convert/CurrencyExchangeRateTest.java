@@ -23,13 +23,20 @@ import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 
+import javax.money.CurrencyUnit;
 import javax.money.convert.ExchangeRateType;
+
+import net.java.javamoney.ri.core.MoneyCurrency;
 
 import org.junit.Test;
 
-public class CurrencyExchangeRateTest extends ConvertTestBase {
+public class CurrencyExchangeRateTest {
 
-	private static final ExchangeRateType TYPE = SingletonExchangeRateType
+	private static final CurrencyUnit EURO = MoneyCurrency.getInstance("EUR");
+	private static final CurrencyUnit DOLLAR = MoneyCurrency.getInstance("USD");
+	private static final long TEN_MINUTES_IN_MILLIS = 600000L;
+
+	private static final ExchangeRateType TYPE = CurrencyExchangeRateType
 			.of("test");
 
 	@Test

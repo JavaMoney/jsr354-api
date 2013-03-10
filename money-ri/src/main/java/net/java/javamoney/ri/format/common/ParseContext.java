@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.format.ParserToken;
+import net.java.javamoney.ri.format.tokenparser.ParserToken;
 
 /**
  * This class contains the parsing context for parsing a value. Each ParserToken

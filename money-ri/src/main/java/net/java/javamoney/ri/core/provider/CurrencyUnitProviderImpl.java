@@ -46,8 +46,6 @@ import net.java.javamoney.ri.AbstractSpiComponent;
  */
 public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 		implements CurrencyUnitProvider {
-	/** Singleton instance. */
-	private static final CurrencyUnitProviderImpl INSTANCE = new CurrencyUnitProviderImpl();
 	/**
 	 * System property used to redefine the default namespace for
 	 * {@link CurrencyUnit} instances.
@@ -101,7 +99,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 	 * java.lang.String, long)
 	 */
 	public CurrencyUnit get(String namespace, String code, Long timestamp) {
-		List<CurrencyUnitProviderSpi> provList = INSTANCE.currencyProviders
+		List<CurrencyUnitProviderSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
 			return null;
@@ -128,7 +126,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 
 	public CurrencyUnit[] getAll(String namespace, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		List<CurrencyUnitProviderSpi> provList = INSTANCE.currencyProviders
+		List<CurrencyUnitProviderSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
 			return null;
@@ -153,7 +151,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 
 	public CurrencyUnit[] getAll(Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		for (List<CurrencyUnitProviderSpi> provList : INSTANCE.currencyProviders
+		for (List<CurrencyUnitProviderSpi> provList : currencyProviders
 				.values()) {
 			for (CurrencyUnitProviderSpi prov : provList) {
 				CurrencyUnit[] currencies = prov.getCurrencies(timestamp);
@@ -179,7 +177,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 
 	public boolean isAvailable(String namespace, String code, Long start,
 			Long end) {
-		List<CurrencyUnitProviderSpi> provList = INSTANCE.currencyProviders
+		List<CurrencyUnitProviderSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
 			return false;
@@ -207,7 +205,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 
 	public CurrencyUnit[] getAll(Locale locale, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		for (List<CurrencyUnitProviderSpi> provList : INSTANCE.currencyProviders
+		for (List<CurrencyUnitProviderSpi> provList : currencyProviders
 				.values()) {
 			for (CurrencyUnitProviderSpi prov : provList) {
 				CurrencyUnit[] currencies = prov.getCurrencies(locale,
@@ -221,7 +219,7 @@ public final class CurrencyUnitProviderImpl extends AbstractSpiComponent
 	}
 
 	public CurrencyUnit map(CurrencyUnit unit, String targetNamespace) {
-		List<CurrencyUnitProviderSpi> provList = INSTANCE.currencyProviders
+		List<CurrencyUnitProviderSpi> provList = currencyProviders
 				.get(unit.getNamespace());
 		if (provList == null) {
 			return null;

@@ -29,23 +29,42 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.provider.impl;
+package net.java.javamoney.ri.convert.spi;
 
-import javax.money.convert.ExchangeRateProvider;
+import javax.money.CurrencyUnit;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.ExchangeRateProviderFactorySpi;
+import javax.money.convert.ExchangeRate;
 
 /**
- * Empty pseudo implementation for testing only.
- * 
+ * @author <a href="mailto:units@catmedia.us">Werner Keil</a>
  * @author Anatole Tresch
+ * @version 0.1.1
  */
-public class TestExchangeRateProviderFactorySpi implements ExchangeRateProviderFactorySpi {
+public interface ExchangeRateProviderSpi {
 
-	@Override
-	public ExchangeRateProvider createExchangeRateProvider(ExchangeRateType type) {
-		return new TestExchangeRateProvider();
-	}
+	/**
+	 * Get the exchange rate type that this provider instance is providing data
+	 * for.
+	 * 
+	 * @return the {@link ExchangeRateType} supported, never null.
+	 */
+	public ExchangeRateType getExchangeRateType();
 
+	/**
+	 * Get an exchange rate for the given parameters.
+	 * 
+	 * @param source
+	 *            the source currency.
+	 * @param target
+	 *            the target currency.
+	 * @param type
+	 *            Allows to determine the kind of rate to returned. {@code null}
+	 *            means any type.
+	 * @param timestamp
+	 *            the required target UTC timestamp for the rate, or
+	 *            {@code null} for the latest available.
+	 * @return the according exchange rate, or null.
+	 */
+	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target, Long timestamp);
 
 }

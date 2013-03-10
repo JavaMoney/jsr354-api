@@ -31,12 +31,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.money.CurrencyUnit;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.ExchangeRateProviderSpi;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import net.java.javamoney.ri.convert.CurrencyExchangeRate;
-import net.java.javamoney.ri.convert.SingletonExchangeRateType;
+import net.java.javamoney.ri.convert.CurrencyExchangeRateType;
+import net.java.javamoney.ri.convert.spi.ExchangeRateProviderSpi;
 import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.core.provider.IsoCurrencyOnlineProvider;
 
@@ -76,7 +76,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProviderSpi {
 	/** Parser factory. */
 	private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 	/** The {@link ExchangeRateType} of this provider. */
-	private static final ExchangeRateType RATE_TYPE = SingletonExchangeRateType
+	private static final ExchangeRateType RATE_TYPE = CurrencyExchangeRateType
 			.of("EZB");
 
 	/**

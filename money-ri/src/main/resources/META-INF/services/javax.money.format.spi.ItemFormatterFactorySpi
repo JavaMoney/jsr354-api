@@ -1,2 +1,2 @@
-net.java.javamoney.ri.format.impl.IsoAmountFormatterFactorySpi
-net.java.javamoney.ri.format.impl.IsoCurrencyFormatterFactorySpi
+net.java.javamoney.ri.format.impl.format.IsoAmountFormatterFactorySpi
+net.java.javamoney.ri.format.impl.format.IsoCurrencyFormatterFactorySpi

@@ -28,7 +28,7 @@ import javax.money.convert.ExchangeRateType;
 import javax.money.provider.Monetary;
 import javax.money.provider.MonetaryAmountProvider;
 
-import net.java.javamoney.ri.convert.SingletonExchangeRateType;
+import net.java.javamoney.ri.convert.CurrencyExchangeRateType;
 
 /**
  * Implementation of a {@link CurrencyConverter} that is simply adapting an
@@ -41,7 +41,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 	private ExchangeRateType exchangeRateType;
 
 	public DefaultCurrencyConverter() {
-		this(SingletonExchangeRateType.of("default"));
+		this(CurrencyExchangeRateType.of("default"));
 	}
 
 	public DefaultCurrencyConverter(ExchangeRateType exchangeRateType) {

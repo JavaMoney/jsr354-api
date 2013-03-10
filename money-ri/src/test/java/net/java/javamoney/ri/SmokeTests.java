@@ -19,7 +19,7 @@ import javax.money.format.ItemParser;
 import javax.money.format.LocalizationStyle;
 import javax.money.provider.Monetary;
 
-import net.java.javamoney.ri.convert.SingletonExchangeRateType;
+import net.java.javamoney.ri.convert.CurrencyExchangeRateType;
 import net.java.javamoney.ri.core.Money;
 import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.core.StandardRoundings;
@@ -76,7 +76,7 @@ public class SmokeTests {
 	@Test
 	public void testExchange() {
 		ExchangeRateProvider prov = Monetary
-				.getExchangeRateProvider(SingletonExchangeRateType.of("EZB"));
+				.getExchangeRateProvider(CurrencyExchangeRateType.of("EZB"));
 		assertNotNull(prov);
 		ExchangeRate rate1 = prov.get(MoneyCurrency.getInstance("CHF"),
 				MoneyCurrency.getInstance("EUR"));
@@ -98,7 +98,7 @@ public class SmokeTests {
 				RoundingMode.HALF_UP);
 
 		CurrencyConverter conv = Monetary
-				.getCurrencyConverter(SingletonExchangeRateType.of("EZB"));
+				.getCurrencyConverter(CurrencyExchangeRateType.of("EZB"));
 		assertNotNull(conv);
 		MonetaryAmount srcCHF = Money.valueOf(MoneyCurrency.getInstance("CHF"),
 				100.15);

@@ -1,1 +1,1 @@
-net.java.javamoney.ri.format.impl.DefaultItemFormatterFactory
+net.java.javamoney.ri.format.impl.ItemFormatterFactoryImpl

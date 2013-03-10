@@ -29,23 +29,26 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.provider.impl;
+package javax.money.convert.spi;
 
-import javax.money.convert.ExchangeRateProvider;
+import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.ExchangeRateProviderFactorySpi;
 
 /**
- * Empty pseudo implementation for testing only.
+ * This SPI defines the factory that determines the default implementations of
+ * {@link CurrencyConverter} to be used for a given {@link ExchangeRateType}, if
+ * no explicit {@link CurrencyConverter} was registered.
  * 
  * @author Anatole Tresch
  */
-public class TestExchangeRateProviderFactorySpi implements ExchangeRateProviderFactorySpi {
+public interface CurrencyConverterFactorySpi {
 
-	@Override
-	public ExchangeRateProvider createExchangeRateProvider(ExchangeRateType type) {
-		return new TestExchangeRateProvider();
-	}
-
+	/**
+	 * Get the exchange rate type that this provider instance is providing data
+	 * for.
+	 * 
+	 * @return the {@link ExchangeRateType} supported, never null.
+	 */
+	public CurrencyConverter createCurrencyConverter(ExchangeRateType type);
 
 }

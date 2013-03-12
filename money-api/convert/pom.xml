@@ -6,7 +6,8 @@
     <version>0.3-SNAPSHOT</version>
   </parent>
   <artifactId>money-api-convert</artifactId>
-  <name>JSR 354 (Money and Currency) - Standalone Conversion API </name>
+  <name>JSR 354 (Money and Currency) - Conversion API</name>
+  <packaging>bundle</packaging> 
   <dependencies>
   	<dependency>
   		<groupId>javax.money</groupId>
@@ -14,4 +15,15 @@
   		<version>${project.version}</version>
   	</dependency>
   </dependencies>
+  <build>
+  	<plugins>
+ 			<!-- ======================================================= -->
+            <!--     Packaging (OSGi bundle)                             -->
+            <!-- ======================================================= -->
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+            </plugin>
+  	</plugins>
+  </build>
 </project>

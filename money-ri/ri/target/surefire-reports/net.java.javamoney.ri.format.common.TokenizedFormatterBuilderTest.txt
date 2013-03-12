@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: net.java.javamoney.ri.format.common.TokenizedFormatterBuilderTest
--------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 sec

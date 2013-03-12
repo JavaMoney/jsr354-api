@@ -30,9 +30,9 @@ import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
 import javax.money.ext.Region;
 import javax.money.ext.RegionalCurrencyUnitProvider;
-import javax.money.ext.spi.RegionalCurrencyUnitProviderSpi;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
+import net.java.javamoney.ri.ext.spi.RegionalCurrencyUnitProviderSpi;
 
 
 /**

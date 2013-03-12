@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ *  Copyright (c) 2012, 2013, Werner Keil, Credit Suisse (Anatole Tresch).
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13,8 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *
+ * 
  * Contributors:
- *    Anatole Tresch - initial implementation
+ *    Anatole Tresch - initial version.
  *    Wernner Keil - extensions and adaptions.
  */
 package net.java.javamoney.ri.ext.provider;
@@ -29,9 +30,9 @@ import javax.inject.Singleton;
 import javax.money.ext.Region;
 import javax.money.ext.RegionProvider;
 import javax.money.ext.RegionType;
-import javax.money.ext.spi.RegionProviderSpi;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
+import net.java.javamoney.ri.ext.spi.RegionProviderSpi;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors

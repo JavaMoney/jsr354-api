@@ -75,11 +75,13 @@ public interface ItemParserFactory {
 	 *            {@link Locale} instances to be used, as well as other
 	 *            attributes configuring this instance.
 	 * @return the matching parser, if available.
-	 * @throws IllegalArgumentException
-	 *             If no matching {@link ItemParser} could be provided.
+	 * @throws ItemParseException
+	 *             if the {@link LocalizationStyle} passed can not be used for
+	 *             configuring the {@link ItemParser} and no matching
+	 *             {@link ItemParser} could be provided.
 	 */
 	public <T> ItemParser<T> getItemParser(Class<T> targetType,
-			LocalizationStyle style);
+			LocalizationStyle style) throws ItemParseException;
 
 	/**
 	 * This method returns an instance of a fixed styled {@link ItemParser}.
@@ -91,10 +93,12 @@ public interface ItemParserFactory {
 	 * @param locale
 	 *            The target locale.
 	 * @return the formatter required, if available.
-	 * @throws IllegalArgumentException
-	 *             If no matching {@link ItemParser} could be provided.
+	 * @throws ItemParseException
+	 *             if the {@link LocalizationStyle} passed can not be used for
+	 *             configuring the {@link ItemParser} and no matching
+	 *             {@link ItemParser} could be provided.
 	 */
-	public <T> ItemParser<T> getItemParser(Class<T> targetType, Locale locale);
-
+	public <T> ItemParser<T> getItemParser(Class<T> targetType, Locale locale)
+			throws ItemParseException;
 
 }

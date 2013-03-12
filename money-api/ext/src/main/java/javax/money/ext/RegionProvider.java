@@ -31,7 +31,7 @@
  */
 package javax.money.ext;
 
-import javax.money.provider.spi.MonetaryExtension;
+import javax.money.provider.MonetaryExtension;
 
 /**
  * This class models the component defined by JSR 354 that provides accessors

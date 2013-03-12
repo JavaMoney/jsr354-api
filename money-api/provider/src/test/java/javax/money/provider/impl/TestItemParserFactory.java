@@ -65,14 +65,6 @@ public class TestItemParserFactory implements ItemParserFactory {
 	@Override
 	public <T> ItemParser<T> getItemParser(Class<T> targetType,
 			LocalizationStyle style) {
-		if (!isSupportedStyle(targetType, style.getId())) {
-			throw new IllegalArgumentException("Unsupported style.");
-		}
-		if (MonetaryAmount.class.equals(targetType)) {
-			return (ItemParser<T>) new TestAmountParser();
-		} else if (CurrencyUnit.class.equals(targetType)) {
-			return (ItemParser<T>) new TestCurrencyParser();
-		}
 		return null;
 	}
 

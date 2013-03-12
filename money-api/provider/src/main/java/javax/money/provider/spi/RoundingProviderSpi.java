@@ -68,8 +68,8 @@ public interface RoundingProviderSpi {
 	 * @param currency
 	 *            the currency instance. not null.
 	 * @param timestamp
-	 *            the target timestamp for the {@link Rounding}, or {@code null} for the
-	 *            current UTC time.
+	 *            the target timestamp for the {@link Rounding}, or {@code null}
+	 *            for the current UTC time.
 	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
 	 *         it should be created/registered based on
 	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.

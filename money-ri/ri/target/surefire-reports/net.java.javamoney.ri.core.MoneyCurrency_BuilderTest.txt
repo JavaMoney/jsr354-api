@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: net.java.javamoney.ri.core.MoneyCurrency_BuilderTest
+-------------------------------------------------------------------------------
+Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 sec

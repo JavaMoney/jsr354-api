@@ -6,15 +6,22 @@
 		<groupId>javax.money</groupId>
 		<version>0.3-SNAPSHOT</version>
 	</parent>
-	<artifactId>money-ri</artifactId>
+	<artifactId>money-ri-master</artifactId>
 	<groupId>net.java.javamoney</groupId>
-	<name>JSR 354 (Money and Currency) - Reference Implementation</name>
+	<packaging>pom</packaging>
+	<name>JSR 354 (Money and Currency) - Reference Implementation Master</name>
 	<description>Reference Implementation of JSR 354</description>
 
 	<properties>
 		<javax.money.version>0.3-SNAPSHOT</javax.money.version>
 		<slf4j.version>1.6.1</slf4j.version>
 	</properties>
+	
+	<modules>
+	  <module>ri</module>
+	  <module>ri-cdi</module>
+	  <module>ri-ee</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>

@@ -31,22 +31,19 @@
  */
 package javax.money.provider.impl;
 
+import javax.money.provider.MonetaryExtension;
+import javax.money.provider.annot.ExposedExtensionType;
 import javax.money.provider.ext.TestExtension;
-import javax.money.provider.spi.MonetaryExtension;
 
 /**
  * Simple completely useles (despite testing) implementation of a
- * {@link MonetaryExtension}.
+ * {@link ExposedExtensionType}.
  * 
  * @author Anatole Tresch
  * 
  */
+@ExposedExtensionType(TestExtension.class)
 public class TestExtensionImpl implements TestExtension, MonetaryExtension {
-
-	@Override
-	public Class<TestExtension> getExposedType() {
-		return TestExtension.class;
-	}
 
 	@Override
 	public String sayHello() {

@@ -33,6 +33,7 @@ package javax.money.ext.spi;
 
 import javax.money.CurrencyUnit;
 import javax.money.ext.Region;
+import javax.money.provider.MonetaryExtension;
 
 /**
  * This class models the component defined by JSR 354 that provides accessors
@@ -41,7 +42,7 @@ import javax.money.ext.Region;
  * 
  * @author Anatole Tresch
  */
-public interface RegionalCurrencyUnitProviderSpi{
+public interface RegionalCurrencyUnitProviderSpi extends MonetaryExtension{
 
 	/**
 	 * Access all currencies matching a {@link Region}.

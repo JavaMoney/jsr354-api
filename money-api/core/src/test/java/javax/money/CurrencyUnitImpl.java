@@ -35,7 +35,6 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.Currency;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -321,7 +320,7 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 
 		public Builder setAttribute(String key, Object value) {
 			if (this.attributes == null) {
-				this.attributes = new HashMap<String, Object>();
+				this.attributes = new ConcurrentHashMap<String, Object>();
 			}
 			this.attributes.put(key, value);
 			return this;

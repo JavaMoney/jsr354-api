@@ -39,23 +39,19 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.util.Enumeration;
 
-import javax.money.convert.CurrencyConverter;
-import javax.money.convert.ExchangeRateProvider;
-import javax.money.convert.ExchangeRateType;
+import javax.money.convert.ConversionProvider;
 import javax.money.format.ItemFormatterFactory;
 import javax.money.format.ItemParserFactory;
+import javax.money.provider.Monetary.ComponentLoader;
 import javax.money.provider.ext.TestExtension;
-import javax.money.provider.impl.TestCurrencyConverter;
+import javax.money.provider.impl.TestConversionProvider;
 import javax.money.provider.impl.TestCurrencyUnitProvider;
-import javax.money.provider.impl.TestExchangeRateProvider;
 import javax.money.provider.impl.TestExtensionImpl;
 import javax.money.provider.impl.TestItemFormatterFactory;
 import javax.money.provider.impl.TestItemParserFactory;
 import javax.money.provider.impl.TestMonetaryAmountProvider;
-import javax.money.provider.impl.TestMonetaryAmountProvider2;
 import javax.money.provider.impl.TestRoundingProvider;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -72,13 +68,9 @@ public class MonetaryTest {
 	 */
 	@Test
 	public void testGetMonetaryAmountProviderClassOfQ() {
-		MonetaryAmountProvider f = Monetary
-				.getMonetaryAmountProvider(BigDecimal.class);
+		ComponentLoader f = Monetary.getLoader();
 		assertNotNull(f);
-		assertEquals(TestMonetaryAmountProvider2.class, f.getClass());
-		f = Monetary.getMonetaryAmountProvider(String.class);
-		assertNotNull(f);
-		assertEquals(TestMonetaryAmountProvider.class, f.getClass());
+		assertEquals("javax.money.provider.Monetary$DefaultServiceLoader", f.getClass().getName());
 	}
 
 	/**
@@ -89,16 +81,7 @@ public class MonetaryTest {
 	public void testGetMonetaryAmountProvider() {
 		MonetaryAmountProvider f = Monetary.getMonetaryAmountProvider();
 		assertNotNull(f);
-		assertEquals(Monetary.getDefaultNumberClass(), f.getNumberClass());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.provider.Monetary#getDefaultNumberClass()}.
-	 */
-	@Test
-	public void testGetDefaultNumberClass() {
-		assertEquals(BigDecimal.class, Monetary.getDefaultNumberClass());
+		assertEquals(TestMonetaryAmountProvider.class, f.getClass());
 	}
 
 	/**
@@ -119,55 +102,9 @@ public class MonetaryTest {
 	 */
 	@Test
 	public void testGetExchangeRateProvider() {
-		ExchangeRateProvider prov = Monetary
-				.getExchangeRateProvider(TestExchangeRateProvider.EXCHANGE_RATE_TYPE);
+		ConversionProvider prov = Monetary.getConversionProvider();
 		assertNotNull(prov);
-		assertEquals(TestExchangeRateProvider.class, prov.getClass());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.provider.Monetary#getCurrencyConverter(javax.money.convert.ExchangeRateType)}
-	 * .
-	 */
-	@Test
-	public void testGetCurrencyConverter() {
-		// this instance is registered directly
-		CurrencyConverter prov = Monetary
-				.getCurrencyConverter(TestExchangeRateProvider.EXCHANGE_RATE_TYPE);
-		assertNotNull(prov);
-		assertEquals(TestCurrencyConverter.class, prov.getClass());
-		// this instance is created by the registered
-		// CurrencyConverterFactorySpi
-		prov = Monetary.getCurrencyConverter(new ExchangeRateType() {
-			@Override
-			public String getId() {
-				return "blabla";
-			}
-		});
-		assertNotNull(prov);
-		assertEquals(TestCurrencyConverter.class, prov.getClass());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.provider.Monetary#getSupportedExchangeRateTypes()}.
-	 */
-	@Test
-	@Ignore
-	public void testGetSupportedExchangeRateTypes() {
-		Enumeration<ExchangeRateType> types = Monetary
-				.getSupportedExchangeRateTypes();
-		assertFalse(types.hasMoreElements());
-		Monetary.getExchangeRateProvider(TestExchangeRateProvider.EXCHANGE_RATE_TYPE);
-		types = Monetary.getSupportedExchangeRateTypes();
-		assertTrue(types.hasMoreElements());
-		while (types.hasMoreElements()) {
-			ExchangeRateType exchangeRateType = (ExchangeRateType) types
-					.nextElement();
-			assertEquals(TestExchangeRateProvider.EXCHANGE_RATE_TYPE,
-					exchangeRateType);
-		}
+		assertEquals(TestConversionProvider.class, prov.getClass());
 	}
 
 	/**
@@ -187,12 +124,10 @@ public class MonetaryTest {
 	 */
 	@Test
 	public void testGetItemParserFactory() {
-		ItemParserFactory f = Monetary
-				.getItemParserFactory();
+		ItemParserFactory f = Monetary.getItemParserFactory();
 		assertNotNull(f);
 		assertEquals(TestItemParserFactory.class, f.getClass());
 	}
-
 
 	/**
 	 * Test method for

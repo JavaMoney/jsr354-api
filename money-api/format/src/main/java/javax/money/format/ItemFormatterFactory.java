@@ -46,23 +46,6 @@ import javax.money.format.spi.ItemFormatterFactorySpi;
 public interface ItemFormatterFactory {
 
 	/**
-	 * This method returns an instance of an {@link ItemFormatter} .
-	 * 
-	 * @param targetType
-	 *            the target type, never {@code null}.
-	 * @param style
-	 *            the {@link LocalizationStyle} to be attached to this
-	 *            {@link ItemFormatter}, which also contains the target
-	 *            {@link Locale} instances to be used, as well as other
-	 *            attributes configuring this instance.
-	 * @return the formatter required, if available.
-	 * @throws IllegalArgumentException
-	 *             If no matching formatter could be provided.
-	 */
-	public <T> ItemFormatter<T> getItemFormatter(Class<T> targetType,
-			LocalizationStyle style);
-
-	/**
 	 * Return the style id's supported by this {@link ItemFormatterFactorySpi}
 	 * instance.
 	 * 
@@ -86,6 +69,25 @@ public interface ItemFormatterFactory {
 	public boolean isSupportedStyle(Class<?> targetType, String styleId);
 
 	/**
+	 * This method returns an instance of an {@link ItemFormatter} .
+	 * 
+	 * @param targetType
+	 *            the target type, never {@code null}.
+	 * @param style
+	 *            the {@link LocalizationStyle} to be attached to this
+	 *            {@link ItemFormatter}, which also contains the target
+	 *            {@link Locale} instances to be used, as well as other
+	 *            attributes configuring this instance.
+	 * @return the formatter required, if available.
+	 * @throws ItemFormatException
+	 *             if the {@link LocalizationStyle} passed can not be used for
+	 *             configuring the {@link ItemFormatter} and no matching
+	 *             {@link ItemFormatter} could be provided.
+	 */
+	public <T> ItemFormatter<T> getItemFormatter(Class<T> targetType,
+			LocalizationStyle style) throws ItemFormatException;
+
+	/**
 	 * This method returns an instance of an {@link ItemFormatter}. This method
 	 * is a convenience method for
 	 * {@code getItemFormatter(LocalizationStyle.of(locale)) }.
@@ -95,10 +97,12 @@ public interface ItemFormatterFactory {
 	 * @param locale
 	 *            The target locale.
 	 * @return the formatter required, if available.
-	 * @throws IllegalArgumentException
-	 *             If no matching formatter could be provided.
+	 * @throws ItemFormatException
+	 *             if the {@link LocalizationStyle} passed can not be used for
+	 *             configuring the {@link ItemFormatter} and no matching
+	 *             {@link ItemFormatter} could be provided.
 	 */
 	public <T> ItemFormatter<T> getItemFormatter(Class<T> targetType,
-			Locale locale);
+			Locale locale) throws ItemFormatException;
 
 }

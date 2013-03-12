@@ -35,6 +35,7 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.ServiceLoader;
 
+import javax.money.format.ItemFormatException;
 import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
 
@@ -88,7 +89,11 @@ public interface ItemFormatterFactorySpi<T> {
 	 *            {@link Locale} instances to be used, as well as other
 	 *            attributes.
 	 * @return a formatter instance representing the given style, or null.
+	 * @throws ItemFormatException
+	 *             if the {@link LocalizationStyle} passed can not be used for
+	 *             configuring the {@link ItemFormatter}.
 	 */
-	public ItemFormatter<T> getItemFormatter(LocalizationStyle style);
+	public ItemFormatter<T> getItemFormatter(LocalizationStyle style)
+			throws ItemFormatException;
 
 }

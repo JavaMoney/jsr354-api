@@ -42,16 +42,19 @@ import javax.money.CurrencyUnit;
 public interface ExchangeRateProvider {
 
 	/**
-	 * Get the exchange rate types that this provider instance is providing data
-	 * for.
+	 * Access the {@link ExchangeRateType} for this {@link ExchangeRateProvider}
+	 * .
 	 * 
-	 * @return the {@link ExchangeRateType} delivered by this provider.
+	 * @return the {@link ExchangeRateType}, never null.
 	 */
 	public ExchangeRateType getExchangeRateType();
 
 	/**
 	 * Checks if an exchange of a currency is defined.
 	 * 
+	 * @param type
+	 *            the exchange rate type required that this provider instance is
+	 *            providing data for.
 	 * @param source
 	 *            the source currency
 	 * @param target
@@ -88,7 +91,7 @@ public interface ExchangeRateProvider {
 	 *            or {@code null}.
 	 * @return the matching {@link ExchangeRate}, or {@code null}.
 	 */
-	public ExchangeRate get(CurrencyUnit sourceCurrency,
+	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
 			CurrencyUnit targetCurrency, Long timestamp);
 
 	/**
@@ -101,7 +104,7 @@ public interface ExchangeRateProvider {
 	 *            target currency.
 	 * @return the matching {@link ExchangeRate}, or {@code null}.
 	 */
-	public ExchangeRate get(CurrencyUnit source, CurrencyUnit target);
+	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target);
 
 	/**
 	 * The method reverses the exchange rate to a rate mapping from target to

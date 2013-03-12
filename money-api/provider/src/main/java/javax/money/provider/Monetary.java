@@ -31,26 +31,55 @@
  */
 package javax.money.provider;
 
-import java.math.BigDecimal;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.money.convert.CurrencyConverter;
-import javax.money.convert.ExchangeRateProvider;
-import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.CurrencyConverterFactorySpi;
-import javax.money.convert.spi.ExchangeRateProviderFactorySpi;
+import javax.money.convert.ConversionProvider;
 import javax.money.format.ItemFormatterFactory;
 import javax.money.format.ItemParserFactory;
-import javax.money.provider.spi.MonetaryExtension;
+import javax.money.provider.annot.ExposedExtensionType;
 
 /**
- * This is the main accessor component for Java Money.
+ * This is the main accessor component for Java Money. Is is reponsible for
+ * loading the API top level providers using the {@link ServiceLoader}:
+ * <ul>
+ * <li>{@code javax.money.convert.ConversionProvider}</li>
+ * <li>{@code javax.money.convert.ExchangeRateProvider}</li>
+ * <li>{@code javax.money.format.ItemFormatterFactory}</li>
+ * <li>{@code javax.money.format.ItemParserFactory}</li>
+ * <li>{@code javax.money.provider.CurrencyUnitProvider}</li>
+ * <li>{@code javax.money.provider.MonetaryAmountProvider}</li>
+ * <li>{@code javax.money.provider.RoundingProvider}</li>
+ * </ul>
+ * 
+ * Additionally it is also responsible for loading the
+ * {@link AnnotationServiceSpi} support SPI component, which provides annotation
+ * lookup/search functionality.
+ * <ul>
+ * <li>{@code javax.money.provider.spi.AnnotationServiceSpi}</li>
+ * </ul>
+ * 
+ * The top level API implementations then are required to load the annotated
+ * interfaces automatically.<br/>
+ * The SPIs supported are determined by the different modules. JSR 354 includes
+ * the following spi packages:
+ * <ul>
+ * <li>{@code javax.money.convert.spi}</li>
+ * <li>{@code javax.money.format.spi}</li>
+ * <li>{@code javax.money.provider.spi}</li>
+ * <li>{@code javax.money.ext.spi}</li>
+ * </ul>
  * 
  * @author Anatole Tresch
  * @author Werner Keil
@@ -59,123 +88,94 @@ import javax.money.provider.spi.MonetaryExtension;
 public final class Monetary {
 	private static final Logger LOGGER = Logger.getLogger(Monetary.class
 			.getName());
+
+	private static final ComponentLoader LOADER = initLoader();
+
 	private static final Monetary INSTANCE = new Monetary();
 
-	private Class<?> defaultNumberClass;
+	private final Map<Class<?>, Object> monetaryExtensions = new ConcurrentHashMap<Class<?>, Object>();
 
-	private final CurrencyUnitProvider currencyUnitProvider;
-	private final Map<Class<?>, MonetaryAmountProvider> monetaryAmountProviders = new HashMap<Class<?>, MonetaryAmountProvider>();
-	private final RoundingProvider roundingProvider;
-	private final Map<ExchangeRateType, ExchangeRateProvider> exchangeRateProviders = new HashMap<ExchangeRateType, ExchangeRateProvider>();
-	private final Map<ExchangeRateType, CurrencyConverter> currencyConverters = new HashMap<ExchangeRateType, CurrencyConverter>();
-	private final Map<Class<?>, MonetaryExtension> extensions = new HashMap<Class<?>, MonetaryExtension>();
-	private final ItemParserFactory itemParserFactory;
-	private final ItemFormatterFactory itemFormatterFactory;
+	private MonetaryAmountProvider monetaryAmountProvider;
 
-	private final ServiceLoader<MonetaryAmountProvider> amountFactoryLoader = ServiceLoader
-			.load(MonetaryAmountProvider.class);
-	private final ServiceLoader<CurrencyConverter> currencyConverterLoader = ServiceLoader
-			.load(CurrencyConverter.class);
-	private final ServiceLoader<MonetaryExtension> extensionsLoader = ServiceLoader
-			.load(MonetaryExtension.class);
+	private ItemFormatterFactory itemFormatterFactory;
 
-	private final ServiceLoader<ExchangeRateProviderFactorySpi> exchangeRateProviderFactorySpiLoader = ServiceLoader
-			.load(ExchangeRateProviderFactorySpi.class);
-	private final ServiceLoader<CurrencyConverterFactorySpi> currencyConverterFactorySpis = ServiceLoader
-			.load(CurrencyConverterFactorySpi.class);
+	private ItemParserFactory itemParserFactory;
+
+	private RoundingProvider roundingProvider;
+
+	private ConversionProvider conversionProvider;
+
+	private CurrencyUnitProvider currencyUnitProvider;
+
+	static {
+		INSTANCE.loadExtensions();
+	}
 
 	/**
 	 * Singleton constructor.
 	 */
 	private Monetary() {
-		currencyUnitProvider = loadService(CurrencyUnitProvider.class);
-		roundingProvider = loadService(RoundingProvider.class);
-		itemFormatterFactory = loadService(ItemFormatterFactory.class);
-		itemParserFactory = loadService(ItemParserFactory.class);
-		// TODO define how to handle and handle duplicate registrations!
-		for (CurrencyConverter t : currencyConverterLoader) {
-			this.currencyConverters.put(t.getExchangeRateType(), t);
+	}
+
+	private static ComponentLoader initLoader() {
+		// try loading directly from ServiceLoader
+		Iterator<ComponentLoader> loaders = ServiceLoader.load(
+				ComponentLoader.class).iterator();
+		if (loaders.hasNext()) {
+			return loaders.next();
 		}
-		for (MonetaryAmountProvider t : amountFactoryLoader) {
-			this.monetaryAmountProviders.put(t.getNumberClass(), t);
-		}
-		loadExtensions();
-		initDefaultNumberClass();
+		return new DefaultServiceLoader();
 	}
 
 	/**
-	 * Loads and registers the {@link MonetaryExtension} instances. It also
+	 * Loads and registers the {@link ExposedExtensionType} instances. It also
 	 * checks for the types exposed.
 	 */
+	@SuppressWarnings("unchecked")
 	private void loadExtensions() {
-		for (MonetaryExtension t : extensionsLoader) {
-			try {
-				if (t.getExposedType() == null) {
-					throw new IllegalArgumentException(
-							"Monetary extension of type: "
-									+ t.getClass().getName()
-									+ " does not expose a type.");
+		for (MonetaryExtension t : LOADER.getInstances(MonetaryExtension.class,
+				ExposedExtensionType.class)) {
+			ExposedExtensionType annot = t.getClass().getAnnotation(
+					ExposedExtensionType.class);
+			if (annot != null) {
+				try {
+					if (annot.value() == null) {
+						LOGGER.log(
+								Level.SEVERE,
+								"Monetary extension of type: "
+										+ t.getClass().getName()
+										+ " will be ignored, since it does not expose a type");
+						continue;
+					}
+					if (!annot.value().isAssignableFrom(t.getClass())) {
+						LOGGER.log(
+								Level.SEVERE,
+								"Monetary extension of type: "
+										+ t.getClass().getName()
+										+ " will be ignored, since it does not implement the exposed type: "
+										+ annot.value().getName());
+						continue;
+					}
+					if (this.monetaryExtensions
+							.containsKey(annot.value())) {
+						LOGGER.log(Level.FINEST, "Monetary extension of type: "
+								+ t.getClass().getName() + " already loaded.");
+					} else {
+						this.monetaryExtensions.put(annot.value(), t);
+					}
+				} catch (Exception e) {
+					LOGGER.log(Level.WARNING,
+							"Error loading ExposedExtensionType.", e);
 				}
-				if (!t.getExposedType().isAssignableFrom(t.getClass())) {
-					throw new IllegalArgumentException(
-							"Monetary extension of type: "
-									+ t.getClass().getName()
-									+ " does not implement exposed type: "
-									+ t.getExposedType().getName());
-				}
-				this.extensions.put(t.getExposedType(), t);
-			} catch (Exception e) {
-				LOGGER.log(Level.WARNING, "Error loading MonetaryExtension.", e);
-			}
-		}
-	}
-
-	/**
-	 * Initializes the default numeric representation class, used when calling
-	 * {@link #getMonetaryAmountProvider()}.
-	 */
-	private void initDefaultNumberClass() {
-		String defaultClassName = System
-				.getProperty("javax.money.defaultNumberClass");
-		if (defaultClassName != null) {
-			try {
-				defaultNumberClass = Class.forName(defaultClassName);
-				if (!this.monetaryAmountProviders
-						.containsKey(defaultNumberClass)) {
-					defaultNumberClass = null;
-				}
-			} catch (ClassNotFoundException e) {
-				LOGGER.log(Level.FINE, "Class not found", e);
-			}
-		}
-		if (defaultNumberClass == null) {
-			defaultNumberClass = BigDecimal.class;
-		}
-	}
-
-	/**
-	 * Loads a service from the {@link ServiceLoader} that should be unique.
-	 * This is typically the case for API services.
-	 * 
-	 * @param serviceType
-	 *            THe target service interface type.
-	 * @return The single instance found, or null.
-	 * @throws IllegalStateException
-	 *             if multiple service implementations are registered.
-	 */
-	private <T> T loadService(Class<T> serviceType) {
-		ServiceLoader<T> loader = ServiceLoader.load(serviceType);
-		T instance = null;
-		for (T t : loader) {
-			if (instance == null) {
-				instance = t;
 			} else {
-				throw new IllegalStateException(
-						"javaxmoney: Implementation of " + serviceType
-								+ " is ambigous.");
+				LOGGER.log(
+						Level.WARNING,
+						"Monetary extension is registered with implementationt ype: "
+								+ t.getClass().getName()
+								+ ". It is recommended to decouple it using an API interface type, annotated with @ExposedExtensionType.");
+				this.monetaryExtensions.put(t.getClass(), t);
 			}
 		}
-		return instance;
 	}
 
 	/**
@@ -184,16 +184,17 @@ public final class Monetary {
 	 * @return the {@link MonetaryAmountFactorySpi} component, never
 	 *         {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
 	public static MonetaryAmountProvider getMonetaryAmountProvider(
 			Class<?> numberClass) {
-		MonetaryAmountProvider factory = INSTANCE.monetaryAmountProviders
-				.get(numberClass);
-		if (factory == null) {
-			throw new UnsupportedOperationException(
-					"No MonetaryAmountFactorySpi for number class '"
-							+ numberClass.getName() + "' loaded.");
+		if (INSTANCE.monetaryAmountProvider == null) {
+			INSTANCE.monetaryAmountProvider = LOADER
+					.getInstance(MonetaryAmountProvider.class);
 		}
-		return factory;
+		if (INSTANCE.monetaryAmountProvider == null) {
+			throw new IllegalStateException("No MonetaryAmountProvider loaded.");
+		}
+		return INSTANCE.monetaryAmountProvider;
 	}
 
 	/**
@@ -203,24 +204,13 @@ public final class Monetary {
 	 *         {@code null}.
 	 */
 	public static MonetaryAmountProvider getMonetaryAmountProvider() {
-		return getMonetaryAmountProvider(getDefaultNumberClass());
-	}
-
-	/**
-	 * Get the default number class that is used for the current system. The
-	 * default class is determined by the implementation, but can be overridden
-	 * by setting a system property:
-	 * <p>
-	 * <code>-Djavax.money.defaultNumberClass=a.b.c.MyClass</code>.
-	 * <p>
-	 * It is required that a registered {@link MonetaryAmountFactorySpi} matches
-	 * the default class configured, if not a warning is written and the
-	 * implementation's default is used.
-	 * 
-	 * @return the default number class, never null.
-	 */
-	public static Class<?> getDefaultNumberClass() {
-		return INSTANCE.defaultNumberClass;
+		MonetaryAmountProvider prov = LOADER
+				.getInstance(MonetaryAmountProvider.class);
+		if (prov == null) {
+			throw new UnsupportedOperationException(
+					"No MonetaryAmountProvider loaded");
+		}
+		return prov;
 	}
 
 	/**
@@ -228,7 +218,12 @@ public final class Monetary {
 	 * 
 	 * @return the {@link CurrencyUnitProvider} component, never {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
 	public static CurrencyUnitProvider getCurrencyUnitProvider() {
+		if (INSTANCE.currencyUnitProvider == null) {
+			INSTANCE.currencyUnitProvider = LOADER
+					.getInstance(CurrencyUnitProvider.class);
+		}
 		if (INSTANCE.currencyUnitProvider == null) {
 			throw new UnsupportedOperationException(
 					"No CurrencyUnitProvider loaded");
@@ -237,72 +232,23 @@ public final class Monetary {
 	}
 
 	/**
-	 * Access the {@link ExchangeRateProvider} component.
+	 * Access the {@link ConversionProvider} component.
 	 * 
-	 * @param type
-	 *            the target {@link ExchangeRateType}.
-	 * @return the {@link ExchangeRateProvider} component, never {@code null}.
+	 * @return the {@link ConversionProvider} component, never {@code null}.
 	 * @throws IllegalArgumentException
 	 *             if no such provider is registered.
 	 */
-	public static ExchangeRateProvider getExchangeRateProvider(
-			ExchangeRateType type) {
-		ExchangeRateProvider prov = INSTANCE.exchangeRateProviders.get(type);
-		if (prov == null) {
-			for (ExchangeRateProviderFactorySpi provFactory : INSTANCE.exchangeRateProviderFactorySpiLoader) {
-				prov = provFactory.createExchangeRateProvider(type);
-				if (prov != null) {
-					INSTANCE.exchangeRateProviders.put(type, prov);
-					return prov;
-				}
+	@SuppressWarnings("unchecked")
+	public static ConversionProvider getConversionProvider() {
+		if (INSTANCE.conversionProvider == null) {
+			INSTANCE.conversionProvider = LOADER
+					.getInstance(ConversionProvider.class);
+			if (INSTANCE.conversionProvider == null) {
+				throw new UnsupportedOperationException(
+						"No ConversionProvider loaded");
 			}
 		}
-		if (prov == null) {
-			throw new IllegalArgumentException(
-					"No ExchangeRateProvider for the required type registered: "
-							+ type);
-		}
-		return prov;
-	}
-
-	/**
-	 * Access the {@link ExchangeRateProvider} component.
-	 * 
-	 * @param type
-	 *            the target {@link ExchangeRateType}.
-	 * @return the {@link ExchangeRateProvider} component, never {@code null}.
-	 * @throws IllegalArgumentException
-	 *             if no such provider is registered.
-	 */
-	public static CurrencyConverter getCurrencyConverter(ExchangeRateType type) {
-		CurrencyConverter prov = INSTANCE.currencyConverters.get(type);
-		if (prov == null) {
-			for (CurrencyConverterFactorySpi provFactory : INSTANCE.currencyConverterFactorySpis) {
-				prov = provFactory.createCurrencyConverter(type);
-				if (prov != null) {
-					INSTANCE.currencyConverters.put(type, prov);
-					return prov;
-				}
-			}
-		}
-		if (prov == null) {
-			throw new IllegalArgumentException(
-					"No CurrencyConverters for the required type registered: "
-							+ type);
-		}
-		return prov;
-	}
-
-	/**
-	 * Access the defined {@link ExchangeRateType} currently registered.
-	 * 
-	 * @see #getCurrencyConverter(ExchangeRateType)
-	 * @see #getExchangeRateProvider(ExchangeRateType)
-	 * @return The exchange rate types allow to access a
-	 *         {@link CurrencyConverter} or an {@link ExchangeRateProvider}.
-	 */
-	public static Enumeration<ExchangeRateType> getSupportedExchangeRateTypes() {
-		return Collections.enumeration(INSTANCE.exchangeRateProviders.keySet());
+		return INSTANCE.conversionProvider;
 	}
 
 	/**
@@ -310,10 +256,15 @@ public final class Monetary {
 	 * 
 	 * @return the {@link ItemFormatterFactory} component, never {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
 	public static ItemFormatterFactory getItemFormatterFactory() {
 		if (INSTANCE.itemFormatterFactory == null) {
-			throw new UnsupportedOperationException(
-					"No ItemFormatterFactory loaded");
+			INSTANCE.itemFormatterFactory = LOADER
+					.getInstance(ItemFormatterFactory.class);
+			if (INSTANCE.itemFormatterFactory == null) {
+				throw new UnsupportedOperationException(
+						"No ItemFormatterFactory loaded");
+			}
 		}
 		return INSTANCE.itemFormatterFactory;
 	}
@@ -323,10 +274,15 @@ public final class Monetary {
 	 * 
 	 * @return the {@link ItemParserFactory} component, never {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
 	public static ItemParserFactory getItemParserFactory() {
 		if (INSTANCE.itemParserFactory == null) {
-			throw new UnsupportedOperationException(
-					"No ItemParserFactory loaded");
+			INSTANCE.itemParserFactory = LOADER
+					.getInstance(ItemParserFactory.class);
+			if (INSTANCE.itemParserFactory == null) {
+				throw new UnsupportedOperationException(
+						"No ItemParserFactory loaded");
+			}
 		}
 		return INSTANCE.itemParserFactory;
 	}
@@ -338,8 +294,12 @@ public final class Monetary {
 	 */
 	public static RoundingProvider getRoundingProvider() {
 		if (INSTANCE.roundingProvider == null) {
-			throw new UnsupportedOperationException(
-					"No RoundingProvider loaded");
+			INSTANCE.roundingProvider = LOADER
+					.getInstance(RoundingProvider.class);
+			if (INSTANCE.roundingProvider == null) {
+				throw new UnsupportedOperationException(
+						"No RoudingProvider loaded");
+			}
 		}
 		return INSTANCE.roundingProvider;
 	}
@@ -355,7 +315,7 @@ public final class Monetary {
 	 */
 	public static <T> T getExtension(Class<T> extensionType) {
 		@SuppressWarnings("unchecked")
-		T ext = (T) INSTANCE.extensions.get(extensionType);
+		T ext = (T) INSTANCE.monetaryExtensions.get(extensionType);
 		if (ext == null) {
 			throw new IllegalArgumentException(
 					"Unsupported monetary extension: " + extensionType);
@@ -371,17 +331,141 @@ public final class Monetary {
 	 * @return true, if such an extension type is loaded and registered.
 	 */
 	public static boolean isExtensionAvailable(Class<?> type) {
-		return INSTANCE.extensions.containsKey(type);
+		return INSTANCE.monetaryExtensions.containsKey(type);
 	}
 
 	/**
 	 * Provides the list of exposed extension APIs currently registered.
 	 * 
-	 * @see MonetaryExtension#getExposedType()
+	 * @see ExposedExtensionType#getExposedType()
 	 * @return the enumeration containing the types of extensions loaded, never
 	 *         null.
 	 */
 	public static Enumeration<Class<?>> getLoadedExtensions() {
-		return Collections.enumeration(INSTANCE.extensions.keySet());
+		return Collections.enumeration(INSTANCE.monetaryExtensions.keySet());
 	}
+
+	/**
+	 * Access the {@link ComponentLoader} that is used by this accessor
+	 * instance.
+	 * 
+	 * @return the loder in use, never null.
+	 */
+	public static ComponentLoader getLoader() {
+		return LOADER;
+	}
+
+	/**
+	 * This interface can be registered to the {@link ServiceLoader} to create
+	 * an instance of {@link ComponentLoader} when no explicit
+	 * {@link ComponentLoader} is registered with {@link ServiceLoader}. This
+	 * enables to provide an implementation that still allows the default
+	 * {@link ComponentLoader} to be overridden using the {@link ServiceLoader}.
+	 * 
+	 * @author Anatole Tresch
+	 */
+	public static interface ComponentLoaderDefaultProvider {
+		/**
+		 * Acceee the {@link ComponentLoader} to be used.
+		 * 
+		 * @return the loader, never null.
+		 */
+		public ComponentLoader getDefaultComponentLoader();
+	}
+
+	/**
+	 * This is the loader that is used to load the different providers and spi
+	 * to be used by {@link Monetary} and its services. The
+	 * {@link ComponentLoader} can also be accessed from the {@link Monetary}
+	 * singleton, so it can also be used by the monetary service
+	 * implementations.
+	 * 
+	 * @author Anatole Tresch
+	 */
+	public static interface ComponentLoader {
+		/**
+		 * Access a singleton instance.
+		 * 
+		 * @param type
+		 *            The target type.
+		 * @param annotations
+		 *            The annotations that must be present on the type.
+		 * @return the instance found, or null.
+		 * @throws IllegalStateException
+		 *             , when the instances are ambiguous.
+		 */
+		@SuppressWarnings("unchecked")
+		public <T> T getInstance(Class<T> type,
+				Class<? extends Annotation>... annotations);
+
+		/**
+		 * Access a list of instances.
+		 * 
+		 * @param type
+		 *            The target type.
+		 * @param annotations
+		 *            The annotations that must be present on the types.
+		 * @return the instances matching, never null.
+		 */
+		@SuppressWarnings("unchecked")
+		public <T> List<T> getInstances(Class<T> type,
+				Class<? extends Annotation>... annotations);
+
+	}
+
+	public final static class DefaultServiceLoader implements ComponentLoader {
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T> T getInstance(Class<T> type,
+				Class<? extends Annotation>... annotations) {
+			List<T> instancesFound = getInstances(type, annotations);
+			if (instancesFound.isEmpty()) {
+				return null;
+			} else if (instancesFound.size() == 1) {
+				return instancesFound.get(0);
+			} else {
+				return resolveAmbigousComponents(instancesFound);
+			}
+		}
+
+		protected <T> T resolveAmbigousComponents(List<T> instancesFound) {
+			// or throw exception!
+			return instancesFound.get(0);
+
+		}
+
+		protected boolean annotationsMatch(Object comp,
+				Class<? extends Annotation>[] annotations) {
+			if (annotations == null) {
+				return true;
+			}
+			for (Class<? extends Annotation> annotType : annotations) {
+				if (comp.getClass().getAnnotation(annotType) == null) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T> List<T> getInstances(Class<T> type,
+				Class<? extends Annotation>... annotations) {
+			List<T> instancesFound = new ArrayList<T>();
+			ServiceLoader<T> components = ServiceLoader.load(type);
+			for (T comp : components) {
+				if (annotationsMatch(comp, annotations)) {
+					instancesFound.add((T) comp);
+				}
+			}
+			sortComponents(instancesFound);
+			return instancesFound;
+		}
+
+		protected void sortComponents(List<?> list) {
+		}
+
+	}
+
 }

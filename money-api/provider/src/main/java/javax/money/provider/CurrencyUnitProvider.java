@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
+import javax.money.UnknownCurrencyException;
 
 /**
  * This class models the component defined by JSR 354 that provides accessors
@@ -205,9 +206,9 @@ public interface CurrencyUnitProvider {
 			Long end);
 
 	/**
-	 * Checks if a currency is defined using its name space and code. This is a convenience method for
-	 * {@link #getCurrency(String, String)}, where as namespace the default
-	 * namespace is assumed.
+	 * Checks if a currency is defined using its name space and code. This is a
+	 * convenience method for {@link #getCurrency(String, String)}, where as
+	 * namespace the default namespace is assumed.
 	 * 
 	 * @see #getDefaultNamespace()
 	 * @param code

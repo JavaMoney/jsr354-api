@@ -31,8 +31,11 @@
  */
 package javax.money.provider.impl;
 
+import java.util.Enumeration;
+
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.provider.MonetaryAmountFactory;
 import javax.money.provider.MonetaryAmountProvider;
 
 /**
@@ -43,61 +46,32 @@ import javax.money.provider.MonetaryAmountProvider;
 public class TestMonetaryAmountProvider implements MonetaryAmountProvider {
 
 	@Override
-	public Class<?> getNumberClass() {
-		return String.class;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, Number number) {
-		// empty implementation
+	public Enumeration<Class<?>> getSupportedNumberClasses() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public MonetaryAmount get(CurrencyUnit currency, byte value) {
-		// empty implementation
+	public boolean isNumberClassSupported(Class<?> numberClass) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Class<?> getDefaultNumberClass() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public MonetaryAmount get(CurrencyUnit currency, short value) {
-		// empty implementation
+	public MonetaryAmountFactory getMonetaryAmountFactory(Class<?> numberClass) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public MonetaryAmount get(CurrencyUnit currency, int value) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, long value) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, long major, long minor) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, float value) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount get(CurrencyUnit currency, double value) {
-		// empty implementation
-		return null;
-	}
-
-	@Override
-	public MonetaryAmount zero(CurrencyUnit currency) {
-		// empty implementation
+	public MonetaryAmountFactory getMonetaryAmountFactory() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

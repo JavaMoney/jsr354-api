@@ -31,13 +31,14 @@
  */
 package javax.money.convert.spi;
 
+import javax.money.convert.ConversionProvider;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateType;
 
 /**
  * This SPI defines the factory that determines the default implementations of
- * {@link CurrencyConverter} to be used for a given {@link ExchangeRateType}, if
- * no explicit {@link CurrencyConverter} was registered.
+ * {@link ConversionProvider} to be used for a given {@link ExchangeRateType},
+ * if no explicit {@link ConversionProvider} was registered.
  * 
  * @author Anatole Tresch
  */

@@ -65,14 +65,6 @@ public class TestItemFormatterFactory implements ItemFormatterFactory {
 	@Override
 	public <T> ItemFormatter<T> getItemFormatter(Class<T> type,
 			LocalizationStyle style) {
-		if (!isSupportedStyle(type, style.getId())) {
-			throw new IllegalArgumentException("Unsupported style.");
-		}
-		if (MonetaryAmount.class.equals(type)) {
-			return (ItemFormatter<T>) new TestAmountFormatter();
-		} else if (CurrencyUnit.class.equals(type)) {
-			return (ItemFormatter<T>) new TestCurrencyFormatter();
-		}
 		return null;
 	}
 

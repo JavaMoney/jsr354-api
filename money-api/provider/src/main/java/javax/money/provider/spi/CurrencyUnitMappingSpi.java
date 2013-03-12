@@ -36,7 +36,8 @@ import java.util.ServiceLoader;
 import javax.money.CurrencyUnit;
 
 /**
- * Implementation of this interface define the mappings available for currencies.
+ * Implementation of this interface define the mappings available for
+ * currencies.
  * <p>
  * Registration of the implementations is done using the {@link ServiceLoader}.
  * 

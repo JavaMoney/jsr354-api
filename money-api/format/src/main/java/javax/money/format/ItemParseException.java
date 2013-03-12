@@ -45,19 +45,14 @@ public class ItemParseException extends Exception {
 	/** Serialization lock. */
 	private static final long serialVersionUID = 1L;
 
-	private CharSequence input;
-	private int position;
-
 	/**
 	 * Constructor taking a message.
 	 * 
 	 * @param message
 	 *            the message
 	 */
-	public ItemParseException(String message, CharSequence input, int pos) {
+	public ItemParseException(String message) {
 		super(message);
-		this.input = input;
-		this.position = pos;
 	}
 
 	/**
@@ -68,29 +63,8 @@ public class ItemParseException extends Exception {
 	 * @param cause
 	 *            the exception cause
 	 */
-	public ItemParseException(String message, CharSequence input, int pos,
-			Throwable cause) {
+	public ItemParseException(String message, Throwable cause) {
 		super(message, cause);
-		this.input = input;
-		this.position = pos;
-	}
-
-	/**
-	 * Access the input, that failed to parse.
-	 * 
-	 * @return the input String.
-	 */
-	public CharSequence getInput() {
-		return this.input;
-	}
-
-	/**
-	 * Access the position within the input where parsing failed.
-	 * 
-	 * @return the failing position within the input String, or -1.
-	 */
-	public int getPosition() {
-		return this.position;
 	}
 
 }

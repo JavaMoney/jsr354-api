@@ -34,12 +34,14 @@ package javax.money.ext;
 import java.util.Enumeration;
 import java.util.Locale;
 
+import javax.money.provider.MonetaryExtension;
+
 /**
  * Provider that serves calculations for financial algorithmic.
  * 
  * @author Anatole Tresch Note: still experimental!
  */
-public interface CalculationProvider {
+public interface CalculationProvider extends MonetaryExtension{
 
 	public Enumeration<Calculation<?>> getAvailableCalculations();
 

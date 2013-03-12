@@ -31,7 +31,8 @@
  */
 package javax.money.provider;
 
-import javax.money.CurrencyUnit;
+import java.util.Enumeration;
+
 import javax.money.MonetaryAmount;
 
 /**
@@ -49,107 +50,48 @@ public interface MonetaryAmountProvider {
 	 * 
 	 * @return The number representation class used by this factory, never null.
 	 */
-	public Class<?> getNumberClass();
-	
+	public Enumeration<Class<?>> getSupportedNumberClasses();
+
 	/**
-	 * Create an amount given the parameters.
+	 * Allows to check if a specific number representation is currently
+	 * supported.
 	 * 
-	 * @param currency
-	 *            The required currency, not null.
-	 * @param number
-	 *            The required numeric value, not null.
-	 * @return The amount instance.
+	 * @param numberClass
+	 *            the required number representation class.
+	 * @return true, if a {@link MonetaryAmountFactory} can be accessed for the
+	 *         given class.
+	 * @see #getMonetaryAmountFactory()
 	 */
-	public MonetaryAmount get(CurrencyUnit currency, Number number);
+	public boolean isNumberClassSupported(Class<?> numberClass);
+
+	/**
+	 * Access the number class used for representation by default.
+	 * 
+	 * @return the default number class, never null.
+	 */
+	public Class<?> getDefaultNumberClass();
 
 	/**
 	 * Create an amount given the parameters.
 	 * 
-	 * @param currency
-	 *            The required currency, not null.
-	 * @param value
-	 *            The required numeric value.
-	 * @return The amount instance.
+	 * @param numberClass
+	 *            The required number representation class.
+	 * @return The {@link MonetaryAmountFactory} instance.
+	 * @throws IllegalArgumentException
+	 *             , if the required {@code numberClass} is not supported.
+	 * @see #getSupportedNumberClasses()
+	 * @see #isNumberClassSupported(Class)
 	 */
-	public MonetaryAmount get(CurrencyUnit currency, byte value);
+	public MonetaryAmountFactory getMonetaryAmountFactory(Class<?> numberClass);
 
 	/**
-	 * Create an amount given the parameters.
+	 * Access a {@link MonetaryAmountFactory}, based on the default number
+	 * representation class.
 	 * 
-	 * @param currency
-	 *            The required currency, not null.
-	 * @param value
-	 *            The required numeric value.
-	 * @return The amount instance.
-	 */
-	public MonetaryAmount get(CurrencyUnit currency, short value);
-
-	/**
-	 * Create an amount given the parameters.
+	 * @see #getDefaultNumberClass()
 	 * 
-	 * @param currency
-	 *            The required currency, not null.
-	 * @param value
-	 *            The required numeric value.
-	 * @return The amount instance.
+	 * @return The {@link MonetaryAmountFactory} instance.
 	 */
-	public MonetaryAmount get(CurrencyUnit currency, int value);
-
-	/**
-	 * Create an amount given the parameters.
-	 * 
-	 * @param currency
-	 *            The required currency, not null.
-	 * @param value
-	 *            The required numeric value.
-	 * @return The amount instance.
-	 */
-	public MonetaryAmount get(CurrencyUnit currency, long value);
-
-	/**
-	 * Create an amount given the parameters.
-	 * 
-	 * @param currency
-	 *            The required currency, not null.
-	 * @param major
-	 *            The required major decimal number part.
-	 * @param minor
-	 *            The required minor decimal number part, not negative.
-	 * @return The amount instance.
-	 */
-	public MonetaryAmount get(CurrencyUnit currency, long major, long minor);
-
-	/**
-	 * Create an amount given the parameters.
-	 * 
-	 * @param currency
-	 *            The required currency, not null.
-	 * @param value
-	 *            The required numeric value.
-	 * @return The amount instance.
-	 */
-	public MonetaryAmount get(CurrencyUnit currency, float value);
-
-	/**
-	 * Create an amount given the parameters.
-	 * 
-	 * @param currency
-	 *            The required currency, not null.
-	 * @param value
-	 *            The required numeric value.
-	 * @return The amount instance.
-	 */
-	public MonetaryAmount get(CurrencyUnit currency, double value);
-
-	/**
-	 * Obtains an instance of {@code Money} representing zero.
-	 * <p>
-	 * For example, {@code zero(USD)} creates the instance {@code USD 0.00}.
-	 * 
-	 * @param currency
-	 *            the currency, not null
-	 * @return the instance representing zero, never null
-	 */
-	public MonetaryAmount zero(CurrencyUnit currency);
+	public MonetaryAmountFactory getMonetaryAmountFactory();
 
 }

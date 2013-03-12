@@ -37,7 +37,7 @@ import javax.money.provider.MonetaryAmountProvider;
  */
 public class DefaultCurrencyConverter implements CurrencyConverter {
 
-	private ExchangeRateType exchangeRateType;
+	private ExchangeRateType exchangeRateType; 
 
 	public DefaultCurrencyConverter(ExchangeRateType exchangeRateType) {
 		if (exchangeRateType == null) {

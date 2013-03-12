@@ -7,7 +7,6 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Locale;
 
-import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.Rounding;

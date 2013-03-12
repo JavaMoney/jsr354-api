@@ -21,7 +21,6 @@ package net.java.javamoney.ri.format.provider.format;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Currency;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;

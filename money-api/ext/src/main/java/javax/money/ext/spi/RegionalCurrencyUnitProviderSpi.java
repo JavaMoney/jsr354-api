@@ -33,6 +33,7 @@ package javax.money.ext.spi;
 
 import javax.money.CurrencyUnit;
 import javax.money.ext.Region;
+import javax.money.ext.RegionalCurrencyUnitProvider;
 import javax.money.provider.MonetaryExtension;
 
 /**
@@ -42,7 +43,7 @@ import javax.money.provider.MonetaryExtension;
  * 
  * @author Anatole Tresch
  */
-public interface RegionalCurrencyUnitProviderSpi extends MonetaryExtension{
+public interface RegionalCurrencyUnitProviderSpi extends MonetaryExtension {
 
 	/**
 	 * Access all currencies matching a {@link Region}.
@@ -60,9 +61,23 @@ public interface RegionalCurrencyUnitProviderSpi extends MonetaryExtension{
 	 * @param locale
 	 *            the target locale, not null.
 	 * @param timestamp
-	 *            The target UTC timestamp, or {@code null} for the current UTC timestamp.
+	 *            The target UTC timestamp, or {@code null} for the current UTC
+	 *            timestamp.
 	 * @return the currencies found, or null.
 	 */
 	public CurrencyUnit[] getAll(Region region, Long timestamp);
+
+	/**
+	 * Access all legal tenders for a region.
+	 * 
+	 * @see RegionalCurrencyUnitProvider#getLegalTenders(Region)
+	 * @param region
+	 *            The target region, not null.
+	 * @param timestamp
+	 *            the target timestamp, may be null, meaning now.
+	 * @return The {@link CurrencyUnit} instances valid for a given
+	 *         {@link Region}.
+	 */
+	public CurrencyUnit[] getLegalTenders(Region region, Long timestamp);
 
 }

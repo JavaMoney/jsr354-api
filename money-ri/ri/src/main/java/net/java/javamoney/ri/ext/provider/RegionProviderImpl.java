@@ -32,7 +32,6 @@ import javax.money.ext.RegionType;
 import javax.money.ext.spi.RegionProviderSpi;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
-import net.java.javamoney.ri.ext.RegionImpl;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors

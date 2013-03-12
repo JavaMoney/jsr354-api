@@ -34,6 +34,7 @@ import javax.money.ext.spi.RegionalCurrencyUnitProviderSpi;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
 
+
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
  * for {@link CurrencyUnit}.
@@ -41,12 +42,16 @@ import net.java.javamoney.ri.common.AbstractRiComponent;
  * @author Anatole Tresch
  */
 @Singleton
-public final class RegionalCurrencyUnitProviderImpl extends
-		AbstractRiComponent implements RegionalCurrencyUnitProvider {
+public final class RegionalCurrencyUnitProviderImpl extends AbstractRiComponent
+		implements RegionalCurrencyUnitProvider {
 
 	/** Loaded region providers. */
 	private List<RegionalCurrencyUnitProviderSpi> regionalCurrencyProviders = new ArrayList<RegionalCurrencyUnitProviderSpi>();
 
+	public RegionalCurrencyUnitProviderImpl() {
+		reload();
+	}
+	
 	/**
 	 * This method defined that this implementation is exposed as
 	 * {@link RegionalCurrencyUnitProvider}.
@@ -86,10 +91,50 @@ public final class RegionalCurrencyUnitProviderImpl extends
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		for (RegionalCurrencyUnitProviderSpi prov : regionalCurrencyProviders) {
 			CurrencyUnit[] currencies = prov.getAll(region);
-			if (currencies != null) {
+			if (currencies != null && currencies.length > 0) {
 				result.addAll(Arrays.asList(currencies));
 			}
 		}
 		return result.toArray(new CurrencyUnit[result.size()]);
 	}
+
+	@Override
+	public boolean isLegalTender(CurrencyUnit currency, Region region) {
+		return isLegalTender(currency, region, null);
+	}
+	
+	@Override
+	public boolean isLegalTender(CurrencyUnit currency, Region region,
+			Long timestamp) {
+		CurrencyUnit[] tenders = getLegalTenders(region, timestamp);
+		for (int i = 0; i < tenders.length; i++) {
+			if(!tenders[i].getNamespace().equals(currency.getNamespace())){
+				continue;
+			}
+			if(!tenders[i].getCurrencyCode().equals(currency.getCurrencyCode())){
+				continue;
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public CurrencyUnit[] getLegalTenders(Region region) {
+		return getLegalTenders(region, null);
+	}
+
+	@Override
+	public CurrencyUnit[] getLegalTenders(Region region, Long timestamp) {
+		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
+		for (RegionalCurrencyUnitProviderSpi prov : regionalCurrencyProviders) {
+			CurrencyUnit[] currencies = prov.getLegalTenders(region, timestamp);
+			if (currencies != null && currencies.length > 0) {
+				result.addAll(Arrays.asList(currencies));
+			}
+		}
+		return result.toArray(new CurrencyUnit[result.size()]);
+	}
+
+	
 }

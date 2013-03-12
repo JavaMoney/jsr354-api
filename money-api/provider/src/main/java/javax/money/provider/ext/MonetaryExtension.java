@@ -29,51 +29,14 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.provider.spi;
-
-import java.util.Enumeration;
-
-import javax.money.CurrencyUnit;
-import javax.money.Rounding;
+package javax.money.provider.ext;
 
 /**
- * This instance provides default {@link Rounding}, e.g. for ISO currencies.
+ * This is a marker interface used for identifying/loading of monetary
+ * implementation components as defined by JSR 354 or third parties.
  * 
  * @author Anatole Tresch
  */
-public interface RoundingProviderSpi {
-
-	/**
-	 * Access the {@link Rounding} by id.
-	 * 
-	 * @param name
-	 *            the rounding's id. not null.
-	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
-	 *         {@code null} is returned.
-	 */
-	public Rounding getRounding(String name);
-
-	/**
-	 * Access the ids, defined by this provider SPI implementation.
-	 * 
-	 * @return the its provided, or {@code null}, when no named {@link Rounding}
-	 *         instances are provided by this implementation.
-	 */
-	public Enumeration<String> getRoundingIds();
-
-	/**
-	 * Access the {@link Rounding} for a given {@link CurrencyUnit} and
-	 * timestamp.
-	 * 
-	 * @param currency
-	 *            the currency instance. not null.
-	 * @param timestamp
-	 *            the target timestamp for the {@link Rounding}, or {@code null}
-	 *            for the current UTC time.
-	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
-	 *         it should be created/registered based on
-	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
-	 */
-	public Rounding getRounding(CurrencyUnit currency, Long timestamp);
+public interface MonetaryExtension {
 
 }

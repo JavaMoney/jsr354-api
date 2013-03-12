@@ -30,9 +30,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
-import javax.money.provider.spi.CurrencyUnitProviderSpi;
 
 import net.java.javamoney.ri.core.MoneyCurrency;
+import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
 
 
 /**

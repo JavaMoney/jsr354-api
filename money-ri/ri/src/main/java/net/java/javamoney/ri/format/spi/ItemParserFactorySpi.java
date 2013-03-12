@@ -29,25 +29,25 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.format.spi;
+package net.java.javamoney.ri.format.spi;
 
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.ServiceLoader;
 
-import javax.money.format.ItemFormatException;
 import javax.money.format.ItemFormatter;
+import javax.money.format.ItemParseException;
+import javax.money.format.ItemParser;
 import javax.money.format.LocalizationStyle;
 
 /**
  * Instances of this class can be registered using the {@link ServiceLoader}
- * API. The formatter runtime will ask each registered instance of
- * {@link ItemFormatterFactorySpi} for a formatter given the
- * {@link LocalizationStyle} provided, until an instance will return a non-null
- * instance of {@link AmountFormatter}. This instance finally will be returned
- * to the client.
+ * API. The parser runtime will ask each registered instance for a
+ * {@link ItemParser} given the {@link LocalizationStyle} provided, until an
+ * instance will return a non-null instance of {@link ItemParser}. This instance
+ * finally will be returned to the client.
  * <p>
- * Note that the formatter runtime does not perform any caching of instances
+ * Note that the parser runtime does not perform any caching of instances
  * returned. It is the responsibility of the implementations of this interface,
  * to implement reuse of resources, where useful. Nevertheless keep in mind that
  * synchronization of shared resources can lead to severe performance issues.
@@ -58,7 +58,7 @@ import javax.money.format.LocalizationStyle;
  * 
  * @author Anatole Tresch
  */
-public interface ItemFormatterFactorySpi<T> {
+public interface ItemParserFactorySpi<T> {
 
 	/**
 	 * Return the target type the owning artifact can be applied to.
@@ -68,7 +68,7 @@ public interface ItemFormatterFactorySpi<T> {
 	public Class<T> getTargetClass();
 
 	/**
-	 * Return the style id's supported by this {@link ItemFormatterFactorySpi}
+	 * Return the style id's supported by this {@link ItemParserFactorySpi}
 	 * instance.
 	 * 
 	 * @see LocalizationStyle#getId()
@@ -77,7 +77,7 @@ public interface ItemFormatterFactorySpi<T> {
 	public Enumeration<String> getSupportedStyleIds();
 
 	/**
-	 * Creates a new instance of the formatter defined by the passed
+	 * Creates a new instance of the {@link ItemParser} defined by the passed
 	 * localization style instance, if the style (style id, one of the style's
 	 * locales or additional attributes) required are not supported by this
 	 * factory, {@code null} should be returned.
@@ -89,11 +89,11 @@ public interface ItemFormatterFactorySpi<T> {
 	 *            {@link Locale} instances to be used, as well as other
 	 *            attributes.
 	 * @return a formatter instance representing the given style, or null.
-	 * @throws ItemFormatException
+	 * @throws ItemParseException
 	 *             if the {@link LocalizationStyle} passed can not be used for
-	 *             configuring the {@link ItemFormatter}.
+	 *             configuring the {@link ItemParser}.
 	 */
-	public ItemFormatter<T> getItemFormatter(LocalizationStyle style)
-			throws ItemFormatException;
+	ItemParser<T> getItemParser(LocalizationStyle style)
+			throws ItemParseException;
 
 }

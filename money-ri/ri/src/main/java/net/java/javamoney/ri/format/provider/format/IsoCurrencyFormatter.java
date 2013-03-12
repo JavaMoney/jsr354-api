@@ -31,7 +31,7 @@ import javax.money.format.LocalizationStyle;
 public class IsoCurrencyFormatter implements ItemFormatter<CurrencyUnit> {
 
 	public enum RenderedField {
-		ID, CODE, SYMBOL, DISPLAYNAME, NUMERICCODE
+		ID, CODE, SYMBOL, DISPLAYNAME, NUMERICCODE, OMIT
 	}
 
 	private RenderedField renderedField = RenderedField.CODE;

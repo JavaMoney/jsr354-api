@@ -32,9 +32,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
 import javax.money.LocalizableCurrencyUnit;
-import javax.money.provider.spi.CurrencyUnitProviderSpi;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

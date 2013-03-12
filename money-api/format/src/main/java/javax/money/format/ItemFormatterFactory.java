@@ -34,8 +34,6 @@ package javax.money.format;
 import java.util.Enumeration;
 import java.util.Locale;
 
-import javax.money.format.spi.ItemFormatterFactorySpi;
-
 /**
  * This class represent the accessor interface for creating different kind of
  * {@link ItemFormatter} instances.

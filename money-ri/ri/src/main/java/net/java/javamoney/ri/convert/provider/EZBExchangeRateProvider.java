@@ -143,7 +143,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * javax.money.convert.spi.ExchangeRateProviderSpi#getExchangeRateType()
+	 * net.java.javamoney.ri.convert.spi.ExchangeRateProviderSpi#getExchangeRateType()
 	 */
 	@Override
 	public ExchangeRateType getExchangeRateType() {
@@ -154,7 +154,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * javax.money.convert.spi.ExchangeRateProviderSpi#getExchangeRate(javax
+	 * net.java.javamoney.ri.convert.spi.ExchangeRateProviderSpi#getExchangeRate(javax
 	 * .money.CurrencyUnit, javax.money.CurrencyUnit, java.lang.Long)
 	 */
 	@Override

@@ -30,10 +30,10 @@ import javax.money.format.ItemParseException;
 import javax.money.format.ItemParser;
 import javax.money.format.ItemParserFactory;
 import javax.money.format.LocalizationStyle;
-import javax.money.format.spi.ItemParserFactorySpi;
 import javax.money.provider.Monetary;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
+import net.java.javamoney.ri.format.spi.ItemParserFactorySpi;
 
 public class ItemParserFactoryImpl extends AbstractRiComponent implements
 		ItemParserFactory {

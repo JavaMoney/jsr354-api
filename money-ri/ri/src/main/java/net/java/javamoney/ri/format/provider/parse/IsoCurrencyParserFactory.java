@@ -27,9 +27,9 @@ import javax.money.CurrencyUnit;
 import javax.money.format.ItemParseException;
 import javax.money.format.ItemParser;
 import javax.money.format.LocalizationStyle;
-import javax.money.format.spi.ItemParserFactorySpi;
 
 import net.java.javamoney.ri.format.provider.format.IsoCurrencyFormatter;
+import net.java.javamoney.ri.format.spi.ItemParserFactorySpi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

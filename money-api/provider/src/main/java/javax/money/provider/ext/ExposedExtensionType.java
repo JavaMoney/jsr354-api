@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package javax.money.provider.annot;
+package javax.money.provider.ext;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -38,7 +38,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import javax.money.provider.Monetary;
-import javax.money.provider.MonetaryExtension;
 
 /**
  * This is a interface that defines the API type exposed by

@@ -28,11 +28,11 @@ import javax.money.convert.ConversionProvider;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.CurrencyConverterFactorySpi;
 import javax.money.provider.Monetary;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
 import net.java.javamoney.ri.convert.provider.DefaultCurrencyConverter;
+import net.java.javamoney.ri.convert.spi.CurrencyConverterFactorySpi;
 
 @Singleton
 public class ConversionProviderImpl extends AbstractRiComponent implements

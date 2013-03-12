@@ -34,7 +34,7 @@ package javax.money.ext;
 import java.util.Enumeration;
 import java.util.Locale;
 
-import javax.money.provider.MonetaryExtension;
+import javax.money.provider.ext.MonetaryExtension;
 
 /**
  * Provider that serves calculations for financial algorithmic.

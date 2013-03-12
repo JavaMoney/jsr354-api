@@ -35,7 +35,7 @@ import java.util.ServiceLoader;
 
 import javax.money.ext.Region;
 import javax.money.ext.RegionType;
-import javax.money.provider.MonetaryExtension;
+import javax.money.provider.ext.MonetaryExtension;
 
 /**
  * Implementation of this interface define the regions supported in the system.

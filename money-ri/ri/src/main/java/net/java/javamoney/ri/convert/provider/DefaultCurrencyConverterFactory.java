@@ -23,7 +23,8 @@ import java.util.ServiceLoader;
 import javax.inject.Singleton;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.spi.CurrencyConverterFactorySpi;
+
+import net.java.javamoney.ri.convert.spi.CurrencyConverterFactorySpi;
 
 /**
  * This class provides the default implementation for the

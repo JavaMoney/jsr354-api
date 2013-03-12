@@ -36,10 +36,10 @@ import javax.money.IllegalCurrencyException;
 import javax.money.ext.RegionType;
 import javax.money.provider.CurrencyUnitProvider;
 import javax.money.provider.Monetary;
-import javax.money.provider.spi.CurrencyUnitMappingSpi;
-import javax.money.provider.spi.CurrencyUnitProviderSpi;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
+import net.java.javamoney.ri.core.spi.CurrencyUnitMappingSpi;
+import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors

@@ -28,9 +28,9 @@ import javax.money.MonetaryAmount;
 import javax.money.format.ItemFormatException;
 import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
-import javax.money.format.spi.ItemFormatterFactorySpi;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
+import net.java.javamoney.ri.format.spi.ItemFormatterFactorySpi;
 
 public class IsoAmountFormatterFactory extends AbstractRiComponent implements
 		ItemFormatterFactorySpi<MonetaryAmount> {

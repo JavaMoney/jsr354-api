@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 import javax.money.provider.Monetary.ComponentLoader;
-import javax.money.provider.ext.MonetaryExtension;
 
 public class MonetaryServiceLoader implements ComponentLoader {
 

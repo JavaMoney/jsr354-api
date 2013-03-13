@@ -25,7 +25,7 @@ import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.Rounding;
 import javax.money.convert.CurrencyConversionException;
-import javax.money.provider.ext.MonetaryExtension;
+import javax.money.provider.MonetaryExtension;
 
 /**
  * Component for accessing {@link MonetaryAmount} instances. It is provided by

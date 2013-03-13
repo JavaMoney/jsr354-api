@@ -17,7 +17,7 @@
  * Contributors:
  *    Anatole Tresch - initial version.
  */
-package javax.money.provider.ext;
+package javax.money.provider;
 
 /**
  * This is a marker interface used for identifying/loading of monetary

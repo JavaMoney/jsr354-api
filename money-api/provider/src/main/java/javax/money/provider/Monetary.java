@@ -36,8 +36,6 @@ import java.util.logging.Logger;
 import javax.money.convert.ConversionProvider;
 import javax.money.format.ItemFormatterFactory;
 import javax.money.format.ItemParserFactory;
-import javax.money.provider.ext.ExposedExtensionType;
-import javax.money.provider.ext.MonetaryExtension;
 
 /**
  * This is the main accessor component for Java Money. Is is reponsible for

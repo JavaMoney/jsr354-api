@@ -19,8 +19,8 @@
  */
 package javax.money.provider.impl;
 
-import javax.money.provider.ext.ExposedExtensionType;
-import javax.money.provider.ext.MonetaryExtension;
+import javax.money.provider.ExposedExtensionType;
+import javax.money.provider.MonetaryExtension;
 import javax.money.provider.ext.TestExtension;
 
 /**

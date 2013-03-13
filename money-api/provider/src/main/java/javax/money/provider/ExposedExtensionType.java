@@ -17,7 +17,7 @@
  * Contributors:
  *    Anatole Tresch - initial version.
  */
-package javax.money.provider.ext;
+package javax.money.provider;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -25,7 +25,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.money.provider.Monetary;
 
 /**
  * This is a interface that defines the API type exposed by

@@ -110,4 +110,62 @@ public interface Region {
 	public Enumeration<Region> getChildRegions(RegionType type,
 			boolean recursive);
 
+	/**
+	 * Access a child region (regardless its {@link RegionType}), using its
+	 * identifier.
+	 * 
+	 * @param identifier
+	 *            the child region's id.
+	 * @return the region that matches the given id, or null.
+	 * @throws IllegalArgumentException
+	 *             if multiple child regions have the given id.
+	 */
+	public Region getChildRegion(String identifier);
+
+	/**
+	 * Access a child region (regardless its {@link RegionType}), using its
+	 * identifier.
+	 * 
+	 * @param identifier
+	 *            the child region's id.
+	 * @param recursive
+	 *            Flag, to walk down the tree recursively.
+	 * @return the region that matches the given id, or null.
+	 * @throws IllegalArgumentException
+	 *             if multiple child regions have the given id.
+	 */
+	public Region getChildRegion(String identifier, boolean recursive);
+
+	/**
+	 * Access a child region, check only regions of the given {@link RegionType}
+	 * ), using its identifier.
+	 * 
+	 * @param identifier
+	 *            the child region's id.
+	 * @param type
+	 *            the required {@link RegionType}
+	 * @return the region that matches the given id, or null.
+	 * @throws IllegalArgumentException
+	 *             if multiple child regions have the given id.
+	 */
+	public Region getChildRegion(String identifier, RegionType type);
+
+	/**
+	 * Access a child region, check only regions of the given {@link RegionType}
+	 * ), using its identifier.
+	 * 
+	 * @param identifier
+	 *            the child region's id.
+	 * @param type
+	 *            the required {@link RegionType}
+	 * @param recursive
+	 *            Flag, to walk down the tree recursively.
+	 * @return the region that matches the given id, or null.
+	 * @return the region that matches the given id, or null.
+	 * @throws IllegalArgumentException
+	 *             if multiple child regions have the given id.
+	 */
+	public Region getChildRegion(String identifier, RegionType type,
+			boolean recursive);
+
 }

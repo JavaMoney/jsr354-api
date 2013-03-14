@@ -99,14 +99,14 @@ public final class RegionalCurrencyUnitProviderImpl extends AbstractRiComponent
 	}
 
 	@Override
-	public boolean isLegalTender(CurrencyUnit currency, Region region) {
-		return isLegalTender(currency, region, null);
+	public boolean isLegalTCurrencyUnit(CurrencyUnit currency, Region region) {
+		return isLegalTCurrencyUnit(currency, region, null);
 	}
 	
 	@Override
-	public boolean isLegalTender(CurrencyUnit currency, Region region,
+	public boolean isLegalTCurrencyUnit(CurrencyUnit currency, Region region,
 			Long timestamp) {
-		CurrencyUnit[] tenders = getLegalTenders(region, timestamp);
+		CurrencyUnit[] tenders = getLegalCurrencyUnits(region, timestamp);
 		for (int i = 0; i < tenders.length; i++) {
 			if(!tenders[i].getNamespace().equals(currency.getNamespace())){
 				continue;
@@ -120,12 +120,12 @@ public final class RegionalCurrencyUnitProviderImpl extends AbstractRiComponent
 	}
 
 	@Override
-	public CurrencyUnit[] getLegalTenders(Region region) {
-		return getLegalTenders(region, null);
+	public CurrencyUnit[] getLegalCurrencyUnits(Region region) {
+		return getLegalCurrencyUnits(region, null);
 	}
 
 	@Override
-	public CurrencyUnit[] getLegalTenders(Region region, Long timestamp) {
+	public CurrencyUnit[] getLegalCurrencyUnits(Region region, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		for (RegionalCurrencyUnitProviderSpi prov : regionalCurrencyProviders) {
 			CurrencyUnit[] currencies = prov.getLegalTenders(region, timestamp);

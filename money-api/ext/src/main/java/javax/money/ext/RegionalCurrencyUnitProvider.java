@@ -77,7 +77,7 @@ public interface RegionalCurrencyUnitProvider extends MonetaryExtension {
 	 * @return true if the currency is accepted as legal tender in the current
 	 *         region.
 	 */
-	public boolean isLegalTender(CurrencyUnit currency, Region region);
+	public boolean isLegalTCurrencyUnit(CurrencyUnit currency, Region region);
 
 	/**
 	 * This method allows to evaluate if a {@link CurrencyUnit} is a legal
@@ -94,7 +94,7 @@ public interface RegionalCurrencyUnitProvider extends MonetaryExtension {
 	 * @return true if the currency is accepted as legal tender in the current
 	 *         region.
 	 */
-	public boolean isLegalTender(CurrencyUnit currency, Region region,
+	public boolean isLegalTCurrencyUnit(CurrencyUnit currency, Region region,
 			Long timestamp);
 
 	/**
@@ -106,7 +106,7 @@ public interface RegionalCurrencyUnitProvider extends MonetaryExtension {
 	 * @return the {@link CurrencyUnit} to be known as legal tenders for the
 	 *         given region, never null.
 	 */
-	public CurrencyUnit[] getLegalTenders(Region region);
+	public CurrencyUnit[] getLegalCurrencyUnits(Region region);
 
 	/**
 	 * This method allows to evaluate the {@link CurrencyUnit} accepted as legal
@@ -119,6 +119,6 @@ public interface RegionalCurrencyUnitProvider extends MonetaryExtension {
 	 * @return the {@link CurrencyUnit} to be known as legal tenders for the
 	 *         given region, never null.
 	 */
-	public CurrencyUnit[] getLegalTenders(Region region, Long timestamp);
+	public CurrencyUnit[] getLegalCurrencyUnits(Region region, Long timestamp);
 
 }

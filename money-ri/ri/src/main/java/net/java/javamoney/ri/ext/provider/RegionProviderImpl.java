@@ -21,6 +21,8 @@
 package net.java.javamoney.ri.ext.provider;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -32,6 +34,7 @@ import javax.money.ext.RegionProvider;
 import javax.money.ext.RegionType;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
+import net.java.javamoney.ri.ext.RegionImpl;
 import net.java.javamoney.ri.ext.spi.RegionProviderSpi;
 
 /**
@@ -70,7 +73,7 @@ public final class RegionProviderImpl extends AbstractRiComponent implements
 	 * @return all defined region types, never null.
 	 */
 	@Override
-	public RegionType[] getRegionTypes() {
+	public Enumeration<RegionType> getRegionTypes() {
 		Set<RegionType> result = new HashSet<RegionType>();
 		for (RegionProviderSpi prov : INSTANCE.regionProviders) {
 			RegionType[] regionTypes = prov.getRegionTypes();
@@ -89,7 +92,7 @@ public final class RegionProviderImpl extends AbstractRiComponent implements
 				result.add(regionTypes[i]);
 			}
 		}
-		return result.toArray(new RegionType[result.size()]);
+		return Collections.enumeration(result);
 	}
 
 	/**
@@ -170,7 +173,7 @@ public final class RegionProviderImpl extends AbstractRiComponent implements
 	 * @return the regions found, never null.
 	 */
 	@Override
-	public Region[] getRootRegions() {
+	public Enumeration<Region> getRootRegions() {
 		Region[] regions = getAll();
 		Set<Region> result = new HashSet<Region>();
 		for (Region region : regions) {
@@ -178,7 +181,17 @@ public final class RegionProviderImpl extends AbstractRiComponent implements
 				result.add(region);
 			}
 		}
-		return result.toArray(new Region[result.size()]);
+		return Collections.enumeration(result);
+	}
+
+	@Override
+	public RegionType getRegionType(String id) {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
+	@Override
+	public Region getRootRegion(String id) {
+		throw new UnsupportedOperationException("Not implemented");
 	}
 
 }

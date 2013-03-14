@@ -425,4 +425,25 @@ public class RegionImpl implements Region, Serializable {
 
 	}
 
+	@Override
+	public Region getChildRegion(String identifier) {
+		throw new UnsupportedOperationException("Not yet implemented");
+	}
+
+	@Override
+	public Region getChildRegion(String identifier, boolean recursive) {
+		throw new UnsupportedOperationException("Not yet implemented");
+	}
+
+	@Override
+	public Region getChildRegion(String identifier, RegionType type) {
+		throw new UnsupportedOperationException("Not yet implemented");
+	}
+
+	@Override
+	public Region getChildRegion(String identifier, RegionType type,
+			boolean recursive) {
+		throw new UnsupportedOperationException("Not yet implemented");
+	}
+
 }

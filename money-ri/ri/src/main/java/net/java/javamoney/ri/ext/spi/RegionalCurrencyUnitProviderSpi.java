@@ -58,7 +58,7 @@ public interface RegionalCurrencyUnitProviderSpi extends MonetaryExtension {
 	/**
 	 * Access all legal tenders for a region.
 	 * 
-	 * @see RegionalCurrencyUnitProvider#getLegalTenders(Region)
+	 * @see RegionalCurrencyUnitProvider#getLegalCurrencyUnits(Region)
 	 * @param region
 	 *            The target region, not null.
 	 * @param timestamp

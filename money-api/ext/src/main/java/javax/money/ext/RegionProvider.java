@@ -51,39 +51,32 @@ public interface RegionProvider extends MonetaryExtension {
 	public Enumeration<RegionType> getRegionTypes();
 
 	/**
-	 * Access all regions available, that have no parent region.
+	 * Access a RegionType using its id.
+	 * 
+	 * @param id
+	 *            The {@link RegionType} id, not null.
+	 * @return the matching {@link RegionType}, or null.
+	 */
+	public RegionType getRegionType(String id);
+
+	/**
+	 * Access all regions available, that have no parent region. It is possible
+	 * to define different regional hierarchies at the same time, whereas the
+	 * ids of the root regions must be unique among all root regions
 	 * 
 	 * @return all {@link Region}s available without a parent, never null.
 	 */
 	public Enumeration<Region> getRootRegions();
 
 	/**
-	 * Access a region.
+	 * Since ids of root regions must be unique a regional tree can be accessed
+	 * using this id.
 	 * 
-	 * @param identifier
-	 *            The region's id, not null.
-	 * @param type
-	 *            The region type, not null.
-	 * @return the region instance.
-	 * @throws IllegalArgumentException
-	 *             if the region does not exist.
+	 * @see #getRootRegions()
+	 * @param id
+	 *            the root region's id
+	 * @return the root region, or null.
 	 */
-	public Region get(String identifier, RegionType type);
-
-	/**
-	 * Access all regions for a given {@link RegionType}.
-	 * 
-	 * @param type
-	 *            The region type, not null.
-	 * @return the regions found, never null.
-	 */
-	public Enumeration<Region> getAll(RegionType type);
-
-	/**
-	 * Access all regions.
-	 * 
-	 * @return the regions found, never null.
-	 */
-	public Enumeration<Region> getAll();
+	public Region getRootRegion(String id);
 
 }

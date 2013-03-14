@@ -31,6 +31,8 @@
  */
 package javax.money.ext;
 
+import java.util.Enumeration;
+
 import javax.money.provider.MonetaryExtension;
 
 /**
@@ -46,14 +48,14 @@ public interface RegionProvider extends MonetaryExtension {
 	 * 
 	 * @return all {@link RegionType}s available, never null.
 	 */
-	public RegionType[] getRegionTypes();
+	public Enumeration<RegionType> getRegionTypes();
 
 	/**
 	 * Access all regions available, that have no parent region.
 	 * 
 	 * @return all {@link Region}s available without a parent, never null.
 	 */
-	public Region[] getRootRegions();
+	public Enumeration<Region> getRootRegions();
 
 	/**
 	 * Access a region.
@@ -75,13 +77,13 @@ public interface RegionProvider extends MonetaryExtension {
 	 *            The region type, not null.
 	 * @return the regions found, never null.
 	 */
-	public Region[] getAll(RegionType type);
+	public Enumeration<Region> getAll(RegionType type);
 
 	/**
 	 * Access all regions.
 	 * 
 	 * @return the regions found, never null.
 	 */
-	public Region[] getAll();
+	public Enumeration<Region> getAll();
 
 }

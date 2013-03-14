@@ -18,12 +18,14 @@
  */
 package net.java.javamoney.ri.ext;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.money.ext.LocalizableRegionType;
 import javax.money.ext.Region;
 import javax.money.ext.RegionType;
+import javax.money.format.LocalizableItem;
+import javax.money.format.LocalizationStyle;
 
 /**
  * This class implements a {@link LocalizableRegionType} based on a
@@ -32,7 +34,7 @@ import javax.money.ext.RegionType;
  * @author Anatole Tresch
  * 
  */
-public class ResourceBundleLocalizedRegion implements LocalizableRegionType {
+public class ResourceBundleLocalizedRegion implements RegionType, LocalizableItem {
 
 	private final Region base;
 	private final String basename;
@@ -51,19 +53,6 @@ public class ResourceBundleLocalizedRegion implements LocalizableRegionType {
 	@Override
 	public String getId() {
 		return base.getId();
-	}
-
-	@Override
-	public String getDisplayName() {
-		ResourceBundle bundle = ResourceBundle.getBundle(basename,
-				Locale.getDefault());
-		return bundle.getString("Region."+getId()+".displayname");
-	}
-
-	@Override
-	public String getDisplayName(Locale locale) {
-		ResourceBundle bundle = ResourceBundle.getBundle(basename, locale);
-		return bundle.getString("Region."+getId()+".displayname");
 	}
 
 	public String getBasename() {
@@ -108,6 +97,29 @@ public class ResourceBundleLocalizedRegion implements LocalizableRegionType {
 	public String toString() {
 		return "ResourceBundleLocalizedRegionType [base=" + base
 				+ ", basename=" + basename + "]";
+	}
+
+	@Override
+	public String format(Locale locale) {
+		ResourceBundle bundle = ResourceBundle.getBundle(basename, locale);
+		return bundle.getString("Region."+getId()+".displayname");
+	}
+
+	@Override
+	public String format(LocalizationStyle style) {
+		ResourceBundle bundle = ResourceBundle.getBundle(basename, style.getTranslationLocale());
+		return bundle.getString("Region."+getId()+".displayname");
+	}
+
+	@Override
+	public void print(Appendable appendable, Locale locale) throws IOException {
+		appendable.append(format(locale));
+	}
+
+	@Override
+	public void print(Appendable appendable, LocalizationStyle style)
+			throws IOException {
+		appendable.append(format(style));
 	}
 	
 

@@ -1,5 +1,6 @@
 package net.java.javamoney.ri;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -7,8 +8,8 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Locale;
 
-import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
+import javax.money.LocalizableCurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.Rounding;
 import javax.money.convert.ConversionProvider;
@@ -53,6 +54,20 @@ public class SmokeTests {
 		assertEquals(1.0d, amount1.doubleValue(), 0);
 		assertEquals(1.0d, amount2.doubleValue(), 0);
 		assertEquals(2.0d, amount3.doubleValue(), 0);
+	}
+	
+	@Test
+	public void testCurrencyAccess() {
+		// Creating one
+		CurrencyUnit currency = Monetary.getCurrencyUnitProvider().get(
+				CurrencyUnit.ISO_NAMESPACE, "INR");
+		assertNotNull(currency);
+		assertTrue(currency instanceof LocalizableCurrencyUnit);
+		LocalizableCurrencyUnit lcu = (LocalizableCurrencyUnit)currency;
+		assertEquals("INR", lcu.getSymbol(Locale.ENGLISH));
+		assertEquals("INR", lcu.getSymbol(Locale.GERMAN));
+		assertEquals("Indian Rupee", lcu.getDisplayName(Locale.ENGLISH));
+		assertEquals("Indische Rupie", lcu.getDisplayName(Locale.GERMAN));
 	}
 
 	@Test

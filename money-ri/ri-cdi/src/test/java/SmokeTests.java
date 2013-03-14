@@ -20,12 +20,14 @@
  */
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
+import javax.money.LocalizableCurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.Rounding;
 import javax.money.convert.ConversionProvider;
@@ -187,5 +189,19 @@ public class SmokeTests {
 						LocalizationStyle.of("CODE", Locale.GERMANY));
 		System.out.println("Formatted amount: " + formatter.format(amount));
 		assertEquals(1.0d, amount.doubleValue(), 0);
+	}
+	
+	@Test
+	public void testCurrencyAccess() {
+		// Creating one
+		CurrencyUnit currency = Monetary.getCurrencyUnitProvider().get(
+				CurrencyUnit.ISO_NAMESPACE, "INR");
+		assertNotNull(currency);
+		assertTrue(currency instanceof LocalizableCurrencyUnit);
+		LocalizableCurrencyUnit lcu = (LocalizableCurrencyUnit)currency;
+		assertEquals("INR", lcu.getSymbol(Locale.ENGLISH));
+		assertEquals("INR", lcu.getSymbol(Locale.GERMAN));
+		assertEquals("Indian Rupee", lcu.getDisplayName(Locale.ENGLISH));
+		assertEquals("Indische Rupie", lcu.getDisplayName(Locale.GERMAN));
 	}
 }

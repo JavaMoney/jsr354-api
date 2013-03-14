@@ -18,11 +18,13 @@
  */
 package net.java.javamoney.ri.ext;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.money.ext.LocalizableRegionType;
 import javax.money.ext.RegionType;
+import javax.money.format.LocalizableItem;
+import javax.money.format.LocalizationStyle;
 
 /**
  * This class implements a {@link LocalizableRegionType} based on a
@@ -31,7 +33,8 @@ import javax.money.ext.RegionType;
  * @author Anatole Tresch
  * 
  */
-public class ResourceBundleLocalizedRegionType implements LocalizableRegionType {
+public class ResourceBundleLocalizedRegionType implements RegionType,
+		LocalizableItem {
 
 	private final RegionType base;
 	private final String basename;
@@ -53,23 +56,25 @@ public class ResourceBundleLocalizedRegionType implements LocalizableRegionType 
 	}
 
 	@Override
-	public String getDisplayName() {
-		ResourceBundle bundle = ResourceBundle.getBundle(basename,
-				Locale.getDefault());
-		return bundle.getString("RegionType."+getId()+".displayname");
+	public String format(Locale locale) {
+		ResourceBundle bundle = ResourceBundle.getBundle(basename, locale);
+		return bundle.getString("RegionType." + getId() + ".displayname");
 	}
 
 	@Override
-	public String getDisplayName(Locale locale) {
-		ResourceBundle bundle = ResourceBundle.getBundle(basename, locale);
-		return bundle.getString("RegionType."+getId()+".displayname");
+	public String format(LocalizationStyle style) {
+		ResourceBundle bundle = ResourceBundle.getBundle(basename,
+				style.getTranslationLocale());
+		return bundle.getString("RegionType." + getId() + ".displayname");
 	}
 
 	public String getBasename() {
 		return this.basename;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -80,7 +85,9 @@ public class ResourceBundleLocalizedRegionType implements LocalizableRegionType 
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -100,7 +107,9 @@ public class ResourceBundleLocalizedRegionType implements LocalizableRegionType 
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -108,6 +117,16 @@ public class ResourceBundleLocalizedRegionType implements LocalizableRegionType 
 		return "ResourceBundleLocalizedRegionType [base=" + base
 				+ ", basename=" + basename + "]";
 	}
-	
+
+	@Override
+	public void print(Appendable appendable, Locale locale) throws IOException {
+		appendable.append(format(locale));
+	}
+
+	@Override
+	public void print(Appendable appendable, LocalizationStyle style)
+			throws IOException {
+		appendable.append(format(style));
+	}
 
 }

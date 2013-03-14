@@ -4,7 +4,7 @@ Specification:  <JSR-354  Money and Currency API > ("Specification")
 
 Version:  0.3
 
-Status:  Sped Lead Draft
+Status:  Spec Lead Draft
 
 Specification Lead:  Credit Suisse ("Specification Lead")
 

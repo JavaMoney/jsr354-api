@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>javax.money</groupId>
 		<artifactId>jsr354</artifactId>
-		<version>0.3-SNAPSHOT</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>money-impl</artifactId>
 	<groupId>net.java.javamoney</groupId>
@@ -20,7 +20,7 @@
 		<basedir>.</basedir>
 		<!-- Dependency versions -->
 		<junit.version>4.8.2</junit.version>
-		<javax.money.version>0.3-SNAPSHOT</javax.money.version>
+		<javax.money.version>1.0-SNAPSHOT</javax.money.version>
 		<slf4j.version>1.6.1</slf4j.version>
 	</properties>
 	

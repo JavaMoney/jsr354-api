@@ -6,7 +6,6 @@
  * Copyright (c) 2012-2013, Credit Suisse
  * All rights reserved.
  */
-
 package javax.money;
 
 import static org.junit.Assert.assertEquals;

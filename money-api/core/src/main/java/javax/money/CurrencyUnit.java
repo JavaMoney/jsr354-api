@@ -6,6 +6,7 @@
  * Copyright (c) 2012-2013, Credit Suisse
  * All rights reserved.
  */
+
 package javax.money;
 
 import java.util.Enumeration;

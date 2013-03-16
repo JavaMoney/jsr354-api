@@ -4,7 +4,7 @@
 <stringAttribute key="M2_GOALS" value="clean install"/>
 <booleanAttribute key="M2_NON_RECURSIVE" value="false"/>
 <booleanAttribute key="M2_OFFLINE" value="false"/>
-<stringAttribute key="M2_PROFILES" value="license"/>
+<stringAttribute key="M2_PROFILES" value=""/>
 <listAttribute key="M2_PROPERTIES"/>
 <stringAttribute key="M2_RUNTIME" value="C:\ProgramData\Java\apache-maven-3.0.4"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>

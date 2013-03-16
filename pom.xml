@@ -17,23 +17,28 @@
 		<basedir>.</basedir>
 		<!-- Dependency versions -->
 		<junit.version>4.8.2</junit.version>
+
+		<license.licenseName>jcp_spec</license.licenseName>
+		<license.licenseResolver>src/license</license.licenseResolver>
+
 	</properties>
 
 	<modules>
-		<!-- module>jdk-stub</module  -->
 		<module>money-api</module>
-		<module>money-ri</module>
+		<module>money-impl</module>
 		<module>money-tck</module>
 	</modules>
 
 	<licenses>
 		<license>
-			<name>Spec</name>
+			<name>Spec License</name>
+			<comments>Spec</comments>
 			<url>LICENSE.txt</url>
 		</license>
 		<license>
-			<name>RI + TCK</name>
-			<url>LICENSE_RI-TCK.txt</url>
+			<name>Apache License version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<comments>RI + TCK</comments>
 		</license>
 	</licenses>
 
@@ -124,11 +129,8 @@
 									<requireJavaVersion>
 										<version>1.7.0</version>
 									</requireJavaVersion>
-									<!-- requirePluginVersions>
-										<banLatest>true</banLatest>
-										<banRelease>true</banRelease>
-										<banSnapshots>true</banSnapshots>
-									</requirePluginVersions -->
+									<!-- requirePluginVersions> <banLatest>true</banLatest> <banRelease>true</banRelease> 
+										<banSnapshots>true</banSnapshots> </requirePluginVersions -->
 								</rules>
 							</configuration>
 						</execution>
@@ -278,8 +280,35 @@
 					<artifactId>maven-site-plugin</artifactId>
 					<version>2.1</version>
 				</plugin>
+
+				<!-- ======================================================= -->
+				<!-- License -->
+				<!-- ======================================================= -->
+				<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>license-maven-plugin</artifactId> 
+					<version>1.4</version> </plugin> -->
+				<plugin>
+					<groupId>com.google.code.maven-license-plugin</groupId>
+					<artifactId>maven-license-plugin</artifactId>
+					<version>1.4.0</version>
+					<configuration>
+						<excludes>
+							<exclude>target/**</exclude>
+							<exclude>LICENSE*.txt</exclude>
+							<exclude>README.*</exclude>
+							<exclude>checkstyle*.*</exclude>
+							<exclude>*.css</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
+				<!-- TODO enable this only for major upgrades (ensure to copy LICENSE.txt 
+					to LICENSE.bak first) -->
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>license-maven-plugin</artifactId> 
+				<version>1.4</version> <executions> <execution> <id>first</id> <goals> <goal>update-file-header</goal> 
+				</goals> <phase>process-sources</phase> </execution> </executions> </plugin> -->
+		</plugins>
 	</build>
 
 	<reporting>
@@ -504,7 +533,7 @@
 			<name>Anatole Tresch</name>
 			<organization>Credit Suisse</organization>
 			<roles>
-				<role>Specicifaction Lead</role>
+				<role>Specification Lead</role>
 			</roles>
 		</developer>
 		<developer>
@@ -626,4 +655,5 @@
 			</build>
 		</profile>
 	</profiles>
+	<inceptionYear>2012</inceptionYear>
 </project>

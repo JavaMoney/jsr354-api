@@ -19,7 +19,7 @@
 package net.java.javamoney.ri.ext.calc;
 
 import javax.money.MonetaryAmount;
-import javax.money.ext.annot.ManagedCalculation;
+import javax.money.ext.annotation.ManagedCalculation;
 
 /**
  * Calculation that evaluates the maximum of a number of {@link MonetaryAmount}

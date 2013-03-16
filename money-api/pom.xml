@@ -48,27 +48,27 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>com.google.code.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<configuration>
-					<basedir>${basedir}</basedir>
-					<header>${basedir}/src/etc/header.txt</header>
-					<quiet>false</quiet>
-					<failIfMissing>true</failIfMissing>
-					<aggregate>false</aggregate>
-					<encoding>UTF-8</encoding>
-				</configuration>
-				<!-- <executions>
-					<execution>
-						<phase>compile</phase>
-						<goals>
-							<goal>format</goal>
-						</goals>
-					</execution>
-				</executions> -->
-			</plugin>
-		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>license</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.google.code.maven-license-plugin</groupId>
+						<artifactId>maven-license-plugin</artifactId>
+						<configuration>
+							<basedir>${basedir}</basedir>
+							<header>${basedir}/src/etc/header.txt</header>
+							<quiet>false</quiet>
+							<failIfMissing>true</failIfMissing>
+							<aggregate>false</aggregate>
+							<encoding>UTF-8</encoding>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

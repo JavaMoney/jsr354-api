@@ -37,7 +37,7 @@
 		</license>
 		<license>
 			<name>Apache License version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<url>LICENSE_RI-TCK.txt</url>
 			<comments>RI + TCK</comments>
 		</license>
 	</licenses>
@@ -280,28 +280,6 @@
 					<artifactId>maven-site-plugin</artifactId>
 					<version>2.1</version>
 				</plugin>
-
-				<!-- ======================================================= -->
-				<!-- License -->
-				<!-- ======================================================= -->
-				<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>license-maven-plugin</artifactId> 
-					<version>1.4</version> </plugin> -->
-				<plugin>
-					<groupId>com.google.code.maven-license-plugin</groupId>
-					<artifactId>maven-license-plugin</artifactId>
-					<version>1.4.0</version>
-					<configuration>
-						<excludes>
-							<exclude>target/**</exclude>
-							<exclude>LICENSE*.txt</exclude>
-							<exclude>README.*</exclude>
-							<exclude>checkstyle*.*</exclude>
-							<exclude>*.css</exclude>
-						</excludes>
-					</configuration>
-				</plugin>
-				<!-- TODO enable this only for major upgrades (ensure to copy LICENSE.txt 
-					to LICENSE.bak first) -->
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -617,6 +595,7 @@
 
 	<profiles>
 		<profile>
+			<id>sign</id>
 			<activation>
 				<property>
 					<name>sign</name>
@@ -654,6 +633,62 @@
 				</plugins>
 			</build>
 		</profile>
+		
+		<profile>
+			<id>license</id>
+			<activation>
+				<property>
+					<name>license</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+				<!-- ======================================================= -->
+				<!-- License -->
+				<!-- ======================================================= -->
+				<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>license-maven-plugin</artifactId> 
+					<version>1.4</version> </plugin> -->
+				<plugin>
+					<groupId>com.google.code.maven-license-plugin</groupId>
+					<artifactId>maven-license-plugin</artifactId>
+					<version>1.4.0</version>
+					<configuration>
+						<excludes>
+							<exclude>target/**</exclude>
+							<exclude>LICENSE*.txt</exclude>
+							<exclude>README.*</exclude>
+							<exclude>checkstyle*.*</exclude>
+							<exclude>*.css</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
+				<!-- TODO enable this only for major upgrades (ensure to copy LICENSE.txt 
+					to LICENSE.bak first) -->
+					</plugins>
+				</pluginManagement>
+				<plugins>
+						<!-- Usage: mvn clean deploy -Dgpg.passphrase=yourpassphrase ; Or sign 
+							already deployed artifact: $ mvn gpg:sign-and-deploy-file > -DpomFile=target/myapp-1.0.pom 
+							> -Dfile=target/myapp-1.0.jar > -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ 
+							> -DrepositoryId=sonatype-nexus-staging -->
+					<plugin>
+						<groupId>com.google.code.maven-license-plugin</groupId>
+						<artifactId>maven-license-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>format</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
 	</profiles>
 	<inceptionYear>2012</inceptionYear>
 </project>

@@ -2,19 +2,21 @@
  * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
  *
  * Specification:  <JSR-354  Money and Currency API > ("Specification")
+ *
+ * Copyright (c) 2012-2013, Credit Suisse
+ * All rights reserved.
  */
+
 package javax.money.provider;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +26,7 @@ import javax.money.format.ItemFormatterFactory;
 import javax.money.format.ItemParserFactory;
 
 /**
- * This is the main accessor component for Java Money. Is is reponsible for
+ * This is the main accessor component for Java Money. Is is responsible for
  * loading the API top level providers using the {@link ServiceLoader}:
  * <ul>
  * <li>{@code javax.money.convert.ConversionProvider}</li>
@@ -56,6 +58,7 @@ import javax.money.format.ItemParserFactory;
  * 
  * @author Anatole Tresch
  * @author Werner Keil
+ * @version 0.9
  * 
  */
 public final class Monetary {
@@ -177,6 +180,7 @@ public final class Monetary {
 	 *         {@code null}.
 	 */
 	public static MonetaryAmountProvider getMonetaryAmountProvider() {
+		@SuppressWarnings("unchecked")
 		MonetaryAmountProvider prov = LOADER
 				.getInstance(MonetaryAmountProvider.class);
 		if (prov == null) {
@@ -265,6 +269,7 @@ public final class Monetary {
 	 * 
 	 * @return the {@link RoundingProvider} component, never {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
 	public static RoundingProvider getRoundingProvider() {
 		if (INSTANCE.roundingProvider == null) {
 			INSTANCE.roundingProvider = LOADER

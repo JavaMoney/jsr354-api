@@ -7,8 +7,7 @@
 		<version>0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>money-java-ee</artifactId>
-	<groupId>net.java.javamoney</groupId>
-	<name>JSR 354 (Money and Currency) - Implementation for EE</name>
+	<name>JSR 354 (Money and Currency) - Implementation for Java EE</name>
 	<description>Implementation of JSR 354, based on CDI features within a container.</description>
 
 	<dependencies>

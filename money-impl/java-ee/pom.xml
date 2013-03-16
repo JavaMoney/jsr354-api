@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>money-impl</artifactId>
 		<groupId>net.java.javamoney</groupId>
-		<version>0.3-SNAPSHOT</version>
+		<version>0.3</version>
 	</parent>
 	<artifactId>money-java-ee</artifactId>
 	<name>JSR 354 (Money and Currency) - Implementation for Java EE</name>

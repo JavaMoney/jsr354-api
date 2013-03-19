@@ -20,11 +20,11 @@ package javax.money;
 public class MonetaryException extends RuntimeException {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -9039026008242959369L;
+     * 
+     */
+    private static final long serialVersionUID = -9039026008242959369L;
 
-	/**
+    /**
      * Constructs a <code>MonetaryException</code> with the
      * specified detail message.
      *

@@ -17,6 +17,9 @@ package javax.money;
  * 
  * @author Werner Keil
  * @author Stephen Colebourne
+ * 
+ * @deprecated as of EDR exception hierarchy we consider, deriving children directly from IllegalArgumentException.
+ * This exception is currently not used by itself.
  */
 public class IllegalCurrencyException extends IllegalArgumentException {
 

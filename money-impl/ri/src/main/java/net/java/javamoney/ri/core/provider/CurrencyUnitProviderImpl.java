@@ -15,13 +15,12 @@
  *
  * Contributors:
  *    Anatole Tresch - initial implementation
- *    Wernner Keil - extensions and adaptions.
+ *    Werner Keil - extensions and adaptions.
  */
 package net.java.javamoney.ri.core.provider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -32,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
-import javax.money.IllegalCurrencyException;
+import javax.money.UnknownCurrencyException;
 import javax.money.ext.RegionType;
 import javax.money.provider.CurrencyUnitProvider;
 import javax.money.provider.Monetary;
@@ -46,6 +45,7 @@ import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
  * for {@link CurrencyUnit}.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 @Singleton
 public class CurrencyUnitProviderImpl extends AbstractRiComponent
@@ -115,7 +115,7 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent
 				return currency;
 			}
 		}
-		throw new IllegalCurrencyException(namespace, code);
+		throw new UnknownCurrencyException(namespace, code);
 	}
 
 	/**

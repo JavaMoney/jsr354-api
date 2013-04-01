@@ -19,7 +19,7 @@
 package net.java.javamoney.ri.ext.calc;
 
 import javax.money.MonetaryAmount;
-import javax.money.ext.annotation.ManagedCalculation;
+
 
 /**
  * Calculation that evaluates the minimum of a number of {@link MonetaryAmount}
@@ -28,11 +28,7 @@ import javax.money.ext.annotation.ManagedCalculation;
  * @author Anatole Tresch
  */
 @ManagedCalculation
-public class Min extends AbstractCalculation<MonetaryAmount> {
-
-	public Min() {
-		super("min", MonetaryAmount.class, true);
-	}
+public class Min extends AbstractMonetaryCalculation {
 
 	protected MonetaryAmount calculateImpl(MonetaryAmount... amounts) {
 		MonetaryAmount min = amounts[0];

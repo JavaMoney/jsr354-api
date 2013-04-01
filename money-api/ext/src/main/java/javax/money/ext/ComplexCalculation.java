@@ -14,15 +14,7 @@ package javax.money.ext;
  * 
  * @author Anatole Tresch
  */
-public interface ComplexCalculation {
-
-	/**
-	 * Returns an literal non localized name, that identifies this type of
-	 * calculation.
-	 * 
-	 * @return the identifier, not null.
-	 */
-	public String getId();
+public interface ComplexCalculation extends Calculation<CompoundValue,CompoundValue>{
 
 	/**
 	 * Returns a literal non localized name, that identifies this type of
@@ -30,7 +22,7 @@ public interface ComplexCalculation {
 	 * 
 	 * @return the identifier, not null.
 	 */
-	public CompoundValueTemplate getInputType();
+	public CompoundType getCompundInputType();
 
 	/**
 	 * Returns a literal non localized name, that identifies this type of
@@ -38,18 +30,6 @@ public interface ComplexCalculation {
 	 * 
 	 * @return the identifier, not null.
 	 */
-	public CompoundValueTemplate getOutputType();
-
-	/**
-	 * Returns a complex {@link CompoundValue} as a result one another
-	 * {@link CompoundValue}.
-	 * 
-	 * @param value
-	 *            the {@link CompoundValue} to use, not null
-	 * @return the calculation result as a {@link CompoundValue}, never null
-	 * @throws CalculationException
-	 *             if the calculation fails
-	 */
-	public CompoundValue calculate(CompoundValue value);
+	public CompoundType getCompoundResultType();
 
 }

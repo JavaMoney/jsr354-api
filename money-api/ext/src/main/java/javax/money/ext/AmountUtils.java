@@ -12,7 +12,8 @@
  */
 package javax.money.ext;
 
-import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
@@ -29,47 +30,29 @@ import javax.money.provider.MonetaryExtension;
 public interface AmountUtils extends MonetaryExtension {
 
 	/**
-	 * Adjust all the passed instances of {@code MonetaryAmount} and returns an
-	 * adjusted array.
-	 * <p>
-	 * The array must contain at least one monetary value. Subsequent amounts
-	 * are adjusted and added as though using {@link #plus(MonetaryAmount)}. All
-	 * amounts must be in the same currency.
+	 * This method separates the given amounts according to their
+	 * {@link CurrencyUnit}. The order of {@link MonetaryAmount} instances
+	 * hereby is preserved as passed as input.
 	 * 
-	 * @param adjuster
-	 *            The {@link AmountAdjuster} to be used, not null.
 	 * @param amounts
-	 *            the monetary values to adjust and total, not empty, no null
-	 *            elements, not null
-	 * @return the adjusted {@link MonetaryAmount} instances, never null
-	 * @throws IllegalArgumentException
-	 *             if the array is empty
-	 * @throws CurrencyConversionException
-	 *             if the currencies differ
+	 *            the amounts to be separated.
+	 * @return the amounts separated, one collection per equal
+	 *         {@link CurrencyUnit}.
 	 */
-	public <T> T[] calculateAll(Calculation<T> calculation,
+	public Map<CurrencyUnit, List<MonetaryAmount>> separateCurrencies(
 			MonetaryAmount... amounts);
 
 	/**
-	 * Adjust all the passed instances of {@code MonetaryAmount} and returns an
-	 * adjusted array.
-	 * <p>
-	 * The array must contain at least one monetary value. Subsequent amounts
-	 * are adjusted and added as though using {@link #plus(MonetaryAmount)}. All
-	 * amounts must be in the same currency.
+	 * This method separates the given amounts according to their
+	 * {@link CurrencyUnit}. The order of {@link MonetaryAmount} instances
+	 * hereby is preserved as passed as input.
 	 * 
-	 * @param adjuster
-	 *            The {@link AmountAdjuster} to be used, not null.
 	 * @param amounts
-	 *            the monetary values to adjust and total, not empty, no null
-	 *            elements, not null
-	 * @return the adjusted {@link MonetaryAmount} instances, never null
-	 * @throws IllegalArgumentException
-	 *             if the array is empty
-	 * @throws CurrencyConversionException
-	 *             if the currencies differ
+	 *            the amounts to be separated.
+	 * @return the amounts separated, one collection per equal
+	 *         {@link CurrencyUnit}.
 	 */
-	public <T> T[] calculateAll(Calculation<T> calculation,
+	public Map<CurrencyUnit, List<MonetaryAmount>> separateCurrencies(
 			Iterable<MonetaryAmount> amounts);
 
 	/**
@@ -357,26 +340,5 @@ public interface AmountUtils extends MonetaryExtension {
 	public MonetaryAmount[] divideAndSeparate(MonetaryAmount total,
 			Number divisor, Rounding rounding, boolean addDifferenceToLastValue);
 
-	/**
-	 * Gets the monetary amount using the passed target type. This method allows
-	 * to support different return types, depending of the concrete
-	 * implementation. E.g. {@link BigDecimal} should be supported within SE
-	 * environments, whereas on ME environments {@link Double} will be more
-	 * likely.
-	 * <p>
-	 * This returns the monetary value as a {@code T}. No scaling will be
-	 * affected. for additional scaling based on the currency use
-	 * {@link #getAdjusted()}.
-	 * 
-	 * @param type
-	 *            The target type, not null.
-	 * @param rounding
-	 *            the {@link Rounding} to be applied.
-	 * @return the amount represented as T, never null
-	 * @throws IllegalArgumentException
-	 *             if the representation type is not supported.
-	 */
-	public <T> T roundAndConvert(MonetaryAmount total, Class<T> type,
-			Rounding rounding);
 
 }

@@ -93,11 +93,19 @@ public final class Monetary {
 	}
 
 	private static ComponentLoader initLoader() {
-		// try loading directly from ServiceLoader
-		Iterator<ComponentLoader> loaders = ServiceLoader.load(
+		ComponentLoader loader = null;
+		try{
+			// try loading directly from ServiceLoader
+			Iterator<ComponentLoader> loaders = ServiceLoader.load(
 				ComponentLoader.class).iterator();
-		if (loaders.hasNext()) {
-			return loaders.next();
+			if (loaders.hasNext()) {
+				loader = loaders.next();
+				loader.init();
+				return loader;
+			}
+		}
+		catch(Exception e){
+			LOGGER.log(Level.INFO, "No ComponentLoader found, using ServiceLoader default.", e);
 		}
 		return new DefaultServiceLoader();
 	}
@@ -131,8 +139,7 @@ public final class Monetary {
 										+ annot.value().getName());
 						continue;
 					}
-					if (this.monetaryExtensions
-							.containsKey(annot.value())) {
+					if (this.monetaryExtensions.containsKey(annot.value())) {
 						LOGGER.log(Level.FINEST, "Monetary extension of type: "
 								+ t.getClass().getName() + " already loaded.");
 					} else {
@@ -333,24 +340,6 @@ public final class Monetary {
 	}
 
 	/**
-	 * This interface can be registered to the {@link ServiceLoader} to create
-	 * an instance of {@link ComponentLoader} when no explicit
-	 * {@link ComponentLoader} is registered with {@link ServiceLoader}. This
-	 * enables to provide an implementation that still allows the default
-	 * {@link ComponentLoader} to be overridden using the {@link ServiceLoader}.
-	 * 
-	 * @author Anatole Tresch
-	 */
-	public static interface ComponentLoaderDefaultProvider {
-		/**
-		 * Acceee the {@link ComponentLoader} to be used.
-		 * 
-		 * @return the loader, never null.
-		 */
-		public ComponentLoader getDefaultComponentLoader();
-	}
-
-	/**
 	 * This is the loader that is used to load the different providers and spi
 	 * to be used by {@link Monetary} and its services. The
 	 * {@link ComponentLoader} can also be accessed from the {@link Monetary}
@@ -360,6 +349,12 @@ public final class Monetary {
 	 * @author Anatole Tresch
 	 */
 	public static interface ComponentLoader {
+
+		/**
+		 * Method to initialize the component loader instance.
+		 */
+		public void init();
+
 		/**
 		 * Access a singleton instance.
 		 * 
@@ -392,6 +387,11 @@ public final class Monetary {
 
 	public final static class DefaultServiceLoader implements ComponentLoader {
 
+		@Override
+		public void init() {
+			// Nothing todo here
+		}
+		
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T getInstance(Class<T> type,

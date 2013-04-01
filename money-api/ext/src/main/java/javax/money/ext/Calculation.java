@@ -8,6 +8,8 @@
  */
 package javax.money.ext;
 
+import java.util.concurrent.Callable;
+
 import javax.money.MonetaryAmount;
 
 /**
@@ -16,33 +18,28 @@ import javax.money.MonetaryAmount;
  * 
  * @author Anatole Tresch
  * 
- * @param <T>
+ * @param <R>
  *            the result type of the calculation.
+ * @param <T>
+ *            the type of the input parameters.
  */
-public interface Calculation<T> {
+public interface Calculation<R, T> extends Callable<R> {
 
 	/**
-	 * Returns an literal non localized name, that identifies this type of
-	 * calculation.
-	 * 
-	 * @return the identifier, not null.
-	 */
-	public String getId();
-
-	/**
-	 * Result type of this {@link Calculation}, rewuired to evaluate the type
-	 * during runtime.
+	 * Result type of this {@link Calculation}, required to evaluate the result
+	 * type during runtime.
 	 * 
 	 * @return the result type.
 	 */
-	public Class<?> getResultType();
+	public Class<R> getResultType();
 
 	/**
-	 * Flag that defines if this calculation supports multiple input values.
+	 * Access the parameter type of this {@link Calculation}, required to
+	 * evaluate the parameter type during runtime.
 	 * 
-	 * @return true, if multiple input values are supported.
+	 * @return the result type.
 	 */
-	public boolean isMultiValued();
+	public Class<T> getParameterType();
 
 	/**
 	 * Returns a result calculated using the given {@link MonetaryAmount}.
@@ -53,6 +50,6 @@ public interface Calculation<T> {
 	 * @throws ArithmeticException
 	 *             if the adjustment fails
 	 */
-	public T calculate(MonetaryAmount... amounts);
+	public void setParameters(@SuppressWarnings("unchecked") T... params);
 
 }

@@ -19,7 +19,7 @@
 package net.java.javamoney.ri.ext.calc;
 
 import javax.money.MonetaryAmount;
-import javax.money.ext.annotation.ManagedCalculation;
+
 
 /**
  * Calculation that evaluates the maximum of a number of {@link MonetaryAmount}
@@ -28,11 +28,7 @@ import javax.money.ext.annotation.ManagedCalculation;
  * @author Anatole Tresch
  */
 @ManagedCalculation
-public class Max extends AbstractCalculation<MonetaryAmount> {
-
-	public Max() {
-		super("max", MonetaryAmount.class, true);
-	}
+public class Max extends AbstractMonetaryCalculation {
 
 	protected MonetaryAmount calculateImpl(MonetaryAmount... amounts) {
 		MonetaryAmount max = amounts[0];

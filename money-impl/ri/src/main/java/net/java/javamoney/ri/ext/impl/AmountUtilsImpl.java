@@ -1,11 +1,13 @@
 package net.java.javamoney.ri.ext.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.Rounding;
 import javax.money.ext.AmountUtils;
-import javax.money.ext.Calculation;
 import javax.money.provider.ExposedExtensionType;
 import javax.money.provider.MonetaryExtension;
 
@@ -13,19 +15,6 @@ import javax.money.provider.MonetaryExtension;
 @ExposedExtensionType(AmountUtils.class)
 public class AmountUtilsImpl implements AmountUtils, MonetaryExtension {
 
-	@Override
-	public <T> T[] calculateAll(Calculation<T> calculation,
-			MonetaryAmount... amounts) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <T> T[] calculateAll(Calculation<T> calculation,
-			Iterable<MonetaryAmount> amounts) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public MonetaryAmount min(MonetaryAmount... amounts) {
@@ -142,8 +131,15 @@ public class AmountUtilsImpl implements AmountUtils, MonetaryExtension {
 	}
 
 	@Override
-	public <T> T roundAndConvert(MonetaryAmount total, Class<T> type,
-			Rounding rounding) {
+	public Map<CurrencyUnit, List<MonetaryAmount>> separateCurrencies(
+			MonetaryAmount... amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<CurrencyUnit, List<MonetaryAmount>> separateCurrencies(
+			Iterable<MonetaryAmount> amounts) {
 		// TODO Auto-generated method stub
 		return null;
 	}

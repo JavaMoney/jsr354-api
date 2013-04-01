@@ -19,6 +19,8 @@
 package net.java.javamoney.ri.ext.calc;
 
 import javax.money.MonetaryAmount;
+import javax.money.ext.Calculation;
+
 
 /**
  * Calculation that evaluates the average of a number of {@link MonetaryAmount}
@@ -26,15 +28,32 @@ import javax.money.MonetaryAmount;
  * 
  * @author Anatole Tresch
  */
-@ManagedCalculation
-public class Average extends AbstractMonetaryCalculation {
+public abstract class AbstractMonetaryCalculation implements Calculation<MonetaryAmount,MonetaryAmount> {
 
-	protected MonetaryAmount calculateImpl(MonetaryAmount... amounts) {
-		MonetaryAmount sum = amounts[0];
-		for (int i = 1; i < amounts.length; i++) {
-			sum = sum.add(amounts[i]);
-		}
-		return sum.divide(amounts.length);
+	private MonetaryAmount[] params;
+	
+	protected abstract MonetaryAmount calculateImpl(MonetaryAmount... amounts);
+
+	@Override
+	public void setParameters(MonetaryAmount... params) {
+		this.params = params;
 	}
+	
+	@Override
+	public MonetaryAmount call() throws Exception {
+		return calculateImpl(this.params);
+	}
+
+	@Override
+	public Class<MonetaryAmount> getResultType() {
+		return MonetaryAmount.class;
+	}
+
+	@Override
+	public Class<MonetaryAmount> getParameterType() {
+		return MonetaryAmount.class;
+	}
+
+	
 
 }

@@ -28,13 +28,18 @@ import javax.money.provider.Monetary.ComponentLoader;
 
 public class CDIStandaloneLoader implements ComponentLoader {
 
-	private CDIContainer cdi = new CDIContainer();
+	private CDIContainer cdi;
 
+	@Override
+	public void init() {
+		cdi = new CDIContainer();
+		cdi.start();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getInstance(Class<T> type,
 			Class<? extends Annotation>... annotations) {
-		cdi.start();
 		List<T> instancesFound = getInstances(type, annotations);
 		if (instancesFound.isEmpty()) {
 			return null;
@@ -82,5 +87,7 @@ public class CDIStandaloneLoader implements ComponentLoader {
 	protected <T> List<T> sortComponents(List<T> list) {
 		return list;
 	}
+
+	
 
 }

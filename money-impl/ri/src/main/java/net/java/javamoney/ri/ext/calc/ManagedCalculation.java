@@ -6,7 +6,7 @@
  * Copyright (c) 2012-2013, Credit Suisse
  * All rights reserved.
  */
-package javax.money.ext.annotation;
+package net.java.javamoney.ri.ext.calc;
 
 /**
  * Annotation for automatic loading of monetary calculations.

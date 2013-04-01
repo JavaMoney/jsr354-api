@@ -8,8 +8,7 @@
  */
 package javax.money.ext;
 
-import java.util.Enumeration;
-import java.util.Locale;
+import java.util.Map;
 
 import javax.money.provider.MonetaryExtension;
 
@@ -18,30 +17,16 @@ import javax.money.provider.MonetaryExtension;
  * 
  * @author Anatole Tresch Note: still experimental!
  */
-public interface CalculationProvider extends MonetaryExtension{
+public interface CalculationProvider extends MonetaryExtension {
 
-	public Enumeration<Calculation<?>> getAvailableCalculations();
+	@SuppressWarnings("rawtypes")
+	public Map<String, Class<? extends Calculation>> getAvailableCalculations();
 
-	public boolean isCalculationDefined(String calculationId);
+	@SuppressWarnings("rawtypes")
+	public Class<? extends Calculation> getCalculationType(String id);
 
-	public <T> Calculation<T> getCalculation(String calculationId,
-			Class<T> resultType);
+	public boolean isCalculationDefined(String id);
 
-	public Enumeration<ComplexCalculation> getComplexCalculations();
-
-	public boolean isComplexCalculationDefined(String calculationId);
-
-	public ComplexCalculation getComplexCalculation(String calculationId);
-
-	public String getCalculationName(Calculation<?> calculation, Locale locale);
-
-	public String getCalculationDescription(Calculation<?> calculation,
-			Locale locale);
-
-	public String getCalculationName(ComplexCalculation calculation,
-			Locale locale);
-
-	public String getCalculationDescription(ComplexCalculation calculation,
-			Locale locale);
+	public Calculation<?, ?> getCalculation(String id);
 
 }

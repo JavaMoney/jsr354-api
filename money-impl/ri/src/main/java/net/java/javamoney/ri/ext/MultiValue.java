@@ -18,35 +18,48 @@
  */
 package net.java.javamoney.ri.ext;
 
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.money.ext.CompoundType;
 import javax.money.ext.CompoundValue;
 
 /**
- * Defines a {@link MultiValue} containing T
- * instances.
+ * Defines a {@link MultiValue} containing T instances.
  * 
  * @see CompoundValue
  * @author Anatole Tresch
  */
-public class MultiValue implements CompoundValue {
+public class MultiValue extends HashMap<String, Object> implements
+		CompoundValue {
 
+	/**
+	 * serialVersionUID.
+	 */
+	private static final long serialVersionUID = 5511830637352838197L;
 	private final String id;
-	private final Map<Object, Object> items = new HashMap<Object, Object>();
+	private CompoundType type;
 
-	protected MultiValue(String id) {
+	protected MultiValue(String id, CompoundType type) {
 		if (id == null) {
 			throw new IllegalArgumentException("id can not bve null.");
 		}
 		this.id = id;
+		if (type == null) {
+			throw new IllegalArgumentException("type can not bve null.");
+		}
+		this.type = type;
 	}
 
-	protected MultiValue(String id, Map<Object, Object> items) {
-		this(id);
-		this.items.putAll(items);
+	protected MultiValue(String id, CompoundType type, Map<String, Object> items) {
+		this(id, type);
+		type.validate(items);
+		this.putAll(items);
+	}
+
+	@Override
+	public CompoundType getCompoundType() {
+		return this.type;
 	}
 
 	/**
@@ -59,41 +72,10 @@ public class MultiValue implements CompoundValue {
 		return this.id;
 	}
 
-	public Enumeration<Object> getKeys() {
-		return Collections.enumeration(this.items.keySet());
-	}
-
-	public boolean isKeyDefined(Object key) {
-		return this.items.containsKey(key);
-	}
-
-	public <T> T get(Object key, Class<T> type) {
-		@SuppressWarnings("unchecked")
-		T r = (T) this.items.get(key);
-		if (r == null) {
-			throw new IllegalArgumentException("Key is not defined: " + key);
-		}
-		return r;
-	}
-
-	@Override
-	public Class<?> getType(Object key) {
-		Object o = this.items.get(key);
-		if(o!=null){
-			return o.getClass();
-		}
-		return null;
-	}
-	
-	public Map<Object, ?> getAll() {
-		return Collections.unmodifiableMap(this.items);
-	}
-
-
-	public Builder toBuilder(){
+	public Builder toBuilder() {
 		return new Builder(this);
 	}
-	
+
 	/**
 	 * A CompoundItemBuilder T is an CompoundItemBuilder that holds several
 	 * instances of a type T. In financial applications this is very useful
@@ -110,17 +92,34 @@ public class MultiValue implements CompoundValue {
 	public static class Builder {
 
 		private String id;
-
-		private Map<Object, Object> items = new HashMap<Object, Object>();
+		private CompoundType type;
+		private Map<String, Object> items = new HashMap<String, Object>();
 
 		public Builder(String id) {
 			setId(id);
 		}
 
+		public Builder(String id, CompoundType type) {
+			setId(id);
+			setCompoundType(type);
+		}
+
+		public Builder setCompoundType(CompoundType type) {
+			if (type == null) {
+				throw new IllegalArgumentException("Compound type required.");
+			}
+			this.type = type;
+			return this;
+		}
+
+		public CompoundType getCompoundType() {
+			return this.type;
+		}
+
 		public Builder(CompoundValue baseItem) {
 			if (baseItem != null) {
 				setId(baseItem.getId());
-				this.items.putAll(baseItem.getAll());
+				this.items.putAll(baseItem);
 			}
 		}
 
@@ -128,31 +127,19 @@ public class MultiValue implements CompoundValue {
 			return this.id;
 		}
 
-		public void setId(String id) {
+		public Builder setId(String id) {
 			if (id == null) {
 				throw new IllegalArgumentException("id may not be null.");
 			}
 			this.id = id;
+			return this;
 		}
 
-		public Enumeration<Object> getKeys() {
-			return Collections.enumeration(this.items.keySet());
+		public Map<String, Object> getItems() {
+			return this.items;
 		}
 
-		public boolean isKeyDefined(Object key) {
-			return this.items.containsKey(key);
-		}
-
-		@SuppressWarnings("unchecked")
-		public <T> T get(Object key, Class<T> type) {
-			return (T) this.items.get(key);
-		}
-
-		public Map<Object, ?> getAll() {
-			return Collections.unmodifiableMap(this.items);
-		}
-
-		public Object set(Object key, Object item) {
+		public Object set(String key, Object item) {
 			if (item == null) {
 				throw new IllegalArgumentException("item may not be null.");
 			}
@@ -162,7 +149,7 @@ public class MultiValue implements CompoundValue {
 			return this.items.put(key, item);
 		}
 
-		public void set(Map<Object, Object> items) {
+		public void set(Map<String, Object> items) {
 			if (items == null) {
 				throw new IllegalArgumentException("items may not be null.");
 			}
@@ -177,8 +164,8 @@ public class MultiValue implements CompoundValue {
 			this.items.clear();
 		}
 
-		public CompoundValue build(){
-			return new MultiValue(this.id, this.items);
+		public CompoundValue build() {
+			return new MultiValue(this.id, this.type, this.items);
 		}
 
 	}

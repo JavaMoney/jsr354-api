@@ -72,4 +72,9 @@ public class MonetaryServiceLoader implements ComponentLoader {
 		return list;
 	}
 
+	@Override
+	public void init() {
+		
+	}
+
 }

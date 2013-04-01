@@ -10,15 +10,17 @@
 package javax.money;
 
 /**
- * Exception thrown when the requested currency is unknown to the currency
- * system in use.
+ * Exception thrown when the currency of a {@link MonetaryAmount} passed to
+ * arithmetic operations on another {@link MonetaryAmount} is not compatible.
  * <p>
- * For example, this exception would be thrown when trying to obtain a currency
- * using an unrecognized currency code or locale.
+ * For example, this exception would be thrown when trying to multiply a
+ * {@link MonetaryAmount} in (ISO-4217) CHF with a a {@link MonetaryAmount} in
+ * (ISO-4217) USD.
  * 
  * @author Werner Keil
+ * @author Anatole Tresch
  */
-public class CurrencyMismatchException extends IllegalCurrencyException {
+public class CurrencyMismatchException extends MonetaryException {
 	/**
 	 * serialVersionUID.
 	 */
@@ -36,7 +38,7 @@ public class CurrencyMismatchException extends IllegalCurrencyException {
 	 * @param source
 	 *            the source currency, not {@code null}.
 	 * @param target
-	 *            the target currency, not {@code null}.
+	 *            the mismatching target currency, not {@code null}.
 	 */
 	public CurrencyMismatchException(CurrencyUnit source, CurrencyUnit target) {
 		super("Currency mismatch: " + source + " != " + target);

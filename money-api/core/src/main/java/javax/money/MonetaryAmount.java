@@ -8,13 +8,14 @@
  */
 package javax.money;
 
+import java.math.BigDecimal;
 
 /**
  * Interface defining a monetary amount. The effective internal representation
  * of an amount may vary depending on the implementation used. Nevertheless
  * basically an amount provides a functionality similar to {@link BigDecimal}.
  * <p>
- * Since {@link Number} is not an interface this type is not extending
+ * Since {@link Number} is not an interface, this type is not extending
  * {@link Number}.
  * 
  * @author Anatole Tresch
@@ -23,9 +24,9 @@ package javax.money;
 public interface MonetaryAmount {
 
 	/**
-	 * Gets the currency.
+	 * Gets the amount's currency.
 	 * 
-	 * @return the currency, never null
+	 * @return the currency, never {@code null}
 	 */
 	public CurrencyUnit getCurrency();
 
@@ -59,7 +60,7 @@ public interface MonetaryAmount {
 	 * @param amount
 	 *            value with which the maximum is to be computed.
 	 * @return the {@code MonetaryAmount} whose value is the greater of this
-	 *         {@code MonetaryAmount} and {@code val}. If they are equal, as
+	 *         {@code MonetaryAmount} and {@code amount}. If they are equal, as
 	 *         defined by the {@link #compareTo(MonetaryAmount) compareTo}
 	 *         method, {@code this} is returned.
 	 * @see #compareTo(MonetaryAmount)
@@ -268,7 +269,7 @@ public interface MonetaryAmount {
 	 * 
 	 * <p>
 	 * The parameter {@code n} must be in the range 0 through 999999999,
-	 * inclusive. {@code ZERO.pow(0)} returns {@link #ONE}.
+	 * inclusive. {@code ZERO.pow(0)} returns {@code 1}.
 	 * 
 	 * Note that future releases may expand the allowable exponent range of this
 	 * method.
@@ -290,8 +291,7 @@ public interface MonetaryAmount {
 	 * number of digits. An ulp of a zero value is numerically equal to 1 with
 	 * the scale of {@code this}. The result is stored with the same scale as
 	 * {@code this} so the result for zero and nonzero values is equal to
-	 * {@code [1,
-	 * this.getgetScale()]}.
+	 * {@code [1, this.getgetScale()]}.
 	 * 
 	 * @return the size of an ulp of {@code this}
 	 */
@@ -341,20 +341,19 @@ public interface MonetaryAmount {
 	 */
 	public MonetaryAmount scaleByPowerOfTen(int n);
 
-
 	/**
 	 * Gets the amount in major units as a {@code MonetaryAmount} with scale 0.
 	 * <p>
 	 * This returns the monetary amount in terms of the major units of the
 	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
-	 * will return 2, and 'BHD -1.345' will return -1.
+	 * will return 'EUR 2', and 'BHD -1.345' will return 'BHD -1'.
 	 * <p>
 	 * This is returned as a {@code MonetaryAmount} rather than a
 	 * {@code BigInteger} . This is to allow further calculations to be
 	 * performed on the result. Should you need a {@code BigInteger}, simply
-	 * call {@link BigDecimal#toBigInteger()}.
+	 * call {@code asType(BigInteger.class)}.
 	 * 
-	 * @return the major units part of the amount, never null
+	 * @return the major units part of the amount, never {@code null}
 	 */
 	public MonetaryAmount getMajorPart();
 
@@ -393,12 +392,12 @@ public interface MonetaryAmount {
 	 * <p>
 	 * This returns the monetary amount in terms of the minor units of the
 	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
-	 * will return 235, and 'BHD -1.345' will return -1345.
+	 * will return 'EUR 235', and 'BHD -1.345' will return 'BHD -1345'.
 	 * <p>
 	 * This is returned as a {@code MonetaryAmount} rather than a
 	 * {@code BigInteger} . This is to allow further calculations to be
 	 * performed on the result. Should you need a {@code BigInteger}, simply
-	 * call {@link BigDecimal#toBigInteger()}.
+	 * call {@link asType(BigInteger.class)}.
 	 * <p>
 	 * This method matches the API of {@link java.math.BigDecimal}.
 	 * 
@@ -475,9 +474,9 @@ public interface MonetaryAmount {
 	/**
 	 * Returns a copy of this monetary value with the specified amount.
 	 * <p>
-	 * The returned instance will have this currency and the new amount. No
-	 * rounding is performed on the amount to be added, so it must have a scale
-	 * compatible with the currency.
+	 * The returned instance will have a currency as returned by
+	 * {@link #getCurrency()} and the new amount. No rounding is performed on
+	 * the amount to be added.
 	 * <p>
 	 * This instance is immutable and unaffected by this method.
 	 * 
@@ -495,10 +494,10 @@ public interface MonetaryAmount {
 	/**
 	 * * Gets the scale of the amount.
 	 * <p>
-	 * The scale has the same meaning as in {@link java.math.BigDecimal}. Positive
-	 * values represent the number of decimal places in use. For example, a
-	 * scale of 2 means that the money will have two decimal places such as 'USD
-	 * 43.25'.
+	 * The scale has the same meaning as in {@link java.math.BigDecimal}.
+	 * Positive values represent the number of decimal places in use. For
+	 * example, a scale of 2 means that the money will have two decimal places
+	 * such as 'USD 43.25'.
 	 * <p>
 	 * For {@code MonetaryAmount}, the scale is fixed and always matches that of
 	 * the currency.
@@ -508,8 +507,8 @@ public interface MonetaryAmount {
 	public int getScale();
 
 	/**
-	 * Returns the <i>internal precision</i> of this {@code MonetaryAmount}.
-	 * (The precision is the number of digits in the unscaled value.)
+	 * Returns the <i>internal precision</i> of this {@code MonetaryAmount}. The
+	 * precision is the number of digits in the unscaled value.
 	 * 
 	 * <p>
 	 * The precision of a zero value is 1.
@@ -624,7 +623,8 @@ public interface MonetaryAmount {
 	 * 
 	 * @param amount
 	 *            The amount to compare to.
-	 * @return TRUE, if this amount is less compared to the amount passed.
+	 * @return {@code true}, if this amount is less compared to the amount
+	 *         passed.
 	 */
 	public boolean lessThan(MonetaryAmount amount);
 
@@ -633,8 +633,8 @@ public interface MonetaryAmount {
 	 * 
 	 * @param number
 	 *            The number to compare to.
-	 * @return TRUE, if this amount's value is less compared to the number
-	 *         passed.
+	 * @return {@code true}, if this amount's value is less compared to the
+	 *         number passed.
 	 */
 	public boolean lessThan(Number number);
 
@@ -643,8 +643,8 @@ public interface MonetaryAmount {
 	 * 
 	 * @param amount
 	 *            The amount to compare to.
-	 * @return TRUE, if this amount is less or the same compared to the amount
-	 *         passed.
+	 * @return {@code true}, if this amount is less or the same compared to the
+	 *         amount passed.
 	 */
 	public boolean lessThanOrEqualTo(MonetaryAmount amount);
 
@@ -654,8 +654,8 @@ public interface MonetaryAmount {
 	 * 
 	 * @param number
 	 *            The number to compare to.
-	 * @return TRUE, if this amount's value is less or the same compared to the
-	 *         number passed.
+	 * @return {@code true}, if this amount's value is less or the same compared
+	 *         to the number passed.
 	 */
 	public boolean lessThanOrEqualTo(Number number);
 
@@ -664,7 +664,8 @@ public interface MonetaryAmount {
 	 * 
 	 * @param amount
 	 *            The amount to compare to.
-	 * @return TRUE, if this amount is greater compared to the amount passed.
+	 * @return {@code true}, if this amount is greater compared to the amount
+	 *         passed.
 	 */
 	public boolean greaterThan(MonetaryAmount amount);
 
@@ -673,8 +674,8 @@ public interface MonetaryAmount {
 	 * 
 	 * @param number
 	 *            The number to compare to.
-	 * @return TRUE, if this amount's value is greater compared to the number
-	 *         passed.
+	 * @return {@code true}, if this amount's value is greater compared to the
+	 *         number passed.
 	 */
 	public boolean greaterThan(Number number);
 
@@ -684,8 +685,8 @@ public interface MonetaryAmount {
 	 * 
 	 * @param amount
 	 *            The amount to compare to.
-	 * @return TRUE, if this amount is greater or the same compared to the
-	 *         amount passed.
+	 * @return {@code true}, if this amount is greater or the same compared to
+	 *         the amount passed.
 	 */
 	public boolean greaterThanOrEqualTo(MonetaryAmount amount);
 
@@ -695,8 +696,8 @@ public interface MonetaryAmount {
 	 * 
 	 * @param number
 	 *            The number to compare to.
-	 * @return TRUE, if this amount's value is greater or the same compared to
-	 *         the number passed.
+	 * @return {@code true}, if this amount's value is greater or the same
+	 *         compared to the number passed.
 	 */
 	public boolean greaterThanOrEqualTo(Number number);
 
@@ -707,19 +708,21 @@ public interface MonetaryAmount {
 	 * 
 	 * @param number
 	 *            The number to compare to.
-	 * @return TRUE, if this amount's value is the same compared to the number
-	 *         passed.
+	 * @return {@code true}, if this amount's value is the same compared to the
+	 *         number passed.
 	 */
 	public boolean isEqualTo(MonetaryAmount amount);
-	
+
 	/**
-	 * Allows to check, if the currency of the two amounts are the same. This
-	 * means that corresponding currency's namespace and code must match.
+	 * Allows to check, if the currency of the two amounts are the same, meaning
+	 * that corresponding currency name spaces and currency codes must be equal.
 	 * 
+	 * @see CurrencyUnit#getNamespace()
+	 * @see CurrencyUnit#getCurrencyCode()
 	 * @param amount
-	 *            The amount to comapre to, not {@code null}.
-	 * @return true, if the {@link CurrencyUnit} of this instance has the same
-	 *         namespace and code.
+	 *            The amount to compare to, not {@code null}.
+	 * @return {@code true}, if the {@link CurrencyUnit} of this instance has
+	 *         the same name space and code.
 	 */
 	public boolean hasSameCurrencyAs(MonetaryAmount amount);
 
@@ -728,8 +731,8 @@ public interface MonetaryAmount {
 	 * 
 	 * @param number
 	 *            The number to compare to.
-	 * @return TRUE, if this amount's value is the same compared to the number
-	 *         passed.
+	 * @return {@code true}, if this amount's value is the same compared to the
+	 *         number passed.
 	 */
 	public boolean hasSameNumberAs(Number number);
 
@@ -738,8 +741,10 @@ public interface MonetaryAmount {
 	 * 
 	 * @param amount
 	 *            The amount to compare to.
-	 * @return TRUE, if this amount's value is not the same compared to the
-	 *         number passed.
+	 * @return {@code true}, if this amount's value is not the same compared to
+	 *         the number passed, or the {@link CurrencyUnit} of the amount
+	 *         passed does not match this instances {@link CurrencyUnit}.
+	 * @see #hasSameCurrencyAs(MonetaryAmount)
 	 */
 	public boolean isNotEqualTo(MonetaryAmount amount);
 
@@ -749,8 +754,8 @@ public interface MonetaryAmount {
 	 * 
 	 * @param number
 	 *            The number to compare to.
-	 * @return TRUE, if this amount's value is not the same compared to the
-	 *         number passed.
+	 * @return {@code true}, if this amount's value is not the same compared to
+	 *         the number passed.
 	 */
 	public boolean isNotEqualTo(Number number);
 
@@ -812,25 +817,26 @@ public interface MonetaryAmount {
 	 * * Gets the monetary amount using the passed target type. This method
 	 * allows to support different return types, depending of the concrete
 	 * implementation. E.g. {@link BigDecimal}, {@link java.lang.Number} and the
-	 * all numeric wrapper types should be supported within SE environments,
-	 * whereas on other environments it may be different.
+	 * numeric wrapper types should be supported within SE environments, whereas
+	 * on other environments, it may be different.
 	 * <p>
 	 * This returns the monetary value as a {@code T}. No scaling will be
-	 * affected. for additional scaling based on the currency use
-	 * {@link #valueOf(Class, boolean)} instead of.
+	 * affected.
 	 * 
-	 * @return the amount represented as T, never null
+	 * @return the amount represented as T, never {@code null}
 	 * @throws IllegalArgumentException
-	 *             if the representation type is not supported.
+	 *             if the representation type is not supported, or the target
+	 *             type can not provide the precision required.
 	 */
 	public <T> T asType(Class<T> type);
 
 	/**
 	 * Access the class that models the representation of the numeric part of
 	 * the amount. The internal value can be accessed by calling
-	 * {@link #valueOf(Class)} passing the result of this method.
+	 * {@link #asType(Class)} passing the result of this method.
 	 * 
 	 * @return The class that represents the numeric representation, never null.
+	 * @see #asType(Class)
 	 */
 	public Class<?> getNumberType();
 

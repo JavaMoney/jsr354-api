@@ -9,17 +9,18 @@
 
 package javax.money;
 
+import java.util.Currency;
 import java.util.Enumeration;
 
 /**
- * * A unit of currency.
+ * A unit of currency.
  * <p>
- * * This class represents a unit of currency such as the British Pound, Euro,
- * US Dollar, BitCoins or other.
+ * This class represents a unit of currency such as the British Pound, Euro, US
+ * Dollar, BitCoins or other.
  * <p>
- * * The set of loaded currencies is provided by an instances of
- * {@link CurrencyUnitProvider}. The providers used are registered using the
- * {@link ServiceLoader} feature.
+ * Currencies can be distinguished within separate arbitrary currency name
+ * spaces, whereas as {@link #ISO_NAMESPACE} will be the the most commonly used
+ * one, similar to {@link Currency}.
  * 
  * @author Werner Keil
  * @author Stephen Colebourne
@@ -28,7 +29,8 @@ import java.util.Enumeration;
 public interface CurrencyUnit {
 
 	/**
-	 * The predefined namespace for ISO 4217 currencies.
+	 * The predefined name space for ISO 4217 currencies, similar to
+	 * {@link Currency}.
 	 */
 	public static final String ISO_NAMESPACE = "ISO-4217";
 
@@ -87,15 +89,6 @@ public interface CurrencyUnit {
 	public int getDefaultFractionDigits();
 
 	/**
-	 * Gets the increment used for rounding, along with
-	 * {@link #getDefaultFractionDigits()} rounding is defined.
-	 * 
-	 * @return
-	 * 
-	 *         public double getRoundingIncrement();
-	 */
-
-	/**
 	 * Checks if this is a currency that has a legal tender.
 	 * 
 	 * @return true if this currency has a legal tender.
@@ -110,7 +103,7 @@ public interface CurrencyUnit {
 	public boolean isVirtual();
 
 	/**
-	 * Get the timestamp from when this currency instance is valid from.<br/>
+	 * Get the timestamp from when this currency instance is valid.<br/>
 	 * This is useful for historic currencies.
 	 * 
 	 * @return the UTC timestamp from where this instance is valid. If not
@@ -119,7 +112,7 @@ public interface CurrencyUnit {
 	public Long getValidFrom();
 
 	/**
-	 * Get the timestamp until when this currency instance is valid from.<br/>
+	 * Get the timestamp until when this currency instance is valid.<br/>
 	 * This is useful for historic currencies.
 	 * 
 	 * @return the UTC timestamp until when this instance is valid. If not
@@ -129,7 +122,7 @@ public interface CurrencyUnit {
 
 	/**
 	 * Access additional attributes of this currency instance. This allows to
-	 * add additional codes or extended information by SPI providers. For
+	 * add additional codes or extended information by spi providers. For
 	 * instance there are ISO currency codes existing that may represented by
 	 * different country specific currencies. The detailed country can be added
 	 * as an attribute here.
@@ -143,6 +136,7 @@ public interface CurrencyUnit {
 	/**
 	 * Access the extended attributes defined.
 	 * 
+	 * @see #getAttribute(String, Class)
 	 * @return the attribute key available, never null.
 	 */
 	public Enumeration<String> getAttributeKeys();
@@ -150,6 +144,7 @@ public interface CurrencyUnit {
 	/**
 	 * Access the type of an attribute.
 	 * 
+	 * @see #getAttribute(String, Class)
 	 * @param key
 	 *            The attribute key
 	 * @return the attribute's value class, or null.

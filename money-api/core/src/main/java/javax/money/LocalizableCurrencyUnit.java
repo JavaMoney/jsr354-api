@@ -12,7 +12,7 @@ import java.util.Locale;
 
 /**
  * This interface extends a {@link CurrencyUnit} by the most common localization
- * methods, similar to the ones defined in <code>java.util.Currency</code>.
+ * methods, similar to the ones defined in {@link java.util.Currency}.
  * 
  * @author Anatole Tresch
  * @author Werner Keil

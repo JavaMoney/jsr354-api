@@ -9,7 +9,7 @@
 package javax.money.convert;
 
 import javax.money.CurrencyUnit;
-import javax.money.IllegalCurrencyException;
+import javax.money.MonetaryException;
 
 /**
  * Exception thrown when a monetary conversion operation fails.
@@ -17,7 +17,7 @@ import javax.money.IllegalCurrencyException;
  * @author Werner Keil
  * @author Stephen Colebourne
  */
-public class CurrencyConversionException extends IllegalCurrencyException {
+public class CurrencyConversionException extends MonetaryException {
 
 	/** Serialization lock. */
 	private static final long serialVersionUID = -7743240650686883450L;

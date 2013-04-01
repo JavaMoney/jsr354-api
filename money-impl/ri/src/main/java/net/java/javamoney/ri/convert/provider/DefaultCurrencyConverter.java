@@ -64,7 +64,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 		ExchangeRate rate = provider.getExchangeRate(amount.getCurrency(), target);
 		if (rate == null) {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
-					null);
+					null, "No rate available.");
 		}
 		MonetaryAmountProvider amountProvider = Monetary
 				.getMonetaryAmountProvider(amount.getNumberType());

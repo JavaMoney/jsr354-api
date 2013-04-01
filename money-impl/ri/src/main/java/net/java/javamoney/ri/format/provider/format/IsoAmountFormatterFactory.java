@@ -53,7 +53,7 @@ public class IsoAmountFormatterFactory extends AbstractRiComponent implements
 		String namespace = style.getAttribute("namespace", String.class);
 		if (namespace == null) {
 			log.debug("Using default namespace " + CurrencyUnit.ISO_NAMESPACE
-					+ " for styeL: " + style);
+					+ " for style: " + style);
 			namespace = CurrencyUnit.ISO_NAMESPACE;
 		}
 		if (!CurrencyUnit.ISO_NAMESPACE.equals(namespace)) {

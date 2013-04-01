@@ -1,0 +1,151 @@
+package net.java.javamoney.ri.ext.impl;
+
+import javax.inject.Singleton;
+import javax.money.CurrencyUnit;
+import javax.money.MonetaryAmount;
+import javax.money.Rounding;
+import javax.money.ext.AmountUtils;
+import javax.money.ext.Calculation;
+import javax.money.provider.ExposedExtensionType;
+import javax.money.provider.MonetaryExtension;
+
+@Singleton
+@ExposedExtensionType(AmountUtils.class)
+public class AmountUtilsImpl implements AmountUtils, MonetaryExtension {
+
+	@Override
+	public <T> T[] calculateAll(Calculation<T> calculation,
+			MonetaryAmount... amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> T[] calculateAll(Calculation<T> calculation,
+			Iterable<MonetaryAmount> amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount min(MonetaryAmount... amounts) {
+		if (amounts.length == 1) {
+			return amounts[0];
+		}
+		MonetaryAmount am = amounts[0];
+		for (int i = 1; i < amounts.length; i++) {
+			am = am.min(amounts[i]);
+		}
+		return am;
+	}
+
+	@Override
+	public MonetaryAmount min(Iterable<MonetaryAmount> amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount average(MonetaryAmount... amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount average(Iterable<MonetaryAmount> amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount max(MonetaryAmount... amounts) {
+		if (amounts.length == 1) {
+			return amounts[0];
+		}
+		MonetaryAmount am = amounts[0];
+		for (int i = 1; i < amounts.length; i++) {
+			am = am.max(amounts[i]);
+		}
+		return am;
+	}
+
+	@Override
+	public MonetaryAmount max(Iterable<MonetaryAmount> amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount roundedTotal(Rounding rounding,
+			MonetaryAmount... amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount roundedTotal(Rounding rounding,
+			Iterable<MonetaryAmount> amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount total(MonetaryAmount... amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount total(Iterable<MonetaryAmount> amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount total(CurrencyUnit currency,
+			MonetaryAmount... amounts) {
+		if (amounts.length == 1) {
+			return amounts[0];
+		}
+		MonetaryAmount am = amounts[0];
+		for (int i = 1; i < amounts.length; i++) {
+			am = am.max(amounts[i]);
+		}
+		return am;
+	}
+
+	@Override
+	public MonetaryAmount total(CurrencyUnit currency,
+			Iterable<MonetaryAmount> amounts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount nonNull(MonetaryAmount amount, CurrencyUnit currency) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount[] divideAndSeparate(MonetaryAmount total,
+			Number divisor, boolean addDifferenceToLastValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonetaryAmount[] divideAndSeparate(MonetaryAmount total,
+			Number divisor, Rounding rounding, boolean addDifferenceToLastValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> T roundAndConvert(MonetaryAmount total, Class<T> type,
+			Rounding rounding) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

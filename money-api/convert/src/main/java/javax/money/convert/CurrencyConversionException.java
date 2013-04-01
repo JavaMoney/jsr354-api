@@ -45,7 +45,8 @@ public class CurrencyConversionException extends MonetaryException {
 	 */
 	public CurrencyConversionException(CurrencyUnit source,
 			CurrencyUnit target, Long timestamp, String message) {
-		super(message);
+		super("Cannot convert " + String.valueOf(source) + " into "
+				+ String.valueOf(target) +": " + message);
 		this.source = source;
 		this.target = target;
 		this.timestamp = timestamp;
@@ -134,7 +135,7 @@ public class CurrencyConversionException extends MonetaryException {
 	@Override
 	public String toString() {
 		return "CurrencyConversionException [source=" + source + ", target="
-				+ target + ", timestamp=" + timestamp + "]";
+				+ target + ", timestamp=" + timestamp + "]: " + getMessage();
 	}
 
 }

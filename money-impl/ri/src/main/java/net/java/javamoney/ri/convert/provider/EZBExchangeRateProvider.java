@@ -143,7 +143,8 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * net.java.javamoney.ri.convert.spi.ExchangeRateProviderSpi#getExchangeRateType()
+	 * net.java.javamoney.ri.convert.spi.ExchangeRateProviderSpi#getExchangeRateType
+	 * ()
 	 */
 	@Override
 	public ExchangeRateType getExchangeRateType() {
@@ -154,8 +155,8 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * net.java.javamoney.ri.convert.spi.ExchangeRateProviderSpi#getExchangeRate(javax
-	 * .money.CurrencyUnit, javax.money.CurrencyUnit, java.lang.Long)
+	 * net.java.javamoney.ri.convert.spi.ExchangeRateProviderSpi#getExchangeRate
+	 * (javax .money.CurrencyUnit, javax.money.CurrencyUnit, java.lang.Long)
 	 */
 	@Override
 	public ExchangeRate getExchangeRate(CurrencyUnit source,
@@ -206,19 +207,27 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 			builder.setSourceLeadingFactor(1.0d);
 			return builder.build();
 		} else if ("EUR".equals(target.getCurrencyCode())) {
+			if(sourceRate==null){
+				return null;
+			}
 			return reverse(sourceRate);
 		} else if ("EUR".equals(source.getCurrencyCode())) {
 			return targetRate;
 		} else {
-			sourceRate = reverse(sourceRate);
-			builder.setExchangeRateChain(sourceRate, targetRate);
-			builder.setSourceLeadingFactor(sourceRate.getFactor().doubleValue()
-					* targetRate.getFactor().doubleValue());
-			return builder.build();
+			// TODO: Conversion without EUR not yet implemented!
+			return null;
+			// sourceRate = reverse(sourceRate);
+			// builder.setExchangeRateChain(sourceRate, targetRate);
+			// builder.setSourceLeadingFactor(sourceRate.getFactor().doubleValue()
+			// * targetRate.getFactor().doubleValue());
+			// return builder.build();
 		}
 	}
 
 	private static ExchangeRate reverse(ExchangeRate rate) {
+		if (rate == null) {
+			throw new IllegalArgumentException("Rate null is not reversable.");
+		}
 		if (rate.getFactor() instanceof BigDecimal) {
 			return new CurrencyExchangeRate(rate.getExchangeRateType(),
 					rate.getSource(), rate.getTarget(),
@@ -348,7 +357,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	@Override
 	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
 			Long timestamp) {
-		return getExchangeRate(src, target, timestamp)!=null;
+		return getExchangeRate(src, target, timestamp) != null;
 	}
 
 	@Override

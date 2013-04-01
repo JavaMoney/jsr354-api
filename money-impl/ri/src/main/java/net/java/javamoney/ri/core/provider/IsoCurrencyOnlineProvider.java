@@ -58,9 +58,7 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 	public IsoCurrencyOnlineProvider() {
 		saxParserFactory.setNamespaceAware(false);
 		saxParserFactory.setValidating(false);
-		loadCountries();
-		loadCurrencies();
-		LOGGER.debug("Currencies loaded from ISO:" + this.currencies.values());
+		new CurrencyLoader().start();
 	}
 
 	public void loadCurrencies() {
@@ -358,5 +356,19 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
 	public static void main(String[] args) {
 		new IsoCurrencyOnlineProvider();
+	}
+	
+	private final class CurrencyLoader extends Thread{
+		
+		public CurrencyLoader() {
+			super("ISO Currency Online Loader");
+		}
+		
+		public void run(){
+			loadCountries();
+			loadCurrencies();
+			LOGGER.debug("Currencies loaded from ISO:" + IsoCurrencyOnlineProvider.this.currencies.values());
+		}
+		
 	}
 }

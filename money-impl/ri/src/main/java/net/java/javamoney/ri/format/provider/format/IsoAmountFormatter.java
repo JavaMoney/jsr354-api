@@ -29,6 +29,8 @@ import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
 import javax.money.provider.Monetary;
 
+import net.java.javamoney.ri.format.util.StringGrouper;
+
 public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
 
 	private LocalizationStyle style;
@@ -77,24 +79,57 @@ public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
 	}
 
 	@Override
-	public String format(MonetaryAmount item)throws ItemFormatException {
+	public String format(MonetaryAmount item) throws ItemFormatException {
 		CurrencyUnit currencyUnit = item.getCurrency();
 		StringBuilder result = new StringBuilder();
 
 		if (CurrencyUnit.ISO_NAMESPACE.equals(currencyUnit.getNamespace())) {
 			String currencyString = "";
 			ItemFormatter<CurrencyUnit> cf = Monetary.getItemFormatterFactory()
-					.getItemFormatter(CurrencyUnit.class,
-							currencyStyle);
-			// TODO fix grouping for Cores, Lakhs and similar, possibly define an extension SPI that may be loaded for
-			// special currencies only, thus requiring to override the more advanced cases only ;-)
+					.getItemFormatter(CurrencyUnit.class, currencyStyle);
+			// TODO fix grouping for Cores, Lakhs and similar, possibly define
+			// an extension SPI that may be loaded for
+			// special currencies only, thus requiring to override the more
+			// advanced cases only ;-)
 			DecimalFormat df = (DecimalFormat) DecimalFormat
 					.getCurrencyInstance(style.getNumberLocale());
 			DecimalFormatSymbols syms = df.getDecimalFormatSymbols();
 			syms.setCurrencySymbol("");
 			df.setDecimalFormatSymbols(syms);
+			String numberString = null;
 			Number number = item.asType(Number.class);
-			String numberString = df.format(number).trim();
+			Boolean grouping = style.getAttribute("grouping", Boolean.class);
+			if (grouping != null && !grouping.booleanValue()) {
+				df.setGroupingUsed(false);
+				numberString = df.format(number).trim();
+			} else {
+				if (grouping == null || grouping.booleanValue()) {
+					df.setGroupingUsed(false);
+					numberString = df.format(number).trim();
+					String[] splitted = numberString.split(getSplitExp(syms
+							.getDecimalSeparator()));
+					int[] groups = style.getAttribute("groups", int[].class);
+					if (groups != null) {
+						StringGrouper grouper = new StringGrouper();
+						grouper.setGroupSizes(groups);
+						char[] groupChars = style.getAttribute("groupChars",
+								char[].class);
+						if (groupChars != null) {
+							grouper.setGroupChars(groupChars);
+							numberString = grouper.group(splitted[0]);
+						} else {
+							grouper.setGroupChars(syms.getGroupingSeparator());
+							numberString = grouper.group(splitted[0]);
+						}
+						if (splitted.length > 1) {
+							numberString += syms.getDecimalSeparator() + splitted[1];
+						}
+					} else {
+						numberString = df.format(number).trim();
+					}
+				}
+			}
+
 			String sep = (String) style.getAttribute("separator", String.class);
 			if (sep == null) {
 				sep = " ";
@@ -111,6 +146,13 @@ public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
 			}
 		}
 		return result.toString();
+	}
+
+	private String getSplitExp(char decimalSeparator) {
+		if (decimalSeparator == '.') {
+			return "\\.";
+		}
+		return String.valueOf(decimalSeparator);
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import javax.money.MonetaryException;
  * 
  * @author Werner Keil
  * @author Stephen Colebourne
+ * @author Anatole Tresch
  */
 public class CurrencyConversionException extends MonetaryException {
 

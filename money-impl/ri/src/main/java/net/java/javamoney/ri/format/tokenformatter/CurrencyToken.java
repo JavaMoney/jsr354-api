@@ -92,13 +92,11 @@ public class CurrencyToken<T extends MonetaryAmount> extends AbstractFormatterTo
 			return String.valueOf(unit.getNumericCode());
 		case NAME:
 			ItemFormatter<CurrencyUnit> cf1 = Monetary.getItemFormatterFactory().getItemFormatter(
-					CurrencyUnit.class, styleUsed);
-			styleUsed.setAttribute("renderField", "displayName");
+					CurrencyUnit.class, new LocalizationStyle.Builder(styleUsed).setAttribute("renderField", "displayName").build());
 			return cf1.format(unit);
 		case SYMBOL:
 			ItemFormatter<CurrencyUnit> cf2 = Monetary.getItemFormatterFactory().getItemFormatter(
-					CurrencyUnit.class, styleUsed);
-			styleUsed.setAttribute("renderField", "symbol");
+					CurrencyUnit.class, new LocalizationStyle.Builder(styleUsed).setAttribute("renderField", "symbol").build());
 			return cf2.format(unit);
 		case FULLCODE:
 		default:

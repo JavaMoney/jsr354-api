@@ -65,8 +65,8 @@ public class IsoAmountFormatterFactory extends AbstractRiComponent implements
 		if (renderedFieldValue == null) {
 			renderedFieldValue = "CODE";
 		}
-		LocalizationStyle currencyStyle = new LocalizationStyle(
-				renderedFieldValue, style.getNumberLocale());
+		LocalizationStyle currencyStyle = new LocalizationStyle.Builder(
+				renderedFieldValue, style.getNumberLocale()).build();
 		return new IsoAmountFormatter(style, currencyStyle);
 	}
 

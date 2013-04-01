@@ -60,12 +60,5 @@ public interface LocalizableMonetaryAmount extends MonetaryAmount {
 	 */
 	public String getLocalizedNumber(Locale locale);
 
-	/**
-	 * Access the {@link MonetaryAmount} {@link CurrencyUnit} as a
-	 * {@link LocalizableCurrencyUnit}.
-	 * 
-	 * @return A {@link LocalizableCurrencyUnit} corresponding to the
-	 *         {@link CurrencyUnit} of this instance, never {@code null}
-	 */
-	public LocalizableCurrencyUnit getLocalizableCurrencyUnit();
+
 }

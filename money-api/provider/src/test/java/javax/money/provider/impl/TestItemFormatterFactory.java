@@ -48,7 +48,7 @@ public class TestItemFormatterFactory implements ItemFormatterFactory {
 	@Override
 	public <T> ItemFormatter<T> getItemFormatter(Class<T> targetType,
 			Locale locale) {
-		return getItemFormatter(targetType, LocalizationStyle.of(locale));
+		return getItemFormatter(targetType, LocalizationStyle.valueOf(locale));
 	}
 
 }

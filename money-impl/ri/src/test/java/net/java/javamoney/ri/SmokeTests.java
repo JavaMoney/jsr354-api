@@ -163,7 +163,7 @@ public class SmokeTests {
 		try {
 			ItemParser<CurrencyUnit> parser = Monetary.getItemParserFactory()
 					.getItemParser(CurrencyUnit.class,
-							LocalizationStyle.of(Locale.ENGLISH));
+							LocalizationStyle.valueOf(Locale.ENGLISH));
 			CurrencyUnit cur = parser.parse("CHF");
 			assertNotNull(cur);
 			assertEquals("CHF", cur.getCurrencyCode());
@@ -182,7 +182,7 @@ public class SmokeTests {
 		ItemFormatter<MonetaryAmount> formatter = Monetary
 				.getItemFormatterFactory().getItemFormatter(
 						MonetaryAmount.class,
-						LocalizationStyle.of("CODE", Locale.GERMANY));
+						LocalizationStyle.valueOf("CODE", Locale.GERMANY));
 		System.out.println("Formatted amount: " + formatter.format(amount));
 		assertEquals(1.0d, amount.doubleValue(), 0);
 	}

@@ -56,7 +56,7 @@ public class CurrencyToken<T extends MonetaryAmount> extends AbstractFormatterTo
 	}
 
 	public CurrencyToken(Locale locale) {
-		setLocalizationStyle(LocalizationStyle.of(locale));
+		setLocalizationStyle(LocalizationStyle.valueOf(locale));
 	}
 
 	public CurrencyToken<?> setLocalizationStyle(LocalizationStyle style) {

@@ -28,7 +28,7 @@ import java.util.Map;
  * <p>
  * For convenience the a simple instance if {@link Locale} can easily be
  * converted into a {@link LocalizationStyle} using the method
- * {@link #of(Locale)}.
+ * {@link #valueOf(Locale)}.
  * 
  * @author Anatole Tresch
  */
@@ -217,7 +217,7 @@ public class LocalizationStyle implements Serializable {
 	 *            The target {@link Locale}
 	 * @return the {@link LocalizationStyle} created.
 	 */
-	public static LocalizationStyle of(Locale locale) {
+	public static LocalizationStyle valueOf(Locale locale) {
 		return new Builder(DEFAULT_ID, locale).build();
 	}
 
@@ -231,7 +231,7 @@ public class LocalizationStyle implements Serializable {
 	 *            The target {@link Locale}
 	 * @return the {@link LocalizationStyle} created.
 	 */
-	public static LocalizationStyle of(String styleId, Locale locale) {
+	public static LocalizationStyle valueOf(String styleId, Locale locale) {
 		return new Builder(styleId, locale).build();
 	}
 

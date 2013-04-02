@@ -103,7 +103,7 @@ public class ItemFormatterFactoryImpl extends AbstractRiComponent implements
 	@Override
 	public <T> ItemFormatter<T> getItemFormatter(Class<T> targetType,
 			Locale locale) throws ItemFormatException {
-		return getItemFormatter(targetType, LocalizationStyle.of(locale));
+		return getItemFormatter(targetType, LocalizationStyle.valueOf(locale));
 	}
 
 	/**

@@ -71,6 +71,6 @@ public interface RoundedMonetaryAmount extends MonetaryAmount {
 	 * @see #rounded()
 	 * @return the {@link Rounding} applied, never {@code null}.
 	 */
-	public Rounding getRouding();
+	public Rounding getRounding();
 
 }

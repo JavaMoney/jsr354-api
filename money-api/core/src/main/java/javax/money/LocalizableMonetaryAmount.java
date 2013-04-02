@@ -24,7 +24,7 @@ public interface LocalizableMonetaryAmount extends MonetaryAmount {
 	 * 
 	 * @return the localized value of this amount for the default locale
 	 */
-	public String getLocalized();
+	public String getDisplayValue();
 
 	/**
 	 * Gets the localized value of this amount for the specified locale, e.g.
@@ -37,7 +37,7 @@ public interface LocalizableMonetaryAmount extends MonetaryAmount {
 	 * @exception IllegalArgumentException
 	 *                if <code>locale</code> is null
 	 */
-	public String getLocalized(Locale locale);
+	public String getDisplayValue(Locale locale);
 
 	/**
 	 * Gets the number that is suitable for displaying this amount for the
@@ -45,7 +45,7 @@ public interface LocalizableMonetaryAmount extends MonetaryAmount {
 	 * 
 	 * @return the localized number of this amount for the default locale
 	 */
-	public String getLocalizedNumber();
+	public String getDisplayNumber();
 
 	/**
 	 * Gets the number that is suitable for displaying this amount for the
@@ -58,7 +58,7 @@ public interface LocalizableMonetaryAmount extends MonetaryAmount {
 	 * @exception IllegalArgumentException
 	 *                if <code>locale</code> is null
 	 */
-	public String getLocalizedNumber(Locale locale);
+	public String getDisplayNumber(Locale locale);
 
 
 }

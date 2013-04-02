@@ -10,10 +10,8 @@
  * Copyright (c) 2012-2013, Credit Suisse
  * All rights reserved.
  */
-package javax.money.ext;
+package javax.money;
 
-import javax.money.MonetaryAmount;
-import javax.money.Rounding;
 
 /**
  * This interface adds {@link Rounding} to a {@link MonetaryAmount}. Hereby a
@@ -21,7 +19,7 @@ import javax.money.Rounding;
  * <ul>
  * <li>Rounding is performed implicitly, whenever an amount is
  * <i>externalized</i>, e.g. by calling {@link #asType(Class)}. This will
- * directly constraint the external precision, to the one implied by the
+ * directly constrain the external precision, to the one implied by the
  * {@link Rounding} applied to this instance.</li>
  * <li>Rounding is never applied implicitly, so on externalization, the full
  * precision is applied if possible. Nevertheless a <i>rounded instance</i> can

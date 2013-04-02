@@ -486,7 +486,7 @@ public interface MonetaryAmount {
 	 * @throws ArithmeticException
 	 *             if the scale of the amount is too large
 	 */
-	public MonetaryAmount with(Number amount);
+	public MonetaryAmount withAmount(Number amount);
 
 	// -------------------- Introspection and value methods, similar to
 	// java.lang.Number; java.lang.BigDecimal

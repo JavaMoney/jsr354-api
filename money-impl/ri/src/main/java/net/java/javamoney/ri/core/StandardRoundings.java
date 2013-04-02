@@ -120,7 +120,7 @@ public class StandardRoundings {
 		public MonetaryAmount round(MonetaryAmount amount) {
 			BigDecimal dec = amount.asType(BigDecimal.class);
 			dec = dec.setScale(this.scale, this.roundingMode);
-			return amount.with(dec);
+			return amount.withAmount(dec);
 		}
 
 	}

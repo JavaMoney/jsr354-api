@@ -507,7 +507,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * 
 	 * @see javax.money.MonetaryAmount#with(java.lang.Number)
 	 */
-	public MonetaryAmount with(Number amount) {
+	public MonetaryAmount withAmount(Number amount) {
 		checkNumber(amount);
 		return new Money(this.currency,
 				BigDecimal.valueOf(amount.doubleValue()));

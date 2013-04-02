@@ -102,7 +102,7 @@ public class ItemParserFactoryImpl extends AbstractRiComponent implements
 	@Override
 	public <T> ItemParser<T> getItemParser(Class<T> targetType, Locale locale)
 			throws ItemParseException {
-		return getItemParser(targetType, LocalizationStyle.of(locale));
+		return getItemParser(targetType, LocalizationStyle.valueOf(locale));
 	}
 
 	/**

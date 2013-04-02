@@ -47,7 +47,7 @@ public class TestItemParserFactory implements ItemParserFactory {
 
 	@Override
 	public <T> ItemParser<T> getItemParser(Class<T> targetType, Locale locale) {
-		return getItemParser(targetType, LocalizationStyle.of(locale));
+		return getItemParser(targetType, LocalizationStyle.valueOf(locale));
 	}
 
 }

@@ -65,7 +65,7 @@ public interface ItemFormatterFactory {
 	/**
 	 * This method returns an instance of an {@link ItemFormatter}. This method
 	 * is a convenience method for
-	 * {@code getItemFormatter(LocalizationStyle.of(locale)) }.
+	 * {@code getItemFormatter(LocalizationStyle.valueOf(locale)) }.
 	 * 
 	 * @param targetType
 	 *            the target type, never {@code null}.

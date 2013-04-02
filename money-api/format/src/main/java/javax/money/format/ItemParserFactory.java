@@ -61,7 +61,7 @@ public interface ItemParserFactory {
 	/**
 	 * This method returns an instance of a fixed styled {@link ItemParser}.
 	 * This method is a convenience method for
-	 * {@code getItemParser(targetType, LocalizationStyle.of(locale)) }.
+	 * {@code getItemParser(targetType,LocalizationStyle.valueOf(locale)) }.
 	 * 
 	 * @param targetType
 	 *            the target type, never {@code null}.

@@ -38,7 +38,7 @@ public class TokenizedItemFormatterTest {
 		df.setDecimalFormatSymbols(syms);
 		b.addToken(new FormattedNumber<Double>(df).setNumberGroupChars(',',
 				'\'').setNumberGroupSizes(2, 2, 3));
-		b.setLocalizationStyle(LocalizationStyle.of(Locale.FRENCH));
+		b.setLocalizationStyle(LocalizationStyle.valueOf(Locale.FRENCH));
 		ItemFormatter<Double> f = b.build();
 		assertNotNull(f);
 		assertEquals("test- 12'345'67,89:12", f.format(123456789.123456789d));
@@ -56,7 +56,7 @@ public class TokenizedItemFormatterTest {
 		f.setDecimalFormatSymbols(symbols);
 		b.addToken(new FormattedNumber<Double>(f)
 				.setNumberGroupChars(',', '\'').setNumberGroupSizes(2, 2, 3));
-		b.setLocalizationStyle(LocalizationStyle.of(Locale.FRENCH));
+		b.setLocalizationStyle(LocalizationStyle.valueOf(Locale.FRENCH));
 		ItemFormatter<Double> sf = b.build();
 		assertNotNull(sf);
 		assertEquals("test- BEF+ 12'345'67,89:12",
@@ -107,11 +107,11 @@ public class TokenizedItemFormatterTest {
 				Double.class);
 		b.addToken(new Literal<Double>("test "));
 		b.addToken(new FormattedNumber<Double>());
-		b.setLocalizationStyle(LocalizationStyle.of(Locale.CHINESE));
+		b.setLocalizationStyle(LocalizationStyle.valueOf(Locale.CHINESE));
 		ItemFormatter<Double> f = b.build();
 		assertNotNull(f);
 		assertEquals("test 123,456,789.123", f.format(123456789.123456789d));
-		b.setLocalizationStyle(LocalizationStyle.of(Locale.GERMAN));
+		b.setLocalizationStyle(LocalizationStyle.valueOf(Locale.GERMAN));
 		f = b.build();
 		assertNotNull(f);
 		assertEquals("test 123.456.789,123", f.format(123456789.123456789d));

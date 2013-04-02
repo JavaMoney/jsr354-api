@@ -37,7 +37,7 @@ import javax.money.provider.MonetaryAmountProvider;
  */
 public class DefaultCurrencyConverter implements CurrencyConverter {
 
-	private ExchangeRateType exchangeRateType; 
+	private ExchangeRateType exchangeRateType;
 
 	public DefaultCurrencyConverter(ExchangeRateType exchangeRateType) {
 		if (exchangeRateType == null) {
@@ -54,22 +54,23 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 
 	@Override
 	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target) {
-		ExchangeRateProvider provider = Monetary
-				.getConversionProvider().getExchangeRateProvider(exchangeRateType);
+		ExchangeRateProvider provider = Monetary.getConversionProvider()
+				.getExchangeRateProvider(exchangeRateType);
 		if (provider == null) {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
 					null, "Undefined exchange rate type: "
 							+ this.exchangeRateType);
 		}
-		ExchangeRate rate = provider.getExchangeRate(amount.getCurrency(), target);
+		ExchangeRate rate = provider.getExchangeRate(amount.getCurrency(),
+				target);
 		if (rate == null) {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
 					null, "No rate available.");
 		}
 		MonetaryAmountProvider amountProvider = Monetary
 				.getMonetaryAmountProvider(amount.getNumberType());
-		return amountProvider.getMonetaryAmountFactory().get(target, amount.multiply(rate.getFactor())
-				.asType(Number.class));
+		return amountProvider.getMonetaryAmountFactory().get(target,
+				amount.multiply(rate.getFactor()).asType(Number.class));
 	}
 
 	@Override
@@ -82,16 +83,16 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 					timestamp, "Undefined exchange rate type: "
 							+ this.exchangeRateType);
 		}
-		ExchangeRate rate = provider.getExchangeRate(amount.getCurrency(), target,
-				timestamp);
+		ExchangeRate rate = provider.getExchangeRate(amount.getCurrency(),
+				target, timestamp);
 		if (rate == null) {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
 					timestamp, "Timestamp: " + timestamp);
 		}
 		MonetaryAmountProvider amountProvider = Monetary
 				.getMonetaryAmountProvider(amount.getNumberType());
-		return amountProvider.getMonetaryAmountFactory().get(target, amount.multiply(rate.getFactor())
-				.asType(Number.class));
+		return amountProvider.getMonetaryAmountFactory().get(target,
+				amount.multiply(rate.getFactor()).asType(Number.class));
 	}
 
 	@Override
@@ -104,15 +105,16 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 					targetCurrency, null, "Undefined exchange rate type: "
 							+ this.exchangeRateType);
 		}
-		ExchangeRate rate = provider.getExchangeRate(sourceCurrency, targetCurrency);
+		ExchangeRate rate = provider.getExchangeRate(sourceCurrency,
+				targetCurrency);
 		if (rate == null) {
 			throw new CurrencyConversionException(sourceCurrency,
 					targetCurrency, null);
 		}
 		MonetaryAmountProvider amountProvider = Monetary
 				.getMonetaryAmountProvider();
-		return amountProvider.getMonetaryAmountFactory().get(targetCurrency, amount).multiply(
-				rate.getFactor());
+		return amountProvider.getMonetaryAmountFactory()
+				.get(targetCurrency, amount).multiply(rate.getFactor());
 	}
 
 	@Override
@@ -125,16 +127,16 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 					targetCurrency, timestamp, "Undefined exchange rate type: "
 							+ this.exchangeRateType);
 		}
-		ExchangeRate rate = provider.getExchangeRate(sourceCurrency, targetCurrency,
-				timestamp);
+		ExchangeRate rate = provider.getExchangeRate(sourceCurrency,
+				targetCurrency, timestamp);
 		if (rate == null) {
 			throw new CurrencyConversionException(sourceCurrency,
 					targetCurrency, timestamp, "Timestamp: " + timestamp);
 		}
 		MonetaryAmountProvider amountProvider = Monetary
 				.getMonetaryAmountProvider();
-		return amountProvider.getMonetaryAmountFactory().get(targetCurrency, amount).multiply(
-				rate.getFactor());
+		return amountProvider.getMonetaryAmountFactory()
+				.get(targetCurrency, amount).multiply(rate.getFactor());
 	}
 
 }

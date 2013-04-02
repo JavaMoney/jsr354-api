@@ -44,17 +44,17 @@ public class CurrencyExchangeRateTest {
 		CurrencyExchangeRate rate = new CurrencyExchangeRate(TYPE, EURO,
 				DOLLAR, 1.30693d, System.currentTimeMillis(),
 				TEN_MINUTES_IN_MILLIS);
-		assertNotNull(rate.getSource());
-		assertEquals("EUR", rate.getSource().getCurrencyCode());
+		assertNotNull(rate.getBase());
+		assertEquals("EUR", rate.getBase().getCurrencyCode());
 	}
 
 	@Test
 	public void testGetTargetCurrency() {
 		CurrencyExchangeRate rate = new CurrencyExchangeRate(TYPE, EURO,
-				DOLLAR, BigDecimal.valueOf(1.30693d),
+				DOLLAR, BigDecimal.valueOf(1.30693d), 
 				System.currentTimeMillis(), TEN_MINUTES_IN_MILLIS);
-		assertNotNull(rate.getTarget());
-		assertEquals("USD", rate.getTarget().getCurrencyCode());
+		assertNotNull(rate.getTerm());
+		assertEquals("USD", rate.getTerm().getCurrencyCode());
 	}
 
 	@Test

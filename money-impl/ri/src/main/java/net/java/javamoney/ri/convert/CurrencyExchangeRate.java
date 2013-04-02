@@ -35,8 +35,8 @@ import net.java.javamoney.ri.common.AbstractAttributableItem;
 public final class CurrencyExchangeRate extends AbstractAttributableItem
 		implements ExchangeRate, Comparable<ExchangeRate> {
 
-	private final CurrencyUnit source;
-	private final CurrencyUnit target;
+	private final CurrencyUnit base;
+	private final CurrencyUnit term;
 	private final Number factor;
 	private final ExchangeRateType exchangeRateType;
 	private Long validFrom;
@@ -45,12 +45,12 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	private ExchangeRate[] chain = new ExchangeRate[] { this };
 
 	public CurrencyExchangeRate(ExchangeRateType conversionType,
-			CurrencyUnit source, CurrencyUnit target, Number factor) {
-		if (source == null) {
-			throw new IllegalArgumentException("source may not be null.");
+			CurrencyUnit base, CurrencyUnit term, Number factor) {
+		if (base == null) {
+			throw new IllegalArgumentException("base may not be null.");
 		}
-		if (target == null) {
-			throw new IllegalArgumentException("target may not be null.");
+		if (term == null) {
+			throw new IllegalArgumentException("term may not be null.");
 		}
 		if (factor == null) {
 			throw new IllegalArgumentException("factor may not be null.");
@@ -59,23 +59,23 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 			throw new IllegalArgumentException(
 					"exchangeRateType may not be null.");
 		}
-		this.source = source;
-		this.target = target;
+		this.base = base;
+		this.term = term;
 		this.factor = factor;
 		this.exchangeRateType = conversionType;
 	}
 
 	public CurrencyExchangeRate(ExchangeRateType conversionType,
-			CurrencyUnit source, CurrencyUnit target, Number factor,
+			CurrencyUnit base, CurrencyUnit term, Number factor,
 			ExchangeRate[] chain) {
-		this(conversionType, source, target, factor);
+		this(conversionType, base, term, factor);
 		setExchangeRateChain(chain);
 	}
 
 	public CurrencyExchangeRate(ExchangeRateType conversionType,
-			CurrencyUnit source, CurrencyUnit target, Number factor,
+			CurrencyUnit base, CurrencyUnit term, Number factor,
 			ExchangeRate[] chain, Long validFrom, Long validUntil) {
-		this(conversionType, source, target, factor);
+		this(conversionType, base, term, factor);
 		if (chain != null) {
 			setExchangeRateChain(chain);
 		}
@@ -84,19 +84,19 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	}
 
 	public CurrencyExchangeRate(ExchangeRateType conversionType,
-			CurrencyUnit source, CurrencyUnit target, Number factor,
+			CurrencyUnit base, CurrencyUnit term, Number factor,
 			Long validFrom, Long validUntil) {
-		this(conversionType, source, target, factor);
+		this(conversionType, base, term, factor);
 		setValidFrom(validFrom);
 		setValidUntil(validUntil);
 	}
 
-	public final CurrencyUnit getSource() {
-		return source;
+	public final CurrencyUnit getBase() {
+		return base;
 	}
 
-	public final CurrencyUnit getTarget() {
-		return target;
+	public final CurrencyUnit getTerm() {
+		return term;
 	}
 
 	public final Number getFactor() {
@@ -192,7 +192,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	@Override
 	public String toString() {
 		return "CurrencyExchangeRate [exchangeRateType=" + exchangeRateType
-				+ ", source=" + source + ", target=" + target + ", factor="
+				+ ", base=" + base + ", term=" + term + ", factor="
 				+ factor + ", validFrom=" + validFrom + ", validUntil="
 				+ validUntil + ", provider=" + provider + "]";
 	}
@@ -206,8 +206,8 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	public static final class Builder {
 
 		private ExchangeRateType exchangeRateType;
-		private CurrencyUnit source;
-		private CurrencyUnit target;
+		private CurrencyUnit base;
+		private CurrencyUnit term;
 		private Number factor;
 		private String provider;
 		private Long validFrom;
@@ -238,22 +238,22 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 			return exchangeRateType;
 		}
 
-		public Builder setSource(CurrencyUnit currency) {
-			this.source = currency;
+		public Builder setBase(CurrencyUnit base) {
+			this.base = base;
 			return this;
 		}
 
-		public CurrencyUnit getSource() {
-			return source;
+		public CurrencyUnit getBase() {
+			return base;
 		}
 
-		public Builder setTarget(CurrencyUnit currency) {
-			this.target = currency;
+		public Builder setTerm(CurrencyUnit term) {
+			this.term = term;
 			return this;
 		}
 
-		public CurrencyUnit getTarget() {
-			return target;
+		public CurrencyUnit getTerm() {
+			return term;
 		}
 
 		public Builder setValidFrom(Long validFrom) {
@@ -325,7 +325,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 
 		public ExchangeRate build() {
 			CurrencyExchangeRate rate = new CurrencyExchangeRate(
-					exchangeRateType, source, target, factor, rateChain,
+					exchangeRateType, base, term, factor, rateChain,
 					validFrom, validUntil);
 			rate.setProvider(this.provider);
 			rate.setReadOnly();

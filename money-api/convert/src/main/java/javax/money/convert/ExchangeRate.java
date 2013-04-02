@@ -33,22 +33,22 @@ public interface ExchangeRate {
 	 * 
 	 * @return the source currency.
 	 */
-	public CurrencyUnit getSource();
+	public CurrencyUnit getBase();
 
 	/**
 	 * Get the target currency.
 	 * 
 	 * @return the target currency.
 	 */
-	public CurrencyUnit getTarget();
+	public CurrencyUnit getTerm();
 
 	/**
-	 * Access the rate's factor.
+	 * Access the rate's bid factor.
 	 * 
-	 * @return the factor for this exchange rate.
+	 * @return the bid factor for this exchange rate, or {@code null}.
 	 */
 	public Number getFactor();
-
+	
 	/**
 	 * Returns the UTC timestamp defining from what date/time this rate is
 	 * valid.

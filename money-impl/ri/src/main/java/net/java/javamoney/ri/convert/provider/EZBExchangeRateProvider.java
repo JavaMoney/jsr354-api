@@ -168,8 +168,8 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 		CurrencyExchangeRate.Builder builder = new CurrencyExchangeRate.Builder();
 		builder.setProvider("European Central Bank");
 		builder.setExchangeRateType(RATE_TYPE);
-		builder.setSource(source);
-		builder.setTarget(target);
+		builder.setBase(source);
+		builder.setTerm(target);
 		ExchangeRate sourceRate = null;
 		ExchangeRate targetRate = null;
 		if (timestamp == null) {
@@ -207,7 +207,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 			builder.setSourceLeadingFactor(1.0d);
 			return builder.build();
 		} else if ("EUR".equals(target.getCurrencyCode())) {
-			if(sourceRate==null){
+			if (sourceRate == null) {
 				return null;
 			}
 			return reverse(sourceRate);
@@ -230,12 +230,11 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 		}
 		if (rate.getFactor() instanceof BigDecimal) {
 			return new CurrencyExchangeRate(rate.getExchangeRateType(),
-					rate.getSource(), rate.getTarget(),
+					rate.getTerm(), rate.getBase(),
 					BigDecimal.ONE.divide((BigDecimal) rate.getFactor()));
 		}
 		return new CurrencyExchangeRate(rate.getExchangeRateType(),
-				rate.getTarget(), rate.getSource(), 1.0d / rate.getFactor()
-						.doubleValue());
+				rate.getTerm(), rate.getBase(), 1.0d / rate.getFactor().doubleValue());
 	}
 
 	/**
@@ -323,8 +322,8 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	void addRate(CurrencyUnit tgtCurrency, Long timestamp, Double rate,
 			boolean loadCurrent) {
 		CurrencyExchangeRate.Builder builder = new CurrencyExchangeRate.Builder();
-		builder.setSource(SOURCE_CURRENCY);
-		builder.setTarget(tgtCurrency);
+		builder.setBase(SOURCE_CURRENCY);
+		builder.setTerm(tgtCurrency);
 		builder.setValidFrom(timestamp);
 		builder.setProvider("European Central Bank");
 		builder.setAttribute("dataloadTS", System.currentTimeMillis());

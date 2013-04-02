@@ -33,7 +33,7 @@ public class Max extends AbstractMonetaryCalculation {
 	protected MonetaryAmount calculateImpl(MonetaryAmount... amounts) {
 		MonetaryAmount max = amounts[0];
 		for (int i = 1; i < amounts.length; i++) {
-			if (amounts[i].greaterThan(max)) {
+			if (amounts[i].isGreaterThan(max)) {
 				max = amounts[i];
 			}
 		}

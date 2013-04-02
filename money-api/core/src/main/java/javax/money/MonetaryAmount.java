@@ -626,7 +626,7 @@ public interface MonetaryAmount {
 	 * @return {@code true}, if this amount is less compared to the amount
 	 *         passed.
 	 */
-	public boolean lessThan(MonetaryAmount amount);
+	public boolean isLessThan(MonetaryAmount amount);
 
 	/**
 	 * Checks if this amount's value is less compared to the number passed.
@@ -636,7 +636,7 @@ public interface MonetaryAmount {
 	 * @return {@code true}, if this amount's value is less compared to the
 	 *         number passed.
 	 */
-	public boolean lessThan(Number number);
+	public boolean isLessThan(Number number);
 
 	/**
 	 * Checks if this amount is less or the same compared to the amount passed.
@@ -646,7 +646,7 @@ public interface MonetaryAmount {
 	 * @return {@code true}, if this amount is less or the same compared to the
 	 *         amount passed.
 	 */
-	public boolean lessThanOrEqualTo(MonetaryAmount amount);
+	public boolean isLessThanOrEqualTo(MonetaryAmount amount);
 
 	/**
 	 * Checks if this amount's value is less or the same compared to the number
@@ -657,7 +657,7 @@ public interface MonetaryAmount {
 	 * @return {@code true}, if this amount's value is less or the same compared
 	 *         to the number passed.
 	 */
-	public boolean lessThanOrEqualTo(Number number);
+	public boolean isLessThanOrEqualTo(Number number);
 
 	/**
 	 * Checks if this amount is greater compared to the amount passed.
@@ -667,7 +667,7 @@ public interface MonetaryAmount {
 	 * @return {@code true}, if this amount is greater compared to the amount
 	 *         passed.
 	 */
-	public boolean greaterThan(MonetaryAmount amount);
+	public boolean isGreaterThan(MonetaryAmount amount);
 
 	/**
 	 * Checks if this amount's value is greater compared to the number passed.
@@ -677,7 +677,7 @@ public interface MonetaryAmount {
 	 * @return {@code true}, if this amount's value is greater compared to the
 	 *         number passed.
 	 */
-	public boolean greaterThan(Number number);
+	public boolean isGreaterThan(Number number);
 
 	/**
 	 * Checks if this amount is greater or the same compared to the amount
@@ -688,7 +688,7 @@ public interface MonetaryAmount {
 	 * @return {@code true}, if this amount is greater or the same compared to
 	 *         the amount passed.
 	 */
-	public boolean greaterThanOrEqualTo(MonetaryAmount amount);
+	public boolean isGreaterThanOrEqualTo(MonetaryAmount amount);
 
 	/**
 	 * Checks if this amount's value is greater or the same compared to the
@@ -699,7 +699,7 @@ public interface MonetaryAmount {
 	 * @return {@code true}, if this amount's value is greater or the same
 	 *         compared to the number passed.
 	 */
-	public boolean greaterThanOrEqualTo(Number number);
+	public boolean isGreaterThanOrEqualTo(Number number);
 
 	/**
 	 * Checks if this amount is the same compared to the amount passed. This is

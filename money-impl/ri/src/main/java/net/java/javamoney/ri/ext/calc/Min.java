@@ -33,7 +33,7 @@ public class Min extends AbstractMonetaryCalculation {
 	protected MonetaryAmount calculateImpl(MonetaryAmount... amounts) {
 		MonetaryAmount min = amounts[0];
 		for (int i = 1; i < amounts.length; i++) {
-			if (amounts[i].lessThan(min)) {
+			if (amounts[i].isLessThan(min)) {
 				min = amounts[i];
 			}
 		}

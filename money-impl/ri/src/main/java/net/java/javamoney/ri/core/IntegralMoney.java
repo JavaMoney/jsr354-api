@@ -195,7 +195,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public MonetaryAmount min(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		if (amount.lessThan(this)) {
+		if (amount.isLessThan(this)) {
 			return amount;
 		}
 		return this;
@@ -208,7 +208,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public MonetaryAmount max(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		if (amount.greaterThan(this)) {
+		if (amount.isGreaterThan(this)) {
 			return amount;
 		}
 		return this;
@@ -659,7 +659,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#lessThan(javax.money.MonetaryAmount)
 	 */
-	public boolean lessThan(MonetaryAmount amount) {
+	public boolean isLessThan(MonetaryAmount amount) {
 		checkAmountParameter(amount);
 		return this.number < amount.longValue();
 	}
@@ -669,7 +669,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#lessThan(java.lang.Number)
 	 */
-	public boolean lessThan(Number number) {
+	public boolean isLessThan(Number number) {
 		checkNumber(number);
 		return this.number < number.longValue();
 	}
@@ -680,7 +680,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * @see
 	 * javax.money.MonetaryAmount#lessThanOrEqualTo(javax.money.MonetaryAmount)
 	 */
-	public boolean lessThanOrEqualTo(MonetaryAmount amount) {
+	public boolean isLessThanOrEqualTo(MonetaryAmount amount) {
 		checkAmountParameter(amount);
 		return this.number <= amount.longValue();
 	}
@@ -690,7 +690,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#lessThanOrEqualTo(java.lang.Number)
 	 */
-	public boolean lessThanOrEqualTo(Number number) {
+	public boolean isLessThanOrEqualTo(Number number) {
 		checkNumber(number);
 		return this.number <= number.longValue();
 	}
@@ -700,7 +700,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#greaterThan(javax.money.MonetaryAmount)
 	 */
-	public boolean greaterThan(MonetaryAmount amount) {
+	public boolean isGreaterThan(MonetaryAmount amount) {
 		checkAmountParameter(amount);
 		return this.number > amount.longValue();
 	}
@@ -710,7 +710,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#greaterThan(java.lang.Number)
 	 */
-	public boolean greaterThan(Number number) {
+	public boolean isGreaterThan(Number number) {
 		checkNumber(number);
 		return this.number > number.longValue();
 	}
@@ -722,7 +722,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * javax.money.MonetaryAmount#greaterThanOrEqualTo(javax.money.MonetaryAmount
 	 * ) #see
 	 */
-	public boolean greaterThanOrEqualTo(MonetaryAmount amount) {
+	public boolean isGreaterThanOrEqualTo(MonetaryAmount amount) {
 		checkAmountParameter(amount);
 		return this.number >= amount.longValue();
 	}
@@ -732,7 +732,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#greaterThanOrEqualTo(java.lang.Number)
 	 */
-	public boolean greaterThanOrEqualTo(Number number) {
+	public boolean isGreaterThanOrEqualTo(Number number) {
 		checkNumber(number);
 		return this.number >= number.longValue();
 	}

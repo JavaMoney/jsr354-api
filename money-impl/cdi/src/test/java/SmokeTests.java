@@ -1,4 +1,3 @@
-
 /*
  *  Copyright (c) 2012, 2013, Werner Keil, Credit Suisse (Anatole Tresch).
  *
@@ -56,7 +55,6 @@ public class SmokeTests {
 	private static final ExchangeRateType RATE_TYPE = CurrencyExchangeRateType
 			.of("EZB");
 
-	
 	@Test
 	public void testCreateAmounts() {
 		// Creating one
@@ -103,13 +101,17 @@ public class SmokeTests {
 		ExchangeRateProvider prov = Monetary.getConversionProvider()
 				.getExchangeRateProvider(RATE_TYPE);
 		assertNotNull(prov);
-		ExchangeRate rate1 = prov.getExchangeRate(MoneyCurrency.getInstance("CHF"),
+		ExchangeRate rate1 = prov.getExchangeRate(
+				MoneyCurrency.getInstance("CHF"),
 				MoneyCurrency.getInstance("EUR"));
-		ExchangeRate rate2 = prov.getExchangeRate(MoneyCurrency.getInstance("EUR"),
+		ExchangeRate rate2 = prov.getExchangeRate(
+				MoneyCurrency.getInstance("EUR"),
 				MoneyCurrency.getInstance("CHF"));
-		ExchangeRate rate3 = prov.getExchangeRate(MoneyCurrency.getInstance("CHF"),
+		ExchangeRate rate3 = prov.getExchangeRate(
+				MoneyCurrency.getInstance("CHF"),
 				MoneyCurrency.getInstance("USD"));
-		ExchangeRate rate4 = prov.getExchangeRate(MoneyCurrency.getInstance("USD"),
+		ExchangeRate rate4 = prov.getExchangeRate(
+				MoneyCurrency.getInstance("USD"),
 				MoneyCurrency.getInstance("CHF"));
 		System.out.println(rate1);
 		System.out.println(rate2);
@@ -122,8 +124,7 @@ public class SmokeTests {
 		Rounding rounding = StandardRoundings.getRounding(2,
 				RoundingMode.HALF_UP);
 
-		ConversionProvider conv = Monetary
-				.getConversionProvider();
+		ConversionProvider conv = Monetary.getConversionProvider();
 		assertNotNull(conv);
 		MonetaryAmount srcCHF = Money.valueOf(MoneyCurrency.getInstance("CHF"),
 				100.15);
@@ -132,31 +133,40 @@ public class SmokeTests {
 		MonetaryAmount srcEUR = Money.valueOf(MoneyCurrency.getInstance("EUR"),
 				100.15);
 
-		MonetaryAmount tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcCHF,
+		MonetaryAmount tgt = conv.getCurrencyConverter(RATE_TYPE).convert(
+				srcCHF, MoneyCurrency.getInstance("EUR"));
+		MonetaryAmount tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(
+				100.15d, MoneyCurrency.getInstance("CHF"),
 				MoneyCurrency.getInstance("EUR"));
-		MonetaryAmount tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
-				MoneyCurrency.getInstance("CHF"),
-				MoneyCurrency.getInstance("EUR"));
-		MonetaryAmount tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt2,
-				MoneyCurrency.getInstance("CHF"));
+		MonetaryAmount tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(
+				tgt2, MoneyCurrency.getInstance("CHF"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcCHF, rounding.round(tgt3));
-		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcEUR, MoneyCurrency.getInstance("CHF"));
-		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d, MoneyCurrency.getInstance("EUR"),
+		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcEUR,
 				MoneyCurrency.getInstance("CHF"));
-		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt, MoneyCurrency.getInstance("EUR"));
+		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
+				MoneyCurrency.getInstance("EUR"),
+				MoneyCurrency.getInstance("CHF"));
+		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt,
+				MoneyCurrency.getInstance("EUR"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcEUR, rounding.round(tgt3));
-		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcCHF, MoneyCurrency.getInstance("USD"));
-		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d, MoneyCurrency.getInstance("CHF"),
+		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcCHF,
 				MoneyCurrency.getInstance("USD"));
-		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt2, MoneyCurrency.getInstance("CHF"));
+		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
+				MoneyCurrency.getInstance("CHF"),
+				MoneyCurrency.getInstance("USD"));
+		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt2,
+				MoneyCurrency.getInstance("CHF"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcCHF, rounding.round(tgt3));
-		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcUSD, MoneyCurrency.getInstance("CHF"));
-		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d, MoneyCurrency.getInstance("USD"),
+		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcUSD,
 				MoneyCurrency.getInstance("CHF"));
-		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt2, MoneyCurrency.getInstance("USD"));
+		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
+				MoneyCurrency.getInstance("USD"),
+				MoneyCurrency.getInstance("CHF"));
+		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt2,
+				MoneyCurrency.getInstance("USD"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcUSD, rounding.round(tgt3));
 	}
@@ -181,8 +191,8 @@ public class SmokeTests {
 		// Using formatters
 		CurrencyUnit currency = Monetary.getCurrencyUnitProvider().get(
 				"ISO-4217", "CHF");
-		MonetaryAmount amount = Monetary.getMonetaryAmountProvider().getMonetaryAmountFactory().get(
-				currency, 1.0d);
+		MonetaryAmount amount = Monetary.getMonetaryAmountProvider()
+				.getMonetaryAmountFactory().get(currency, 1.0d);
 		ItemFormatter<MonetaryAmount> formatter = Monetary
 				.getItemFormatterFactory().getItemFormatter(
 						MonetaryAmount.class,
@@ -190,15 +200,15 @@ public class SmokeTests {
 		System.out.println("Formatted amount: " + formatter.format(amount));
 		assertEquals(1.0d, amount.doubleValue(), 0);
 	}
-	
+
 	@Test
 	public void testCurrencyAccess() {
 		// Creating one
 		CurrencyUnit currency = Monetary.getCurrencyUnitProvider().get(
-				CurrencyUnit.ISO_NAMESPACE, "INR");
+				MoneyCurrency.ISO_NAMESPACE, "INR");
 		assertNotNull(currency);
 		assertTrue(currency instanceof LocalizableCurrencyUnit);
-		LocalizableCurrencyUnit lcu = (LocalizableCurrencyUnit)currency;
+		LocalizableCurrencyUnit lcu = (LocalizableCurrencyUnit) currency;
 		assertEquals("INR", lcu.getSymbol(Locale.ENGLISH));
 		assertEquals("INR", lcu.getSymbol(Locale.GERMAN));
 		assertEquals("Indian Rupee", lcu.getDisplayName(Locale.ENGLISH));

@@ -23,13 +23,13 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.format.ItemFormatException;
 import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
+import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.format.spi.ItemFormatterFactorySpi;
 
 public class IsoAmountFormatterFactory extends AbstractRiComponent implements
@@ -52,12 +52,12 @@ public class IsoAmountFormatterFactory extends AbstractRiComponent implements
 			LocalizationStyle style) throws ItemFormatException {
 		String namespace = style.getAttribute("namespace", String.class);
 		if (namespace == null) {
-			log.debug("Using default namespace " + CurrencyUnit.ISO_NAMESPACE
+			log.debug("Using default namespace " + MoneyCurrency.ISO_NAMESPACE
 					+ " for style: " + style);
-			namespace = CurrencyUnit.ISO_NAMESPACE;
+			namespace = MoneyCurrency.ISO_NAMESPACE;
 		}
-		if (!CurrencyUnit.ISO_NAMESPACE.equals(namespace)) {
-			throw new ItemFormatException("Only " + CurrencyUnit.ISO_NAMESPACE
+		if (!MoneyCurrency.ISO_NAMESPACE.equals(namespace)) {
+			throw new ItemFormatException("Only " + MoneyCurrency.ISO_NAMESPACE
 					+ " is supported as namespace, was:" + style);
 		}
 		String renderedFieldValue = (String) style.getAttribute(

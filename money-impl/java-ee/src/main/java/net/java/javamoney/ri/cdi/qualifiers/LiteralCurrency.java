@@ -25,12 +25,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import javax.inject.Qualifier;
-import javax.money.CurrencyUnit;
+
+import net.java.javamoney.ri.core.MoneyCurrency;
 
 @Qualifier
-@Target({ElementType.TYPE, ElementType.FIELD, ElementType.PARAMETER})
+@Target({ ElementType.TYPE, ElementType.FIELD, ElementType.PARAMETER })
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LiteralCurrency {
-	String namespace() default CurrencyUnit.ISO_NAMESPACE;
+	String namespace() default MoneyCurrency.ISO_NAMESPACE;
 }

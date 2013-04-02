@@ -29,12 +29,6 @@ import java.util.Enumeration;
 public interface CurrencyUnit {
 
 	/**
-	 * The predefined name space for ISO 4217 currencies, similar to
-	 * {@link Currency}.
-	 */
-	public static final String ISO_NAMESPACE = "ISO-4217";
-
-	/**
 	 * Defines the name space for the currency code. If the CurrencyUnit is an
 	 * instance of <type>java.util.Currency</type> this method returns
 	 * 'ISO-4217', whereas for other currency schemes, e.g. virtual currencies

@@ -28,6 +28,7 @@ import javax.money.format.ItemParseException;
 import javax.money.format.ItemParser;
 import javax.money.format.LocalizationStyle;
 
+import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.format.provider.format.IsoCurrencyFormatter;
 import net.java.javamoney.ri.format.spi.ItemParserFactorySpi;
 
@@ -60,9 +61,9 @@ public class IsoCurrencyParserFactory implements
 			throws ItemParseException {
 		String namespace = style.getAttribute("namespace", String.class);
 		if (namespace == null) {
-			namespace = CurrencyUnit.ISO_NAMESPACE;
+			namespace = MoneyCurrency.ISO_NAMESPACE;
 		}
-		if (CurrencyUnit.ISO_NAMESPACE.equals(namespace)
+		if (MoneyCurrency.ISO_NAMESPACE.equals(namespace)
 				&& style.isDefaultStyle()) {
 			return new IsoCurrencyParser(style);
 		}

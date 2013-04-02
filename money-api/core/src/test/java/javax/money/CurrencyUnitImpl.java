@@ -76,7 +76,7 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 	}
 
 	public static CurrencyUnit getInstance(Currency currency) {
-		String key = CurrencyUnit.ISO_NAMESPACE + ':'
+		String key = "ISO-4217:"
 				+ currency.getCurrencyCode();
 		CurrencyUnit cachedItem = CACHED.get(key);
 		if (cachedItem == null) {
@@ -201,7 +201,7 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 	 */
 	@Override
 	public String toString() {
-		if (CurrencyUnit.ISO_NAMESPACE.equals(namespace)) {
+		if ("ISO-4217".equals(namespace)) {
 			return currencyCode;
 		}
 		return namespace + ':' + currencyCode;
@@ -231,7 +231,7 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 		}
 
 		public Builder(String currencyCode) {
-			this(CurrencyUnit.ISO_NAMESPACE, currencyCode);
+			this("ISO-4217", currencyCode);
 		}
 
 		public Builder(String namespace, String currencyCode) {
@@ -456,7 +456,7 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 		 */
 
 		public String getNamespace() {
-			return ISO_NAMESPACE;
+			return "ISO-4217";
 		}
 
 		public Long getValidFrom() {

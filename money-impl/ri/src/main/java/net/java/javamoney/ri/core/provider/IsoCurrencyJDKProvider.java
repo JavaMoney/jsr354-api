@@ -19,10 +19,7 @@
  */
 package net.java.javamoney.ri.core.provider;
 
-import static javax.money.CurrencyUnit.ISO_NAMESPACE;
-
 import java.util.Currency;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -56,7 +53,7 @@ public class IsoCurrencyJDKProvider implements CurrencyUnitProviderSpi {
 	}
 
 	public String getNamespace() {
-		return ISO_NAMESPACE;
+		return MoneyCurrency.ISO_NAMESPACE;
 	}
 
 	public CurrencyUnit getCurrency(String code, Long timestamp) {

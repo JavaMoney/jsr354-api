@@ -29,6 +29,7 @@ import javax.money.format.ItemFormatException;
 import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
 
+import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.format.provider.format.IsoCurrencyFormatter.RenderedField;
 import net.java.javamoney.ri.format.spi.ItemFormatterFactorySpi;
 
@@ -57,7 +58,8 @@ public class IsoCurrencyFormatterFactory implements
 	}
 
 	@Override
-	public ItemFormatter<CurrencyUnit> getItemFormatter(LocalizationStyle style) throws ItemFormatException{
+	public ItemFormatter<CurrencyUnit> getItemFormatter(LocalizationStyle style)
+			throws ItemFormatException {
 		String renderedFieldValue = style.getId();
 		try {
 			IsoCurrencyFormatter.RenderedField.valueOf(renderedFieldValue
@@ -67,10 +69,10 @@ public class IsoCurrencyFormatterFactory implements
 					+ Arrays.toString(RenderedField.values()));
 		}
 		String namespace = style.getAttribute("namespace", String.class);
-		if(namespace==null){
-			namespace = CurrencyUnit.ISO_NAMESPACE;
+		if (namespace == null) {
+			namespace = MoneyCurrency.ISO_NAMESPACE;
 		}
-		if (CurrencyUnit.ISO_NAMESPACE.equals(namespace)) {
+		if (MoneyCurrency.ISO_NAMESPACE.equals(namespace)) {
 			return new IsoCurrencyFormatter(style);
 		}
 		if (LOGGER.isDebugEnabled()) {

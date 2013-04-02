@@ -29,6 +29,7 @@ import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
 import javax.money.provider.Monetary;
 
+import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.format.util.StringGrouper;
 
 public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
@@ -83,7 +84,7 @@ public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
 		CurrencyUnit currencyUnit = item.getCurrency();
 		StringBuilder result = new StringBuilder();
 
-		if (CurrencyUnit.ISO_NAMESPACE.equals(currencyUnit.getNamespace())) {
+		if (MoneyCurrency.ISO_NAMESPACE.equals(currencyUnit.getNamespace())) {
 			String currencyString = "";
 			ItemFormatter<CurrencyUnit> cf = Monetary.getItemFormatterFactory()
 					.getItemFormatter(CurrencyUnit.class, currencyStyle);

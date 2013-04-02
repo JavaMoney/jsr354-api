@@ -28,6 +28,8 @@ import javax.money.format.ItemFormatException;
 import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
 
+import net.java.javamoney.ri.core.MoneyCurrency;
+
 public class IsoCurrencyFormatter implements ItemFormatter<CurrencyUnit> {
 
 	public enum RenderedField {
@@ -72,7 +74,7 @@ public class IsoCurrencyFormatter implements ItemFormatter<CurrencyUnit> {
 			return String.valueOf(item.getNumericCode());
 		}
 		// check for iso currencies
-		if (CurrencyUnit.ISO_NAMESPACE.equals(item.getNamespace())) {
+		if (MoneyCurrency.ISO_NAMESPACE.equals(item.getNamespace())) {
 			Currency isoCurrency = Currency.getInstance(item.getCurrencyCode());
 			switch (renderedField) {
 			case SYMBOL:

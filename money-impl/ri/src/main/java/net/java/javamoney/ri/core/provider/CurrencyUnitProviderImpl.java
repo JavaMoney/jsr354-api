@@ -37,6 +37,7 @@ import javax.money.provider.CurrencyUnitProvider;
 import javax.money.provider.Monetary;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
+import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.core.spi.CurrencyUnitMappingSpi;
 import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
 
@@ -60,7 +61,7 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent
 	/** Loaded currency mappers. */
 	private Set<CurrencyUnitMappingSpi> mappers = new HashSet<CurrencyUnitMappingSpi>();
 	/** The default namespace used. */
-	private String defaultNamespace = CurrencyUnit.ISO_NAMESPACE;
+	private String defaultNamespace = MoneyCurrency.ISO_NAMESPACE;
 
 	/**
 	 * COnstructor, also loading the registered spi's.

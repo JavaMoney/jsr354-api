@@ -18,8 +18,6 @@
  */
 package net.java.javamoney.ri.core.provider;
 
-import static javax.money.CurrencyUnit.ISO_NAMESPACE;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,14 +33,14 @@ import javax.money.LocalizableCurrencyUnit;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 @Singleton
 public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
@@ -107,7 +105,7 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
 		@Override
 		public String getNamespace() {
-			return CurrencyUnit.ISO_NAMESPACE;
+			return MoneyCurrency.ISO_NAMESPACE;
 		}
 
 		@Override
@@ -312,7 +310,7 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
 	@Override
 	public String getNamespace() {
-		return ISO_NAMESPACE;
+		return MoneyCurrency.ISO_NAMESPACE;
 	}
 
 	@Override

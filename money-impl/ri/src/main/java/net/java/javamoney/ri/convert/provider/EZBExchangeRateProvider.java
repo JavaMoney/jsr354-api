@@ -161,8 +161,8 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	@Override
 	public ExchangeRate getExchangeRate(CurrencyUnit source,
 			CurrencyUnit target, Long timestamp) {
-		if (!CurrencyUnit.ISO_NAMESPACE.equals(source.getNamespace())
-				|| !CurrencyUnit.ISO_NAMESPACE.equals(target.getNamespace())) {
+		if (!MoneyCurrency.ISO_NAMESPACE.equals(source.getNamespace())
+				|| !MoneyCurrency.ISO_NAMESPACE.equals(target.getNamespace())) {
 			return null;
 		}
 		CurrencyExchangeRate.Builder builder = new CurrencyExchangeRate.Builder();

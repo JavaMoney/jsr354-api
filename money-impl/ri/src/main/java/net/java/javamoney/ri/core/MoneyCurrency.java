@@ -44,6 +44,12 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 		Comparable<CurrencyUnit> {
 
 	/**
+	 * The predefined name space for ISO 4217 currencies, similar to
+	 * {@link Currency}.
+	 */
+	public static final String ISO_NAMESPACE = "ISO-4217";
+	
+	/**
 	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = -2523936311372374236L;
@@ -91,7 +97,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 	}
 
 	public static CurrencyUnit getInstance(Currency currency) {
-		String key = CurrencyUnit.ISO_NAMESPACE + ':'
+		String key = ISO_NAMESPACE + ':'
 				+ currency.getCurrencyCode();
 		CurrencyUnit cachedItem = CACHED.get(key);
 		if (cachedItem == null) {
@@ -216,7 +222,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 	 */
 	@Override
 	public String toString() {
-		if (CurrencyUnit.ISO_NAMESPACE.equals(namespace)) {
+		if (ISO_NAMESPACE.equals(namespace)) {
 			return currencyCode;
 		}
 		return namespace + ':' + currencyCode;
@@ -246,7 +252,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 		}
 
 		public Builder(String currencyCode) {
-			this(CurrencyUnit.ISO_NAMESPACE, currencyCode);
+			this(ISO_NAMESPACE, currencyCode);
 		}
 
 		public Builder(String namespace, String currencyCode) {

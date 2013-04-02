@@ -96,7 +96,7 @@ public interface CurrencyUnit {
 	public boolean isLegalTender();
 
 	/**
-	 * Checks if this is a virtual currency, such as BitCoins or Linden Dollars.
+	 * Checks if this is a virtual currency, such as Bitcoin or Linden Dollar.
 	 * 
 	 * @return true if this is a virtual currency.
 	 */

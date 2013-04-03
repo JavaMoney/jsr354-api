@@ -32,7 +32,6 @@ import java.util.logging.Logger;
 import javax.money.CurrencyUnit;
 import javax.money.LocalizableCurrencyUnit;
 
-
 /**
  * Adapter that implements the new {@link CurrencyUnit} interface using the
  * JDK's {@link Currency}.
@@ -48,7 +47,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * {@link Currency}.
 	 */
 	public static final String ISO_NAMESPACE = "ISO-4217";
-	
+
 	/**
 	 * serialVersionUID.
 	 */
@@ -75,7 +74,8 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 
 	private static final Map<String, CurrencyUnit> CACHED = new ConcurrentHashMap<String, CurrencyUnit>();
 
-	private static final Logger LOGGER = Logger.getLogger(MoneyCurrency.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(MoneyCurrency.class
+			.getName());
 
 	/**
 	 * Private constructor.
@@ -96,9 +96,8 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 		this.attributes = attributes;
 	}
 
-	public static CurrencyUnit getInstance(Currency currency) {
-		String key = ISO_NAMESPACE + ':'
-				+ currency.getCurrencyCode();
+	public static CurrencyUnit of(Currency currency) {
+		String key = ISO_NAMESPACE + ':' + currency.getCurrencyCode();
 		CurrencyUnit cachedItem = CACHED.get(key);
 		if (cachedItem == null) {
 			cachedItem = new JDKCurrencyAdapter(currency);
@@ -107,11 +106,11 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 		return cachedItem;
 	}
 
-	public static CurrencyUnit getInstance(String isoCurrency) {
-		return getInstance(Currency.getInstance(isoCurrency));
+	public static CurrencyUnit of(String currencyCode) {
+		return of(Currency.getInstance(currencyCode));
 	}
 
-	public static CurrencyUnit getInstance(String namespace, String currencyCode) {
+	public static CurrencyUnit of(String namespace, String currencyCode) {
 		String key = namespace + ':' + currencyCode;
 		return CACHED.get(key);
 	}
@@ -401,7 +400,8 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 
 		public CurrencyUnit build(boolean cache) {
 			if (!isBuildable()) {
-				throw new IllegalStateException("Can not build CurrencyUnitImpl.");
+				throw new IllegalStateException(
+						"Can not build CurrencyUnitImpl.");
 			}
 			if (cache) {
 				if (validUntil != null) {

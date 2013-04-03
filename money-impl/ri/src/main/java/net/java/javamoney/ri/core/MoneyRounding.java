@@ -34,8 +34,12 @@ import javax.money.Rounding;
  * @author Anatole Tresch
  * 
  */
-public class StandardRoundings {
+public final class MoneyRounding {
 
+	private MoneyRounding() {
+		// singleton constructor
+	}
+	
 	/**
 	 * Creates an {@link AmountAdjuster} for rounding {@link MonetaryAmount}
 	 * instances given a currency.

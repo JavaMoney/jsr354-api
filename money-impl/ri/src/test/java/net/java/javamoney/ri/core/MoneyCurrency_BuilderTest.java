@@ -353,12 +353,12 @@ public class MoneyCurrency_BuilderTest {
 		assertEquals(Long.valueOf(100L), cu.getValidUntil());
 		assertTrue(cu.isLegalTender());
 		assertFalse(cu.isVirtual());
-		CurrencyUnit cu2 = MoneyCurrency.getInstance("testBuildBoolean", "cd");
+		CurrencyUnit cu2 = MoneyCurrency.of("testBuildBoolean", "cd");
 		assertTrue(cu2 != cu);
 		builder.setValidFrom(System.currentTimeMillis());
 		builder.setValidUntil(null);
 		cu = builder.build(true);
-		cu2 = MoneyCurrency.getInstance("testBuildBoolean", "cd");
+		cu2 = MoneyCurrency.of("testBuildBoolean", "cd");
 		assertTrue(cu2 == cu);
 	}
 

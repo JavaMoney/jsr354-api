@@ -35,20 +35,20 @@ import org.junit.Test;
 public class IntegralMoneyTest {
 
 	private static final BigDecimal TEN = new BigDecimal(10.0d);
-	protected static final CurrencyUnit EURO = MoneyCurrency.getInstance("EUR");
+	protected static final CurrencyUnit EURO = MoneyCurrency.of("EUR");
 	protected static final CurrencyUnit DOLLAR = MoneyCurrency
-			.getInstance("USD");
+			.of("USD");
 
 	@Test
 	public void testGetInstanceCurrencyBigDecimal() {
-		IntegralMoney m = IntegralMoney.valueOf(MoneyCurrency.getInstance("EUR"), TEN);
+		IntegralMoney m = IntegralMoney.valueOf(MoneyCurrency.of("EUR"), TEN);
 		assertEquals(TEN, m.asType(BigDecimal.class));
 		assertEquals(Long.valueOf(10L), m.asType(Long.class));
 	}
 
 	@Test
 	public void testGetInstanceCurrencyDouble() {
-		IntegralMoney m = IntegralMoney.valueOf(MoneyCurrency.getInstance("EUR"), 10.0d);
+		IntegralMoney m = IntegralMoney.valueOf(MoneyCurrency.of("EUR"), 10.0d);
 		assertTrue(TEN.doubleValue() == m.doubleValue());
 	}
 

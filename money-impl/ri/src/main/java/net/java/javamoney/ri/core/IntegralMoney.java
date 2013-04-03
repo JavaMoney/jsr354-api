@@ -89,7 +89,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * @return A new instance of {@link IntegralMoney}.
 	 */
 	public static IntegralMoney valueOf(String isoCurrencyCode, Number number) {
-		return new IntegralMoney(MoneyCurrency.getInstance(isoCurrencyCode),
+		return new IntegralMoney(MoneyCurrency.of(isoCurrencyCode),
 				number);
 	}
 

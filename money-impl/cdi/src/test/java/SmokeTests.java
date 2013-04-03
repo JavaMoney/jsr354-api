@@ -42,7 +42,7 @@ import javax.money.provider.Monetary;
 import net.java.javamoney.ri.convert.CurrencyExchangeRateType;
 import net.java.javamoney.ri.core.Money;
 import net.java.javamoney.ri.core.MoneyCurrency;
-import net.java.javamoney.ri.core.StandardRoundings;
+import net.java.javamoney.ri.core.MoneyRounding;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -60,10 +60,8 @@ public class SmokeTests {
 		// Creating one
 		CurrencyUnit currency = Monetary.getCurrencyUnitProvider().get(
 				"ISO-4217", "CHF");
-		MonetaryAmount amount1 = Monetary.getMonetaryAmountProvider()
-				.getMonetaryAmountFactory().get(currency, 1.0d);
-		MonetaryAmount amount2 = Monetary.getMonetaryAmountProvider()
-				.getMonetaryAmountFactory().get(currency, 1.0d);
+		MonetaryAmount amount1 = Money.of(currency, 1.0d);
+		MonetaryAmount amount2 = Money.of(currency, 1.0d);
 		MonetaryAmount amount3 = amount1.add(amount2);
 		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
 		assertEquals("ISO-4217", currency.getNamespace());
@@ -75,8 +73,8 @@ public class SmokeTests {
 	@Test
 	public void testCreateMoney() {
 		// Creating one
-		Money amount1 = Money.valueOf("CHF", 1.0d);
-		Money amount2 = Money.valueOf("CHF", 1.0d);
+		Money amount1 = Money.of("CHF", 1.0d);
+		Money amount2 = Money.of("CHF", 1.0d);
 		MonetaryAmount amount3 = amount1.add(amount2);
 		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
 		assertEquals(1.0d, amount1.doubleValue(), 0);
@@ -102,17 +100,17 @@ public class SmokeTests {
 				.getExchangeRateProvider(RATE_TYPE);
 		assertNotNull(prov);
 		ExchangeRate rate1 = prov.getExchangeRate(
-				MoneyCurrency.getInstance("CHF"),
-				MoneyCurrency.getInstance("EUR"));
+				MoneyCurrency.of("CHF"),
+				MoneyCurrency.of("EUR"));
 		ExchangeRate rate2 = prov.getExchangeRate(
-				MoneyCurrency.getInstance("EUR"),
-				MoneyCurrency.getInstance("CHF"));
+				MoneyCurrency.of("EUR"),
+				MoneyCurrency.of("CHF"));
 		ExchangeRate rate3 = prov.getExchangeRate(
-				MoneyCurrency.getInstance("CHF"),
-				MoneyCurrency.getInstance("USD"));
+				MoneyCurrency.of("CHF"),
+				MoneyCurrency.of("USD"));
 		ExchangeRate rate4 = prov.getExchangeRate(
-				MoneyCurrency.getInstance("USD"),
-				MoneyCurrency.getInstance("CHF"));
+				MoneyCurrency.of("USD"),
+				MoneyCurrency.of("CHF"));
 		System.out.println(rate1);
 		System.out.println(rate2);
 		System.out.println(rate3);
@@ -121,52 +119,52 @@ public class SmokeTests {
 
 	@Test
 	public void testCurrencyConverter() {
-		Rounding rounding = StandardRoundings.getRounding(2,
+		Rounding rounding = MoneyRounding.getRounding(2,
 				RoundingMode.HALF_UP);
 
 		ConversionProvider conv = Monetary.getConversionProvider();
 		assertNotNull(conv);
-		MonetaryAmount srcCHF = Money.valueOf(MoneyCurrency.getInstance("CHF"),
+		MonetaryAmount srcCHF = Money.of(MoneyCurrency.of("CHF"),
 				100.15);
-		MonetaryAmount srcUSD = Money.valueOf(MoneyCurrency.getInstance("USD"),
+		MonetaryAmount srcUSD = Money.of(MoneyCurrency.of("USD"),
 				100.15);
-		MonetaryAmount srcEUR = Money.valueOf(MoneyCurrency.getInstance("EUR"),
+		MonetaryAmount srcEUR = Money.of(MoneyCurrency.of("EUR"),
 				100.15);
 
 		MonetaryAmount tgt = conv.getCurrencyConverter(RATE_TYPE).convert(
-				srcCHF, MoneyCurrency.getInstance("EUR"));
+				srcCHF, MoneyCurrency.of("EUR"));
 		MonetaryAmount tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(
-				100.15d, MoneyCurrency.getInstance("CHF"),
-				MoneyCurrency.getInstance("EUR"));
+				100.15d, MoneyCurrency.of("CHF"),
+				MoneyCurrency.of("EUR"));
 		MonetaryAmount tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(
-				tgt2, MoneyCurrency.getInstance("CHF"));
+				tgt2, MoneyCurrency.of("CHF"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcCHF, rounding.round(tgt3));
 		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcEUR,
-				MoneyCurrency.getInstance("CHF"));
+				MoneyCurrency.of("CHF"));
 		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
-				MoneyCurrency.getInstance("EUR"),
-				MoneyCurrency.getInstance("CHF"));
+				MoneyCurrency.of("EUR"),
+				MoneyCurrency.of("CHF"));
 		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt,
-				MoneyCurrency.getInstance("EUR"));
+				MoneyCurrency.of("EUR"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcEUR, rounding.round(tgt3));
 		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcCHF,
-				MoneyCurrency.getInstance("USD"));
+				MoneyCurrency.of("USD"));
 		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
-				MoneyCurrency.getInstance("CHF"),
-				MoneyCurrency.getInstance("USD"));
+				MoneyCurrency.of("CHF"),
+				MoneyCurrency.of("USD"));
 		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt2,
-				MoneyCurrency.getInstance("CHF"));
+				MoneyCurrency.of("CHF"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcCHF, rounding.round(tgt3));
 		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcUSD,
-				MoneyCurrency.getInstance("CHF"));
+				MoneyCurrency.of("CHF"));
 		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
-				MoneyCurrency.getInstance("USD"),
-				MoneyCurrency.getInstance("CHF"));
+				MoneyCurrency.of("USD"),
+				MoneyCurrency.of("CHF"));
 		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt2,
-				MoneyCurrency.getInstance("USD"));
+				MoneyCurrency.of("USD"));
 		assertEquals(tgt, tgt2);
 		assertEquals(srcUSD, rounding.round(tgt3));
 	}
@@ -191,8 +189,7 @@ public class SmokeTests {
 		// Using formatters
 		CurrencyUnit currency = Monetary.getCurrencyUnitProvider().get(
 				"ISO-4217", "CHF");
-		MonetaryAmount amount = Monetary.getMonetaryAmountProvider()
-				.getMonetaryAmountFactory().get(currency, 1.0d);
+		MonetaryAmount amount = Money.of(currency, 1.0d);
 		ItemFormatter<MonetaryAmount> formatter = Monetary
 				.getItemFormatterFactory().getItemFormatter(
 						MonetaryAmount.class,

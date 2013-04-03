@@ -27,7 +27,8 @@ import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
 import javax.money.provider.Monetary;
-import javax.money.provider.MonetaryAmountProvider;
+
+import net.java.javamoney.ri.core.Money;
 
 /**
  * Implementation of a {@link ConversionProvider} that is simply adapting an
@@ -67,9 +68,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
 					null, "No rate available.");
 		}
-		MonetaryAmountProvider amountProvider = Monetary
-				.getMonetaryAmountProvider(amount.getNumberType());
-		return amountProvider.getMonetaryAmountFactory().get(target,
+		return Money.of(target,
 				amount.multiply(rate.getFactor()).asType(Number.class));
 	}
 
@@ -89,9 +88,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
 					timestamp, "Timestamp: " + timestamp);
 		}
-		MonetaryAmountProvider amountProvider = Monetary
-				.getMonetaryAmountProvider(amount.getNumberType());
-		return amountProvider.getMonetaryAmountFactory().get(target,
+		return Money.of(target,
 				amount.multiply(rate.getFactor()).asType(Number.class));
 	}
 
@@ -111,10 +108,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 			throw new CurrencyConversionException(sourceCurrency,
 					targetCurrency, null);
 		}
-		MonetaryAmountProvider amountProvider = Monetary
-				.getMonetaryAmountProvider();
-		return amountProvider.getMonetaryAmountFactory()
-				.get(targetCurrency, amount).multiply(rate.getFactor());
+		return Money.of(targetCurrency, amount).multiply(rate.getFactor());
 	}
 
 	@Override
@@ -133,10 +127,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 			throw new CurrencyConversionException(sourceCurrency,
 					targetCurrency, timestamp, "Timestamp: " + timestamp);
 		}
-		MonetaryAmountProvider amountProvider = Monetary
-				.getMonetaryAmountProvider();
-		return amountProvider.getMonetaryAmountFactory()
-				.get(targetCurrency, amount).multiply(rate.getFactor());
+		return Money.of(targetCurrency, amount).multiply(rate.getFactor());
 	}
 
 }

@@ -66,7 +66,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	private static final String HISTORIC_RATES_URL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml";
 	/** Source currency of the loaded rates is always EUR. */
 	private static final CurrencyUnit SOURCE_CURRENCY = MoneyCurrency
-			.getInstance("EUR");
+			.of("EUR");
 	/** The logger used. */
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(IsoCurrencyOnlineProvider.class);
@@ -293,7 +293,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 					} else if (attributes.getValue("currency") != null) {
 						// read data <Cube currency="USD" rate="1.3349"/>
 						CurrencyUnit tgtCurrency = MoneyCurrency
-								.getInstance(attributes.getValue("currency"));
+								.of(attributes.getValue("currency"));
 						Double rate = Double.parseDouble(attributes
 								.getValue("rate"));
 						addRate(tgtCurrency, timestamp, rate, loadCurrent);

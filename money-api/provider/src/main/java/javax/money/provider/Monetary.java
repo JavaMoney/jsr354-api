@@ -70,8 +70,6 @@ public final class Monetary {
 
 	private final Map<Class<?>, Object> monetaryExtensions = new ConcurrentHashMap<Class<?>, Object>();
 
-	private MonetaryAmountProvider monetaryAmountProvider;
-
 	private ItemFormatterFactory itemFormatterFactory;
 
 	private ItemParserFactory itemParserFactory;
@@ -94,18 +92,18 @@ public final class Monetary {
 
 	private static ComponentLoader initLoader() {
 		ComponentLoader loader = null;
-		try{
+		try {
 			// try loading directly from ServiceLoader
 			Iterator<ComponentLoader> loaders = ServiceLoader.load(
-				ComponentLoader.class).iterator();
+					ComponentLoader.class).iterator();
 			if (loaders.hasNext()) {
 				loader = loaders.next();
 				loader.init();
 				return loader;
 			}
-		}
-		catch(Exception e){
-			LOGGER.log(Level.INFO, "No ComponentLoader found, using ServiceLoader default.", e);
+		} catch (Exception e) {
+			LOGGER.log(Level.INFO,
+					"No ComponentLoader found, using ServiceLoader default.", e);
 		}
 		return new DefaultServiceLoader();
 	}
@@ -158,42 +156,6 @@ public final class Monetary {
 				this.monetaryExtensions.put(t.getClass(), t);
 			}
 		}
-	}
-
-	/**
-	 * Access the {@link MonetaryAmountFactorySpi} component.
-	 * 
-	 * @return the {@link MonetaryAmountFactorySpi} component, never
-	 *         {@code null}.
-	 */
-	@SuppressWarnings("unchecked")
-	public static MonetaryAmountProvider getMonetaryAmountProvider(
-			Class<?> numberClass) {
-		if (INSTANCE.monetaryAmountProvider == null) {
-			INSTANCE.monetaryAmountProvider = LOADER
-					.getInstance(MonetaryAmountProvider.class);
-		}
-		if (INSTANCE.monetaryAmountProvider == null) {
-			throw new IllegalStateException("No MonetaryAmountProvider loaded.");
-		}
-		return INSTANCE.monetaryAmountProvider;
-	}
-
-	/**
-	 * Access the {@link MonetaryAmountFactorySpi} default component.
-	 * 
-	 * @return the {@link MonetaryAmountFactorySpi} component, never
-	 *         {@code null}.
-	 */
-	public static MonetaryAmountProvider getMonetaryAmountProvider() {
-		@SuppressWarnings("unchecked")
-		MonetaryAmountProvider prov = LOADER
-				.getInstance(MonetaryAmountProvider.class);
-		if (prov == null) {
-			throw new UnsupportedOperationException(
-					"No MonetaryAmountProvider loaded");
-		}
-		return prov;
 	}
 
 	/**
@@ -391,7 +353,7 @@ public final class Monetary {
 		public void init() {
 			// Nothing todo here
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T getInstance(Class<T> type,

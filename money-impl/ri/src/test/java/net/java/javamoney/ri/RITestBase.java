@@ -27,6 +27,6 @@ import net.java.javamoney.ri.core.MoneyCurrency;
  *
  */
 public abstract class RITestBase {
-	protected static final CurrencyUnit EURO = MoneyCurrency.getInstance("EUR");
-	protected static final CurrencyUnit DOLLAR = MoneyCurrency.getInstance("USD");
+	protected static final CurrencyUnit EURO = MoneyCurrency.of("EUR");
+	protected static final CurrencyUnit DOLLAR = MoneyCurrency.of("USD");
 }

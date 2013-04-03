@@ -47,7 +47,7 @@ public class IsoCurrencyJDKProvider implements CurrencyUnitProviderSpi {
 	public IsoCurrencyJDKProvider() {
 		Set<Currency> jdkCurrencies = Currency.getAvailableCurrencies();
 		for (Currency jdkCurrency : jdkCurrencies) {
-			CurrencyUnit currency = MoneyCurrency.getInstance(jdkCurrency);
+			CurrencyUnit currency = MoneyCurrency.of(jdkCurrency);
 			this.currencies.put(currency.getCurrencyCode(), currency);
 		}
 	}

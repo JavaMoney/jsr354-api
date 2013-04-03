@@ -32,8 +32,8 @@ import org.junit.Test;
 
 public class CurrencyExchangeRateTest {
 
-	private static final CurrencyUnit EURO = MoneyCurrency.getInstance("EUR");
-	private static final CurrencyUnit DOLLAR = MoneyCurrency.getInstance("USD");
+	private static final CurrencyUnit EURO = MoneyCurrency.of("EUR");
+	private static final CurrencyUnit DOLLAR = MoneyCurrency.of("USD");
 	private static final long TEN_MINUTES_IN_MILLIS = 600000L;
 
 	private static final ExchangeRateType TYPE = CurrencyExchangeRateType

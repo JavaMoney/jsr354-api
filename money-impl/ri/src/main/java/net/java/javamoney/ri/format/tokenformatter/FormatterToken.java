@@ -64,6 +64,6 @@ public interface FormatterToken<T> {
 	 *             if an IO error occurs
 	 */
 	public void print(Appendable appendable, T item, LocalizationStyle style)
-			throws IOException;
+	throws IOException;
 	
 }

@@ -76,7 +76,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 *            The numeric part, not null.
 	 * @return A new instance of {@link Money}.
 	 */
-	public static Money valueOf(CurrencyUnit currency, Number number) {
+	public static Money of(CurrencyUnit currency, Number number) {
 		// TODO caching
 		return new Money(currency, number);
 	}
@@ -90,11 +90,11 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 *            The numeric part, not null.
 	 * @return A new instance of {@link Money}.
 	 */
-	public static Money valueOf(String isoCurrencyCode, Number number) {
-		return new Money(MoneyCurrency.getInstance(isoCurrencyCode), number);
+	public static Money of(String currencyCode, Number number) {
+		return new Money(MoneyCurrency.of(currencyCode), number);
 	}
 
-/**
+	/**
 	 * Facory method creating a zero instance with the given {@code currency);
 	 * @param currency the target currency of the amount being created.
 	 * @return
@@ -103,16 +103,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		return new Money(currency, BigDecimal.ZERO);
 	}
 
-	/**
-	 * Get the number represnetation type, E.g. {@code java.math.BigDecimal}.
-	 * 
-	 * @return
-	 */
-	public static Class<?> getNumberClass() {
-		return BigDecimal.class;
-	}
-	
-	
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -851,7 +841,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 *            currency unit of the {@code Money}.
 	 * @return a {@code Money} combining the numeric value and currency unit.
 	 */
-	public static Money valueOf(CurrencyUnit currency, BigDecimal number) {
+	public static Money of(CurrencyUnit currency, BigDecimal number) {
 		return new Money(currency, number);
 	}
 

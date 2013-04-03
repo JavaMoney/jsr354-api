@@ -35,33 +35,33 @@ import org.junit.Test;
 public class MoneyTest {
 
 	private static final BigDecimal TEN = new BigDecimal(10.0d);
-	protected static final CurrencyUnit EURO = MoneyCurrency.getInstance("EUR");
+	protected static final CurrencyUnit EURO = MoneyCurrency.of("EUR");
 	protected static final CurrencyUnit DOLLAR = MoneyCurrency
-			.getInstance("USD");
+			.of("USD");
 
 	@Test
 	public void testGetInstanceCurrencyBigDecimal() {
-		Money m = Money.valueOf(MoneyCurrency.getInstance("EUR"), TEN);
+		Money m = Money.of(MoneyCurrency.of("EUR"), TEN);
 		assertEquals(TEN, m.asType(BigDecimal.class));
 	}
 
 	@Test
 	public void testGetInstanceCurrencyDouble() {
-		Money m = Money.valueOf(MoneyCurrency.getInstance("EUR"), 10.0d);
+		Money m = Money.of(MoneyCurrency.of("EUR"), 10.0d);
 		assertTrue(TEN.doubleValue() == m.doubleValue());
 	}
 
 	@Test
 	public void testGetCurrency() {
-		MonetaryAmount money = Money.valueOf(EURO, BigDecimal.TEN);
+		MonetaryAmount money = Money.of(EURO, BigDecimal.TEN);
 		assertNotNull(money.getCurrency());
 		assertEquals("EUR", money.getCurrency().getCurrencyCode());
 	}
 
 	@Test
 	public void testAddNumber() {
-		MonetaryAmount money1 = Money.valueOf(EURO, BigDecimal.TEN);
-		MonetaryAmount money2 = Money.valueOf(EURO, BigDecimal.ONE);
+		MonetaryAmount money1 = Money.of(EURO, BigDecimal.TEN);
+		MonetaryAmount money2 = Money.of(EURO, BigDecimal.ONE);
 		MonetaryAmount moneyResult = money1.add(money2);
 		assertNotNull(moneyResult);
 		assertEquals(11d, moneyResult.doubleValue(), 0d);
@@ -69,8 +69,8 @@ public class MoneyTest {
 
 	@Test
 	public void testSubtractMonetaryAmount() {
-		MonetaryAmount money1 = Money.valueOf(EURO, BigDecimal.TEN);
-		MonetaryAmount money2 = Money.valueOf(EURO, BigDecimal.ONE);
+		MonetaryAmount money1 = Money.of(EURO, BigDecimal.TEN);
+		MonetaryAmount money2 = Money.of(EURO, BigDecimal.ONE);
 		MonetaryAmount moneyResult = money1.subtract(money2);
 		assertNotNull(moneyResult);
 		assertEquals(9d, moneyResult.doubleValue(), 0d);
@@ -78,8 +78,8 @@ public class MoneyTest {
 
 	@Test
 	public void testDivideAndRemainder_BigDecimal() {
-		MonetaryAmount money1 = Money.valueOf(EURO, BigDecimal.ONE);
-		MonetaryAmount money2 = Money.valueOf(EURO, new BigDecimal(
+		MonetaryAmount money1 = Money.of(EURO, BigDecimal.ONE);
+		MonetaryAmount money2 = Money.of(EURO, new BigDecimal(
 				"0.50000000000000000001"));
 		MonetaryAmount[] divideAndRemainder = money1.divideAndRemainder(money2);
 		assertThat(divideAndRemainder[0].asType(BigDecimal.class),
@@ -90,8 +90,8 @@ public class MoneyTest {
 
 	@Test
 	public void testDivideToIntegralValue_BigDecimal() {
-		MonetaryAmount money1 = Money.valueOf(EURO, BigDecimal.ONE);
-		MonetaryAmount money2 = Money.valueOf(EURO, new BigDecimal(
+		MonetaryAmount money1 = Money.of(EURO, BigDecimal.ONE);
+		MonetaryAmount money2 = Money.of(EURO, new BigDecimal(
 				"0.50000000000000000001"));
 		MonetaryAmount result = money1.divideToIntegralValue(money2);
 		assertThat(result.asType(BigDecimal.class), equalTo(BigDecimal.ONE));
@@ -99,7 +99,7 @@ public class MoneyTest {
 	
 	@Test
 	public void comparePerformance(){
-		MonetaryAmount money1 = Money.valueOf(EURO, BigDecimal.ONE);
+		MonetaryAmount money1 = Money.of(EURO, BigDecimal.ONE);
 		long start = System.currentTimeMillis();
 		for(int i=0; i<100000;i++){
 			money1 = money1.add(1234567);

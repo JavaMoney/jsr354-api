@@ -84,13 +84,13 @@ public class IsoCurrencyParser implements ItemParser<CurrencyUnit> {
 				}
 				namespace = textString.substring(0, index);
 				currencyCode = textString.substring(index + 1);
-				return MoneyCurrency.getInstance(namespace, currencyCode);
+				return MoneyCurrency.of(namespace, currencyCode);
 			case CODE:
 				if (namespace == null) {
 					throw new ItemParseException(
 							"Currency CODE format requires namespace attribute, but was:: " + text);
 				}
-				return MoneyCurrency.getInstance(namespace, text.toString());
+				return MoneyCurrency.of(namespace, text.toString());
 			}
 		}
 		throw new ItemParseException("Currency not parseable: " + text);

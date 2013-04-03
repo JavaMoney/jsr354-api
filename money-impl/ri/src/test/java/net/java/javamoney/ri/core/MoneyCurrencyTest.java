@@ -42,13 +42,13 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getInstance(java.util.Currency)}
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#of(java.util.Currency)}
 	 * .
 	 */
 	@Test
 	public void testGetInstanceCurrency() {
 		Currency jdkCurrency = Currency.getInstance("CHF");
-		CurrencyUnit cur = MoneyCurrency.getInstance(jdkCurrency);
+		CurrencyUnit cur = MoneyCurrency.of(jdkCurrency);
 		assertNotNull(cur);
 		assertEquals(jdkCurrency.getCurrencyCode(), cur.getCurrencyCode());
 		assertEquals(jdkCurrency.getNumericCode(), cur.getNumericCode());
@@ -68,12 +68,12 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getInstance(java.lang.String)}
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#of(java.lang.String)}
 	 * .
 	 */
 	@Test
 	public void testGetInstanceString() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("CHF");
+		CurrencyUnit cur = MoneyCurrency.of("CHF");
 		assertNotNull(cur);
 		Currency jdkCurrency = Currency.getInstance("CHF");
 		assertEquals(jdkCurrency.getCurrencyCode(), cur.getCurrencyCode());
@@ -94,13 +94,13 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getInstance(java.lang.String, java.lang.String)}
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#of(java.lang.String, java.lang.String)}
 	 * .
 	 */
 	@Test
 	public void testGetInstanceStringString() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
-		CurrencyUnit cur2 = MoneyCurrency.getInstance(
+		CurrencyUnit cur = MoneyCurrency.of("USD");
+		CurrencyUnit cur2 = MoneyCurrency.of(
 				MoneyCurrency.ISO_NAMESPACE, "USD");
 		assertNotNull(cur2);
 		assertTrue(cur == cur2);
@@ -127,9 +127,9 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testIsVirtual() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur = MoneyCurrency.of("USD");
 		assertFalse(cur.isVirtual());
-		cur = MoneyCurrency.getInstance("XAU");
+		cur = MoneyCurrency.of("XAU");
 		assertFalse(cur.isVirtual());
 	}
 
@@ -139,7 +139,7 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testGetNamespace() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur = MoneyCurrency.of("USD");
 		assertEquals(MoneyCurrency.ISO_NAMESPACE, cur.getNamespace());
 	}
 
@@ -149,7 +149,7 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testGetValidFrom() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur = MoneyCurrency.of("USD");
 		assertNull(cur.getValidFrom());
 	}
 
@@ -159,7 +159,7 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testGetValidUntil() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur = MoneyCurrency.of("USD");
 		assertNull(cur.getValidUntil());
 	}
 
@@ -169,9 +169,9 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testGetCurrencyCode() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur = MoneyCurrency.of("USD");
 		assertEquals("USD", cur.getCurrencyCode());
-		cur = MoneyCurrency.getInstance("EUR");
+		cur = MoneyCurrency.of("EUR");
 		assertEquals("EUR", cur.getCurrencyCode());
 	}
 
@@ -181,9 +181,9 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testGetNumericCode() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur = MoneyCurrency.of("USD");
 		assertEquals(840, cur.getNumericCode());
-		cur = MoneyCurrency.getInstance("EUR");
+		cur = MoneyCurrency.of("EUR");
 		assertEquals(978, cur.getNumericCode());
 	}
 
@@ -194,9 +194,9 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testGetDefaultFractionDigits() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur = MoneyCurrency.of("USD");
 		assertEquals(2, cur.getDefaultFractionDigits());
-		cur = MoneyCurrency.getInstance("JPY");
+		cur = MoneyCurrency.of("JPY");
 		assertEquals(0, cur.getDefaultFractionDigits());
 	}
 
@@ -207,7 +207,7 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testGetAttribute() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur = MoneyCurrency.of("USD");
 		assertNull(cur.getAttribute("A", Object.class));
 	}
 
@@ -217,7 +217,7 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testGetAttributeKeys() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur = MoneyCurrency.of("USD");
 		assertNotNull(cur.getAttributeKeys());
 		assertFalse(cur.getAttributeKeys().hasMoreElements());
 	}
@@ -229,7 +229,7 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testGetAttributeType() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur = MoneyCurrency.of("USD");
 		assertNull(cur.getAttributeType("A"));
 	}
 
@@ -239,9 +239,9 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testIsLegalTender() {
-		CurrencyUnit cur = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur = MoneyCurrency.of("USD");
 		assertTrue(cur.isLegalTender());
-		cur = MoneyCurrency.getInstance("XAU");
+		cur = MoneyCurrency.of("XAU");
 		assertFalse(cur.isLegalTender());
 	}
 
@@ -253,8 +253,8 @@ public class MoneyCurrencyTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testCompareTo() {
-		CurrencyUnit cur1 = MoneyCurrency.getInstance("USD");
-		CurrencyUnit cur2 = MoneyCurrency.getInstance("EUR");
+		CurrencyUnit cur1 = MoneyCurrency.of("USD");
+		CurrencyUnit cur2 = MoneyCurrency.of("EUR");
 		assertTrue(cur1 instanceof Comparable);
 		assertTrue(cur2 instanceof Comparable);
 		assertTrue(0 < ((Comparable<CurrencyUnit>) cur1).compareTo(cur2));
@@ -279,7 +279,7 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testToString() {
-		CurrencyUnit cur1 = MoneyCurrency.getInstance("USD");
+		CurrencyUnit cur1 = MoneyCurrency.of("USD");
 		String toString = cur1.toString();
 		assertNotNull(toString);
 		assertTrue("Does not contain currency code.", toString.contains("USD"));

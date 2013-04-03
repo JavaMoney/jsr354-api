@@ -18,10 +18,10 @@
  */
 package net.java.javamoney.ri.format.tokenformatter;
 
-import javax.money.format.ItemParseException;
-import javax.money.format.LocalizationStyle;
+import java.io.IOException;
 
-import net.java.javamoney.ri.format.common.ParseContext;
+import javax.money.format.FormatToken;
+import javax.money.format.LocalizationStyle;
 
 /**
  * {@link FormatDecorator} that allows to replace the representation of a zero
@@ -32,20 +32,19 @@ import net.java.javamoney.ri.format.common.ParseContext;
  * @param <T>
  *            The concrete {@link Number} type.
  */
-public class ZeroValueDecorator<T extends Number> extends
-		AbstractFormatterToken<T> {
+public class ZeroValueToken<T extends Number> extends AbstractFormatterToken<T> {
 
 	private String zeroValue;
-	private FormatterToken<T> decorated;
+	private FormatToken<T> decorated;
 
-	public ZeroValueDecorator(FormatterToken<T> decorated) {
+	public ZeroValueToken(FormatToken<T> decorated) {
 		if (decorated == null) {
 			throw new IllegalArgumentException("decorated is required.");
 		}
 		this.decorated = decorated;
 	}
 
-	public ZeroValueDecorator<T> setZeroValue(String value) {
+	public ZeroValueToken<T> setZeroValue(String value) {
 		this.zeroValue = value;
 		return this;
 	}
@@ -59,8 +58,13 @@ public class ZeroValueDecorator<T extends Number> extends
 		if (item.doubleValue() == 0.0d || item.doubleValue() == -0.0d) {
 			return zeroValue;
 		}
-		return this.decorated.format(item, style);
+		StringBuilder builder = new StringBuilder();
+		try {
+			this.decorated.print(builder, item, style);
+		} catch (IOException e) {
+			throw new IllegalStateException("Formatting failed.", e);
+		}
+		return builder.toString();
 	}
-
 
 }

@@ -23,15 +23,13 @@ import java.util.ResourceBundle;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.format.FormatToken;
 import javax.money.format.ItemFormatter;
-import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.provider.Monetary;
 
-import net.java.javamoney.ri.format.common.ParseContext;
-
 /**
- * {@link FormatterToken} that adds a localizable {@link String}, read by key
+ * {@link FormatToken} that adds a localizable {@link String}, read by key
  * from a {@link ResourceBundle}..
  * 
  * @author Anatole Tresch

@@ -22,14 +22,13 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import javax.money.MonetaryAmount;
-import javax.money.format.ItemParseException;
+import javax.money.format.FormatToken;
 import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.format.common.ParseContext;
 import net.java.javamoney.ri.format.util.StringGrouper;
 
 /**
- * {@link FormatterToken} which allows to format a {@link Number} type.
+ * {@link FormatToken} which allows to format a {@link Number} type.
  * 
  * @author Anatole Tresch
  * 

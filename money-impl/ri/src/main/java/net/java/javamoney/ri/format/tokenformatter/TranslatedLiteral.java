@@ -20,13 +20,11 @@ package net.java.javamoney.ri.format.tokenformatter;
 
 import java.util.ResourceBundle;
 
-import javax.money.format.ItemParseException;
+import javax.money.format.FormatToken;
 import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.format.common.ParseContext;
-
 /**
- * {@link FormatterToken} that adds a localizable {@link String}, read by key from
+ * {@link FormatToken} that adds a localizable {@link String}, read by key from
  * a {@link ResourceBundle}..
  * 
  * @author Anatole Tresch

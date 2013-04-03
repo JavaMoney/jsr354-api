@@ -10,13 +10,14 @@ import java.text.DecimalFormatSymbols;
 import java.util.Enumeration;
 import java.util.Locale;
 
+import javax.money.format.FormatToken;
 import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
+import javax.money.format.TokenizedItemFormatterBuilder;
 
 import net.java.javamoney.ri.format.tokenformatter.FormattedNumber;
-import net.java.javamoney.ri.format.tokenformatter.FormatterToken;
 import net.java.javamoney.ri.format.tokenformatter.Literal;
-import net.java.javamoney.ri.format.tokenformatter.TokenizedItemFormatter;
+import net.java.javamoney.ri.format.tokenformatter.DefaultTokenizedItemFormatter;
 
 import org.junit.Test;
 
@@ -24,12 +25,12 @@ public class TokenizedItemFormatterTest {
 
 	@Test
 	public void testTokenizedFormatterBuilder() {
-		new TokenizedItemFormatter.Builder<Double>(Double.class);
+		new DefaultTokenizedItemFormatter.Builder<Double>(Double.class);
 	}
 
 	@Test
 	public void testAddTokenFormatTokenOfT() throws IOException {
-		TokenizedItemFormatter.Builder<Double> b = new TokenizedItemFormatter.Builder<Double>(
+		DefaultTokenizedItemFormatter.Builder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
 		b.addToken(new Literal<Double>("test- "));
 		DecimalFormat df = new DecimalFormat("#0.0#");
@@ -46,7 +47,7 @@ public class TokenizedItemFormatterTest {
 
 	@Test
 	public void testAddTokenString() throws IOException {
-		TokenizedItemFormatter.Builder<Double> b = new TokenizedItemFormatter.Builder<Double>(
+		DefaultTokenizedItemFormatter.Builder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
 		b.addToken("test- ");
 		b.addToken("BEF+ ");
@@ -65,15 +66,15 @@ public class TokenizedItemFormatterTest {
 
 	@Test
 	public void testGetTokens() {
-		TokenizedItemFormatter.Builder<Double> b = new TokenizedItemFormatter.Builder<Double>(
+		TokenizedItemFormatterBuilder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
 		b.addToken("1");
 		b.addToken("2");
 		b.addToken("3");
-		Enumeration<FormatterToken<Double>> tokens = b.getTokens();
+		Enumeration<FormatToken<Double>> tokens = b.getTokens();
 		int size = 0;
 		while (tokens.hasMoreElements()) {
-			FormatterToken<?> token = (FormatterToken<?>) tokens.nextElement();
+			FormatToken<?> token = (FormatToken<?>) tokens.nextElement();
 			assertNotNull(token);
 			assertTrue(token instanceof Literal<?>);
 			size++;
@@ -83,7 +84,7 @@ public class TokenizedItemFormatterTest {
 
 	@Test
 	public void testGetTokenCount() {
-		TokenizedItemFormatter.Builder<Double> b = new TokenizedItemFormatter.Builder<Double>(
+		TokenizedItemFormatterBuilder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
 		b.addToken("1");
 		b.addToken("2");
@@ -92,7 +93,7 @@ public class TokenizedItemFormatterTest {
 
 	@Test
 	public void testClear() {
-		TokenizedItemFormatter.Builder<Double> b = new TokenizedItemFormatter.Builder<Double>(
+		TokenizedItemFormatterBuilder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
 		b.addToken("1");
 		b.addToken("2");
@@ -103,7 +104,7 @@ public class TokenizedItemFormatterTest {
 
 	@Test
 	public void testToFormatterLocalizationStyle() {
-		TokenizedItemFormatter.Builder<Double> b = new TokenizedItemFormatter.Builder<Double>(
+		DefaultTokenizedItemFormatter.Builder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
 		b.addToken(new Literal<Double>("test "));
 		b.addToken(new FormattedNumber<Double>());

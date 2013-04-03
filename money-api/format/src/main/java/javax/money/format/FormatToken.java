@@ -16,34 +16,16 @@
  * Contributors:
  *    Anatole Tresch - initial implementation
  */
-package net.java.javamoney.ri.format.tokenformatter;
+package javax.money.format;
 
 import java.io.IOException;
 
-import javax.money.format.ItemFormatException;
-import javax.money.format.LocalizationStyle;
 
 
 /**
  * Formats instances of T to a {@link String} or an {@link Appendable}.
  */
-public interface FormatterToken<T> {
-
-	/**
-	 * Formats a value of T to a {@code String}. This method uses a
-	 * {@link LocalizationStyle} as an input parameter. Styles allows to define
-	 * detailed and customized formatting input parameters. This allows to
-	 * implement also complex formatting requirements using this interface.
-	 * 
-	 * @param item
-	 *            the item to print, not null
-	 * @return the string printed using the settings of this formatter
-	 * @throws UnsupportedOperationException
-	 *             if the formatter is unable to print
-	 * @throws ItemFormatException
-	 *             if there is a problem while printing
-	 */
-	public String format(T item, LocalizationStyle style);
+public interface FormatToken<T> {
 
 	/**
 	 * Prints a item value to an {@code Appendable}.

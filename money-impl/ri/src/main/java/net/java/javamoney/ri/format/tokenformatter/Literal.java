@@ -18,13 +18,11 @@
  */
 package net.java.javamoney.ri.format.tokenformatter;
 
-import javax.money.format.ItemParseException;
+import javax.money.format.FormatToken;
 import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.format.common.ParseContext;
-
 /**
- * {@link FormatterToken} which adds an arbitrary literal constant value to the
+ * {@link FormatToken} which adds an arbitrary literal constant value to the
  * output.
  * 
  * @author Anatole Tresch

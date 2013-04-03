@@ -20,32 +20,20 @@ package net.java.javamoney.ri.format.tokenformatter;
 
 import java.io.IOException;
 
-import javax.money.format.ItemParseException;
+import javax.money.format.FormatToken;
 import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.format.common.ParseContext;
-import net.java.javamoney.ri.format.tokenparser.ParserToken;
-
 /**
- * Base class when implementing a {@link FormatterToken}.
+ * Base class when implementing a {@link FormatToken}.
  * 
  * @author Anatole Tresch
  * 
  * @param <T>
  *            The target type.
  */
-public abstract class AbstractFormatterToken<T> implements FormatterToken<T> {
+public abstract class AbstractFormatterToken<T> implements FormatToken<T> {
 
 	protected abstract String getToken(T item, LocalizationStyle style);
-
-	@Override
-	public String format(T item, LocalizationStyle style) {
-		String token = getToken(item, style);
-		if (token == null) {
-			throw new IllegalStateException("Token may not be null.");
-		}
-		return token;
-	}
 
 	@Override
 	public void print(Appendable appendable, T item, LocalizationStyle style)

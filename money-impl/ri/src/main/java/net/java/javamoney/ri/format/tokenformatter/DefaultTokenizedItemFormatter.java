@@ -191,7 +191,7 @@ public class DefaultTokenizedItemFormatter<T> extends AbstractTargeted<T>
 		 * #addToken(java.lang.String)
 		 */
 		@Override
-		public TokenizedItemFormatterBuilder<T> addToken(String token) {
+		public TokenizedItemFormatterBuilder<T> addLiteral(String token) {
 			this.tokens.add(new Literal<T>(token));
 			return this;
 		}

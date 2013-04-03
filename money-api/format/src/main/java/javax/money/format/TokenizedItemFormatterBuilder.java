@@ -36,7 +36,7 @@ public interface TokenizedItemFormatterBuilder<T> {
 	 *            The literal token
 	 * @return the builder instance.
 	 */
-	public TokenizedItemFormatterBuilder<T> addToken(String token);
+	public TokenizedItemFormatterBuilder<T> addLiteral(String token);
 
 	/**
 	 * Set the {@link LocalizationStyle} to be used for configuring the

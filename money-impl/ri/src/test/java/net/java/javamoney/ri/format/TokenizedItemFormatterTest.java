@@ -49,8 +49,8 @@ public class TokenizedItemFormatterTest {
 	public void testAddTokenString() throws IOException {
 		DefaultTokenizedItemFormatter.Builder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
-		b.addToken("test- ");
-		b.addToken("BEF+ ");
+		b.addLiteral("test- ");
+		b.addLiteral("BEF+ ");
 		DecimalFormat f = new DecimalFormat("#0.0#");
 		DecimalFormatSymbols symbols = f.getDecimalFormatSymbols();
 		symbols.setDecimalSeparator(':');
@@ -68,9 +68,9 @@ public class TokenizedItemFormatterTest {
 	public void testGetTokens() {
 		TokenizedItemFormatterBuilder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
-		b.addToken("1");
-		b.addToken("2");
-		b.addToken("3");
+		b.addLiteral("1");
+		b.addLiteral("2");
+		b.addLiteral("3");
 		Enumeration<FormatToken<Double>> tokens = b.getTokens();
 		int size = 0;
 		while (tokens.hasMoreElements()) {
@@ -86,8 +86,8 @@ public class TokenizedItemFormatterTest {
 	public void testGetTokenCount() {
 		TokenizedItemFormatterBuilder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
-		b.addToken("1");
-		b.addToken("2");
+		b.addLiteral("1");
+		b.addLiteral("2");
 		assertEquals(2, b.getTokenCount());
 	}
 
@@ -95,8 +95,8 @@ public class TokenizedItemFormatterTest {
 	public void testClear() {
 		TokenizedItemFormatterBuilder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
-		b.addToken("1");
-		b.addToken("2");
+		b.addLiteral("1");
+		b.addLiteral("2");
 		assertEquals(2, b.getTokenCount());
 		b.clear();
 		assertEquals(0, b.getTokenCount());

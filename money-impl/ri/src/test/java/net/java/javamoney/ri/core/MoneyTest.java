@@ -111,7 +111,7 @@ public class MoneyTest {
 		long duration = end - start;
 		System.out.println("Duration for 100000 multiplications (Money/BD): " + duration + " ms ("+(duration/100) + " ns per loop) -> " + money1);
 		
-		MonetaryAmount money2 = IntegralMoney.valueOf(EURO, BigDecimal.ONE);
+		MonetaryAmount money2 = IntegralMoney.of(EURO, BigDecimal.ONE);
 		start = System.currentTimeMillis();
 		for(int i=0; i<100000;i++){
 			money2 = money2.add(1234567);

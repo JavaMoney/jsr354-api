@@ -89,21 +89,6 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 		private int minorUnits;
 
 		@Override
-		public <T> T getAttribute(String key, Class<T> type) {
-			return null;
-		}
-
-		@Override
-		public Enumeration<String> getAttributeKeys() {
-			return Collections.emptyEnumeration();
-		}
-
-		@Override
-		public Class<?> getAttributeType(String key) {
-			return null;
-		}
-
-		@Override
 		public String getNamespace() {
 			return MoneyCurrency.ISO_NAMESPACE;
 		}

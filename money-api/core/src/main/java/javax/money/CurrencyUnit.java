@@ -114,35 +114,4 @@ public interface CurrencyUnit {
 	 */
 	public Long getValidUntil();
 
-	/**
-	 * Access additional attributes of this currency instance. This allows to
-	 * add additional codes or extended information by spi providers. For
-	 * instance there are ISO currency codes existing that may represented by
-	 * different country specific currencies. The detailed country can be added
-	 * as an attribute here.
-	 * 
-	 * @param key
-	 *            The attribute's key, never null.
-	 * @return the according attribute value, or null.
-	 */
-	public <T> T getAttribute(String key, Class<T> type);
-
-	/**
-	 * Access the extended attributes defined.
-	 * 
-	 * @see #getAttribute(String, Class)
-	 * @return the attribute key available, never null.
-	 */
-	public Enumeration<String> getAttributeKeys();
-
-	/**
-	 * Access the type of an attribute.
-	 * 
-	 * @see #getAttribute(String, Class)
-	 * @param key
-	 *            The attribute key
-	 * @return the attribute's value class, or null.
-	 */
-	public Class<?> getAttributeType(String key);
-
 }

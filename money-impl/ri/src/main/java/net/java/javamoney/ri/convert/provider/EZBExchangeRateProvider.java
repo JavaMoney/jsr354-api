@@ -65,8 +65,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	/** URL for the historic data feed. */
 	private static final String HISTORIC_RATES_URL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml";
 	/** Source currency of the loaded rates is always EUR. */
-	private static final CurrencyUnit SOURCE_CURRENCY = MoneyCurrency
-			.of("EUR");
+	private static final CurrencyUnit SOURCE_CURRENCY = MoneyCurrency.of("EUR");
 	/** The logger used. */
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(IsoCurrencyOnlineProvider.class);
@@ -193,7 +192,6 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 			cal.set(GregorianCalendar.MILLISECOND, 0);
 			Long targetTS = Long.valueOf(cal.getTimeInMillis());
 			builder.setValidFrom(targetTS);
-			builder.setAttribute("requestedTS", timestamp);
 			Map<String, ExchangeRate> targetRates = this.historicRates
 					.get(targetTS);
 			if (targetRates == null) {
@@ -228,13 +226,20 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 		if (rate == null) {
 			throw new IllegalArgumentException("Rate null is not reversable.");
 		}
+		CurrencyExchangeRate newRate = null;
 		if (rate.getFactor() instanceof BigDecimal) {
-			return new CurrencyExchangeRate(rate.getExchangeRateType(),
+			newRate = new CurrencyExchangeRate(rate.getExchangeRateType(),
 					rate.getTerm(), rate.getBase(),
 					BigDecimal.ONE.divide((BigDecimal) rate.getFactor()));
+		} else {
+			newRate = new CurrencyExchangeRate(rate.getExchangeRateType(),
+					rate.getTerm(), rate.getBase(), 1.0d / rate.getFactor()
+							.doubleValue());
 		}
-		return new CurrencyExchangeRate(rate.getExchangeRateType(),
-				rate.getTerm(), rate.getBase(), 1.0d / rate.getFactor().doubleValue());
+		newRate.setProvider(rate.getProvider());
+		newRate.setValidFrom(rate.getValidFrom());
+		newRate.setValidUntil(rate.getValidUntil());
+		return newRate;
 	}
 
 	/**
@@ -292,8 +297,8 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 						timestamp = Long.valueOf(date.getTime());
 					} else if (attributes.getValue("currency") != null) {
 						// read data <Cube currency="USD" rate="1.3349"/>
-						CurrencyUnit tgtCurrency = MoneyCurrency
-								.of(attributes.getValue("currency"));
+						CurrencyUnit tgtCurrency = MoneyCurrency.of(attributes
+								.getValue("currency"));
 						Double rate = Double.parseDouble(attributes
 								.getValue("rate"));
 						addRate(tgtCurrency, timestamp, rate, loadCurrent);
@@ -326,7 +331,6 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 		builder.setTerm(tgtCurrency);
 		builder.setValidFrom(timestamp);
 		builder.setProvider("European Central Bank");
-		builder.setAttribute("dataloadTS", System.currentTimeMillis());
 		builder.setSourceLeadingFactor(rate);
 		builder.setExchangeRateType(RATE_TYPE);
 		ExchangeRate exchangeRate = builder.build();

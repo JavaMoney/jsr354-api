@@ -18,9 +18,6 @@
  */
 package net.java.javamoney.ri.convert;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.money.CurrencyUnit;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
@@ -81,6 +78,7 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		}
 		setValidFrom(validFrom);
 		setValidUntil(validUntil);
+		setProvider(provider);
 	}
 
 	public CurrencyExchangeRate(ExchangeRateType conversionType,
@@ -192,9 +190,9 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 	@Override
 	public String toString() {
 		return "CurrencyExchangeRate [exchangeRateType=" + exchangeRateType
-				+ ", base=" + base + ", term=" + term + ", factor="
-				+ factor + ", validFrom=" + validFrom + ", validUntil="
-				+ validUntil + ", provider=" + provider + "]";
+				+ ", base=" + base + ", term=" + term + ", factor=" + factor
+				+ ", validFrom=" + validFrom + ", validUntil=" + validUntil
+				+ ", provider=" + provider + "]";
 	}
 
 	/**
@@ -213,21 +211,6 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 		private Long validFrom;
 		private Long validUntil;
 		private ExchangeRate[] rateChain;
-		private Map<String, Object> attributes = new HashMap<String, Object>();
-
-		@SuppressWarnings("unchecked")
-		public <T> T getAttribute(String key, Class<T> type) {
-			return (T) this.attributes.get(key);
-		}
-
-		public void clearAttributes() {
-			this.attributes.clear();
-		}
-
-		public final Builder setAttribute(String key, Object value) {
-			this.attributes.put(key, value);
-			return this;
-		}
 
 		public Builder setExchangeRateType(ExchangeRateType exchangeRateType) {
 			this.exchangeRateType = exchangeRateType;
@@ -325,8 +308,8 @@ public final class CurrencyExchangeRate extends AbstractAttributableItem
 
 		public ExchangeRate build() {
 			CurrencyExchangeRate rate = new CurrencyExchangeRate(
-					exchangeRateType, base, term, factor, rateChain,
-					validFrom, validUntil);
+					exchangeRateType, base, term, factor, rateChain, validFrom,
+					validUntil);
 			rate.setProvider(this.provider);
 			rate.setReadOnly();
 			return rate;

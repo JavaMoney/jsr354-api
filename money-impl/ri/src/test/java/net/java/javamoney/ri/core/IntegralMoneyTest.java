@@ -41,28 +41,28 @@ public class IntegralMoneyTest {
 
 	@Test
 	public void testGetInstanceCurrencyBigDecimal() {
-		IntegralMoney m = IntegralMoney.valueOf(MoneyCurrency.of("EUR"), TEN);
+		IntegralMoney m = IntegralMoney.of(MoneyCurrency.of("EUR"), TEN);
 		assertEquals(TEN, m.asType(BigDecimal.class));
 		assertEquals(Long.valueOf(10L), m.asType(Long.class));
 	}
 
 	@Test
 	public void testGetInstanceCurrencyDouble() {
-		IntegralMoney m = IntegralMoney.valueOf(MoneyCurrency.of("EUR"), 10.0d);
+		IntegralMoney m = IntegralMoney.of(MoneyCurrency.of("EUR"), 10.0d);
 		assertTrue(TEN.doubleValue() == m.doubleValue());
 	}
 
 	@Test
 	public void testGetCurrency() {
-		MonetaryAmount money = IntegralMoney.valueOf(EURO, BigDecimal.TEN);
+		MonetaryAmount money = IntegralMoney.of(EURO, BigDecimal.TEN);
 		assertNotNull(money.getCurrency());
 		assertEquals("EUR", money.getCurrency().getCurrencyCode());
 	}
 
 	@Test
 	public void testAddNumber() {
-		MonetaryAmount money1 = IntegralMoney.valueOf(EURO, BigDecimal.TEN);
-		MonetaryAmount money2 = IntegralMoney.valueOf(EURO, BigDecimal.ONE);
+		MonetaryAmount money1 = IntegralMoney.of(EURO, BigDecimal.TEN);
+		MonetaryAmount money2 = IntegralMoney.of(EURO, BigDecimal.ONE);
 		MonetaryAmount moneyResult = money1.add(money2);
 		assertNotNull(moneyResult);
 		assertEquals(11d, moneyResult.doubleValue(), 0d);
@@ -70,8 +70,8 @@ public class IntegralMoneyTest {
 
 	@Test
 	public void testSubtractMonetaryAmount() {
-		MonetaryAmount money1 = IntegralMoney.valueOf(EURO, BigDecimal.TEN);
-		MonetaryAmount money2 = IntegralMoney.valueOf(EURO, BigDecimal.ONE);
+		MonetaryAmount money1 = IntegralMoney.of(EURO, BigDecimal.TEN);
+		MonetaryAmount money2 = IntegralMoney.of(EURO, BigDecimal.ONE);
 		MonetaryAmount moneyResult = money1.subtract(money2);
 		assertNotNull(moneyResult);
 		assertEquals(9d, moneyResult.doubleValue(), 0d);
@@ -79,8 +79,8 @@ public class IntegralMoneyTest {
 
 	@Test
 	public void testDivideAndRemainder() {
-		MonetaryAmount money1 = IntegralMoney.valueOf(EURO, 1000);
-		MonetaryAmount money2 = IntegralMoney.valueOf(EURO, 11);
+		MonetaryAmount money1 = IntegralMoney.of(EURO, 1000);
+		MonetaryAmount money2 = IntegralMoney.of(EURO, 11);
 		MonetaryAmount[] divideAndRemainder = money1.divideAndRemainder(money2);
 		assertEquals(90L, divideAndRemainder[0].longValue());
 		assertEquals(10L, divideAndRemainder[1].longValue());
@@ -88,8 +88,8 @@ public class IntegralMoneyTest {
 
 	@Test
 	public void testDivideToIntegralValue() {
-		MonetaryAmount money1 = IntegralMoney.valueOf(EURO, 1000);
-		MonetaryAmount money2 = IntegralMoney.valueOf(EURO, 5);
+		MonetaryAmount money1 = IntegralMoney.of(EURO, 1000);
+		MonetaryAmount money2 = IntegralMoney.of(EURO, 5);
 		MonetaryAmount result = money1.divideToIntegralValue(money2);
 		assertEquals(200L, result.longValue());
 	}

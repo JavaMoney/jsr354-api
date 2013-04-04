@@ -61,7 +61,6 @@ public final class IntegralMoney implements MonetaryAmount,
 		this.currency = currency;
 		this.number = number.longValue();
 	}
-	
 
 	/**
 	 * Static factory method for creating a new instance of
@@ -73,7 +72,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 *            The numeric part, not null.
 	 * @return A new instance of {@link IntegralMoney}.
 	 */
-	public static IntegralMoney valueOf(CurrencyUnit currency, Number number) {
+	public static IntegralMoney of(CurrencyUnit currency, Number number) {
 		// TODO caching
 		return new IntegralMoney(currency, number);
 	}
@@ -88,9 +87,8 @@ public final class IntegralMoney implements MonetaryAmount,
 	 *            The numeric part, not null.
 	 * @return A new instance of {@link IntegralMoney}.
 	 */
-	public static IntegralMoney valueOf(String isoCurrencyCode, Number number) {
-		return new IntegralMoney(MoneyCurrency.of(isoCurrencyCode),
-				number);
+	public static IntegralMoney of(String isoCurrencyCode, Number number) {
+		return new IntegralMoney(MoneyCurrency.of(isoCurrencyCode), number);
 	}
 
 /**
@@ -223,7 +221,8 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public MonetaryAmount add(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		return new IntegralMoney(this.currency, this.number + amount.longValue());
+		return new IntegralMoney(this.currency, this.number
+				+ amount.longValue());
 	}
 
 	/*
@@ -865,7 +864,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 *            currency unit of the {@code Money}.
 	 * @return a {@code Money} combining the numeric value and currency unit.
 	 */
-	public static IntegralMoney valueOf(CurrencyUnit currency, BigDecimal number) {
+	public static IntegralMoney of(CurrencyUnit currency, BigDecimal number) {
 		return new IntegralMoney(currency, number);
 	}
 

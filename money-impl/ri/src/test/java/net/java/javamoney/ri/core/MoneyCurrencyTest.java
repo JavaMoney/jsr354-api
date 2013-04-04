@@ -42,8 +42,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#of(java.util.Currency)}
-	 * .
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#of(java.util.Currency)} .
 	 */
 	@Test
 	public void testGetInstanceCurrency() {
@@ -68,8 +67,7 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#of(java.lang.String)}
-	 * .
+	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#of(java.lang.String)} .
 	 */
 	@Test
 	public void testGetInstanceString() {
@@ -100,8 +98,8 @@ public class MoneyCurrencyTest {
 	@Test
 	public void testGetInstanceStringString() {
 		CurrencyUnit cur = MoneyCurrency.of("USD");
-		CurrencyUnit cur2 = MoneyCurrency.of(
-				MoneyCurrency.ISO_NAMESPACE, "USD");
+		CurrencyUnit cur2 = MoneyCurrency
+				.of(MoneyCurrency.ISO_NAMESPACE, "USD");
 		assertNotNull(cur2);
 		assertTrue(cur == cur2);
 		Currency jdkCurrency = Currency.getInstance("USD");
@@ -198,39 +196,6 @@ public class MoneyCurrencyTest {
 		assertEquals(2, cur.getDefaultFractionDigits());
 		cur = MoneyCurrency.of("JPY");
 		assertEquals(0, cur.getDefaultFractionDigits());
-	}
-
-	/**
-	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getAttribute(java.lang.String, java.lang.Class)}
-	 * .
-	 */
-	@Test
-	public void testGetAttribute() {
-		CurrencyUnit cur = MoneyCurrency.of("USD");
-		assertNull(cur.getAttribute("A", Object.class));
-	}
-
-	/**
-	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getAttributeKeys()}.
-	 */
-	@Test
-	public void testGetAttributeKeys() {
-		CurrencyUnit cur = MoneyCurrency.of("USD");
-		assertNotNull(cur.getAttributeKeys());
-		assertFalse(cur.getAttributeKeys().hasMoreElements());
-	}
-
-	/**
-	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getAttributeType(java.lang.String)}
-	 * .
-	 */
-	@Test
-	public void testGetAttributeType() {
-		CurrencyUnit cur = MoneyCurrency.of("USD");
-		assertNull(cur.getAttributeType("A"));
 	}
 
 	/**

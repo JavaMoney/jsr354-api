@@ -21,12 +21,12 @@ package net.java.javamoney.ri.core;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.Rounding;
-
 
 /**
  * Default immutable implementation of {@link MonetaryAmount}.
@@ -51,6 +51,19 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 *            the amount, not null.
 	 */
 	public Money(CurrencyUnit currency, Number number) {
+		this(currency, number, getDefaultMathContext());
+	}
+
+
+	/**
+	 * Creates a new instance os {@link Money}.
+	 * 
+	 * @param currency
+	 *            the currency, not null.
+	 * @param number
+	 *            the amount, not null.
+	 */
+	public Money(CurrencyUnit currency, Number number, MathContext mathContext) {
 		if (currency == null) {
 			throw new IllegalArgumentException("Currency is required.");
 		}
@@ -65,6 +78,26 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 			this.number = BigDecimal.valueOf(number.doubleValue());
 		}
 		// TODO ensure internal precision!
+	}
+	
+	private static MathContext getDefaultMathContext() {
+		// TODO Implement this something useful
+		return MathContext.DECIMAL64;
+	}
+
+	// Static Factory Methods
+	/**
+	 * Translates a {@code BigDecimal} value and a {@code CurrencyUnit} currency
+	 * into a {@code Money}.
+	 * 
+	 * @param number
+	 *            numeric value of the {@code Money}.
+	 * @param currency
+	 *            currency unit of the {@code Money}.
+	 * @return a {@code Money} combining the numeric value and currency unit.
+	 */
+	public static Money of(CurrencyUnit currency, BigDecimal number) {
+		return new Money(currency, number);
 	}
 
 	/**
@@ -84,6 +117,21 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	/**
 	 * Static factory method for creating a new instance of {@link Money}.
 	 * 
+	 * @param currency
+	 *            The target currency, not null.
+	 * @param number
+	 *            The numeric part, not null.
+	 * @return A new instance of {@link Money}.
+	 */
+	public static Money of(CurrencyUnit currency, Number number,
+			MathContext mathContext) {
+		// TODO caching
+		return new Money(currency, number, mathContext);
+	}
+
+	/**
+	 * Static factory method for creating a new instance of {@link Money}.
+	 * 
 	 * @param isoCurrencyCode
 	 *            The target currency as ISO currency code.
 	 * @param number
@@ -95,6 +143,20 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	}
 
 	/**
+	 * Static factory method for creating a new instance of {@link Money}.
+	 * 
+	 * @param isoCurrencyCode
+	 *            The target currency as ISO currency code.
+	 * @param number
+	 *            The numeric part, not null.
+	 * @return A new instance of {@link Money}.
+	 */
+	public static Money of(String currencyCode, Number number,
+			MathContext mathContext) {
+		return new Money(MoneyCurrency.of(currencyCode), number, mathContext);
+	}
+
+/**
 	 * Facory method creating a zero instance with the given {@code currency);
 	 * @param currency the target currency of the amount being created.
 	 * @return
@@ -103,8 +165,9 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		return new Money(currency, BigDecimal.ZERO);
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -117,7 +180,9 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -826,23 +891,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * javax.money.Rounding)
 	 */
 	public <T> T asType(Class<T> type, Rounding rounding) {
-		MonetaryAmount amount =  rounding.round(this);
+		MonetaryAmount amount = rounding.round(this);
 		return amount.asType(type);
-	}
-
-	// Static Factory Methods
-	/**
-	 * Translates a {@code BigDecimal} value and a {@code CurrencyUnit} currency
-	 * into a {@code Money}.
-	 * 
-	 * @param number
-	 *            numeric value of the {@code Money}.
-	 * @param currency
-	 *            currency unit of the {@code Money}.
-	 * @return a {@code Money} combining the numeric value and currency unit.
-	 */
-	public static Money of(CurrencyUnit currency, BigDecimal number) {
-		return new Money(currency, number);
 	}
 
 	/*
@@ -909,6 +959,16 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 				amount.getCurrency().getNamespace())
 				&& this.currency.getCurrencyCode().equals(
 						amount.getCurrency().getCurrencyCode());
+	}
+
+	/**
+	 * This method allows to change the MathContext of the monetary amount.
+	 * 
+	 * @param mathContext
+	 *            the new {@link MathContext}, never {@code null}.
+	 */
+	public Money setMathContext(MathContext mathContext) {
+		return new Money(this.currency, new BigDecimal(toString(), mathContext));
 	}
 
 }

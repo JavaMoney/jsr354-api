@@ -20,10 +20,7 @@
 package net.java.javamoney.ri.core;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Currency;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -65,8 +62,6 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 	private final Long validFrom;
 	/** valid until, or {@code null}. */
 	private final Long validUntil;
-	/** Any additional attributes, or {@code null}. */
-	private Map<String, Object> attributes;
 	/** true, if legal tender. */
 	private final boolean legalTender;
 	/** true, if it is a virtual currency. */
@@ -84,7 +79,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 	 */
 	private MoneyCurrency(String namespace, String code, int numCode,
 			int fractionDigits, Long validFrom, Long validUntil, boolean legal,
-			boolean virtual, Map<String, Object> attributes) {
+			boolean virtual) {
 		this.namespace = namespace;
 		this.currencyCode = code;
 		this.numericCode = numCode;
@@ -93,7 +88,6 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 		this.validUntil = validUntil;
 		this.legalTender = legal;
 		this.virtual = virtual;
-		this.attributes = attributes;
 	}
 
 	public static CurrencyUnit of(Currency currency) {
@@ -144,43 +138,6 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 
 	public int getDefaultFractionDigits() {
 		return defaultFractionDigits;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T getAttribute(String key, Class<T> type) {
-		if (key == null) {
-			throw new IllegalArgumentException("key may not b enull.");
-		}
-		if (type == null) {
-			throw new IllegalArgumentException("type may not b enull.");
-		}
-		if (this.attributes != null) {
-			return (T) this.attributes.get(key);
-		}
-		return null;
-	}
-
-	@Override
-	public Enumeration<String> getAttributeKeys() {
-		if (this.attributes != null) {
-			return Collections.enumeration(this.attributes.keySet());
-		}
-		return Collections.emptyEnumeration();
-	}
-
-	@Override
-	public Class<?> getAttributeType(String key) {
-		if (key == null) {
-			throw new IllegalArgumentException("key may not b enull.");
-		}
-		if (this.attributes != null) {
-			Object value = this.attributes.get(key);
-			if (value != null) {
-				return value.getClass();
-			}
-		}
-		return null;
 	}
 
 	@Override
@@ -240,8 +197,6 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 		private Long validFrom;
 		/** valid until, or {@code null}. */
 		private Long validUntil;
-		/** Any additional attributes, or {@code null}. */
-		private Map<String, Object> attributes;
 		/** true, if legal tender. */
 		private boolean legalTender = true;
 		/** true for virtual currencies. */
@@ -315,49 +270,6 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 			return this;
 		}
 
-		public Builder setAttribute(String key, Object value) {
-			if (this.attributes == null) {
-				this.attributes = new HashMap<String, Object>();
-			}
-			this.attributes.put(key, value);
-			return this;
-		}
-
-		public Object removeAttribute(String key) {
-			if (this.attributes == null) {
-				return null;
-			}
-			return this.attributes.remove(key);
-		}
-
-		public Enumeration<String> getAttributeKeys() {
-			if (this.attributes != null) {
-				return Collections.enumeration(this.attributes.keySet());
-			}
-			return Collections.emptyEnumeration();
-		}
-
-		public Class<?> getAttributeType(String key) {
-			if (key == null) {
-				throw new IllegalArgumentException("key may not b enull.");
-			}
-			if (this.attributes != null) {
-				Object value = this.attributes.get(key);
-				if (value != null) {
-					return value.getClass();
-				}
-			}
-			return null;
-		}
-
-		@SuppressWarnings("unchecked")
-		public <T> T getAttribute(String key, Class<T> type) {
-			if (this.attributes == null) {
-				return null;
-			}
-			return (T) this.attributes.get(key);
-		}
-
 		public String getNamespace() {
 			return this.namespace;
 		}
@@ -421,14 +333,14 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 				if (current == null) {
 					current = new MoneyCurrency(namespace, currencyCode,
 							numericCode, defaultFractionDigits, validFrom,
-							validUntil, legalTender, virtual, attributes);
+							validUntil, legalTender, virtual);
 					CACHED.put(key, current);
 				}
 				return current;
 			}
 			return new MoneyCurrency(namespace, currencyCode, numericCode,
 					defaultFractionDigits, validFrom, validUntil, legalTender,
-					virtual, attributes);
+					virtual);
 		}
 	}
 
@@ -516,21 +428,6 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 
 		public String toString() {
 			return this.currency.toString();
-		}
-
-		@Override
-		public <T> T getAttribute(String key, Class<T> type) {
-			return null;
-		}
-
-		@Override
-		public Enumeration<String> getAttributeKeys() {
-			return Collections.emptyEnumeration();
-		}
-
-		@Override
-		public Class<?> getAttributeType(String key) {
-			return null;
 		}
 
 		@Override

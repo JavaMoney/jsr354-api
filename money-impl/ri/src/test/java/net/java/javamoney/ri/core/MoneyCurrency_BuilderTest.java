@@ -21,11 +21,8 @@ package net.java.javamoney.ri.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
-import java.util.Enumeration;
 
 import javax.money.CurrencyUnit;
 
@@ -79,7 +76,8 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setNamespace(java.lang.String)}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setNamespace(java.lang.String)}
+	 * .
 	 */
 	@Test
 	public void testGetSetNamespace() {
@@ -103,7 +101,8 @@ public class MoneyCurrency_BuilderTest {
 	/**
 	 * Test method for
 	 * {@link javax.money.CurrencyUnitImpl.Builder#setDefaultFractionDigits(int)}
-	 * and {@link javax.money.CurrencyUnitImpl.Builder#getDefaultFractionDigits()}.
+	 * and
+	 * {@link javax.money.CurrencyUnitImpl.Builder#getDefaultFractionDigits()}.
 	 */
 	@Test
 	public void testGetSetDefaultFractionDigits() {
@@ -116,7 +115,8 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setDefaultFractionDigits(int)}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setDefaultFractionDigits(int)}
+	 * .
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetSetDefaultFractionDigits_InvalidInput() {
@@ -162,7 +162,8 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setValidUntil(java.lang.Long)}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#setValidUntil(java.lang.Long)}
+	 * .
 	 */
 	@Test
 	public void testSetValidUntil() {
@@ -203,87 +204,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setAttribute(java.lang.String, java.lang.Object)}
-	 * and
-	 * {@link javax.money.CurrencyUnitImpl.Builder#getAttribute(java.lang.String, java.lang.Class)}
-	 * . .
-	 */
-	@Test
-	public void testGetSetAttribute() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setAttribute("testGetSetAttribute", Boolean.TRUE);
-		assertNotNull(builder
-				.getAttribute("testGetSetAttribute", Boolean.class));
-		assertNotNull(builder.getAttribute("testGetSetAttribute", Object.class));
-		assertTrue(builder.getAttribute("testGetSetAttribute", Boolean.class) == builder
-				.getAttribute("testGetSetAttribute", Object.class));
-		assertTrue(builder.getAttribute("testGetSetAttribute", Boolean.class) == Boolean.TRUE);
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#removeAttribute(java.lang.String)}
-	 * .
-	 */
-	@Test
-	public void testRemoveAttribute() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setAttribute("testRemoveAttribute", Boolean.TRUE);
-		assertNotNull(builder
-				.getAttribute("testRemoveAttribute", Boolean.class));
-		builder.removeAttribute("test2");
-		assertNotNull(builder.removeAttribute("testRemoveAttribute"));
-		assertNull(builder.getAttribute("testRemoveAttribute", Boolean.class));
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#getAttributeKeys()}.
-	 */
-	@Test
-	public void testGetAttributeKeys() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder();
-		Enumeration<String> keys = builder.getAttributeKeys();
-		assertNotNull(keys);
-		builder.setAttribute("attr1", Boolean.TRUE).setAttribute("attr2",
-				"attr2Value");
-		keys = builder.getAttributeKeys();
-		assertNotNull(keys);
-		assertTrue(keys.hasMoreElements());
-		boolean a1Found = false;
-		boolean a2Found = false;
-		while (keys.hasMoreElements()) {
-			String key = (String) keys.nextElement();
-			if ("attr1".equals(key)) {
-				a1Found = true;
-			} else if ("attr2".equals(key)) {
-				a2Found = true;
-			}
-		}
-		assertTrue(a1Found);
-		assertTrue(a2Found);
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#getAttributeType(java.lang.String)}
-	 * .
-	 */
-	@Test
-	public void testGetAttributeType() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder();
-		builder.setAttribute("attr1", Boolean.TRUE).setAttribute("attr2",
-				"attr2Value");
-		assertNotNull(builder.getAttributeType("attr1"));
-		assertNotNull(builder.getAttributeType("attr2"));
-		assertNull(builder.getAttributeType("attr3"));
-		assertTrue(builder.getAttributeType("attr1") == Boolean.class);
-		assertTrue(builder.getAttributeType("attr2") == String.class);
-	}
-
-	/**
-	 * Test method for {@link javax.money.CurrencyUnitImpl.Builder#getValidUntil()}
-	 * .
+	 * {@link javax.money.CurrencyUnitImpl.Builder#getValidUntil()} .
 	 */
 	@Test
 	public void testGetSetValidUntil() {
@@ -295,14 +216,12 @@ public class MoneyCurrency_BuilderTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.CurrencyUnitImpl.Builder#isBuildable()}.
+	 * Test method for
+	 * {@link javax.money.CurrencyUnitImpl.Builder#isBuildable()}.
 	 */
 	@Test
 	public void testIsBuildable() {
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder();
-		assertFalse(builder.isBuildable());
-		builder.setAttribute("attr1", Boolean.TRUE).setAttribute("attr2",
-				"attr2Value");
 		assertFalse(builder.isBuildable());
 		builder.setNamespace("ns");
 		assertFalse(builder.isBuildable());
@@ -316,11 +235,9 @@ public class MoneyCurrency_BuilderTest {
 	@Test
 	public void testBuild() {
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setAttribute("attr1", Boolean.TRUE)
-				.setAttribute("attr2", "attr2Value").setNamespace("ns")
-				.setCurrencyCode("cd").setLegalTender(true).setVirtual(false)
-				.setDefaultFractionDigits(101).setNumericCode(7)
-				.setValidFrom(10L).setValidUntil(100L);
+				.setNamespace("ns").setCurrencyCode("cd").setLegalTender(true)
+				.setVirtual(false).setDefaultFractionDigits(101)
+				.setNumericCode(7).setValidFrom(10L).setValidUntil(100L);
 		CurrencyUnit cu = builder.build();
 		assertEquals("ns", cu.getNamespace());
 		assertEquals("cd", cu.getCurrencyCode());
@@ -333,13 +250,12 @@ public class MoneyCurrency_BuilderTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.CurrencyUnitImpl.Builder#build(boolean)}.
+	 * Test method for
+	 * {@link javax.money.CurrencyUnitImpl.Builder#build(boolean)}.
 	 */
 	@Test
 	public void testBuildBoolean() {
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setAttribute("attr1", Boolean.TRUE)
-				.setAttribute("attr2", "attr2Value")
 				.setNamespace("testBuildBoolean").setCurrencyCode("cd")
 				.setLegalTender(true).setVirtual(false)
 				.setDefaultFractionDigits(101).setNumericCode(7)

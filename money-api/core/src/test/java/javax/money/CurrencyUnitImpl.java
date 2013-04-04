@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-
 /**
  * Adapter that implements the new {@link CurrencyUnit} interface using the
  * JDK's {@link Currency}, for test only used here.
@@ -45,8 +44,6 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 	private final Long validFrom;
 	/** valid until, or {@code null}. */
 	private final Long validUntil;
-	/** Any additional attributes, or {@code null}. */
-	private Map<String, Object> attributes;
 	/** true, if legal tender. */
 	private final boolean legalTender;
 	/** true, if it is a virtual currency. */
@@ -54,7 +51,8 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 
 	private static final Map<String, CurrencyUnit> CACHED = new ConcurrentHashMap<String, CurrencyUnit>();
 
-	private static final Logger LOGGER = Logger.getLogger(CurrencyUnitImpl.class.getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(CurrencyUnitImpl.class.getName());
 
 	/**
 	 * Private constructor.
@@ -63,7 +61,7 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 	 */
 	private CurrencyUnitImpl(String namespace, String code, int numCode,
 			int fractionDigits, Long validFrom, Long validUntil, boolean legal,
-			boolean virtual, Map<String, Object> attributes) {
+			boolean virtual) {
 		this.namespace = namespace;
 		this.currencyCode = code;
 		this.numericCode = numCode;
@@ -72,12 +70,10 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 		this.validUntil = validUntil;
 		this.legalTender = legal;
 		this.virtual = virtual;
-		this.attributes = attributes;
 	}
 
 	public static CurrencyUnit getInstance(Currency currency) {
-		String key = "ISO-4217:"
-				+ currency.getCurrencyCode();
+		String key = "ISO-4217:" + currency.getCurrencyCode();
 		CurrencyUnit cachedItem = CACHED.get(key);
 		if (cachedItem == null) {
 			cachedItem = new JDKCurrencyAdapter(currency);
@@ -124,43 +120,6 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 
 	public int getDefaultFractionDigits() {
 		return defaultFractionDigits;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T getAttribute(String key, Class<T> type) {
-		if (key == null) {
-			throw new IllegalArgumentException("key may not b enull.");
-		}
-		if (type == null) {
-			throw new IllegalArgumentException("type may not b enull.");
-		}
-		if (this.attributes != null) {
-			return (T) this.attributes.get(key);
-		}
-		return null;
-	}
-
-	@Override
-	public Enumeration<String> getAttributeKeys() {
-		if (this.attributes != null) {
-			return Collections.enumeration(this.attributes.keySet());
-		}
-		return Collections.emptyEnumeration();
-	}
-
-	@Override
-	public Class<?> getAttributeType(String key) {
-		if (key == null) {
-			throw new IllegalArgumentException("key may not b enull.");
-		}
-		if (this.attributes != null) {
-			Object value = this.attributes.get(key);
-			if (value != null) {
-				return value.getClass();
-			}
-		}
-		return null;
 	}
 
 	@Override
@@ -380,7 +339,8 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 
 		public CurrencyUnit build(boolean cache) {
 			if (!isBuildable()) {
-				throw new IllegalStateException("Can not build CurrencyUnitImpl.");
+				throw new IllegalStateException(
+						"Can not build CurrencyUnitImpl.");
 			}
 			if (cache) {
 				if (validUntil != null) {
@@ -400,14 +360,14 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 				if (current == null) {
 					current = new CurrencyUnitImpl(namespace, currencyCode,
 							numericCode, defaultFractionDigits, validFrom,
-							validUntil, legalTender, virtual, attributes);
+							validUntil, legalTender, virtual);
 					CACHED.put(key, current);
 				}
 				return current;
 			}
 			return new CurrencyUnitImpl(namespace, currencyCode, numericCode,
 					defaultFractionDigits, validFrom, validUntil, legalTender,
-					virtual, attributes);
+					virtual);
 		}
 	}
 
@@ -495,21 +455,6 @@ final class CurrencyUnitImpl implements CurrencyUnit, Serializable,
 
 		public String toString() {
 			return this.currency.toString();
-		}
-
-		@Override
-		public <T> T getAttribute(String key, Class<T> type) {
-			return null;
-		}
-
-		@Override
-		public Enumeration<String> getAttributeKeys() {
-			return Collections.emptyEnumeration();
-		}
-
-		@Override
-		public Class<?> getAttributeType(String key) {
-			return null;
 		}
 
 		@Override

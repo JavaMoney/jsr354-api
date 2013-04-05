@@ -34,8 +34,6 @@ import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
 
-import net.java.javamoney.ri.convert.CurrencyExchangeRateType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,7 +141,7 @@ public class IMFExchangeRateProvider implements ExchangeRateProvider {
 
 	@Override
 	public ExchangeRateType getExchangeRateType() {
-		return CurrencyExchangeRateType.of("IMF");
+		return ExchangeRateType.of("IMF");
 	}
 
 	@Override
@@ -154,7 +152,7 @@ public class IMFExchangeRateProvider implements ExchangeRateProvider {
 	@Override
 	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
 			Long timestamp) {
-		return getExchangeRate(src, target, timestamp)!=null;
+		return getExchangeRate(src, target, timestamp) != null;
 	}
 
 	@Override

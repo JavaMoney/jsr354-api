@@ -29,11 +29,10 @@ import javax.money.format.ItemParserFactory;
  * loading the API top level providers using the {@link ServiceLoader}:
  * <ul>
  * <li>{@code javax.money.convert.ConversionProvider}</li>
- * <li>{@code javax.money.convert.ExchangeRateProvider}</li>
  * <li>{@code javax.money.format.ItemFormatterFactory}</li>
  * <li>{@code javax.money.format.ItemParserFactory}</li>
  * <li>{@code javax.money.provider.CurrencyUnitProvider}</li>
- * <li>{@code javax.money.provider.MonetaryAmountProvider}</li>
+ * <li>{@code javax.money.provider.HistoricCurrencyUnitProvider}</li>
  * <li>{@code javax.money.provider.RoundingProvider}</li>
  * </ul>
  * 
@@ -79,6 +78,8 @@ public final class Monetary {
 	private ConversionProvider conversionProvider;
 
 	private CurrencyUnitProvider currencyUnitProvider;
+	
+	private HistoricCurrencyUnitProvider historicCurrencyUnitProvider;
 
 	static {
 		INSTANCE.loadExtensions();
@@ -175,6 +176,25 @@ public final class Monetary {
 		}
 		return INSTANCE.currencyUnitProvider;
 	}
+	
+	/**
+	 * Access the {@link CurrencyUnitProvider} component.
+	 * 
+	 * @return the {@link CurrencyUnitProvider} component, never {@code null}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static HistoricCurrencyUnitProvider getHistoricCurrencyUnitProvider() {
+		if (INSTANCE.historicCurrencyUnitProvider == null) {
+			INSTANCE.historicCurrencyUnitProvider = LOADER
+					.getInstance(HistoricCurrencyUnitProvider.class);
+		}
+		if (INSTANCE.historicCurrencyUnitProvider == null) {
+			throw new UnsupportedOperationException(
+					"No HistoricCurrencyUnitProvider loaded");
+		}
+		return INSTANCE.historicCurrencyUnitProvider;
+	}
+	
 
 	/**
 	 * Access the {@link ConversionProvider} component.

@@ -8,6 +8,11 @@
  */
 package javax.money.ext;
 
+import java.io.Serializable;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.money.convert.ExchangeRateType;
 
 /**
  * Defines the different region types available. This allows to segregate
@@ -15,13 +20,115 @@ package javax.money.ext;
  * 
  * @author Anatole Tresch
  */
-public interface RegionType{
+public final class RegionType implements Serializable, Comparable<RegionType> {
 
 	/**
-	 * Return the type's identifier.
-	 * 
-	 * @return the unique identifier.
+	 * serialVersionUID.
 	 */
-	public String getId();
+	private static final long serialVersionUID = -921476180849747654L;
+
+	/** Shared cache of types instantiated with the #of(String) method. */
+	private static final Map<String, RegionType> TYPE_CACHE = new ConcurrentHashMap<String, RegionType>();
+
+	/** The type's id. */
+	private String id;
+
+	/**
+	 * Constructor for the instance.
+	 * 
+	 * @param id
+	 *            The type's identifier, not {@code null}
+	 */
+	public RegionType(String id) {
+		if (id == null || id.isEmpty()) {
+			throw new IllegalArgumentException("id null or empty.");
+		}
+		this.id = id;
+	}
+
+	/**
+	 * Access an {@link RegionType} by id. Instances with the same id will be
+	 * shared.
+	 * 
+	 * @param id
+	 *            The rate's identifier.
+	 * @return the corresponding type, never {@code null}.
+	 */
+	public static RegionType of(String id) {
+		RegionType type = TYPE_CACHE.get(id);
+		if (type != null) {
+			return type;
+		}
+		type = new RegionType(id);
+		TYPE_CACHE.put(id, type);
+		return type;
+	}
+
+	/**
+	 * Get the (non localized) identifier of the {@link ExchangeRateType}.
+	 * 
+	 * @return The identifier, never null.
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RegionType other = (RegionType) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "RegionType [id=" + id + "]";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(RegionType o) {
+		if (o == null) {
+			return -1;
+		}
+		return this.id.compareTo(o.id);
+	}
 
 }

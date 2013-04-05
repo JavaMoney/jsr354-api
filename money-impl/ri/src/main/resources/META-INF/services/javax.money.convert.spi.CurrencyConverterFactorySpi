@@ -1,1 +1,1 @@
-net.java.javamoney.ri.convert.provider.DefaultCurrencyConverterFactory
+javax.money.convert.provider.DefaultCurrencyConverterFactory

@@ -20,8 +20,6 @@ package net.java.javamoney.ri.core.provider;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -30,10 +28,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
 import javax.money.LocalizableCurrencyUnit;
+import javax.money.MoneyCurrency;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
 
 import org.slf4j.Logger;
@@ -45,8 +43,9 @@ import org.xml.sax.helpers.DefaultHandler;
 @Singleton
 public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(IsoCurrencyOnlineProvider.class);
-	
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(IsoCurrencyOnlineProvider.class);
+
 	private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 
 	private Map<String, String> countryCodeMap = new ConcurrentHashMap<String, String>();
@@ -151,7 +150,7 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
 		@Override
 		public boolean isLegalTender() {
-			if(getCurrencyCode().startsWith("X")){
+			if (getCurrencyCode().startsWith("X")) {
 				return false;
 			}
 			return true;
@@ -308,7 +307,7 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
 	@Override
 	public CurrencyUnit[] getCurrencies(Locale locale, Long timestamp) {
-		if (locale!=null && timestamp == null) {
+		if (locale != null && timestamp == null) {
 			List<CurrencyUnit> result = new ArrayList<CurrencyUnit>();
 			for (ISOCurrency currency : currencies.values()) {
 				if (locale.equals(currency.country)) {
@@ -340,18 +339,19 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 	public static void main(String[] args) {
 		new IsoCurrencyOnlineProvider();
 	}
-	
-	private final class CurrencyLoader extends Thread{
-		
+
+	private final class CurrencyLoader extends Thread {
+
 		public CurrencyLoader() {
 			super("ISO Currency Online Loader");
 		}
-		
-		public void run(){
+
+		public void run() {
 			loadCountries();
 			loadCurrencies();
-			LOGGER.debug("Currencies loaded from ISO:" + IsoCurrencyOnlineProvider.this.currencies.values());
+			LOGGER.debug("Currencies loaded from ISO:"
+					+ IsoCurrencyOnlineProvider.this.currencies.values());
 		}
-		
+
 	}
 }

@@ -30,6 +30,7 @@ import java.util.Locale;
 
 import javax.money.CurrencyUnit;
 import javax.money.LocalizableCurrencyUnit;
+import javax.money.MoneyCurrency;
 
 import org.junit.Test;
 

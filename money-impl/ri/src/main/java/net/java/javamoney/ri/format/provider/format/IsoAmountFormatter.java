@@ -24,12 +24,12 @@ import java.text.DecimalFormatSymbols;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.MoneyCurrency;
 import javax.money.format.ItemFormatException;
 import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
 import javax.money.provider.Monetary;
 
-import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.format.util.StringGrouper;
 
 public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {

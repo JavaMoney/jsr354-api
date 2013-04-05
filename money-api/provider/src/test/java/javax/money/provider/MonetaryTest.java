@@ -23,6 +23,7 @@ import javax.money.provider.ext.TestExtension;
 import javax.money.provider.impl.TestConversionProvider;
 import javax.money.provider.impl.TestCurrencyUnitProvider;
 import javax.money.provider.impl.TestExtensionImpl;
+import javax.money.provider.impl.TestHistoricCurrencyUnitProvider;
 import javax.money.provider.impl.TestItemFormatterFactory;
 import javax.money.provider.impl.TestItemParserFactory;
 import javax.money.provider.impl.TestRoundingProvider;
@@ -45,7 +46,8 @@ public class MonetaryTest {
 	public void testGetMonetaryAmountProviderClassOfQ() {
 		ComponentLoader f = Monetary.getLoader();
 		assertNotNull(f);
-		assertEquals("javax.money.provider.Monetary$DefaultServiceLoader", f.getClass().getName());
+		assertEquals("javax.money.provider.Monetary$DefaultServiceLoader", f
+				.getClass().getName());
 	}
 
 	/**
@@ -57,6 +59,18 @@ public class MonetaryTest {
 		CurrencyUnitProvider prov = Monetary.getCurrencyUnitProvider();
 		assertNotNull(prov);
 		assertEquals(TestCurrencyUnitProvider.class, prov.getClass());
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.provider.Monetary#getCurrencyUnitProvider()}.
+	 */
+	@Test
+	public void testGetHistoricCurrencyUnitProvider() {
+		HistoricCurrencyUnitProvider prov = Monetary
+				.getHistoricCurrencyUnitProvider();
+		assertNotNull(prov);
+		assertEquals(TestHistoricCurrencyUnitProvider.class, prov.getClass());
 	}
 
 	/**

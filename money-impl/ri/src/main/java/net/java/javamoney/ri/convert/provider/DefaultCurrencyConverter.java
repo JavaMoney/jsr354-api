@@ -20,6 +20,7 @@ package net.java.javamoney.ri.convert.provider;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.Money;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.CurrencyConversionException;
 import javax.money.convert.CurrencyConverter;
@@ -28,7 +29,6 @@ import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
 import javax.money.provider.Monetary;
 
-import net.java.javamoney.ri.core.Money;
 
 /**
  * Implementation of a {@link ConversionProvider} that is simply adapting an

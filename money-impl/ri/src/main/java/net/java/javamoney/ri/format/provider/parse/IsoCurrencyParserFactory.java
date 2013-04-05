@@ -24,11 +24,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
+import javax.money.MoneyCurrency;
 import javax.money.format.ItemParseException;
 import javax.money.format.ItemParser;
 import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.format.provider.format.IsoCurrencyFormatter;
 import net.java.javamoney.ri.format.spi.ItemParserFactorySpi;
 

@@ -24,6 +24,7 @@ import java.math.BigInteger;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.MoneyCurrency;
 
 /**
  * Default immutable implementation of {@link MonetaryAmount}.

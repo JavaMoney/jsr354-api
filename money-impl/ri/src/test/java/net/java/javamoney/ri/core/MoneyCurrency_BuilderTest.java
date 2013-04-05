@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.money.CurrencyUnit;
+import javax.money.MoneyCurrency;
 
 import org.junit.Test;
 

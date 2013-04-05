@@ -25,8 +25,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import javax.inject.Qualifier;
+import javax.money.MoneyCurrency;
 
-import net.java.javamoney.ri.core.MoneyCurrency;
 
 @Qualifier
 @Target({ ElementType.TYPE, ElementType.FIELD, ElementType.PARAMETER })

@@ -30,15 +30,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
+import javax.money.MoneyCurrency;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import net.java.javamoney.ri.convert.CurrencyExchangeRate;
-import net.java.javamoney.ri.convert.CurrencyExchangeRateType;
-import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.core.provider.IsoCurrencyOnlineProvider;
 
 import org.slf4j.Logger;
@@ -77,7 +75,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	/** Parser factory. */
 	private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 	/** The {@link ExchangeRateType} of this provider. */
-	private static final ExchangeRateType RATE_TYPE = CurrencyExchangeRateType
+	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
 			.of("EZB");
 
 	/**
@@ -142,7 +140,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * net.java.javamoney.ri.convert.spi.ExchangeRateProviderSpi#getExchangeRateType
+	 * javax.money.convert.spi.ExchangeRateProviderSpi#getExchangeRateType
 	 * ()
 	 */
 	@Override
@@ -154,7 +152,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * net.java.javamoney.ri.convert.spi.ExchangeRateProviderSpi#getExchangeRate
+	 * javax.money.convert.spi.ExchangeRateProviderSpi#getExchangeRate
 	 * (javax .money.CurrencyUnit, javax.money.CurrencyUnit, java.lang.Long)
 	 */
 	@Override
@@ -164,7 +162,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 				|| !MoneyCurrency.ISO_NAMESPACE.equals(target.getNamespace())) {
 			return null;
 		}
-		CurrencyExchangeRate.Builder builder = new CurrencyExchangeRate.Builder();
+		ExchangeRate.Builder builder = new ExchangeRate.Builder();
 		builder.setProvider("European Central Bank");
 		builder.setExchangeRateType(RATE_TYPE);
 		builder.setBase(source);
@@ -202,7 +200,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 		}
 		if ("EUR".equals(source.getCurrencyCode())
 				&& "EUR".equals(target.getCurrencyCode())) {
-			builder.setSourceLeadingFactor(1.0d);
+			builder.setBaseLeadingFactor(BigDecimal.ONE);
 			return builder.build();
 		} else if ("EUR".equals(target.getCurrencyCode())) {
 			if (sourceRate == null) {
@@ -226,20 +224,10 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 		if (rate == null) {
 			throw new IllegalArgumentException("Rate null is not reversable.");
 		}
-		CurrencyExchangeRate newRate = null;
-		if (rate.getFactor() instanceof BigDecimal) {
-			newRate = new CurrencyExchangeRate(rate.getExchangeRateType(),
-					rate.getTerm(), rate.getBase(),
-					BigDecimal.ONE.divide((BigDecimal) rate.getFactor()));
-		} else {
-			newRate = new CurrencyExchangeRate(rate.getExchangeRateType(),
-					rate.getTerm(), rate.getBase(), 1.0d / rate.getFactor()
-							.doubleValue());
-		}
-		newRate.setProvider(rate.getProvider());
-		newRate.setValidFrom(rate.getValidFrom());
-		newRate.setValidUntil(rate.getValidUntil());
-		return newRate;
+		return new ExchangeRate(rate.getExchangeRateType(), rate.getTerm(),
+				rate.getBase(), BigDecimal.ONE.divide((BigDecimal) rate
+						.getFactor()), rate.getProvider(), rate.getValidFrom(),
+				rate.getValidUntil());
 	}
 
 	/**
@@ -299,9 +287,11 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 						// read data <Cube currency="USD" rate="1.3349"/>
 						CurrencyUnit tgtCurrency = MoneyCurrency.of(attributes
 								.getValue("currency"));
-						Double rate = Double.parseDouble(attributes
-								.getValue("rate"));
-						addRate(tgtCurrency, timestamp, rate, loadCurrent);
+						addRate(tgtCurrency, timestamp,
+								BigDecimal.valueOf(Double
+										.parseDouble(attributes
+												.getValue("rate"))),
+								loadCurrent);
 					}
 				}
 				super.startElement(uri, localName, qName, attributes);
@@ -324,14 +314,14 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	 * @param loadCurrent
 	 *            Flag, if current or historic data is loaded.
 	 */
-	void addRate(CurrencyUnit tgtCurrency, Long timestamp, Double rate,
+	void addRate(CurrencyUnit tgtCurrency, Long timestamp, BigDecimal rate,
 			boolean loadCurrent) {
-		CurrencyExchangeRate.Builder builder = new CurrencyExchangeRate.Builder();
+		ExchangeRate.Builder builder = new ExchangeRate.Builder();
 		builder.setBase(SOURCE_CURRENCY);
 		builder.setTerm(tgtCurrency);
 		builder.setValidFrom(timestamp);
 		builder.setProvider("European Central Bank");
-		builder.setSourceLeadingFactor(rate);
+		builder.setBaseLeadingFactor(rate);
 		builder.setExchangeRateType(RATE_TYPE);
 		ExchangeRate exchangeRate = builder.build();
 		if (loadCurrent) {

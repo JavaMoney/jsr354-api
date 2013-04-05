@@ -16,7 +16,7 @@
  * Contributors:
  *    Werner Keil - initial implementation.
  */
-package net.java.javamoney.ri.convert;
+package javax.money.convert;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -24,34 +24,30 @@ import static org.junit.Assert.assertNotNull;
 import java.math.BigDecimal;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.ExchangeRateType;
-
-import net.java.javamoney.ri.core.MoneyCurrency;
+import javax.money.MoneyCurrency;
 
 import org.junit.Test;
 
-public class CurrencyExchangeRateTest {
+public class ExchangeRateTest {
 
 	private static final CurrencyUnit EURO = MoneyCurrency.of("EUR");
 	private static final CurrencyUnit DOLLAR = MoneyCurrency.of("USD");
 	private static final long TEN_MINUTES_IN_MILLIS = 600000L;
 
-	private static final ExchangeRateType TYPE = CurrencyExchangeRateType
-			.of("test");
+	private static final ExchangeRateType TYPE = ExchangeRateType.of("test");
 
 	@Test
 	public void testGetSourceCurrency() {
-		CurrencyExchangeRate rate = new CurrencyExchangeRate(TYPE, EURO,
-				DOLLAR, 1.30693d, System.currentTimeMillis(),
-				TEN_MINUTES_IN_MILLIS);
+		ExchangeRate rate = new ExchangeRate(TYPE, EURO, DOLLAR, 1.30693d,
+				"TEST", System.currentTimeMillis(), TEN_MINUTES_IN_MILLIS);
 		assertNotNull(rate.getBase());
 		assertEquals("EUR", rate.getBase().getCurrencyCode());
 	}
 
 	@Test
 	public void testGetTargetCurrency() {
-		CurrencyExchangeRate rate = new CurrencyExchangeRate(TYPE, EURO,
-				DOLLAR, BigDecimal.valueOf(1.30693d), 
+		ExchangeRate rate = new ExchangeRate(TYPE, EURO, DOLLAR,
+				BigDecimal.valueOf(1.30693d), "TEST",
 				System.currentTimeMillis(), TEN_MINUTES_IN_MILLIS);
 		assertNotNull(rate.getTerm());
 		assertEquals("USD", rate.getTerm().getCurrencyCode());
@@ -60,8 +56,8 @@ public class CurrencyExchangeRateTest {
 	@Test
 	public void testGetTimestamp() {
 		long timestamp = System.currentTimeMillis();
-		CurrencyExchangeRate rate = new CurrencyExchangeRate(TYPE, EURO,
-				DOLLAR, BigDecimal.valueOf(1.30693d), timestamp,
+		ExchangeRate rate = new ExchangeRate(TYPE, EURO, DOLLAR,
+				BigDecimal.valueOf(1.30693d), "TEST", timestamp,
 				TEN_MINUTES_IN_MILLIS);
 		assertEquals(Long.valueOf(timestamp), rate.getValidFrom());
 	}

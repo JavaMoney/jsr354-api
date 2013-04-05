@@ -21,6 +21,7 @@ package net.java.javamoney.ri.core.provider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -31,13 +32,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
+import javax.money.MoneyCurrency;
 import javax.money.UnknownCurrencyException;
 import javax.money.ext.RegionType;
 import javax.money.provider.CurrencyUnitProvider;
 import javax.money.provider.Monetary;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
-import net.java.javamoney.ri.core.MoneyCurrency;
 import net.java.javamoney.ri.core.spi.CurrencyUnitMappingSpi;
 import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
 
@@ -49,8 +50,8 @@ import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
  * @author Werner Keil
  */
 @Singleton
-public class CurrencyUnitProviderImpl extends AbstractRiComponent
-		implements CurrencyUnitProvider {
+public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
+		CurrencyUnitProvider {
 	/**
 	 * System property used to redefine the default namespace for
 	 * {@link CurrencyUnit} instances.
@@ -81,7 +82,8 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent
 	 */
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		List<CurrencyUnitProviderSpi> loadedList = Monetary.getLoader().getInstances(CurrencyUnitProviderSpi.class);
+		List<CurrencyUnitProviderSpi> loadedList = Monetary.getLoader()
+				.getInstances(CurrencyUnitProviderSpi.class);
 		for (CurrencyUnitProviderSpi currencyProviderSPI : loadedList) {
 			List<CurrencyUnitProviderSpi> provList = this.currencyProviders
 					.get(currencyProviderSPI.getNamespace());
@@ -92,7 +94,8 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent
 			}
 			provList.add(currencyProviderSPI);
 		}
-		List<CurrencyUnitMappingSpi> loadedMapperList = Monetary.getLoader().getInstances(CurrencyUnitMappingSpi.class);
+		List<CurrencyUnitMappingSpi> loadedMapperList = Monetary.getLoader()
+				.getInstances(CurrencyUnitMappingSpi.class);
 		for (CurrencyUnitMappingSpi currencyMappingSPI : loadedMapperList) {
 			mappers.add(currencyMappingSPI);
 		}
@@ -126,11 +129,11 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent
 	 *            The region type, not null.
 	 * @return the regions found, never null.
 	 */
-	public CurrencyUnit[] getAll(String namespace) {
+	public Collection<CurrencyUnit> getAll(String namespace) {
 		return getAll(namespace, null);
 	}
 
-	public CurrencyUnit[] getAll(String namespace, Long timestamp) {
+	public Collection<CurrencyUnit> getAll(String namespace, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		List<CurrencyUnitProviderSpi> provList = currencyProviders
 				.get(namespace);
@@ -143,7 +146,7 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent
 				result.addAll(Arrays.asList(currencies));
 			}
 		}
-		return result.toArray(new CurrencyUnit[result.size()]);
+		return result;
 	}
 
 	/**
@@ -151,11 +154,11 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent
 	 * 
 	 * @return the regions found, never null.
 	 */
-	public CurrencyUnit[] getAll() {
+	public Collection<CurrencyUnit> getAll() {
 		return getAll((Long) null);
 	}
 
-	public CurrencyUnit[] getAll(Long timestamp) {
+	public Collection<CurrencyUnit> getAll(Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		for (List<CurrencyUnitProviderSpi> provList : currencyProviders
 				.values()) {
@@ -166,7 +169,7 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent
 				}
 			}
 		}
-		return result.toArray(new CurrencyUnit[result.size()]);
+		return result;
 	}
 
 	public CurrencyUnit get(String namespace, String code) {
@@ -200,16 +203,15 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent
 		return this.currencyProviders.containsKey(namespace);
 	}
 
-	public String[] getNamespaces() {
-		return this.currencyProviders.keySet().toArray(
-				new String[this.currencyProviders.size()]);
+	public Collection<String> getNamespaces() {
+		return this.currencyProviders.keySet();
 	}
 
-	public CurrencyUnit[] getAll(Locale locale) {
+	public Collection<CurrencyUnit> getAll(Locale locale) {
 		return getAll(locale, null);
 	}
 
-	public CurrencyUnit[] getAll(Locale locale, Long timestamp) {
+	public Set<CurrencyUnit> getAll(Locale locale, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		for (List<CurrencyUnitProviderSpi> provList : currencyProviders
 				.values()) {
@@ -220,29 +222,6 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent
 					result.addAll(Arrays.asList(currencies));
 				}
 			}
-		}
-		return result.toArray(new CurrencyUnit[result.size()]);
-	}
-
-	public CurrencyUnit map(CurrencyUnit unit, String targetNamespace) {
-		List<CurrencyUnitProviderSpi> provList = currencyProviders
-				.get(unit.getNamespace());
-		if (provList == null) {
-			return null;
-		}
-		for (CurrencyUnitMappingSpi prov : mappers) {
-			CurrencyUnit mappedUnit = prov.map(unit, targetNamespace);
-			if (mappedUnit != null) {
-				return mappedUnit;
-			}
-		}
-		return null;
-	}
-
-	public CurrencyUnit[] mapAll(CurrencyUnit[] units, String targetNamespace) {
-		CurrencyUnit[] result = new CurrencyUnit[units.length];
-		for (int i = 0; i < result.length; i++) {
-			result[i] = map(units[i], targetNamespace);
 		}
 		return result;
 	}
@@ -258,23 +237,8 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent
 	}
 
 	@Override
-	public CurrencyUnit get(String code, Long timestamp) {
-		return get(this.defaultNamespace, code, timestamp);
-	}
-
-	@Override
 	public boolean isAvailable(String code) {
 		return isAvailable(getDefaultNamespace(), code);
-	}
-
-	@Override
-	public boolean isAvailable(String code, Long timestamp) {
-		return isAvailable(getDefaultNamespace(), code, timestamp);
-	}
-
-	@Override
-	public boolean isAvailable(String code, Long start, Long end) {
-		return isAvailable(getDefaultNamespace(), code, start, end);
 	}
 
 }

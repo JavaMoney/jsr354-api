@@ -44,6 +44,7 @@ public interface CurrencyUnitMappingSpi {
 	 *            the target namespace, never {@code null}.
 	 * @return The mapped {@link CurrencyUnit}, or null.
 	 */
-	public CurrencyUnit map(CurrencyUnit unit, String targetNamespace);
+	public CurrencyUnit map(CurrencyUnit unit, String targetNamespace,
+			Long timestamp);
 
 }

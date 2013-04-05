@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-
 /**
  * Adapter that implements the new {@link CurrencyUnit} interface using the
  * JDK's {@link Currency}.
@@ -93,7 +92,11 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 
 	public static CurrencyUnit of(String namespace, String currencyCode) {
 		String key = namespace + ':' + currencyCode;
-		return CACHED.get(key);
+		CurrencyUnit cu = CACHED.get(key);
+		if (cu == null && namespace.equals(ISO_NAMESPACE)) {
+			return of(currencyCode);
+		}
+		return cu;
 	}
 
 	public boolean isVirtual() {

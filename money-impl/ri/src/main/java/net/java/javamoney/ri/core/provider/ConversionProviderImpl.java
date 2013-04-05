@@ -73,6 +73,7 @@ public class ConversionProviderImpl extends AbstractRiComponent implements
 			if (converter == null) {
 				converter = new DefaultCurrencyConverter(type);
 			}
+			this.currencyConverters.put(type, converter);
 		}
 		return converter;
 	}

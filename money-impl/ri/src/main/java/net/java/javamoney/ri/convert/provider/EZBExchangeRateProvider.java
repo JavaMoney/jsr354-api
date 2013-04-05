@@ -77,7 +77,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	/** The {@link ExchangeRateType} of this provider. */
 	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
 			.of("EZB");
-
+ 
 	/**
 	 * Constructor, also loads initial data.
 	 */

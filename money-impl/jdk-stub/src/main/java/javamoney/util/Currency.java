@@ -805,30 +805,6 @@ public final class Currency implements Serializable, LocalizableCurrencyUnit {
 		return null;
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	@Override
-	public <T> T getAttribute(String key, Class<T> type) {
-		return null;
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	@Override
-	public Class<?> getAttributeType(String key) {
-		return null;
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	@Override
-	public Enumeration<String> getAttributeKeys() {
-		return Collections.emptyEnumeration();
-	}
-
 	@Override
 	public boolean isLegalTender() {
 		if(getCurrencyCode().startsWith("X")){

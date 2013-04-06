@@ -10,6 +10,11 @@ package javax.money.convert;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import javax.money.CurrencyUnit;
 
@@ -71,13 +76,19 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 		}
 		this.base = base;
 		this.term = term;
-		if (factor instanceof BigDecimal) {
-			this.factor = (BigDecimal) factor;
-		} else {
-			this.factor = BigDecimal.valueOf(factor.doubleValue());
-		}
+		this.factor = getBigDecimal(factor);
 		this.exchangeRateType = conversionType;
 		this.provider = provider;
+	}
+
+	private BigDecimal getBigDecimal(Number num) {
+		if (num instanceof BigDecimal) {
+			return (BigDecimal) num;
+		}
+		if (num instanceof Long) {
+			return BigDecimal.valueOf(num.longValue());
+		}
+		return BigDecimal.valueOf(num.doubleValue());
 	}
 
 	/**
@@ -99,8 +110,8 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	 *            {@code null}
 	 */
 	public ExchangeRate(ExchangeRateType conversionType, CurrencyUnit base,
-			CurrencyUnit term, Number factor, String provider,
-			Long validFrom, Long validUntil) {
+			CurrencyUnit term, Number factor, String provider, Long validFrom,
+			Long validUntil) {
 		this(conversionType, base, term, factor, provider);
 		this.validFrom = validFrom;
 		this.validUntil = validUntil;
@@ -123,7 +134,7 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	 */
 	public ExchangeRate(ExchangeRateType conversionType, CurrencyUnit base,
 			CurrencyUnit term, Number factor, String provider,
-			ExchangeRate[] chain) {
+			ExchangeRate... chain) {
 		this(conversionType, base, term, factor, provider);
 		setExchangeRateChain(chain);
 	}
@@ -150,8 +161,8 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	 *            {@code null}
 	 */
 	public ExchangeRate(ExchangeRateType conversionType, CurrencyUnit base,
-			CurrencyUnit term, Number factor, String provider,
-			ExchangeRate[] chain, Long validFrom, Long validUntil) {
+			CurrencyUnit term, Number factor, String provider, Long validFrom,
+			Long validUntil, ExchangeRate... chain) {
 		this(conversionType, base, term, factor, provider);
 		setExchangeRateChain(chain);
 		this.validFrom = validFrom;
@@ -165,17 +176,18 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	 * @param chain
 	 *            the chain to set.
 	 */
-	private void setExchangeRateChain(ExchangeRate[] chain) {
+	private void setExchangeRateChain(ExchangeRate... chain) {
 		if (chain == null || chain.length == 0) {
 			this.chain = new ExchangeRate[] { this };
-		}
-		for (int i = 0; i < chain.length; i++) {
-			if (chain[i] == null) {
-				throw new IllegalArgumentException(
-						"Chain element can not be null.");
+		} else {
+			for (int i = 0; i < chain.length; i++) {
+				if (chain[i] == null) {
+					throw new IllegalArgumentException(
+							"Chain element can not be null.");
+				}
 			}
+			this.chain = chain;
 		}
-		this.chain = chain;
 	}
 
 	/**
@@ -267,8 +279,8 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	 *         several instances. For a direct exchange rate, this equals to
 	 *         <code>new ConversionRate[]{this}</code>.
 	 */
-	public final ExchangeRate[] getExchangeRateChain() {
-		return this.chain.clone();
+	public final List<ExchangeRate> getExchangeRateChain() {
+		return Arrays.asList(this.chain);
 	}
 
 	/**
@@ -307,10 +319,93 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	 */
 	@Override
 	public String toString() {
-		return "CurrencyExchangeRate [exchangeRateType=" + exchangeRateType
-				+ ", base=" + base + ", term=" + term + ", factor=" + factor
+		return "ExchangeRate [type=" + exchangeRateType.getId() + ", base="
+				+ base + ", term=" + term + ", factor=" + factor
 				+ ", validFrom=" + validFrom + ", validUntil=" + validUntil
 				+ ", provider=" + provider + "]";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((base == null) ? 0 : base.hashCode());
+		result = prime
+				* result
+				+ ((exchangeRateType == null) ? 0 : exchangeRateType.hashCode());
+		result = prime * result + ((factor == null) ? 0 : factor.hashCode());
+		result = prime * result
+				+ ((provider == null) ? 0 : provider.hashCode());
+		result = prime * result + ((term == null) ? 0 : term.hashCode());
+		result = prime * result
+				+ ((validFrom == null) ? 0 : validFrom.hashCode());
+		result = prime * result
+				+ ((validUntil == null) ? 0 : validUntil.hashCode());
+		if (chain[0] != this) {
+			result = prime * result + Arrays.hashCode(chain);
+		}
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ExchangeRate other = (ExchangeRate) obj;
+		if (base == null) {
+			if (other.base != null)
+				return false;
+		} else if (!base.equals(other.base))
+			return false;
+		if (chain[0] != this) {
+			if (!Arrays.equals(chain, other.chain))
+				return false;
+		}
+		if (exchangeRateType == null) {
+			if (other.exchangeRateType != null)
+				return false;
+		} else if (!exchangeRateType.equals(other.exchangeRateType))
+			return false;
+		if (factor == null) {
+			if (other.factor != null)
+				return false;
+		} else if (!factor.equals(other.factor))
+			return false;
+		if (provider == null) {
+			if (other.provider != null)
+				return false;
+		} else if (!provider.equals(other.provider))
+			return false;
+		if (term == null) {
+			if (other.term != null)
+				return false;
+		} else if (!term.equals(other.term))
+			return false;
+		if (validFrom == null) {
+			if (other.validFrom != null)
+				return false;
+		} else if (!validFrom.equals(other.validFrom))
+			return false;
+		if (validUntil == null) {
+			if (other.validUntil != null)
+				return false;
+		} else if (!validUntil.equals(other.validUntil))
+			return false;
+		return true;
 	}
 
 	/**
@@ -339,6 +434,18 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 		 */
 		public Builder setExchangeRateType(ExchangeRateType exchangeRateType) {
 			this.exchangeRateType = exchangeRateType;
+			return this;
+		}
+
+		/**
+		 * Sets the {@link ExchangeRateType}
+		 * 
+		 * @param exchangeRateType
+		 *            to be applied
+		 * @return the builder instance
+		 */
+		public Builder setExchangeRateType(String exchangeRateType) {
+			this.exchangeRateType = ExchangeRateType.of(exchangeRateType);
 			return this;
 		}
 
@@ -456,11 +563,11 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 		 * 
 		 * @return the rate chain, or null.
 		 */
-		public ExchangeRate[] getExchangeRateChain() {
+		public List<ExchangeRate> getExchangeRateChain() {
 			if (rateChain != null) {
-				return rateChain.clone();
+				return Arrays.asList(rateChain);
 			}
-			return null;
+			return Collections.emptyList();
 		}
 
 		/**
@@ -471,37 +578,37 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 		 *            the factor.
 		 * @return The builder instance.
 		 */
-		public Builder setBaseLeadingFactor(BigDecimal factor) {
+		public Builder setFactor(Number factor) {
+			this.factor = BigDecimal.valueOf(factor.doubleValue());
+			return this;
+		}
+
+		/**
+		 * Sets the conversion factor, as the factor
+		 * {@code base * factor = target}.
+		 * 
+		 * @param factor
+		 *            the factor.
+		 * @return The builder instance.
+		 */
+		public Builder setFactor(Long factor) {
+			this.factor = BigDecimal.valueOf(factor.longValue());
+			return this;
+		}
+
+		/**
+		 * Sets the conversion factor, as the factor
+		 * {@code base * factor = target}.
+		 * 
+		 * @param factor
+		 *            the factor.
+		 * @return The builder instance.
+		 */
+		public Builder setFactor(BigDecimal factor) {
 			this.factor = factor;
 			return this;
 		}
 
-		/**
-		 * Sets the conversion factor, as the factor
-		 * {@code term * factor = base}.
-		 * 
-		 * @param factor
-		 *            the factor.
-		 * @return The builder instance.
-		 */
-		public Builder setTermLeadingFactor(BigDecimal factor) {
-			this.factor = BigDecimal.ONE.divide(factor);
-			return this;
-		}
-
-		/**
-		 * Sets the conversion factor, as the factor
-		 * {@code term * factor = base}.
-		 * 
-		 * @param factor
-		 *            the factor.
-		 * @return The builder instance.
-		 */
-		public Builder setTermLeadingFactor(Number factor) {
-			this.factor = BigDecimal.ONE.divide(BigDecimal.valueOf(factor
-					.doubleValue()));
-			return this;
-		}
 
 		/**
 		 * Sets the provider to be applied.
@@ -566,7 +673,7 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 		 */
 		public ExchangeRate build() {
 			return new ExchangeRate(exchangeRateType, base, term, factor,
-					provider, rateChain, validFrom, validUntil);
+					provider, validFrom, validUntil, rateChain);
 		}
 
 	}

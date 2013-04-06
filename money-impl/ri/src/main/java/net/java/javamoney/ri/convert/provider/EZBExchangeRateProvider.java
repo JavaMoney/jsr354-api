@@ -19,6 +19,8 @@
 package net.java.javamoney.ri.convert.provider;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -156,25 +158,25 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	 * (javax .money.CurrencyUnit, javax.money.CurrencyUnit, java.lang.Long)
 	 */
 	@Override
-	public ExchangeRate getExchangeRate(CurrencyUnit source,
-			CurrencyUnit target, Long timestamp) {
-		if (!MoneyCurrency.ISO_NAMESPACE.equals(source.getNamespace())
-				|| !MoneyCurrency.ISO_NAMESPACE.equals(target.getNamespace())) {
+	public ExchangeRate getExchangeRate(CurrencyUnit base,
+			CurrencyUnit term, Long timestamp) {
+		if (!MoneyCurrency.ISO_NAMESPACE.equals(base.getNamespace())
+				|| !MoneyCurrency.ISO_NAMESPACE.equals(term.getNamespace())) {
 			return null;
 		}
 		ExchangeRate.Builder builder = new ExchangeRate.Builder();
 		builder.setProvider("European Central Bank");
 		builder.setExchangeRateType(RATE_TYPE);
-		builder.setBase(source);
-		builder.setTerm(target);
+		builder.setBase(base);
+		builder.setTerm(term);
 		ExchangeRate sourceRate = null;
 		ExchangeRate targetRate = null;
 		if (timestamp == null) {
 			if (currentRates.isEmpty()) {
 				return null;
 			}
-			sourceRate = currentRates.get(source.getCurrencyCode());
-			targetRate = currentRates.get(target.getCurrencyCode());
+			sourceRate = currentRates.get(base.getCurrencyCode());
+			targetRate = currentRates.get(term.getCurrencyCode());
 		} else {
 			if (historicRates.isEmpty()) {
 				return null;
@@ -195,22 +197,31 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 			if (targetRates == null) {
 				return null;
 			}
-			sourceRate = targetRates.get(source.getCurrencyCode());
-			targetRate = targetRates.get(target.getCurrencyCode());
+			sourceRate = targetRates.get(base.getCurrencyCode());
+			targetRate = targetRates.get(term.getCurrencyCode());
 		}
-		if ("EUR".equals(source.getCurrencyCode())
-				&& "EUR".equals(target.getCurrencyCode())) {
-			builder.setBaseLeadingFactor(BigDecimal.ONE);
+		if ("EUR".equals(base.getCurrencyCode())
+				&& "EUR".equals(term.getCurrencyCode())) {
+			builder.setFactor(BigDecimal.ONE);
 			return builder.build();
-		} else if ("EUR".equals(target.getCurrencyCode())) {
+		} else if ("EUR".equals(term.getCurrencyCode())) {
 			if (sourceRate == null) {
 				return null;
 			}
 			return reverse(sourceRate);
-		} else if ("EUR".equals(source.getCurrencyCode())) {
+		} else if ("EUR".equals(base.getCurrencyCode())) {
 			return targetRate;
 		} else {
-			// TODO: Conversion without EUR not yet implemented!
+			// Get Conversion base as derived rate: base -> EUR -> term
+			ExchangeRate rate1 = getExchangeRate(base, MoneyCurrency.of("EUR"),
+					timestamp);
+			ExchangeRate rate2 = getExchangeRate(MoneyCurrency.of("EUR"), term,
+					timestamp);
+			if(rate1!=null || rate2!=null){
+				builder.setFactor(rate1.getFactor().multiply(rate2.getFactor()));
+				builder.setExchangeRateChain(rate1, rate2);
+				return builder.build();
+			}
 			return null;
 			// sourceRate = reverse(sourceRate);
 			// builder.setExchangeRateChain(sourceRate, targetRate);
@@ -225,8 +236,8 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 			throw new IllegalArgumentException("Rate null is not reversable.");
 		}
 		return new ExchangeRate(rate.getExchangeRateType(), rate.getTerm(),
-				rate.getBase(), BigDecimal.ONE.divide((BigDecimal) rate
-						.getFactor()), rate.getProvider(), rate.getValidFrom(),
+				rate.getBase(), BigDecimal.ONE.divide(rate
+						.getFactor(), rate.getFactor().scale(), RoundingMode.HALF_EVEN), rate.getProvider(), rate.getValidFrom(),
 				rate.getValidUntil());
 	}
 
@@ -321,7 +332,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 		builder.setTerm(tgtCurrency);
 		builder.setValidFrom(timestamp);
 		builder.setProvider("European Central Bank");
-		builder.setBaseLeadingFactor(rate);
+		builder.setFactor(rate);
 		builder.setExchangeRateType(RATE_TYPE);
 		ExchangeRate exchangeRate = builder.build();
 		if (loadCurrent) {

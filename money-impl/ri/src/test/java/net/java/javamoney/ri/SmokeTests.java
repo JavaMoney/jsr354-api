@@ -115,9 +115,9 @@ public class SmokeTests {
 
 		ConversionProvider conv = Monetary.getConversionProvider();
 		assertNotNull(conv);
-		MonetaryAmount srcCHF = Money.of(MoneyCurrency.of("CHF"), 100.15);
-		MonetaryAmount srcUSD = Money.of(MoneyCurrency.of("USD"), 100.15);
-		MonetaryAmount srcEUR = Money.of(MoneyCurrency.of("EUR"), 100.15);
+		MonetaryAmount srcCHF = Money.of("CHF", 100.15);
+		MonetaryAmount srcUSD = Money.of("USD", 100.15);
+		MonetaryAmount srcEUR = Money.of("EUR", 100.15);
 
 		MonetaryAmount tgt = conv.getCurrencyConverter(RATE_TYPE).convert(
 				srcCHF, MoneyCurrency.of("EUR"));

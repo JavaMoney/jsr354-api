@@ -28,8 +28,8 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test
 	public void testCurrencyMismatchException() {
-		new CurrencyMismatchException(MoneyCurrency.of("CHF"),
-				MoneyCurrency.of("USD"));
+		new CurrencyMismatchException(TestCurrency.of("CHF"),
+				TestCurrency.of("USD"));
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testCurrencyMismatchException_FirstParamNull() {
-		new CurrencyMismatchException(null, MoneyCurrency.of("USD"));
+		new CurrencyMismatchException(null, TestCurrency.of("USD"));
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testCurrencyMismatchException_SecondParamNull() {
-		new CurrencyMismatchException(MoneyCurrency.of("CHF"), null);
+		new CurrencyMismatchException(TestCurrency.of("CHF"), null);
 	}
 
 	/**
@@ -68,8 +68,8 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test
 	public void testGetSourceCurrency() {
-		CurrencyUnit src = MoneyCurrency.of("CHF");
-		CurrencyUnit tgt = MoneyCurrency.of("USD");
+		CurrencyUnit src = TestCurrency.of("CHF");
+		CurrencyUnit tgt = TestCurrency.of("USD");
 		CurrencyMismatchException ex = new CurrencyMismatchException(src, tgt);
 		assertEquals(src, ex.getSource());
 	}
@@ -80,8 +80,8 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test
 	public void testGetTargetCurrency() {
-		CurrencyUnit src = MoneyCurrency.of("CHF");
-		CurrencyUnit tgt = MoneyCurrency.of("USD");
+		CurrencyUnit src = TestCurrency.of("CHF");
+		CurrencyUnit tgt = TestCurrency.of("USD");
 		CurrencyMismatchException ex = new CurrencyMismatchException(src, tgt);
 		assertEquals(tgt, ex.getTarget());
 	}
@@ -91,8 +91,8 @@ public class CurrencyMismatchExceptionTest {
 	 */
 	@Test
 	public void testToString() {
-		CurrencyUnit src = MoneyCurrency.of("CHF");
-		CurrencyUnit tgt = MoneyCurrency.of("USD");
+		CurrencyUnit src = TestCurrency.of("CHF");
+		CurrencyUnit tgt = TestCurrency.of("USD");
 		CurrencyMismatchException ex = new CurrencyMismatchException(src, tgt);
 		String toString = ex.toString();
 		assertNotNull(toString);

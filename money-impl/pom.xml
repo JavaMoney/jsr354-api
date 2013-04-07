@@ -11,7 +11,7 @@
 	<packaging>pom</packaging>
 	<name>JSR 354 (Money and Currency) - Standalone implementations</name>
 	<description>Implementations of JSR 354</description>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdkVersion>1.7</jdkVersion>
@@ -23,7 +23,7 @@
 		<javax.money.version>1.0-SNAPSHOT</javax.money.version>
 		<slf4j.version>1.6.1</slf4j.version>
 	</properties>
-	
+
 	<licenses>
 		<license>
 			<name>Apache License version 2.0</name>
@@ -48,6 +48,12 @@
 				<groupId>javax.money</groupId>
 				<artifactId>money-api-ext</artifactId>
 				<version>${javax.money.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.money</groupId>
+				<artifactId>money-platform-ri</artifactId>
+				<version>${javax.money.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -81,6 +87,10 @@
 		<dependency>
 			<groupId>javax.money</groupId>
 			<artifactId>money-api-ext</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.money</groupId>
+			<artifactId>money-platform-ri</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>

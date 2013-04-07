@@ -24,7 +24,7 @@
 	</properties>
 
 	<modules>
-		<module>money-core</module>
+		<module>money-platform</module>
 		<module>money-api</module>
 		<module>money-impl</module>
 		<module>money-tck</module>

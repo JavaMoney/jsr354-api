@@ -6,11 +6,11 @@
 		<groupId>javax.money</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>money-core</artifactId>
+	<artifactId>money-platform</artifactId>
 	<name>JSR 354 (Money and Currency) - Core API and Implementation</name>
 	<description>This part is targeted for inclusion into JDK SE 9. Since JDK integration also contains the default implementations, this module
 	over all contains an API, as well as according implementations.</description>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<build>
 		<plugins>
 			<!-- ======================================================= -->
@@ -23,11 +23,9 @@
 		</plugins>
 	</build>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+	<modules>
+	  <module>api</module>
+	  <module>ri</module>
+	</modules>
+	
 </project>

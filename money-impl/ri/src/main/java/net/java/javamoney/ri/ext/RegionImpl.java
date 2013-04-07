@@ -401,7 +401,6 @@ public class RegionImpl implements Region, Serializable {
 
 	}
 
-	@Override
 	public Region getChild(String identifier) {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}

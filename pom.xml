@@ -24,6 +24,7 @@
 	</properties>
 
 	<modules>
+		<module>money-core</module>
 		<module>money-api</module>
 		<module>money-impl</module>
 		<module>money-tck</module>
@@ -111,6 +112,21 @@
 		</extensions>
 		<pluginManagement>
 			<plugins>
+				<!-- ======================================================= -->
+				<!-- Packaging (OSGi bundle) -->
+				<!-- ======================================================= -->
+				<plugin>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>maven-bundle-plugin</artifactId>
+					<version>2.3.5</version>
+					<extensions>true</extensions>
+					<configuration>
+						<instructions>
+							<Export-Package>javax.money.*</Export-Package>
+							<Private-Package>!*</Private-Package>
+						</instructions>
+					</configuration>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
@@ -633,7 +649,7 @@
 				</plugins>
 			</build>
 		</profile>
-		
+
 		<profile>
 			<id>license</id>
 			<activation>
@@ -645,34 +661,34 @@
 			<build>
 				<pluginManagement>
 					<plugins>
-				<!-- ======================================================= -->
-				<!-- License -->
-				<!-- ======================================================= -->
-				<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>license-maven-plugin</artifactId> 
-					<version>1.4</version> </plugin> -->
-				<plugin>
-					<groupId>com.google.code.maven-license-plugin</groupId>
-					<artifactId>maven-license-plugin</artifactId>
-					<version>1.4.0</version>
-					<configuration>
-						<excludes>
-							<exclude>target/**</exclude>
-							<exclude>LICENSE*.txt</exclude>
-							<exclude>README.*</exclude>
-							<exclude>checkstyle*.*</exclude>
-							<exclude>*.css</exclude>
-						</excludes>
-					</configuration>
-				</plugin>
-				<!-- TODO enable this only for major upgrades (ensure to copy LICENSE.txt 
-					to LICENSE.bak first) -->
+						<!-- ======================================================= -->
+						<!-- License -->
+						<!-- ======================================================= -->
+						<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>license-maven-plugin</artifactId> 
+							<version>1.4</version> </plugin> -->
+						<plugin>
+							<groupId>com.google.code.maven-license-plugin</groupId>
+							<artifactId>maven-license-plugin</artifactId>
+							<version>1.4.0</version>
+							<configuration>
+								<excludes>
+									<exclude>target/**</exclude>
+									<exclude>LICENSE*.txt</exclude>
+									<exclude>README.*</exclude>
+									<exclude>checkstyle*.*</exclude>
+									<exclude>*.css</exclude>
+								</excludes>
+							</configuration>
+						</plugin>
+						<!-- TODO enable this only for major upgrades (ensure to copy LICENSE.txt 
+							to LICENSE.bak first) -->
 					</plugins>
 				</pluginManagement>
 				<plugins>
-						<!-- Usage: mvn clean deploy -Dgpg.passphrase=yourpassphrase ; Or sign 
-							already deployed artifact: $ mvn gpg:sign-and-deploy-file > -DpomFile=target/myapp-1.0.pom 
-							> -Dfile=target/myapp-1.0.jar > -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ 
-							> -DrepositoryId=sonatype-nexus-staging -->
+					<!-- Usage: mvn clean deploy -Dgpg.passphrase=yourpassphrase ; Or sign 
+						already deployed artifact: $ mvn gpg:sign-and-deploy-file > -DpomFile=target/myapp-1.0.pom 
+						> -Dfile=target/myapp-1.0.jar > -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ 
+						> -DrepositoryId=sonatype-nexus-staging -->
 					<plugin>
 						<groupId>com.google.code.maven-license-plugin</groupId>
 						<artifactId>maven-license-plugin</artifactId>
@@ -688,7 +704,7 @@
 				</plugins>
 			</build>
 		</profile>
-		
+
 	</profiles>
 	<inceptionYear>2012</inceptionYear>
 </project>

@@ -9,10 +9,9 @@
 	</parent>
 	<artifactId>money-api</artifactId>
 	<packaging>pom</packaging>
-	<name>Java Money and Currency API</name>
+	<name>JSR354 - Java Money and Currency API</name>
 
 	<modules>
-		<module>core</module>
 		<module>convert</module>
 		<module>ext</module>
 		<module>format</module>
@@ -28,27 +27,6 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<pluginManagement>
-			<plugins>
-				<!-- ======================================================= -->
-				<!-- Packaging (OSGi bundle) -->
-				<!-- ======================================================= -->
-				<plugin>
-					<groupId>org.apache.felix</groupId>
-					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.3.5</version>
-					<extensions>true</extensions>
-					<configuration>
-						<instructions>
-							<Export-Package>javax.money.*</Export-Package>
-							<Private-Package>!*</Private-Package>
-						</instructions>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
 
 	<profiles>
 		<profile>

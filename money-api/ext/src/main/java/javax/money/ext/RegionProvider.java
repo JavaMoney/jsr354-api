@@ -8,7 +8,7 @@
  */
 package javax.money.ext;
 
-import java.util.Enumeration;
+import java.util.Collection;
 
 import javax.money.provider.MonetaryExtension;
 
@@ -21,29 +21,13 @@ import javax.money.provider.MonetaryExtension;
 public interface RegionProvider extends MonetaryExtension {
 
 	/**
-	 * Access all types of regions available.
-	 * 
-	 * @return all {@link RegionType}s available, never null.
-	 */
-	public Enumeration<RegionType> getRegionTypes();
-
-	/**
-	 * Access a RegionType using its id.
-	 * 
-	 * @param id
-	 *            The {@link RegionType} id, not null.
-	 * @return the matching {@link RegionType}, or null.
-	 */
-	public RegionType getRegionType(String id);
-
-	/**
 	 * Access all regions available, that have no parent region. It is possible
 	 * to define different regional hierarchies at the same time, whereas the
 	 * ids of the root regions must be unique among all root regions
 	 * 
 	 * @return all {@link Region}s available without a parent, never null.
 	 */
-	public Enumeration<Region> getRootRegions();
+	public Collection<Region> getRootRegions();
 
 	/**
 	 * Since ids of root regions must be unique a regional tree can be accessed

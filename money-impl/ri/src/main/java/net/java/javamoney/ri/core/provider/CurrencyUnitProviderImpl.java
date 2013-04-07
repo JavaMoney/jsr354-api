@@ -83,7 +83,7 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
 	@SuppressWarnings("unchecked")
 	public void reload() {
 		List<CurrencyUnitProviderSpi> loadedList = Monetary.getLoader()
-				.getInstances(CurrencyUnitProviderSpi.class);
+				.getComponents(CurrencyUnitProviderSpi.class);
 		for (CurrencyUnitProviderSpi currencyProviderSPI : loadedList) {
 			List<CurrencyUnitProviderSpi> provList = this.currencyProviders
 					.get(currencyProviderSPI.getNamespace());
@@ -95,7 +95,7 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
 			provList.add(currencyProviderSPI);
 		}
 		List<CurrencyUnitMappingSpi> loadedMapperList = Monetary.getLoader()
-				.getInstances(CurrencyUnitMappingSpi.class);
+				.getComponents(CurrencyUnitMappingSpi.class);
 		for (CurrencyUnitMappingSpi currencyMappingSPI : loadedMapperList) {
 			mappers.add(currencyMappingSPI);
 		}

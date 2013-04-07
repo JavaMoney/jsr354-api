@@ -21,8 +21,7 @@
 package net.java.javamoney.ri.ext.provider;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -65,35 +64,6 @@ public final class RegionProviderImpl extends AbstractRiComponent implements
 		return RegionProvider.class;
 	}
 
-	/**
-	 * Access all defined {@link RegionType}.
-	 * 
-	 * @see Region#getRegionType() #see
-	 *      {@link RegionProviderSpi#getRegionTypes()}
-	 * @return all defined region types, never null.
-	 */
-	@Override
-	public Enumeration<RegionType> getRegionTypes() {
-		Set<RegionType> result = new HashSet<RegionType>();
-		for (RegionProviderSpi prov : INSTANCE.regionProviders) {
-			RegionType[] regionTypes = prov.getRegionTypes();
-			if (regionTypes == null) {
-				continue;
-			}
-			for (int i = 0; i < regionTypes.length; i++) {
-				if (regionTypes[i] == null) {
-					log.warn("Found null element in RegionType array returned from "
-							+ prov.getClass().getName());
-				}
-				if (result.contains(regionTypes[i])) {
-					log.warn("Ignoring ambigous RegionType in RegionType array returned from "
-							+ prov.getClass().getName());
-				}
-				result.add(regionTypes[i]);
-			}
-		}
-		return Collections.enumeration(result);
-	}
 
 	/**
 	 * This method reloads the providers available from the
@@ -173,21 +143,17 @@ public final class RegionProviderImpl extends AbstractRiComponent implements
 	 * @return the regions found, never null.
 	 */
 	@Override
-	public Enumeration<Region> getRootRegions() {
+	public Collection<Region> getRootRegions() {
 		Region[] regions = getAll();
 		Set<Region> result = new HashSet<Region>();
 		for (Region region : regions) {
-			if (region.getParentRegion() == null) {
+			if (region.getParent() == null) {
 				result.add(region);
 			}
 		}
-		return Collections.enumeration(result);
+		return result;
 	}
 
-	@Override
-	public RegionType getRegionType(String id) {
-		throw new UnsupportedOperationException("Not implemented");
-	}
 
 	@Override
 	public Region getRootRegion(String id) {

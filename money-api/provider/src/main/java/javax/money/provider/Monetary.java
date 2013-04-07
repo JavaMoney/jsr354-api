@@ -115,7 +115,7 @@ public final class Monetary {
 	 */
 	@SuppressWarnings("unchecked")
 	private void loadExtensions() {
-		for (MonetaryExtension t : LOADER.getInstances(MonetaryExtension.class,
+		for (MonetaryExtension t : LOADER.getComponents(MonetaryExtension.class,
 				ExposedExtensionType.class)) {
 			ExposedExtensionType annot = t.getClass().getAnnotation(
 					ExposedExtensionType.class);
@@ -168,7 +168,7 @@ public final class Monetary {
 	public static CurrencyUnitProvider getCurrencyUnitProvider() {
 		if (INSTANCE.currencyUnitProvider == null) {
 			INSTANCE.currencyUnitProvider = LOADER
-					.getInstance(CurrencyUnitProvider.class);
+					.getComponent(CurrencyUnitProvider.class);
 		}
 		if (INSTANCE.currencyUnitProvider == null) {
 			throw new UnsupportedOperationException(
@@ -186,7 +186,7 @@ public final class Monetary {
 	public static HistoricCurrencyUnitProvider getHistoricCurrencyUnitProvider() {
 		if (INSTANCE.historicCurrencyUnitProvider == null) {
 			INSTANCE.historicCurrencyUnitProvider = LOADER
-					.getInstance(HistoricCurrencyUnitProvider.class);
+					.getComponent(HistoricCurrencyUnitProvider.class);
 		}
 		if (INSTANCE.historicCurrencyUnitProvider == null) {
 			throw new UnsupportedOperationException(
@@ -207,7 +207,7 @@ public final class Monetary {
 	public static ConversionProvider getConversionProvider() {
 		if (INSTANCE.conversionProvider == null) {
 			INSTANCE.conversionProvider = LOADER
-					.getInstance(ConversionProvider.class);
+					.getComponent(ConversionProvider.class);
 			if (INSTANCE.conversionProvider == null) {
 				throw new UnsupportedOperationException(
 						"No ConversionProvider loaded");
@@ -225,7 +225,7 @@ public final class Monetary {
 	public static ItemFormatterFactory getItemFormatterFactory() {
 		if (INSTANCE.itemFormatterFactory == null) {
 			INSTANCE.itemFormatterFactory = LOADER
-					.getInstance(ItemFormatterFactory.class);
+					.getComponent(ItemFormatterFactory.class);
 			if (INSTANCE.itemFormatterFactory == null) {
 				throw new UnsupportedOperationException(
 						"No ItemFormatterFactory loaded");
@@ -243,7 +243,7 @@ public final class Monetary {
 	public static ItemParserFactory getItemParserFactory() {
 		if (INSTANCE.itemParserFactory == null) {
 			INSTANCE.itemParserFactory = LOADER
-					.getInstance(ItemParserFactory.class);
+					.getComponent(ItemParserFactory.class);
 			if (INSTANCE.itemParserFactory == null) {
 				throw new UnsupportedOperationException(
 						"No ItemParserFactory loaded");
@@ -261,7 +261,7 @@ public final class Monetary {
 	public static RoundingProvider getRoundingProvider() {
 		if (INSTANCE.roundingProvider == null) {
 			INSTANCE.roundingProvider = LOADER
-					.getInstance(RoundingProvider.class);
+					.getComponent(RoundingProvider.class);
 			if (INSTANCE.roundingProvider == null) {
 				throw new UnsupportedOperationException(
 						"No RoudingProvider loaded");
@@ -349,7 +349,7 @@ public final class Monetary {
 		 *             , when the instances are ambiguous.
 		 */
 		@SuppressWarnings("unchecked")
-		public <T> T getInstance(Class<T> type,
+		public <T> T getComponent(Class<T> type,
 				Class<? extends Annotation>... annotations);
 
 		/**
@@ -362,7 +362,7 @@ public final class Monetary {
 		 * @return the instances matching, never null.
 		 */
 		@SuppressWarnings("unchecked")
-		public <T> List<T> getInstances(Class<T> type,
+		public <T> List<T> getComponents(Class<T> type,
 				Class<? extends Annotation>... annotations);
 
 	}
@@ -376,9 +376,9 @@ public final class Monetary {
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public <T> T getInstance(Class<T> type,
+		public <T> T getComponent(Class<T> type,
 				Class<? extends Annotation>... annotations) {
-			List<T> instancesFound = getInstances(type, annotations);
+			List<T> instancesFound = getComponents(type, annotations);
 			if (instancesFound.isEmpty()) {
 				return null;
 			} else if (instancesFound.size() == 1) {
@@ -409,7 +409,7 @@ public final class Monetary {
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public <T> List<T> getInstances(Class<T> type,
+		public <T> List<T> getComponents(Class<T> type,
 				Class<? extends Annotation>... annotations) {
 			List<T> instancesFound = new ArrayList<T>();
 			ServiceLoader<T> components = ServiceLoader.load(type);

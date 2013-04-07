@@ -21,7 +21,6 @@ package net.java.javamoney.ri.ext.provider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
@@ -84,11 +83,11 @@ public final class RegionalCurrencyUnitProviderImpl extends AbstractRiComponent
 	 * @see javax.money.CurrencyUnitProvider#get(java.lang.String,
 	 * java.lang.String, long)
 	 */
-	public Enumeration<CurrencyUnit> getAll(Region region) {
+	public Set<CurrencyUnit> getAll(Region region) {
 		return getAll(region, -1);
 	}
 
-	public Enumeration<CurrencyUnit> getAll(Region region, long timestamp) {
+	public Set<CurrencyUnit> getAll(Region region, long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		for (RegionalCurrencyUnitProviderSpi prov : regionalCurrencyProviders) {
 			CurrencyUnit[] currencies = prov.getAll(region);
@@ -96,7 +95,7 @@ public final class RegionalCurrencyUnitProviderImpl extends AbstractRiComponent
 				result.addAll(Arrays.asList(currencies));
 			}
 		}
-		return Collections.enumeration(result);
+		return result;
 	}
 
 	@Override
@@ -107,14 +106,14 @@ public final class RegionalCurrencyUnitProviderImpl extends AbstractRiComponent
 	@Override
 	public boolean isLegalTCurrencyUnit(CurrencyUnit currency, Region region,
 			Long timestamp) {
-		Enumeration<CurrencyUnit> tenders = getLegalCurrencyUnits(region, timestamp);
-		while (tenders.hasMoreElements()) {
-			CurrencyUnit currencyUnit = (CurrencyUnit) tenders.nextElement();
+		Set<CurrencyUnit> tenders = getLegalCurrencyUnits(region,
+				timestamp);
+		for(CurrencyUnit currencyUnit: tenders){
 			if (!currencyUnit.getNamespace().equals(currency.getNamespace())) {
 				continue;
 			}
-			if (!currencyUnit.getCurrencyCode()
-					.equals(currency.getCurrencyCode())) {
+			if (!currencyUnit.getCurrencyCode().equals(
+					currency.getCurrencyCode())) {
 				continue;
 			}
 			return true;
@@ -123,12 +122,12 @@ public final class RegionalCurrencyUnitProviderImpl extends AbstractRiComponent
 	}
 
 	@Override
-	public Enumeration<CurrencyUnit> getLegalCurrencyUnits(Region region) {
+	public Set<CurrencyUnit> getLegalCurrencyUnits(Region region) {
 		return getLegalCurrencyUnits(region, null);
 	}
 
 	@Override
-	public Enumeration<CurrencyUnit> getLegalCurrencyUnits(Region region,
+	public Set<CurrencyUnit> getLegalCurrencyUnits(Region region,
 			Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		for (RegionalCurrencyUnitProviderSpi prov : regionalCurrencyProviders) {
@@ -137,7 +136,7 @@ public final class RegionalCurrencyUnitProviderImpl extends AbstractRiComponent
 				result.addAll(Arrays.asList(currencies));
 			}
 		}
-		return Collections.enumeration(result);
+		return result;
 	}
 
 }

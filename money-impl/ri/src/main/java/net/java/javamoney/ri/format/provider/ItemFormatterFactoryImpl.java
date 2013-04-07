@@ -111,7 +111,7 @@ public class ItemFormatterFactoryImpl extends AbstractRiComponent implements
 	 * checks for the types exposed.
 	 */
 	private void loadExtensions() {
-		for (ItemFormatterFactorySpi<?> t : Monetary.getLoader().getInstances(
+		for (ItemFormatterFactorySpi<?> t : Monetary.getLoader().getComponents(
 				ItemFormatterFactorySpi.class)) {
 			try {
 				if (t.getTargetClass() == null) {

@@ -38,9 +38,9 @@ public class CDIStandaloneLoader implements ComponentLoader {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getInstance(Class<T> type,
+	public <T> T getComponent(Class<T> type,
 			Class<? extends Annotation>... annotations) {
-		List<T> instancesFound = getInstances(type, annotations);
+		List<T> instancesFound = getComponents(type, annotations);
 		if (instancesFound.isEmpty()) {
 			return null;
 		} else if (instancesFound.size() == 1) {
@@ -71,7 +71,7 @@ public class CDIStandaloneLoader implements ComponentLoader {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> List<T> getInstances(Class<T> type,
+	public <T> List<T> getComponents(Class<T> type,
 			Class<? extends Annotation>... annotations) {
 		cdi.start();
 		List<T> instancesFound = new ArrayList<T>();

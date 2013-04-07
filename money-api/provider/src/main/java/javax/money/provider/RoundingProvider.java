@@ -8,7 +8,7 @@
  */
 package javax.money.provider;
 
-import java.util.Enumeration;
+import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.Rounding;
@@ -35,7 +35,7 @@ public interface RoundingProvider {
 	 * 
 	 * @return the ids available, never {@code null}.
 	 */
-	public Enumeration<String> getRoundingIds();
+	public Set<String> getRoundingIds();
 
 	/**
 	 * Allows to determine if a named {@link Rounding} is available.

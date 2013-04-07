@@ -43,7 +43,7 @@ public abstract class AbstractRiComponent {
 	 * Singleton constructor.
 	 */
 	protected <T> List<T> getSPIProviders(Class<T> providerClass, Class<? extends Annotation>... annotations) {
-		return Monetary.getLoader().getInstances(providerClass, annotations);
+		return Monetary.getLoader().getComponents(providerClass, annotations);
 	}
 
 }

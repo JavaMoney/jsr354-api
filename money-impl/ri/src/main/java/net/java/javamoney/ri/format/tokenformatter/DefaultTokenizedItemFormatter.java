@@ -97,8 +97,8 @@ public class DefaultTokenizedItemFormatter<T> extends AbstractTargeted<T>
 	 * 
 	 * @return the token used by this formatter, never {@code null}.
 	 */
-	public Enumeration<FormatToken<T>> getTokens() {
-		return Collections.enumeration(Arrays.asList(this.tokens));
+	public List<FormatToken<T>> getTokens() {
+		return Arrays.asList(this.tokens);
 	}
 
 	/*

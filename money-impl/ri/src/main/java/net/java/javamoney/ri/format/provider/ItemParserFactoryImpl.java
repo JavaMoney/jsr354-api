@@ -110,7 +110,7 @@ public class ItemParserFactoryImpl extends AbstractRiComponent implements
 	 * checks for the types exposed.
 	 */
 	private void loadExtensions() {
-		for (ItemParserFactorySpi<?> t : Monetary.getLoader().getInstances(
+		for (ItemParserFactorySpi<?> t : Monetary.getLoader().getComponents(
 				ItemParserFactorySpi.class)) {
 			try {
 				if (t.getTargetClass() == null) {

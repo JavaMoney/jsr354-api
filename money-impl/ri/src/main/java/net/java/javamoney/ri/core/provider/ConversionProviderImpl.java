@@ -45,7 +45,7 @@ public class ConversionProviderImpl extends AbstractRiComponent implements
 	@SuppressWarnings("unchecked")
 	public ConversionProviderImpl() {
 		try {
-			converterFactory = Monetary.getLoader().getInstance(
+			converterFactory = Monetary.getLoader().getComponent(
 					CurrencyConverterFactorySpi.class);
 		} catch (Exception e) {
 			log.debug("No CurrencyConverterFactorySpi implementation found, using default CurrencyConversion.");
@@ -55,7 +55,7 @@ public class ConversionProviderImpl extends AbstractRiComponent implements
 
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		for (ExchangeRateProvider prov : Monetary.getLoader().getInstances(
+		for (ExchangeRateProvider prov : Monetary.getLoader().getComponents(
 				ExchangeRateProvider.class)) {
 			this.exchangeRateProviders.put(prov.getExchangeRateType(), prov);
 		}

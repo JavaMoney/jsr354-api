@@ -210,48 +210,24 @@ public class RegionImpl implements Region, Serializable {
 	}
 
 	@Override
-	public Enumeration<Region> getChildRegions() {
-		return Collections.enumeration(childRegions);
+	public Collection<Region> getChildren() {
+		return Collections.unmodifiableCollection(childRegions);
 	}
 
-	@Override
-	public Enumeration<Region> getChildRegions(RegionType type) {
-		return getChildRegions(type, false);
-	}
 
 	@Override
-	public Enumeration<Region> getChildRegions(RegionType type,
-			boolean recursive) {
-		Set<Region> constraintRegions = new HashSet<Region>();
-		for (Region region : childRegions) {
-			if (region.getRegionType().equals(type)) {
-				constraintRegions.add(region);
-				if (recursive) {
-					Enumeration<Region> subs = region.getChildRegions(type,
-							recursive);
-					while (subs.hasMoreElements()) {
-						Region subRegion = (Region) subs.nextElement();
-						constraintRegions.add(subRegion);
-					}
-				}
-			}
-		}
-		return Collections.enumeration(constraintRegions);
-	}
-
-	@Override
-	public Region getParentRegion() {
+	public Region getParent() {
 		return this.parent;
 	}
 
 	@Override
-	public Region getParentRegion(RegionType type) {
+	public Region getParent(RegionType type) {
 		Region parent = this.parent;
 		while (parent != null) {
 			if (parent.getRegionType().equals(type)) {
 				return parent;
 			}
-			parent = parent.getParentRegion();
+			parent = parent.getParent();
 		}
 		return null;
 	}
@@ -426,23 +402,7 @@ public class RegionImpl implements Region, Serializable {
 	}
 
 	@Override
-	public Region getChildRegion(String identifier) {
-		throw new UnsupportedOperationException("Not yet implemented");
-	}
-
-	@Override
-	public Region getChildRegion(String identifier, boolean recursive) {
-		throw new UnsupportedOperationException("Not yet implemented");
-	}
-
-	@Override
-	public Region getChildRegion(String identifier, RegionType type) {
-		throw new UnsupportedOperationException("Not yet implemented");
-	}
-
-	@Override
-	public Region getChildRegion(String identifier, RegionType type,
-			boolean recursive) {
+	public Region getChild(String identifier) {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 

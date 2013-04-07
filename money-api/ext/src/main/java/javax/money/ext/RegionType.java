@@ -9,6 +9,7 @@
 package javax.money.ext;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -64,6 +65,14 @@ public final class RegionType implements Serializable, Comparable<RegionType> {
 		return type;
 	}
 
+	/**
+	 * Access all region types.
+	 * @return
+	 */
+	public static Collection<RegionType> getTypes() {
+		return TYPE_CACHE.values();
+	}
+	
 	/**
 	 * Get the (non localized) identifier of the {@link ExchangeRateType}.
 	 * 

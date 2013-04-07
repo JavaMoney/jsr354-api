@@ -8,7 +8,7 @@
  */
 package javax.money.ext;
 
-import java.util.Enumeration;
+import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.provider.MonetaryExtension;
@@ -29,7 +29,7 @@ public interface RegionalCurrencyUnitProvider extends MonetaryExtension {
 	 *            the target locale, not null.
 	 * @return the currencies found, never null.
 	 */
-	public Enumeration<CurrencyUnit> getAll(Region region);
+	public Set<CurrencyUnit> getAll(Region region);
 
 	/**
 	 * Access all currencies matching a {@link Region}, valid at the given
@@ -41,7 +41,7 @@ public interface RegionalCurrencyUnitProvider extends MonetaryExtension {
 	 *            The target UTC timestamp, or -1 for the current UTC timestamp.
 	 * @return the currencies found, never null.
 	 */
-	public Enumeration<CurrencyUnit> getAll(Region region, long timestamp);
+	public Set<CurrencyUnit> getAll(Region region, long timestamp);
 
 	/**
 	 * This method allows to evaluate if a {@link CurrencyUnit} is a legal
@@ -85,7 +85,7 @@ public interface RegionalCurrencyUnitProvider extends MonetaryExtension {
 	 * @return the {@link CurrencyUnit} to be known as legal tenders for the
 	 *         given region, never null.
 	 */
-	public Enumeration<CurrencyUnit> getLegalCurrencyUnits(Region region);
+	public Set<CurrencyUnit> getLegalCurrencyUnits(Region region);
 
 	/**
 	 * This method allows to evaluate the {@link CurrencyUnit} accepted as legal
@@ -98,6 +98,6 @@ public interface RegionalCurrencyUnitProvider extends MonetaryExtension {
 	 * @return the {@link CurrencyUnit} to be known as legal tenders for the
 	 *         given region, never null.
 	 */
-	public Enumeration<CurrencyUnit> getLegalCurrencyUnits(Region region, Long timestamp);
+	public Set<CurrencyUnit> getLegalCurrencyUnits(Region region, Long timestamp);
 
 }

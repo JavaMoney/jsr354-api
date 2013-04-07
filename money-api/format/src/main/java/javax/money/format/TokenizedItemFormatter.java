@@ -8,7 +8,7 @@
  */
 package javax.money.format;
 
-import java.util.Enumeration;
+import java.util.List;
 
 
 /**
@@ -27,6 +27,6 @@ public interface TokenizedItemFormatter<T> extends ItemFormatter<T> {
 	 * 
 	 * @return the token used by this formatter, never {@code null}.
 	 */
-	public Enumeration<FormatToken<T>> getTokens();
+	public List<FormatToken<T>> getTokens();
 
 }

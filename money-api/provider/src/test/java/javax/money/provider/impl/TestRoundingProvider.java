@@ -8,7 +8,7 @@
  */
 package javax.money.provider.impl;
 
-import java.util.Enumeration;
+import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.Rounding;
@@ -40,7 +40,7 @@ public class TestRoundingProvider implements RoundingProvider {
 	}
 
 	@Override
-	public Enumeration<String> getRoundingIds() {
+	public Set<String> getRoundingIds() {
 		// TODO Auto-generated method stub
 		return null;
 	}

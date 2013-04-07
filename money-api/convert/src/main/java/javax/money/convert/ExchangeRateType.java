@@ -9,8 +9,7 @@
 package javax.money.convert;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -46,8 +45,8 @@ public final class ExchangeRateType implements Serializable,
 		return instance;
 	}
 
-	public static Enumeration<ExchangeRateType> getTypes() {
-		return Collections.enumeration(CACHED_INSTANCES.values());
+	public static Collection<ExchangeRateType> getTypes() {
+		return CACHED_INSTANCES.values();
 	}
 
 	/**

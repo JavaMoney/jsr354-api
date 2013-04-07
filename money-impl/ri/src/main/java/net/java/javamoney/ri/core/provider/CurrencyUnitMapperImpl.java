@@ -61,7 +61,7 @@ public class CurrencyUnitMapperImpl extends AbstractRiComponent implements
 	@SuppressWarnings("unchecked")
 	public void reload() {
 		List<CurrencyUnitMappingSpi> loadedMapperList = Monetary.getLoader()
-				.getInstances(CurrencyUnitMappingSpi.class);
+				.getComponents(CurrencyUnitMappingSpi.class);
 		for (CurrencyUnitMappingSpi currencyMappingSPI : loadedMapperList) {
 			mappers.add(currencyMappingSPI);
 		}

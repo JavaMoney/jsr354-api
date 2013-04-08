@@ -30,7 +30,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	private static final MathContext DEFAULT_MATH_CONTEXT = initDefaultMathContext();
 
 	/** tHE DEFAULT {@link MathContext} used by this instance, e.g. on division. */
-	private MathContext mathContext = DEFAULT_MATH_CONTEXT;
+	private final MathContext mathContext;
 
 	/**
 	 * Creates a new instance os {@link Money}.
@@ -85,6 +85,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @return the default {@link MathContext}, never null.
 	 */
 	public static final MathContext getDefaultMathContext() {
+		// TODO the accessor to a public static final constant member variable seems of little use. Why not use constant directly?
 		return DEFAULT_MATH_CONTEXT;
 	}
 

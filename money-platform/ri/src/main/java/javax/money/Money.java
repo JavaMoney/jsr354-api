@@ -22,7 +22,7 @@ import java.math.RoundingMode;
 public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 
 	/** The numeric part of this amount. */
-	private BigDecimal number;
+	private final BigDecimal number;
 
 	/** The currency of this amount. */
 	private final CurrencyUnit currency;

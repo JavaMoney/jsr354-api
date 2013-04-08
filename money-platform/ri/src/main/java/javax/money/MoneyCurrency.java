@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public final class MoneyCurrency implements CurrencyUnit, Serializable,
+public class MoneyCurrency implements CurrencyUnit, Serializable,
 		Comparable<CurrencyUnit> {
 
 	/**
@@ -53,7 +53,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 	/** true, if it is a virtual currency. */
 	private final boolean virtual;
 
-	private static final Map<String, CurrencyUnit> CACHED = new ConcurrentHashMap<String, CurrencyUnit>();
+	private static final Map<String, MoneyCurrency> CACHED = new ConcurrentHashMap<String, MoneyCurrency>();
 
 	private static final Logger LOGGER = Logger.getLogger(MoneyCurrency.class
 			.getName());
@@ -75,24 +75,40 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 		this.legalTender = legal;
 		this.virtual = virtual;
 	}
+	
+	/**
+	 * Private constructor.
+	 * 
+	 * @param currency
+	 */
+	private MoneyCurrency(Currency currency) {
+		this.namespace = ISO_NAMESPACE;
+		this.currencyCode = currency.getCurrencyCode();
+		this.numericCode = currency.getNumericCode();
+		this.defaultFractionDigits = currency.getDefaultFractionDigits();
+		this.validFrom = null;
+		this.validUntil = null; // TODO Adapt for hisotoric one, e.g. AFA
+		this.legalTender = !this.currencyCode.startsWith("X"); // TODO check for each code in util.Currency here;
+		this.virtual = this.currencyCode.equals("XXX"); //  TODO check for each code in util.Currency here;
+	}
 
-	public static CurrencyUnit of(Currency currency) {
+	public static MoneyCurrency of(Currency currency) {
 		String key = ISO_NAMESPACE + ':' + currency.getCurrencyCode();
-		CurrencyUnit cachedItem = CACHED.get(key);
+		MoneyCurrency cachedItem = CACHED.get(key);
 		if (cachedItem == null) {
-			cachedItem = new JDKCurrencyAdapter(currency);
+			cachedItem = new MoneyCurrency(currency);
 			CACHED.put(key, cachedItem);
 		}
 		return cachedItem;
 	}
 
-	public static CurrencyUnit of(String currencyCode) {
+	public static MoneyCurrency of(String currencyCode) {
 		return of(Currency.getInstance(currencyCode));
 	}
 
-	public static CurrencyUnit of(String namespace, String currencyCode) {
+	public static MoneyCurrency of(String namespace, String currencyCode) {
 		String key = namespace + ':' + currencyCode;
-		CurrencyUnit cu = CACHED.get(key);
+		MoneyCurrency cu = CACHED.get(key);
 		if (cu == null && namespace.equals(ISO_NAMESPACE)) {
 			return of(currencyCode);
 		}
@@ -319,7 +335,7 @@ public final class MoneyCurrency implements CurrencyUnit, Serializable,
 			}
 			if (cache) {
 				String key = namespace + ':' + currencyCode;
-				CurrencyUnit current = CACHED.get(key);
+				MoneyCurrency current = CACHED.get(key);
 				if (current == null) {
 					current = new MoneyCurrency(namespace, currencyCode,
 							numericCode, defaultFractionDigits, validFrom,

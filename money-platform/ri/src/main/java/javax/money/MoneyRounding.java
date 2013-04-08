@@ -12,22 +12,51 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-
 /**
- * Factory class for creating {@link AmountAdjuster} instances that implement
- * roundings, based on precision and standard {@link RoundingMode} settings..
+ * Implementation class that models rounding based on standard JDK math, a scale
+ * and {@link RoundingMode}..
  * 
  * @author Anatole Tresch
- * 
+ * @see RoundingMode
  */
-public final class MoneyRounding {
+public final class MoneyRounding implements Rounding {
 
-	private MoneyRounding() {
-		// singleton constructor
-	}
-	
+	/** The {@link RoundingMode} used. */
+	private RoundingMode roundingMode;
+	/** The scale to be applied. */
+	private int scale;
+
 	/**
-	 * Creates an {@link AmountAdjuster} for rounding {@link MonetaryAmount}
+	 * Creates an rounder instance.
+	 * 
+	 * @param mathContext
+	 *            The {@link MathContext} to be used, not {@code null}.
+	 */
+	public MoneyRounding(int scale, RoundingMode roundingMode) {
+		if (scale < 0) {
+			throw new IllegalArgumentException("scale < 0");
+		}
+		if (roundingMode == null) {
+			throw new IllegalArgumentException("roundingMode missing");
+		}
+		this.scale = scale;
+		this.roundingMode = roundingMode;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.Rounding#round(javax.money.MonetaryAmount)
+	 */
+	@Override
+	public MonetaryAmount round(MonetaryAmount amount) {
+		BigDecimal dec = amount.asType(BigDecimal.class);
+		dec = dec.setScale(this.scale, this.roundingMode);
+		return amount.withAmount(dec);
+	}
+
+	/**
+	 * Creates an {@link MoneyRounding} for rounding {@link MonetaryAmount}
 	 * instances given a currency.
 	 * 
 	 * @param currency
@@ -36,7 +65,7 @@ public final class MoneyRounding {
 	 *            is sued.
 	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
 	 */
-	public static Rounding getRounding(CurrencyUnit currency,
+	public static MoneyRounding getRounding(CurrencyUnit currency,
 			RoundingMode roundingMode) {
 		int scale = currency.getDefaultFractionDigits();
 		return getRounding(scale, roundingMode);
@@ -52,14 +81,14 @@ public final class MoneyRounding {
 	 *            is sued.
 	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
 	 */
-	public static Rounding getRounding(CurrencyUnit currency) {
+	public static MoneyRounding getRounding(CurrencyUnit currency) {
 		int scale = currency.getDefaultFractionDigits();
 		// TODO get according rounding mode
 		return getRounding(scale, RoundingMode.HALF_UP);
 	}
 
 	/**
-	 * Creates an {@link AmountAdjuster} for rounding given a precision and a
+	 * Creates an {@link MoneyRounding} for rounding given a precision and a
 	 * {@link RoundingMode}.
 	 * 
 	 * @param scale
@@ -68,50 +97,8 @@ public final class MoneyRounding {
 	 *            the {@link RoundingMode}, not null.
 	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
 	 */
-	public static Rounding getRounding(int scale, RoundingMode rounding) {
-		return new MathRounder(scale, rounding);
+	public static MoneyRounding getRounding(int scale, RoundingMode rounding) {
+		return new MoneyRounding(scale, rounding);
 	}
 
-	/**
-	 * Internal simple implementation class that supports rounding encaspulated
-	 * as {@link AmountAdjuster}.
-	 * 
-	 * @author Anatole Tresch
-	 */
-	private final static class MathRounder implements Rounding {
-		/** The {@link RoundingMode} used. */
-		private RoundingMode roundingMode;
-		/** The scale to be applied. */
-		private int scale;
-
-		/**
-		 * Creates an rounder instance.
-		 * 
-		 * @param mathContext
-		 *            The {@link MathContext} to be used, not {@code null}.
-		 */
-		public MathRounder(int scale, RoundingMode roundingMode) {
-			if (scale < 0) {
-				throw new IllegalArgumentException("scale < 0");
-			}
-			if (roundingMode == null) {
-				throw new IllegalArgumentException("roundingMode missing");
-			}
-			this.scale = scale;
-			this.roundingMode = roundingMode;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see javax.money.AmountAdjuster#adjust(javax.money.MonetaryAmount)
-		 */
-		@Override
-		public MonetaryAmount round(MonetaryAmount amount) {
-			BigDecimal dec = amount.asType(BigDecimal.class);
-			dec = dec.setScale(this.scale, this.roundingMode);
-			return amount.withAmount(dec);
-		}
-
-	}
 }

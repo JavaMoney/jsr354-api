@@ -9,7 +9,6 @@
 package javax.money.provider.impl;
 
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;

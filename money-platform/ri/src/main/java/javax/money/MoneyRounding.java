@@ -65,10 +65,10 @@ public final class MoneyRounding implements Rounding {
 	 *            is sued.
 	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
 	 */
-	public static MoneyRounding getRounding(CurrencyUnit currency,
+	public static MoneyRounding of(CurrencyUnit currency,
 			RoundingMode roundingMode) {
 		int scale = currency.getDefaultFractionDigits();
-		return getRounding(scale, roundingMode);
+		return of(scale, roundingMode);
 	}
 
 	/**
@@ -81,10 +81,10 @@ public final class MoneyRounding implements Rounding {
 	 *            is sued.
 	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
 	 */
-	public static MoneyRounding getRounding(CurrencyUnit currency) {
+	public static MoneyRounding of(CurrencyUnit currency) {
 		int scale = currency.getDefaultFractionDigits();
 		// TODO get according rounding mode
-		return getRounding(scale, RoundingMode.HALF_UP);
+		return of(scale, RoundingMode.HALF_UP);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public final class MoneyRounding implements Rounding {
 	 *            the {@link RoundingMode}, not null.
 	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
 	 */
-	public static MoneyRounding getRounding(int scale, RoundingMode rounding) {
+	public static MoneyRounding of(int scale, RoundingMode rounding) {
 		return new MoneyRounding(scale, rounding);
 	}
 

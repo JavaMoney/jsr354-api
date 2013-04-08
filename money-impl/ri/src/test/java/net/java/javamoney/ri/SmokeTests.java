@@ -111,7 +111,7 @@ public class SmokeTests {
 
 	@Test
 	public void testCurrencyConverter() {
-		Rounding rounding = MoneyRounding.getRounding(2, RoundingMode.HALF_UP);
+		Rounding rounding = MoneyRounding.of(2, RoundingMode.HALF_UP);
 
 		ConversionProvider conv = Monetary.getConversionProvider();
 		assertNotNull(conv);

@@ -22,7 +22,7 @@ import java.math.RoundingMode;
 public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 
 	/** The numeric part of this amount. */
-	private BigDecimal number;
+	private final BigDecimal number;
 
 	/** The currency of this amount. */
 	private final CurrencyUnit currency;
@@ -30,7 +30,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	private static final MathContext DEFAULT_MATH_CONTEXT = initDefaultMathContext();
 
 	/** tHE DEFAULT {@link MathContext} used by this instance, e.g. on division. */
-	private MathContext mathContext = DEFAULT_MATH_CONTEXT;
+	private final MathContext mathContext;
 
 	/**
 	 * Creates a new instance os {@link Money}.
@@ -71,10 +71,10 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		checkNumber(number);
 		this.currency = currency;
 		this.mathContext = mathContext;
-		if (BigDecimal.class.isAssignableFrom(number.getClass())) {
+		if (number instanceof BigDecimal) {
 			this.number = (BigDecimal) number;
 		} else {
-			this.number = new BigDecimal(number.doubleValue(),mathContext);
+			this.number = new BigDecimal(number.doubleValue(), mathContext);
 		}
 	}
 
@@ -100,7 +100,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @return a {@code Money} combining the numeric value and currency unit.
 	 */
 	public static Money of(CurrencyUnit currency, BigDecimal number) {
-		return new Money(currency, number);
+		return new Money(currency, number, getDefaultMathContext());
 	}
 
 	/**
@@ -131,7 +131,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 */
 	public static Money of(CurrencyUnit currency, Number number) {
 		// TODO caching
-		return new Money(currency, number);
+		return new Money(currency, number, getDefaultMathContext());
 	}
 
 	/**
@@ -159,7 +159,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @return A new instance of {@link Money}.
 	 */
 	public static Money of(String currencyCode, Number number) {
-		return new Money(MoneyCurrency.of(currencyCode), number);
+		return new Money(MoneyCurrency.of(currencyCode), number,
+				getDefaultMathContext());
 	}
 
 	/**
@@ -181,8 +182,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @param currency the target currency of the amount being created.
 	 * @return
 	 */
-	public static Money zero(CurrencyUnit currency) {
-		return new Money(currency, BigDecimal.ZERO);
+	public static Money ofZero(CurrencyUnit currency) {
+		return new Money(currency, BigDecimal.ZERO, getDefaultMathContext());
 	}
 
 /**
@@ -190,8 +191,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @param currency the target currency of the amount being created.
 	 * @return
 	 */
-	public static Money zero(String currency) {
-		return zero(MoneyCurrency.of(currency));
+	public static Money ofZero(String currency) {
+		return ofZero(MoneyCurrency.of(currency));
 	}
 
 	/*
@@ -294,37 +295,11 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * 
 	 * @see javax.money.MonetaryAmount#abs()
 	 */
-	public MonetaryAmount abs() {
+	public Money abs() {
 		if (this.isPositiveOrZero()) {
 			return this;
 		}
 		return this.negate();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#min(javax.money.MonetaryAmount)
-	 */
-	public MonetaryAmount min(MonetaryAmount amount) {
-		checkAmountParameter(amount);
-		if (amount.isLessThan(this)) {
-			return amount;
-		}
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#max(javax.money.MonetaryAmount)
-	 */
-	public MonetaryAmount max(MonetaryAmount amount) {
-		checkAmountParameter(amount);
-		if (amount.isGreaterThan(this)) {
-			return amount;
-		}
-		return this;
 	}
 
 	// Arithmetic Operations
@@ -334,23 +309,11 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * 
 	 * @see javax.money.MonetaryAmount#add(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount add(MonetaryAmount amount) {
+	public Money add(MonetaryAmount amount) {
 		checkAmountParameter(amount);
 		return new Money(this.currency, this.number.add(
 				amount.asType(BigDecimal.class), this.mathContext),
 				this.mathContext);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#add(java.lang.Number)
-	 */
-	public MonetaryAmount add(Number number) {
-		checkNumber(number);
-		BigDecimal dec = getBigDecimal(number);
-		dec = this.number.add(dec, this.mathContext);
-		return new Money(this.currency, dec, this.mathContext);
 	}
 
 	private BigDecimal getBigDecimal(Number num) {
@@ -368,7 +331,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * 
 	 * @see javax.money.MonetaryAmount#divide(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount divide(MonetaryAmount divisor) {
+	public Money divide(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
 		BigDecimal dec = this.number.divide(divisor.asType(BigDecimal.class),
 				this.mathContext);
@@ -378,12 +341,11 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#divide(java.lang.Number)
+	 * @see javax.money.MonetaryAmount#divide(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount divide(Number divisor) {
-		checkNumber(divisor);
-		BigDecimal dec = this.number.divide(
-				BigDecimal.valueOf(divisor.doubleValue()), this.mathContext);
+	public Money divide(Number divisor) {
+		BigDecimal dec = this.number.divide(getBigDecimal(number),
+				this.mathContext);
 		return new Money(this.currency, dec, this.mathContext);
 	}
 
@@ -393,11 +355,11 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @see
 	 * javax.money.MonetaryAmount#divideAndRemainder(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount[] divideAndRemainder(MonetaryAmount divisor) {
+	public Money[] divideAndRemainder(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
 		BigDecimal[] dec = this.number.divideAndRemainder(
 				divisor.asType(BigDecimal.class), this.mathContext);
-		return new MonetaryAmount[] {
+		return new Money[] {
 				new Money(this.currency, dec[0], this.mathContext),
 				new Money(this.currency, dec[1], this.mathContext) };
 	}
@@ -405,13 +367,13 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#divideAndRemainder(java.lang.Number)
+	 * @see
+	 * javax.money.MonetaryAmount#divideAndRemainder(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount[] divideAndRemainder(Number divisor) {
-		checkNumber(divisor);
+	public Money[] divideAndRemainder(Number divisor) {
 		BigDecimal[] dec = this.number.divideAndRemainder(
 				getBigDecimal(divisor), this.mathContext);
-		return new MonetaryAmount[] {
+		return new Money[] {
 				new Money(this.currency, dec[0], this.mathContext),
 				new Money(this.currency, dec[1], this.mathContext) };
 	}
@@ -423,7 +385,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * javax.money.MonetaryAmount#divideToIntegralValue(javax.money.MonetaryAmount
 	 * )
 	 */
-	public MonetaryAmount divideToIntegralValue(MonetaryAmount divisor) {
+	public Money divideToIntegralValue(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
 		BigDecimal dec = this.number.divideToIntegralValue(
 				divisor.asType(BigDecimal.class), this.mathContext);
@@ -433,12 +395,11 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#divideToIntegralValue(java.lang.Number)
+	 * @see javax.money.MonetaryAmount#divideToIntegralValue(Number) )D
 	 */
-	public MonetaryAmount divideToIntegralValue(Number divisor) {
-		checkNumber(divisor);
+	public Money divideToIntegralValue(Number divisor) {
 		BigDecimal dec = this.number.divideToIntegralValue(
-				BigDecimal.valueOf(divisor.doubleValue()), this.mathContext);
+				getBigDecimal(divisor), this.mathContext);
 		return new Money(this.currency, dec, this.mathContext);
 	}
 
@@ -447,15 +408,19 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * 
 	 * @see javax.money.MonetaryAmount#multiply(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount multiply(MonetaryAmount multiplicand) {
+	public Money multiply(MonetaryAmount multiplicand) {
 		checkAmountParameter(multiplicand);
 		BigDecimal dec = this.number.multiply(
 				multiplicand.asType(BigDecimal.class), this.mathContext);
 		return new Money(this.currency, dec, this.mathContext);
 	}
 
-	public MonetaryAmount multiply(Number multiplicand) {
-		checkNumber(multiplicand);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.MonetaryAmount#multiply(Number)
+	 */
+	public Money multiply(Number multiplicand) {
 		BigDecimal dec = this.number.multiply(getBigDecimal(multiplicand),
 				this.mathContext);
 		return new Money(this.currency, dec, this.mathContext);
@@ -496,20 +461,9 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#subtract(java.lang.Number)
-	 */
-	public MonetaryAmount subtract(Number subtrahend) {
-		checkNumber(subtrahend);
-		return new Money(this.currency, this.number.subtract(
-				getBigDecimal(subtrahend), this.mathContext), this.mathContext);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see javax.money.MonetaryAmount#pow(int)
 	 */
-	public MonetaryAmount pow(int n) {
+	public Money pow(int n) {
 		return new Money(this.currency, this.number.pow(n, this.mathContext),
 				this.mathContext);
 	}
@@ -519,7 +473,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * 
 	 * @see javax.money.MonetaryAmount#ulp()
 	 */
-	public MonetaryAmount ulp() {
+	public Money ulp() {
 		return new Money(this.currency, this.number.ulp());
 	}
 
@@ -528,7 +482,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * 
 	 * @see javax.money.MonetaryAmount#remainder(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount remainder(MonetaryAmount divisor) {
+	public Money remainder(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
 		return new Money(this.currency, this.number.remainder(
 				divisor.asType(BigDecimal.class), this.mathContext),
@@ -538,10 +492,9 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#remainder(java.lang.Number)
+	 * @see javax.money.MonetaryAmount#remainder(Number)
 	 */
-	public MonetaryAmount remainder(Number divisor) {
-		checkNumber(divisor);
+	public Money remainder(Number divisor) {
 		return new Money(this.currency, this.number.remainder(
 				getBigDecimal(divisor), this.mathContext), this.mathContext);
 	}
@@ -551,7 +504,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * 
 	 * @see javax.money.MonetaryAmount#scaleByPowerOfTen(int)
 	 */
-	public MonetaryAmount scaleByPowerOfTen(int n) {
+	public Money scaleByPowerOfTen(int n) {
 		return new Money(this.currency, this.number.scaleByPowerOfTen(n),
 				this.mathContext);
 	}
@@ -644,7 +597,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * 
 	 * @see javax.money.MonetaryAmount#with(java.lang.Number)
 	 */
-	public MonetaryAmount withAmount(Number amount) {
+	public Money from(Number amount) {
 		checkNumber(amount);
 		return new Money(this.currency, getBigDecimal(amount), this.mathContext);
 	}
@@ -790,16 +743,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#lessThan(java.lang.Number)
-	 */
-	public boolean isLessThan(Number number) {
-		checkNumber(number);
-		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) < 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * javax.money.MonetaryAmount#lessThanOrEqualTo(javax.money.MonetaryAmount)
 	 */
@@ -811,31 +754,11 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#lessThanOrEqualTo(java.lang.Number)
-	 */
-	public boolean isLessThanOrEqualTo(Number number) {
-		checkNumber(number);
-		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) <= 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see javax.money.MonetaryAmount#greaterThan(javax.money.MonetaryAmount)
 	 */
 	public boolean isGreaterThan(MonetaryAmount amount) {
 		checkAmountParameter(amount);
 		return number.compareTo(amount.asType(BigDecimal.class)) > 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#greaterThan(java.lang.Number)
-	 */
-	public boolean isGreaterThan(Number number) {
-		checkNumber(number);
-		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) > 0;
 	}
 
 	/*
@@ -853,31 +776,11 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#greaterThanOrEqualTo(java.lang.Number)
-	 */
-	public boolean isGreaterThanOrEqualTo(Number number) {
-		checkNumber(number);
-		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) >= 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see javax.money.MonetaryAmount#isEqualTo(javax.money.MonetaryAmount)
 	 */
 	public boolean isEqualTo(MonetaryAmount amount) {
 		checkAmountParameter(amount);
 		return number.compareTo(amount.asType(BigDecimal.class)) == 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#hasSameNumberAs(java.lang.Number)
-	 */
-	public boolean hasSameNumberAs(Number number) {
-		checkNumber(number);
-		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) == 0;
 	}
 
 	/*
@@ -893,19 +796,9 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#isNotEqualTo(java.lang.Number)
-	 */
-	public boolean isNotEqualTo(Number number) {
-		checkNumber(number);
-		return this.number.compareTo(BigDecimal.valueOf(number.doubleValue())) != 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see javax.money.MonetaryAmount#getMajorPart()
 	 */
-	public MonetaryAmount getMajorPart() {
+	public Money getMajorPart() {
 		return new Money(this.currency, getMajorLong(), this.mathContext);
 	}
 
@@ -914,7 +807,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * 
 	 * @see javax.money.MonetaryAmount#getMinorPart()
 	 */
-	public MonetaryAmount getMinorPart() {
+	public Money getMinorPart() {
 		return new Money(this.currency, getMinorLong(), this.mathContext);
 	}
 
@@ -933,8 +826,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	@SuppressWarnings("unchecked")
 	public <T> T asType(Class<T> type) {
 		if (BigDecimal.class.equals(type)) {
-			final T asType = (T) this.number;
-			return asType;
+			return (T) this.number;
 		}
 		if (Number.class.equals(type)) {
 			final T asType = (T) this.number;

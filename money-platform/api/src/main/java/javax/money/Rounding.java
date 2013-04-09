@@ -33,6 +33,6 @@ public interface Rounding {
 	 * @throws ArithmeticException
 	 *             if rounding fails.
 	 */
-	public MonetaryAmount round(MonetaryAmount amount);
+	public <T extends MonetaryAmount> T round(T amount);
 
 }

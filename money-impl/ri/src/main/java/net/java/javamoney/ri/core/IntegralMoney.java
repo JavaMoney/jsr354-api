@@ -510,7 +510,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * @see javax.money.MonetaryAmount#with(java.lang.Number)
 	 */
 	@Override
-	public MonetaryAmount withAmount(Number number) {
+	public MonetaryAmount from(Number number) {
 		return new IntegralMoney(this.currency, number.longValue());
 	}
 

@@ -22,7 +22,7 @@ public class MoneyRoundingTest {
 	 */
 	@Test
 	public void testGetRoundingCurrencyUnitRoundingMode() {
-		Rounding rounding = MoneyRounding.of(MoneyCurrency.of("CHF"),
+		MoneyRounding rounding = MoneyRounding.of(MoneyCurrency.of("CHF"),
 				RoundingMode.FLOOR);
 		assertNotNull(rounding);
 	}
@@ -33,7 +33,7 @@ public class MoneyRoundingTest {
 	 */
 	@Test
 	public void testGetRoundingCurrencyUnit() {
-		Rounding rounding = MoneyRounding.of(MoneyCurrency.of("CHF"));
+		MoneyRounding rounding = MoneyRounding.of(MoneyCurrency.of("CHF"));
 		assertNotNull(rounding);
 	}
 
@@ -44,7 +44,7 @@ public class MoneyRoundingTest {
 	 */
 	@Test
 	public void testGetRoundingIntRoundingMode() {
-		Rounding rounding = MoneyRounding.of(3, RoundingMode.FLOOR);
+		MoneyRounding rounding = MoneyRounding.of(3, RoundingMode.FLOOR);
 		assertNotNull(rounding);
 	}
 

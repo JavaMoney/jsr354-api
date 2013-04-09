@@ -23,7 +23,8 @@ public class AmountUtilsImpl implements AmountUtils, MonetaryExtension {
 		}
 		MonetaryAmount am = amounts[0];
 		for (int i = 1; i < amounts.length; i++) {
-			am = am.min(amounts[i]);
+			if(am.isGreaterThan(amounts[i]))
+			am = amounts[i];
 		}
 		return am;
 	}
@@ -53,7 +54,8 @@ public class AmountUtilsImpl implements AmountUtils, MonetaryExtension {
 		}
 		MonetaryAmount am = amounts[0];
 		for (int i = 1; i < amounts.length; i++) {
-			am = am.max(amounts[i]);
+			if(am.isLessThan(amounts[i]))
+			am = amounts[i];
 		}
 		return am;
 	}
@@ -98,7 +100,7 @@ public class AmountUtilsImpl implements AmountUtils, MonetaryExtension {
 		}
 		MonetaryAmount am = amounts[0];
 		for (int i = 1; i < amounts.length; i++) {
-			am = am.max(amounts[i]);
+			am = am.add(amounts[i]);
 		}
 		return am;
 	}

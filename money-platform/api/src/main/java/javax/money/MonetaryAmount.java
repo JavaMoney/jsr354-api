@@ -42,32 +42,6 @@ public interface MonetaryAmount {
 	public MonetaryAmount abs();
 
 	/**
-	 * Returns the minimum of this {@code MonetaryAmount} and {@code amount}.
-	 * 
-	 * @param amount
-	 *            value with which the minimum is to be computed.
-	 * @return the {@code MonetaryAmount} whose value is the lesser of this
-	 *         {@code MonetaryAmount} and {@code val}. If they are equal, as
-	 *         defined by the {@link #compareTo(MonetaryAmount) compareTo}
-	 *         method, {@code this} is returned.
-	 * @see #compareTo(java.math.MonetaryAmount)
-	 */
-	public MonetaryAmount min(MonetaryAmount amount);
-
-	/**
-	 * Returns the maximum of this {@code MonetaryAmount} and {@code amount}.
-	 * 
-	 * @param amount
-	 *            value with which the maximum is to be computed.
-	 * @return the {@code MonetaryAmount} whose value is the greater of this
-	 *         {@code MonetaryAmount} and {@code amount}. If they are equal, as
-	 *         defined by the {@link #compareTo(MonetaryAmount) compareTo}
-	 *         method, {@code this} is returned.
-	 * @see #compareTo(MonetaryAmount)
-	 */
-	public MonetaryAmount max(MonetaryAmount amount);
-
-	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this +
 	 * augend)}, and whose scale is {@code max(this.getScale(),
 	 * augend.getScale())}.
@@ -77,17 +51,6 @@ public interface MonetaryAmount {
 	 * @return {@code this + augend}
 	 */
 	public MonetaryAmount add(MonetaryAmount augend);
-
-	/**
-	 * Returns a {@code MonetaryAmount} whose value is {@code (this +
-	 * augend)}, and whose scale is {@code max(this.getScale(),
-	 * augend.getScale())}.
-	 * 
-	 * @param augend
-	 *            value to be added to this {@code MonetaryAmount}.
-	 * @return {@code this + augend}
-	 */
-	public MonetaryAmount add(Number augend);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this /
@@ -250,17 +213,6 @@ public interface MonetaryAmount {
 	 * @return {@code this - subtrahend}
 	 */
 	public MonetaryAmount subtract(MonetaryAmount subtrahend);
-
-	/**
-	 * Returns a {@code MonetaryAmount} whose value is {@code (this -
-	 * subtrahend)}, and whose scale is {@code max(this.getScale(),
-	 * subtrahend.getScale())}.
-	 * 
-	 * @param subtrahend
-	 *            value to be subtracted from this {@code MonetaryAmount}.
-	 * @return {@code this - subtrahend}
-	 */
-	public MonetaryAmount subtract(Number subtrahend);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is
@@ -486,7 +438,7 @@ public interface MonetaryAmount {
 	 * @throws ArithmeticException
 	 *             if the scale of the amount is too large
 	 */
-	public MonetaryAmount withAmount(Number amount);
+	public MonetaryAmount from(Number amount);
 
 	// -------------------- Introspection and value methods, similar to
 	// java.lang.Number; java.lang.BigDecimal
@@ -629,16 +581,6 @@ public interface MonetaryAmount {
 	public boolean isLessThan(MonetaryAmount amount);
 
 	/**
-	 * Checks if this amount's value is less compared to the number passed.
-	 * 
-	 * @param number
-	 *            The number to compare to.
-	 * @return {@code true}, if this amount's value is less compared to the
-	 *         number passed.
-	 */
-	public boolean isLessThan(Number number);
-
-	/**
 	 * Checks if this amount is less or the same compared to the amount passed.
 	 * 
 	 * @param amount
@@ -647,17 +589,6 @@ public interface MonetaryAmount {
 	 *         amount passed.
 	 */
 	public boolean isLessThanOrEqualTo(MonetaryAmount amount);
-
-	/**
-	 * Checks if this amount's value is less or the same compared to the number
-	 * passed.
-	 * 
-	 * @param number
-	 *            The number to compare to.
-	 * @return {@code true}, if this amount's value is less or the same compared
-	 *         to the number passed.
-	 */
-	public boolean isLessThanOrEqualTo(Number number);
 
 	/**
 	 * Checks if this amount is greater compared to the amount passed.
@@ -670,16 +601,6 @@ public interface MonetaryAmount {
 	public boolean isGreaterThan(MonetaryAmount amount);
 
 	/**
-	 * Checks if this amount's value is greater compared to the number passed.
-	 * 
-	 * @param number
-	 *            The number to compare to.
-	 * @return {@code true}, if this amount's value is greater compared to the
-	 *         number passed.
-	 */
-	public boolean isGreaterThan(Number number);
-
-	/**
 	 * Checks if this amount is greater or the same compared to the amount
 	 * passed.
 	 * 
@@ -689,17 +610,6 @@ public interface MonetaryAmount {
 	 *         the amount passed.
 	 */
 	public boolean isGreaterThanOrEqualTo(MonetaryAmount amount);
-
-	/**
-	 * Checks if this amount's value is greater or the same compared to the
-	 * number passed.
-	 * 
-	 * @param number
-	 *            The number to compare to.
-	 * @return {@code true}, if this amount's value is greater or the same
-	 *         compared to the number passed.
-	 */
-	public boolean isGreaterThanOrEqualTo(Number number);
 
 	/**
 	 * Checks if this amount is the same compared to the amount passed. This is
@@ -727,16 +637,6 @@ public interface MonetaryAmount {
 	public boolean hasSameCurrencyAs(MonetaryAmount amount);
 
 	/**
-	 * Checks if this amount's value is the same compared to the number passed.
-	 * 
-	 * @param number
-	 *            The number to compare to.
-	 * @return {@code true}, if this amount's value is the same compared to the
-	 *         number passed.
-	 */
-	public boolean hasSameNumberAs(Number number);
-
-	/**
 	 * Checks if this amount is not the same compared to the amount passed.
 	 * 
 	 * @param amount
@@ -748,16 +648,6 @@ public interface MonetaryAmount {
 	 */
 	public boolean isNotEqualTo(MonetaryAmount amount);
 
-	/**
-	 * Checks if this amount's value is not the same compared to the number
-	 * passed.
-	 * 
-	 * @param number
-	 *            The number to compare to.
-	 * @return {@code true}, if this amount's value is not the same compared to
-	 *         the number passed.
-	 */
-	public boolean isNotEqualTo(Number number);
 
 	// -------------------------------------------- Misc
 

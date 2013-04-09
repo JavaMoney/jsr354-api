@@ -22,9 +22,9 @@ import java.math.RoundingMode;
 public final class MoneyRounding implements Rounding {
 
 	/** The {@link RoundingMode} used. */
-	private RoundingMode roundingMode;
+	private final RoundingMode roundingMode;
 	/** The scale to be applied. */
-	private int scale;
+	private final int scale;
 
 	/**
 	 * Creates an rounder instance.
@@ -49,10 +49,10 @@ public final class MoneyRounding implements Rounding {
 	 * @see javax.money.Rounding#round(javax.money.MonetaryAmount)
 	 */
 	@Override
-	public MonetaryAmount round(MonetaryAmount amount) {
+	public <T extends MonetaryAmount> T round(T amount) {
 		BigDecimal dec = amount.asType(BigDecimal.class);
 		dec = dec.setScale(this.scale, this.roundingMode);
-		return amount.withAmount(dec);
+		return (T)amount.from(dec);
 	}
 
 	/**
@@ -101,4 +101,5 @@ public final class MoneyRounding implements Rounding {
 		return new MoneyRounding(scale, rounding);
 	}
 
+	
 }

@@ -53,6 +53,17 @@ public interface MonetaryAmount {
 	public MonetaryAmount add(MonetaryAmount augend);
 
 	/**
+	 * Returns a {@code MonetaryAmount} whose value is {@code (this +
+	 * augend)}, and whose scale is {@code max(this.getScale(),
+	 * augend.getScale())}.
+	 * 
+	 * @param augend
+	 *            value to be added to this {@code MonetaryAmount}.
+	 * @return {@code this + augend}
+	 */
+	public MonetaryAmount add(Number augend);
+
+	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this /
 	 * divisor)}, and whose preferred scale is {@code (this.getScale() -
 	 * divisor.getScale())}; if the exact quotient cannot be represented
@@ -213,6 +224,17 @@ public interface MonetaryAmount {
 	 * @return {@code this - subtrahend}
 	 */
 	public MonetaryAmount subtract(MonetaryAmount subtrahend);
+
+	/**
+	 * Returns a {@code MonetaryAmount} whose value is {@code (this -
+	 * subtrahend)}, and whose scale is {@code max(this.getScale(),
+	 * subtrahend.getScale())}.
+	 * 
+	 * @param subtrahend
+	 *            value to be subtracted from this {@code MonetaryAmount}.
+	 * @return {@code this - subtrahend}
+	 */
+	public MonetaryAmount subtract(Number subtrahend);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is
@@ -439,6 +461,15 @@ public interface MonetaryAmount {
 	 *             if the scale of the amount is too large
 	 */
 	public MonetaryAmount from(Number amount);
+	
+	/**
+	 * Adjust a {@link MonetaryAmount} using the given {@link MonetaryAdjuster}.
+	 * 
+	 * @param adjuster
+	 *            the adjuster, not null.
+	 * @return the adjusted value, never null.
+	 */
+	public MonetaryAmount with(MonetaryAdjuster adjuster);
 
 	// -------------------- Introspection and value methods, similar to
 	// java.lang.Number; java.lang.BigDecimal
@@ -648,7 +679,6 @@ public interface MonetaryAmount {
 	 */
 	public boolean isNotEqualTo(MonetaryAmount amount);
 
-
 	// -------------------------------------------- Misc
 
 	/**
@@ -729,5 +759,7 @@ public interface MonetaryAmount {
 	 * @see #asType(Class)
 	 */
 	public Class<?> getNumberType();
+
+	
 
 }

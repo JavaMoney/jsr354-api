@@ -9,12 +9,12 @@
 package javax.money;
 
 /**
- * This interface defines a {@link Rounding}. It is hereby important to
+ * This interface defines a {@link MonetaryAdjuster}. It is hereby important to
  * distinguish between <i>internal rounding</i> such as implied by the maximal
  * precision/scale of an amount, and <i>rounding</i> applied to a
  * {@link MonetaryAmount} or a calculation algorithm. Since different use cases
  * may require <i>roundings</i> done at very different stages and differently
- * within a complex financial calculation, {@link Rounding} is not directly
+ * within a complex financial calculation, {@link MonetaryAdjuster} is not directly
  * attached to a monetary type, e.g. a {@link MonetaryAmount}.
  * <p>
  * Nevertheless the JSR's extensions provide a RoundingMonetaryAmount, which
@@ -22,6 +22,17 @@ package javax.money;
  * 
  * @author Anatole Tresch
  */
-public interface Rounding extends MonetaryAdjuster{
+public interface MonetaryAdjuster {
+
+	/**
+	 * This method is called for rounding an amount.
+	 * 
+	 * @param amount
+	 *            the amount to be rounded
+	 * @return the rounded amount.
+	 * @throws ArithmeticException
+	 *             if rounding fails.
+	 */
+	public <T extends MonetaryAmount> T adjust(T amount);
 
 }

@@ -130,8 +130,7 @@ public class MoneyTest {
 	}
 
 	/**
-	 * Test method for
-	 * {@link javax.money.Money#ofZero(javax.money.CurrencyUnit)}.
+	 * Test method for {@link javax.money.Money#ofZero(javax.money.CurrencyUnit)}.
 	 */
 	@Test
 	public void testZeroCurrencyUnit() {
@@ -143,8 +142,7 @@ public class MoneyTest {
 	}
 
 	/**
-	 * Test method for
-	 * {@link javax.money.Money#ofZero(javax.money.CurrencyUnit)}.
+	 * Test method for {@link javax.money.Money#ofZero(javax.money.CurrencyUnit)}.
 	 */
 	@Test
 	public void testZeroString() {
@@ -230,6 +228,7 @@ public class MoneyTest {
 		assertEquals(dec.abs(), abs.asType(BigDecimal.class));
 	}
 
+
 	/**
 	 * Test method for {@link javax.money.Money#add(javax.money.MonetaryAmount)}
 	 * .
@@ -240,8 +239,19 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.add(Money.of("CHF", dec2));
-		assertEquals(dec.add(dec2, MathContext.DECIMAL64),
-				res.asType(BigDecimal.class));
+		assertEquals(dec.add(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#add(java.lang.Number)}.
+	 */
+	@Test
+	public void testAddNumber() {
+		BigDecimal dec = new BigDecimal("135135.151757");
+		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
+		Money m = Money.of("CHF", dec);
+		MonetaryAmount res = m.add(dec2);
+		assertEquals(dec.add(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
 	}
 
 	/**
@@ -262,12 +272,11 @@ public class MoneyTest {
 	 */
 	@Test
 	public void testDivideNumber() {
-		BigDecimal dec = new BigDecimal("135135.151757");
-		BigDecimal dec2 = new BigDecimal("5");
+		BigDecimal dec = new BigDecimal("135135.151757",MathContext.DECIMAL64);
+		BigDecimal dec2 = new BigDecimal("5",MathContext.DECIMAL64);
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.divide(dec2);
-		assertEquals(dec.divide(dec2, MathContext.DECIMAL64),
-				res.asType(BigDecimal.class));
+		assertEquals(dec.divide(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
 	}
 
 	/**
@@ -343,8 +352,7 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.multiply(Money.of("CHF", dec2));
-		assertEquals(dec.multiply(dec2, MathContext.DECIMAL64),
-				res.asType(BigDecimal.class));
+		assertEquals(dec.multiply(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
 	}
 
 	/**
@@ -356,8 +364,7 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.multiply(dec2);
-		assertEquals(dec.multiply(dec2, MathContext.DECIMAL64),
-				res.asType(BigDecimal.class));
+		assertEquals(dec.multiply(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
 	}
 
 	/**
@@ -392,8 +399,19 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.subtract(Money.of("CHF", dec2));
-		assertEquals(dec.subtract(dec2, MathContext.DECIMAL64),
-				res.asType(BigDecimal.class));
+		assertEquals(dec.subtract(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#subtract(java.lang.Number)}.
+	 */
+	@Test
+	public void testSubtractNumber() {
+		BigDecimal dec = new BigDecimal("135135.151757");
+		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
+		Money m = Money.of("CHF", dec);
+		MonetaryAmount res = m.subtract(dec2);
+		assertEquals(dec.subtract(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
 	}
 
 	/**
@@ -404,8 +422,7 @@ public class MoneyTest {
 		BigDecimal dec = new BigDecimal("1335.157");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.pow(7);
-		assertEquals(dec.pow(7, MathContext.DECIMAL64),
-				res.asType(BigDecimal.class));
+		assertEquals(dec.pow(7, MathContext.DECIMAL64), res.asType(BigDecimal.class));
 	}
 
 	/**
@@ -495,7 +512,8 @@ public class MoneyTest {
 	public void testGetMinorInt() {
 		BigDecimal dec = new BigDecimal("1234.12");
 		Money m = Money.of("CHF", dec);
-		assertEquals(dec.movePointRight(dec.precision()).intValueExact(),
+		assertEquals(dec.movePointRight(dec.precision())
+				.intValueExact(),
 				m.getMinorInt());
 	}
 
@@ -748,6 +766,7 @@ public class MoneyTest {
 		assertFalse(m1.isLessThan((Money) null));
 	}
 
+
 	/**
 	 * Test method for
 	 * {@link javax.money.Money#isLessThanOrEqualTo(javax.money.MonetaryAmount)}
@@ -772,6 +791,7 @@ public class MoneyTest {
 		Money m1 = Money.of("CHF", 5);
 		assertFalse(m1.isLessThanOrEqualTo((Money) null));
 	}
+
 
 	/**
 	 * Test method for
@@ -803,6 +823,9 @@ public class MoneyTest {
 	@Test
 	public void testIsGreaterThanNumber() {
 		Money m1 = Money.of("CHF", 5);
+		Money m2 = Money.of("CHF", 10);
+		assertFalse(m1.isGreaterThan(m2));
+		assertTrue(m2.isGreaterThan(m1));
 		assertFalse(m1.isGreaterThan(m1));
 	}
 
@@ -841,25 +864,6 @@ public class MoneyTest {
 		assertFalse(m1.isGreaterThanOrEqualTo((Money) null));
 	}
 
-	/**
-	 * Test method for
-	 * {@link javax.money.Money#isGreaterThanOrEqualTo(java.lang.Number)}.
-	 */
-	@Test
-	public void testIsGreaterThanOrEqualToNumber() {
-		Money m1 = Money.of("CHF", 5);
-		assertTrue(m1.isGreaterThanOrEqualTo(m1));
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.Money#isGreaterThanOrEqualTo(java.lang.Number)}.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testIsGreaterThanOrEqualToNumber_Null() {
-		Money m1 = Money.of("CHF", 5);
-		m1.isGreaterThanOrEqualTo((Money) null);
-	}
 
 	/**
 	 * Test method for
@@ -876,6 +880,7 @@ public class MoneyTest {
 				Money.of("CHF", 1.1)));
 	}
 
+
 	/**
 	 * Test method for
 	 * {@link javax.money.Money#isNotEqualTo(javax.money.MonetaryAmount)}.
@@ -890,6 +895,7 @@ public class MoneyTest {
 		assertTrue(Money.of("CHF", BigDecimal.ONE).isNotEqualTo(
 				Money.of("CHF", 1.1)));
 	}
+
 
 	/**
 	 * Test method for {@link javax.money.Money#getMajorPart()}.
@@ -944,7 +950,7 @@ public class MoneyTest {
 		Rounding rounding = new Rounding() {
 
 			@Override
-			public MonetaryAmount round(MonetaryAmount amount) {
+			public MonetaryAmount adjust(MonetaryAmount amount) {
 				return Money.of(amount.getCurrency(), amount.doubleValue() * 2);
 			}
 

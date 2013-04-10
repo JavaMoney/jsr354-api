@@ -11,12 +11,13 @@ package javax.money.convert;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryAmount;
 
 /**
  * This class models an exchange rate between two currencies.
@@ -247,6 +248,33 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	 */
 	public final Long getValidUntil() {
 		return this.validUntil;
+	}
+
+	/**
+	 * Creates a {@link MonetaryAdjuster} that is performing conversion as
+	 * defined by this rate instance.
+	 * 
+	 * @return an instance of {@link MonetaryAdjuster} performing rate
+	 *         conversion from base to term, or vice versa, never null.
+	 * @see ConvertingAdjuster
+	 */
+	public MonetaryAdjuster asAdjuster() {
+		return new ConvertingAdjuster(this);
+	}
+
+	/**
+	 * Creates a {@link MonetaryAdjuster} that is performing conversion as
+	 * defined by this rate instance.
+	 * 
+	 * @param mathContext
+	 *            The {@link MathContext} to be used for conversion an rate
+	 *            calculation (e.g. for calculating reverse rates).
+	 * @return an instance of {@link MonetaryAdjuster} performing rate
+	 *         conversion from base to term, or vice versa, never null.
+	 * @see ConvertingAdjuster
+	 */
+	public MonetaryAdjuster asAdjuster(MathContext mathContext) {
+		return new ConvertingAdjuster(this).withMathContext(mathContext);
 	}
 
 	/**
@@ -609,7 +637,6 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 			return this;
 		}
 
-
 		/**
 		 * Sets the provider to be applied.
 		 * 
@@ -674,6 +701,53 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 		public ExchangeRate build() {
 			return new ExchangeRate(exchangeRateType, base, term, factor,
 					provider, validFrom, validUntil, rateChain);
+		}
+
+	}
+
+	public static final class ConvertingAdjuster implements MonetaryAdjuster {
+		private ExchangeRate rate;
+		private MathContext mathContext = MathContext.DECIMAL64;
+
+		public ConvertingAdjuster(ExchangeRate rate) {
+			if (rate == null) {
+				throw new IllegalArgumentException("Rate is required.");
+			}
+			this.rate = rate;
+		}
+
+		public ExchangeRate getExchangeRate() {
+			return rate;
+		}
+
+		public MathContext getMathContext() {
+			return mathContext;
+		}
+
+		public ConvertingAdjuster withMathContext(MathContext mathContext) {
+			if (mathContext == null) {
+				throw new IllegalArgumentException("MathContext is required.");
+			}
+			this.mathContext = mathContext;
+			return this;
+		}
+
+		@SuppressWarnings("unchecked")
+		public <T extends MonetaryAmount> T adjust(T amount) {
+			CurrencyUnit curr = amount.getCurrency();
+			if (curr.equals(rate.getBase())) {
+				return (T) amount.from(amount.asType(BigDecimal.class)
+						.multiply(rate.getFactor(), this.mathContext));
+			}
+			if (curr.equals(rate.getTerm())) {
+				BigDecimal reverseFactor = BigDecimal.ONE.divide(
+						rate.getFactor(), amount.getScale());
+				return (T) amount.from(amount.asType(BigDecimal.class)
+						.multiply(reverseFactor, MathContext.DECIMAL64));
+			}
+			throw new CurrencyConversionException(rate.getBase(),
+					rate.getTerm(), System.currentTimeMillis(),
+					"Incompatible currency in amount: " + amount.getCurrency());
 		}
 
 	}

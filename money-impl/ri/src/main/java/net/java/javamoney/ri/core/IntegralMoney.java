@@ -22,6 +22,7 @@ package net.java.javamoney.ri.core;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import javax.money.MonetaryAdjuster;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MoneyCurrency;
@@ -180,37 +181,11 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#abs()
 	 */
-	public MonetaryAmount abs() {
+	public IntegralMoney abs() {
 		if (this.isPositiveOrZero()) {
 			return this;
 		}
 		return this.negate();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#min(javax.money.MonetaryAmount)
-	 */
-	public MonetaryAmount min(MonetaryAmount amount) {
-		checkAmountParameter(amount);
-		if (amount.isLessThan(this)) {
-			return amount;
-		}
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#max(javax.money.MonetaryAmount)
-	 */
-	public MonetaryAmount max(MonetaryAmount amount) {
-		checkAmountParameter(amount);
-		if (amount.isGreaterThan(this)) {
-			return amount;
-		}
-		return this;
 	}
 
 	// Arithmetic Operations
@@ -220,7 +195,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#add(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount add(MonetaryAmount amount) {
+	public IntegralMoney add(MonetaryAmount amount) {
 		checkAmountParameter(amount);
 		return new IntegralMoney(this.currency, this.number
 				+ amount.longValue());
@@ -231,7 +206,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#add(java.lang.Number)
 	 */
-	public MonetaryAmount add(Number number) {
+	public IntegralMoney add(Number number) {
 		checkNumber(number);
 		return new IntegralMoney(this.currency, this.number
 				+ number.longValue());
@@ -242,7 +217,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#divide(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount divide(MonetaryAmount divisor) {
+	public IntegralMoney divide(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
 		return new IntegralMoney(this.currency, this.number
 				/ divisor.longValue());
@@ -253,7 +228,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#divide(java.lang.Number)
 	 */
-	public MonetaryAmount divide(Number divisor) {
+	public IntegralMoney divide(Number divisor) {
 		checkNumber(divisor);
 		return new IntegralMoney(this.currency, this.number
 				/ divisor.longValue());
@@ -265,10 +240,10 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * @see
 	 * javax.money.MonetaryAmount#divideAndRemainder(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount[] divideAndRemainder(MonetaryAmount divisor) {
+	public IntegralMoney[] divideAndRemainder(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
 		long divisorAsLong = divisor.longValue();
-		return new MonetaryAmount[] {
+		return new IntegralMoney[] {
 				new IntegralMoney(this.currency, this.number / divisorAsLong),
 				new IntegralMoney(this.currency, this.number % divisorAsLong) };
 	}
@@ -278,10 +253,10 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#divideAndRemainder(java.lang.Number)
 	 */
-	public MonetaryAmount[] divideAndRemainder(Number divisor) {
+	public IntegralMoney[] divideAndRemainder(Number divisor) {
 		checkNumber(divisor);
 		long divisorAsLong = divisor.longValue();
-		return new MonetaryAmount[] {
+		return new IntegralMoney[] {
 				new IntegralMoney(this.currency, this.number / divisorAsLong),
 				new IntegralMoney(this.currency, this.number % divisorAsLong) };
 	}
@@ -293,7 +268,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * javax.money.MonetaryAmount#divideToIntegralValue(javax.money.MonetaryAmount
 	 * )
 	 */
-	public MonetaryAmount divideToIntegralValue(MonetaryAmount divisor) {
+	public IntegralMoney divideToIntegralValue(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
 		return new IntegralMoney(this.currency, this.number
 				/ divisor.longValue());
@@ -304,7 +279,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#divideToIntegralValue(java.lang.Number)
 	 */
-	public MonetaryAmount divideToIntegralValue(Number divisor) {
+	public IntegralMoney divideToIntegralValue(Number divisor) {
 		checkNumber(divisor);
 		return new IntegralMoney(this.currency, this.number
 				/ divisor.longValue());
@@ -315,13 +290,13 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#multiply(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount multiply(MonetaryAmount multiplicand) {
+	public IntegralMoney multiply(MonetaryAmount multiplicand) {
 		checkAmountParameter(multiplicand);
 		return new IntegralMoney(this.currency, this.number
 				* multiplicand.longValue());
 	}
 
-	public MonetaryAmount multiply(Number multiplicand) {
+	public IntegralMoney multiply(Number multiplicand) {
 		checkNumber(multiplicand);
 		return new IntegralMoney(this.currency, this.number
 				* multiplicand.longValue());
@@ -332,7 +307,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#negate()
 	 */
-	public MonetaryAmount negate() {
+	public IntegralMoney negate() {
 		if (this.number <= 0) {
 			return this;
 		}
@@ -344,7 +319,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#plus()
 	 */
-	public MonetaryAmount plus() {
+	public IntegralMoney plus() {
 		if (this.number > 0) {
 			return this;
 		}
@@ -356,7 +331,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#subtract(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount subtract(MonetaryAmount subtrahend) {
+	public IntegralMoney subtract(MonetaryAmount subtrahend) {
 		checkAmountParameter(subtrahend);
 		return new IntegralMoney(this.currency, this.number
 				- subtrahend.longValue());
@@ -367,7 +342,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#subtract(java.lang.Number)
 	 */
-	public MonetaryAmount subtract(Number subtrahend) {
+	public IntegralMoney subtract(Number subtrahend) {
 		checkNumber(subtrahend);
 		return new IntegralMoney(this.currency, this.number
 				- subtrahend.longValue());
@@ -378,7 +353,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#pow(int)
 	 */
-	public MonetaryAmount pow(int n) {
+	public IntegralMoney pow(int n) {
 		return new IntegralMoney(this.currency, this.number ^ n);
 	}
 
@@ -387,7 +362,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#ulp()
 	 */
-	public MonetaryAmount ulp() {
+	public IntegralMoney ulp() {
 		return new IntegralMoney(this.currency, new BigDecimal(BigInteger.ONE,
 				getScale()).longValue());
 	}
@@ -397,7 +372,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#remainder(javax.money.MonetaryAmount)
 	 */
-	public MonetaryAmount remainder(MonetaryAmount divisor) {
+	public IntegralMoney remainder(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
 		return new IntegralMoney(this.currency, this.number
 				% divisor.longValue());
@@ -408,7 +383,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#remainder(java.lang.Number)
 	 */
-	public MonetaryAmount remainder(Number divisor) {
+	public IntegralMoney remainder(Number divisor) {
 		checkNumber(divisor);
 		return new IntegralMoney(this.currency, this.number
 				% divisor.longValue());
@@ -419,7 +394,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#scaleByPowerOfTen(int)
 	 */
-	public MonetaryAmount scaleByPowerOfTen(int n) {
+	public IntegralMoney scaleByPowerOfTen(int n) {
 		return new IntegralMoney(this.currency, this.number * (10 ^ n));
 	}
 
@@ -510,7 +485,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * @see javax.money.MonetaryAmount#with(java.lang.Number)
 	 */
 	@Override
-	public MonetaryAmount from(Number number) {
+	public IntegralMoney from(Number number) {
 		return new IntegralMoney(this.currency, number.longValue());
 	}
 
@@ -794,7 +769,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#getMajorPart()
 	 */
-	public MonetaryAmount getMajorPart() {
+	public IntegralMoney getMajorPart() {
 		return new IntegralMoney(this.currency, getMajorLong());
 	}
 
@@ -803,7 +778,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#getMinorPart()
 	 */
-	public MonetaryAmount getMinorPart() {
+	public IntegralMoney getMinorPart() {
 		return new IntegralMoney(this.currency, 0L);
 	}
 
@@ -933,6 +908,15 @@ public final class IntegralMoney implements MonetaryAmount,
 				amount.getCurrency().getNamespace())
 				&& this.currency.getCurrencyCode().equals(
 						amount.getCurrency().getCurrencyCode());
+	}
+	
+	/*
+	 * }(non-Javadoc)
+	 * @see javax.money.MonetaryAmount#adjust(javax.money.AmountAdjuster)
+	 */
+	@Override
+	public MonetaryAmount with(MonetaryAdjuster adjuster) {
+		return adjuster.adjust(this);
 	}
 
 }

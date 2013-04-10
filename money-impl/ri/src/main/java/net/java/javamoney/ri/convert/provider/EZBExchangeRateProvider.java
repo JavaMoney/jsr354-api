@@ -237,7 +237,7 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 		}
 		return new ExchangeRate(rate.getExchangeRateType(), rate.getTerm(),
 				rate.getBase(), BigDecimal.ONE.divide(rate
-						.getFactor(), rate.getFactor().scale(), RoundingMode.HALF_EVEN), rate.getProvider(), rate.getValidFrom(),
+						.getFactor(), MathContext.DECIMAL64), rate.getProvider(), rate.getValidFrom(),
 				rate.getValidUntil());
 	}
 

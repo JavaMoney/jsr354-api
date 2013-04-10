@@ -315,6 +315,18 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 				amount.asType(BigDecimal.class), this.mathContext),
 				this.mathContext);
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.MonetaryAmount#add(Number)
+	 */
+	public Money add(Number amount) {
+		checkNumber(amount);
+		return new Money(this.currency, this.number.add(
+				getBigDecimal(amount), this.mathContext),
+				this.mathContext);
+	}
 
 	private BigDecimal getBigDecimal(Number num) {
 		if (num instanceof BigDecimal) {
@@ -344,7 +356,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @see javax.money.MonetaryAmount#divide(javax.money.MonetaryAmount)
 	 */
 	public Money divide(Number divisor) {
-		BigDecimal dec = this.number.divide(getBigDecimal(number),
+		BigDecimal dec = this.number.divide(getBigDecimal(divisor),
 				this.mathContext);
 		return new Money(this.currency, dec, this.mathContext);
 	}
@@ -455,6 +467,18 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		checkAmountParameter(subtrahend);
 		return new Money(this.currency, this.number.subtract(
 				subtrahend.asType(BigDecimal.class), this.mathContext),
+				this.mathContext);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.MonetaryAmount#subtract(Number)
+	 */
+	public Money subtract(Number subtrahend) {
+		checkNumber(subtrahend);
+		return new Money(this.currency, this.number.subtract(
+				getBigDecimal(subtrahend), this.mathContext),
 				this.mathContext);
 	}
 
@@ -821,6 +845,15 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	}
 
 	/*
+	 * }(non-Javadoc)
+	 * @see javax.money.MonetaryAmount#adjust(javax.money.AmountAdjuster)
+	 */
+	@Override
+	public MonetaryAmount with(MonetaryAdjuster adjuster) {
+		return new Money(this.currency, adjuster.adjust(this).asType(BigDecimal.class));
+	}
+	
+	/*
 	 * @see javax.money.MonetaryAmount#asType(java.lang.Class)
 	 */
 	@SuppressWarnings("unchecked")
@@ -863,8 +896,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @see javax.money.MonetaryAmount#asType(java.lang.Class,
 	 * javax.money.Rounding)
 	 */
-	public <T> T asType(Class<T> type, Rounding rounding) {
-		MonetaryAmount amount = rounding.round(this);
+	public <T> T asType(Class<T> type, MonetaryAdjuster adjuster) {
+		MonetaryAmount amount = adjuster.adjust(this);
 		return amount.asType(type);
 	}
 

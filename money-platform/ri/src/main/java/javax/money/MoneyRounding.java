@@ -49,7 +49,7 @@ public final class MoneyRounding implements Rounding {
 	 * @see javax.money.Rounding#round(javax.money.MonetaryAmount)
 	 */
 	@Override
-	public <T extends MonetaryAmount> T round(T amount) {
+	public <T extends MonetaryAmount> T adjust(T amount) {
 		BigDecimal dec = amount.asType(BigDecimal.class);
 		dec = dec.setScale(this.scale, this.roundingMode);
 		return (T)amount.from(dec);
@@ -63,7 +63,7 @@ public final class MoneyRounding implements Rounding {
 	 *            The currency, which determines the required precision. As
 	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
+	 * @return a new instance {@link MonetaryAdjuster} implementing the rounding.
 	 */
 	public static MoneyRounding of(CurrencyUnit currency,
 			RoundingMode roundingMode) {
@@ -72,14 +72,14 @@ public final class MoneyRounding implements Rounding {
 	}
 
 	/**
-	 * Creates an {@link AmountAdjuster} for rounding {@link MonetaryAmount}
+	 * Creates an {@link MonetaryAdjuster} for rounding {@link MonetaryAmount}
 	 * instances given a currency.
 	 * 
 	 * @param currency
 	 *            The currency, which determines the required precision. As
 	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
+	 * @return a new instance {@link MonetaryAdjuster} implementing the rounding.
 	 */
 	public static MoneyRounding of(CurrencyUnit currency) {
 		int scale = currency.getDefaultFractionDigits();
@@ -95,7 +95,7 @@ public final class MoneyRounding implements Rounding {
 	 *            the required scale
 	 * @param rounding
 	 *            the {@link RoundingMode}, not null.
-	 * @return a new instance {@link AmountAdjuster} implementing the rounding.
+	 * @return a new instance {@link MonetaryAdjuster} implementing the rounding.
 	 */
 	public static MoneyRounding of(int scale, RoundingMode rounding) {
 		return new MoneyRounding(scale, rounding);

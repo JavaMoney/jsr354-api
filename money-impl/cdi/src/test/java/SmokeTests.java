@@ -124,36 +124,20 @@ public class SmokeTests {
 
 		MonetaryAmount tgt = conv.getCurrencyConverter(RATE_TYPE).convert(
 				srcCHF, MoneyCurrency.of("EUR"));
-		MonetaryAmount tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(
-				100.15d, MoneyCurrency.of("CHF"), MoneyCurrency.of("EUR"));
 		MonetaryAmount tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(
-				tgt2, MoneyCurrency.of("CHF"));
-		assertEquals(tgt, tgt2);
-		assertEquals(srcCHF, rounding.round(tgt3));
+				tgt, MoneyCurrency.of("CHF"));
+		assertEquals(srcCHF.with(rounding), tgt3.with(rounding));
 		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcEUR,
 				MoneyCurrency.of("CHF"));
-		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
-				MoneyCurrency.of("EUR"), MoneyCurrency.of("CHF"));
 		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt,
 				MoneyCurrency.of("EUR"));
-		assertEquals(tgt, tgt2);
-		assertEquals(srcEUR, rounding.round(tgt3));
+		assertEquals(srcEUR, rounding.adjust(tgt3));
 		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcCHF,
 				MoneyCurrency.of("USD"));
-		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
-				MoneyCurrency.of("CHF"), MoneyCurrency.of("USD"));
-		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt2,
+		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt,
 				MoneyCurrency.of("CHF"));
-		assertEquals(tgt, tgt2);
-		assertEquals(srcCHF, rounding.round(tgt3));
-		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcUSD,
-				MoneyCurrency.of("CHF"));
-		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
-				MoneyCurrency.of("USD"), MoneyCurrency.of("CHF"));
-		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt2,
-				MoneyCurrency.of("USD"));
-		assertEquals(tgt, tgt2);
-		assertEquals(srcUSD, rounding.round(tgt3));
+		assertEquals(srcCHF, tgt3);
+		assertEquals(srcCHF, rounding.adjust(tgt3));
 	}
 
 	@Test

@@ -48,22 +48,12 @@ public class MoneyCurrencyTest {
 	@Test
 	public void testGetInstanceCurrency() {
 		Currency jdkCurrency = Currency.getInstance("CHF");
-		CurrencyUnit cur = MoneyCurrency.of(jdkCurrency);
+		MoneyCurrency cur = MoneyCurrency.of(jdkCurrency);
 		assertNotNull(cur);
 		assertEquals(jdkCurrency.getCurrencyCode(), cur.getCurrencyCode());
 		assertEquals(jdkCurrency.getNumericCode(), cur.getNumericCode());
 		assertEquals(jdkCurrency.getDefaultFractionDigits(),
 				cur.getDefaultFractionDigits());
-		assertEquals(MoneyCurrency.class.getName() + "$JDKCurrencyAdapter", cur
-				.getClass().getName());
-		assertTrue(cur instanceof LocalizableCurrencyUnit);
-		LocalizableCurrencyUnit lCur = (LocalizableCurrencyUnit) cur;
-		assertEquals(jdkCurrency.getDisplayName(), lCur.getDisplayName());
-		assertEquals(jdkCurrency.getDisplayName(Locale.GERMAN),
-				lCur.getDisplayName(Locale.GERMAN));
-		assertEquals(jdkCurrency.getSymbol(), lCur.getSymbol());
-		assertEquals(jdkCurrency.getSymbol(Locale.GERMAN),
-				lCur.getSymbol(Locale.GERMAN));
 	}
 
 	/**
@@ -72,23 +62,13 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testGetInstanceString() {
-		CurrencyUnit cur = MoneyCurrency.of("CHF");
+		MoneyCurrency cur = MoneyCurrency.of("CHF");
 		assertNotNull(cur);
 		Currency jdkCurrency = Currency.getInstance("CHF");
 		assertEquals(jdkCurrency.getCurrencyCode(), cur.getCurrencyCode());
 		assertEquals(jdkCurrency.getNumericCode(), cur.getNumericCode());
 		assertEquals(jdkCurrency.getDefaultFractionDigits(),
 				cur.getDefaultFractionDigits());
-		assertEquals(MoneyCurrency.class.getName() + "$JDKCurrencyAdapter", cur
-				.getClass().getName());
-		assertTrue(cur instanceof LocalizableCurrencyUnit);
-		LocalizableCurrencyUnit lCur = (LocalizableCurrencyUnit) cur;
-		assertEquals(jdkCurrency.getDisplayName(), lCur.getDisplayName());
-		assertEquals(jdkCurrency.getDisplayName(Locale.GERMAN),
-				lCur.getDisplayName(Locale.GERMAN));
-		assertEquals(jdkCurrency.getSymbol(), lCur.getSymbol());
-		assertEquals(jdkCurrency.getSymbol(Locale.GERMAN),
-				lCur.getSymbol(Locale.GERMAN));
 	}
 
 	/**
@@ -98,8 +78,8 @@ public class MoneyCurrencyTest {
 	 */
 	@Test
 	public void testGetInstanceStringString() {
-		CurrencyUnit cur = MoneyCurrency.of("USD");
-		CurrencyUnit cur2 = MoneyCurrency
+		MoneyCurrency cur = MoneyCurrency.of("USD");
+		MoneyCurrency cur2 = MoneyCurrency
 				.of(MoneyCurrency.ISO_NAMESPACE, "USD");
 		assertNotNull(cur2);
 		assertTrue(cur == cur2);
@@ -108,16 +88,6 @@ public class MoneyCurrencyTest {
 		assertEquals(jdkCurrency.getNumericCode(), cur.getNumericCode());
 		assertEquals(jdkCurrency.getDefaultFractionDigits(),
 				cur.getDefaultFractionDigits());
-		assertEquals(MoneyCurrency.class.getName() + "$JDKCurrencyAdapter", cur
-				.getClass().getName());
-		assertTrue(cur instanceof LocalizableCurrencyUnit);
-		LocalizableCurrencyUnit lCur = (LocalizableCurrencyUnit) cur;
-		assertEquals(jdkCurrency.getDisplayName(), lCur.getDisplayName());
-		assertEquals(jdkCurrency.getDisplayName(Locale.GERMAN),
-				lCur.getDisplayName(Locale.GERMAN));
-		assertEquals(jdkCurrency.getSymbol(), lCur.getSymbol());
-		assertEquals(jdkCurrency.getSymbol(Locale.GERMAN),
-				lCur.getSymbol(Locale.GERMAN));
 	}
 
 	/**

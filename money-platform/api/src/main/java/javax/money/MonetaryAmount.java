@@ -315,99 +315,7 @@ public interface MonetaryAmount {
 	 */
 	public MonetaryAmount scaleByPowerOfTen(int n);
 
-	/**
-	 * Gets the amount in major units as a {@code MonetaryAmount} with scale 0.
-	 * <p>
-	 * This returns the monetary amount in terms of the major units of the
-	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
-	 * will return 'EUR 2', and 'BHD -1.345' will return 'BHD -1'.
-	 * <p>
-	 * This is returned as a {@code MonetaryAmount} rather than a
-	 * {@code BigInteger} . This is to allow further calculations to be
-	 * performed on the result. Should you need a {@code BigInteger}, simply
-	 * call {@code asType(BigInteger.class)}.
-	 * 
-	 * @return the major units part of the amount, never {@code null}
-	 */
-	public MonetaryAmount getMajorPart();
-
-	/**
-	 * Gets the amount in major units as a {@code long}.
-	 * <p>
-	 * This returns the monetary amount in terms of the major units of the
-	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
-	 * will return 2, and 'BHD -1.345' will return -1.
-	 * <p>
-	 * This method matches the API of {@link java.math.BigDecimal}.
-	 * 
-	 * @return the major units part of the amount
-	 * @throws ArithmeticException
-	 *             if the amount is too large for a {@code long}
-	 */
-	public long getMajorLong();
-
-	/**
-	 * Gets the amount in major units as an {@code int}.
-	 * <p>
-	 * This returns the monetary amount in terms of the major units of the
-	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
-	 * will return 2, and 'BHD -1.345' will return -1.
-	 * <p>
-	 * This method matches the API of {@link java.math.BigDecimal}.
-	 * 
-	 * @return the major units part of the amount
-	 * @throws ArithmeticException
-	 *             if the amount is too large for an {@code int}
-	 */
-	public int getMajorInt();
-
-	/**
-	 * Gets the amount in minor units as a {@code MonetaryAmount} with scale 0.
-	 * <p>
-	 * This returns the monetary amount in terms of the minor units of the
-	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
-	 * will return 'EUR 235', and 'BHD -1.345' will return 'BHD -1345'.
-	 * <p>
-	 * This is returned as a {@code MonetaryAmount} rather than a
-	 * {@code BigInteger} . This is to allow further calculations to be
-	 * performed on the result. Should you need a {@code BigInteger}, simply
-	 * call {@link asType(BigInteger.class)}.
-	 * <p>
-	 * This method matches the API of {@link java.math.BigDecimal}.
-	 * 
-	 * @return the minor units part of the amount, never null
-	 */
-	public MonetaryAmount getMinorPart();
-
-	/**
-	 * Gets the amount in minor units as a {@code long}.
-	 * <p>
-	 * This returns the monetary amount in terms of the minor units of the
-	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
-	 * will return 235, and 'BHD -1.345' will return -1345.
-	 * <p>
-	 * This method matches the API of {@link java.math.BigDecimal}.
-	 * 
-	 * @return the minor units part of the amount
-	 * @throws ArithmeticException
-	 *             if the amount is too large for a {@code long}
-	 */
-	public long getMinorLong();
-
-	/**
-	 * Gets the amount in minor units as an {@code int}.
-	 * <p>
-	 * This returns the monetary amount in terms of the minor units of the
-	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
-	 * will return 235, and 'BHD -1.345' will return -1345.
-	 * <p>
-	 * This method matches the API of {@link java.math.BigDecimal}.
-	 * 
-	 * @return the minor units part of the amount
-	 * @throws ArithmeticException
-	 *             if the amount is too large for an {@code int}
-	 */
-	public int getMinorInt();
+	
 
 	/**
 	 * Checks if the amount is zero.
@@ -654,18 +562,6 @@ public interface MonetaryAmount {
 	 */
 	public boolean isEqualTo(MonetaryAmount amount);
 
-	/**
-	 * Allows to check, if the currency of the two amounts are the same, meaning
-	 * that corresponding currency name spaces and currency codes must be equal.
-	 * 
-	 * @see CurrencyUnit#getNamespace()
-	 * @see CurrencyUnit#getCurrencyCode()
-	 * @param amount
-	 *            The amount to compare to, not {@code null}.
-	 * @return {@code true}, if the {@link CurrencyUnit} of this instance has
-	 *         the same name space and code.
-	 */
-	public boolean hasSameCurrencyAs(MonetaryAmount amount);
 
 	/**
 	 * Checks if this amount is not the same compared to the amount passed.
@@ -680,58 +576,6 @@ public interface MonetaryAmount {
 	public boolean isNotEqualTo(MonetaryAmount amount);
 
 	// -------------------------------------------- Misc
-
-	/**
-	 * Returns a string representation of this {@code MonetaryAmount}, using
-	 * engineering notation if an exponent is needed.
-	 * 
-	 * <p>
-	 * Returns a string that represents the {@code MonetaryAmount} as described
-	 * in the {@link #toString()} method, except that if exponential notation is
-	 * used, the power of ten is adjusted to be a multiple of three (engineering
-	 * notation) such that the integer part of nonzero values will be in the
-	 * range 1 through 999. If exponential notation is used for zero values, a
-	 * decimal point and one or two fractional zero digits are used so that the
-	 * scale of the zero value is preserved. Note that unlike the output of
-	 * {@link #toString()}, the output of this method is <em>not</em> guaranteed
-	 * to recover the same [integer, scale] pair of this {@code MonetaryAmount}
-	 * if the output string is converting back to a {@code MonetaryAmount} using
-	 * the {@linkplain #Amount(String) string constructor}. The result of this
-	 * method meets the weaker constraint of always producing a numerically
-	 * equal result from applying the string constructor to the method's output.
-	 * 
-	 * @return string representation of this {@code MonetaryAmount}, using
-	 *         engineering notation if an exponent is needed.
-	 */
-	public String toEngineeringString();
-
-	/**
-	 * Returns a string representation of this {@code MonetaryAmount} without an
-	 * exponent field. For values with a positive scale, the number of digits to
-	 * the right of the decimal point is used to indicate scale. For values with
-	 * a zero or negative scale, the resulting string is generated as if the
-	 * value were converted to a numerically equal value with zero scale and as
-	 * if all the trailing zeros of the zero scale value were present in the
-	 * result.
-	 * 
-	 * The entire string is prefixed by a minus sign character '-' (
-	 * <tt>'&#92;u002D'</tt>) if the unscaled value is less than zero. No sign
-	 * character is prefixed if the unscaled value is zero or positive.
-	 * 
-	 * Note that if the result of this method is passed to the
-	 * {@linkplain #Amount(String) string constructor}, only the numerical value
-	 * of this {@code MonetaryAmount} will necessarily be recovered; the
-	 * representation of the new {@code MonetaryAmount} may have a different
-	 * scale. In particular, if this {@code MonetaryAmount} has a negative
-	 * scale, the string resulting from this method will have a scale of zero
-	 * when processed by the string constructor.
-	 * 
-	 * @return a string representation of this {@code MonetaryAmount} without an
-	 *         exponent field.
-	 * @see #toString()
-	 * @see #toEngineeringString()
-	 */
-	public String toPlainString();
 
 	/**
 	 * * Gets the monetary amount using the passed target type. This method

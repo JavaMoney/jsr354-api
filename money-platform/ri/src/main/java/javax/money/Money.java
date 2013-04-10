@@ -534,43 +534,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 				this.mathContext);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#getMajorLong()
-	 */
-	public long getMajorLong() {
-		return this.number.setScale(0, RoundingMode.DOWN).longValueExact();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#getMajorInt()
-	 */
-	public int getMajorInt() {
-		return this.number.setScale(0, RoundingMode.DOWN).intValueExact();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#getMinorLong()
-	 */
-	public long getMinorLong() {
-		return this.number.movePointRight(this.number.precision())
-				.longValueExact();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#getMinorInt()
-	 */
-	public int getMinorInt() {
-		return this.number.movePointRight(this.number.precision())
-				.intValueExact();
-	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -821,24 +785,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#getMajorPart()
-	 */
-	public Money getMajorPart() {
-		return new Money(this.currency, getMajorLong(), this.mathContext);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#getMinorPart()
-	 */
-	public Money getMinorPart() {
-		return new Money(this.currency, getMinorLong(), this.mathContext);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see javax.money.MonetaryAmount#getNumberType()
 	 */
 	public Class<?> getNumberType() {
@@ -948,24 +894,5 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		}
 	}
 
-	/**
-	 * Allows to check, if the currency of the two amounts are the same. This
-	 * means that corresponding currency's namespace and code must match.
-	 * 
-	 * @param amount
-	 *            The amount to comapre to, not {@code null}.
-	 * @return true, if the {@link CurrencyUnit} of this instance has the same
-	 *         namespace and code.
-	 */
-	@Override
-	public boolean hasSameCurrencyAs(MonetaryAmount amount) {
-		if (amount == null) {
-			throw new IllegalArgumentException("Amount must not be null.");
-		}
-		return this.currency.getNamespace().equals(
-				amount.getCurrency().getNamespace())
-				&& this.currency.getCurrencyCode().equals(
-						amount.getCurrency().getCurrencyCode());
-	}
-
+	
 }

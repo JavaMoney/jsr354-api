@@ -401,42 +401,6 @@ public final class IntegralMoney implements MonetaryAmount,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#getMajorLong()
-	 */
-	public long getMajorLong() {
-		return this.number;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#getMajorInt()
-	 */
-	public int getMajorInt() {
-		return (int) this.number;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#getMinorLong()
-	 */
-	public long getMinorLong() {
-		return 0L;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#getMinorInt()
-	 */
-	public int getMinorInt() {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see javax.money.MonetaryAmount#isZero()
 	 */
 	public boolean isZero() {
@@ -767,24 +731,6 @@ public final class IntegralMoney implements MonetaryAmount,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#getMajorPart()
-	 */
-	public IntegralMoney getMajorPart() {
-		return new IntegralMoney(this.currency, getMajorLong());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#getMinorPart()
-	 */
-	public IntegralMoney getMinorPart() {
-		return new IntegralMoney(this.currency, 0L);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see javax.money.MonetaryAmount#getNumberType()
 	 */
 	public Class<?> getNumberType() {
@@ -890,26 +836,6 @@ public final class IntegralMoney implements MonetaryAmount,
 		}
 	}
 
-	/**
-	 * Allows to check, if the currency of the two amounts are the same. This
-	 * means that corresponding currency's namespace and code must match.
-	 * 
-	 * @param amount
-	 *            The amount to comapre to, not {@code null}.
-	 * @return true, if the {@link CurrencyUnit} of this instance has the same
-	 *         namespace and code.
-	 */
-	@Override
-	public boolean hasSameCurrencyAs(MonetaryAmount amount) {
-		if (amount == null) {
-			throw new IllegalArgumentException("Amount must not be null.");
-		}
-		return this.currency.getNamespace().equals(
-				amount.getCurrency().getNamespace())
-				&& this.currency.getCurrencyCode().equals(
-						amount.getCurrency().getCurrencyCode());
-	}
-	
 	/*
 	 * }(non-Javadoc)
 	 * @see javax.money.MonetaryAmount#adjust(javax.money.AmountAdjuster)

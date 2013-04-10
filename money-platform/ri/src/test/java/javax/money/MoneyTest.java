@@ -473,51 +473,6 @@ public class MoneyTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.Money#getMajorLong()}.
-	 */
-	@Test
-	public void testGetMajorLong() {
-		BigDecimal dec = new BigDecimal("135135.151757");
-		Money m = Money.of("CHF", dec);
-		assertEquals(dec.setScale(0, RoundingMode.DOWN).longValueExact(),
-				m.getMajorLong());
-	}
-
-	/**
-	 * Test method for {@link javax.money.Money#getMajorInt()}.
-	 */
-	@Test
-	public void testGetMajorInt() {
-		BigDecimal dec = new BigDecimal("135135.151757");
-		Money m = Money.of("CHF", dec);
-		assertEquals(dec.setScale(0, RoundingMode.DOWN).intValueExact(),
-				m.getMajorInt());
-	}
-
-	/**
-	 * Test method for {@link javax.money.Money#getMinorLong()}.
-	 */
-	@Test
-	public void testGetMinorLong() {
-		BigDecimal dec = new BigDecimal("135135.151757");
-		Money m = Money.of("CHF", dec);
-		assertEquals(dec.movePointRight(dec.precision()).longValueExact(),
-				m.getMinorLong());
-	}
-
-	/**
-	 * Test method for {@link javax.money.Money#getMinorInt()}.
-	 */
-	@Test
-	public void testGetMinorInt() {
-		BigDecimal dec = new BigDecimal("1234.12");
-		Money m = Money.of("CHF", dec);
-		assertEquals(dec.movePointRight(dec.precision())
-				.intValueExact(),
-				m.getMinorInt());
-	}
-
-	/**
 	 * Test method for {@link javax.money.Money#isZero()}.
 	 */
 	@Test
@@ -898,26 +853,6 @@ public class MoneyTest {
 
 
 	/**
-	 * Test method for {@link javax.money.Money#getMajorPart()}.
-	 */
-	@Test
-	public void testGetMajorPart() {
-		BigDecimal dec = new BigDecimal("135135.151757");
-		Money m = Money.of("CHF", dec);
-		assertEquals(Money.of("CHF", m.getMajorLong()), m.getMajorPart());
-	}
-
-	/**
-	 * Test method for {@link javax.money.Money#getMinorPart()}.
-	 */
-	@Test
-	public void testGetMinorPart() {
-		BigDecimal dec = new BigDecimal("135135.151757");
-		Money m = Money.of("CHF", dec);
-		assertEquals(Money.of("CHF", m.getMinorLong()), m.getMinorPart());
-	}
-
-	/**
 	 * Test method for {@link javax.money.Money#getNumberType()}.
 	 */
 	@Test
@@ -980,16 +915,6 @@ public class MoneyTest {
 				.toString());
 		assertEquals("CHF 0", Money.of("CHF", -0.0).toString());
 		assertEquals("CHF 0", Money.of("CHF", -0.0).toString());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.Money#hasSameCurrencyAs(javax.money.MonetaryAmount)}.
-	 */
-	@Test
-	public void testHasSameCurrencyAs() {
-		assertTrue(Money.of("CHF", 0).hasSameCurrencyAs(Money.of("CHF", 45)));
-		assertFalse(Money.of("CHF", 0).hasSameCurrencyAs(Money.of("EUR", 45)));
 	}
 
 	/**

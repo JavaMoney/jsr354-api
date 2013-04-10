@@ -341,5 +341,6 @@ public interface AmountUtils extends MonetaryExtension {
 	public MonetaryAmount[] divideAndSeparate(MonetaryAmount total,
 			Number divisor, Rounding rounding, boolean addDifferenceToLastValue);
 
+	
 
 }

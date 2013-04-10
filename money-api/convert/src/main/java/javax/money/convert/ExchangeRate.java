@@ -705,10 +705,25 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 
 	}
 
+	/**
+	 * Adjuster implementation that models currency conversion, eigther from
+	 * source to term or vice versa, based on the given {@link ExchangeRate}.
+	 * 
+	 * @author Anatole Tresch
+	 */
 	public static final class ConvertingAdjuster implements MonetaryAdjuster {
+		/** THe underlying exchange rate. */
 		private ExchangeRate rate;
+		/** The MathContext used. */
 		private MathContext mathContext = MathContext.DECIMAL64;
 
+		/**
+		 * Creates a new converting adjuster based on the given
+		 * {@link ExchangeRate}.
+		 * 
+		 * @param rate
+		 *            the base rate, not null.
+		 */
 		public ConvertingAdjuster(ExchangeRate rate) {
 			if (rate == null) {
 				throw new IllegalArgumentException("Rate is required.");
@@ -716,14 +731,31 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 			this.rate = rate;
 		}
 
+		/**
+		 * Access the {@link ExchangeRate} this adjuster is based on.
+		 * 
+		 * @return the according rate, never null.
+		 */
 		public ExchangeRate getExchangeRate() {
 			return rate;
 		}
 
+		/**
+		 * Access the {@link MathContext} used by this adjuster.
+		 * 
+		 * @return {@link MathContext} used.
+		 */
 		public MathContext getMathContext() {
 			return mathContext;
 		}
 
+		/**
+		 * Builder styled setter for the {@link MathContext} to be used.
+		 * 
+		 * @param mathContext
+		 *            the {@link MathContext}, not null.
+		 * @return this adjuster instance.
+		 */
 		public ConvertingAdjuster withMathContext(MathContext mathContext) {
 			if (mathContext == null) {
 				throw new IllegalArgumentException("MathContext is required.");
@@ -732,6 +764,16 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 			return this;
 		}
 
+		/**
+		 * Adjuster method that converts eighter from source to term or vice
+		 * versa, using the underlying {@link ExchangeRate}.
+		 * 
+		 * @param amount
+		 *            the amount in base or term currency units.
+		 * @return the converted amount in term or base currency.
+		 * @throws CurrencyConversionException
+		 *             if the amount is not convertable.
+		 */
 		@SuppressWarnings("unchecked")
 		public <T extends MonetaryAmount> T adjust(T amount) {
 			CurrencyUnit curr = amount.getCurrency();
@@ -749,6 +791,16 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 					rate.getTerm(), System.currentTimeMillis(),
 					"Incompatible currency in amount: " + amount.getCurrency());
 		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return "ConvertingAdjuster [rate=" + rate + ", mathContext="
+					+ mathContext + "]";
+		}
+		
 
 	}
 

@@ -15,8 +15,8 @@ import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.TokenizedItemFormatterBuilder;
 
-import net.java.javamoney.ri.format.tokenformatter.FormattedNumber;
-import net.java.javamoney.ri.format.tokenformatter.Literal;
+import net.java.javamoney.ri.format.tokenformatter.NumberToken;
+import net.java.javamoney.ri.format.tokenformatter.LiteralToken;
 import net.java.javamoney.ri.format.tokenformatter.DefaultTokenizedItemFormatter;
 
 import org.junit.Test;
@@ -32,12 +32,12 @@ public class TokenizedItemFormatterTest {
 	public void testAddTokenFormatTokenOfT() throws IOException {
 		DefaultTokenizedItemFormatter.Builder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
-		b.addToken(new Literal<Double>("test- "));
+		b.addToken(new LiteralToken<Double>("test- "));
 		DecimalFormat df = new DecimalFormat("#0.0#");
 		DecimalFormatSymbols syms = df.getDecimalFormatSymbols();
 		syms.setDecimalSeparator(':');
 		df.setDecimalFormatSymbols(syms);
-		b.addToken(new FormattedNumber<Double>(df).setNumberGroupChars(',',
+		b.addToken(new NumberToken<Double>(df).setNumberGroupChars(',',
 				'\'').setNumberGroupSizes(2, 2, 3));
 		b.setLocalizationStyle(LocalizationStyle.valueOf(Locale.FRENCH));
 		ItemFormatter<Double> f = b.build();
@@ -55,7 +55,7 @@ public class TokenizedItemFormatterTest {
 		DecimalFormatSymbols symbols = f.getDecimalFormatSymbols();
 		symbols.setDecimalSeparator(':');
 		f.setDecimalFormatSymbols(symbols);
-		b.addToken(new FormattedNumber<Double>(f)
+		b.addToken(new NumberToken<Double>(f)
 				.setNumberGroupChars(',', '\'').setNumberGroupSizes(2, 2, 3));
 		b.setLocalizationStyle(LocalizationStyle.valueOf(Locale.FRENCH));
 		ItemFormatter<Double> sf = b.build();
@@ -76,7 +76,7 @@ public class TokenizedItemFormatterTest {
 		while (tokens.hasMoreElements()) {
 			FormatToken<?> token = (FormatToken<?>) tokens.nextElement();
 			assertNotNull(token);
-			assertTrue(token instanceof Literal<?>);
+			assertTrue(token instanceof LiteralToken<?>);
 			size++;
 		}
 		assertEquals(3, size);
@@ -106,8 +106,8 @@ public class TokenizedItemFormatterTest {
 	public void testToFormatterLocalizationStyle() {
 		DefaultTokenizedItemFormatter.Builder<Double> b = new DefaultTokenizedItemFormatter.Builder<Double>(
 				Double.class);
-		b.addToken(new Literal<Double>("test "));
-		b.addToken(new FormattedNumber<Double>());
+		b.addToken(new LiteralToken<Double>("test "));
+		b.addToken(new NumberToken<Double>());
 		b.setLocalizationStyle(LocalizationStyle.valueOf(Locale.CHINESE));
 		ItemFormatter<Double> f = b.build();
 		assertNotNull(f);

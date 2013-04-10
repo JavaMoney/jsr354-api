@@ -30,11 +30,11 @@ import javax.money.format.LocalizationStyle;
  * @param <T>
  *            The item type.
  */
-public class Literal<T> extends AbstractFormatterToken<T>{
+public class LiteralToken<T> extends AbstractFormatToken<T>{
 
 	private String token;
 
-	public Literal(String token) {
+	public LiteralToken(String token) {
 		if (token == null) {
 			throw new IllegalArgumentException("Token is required.");
 		}

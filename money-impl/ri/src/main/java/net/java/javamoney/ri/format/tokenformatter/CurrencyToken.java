@@ -37,35 +37,17 @@ import javax.money.provider.Monetary;
  * @param <T>
  *            The concrete type.
  */
-public class CurrencyToken<T extends MonetaryAmount> extends AbstractFormatterToken<T> {
+public class CurrencyToken<T extends CurrencyUnit> extends AbstractFormatToken<T> {
 
 	public static enum DisplayType {
 		NAMESPACE, FULLCODE, CODE, NAME, NUMERIC_CODE, SYMBOL
 	}
 
 	private DisplayType displayType = DisplayType.CODE;
-	private LocalizationStyle style;
 
 	public CurrencyToken() {
 	}
-
-	public CurrencyToken(LocalizationStyle style) {
-		setLocalizationStyle(style);
-	}
-
-	public CurrencyToken(Locale locale) {
-		setLocalizationStyle(LocalizationStyle.valueOf(locale));
-	}
-
-	public CurrencyToken<?> setLocalizationStyle(LocalizationStyle style) {
-		this.style = style;
-		return this;
-	}
-
-	public LocalizationStyle getLocalizationStyle() {
-		return this.style;
-	}
-
+	
 	public CurrencyToken<T> setDisplayType(DisplayType displayType) {
 		if (displayType == null) {
 			throw new IllegalArgumentException("Display type null.");
@@ -73,14 +55,13 @@ public class CurrencyToken<T extends MonetaryAmount> extends AbstractFormatterTo
 		this.displayType = displayType;
 		return this;
 	}
+	
+	public DisplayType getDisplayType(){
+		return this.displayType;
+	}
 
-	protected String getToken(T item,
-			javax.money.format.LocalizationStyle targetStyle) {
-		CurrencyUnit unit = item.getCurrency();
-		LocalizationStyle styleUsed = this.style;
-		if (styleUsed == null) {
-			styleUsed = targetStyle;
-		}
+	protected String getToken(T unit,
+			javax.money.format.LocalizationStyle style) {
 		switch (displayType) {
 		case CODE:
 			return unit.getCurrencyCode();
@@ -90,11 +71,11 @@ public class CurrencyToken<T extends MonetaryAmount> extends AbstractFormatterTo
 			return String.valueOf(unit.getNumericCode());
 		case NAME:
 			ItemFormatter<CurrencyUnit> cf1 = Monetary.getItemFormatterFactory().getItemFormatter(
-					CurrencyUnit.class, new LocalizationStyle.Builder(styleUsed).setAttribute("renderField", "displayName").build());
+					CurrencyUnit.class, new LocalizationStyle.Builder(style).setAttribute("renderField", "displayName").build());
 			return cf1.format(unit);
 		case SYMBOL:
 			ItemFormatter<CurrencyUnit> cf2 = Monetary.getItemFormatterFactory().getItemFormatter(
-					CurrencyUnit.class, new LocalizationStyle.Builder(styleUsed).setAttribute("renderField", "symbol").build());
+					CurrencyUnit.class, new LocalizationStyle.Builder(style).setAttribute("renderField", "symbol").build());
 			return cf2.format(unit);
 		case FULLCODE:
 		default:

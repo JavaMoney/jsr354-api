@@ -31,7 +31,7 @@ import javax.money.format.LocalizationStyle;
  * @param <T>
  *            The target type.
  */
-public abstract class AbstractFormatterToken<T> implements FormatToken<T> {
+public abstract class AbstractFormatToken<T> implements FormatToken<T> {
 
 	protected abstract String getToken(T item, LocalizationStyle style);
 

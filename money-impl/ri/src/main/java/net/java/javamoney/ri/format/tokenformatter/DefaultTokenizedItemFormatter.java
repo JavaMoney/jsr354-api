@@ -46,7 +46,7 @@ import net.java.javamoney.ri.format.common.AbstractTargeted;
 public class DefaultTokenizedItemFormatter<T> extends AbstractTargeted<T>
 		implements TokenizedItemFormatter<T> {
 
-	private FormatToken<T>[] tokens;
+	private List<FormatToken<T>> tokens = new ArrayList<FormatToken<T>>();
 	private LocalizationStyle style;
 
 	public DefaultTokenizedItemFormatter(Class<T> type,
@@ -57,7 +57,9 @@ public class DefaultTokenizedItemFormatter<T> extends AbstractTargeted<T>
 		}
 		this.style = style;
 		// TODO check compatibility of tokens...
-		this.tokens = tokens.clone();
+		if (tokens != null && !(tokens.length == 0)) {
+			this.tokens.addAll(Arrays.asList(tokens));
+		}
 	}
 
 	/*
@@ -69,8 +71,8 @@ public class DefaultTokenizedItemFormatter<T> extends AbstractTargeted<T>
 	 */
 	@Override
 	public void print(Appendable appendable, T item) throws IOException {
-		for (int i = 0; i < tokens.length; i++) {
-			tokens[i].print(appendable, item, style);
+		for (FormatToken<T> token: tokens) {
+			token.print(appendable, item, style);
 		}
 	}
 
@@ -98,7 +100,7 @@ public class DefaultTokenizedItemFormatter<T> extends AbstractTargeted<T>
 	 * @return the token used by this formatter, never {@code null}.
 	 */
 	public List<FormatToken<T>> getTokens() {
-		return Arrays.asList(this.tokens);
+		return Collections.unmodifiableList(this.tokens);
 	}
 
 	/*
@@ -192,7 +194,7 @@ public class DefaultTokenizedItemFormatter<T> extends AbstractTargeted<T>
 		 */
 		@Override
 		public TokenizedItemFormatterBuilder<T> addLiteral(String token) {
-			this.tokens.add(new Literal<T>(token));
+			this.tokens.add(new LiteralToken<T>(token));
 			return this;
 		}
 

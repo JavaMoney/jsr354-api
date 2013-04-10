@@ -32,24 +32,24 @@ import javax.money.format.LocalizationStyle;
  * @param <T>
  *            The concrete type.
  */
-public class TranslatedLiteral<T> extends AbstractFormatterToken<T> {
+public class TranslatedLiteralToken<T> extends AbstractFormatToken<T> {
 
 	private String bundle;
 	private String key;
 
-	public TranslatedLiteral(String key) {
+	public TranslatedLiteralToken(String key) {
 		if (key == null) {
 			throw new IllegalArgumentException("Token is required.");
 		}
 		this.key = key;
 	}
 
-	public TranslatedLiteral(String key, String bundle) {
+	public TranslatedLiteralToken(String key, String bundle) {
 		setKey(key);
 		setBundle(bundle);
 	}
 
-	public TranslatedLiteral<T> setKey(String key) {
+	public TranslatedLiteralToken<T> setKey(String key) {
 		if (key == null) {
 			throw new IllegalArgumentException("Token is required.");
 		}
@@ -57,7 +57,7 @@ public class TranslatedLiteral<T> extends AbstractFormatterToken<T> {
 		return this;
 	}
 
-	public TranslatedLiteral<T> setBundle(String bundle) {
+	public TranslatedLiteralToken<T> setBundle(String bundle) {
 		if (bundle == null) {
 			throw new IllegalArgumentException("Bundle is required.");
 		}

@@ -32,7 +32,7 @@ import javax.money.format.LocalizationStyle;
  * @param <T>
  *            The concrete {@link Number} type.
  */
-public class ZeroValueToken<T extends Number> extends AbstractFormatterToken<T> {
+public class ZeroValueToken<T extends Number> extends AbstractFormatToken<T> {
 
 	private String zeroValue;
 	private FormatToken<T> decorated;

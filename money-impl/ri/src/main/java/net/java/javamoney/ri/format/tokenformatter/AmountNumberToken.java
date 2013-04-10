@@ -21,6 +21,7 @@ package net.java.javamoney.ri.format.tokenformatter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
+import javax.money.MonetaryAmount;
 import javax.money.format.FormatToken;
 import javax.money.format.LocalizationStyle;
 
@@ -34,7 +35,7 @@ import net.java.javamoney.ri.format.util.StringGrouper;
  * @param <T>
  *            The item type.
  */
-public class FormattedNumber<T extends Number> extends AbstractFormatterToken<T> {
+public class AmountNumberToken<T extends MonetaryAmount> extends AbstractFormatToken<T> {
 
 	private static final char[] EMPTY_CHAR_ARRAY = new char[0];
 	private static final int[] EMPTY_INT_ARRAY = new int[0];
@@ -43,17 +44,17 @@ public class FormattedNumber<T extends Number> extends AbstractFormatterToken<T>
 
 	// private StringGrouper fractionGroup;
 
-	public FormattedNumber() {
+	public AmountNumberToken() {
 	}
 
-	public FormattedNumber(DecimalFormat format) {
+	public AmountNumberToken(DecimalFormat format) {
 		if (format == null) {
 			throw new IllegalArgumentException("Format is required.");
 		}
 		this.format = (DecimalFormat) format.clone();
 	}
 
-	public FormattedNumber<T> setNumberGroupSizes(int... groupSizes) {
+	public AmountNumberToken<T> setNumberGroupSizes(int... groupSizes) {
 		if (this.numberGroup == null) {
 			this.numberGroup = new StringGrouper();
 		}
@@ -61,7 +62,7 @@ public class FormattedNumber<T extends Number> extends AbstractFormatterToken<T>
 		return this;
 	}
 
-	public FormattedNumber<T> setNumberGroupChars(char... groupChars) {
+	public AmountNumberToken<T> setNumberGroupChars(char... groupChars) {
 		if (this.numberGroup == null) {
 			this.numberGroup = new StringGrouper();
 		}
@@ -83,7 +84,7 @@ public class FormattedNumber<T extends Number> extends AbstractFormatterToken<T>
 		return this.numberGroup.getGroupSizes();
 	}
 
-	public FormattedNumber<T> setPattern(String pattern) {
+	public AmountNumberToken<T> setPattern(String pattern) {
 		if (this.format == null) {
 			this.format = new DecimalFormat(pattern);
 		} else {
@@ -92,7 +93,7 @@ public class FormattedNumber<T extends Number> extends AbstractFormatterToken<T>
 		return this;
 	}
 
-	public FormattedNumber<T> setDecimalFormat(DecimalFormat format) {
+	public AmountNumberToken<T> setDecimalFormat(DecimalFormat format) {
 		this.format = format;
 		return this;
 	}
@@ -108,7 +109,7 @@ public class FormattedNumber<T extends Number> extends AbstractFormatterToken<T>
 		return null;
 	}
 
-	public FormattedNumber<T> setSymbols(DecimalFormatSymbols symbols) {
+	public AmountNumberToken<T> setSymbols(DecimalFormatSymbols symbols) {
 		if (this.format == null) {
 			this.format = (DecimalFormat) DecimalFormat.getInstance();
 			this.format.setDecimalFormatSymbols(symbols);
@@ -153,23 +154,4 @@ public class FormattedNumber<T extends Number> extends AbstractFormatterToken<T>
 				.getDecimalFormatSymbols().getDecimalSeparator()));
 	}
 
-//	@Override
-//	public void parse(ParseContext context) throws ItemParseException {
-//		DecimalFormat df = getNumberFormat(context.getLocalizationStyle());
-//		if(context.getLocalizationStyle().getAttribute("enforceGrouping", Boolean.class)){
-//			df.setGroupingUsed(true);
-//		}
-//		else{
-//			df.setGroupingUsed(false);
-//		}
-//		String token = context.getNextToken();
-//		Number num;
-//		try {
-//			num = df.parse(token);
-//		} catch (java.text.ParseException e) {
-//			throw new ItemParseException("Failed to parse number.", token, e.getErrorOffset(), e);
-//		}
-//		context.setAttribute(Number.class, num);
-//		context.consume(token);
-//	}
 }

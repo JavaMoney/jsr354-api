@@ -85,6 +85,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @return the default {@link MathContext}, never null.
 	 */
 	public static final MathContext getDefaultMathContext() {
+		// TODO the accessor to a public static final constant member variable seems of little use. Why not use constant directly?
 		return DEFAULT_MATH_CONTEXT;
 	}
 

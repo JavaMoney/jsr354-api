@@ -11,6 +11,7 @@ package javax.money;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Currency;
 
 /**
  * Implementation class that models rounding based on standard JDK math, a scale
@@ -19,8 +20,9 @@ import java.math.RoundingMode;
  * @author Anatole Tresch
  * @see RoundingMode
  */
-public final class MoneyRounding implements Rounding {
+public final class MoneyRounding implements MonetaryAdjuster{
 
+	private static final MonetaryAdjuster DEFAULT_ROUNDING = new DefaultCurrencyRounding();
 	/** The {@link RoundingMode} used. */
 	private final RoundingMode roundingMode;
 	/** The scale to be applied. */
@@ -43,16 +45,8 @@ public final class MoneyRounding implements Rounding {
 		this.roundingMode = roundingMode;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.Rounding#round(javax.money.MonetaryAmount)
-	 */
-	@Override
-	public <T extends MonetaryAmount> T adjust(T amount) {
-		BigDecimal dec = amount.asType(BigDecimal.class);
-		dec = dec.setScale(this.scale, this.roundingMode);
-		return (T)amount.from(dec);
+	public static MonetaryAdjuster of() {
+		return DEFAULT_ROUNDING;
 	}
 
 	/**
@@ -63,7 +57,8 @@ public final class MoneyRounding implements Rounding {
 	 *            The currency, which determines the required precision. As
 	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link MonetaryAdjuster} implementing the rounding.
+	 * @return a new instance {@link MonetaryAdjuster} implementing the
+	 *         rounding.
 	 */
 	public static MoneyRounding of(CurrencyUnit currency,
 			RoundingMode roundingMode) {
@@ -79,7 +74,8 @@ public final class MoneyRounding implements Rounding {
 	 *            The currency, which determines the required precision. As
 	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link MonetaryAdjuster} implementing the rounding.
+	 * @return a new instance {@link MonetaryAdjuster} implementing the
+	 *         rounding.
 	 */
 	public static MoneyRounding of(CurrencyUnit currency) {
 		int scale = currency.getDefaultFractionDigits();
@@ -95,11 +91,33 @@ public final class MoneyRounding implements Rounding {
 	 *            the required scale
 	 * @param rounding
 	 *            the {@link RoundingMode}, not null.
-	 * @return a new instance {@link MonetaryAdjuster} implementing the rounding.
+	 * @return a new instance {@link MonetaryAdjuster} implementing the
+	 *         rounding.
 	 */
 	public static MoneyRounding of(int scale, RoundingMode rounding) {
 		return new MoneyRounding(scale, rounding);
 	}
 
+	@Override
+	public MonetaryAmount apply(MonetaryAmount value) {
+		return value.from(value.asType(BigDecimal.class).setScale(this.scale, this.roundingMode));
+	}
 	
+	/**
+	 * Default Rounding that rounds a {@link MonetaryAmount} based on tis
+	 * {@link Currency}.
+	 * 
+	 * @author Anatole Tresch
+	 */
+	private static final class DefaultCurrencyRounding implements
+			MonetaryAdjuster {
+
+		@Override
+		public MonetaryAmount apply(MonetaryAmount amount) {
+			MoneyRounding r = MoneyRounding.of(amount.getCurrency());
+			return r.apply(amount);
+		}
+
+	}
+
 }

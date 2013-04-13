@@ -22,8 +22,8 @@ package net.java.javamoney.ri.core;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import javax.money.MonetaryAdjuster;
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryAdjuster;
 import javax.money.MonetaryAmount;
 import javax.money.MoneyCurrency;
 
@@ -842,7 +842,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	@Override
 	public MonetaryAmount with(MonetaryAdjuster adjuster) {
-		return adjuster.adjust(this);
+		return adjuster.apply(this);
 	}
 
 }

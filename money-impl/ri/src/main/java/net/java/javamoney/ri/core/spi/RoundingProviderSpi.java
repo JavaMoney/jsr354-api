@@ -22,7 +22,7 @@ package net.java.javamoney.ri.core.spi;
 import java.util.Enumeration;
 
 import javax.money.CurrencyUnit;
-import javax.money.Rounding;
+import javax.money.MonetaryAdjuster;
 
 /**
  * This instance provides default {@link Rounding}, e.g. for ISO currencies.
@@ -39,7 +39,7 @@ public interface RoundingProviderSpi {
 	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
 	 *         {@code null} is returned.
 	 */
-	public Rounding getRounding(String name);
+	public MonetaryAdjuster getRounding(String name);
 
 	/**
 	 * Access the ids, defined by this provider SPI implementation.
@@ -62,6 +62,6 @@ public interface RoundingProviderSpi {
 	 *         it should be created/registered based on
 	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
 	 */
-	public Rounding getRounding(CurrencyUnit currency, Long timestamp);
+	public MonetaryAdjuster getRounding(CurrencyUnit currency, Long timestamp);
 
 }

@@ -8,11 +8,11 @@ import java.util.Collection;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryAdjuster;
 import javax.money.MonetaryAmount;
 import javax.money.Money;
 import javax.money.MoneyCurrency;
 import javax.money.MoneyRounding;
-import javax.money.Rounding;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
@@ -103,7 +103,7 @@ public class SmokeTests {
 
 	@Test
 	public void testCurrencyConverter() {
-		Rounding rounding = MoneyRounding.of(2, RoundingMode.HALF_UP);
+		MonetaryAdjuster rounding = MoneyRounding.of(2, RoundingMode.HALF_UP);
 
 		ConversionProvider conv = Monetary.getConversionProvider();
 		assertNotNull(conv);
@@ -126,7 +126,7 @@ public class SmokeTests {
 		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt,
 				MoneyCurrency.of("EUR"));
 		assertEquals(tgt, tgt2);
-		assertEquals(srcEUR.with(rounding), rounding.adjust(tgt3));
+		assertEquals(srcEUR.with(rounding), rounding.apply(tgt3));
 		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcCHF,
 				MoneyCurrency.of("USD"));
 		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
@@ -134,7 +134,7 @@ public class SmokeTests {
 		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt2,
 				MoneyCurrency.of("CHF"));
 		assertEquals(tgt, tgt2);
-		assertEquals(srcCHF.with(rounding), rounding.adjust(tgt3));
+		assertEquals(srcCHF.with(rounding), rounding.apply(tgt3));
 		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcUSD,
 				MoneyCurrency.of("CHF"));
 		tgt2 = conv.getCurrencyConverter(RATE_TYPE).convert(100.15d,
@@ -142,7 +142,7 @@ public class SmokeTests {
 		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt2,
 				MoneyCurrency.of("USD"));
 		assertEquals(tgt, tgt2);
-		assertEquals(srcUSD.with(rounding), rounding.adjust(tgt3));
+		assertEquals(srcUSD.with(rounding), rounding.apply(tgt3));
 	}
 
 	@Test

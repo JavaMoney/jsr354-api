@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public abstract class AbstractRiComponent {
+public abstract class AbstractRiComponent { 
 	
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	

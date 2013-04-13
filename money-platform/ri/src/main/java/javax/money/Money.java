@@ -11,7 +11,6 @@ package javax.money;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
-import java.math.RoundingMode;
 
 /**
  * Default immutable implementation of {@link MonetaryAmount}.
@@ -85,7 +84,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @return the default {@link MathContext}, never null.
 	 */
 	public static final MathContext getDefaultMathContext() {
-		// TODO the accessor to a public static final constant member variable seems of little use. Why not use constant directly?
+		// TODO the accessor to a public static final constant member variable
+		// seems of little use. Why not use constant directly?
 		return DEFAULT_MATH_CONTEXT;
 	}
 
@@ -316,7 +316,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 				amount.asType(BigDecimal.class), this.mathContext),
 				this.mathContext);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -324,9 +324,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 */
 	public Money add(Number amount) {
 		checkNumber(amount);
-		return new Money(this.currency, this.number.add(
-				getBigDecimal(amount), this.mathContext),
-				this.mathContext);
+		return new Money(this.currency, this.number.add(getBigDecimal(amount),
+				this.mathContext), this.mathContext);
 	}
 
 	private BigDecimal getBigDecimal(Number num) {
@@ -470,7 +469,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 				subtrahend.asType(BigDecimal.class), this.mathContext),
 				this.mathContext);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -479,8 +478,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	public Money subtract(Number subtrahend) {
 		checkNumber(subtrahend);
 		return new Money(this.currency, this.number.subtract(
-				getBigDecimal(subtrahend), this.mathContext),
-				this.mathContext);
+				getBigDecimal(subtrahend), this.mathContext), this.mathContext);
 	}
 
 	/*
@@ -533,8 +531,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		return new Money(this.currency, this.number.scaleByPowerOfTen(n),
 				this.mathContext);
 	}
-
-	
 
 	/*
 	 * (non-Javadoc)
@@ -793,13 +789,14 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 
 	/*
 	 * }(non-Javadoc)
+	 * 
 	 * @see javax.money.MonetaryAmount#adjust(javax.money.AmountAdjuster)
 	 */
 	@Override
 	public MonetaryAmount with(MonetaryAdjuster adjuster) {
-		return new Money(this.currency, adjuster.adjust(this).asType(BigDecimal.class));
+		return adjuster.apply(this);
 	}
-	
+
 	/*
 	 * @see javax.money.MonetaryAmount#asType(java.lang.Class)
 	 */
@@ -844,7 +841,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * javax.money.Rounding)
 	 */
 	public <T> T asType(Class<T> type, MonetaryAdjuster adjuster) {
-		MonetaryAmount amount = adjuster.adjust(this);
+		MonetaryAmount amount = adjuster.apply(this);
 		return amount.asType(type);
 	}
 
@@ -894,5 +891,4 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		}
 	}
 
-	
 }

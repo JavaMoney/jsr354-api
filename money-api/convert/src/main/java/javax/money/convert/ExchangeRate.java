@@ -772,19 +772,18 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 		 *            the amount in base or term currency units.
 		 * @return the converted amount in term or base currency.
 		 * @throws CurrencyConversionException
-		 *             if the amount is not convertable.
+		 *             if the amount is not convertible.
 		 */
-		@SuppressWarnings("unchecked")
-		public <T extends MonetaryAmount> T adjust(T amount) {
+		public MonetaryAmount apply(MonetaryAmount amount) {
 			CurrencyUnit curr = amount.getCurrency();
 			if (curr.equals(rate.getBase())) {
-				return (T) amount.from(amount.asType(BigDecimal.class)
+				return amount.from(amount.asType(BigDecimal.class)
 						.multiply(rate.getFactor(), this.mathContext));
 			}
 			if (curr.equals(rate.getTerm())) {
 				BigDecimal reverseFactor = BigDecimal.ONE.divide(
 						rate.getFactor(), amount.getScale());
-				return (T) amount.from(amount.asType(BigDecimal.class)
+				return amount.from(amount.asType(BigDecimal.class)
 						.multiply(reverseFactor, MathContext.DECIMAL64));
 			}
 			throw new CurrencyConversionException(rate.getBase(),

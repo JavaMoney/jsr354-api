@@ -315,8 +315,6 @@ public interface MonetaryAmount {
 	 */
 	public MonetaryAmount scaleByPowerOfTen(int n);
 
-	
-
 	/**
 	 * Checks if the amount is zero.
 	 * 
@@ -369,7 +367,7 @@ public interface MonetaryAmount {
 	 *             if the scale of the amount is too large
 	 */
 	public MonetaryAmount from(Number amount);
-	
+
 	/**
 	 * Adjust a {@link MonetaryAmount} using the given {@link MonetaryAdjuster}.
 	 * 
@@ -378,6 +376,7 @@ public interface MonetaryAmount {
 	 * @return the adjusted value, never null.
 	 */
 	public MonetaryAmount with(MonetaryAdjuster adjuster);
+
 
 	// -------------------- Introspection and value methods, similar to
 	// java.lang.Number; java.lang.BigDecimal
@@ -562,7 +561,6 @@ public interface MonetaryAmount {
 	 */
 	public boolean isEqualTo(MonetaryAmount amount);
 
-
 	/**
 	 * Checks if this amount is not the same compared to the amount passed.
 	 * 
@@ -603,7 +601,5 @@ public interface MonetaryAmount {
 	 * @see #asType(Class)
 	 */
 	public Class<?> getNumberType();
-
-	
 
 }

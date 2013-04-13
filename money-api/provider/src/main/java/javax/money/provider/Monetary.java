@@ -10,13 +10,9 @@ package javax.money.provider;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.ServiceLoader;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,8 +63,6 @@ public final class Monetary {
 
 	private static final Monetary INSTANCE = new Monetary();
 
-	private final Map<Class<?>, Object> monetaryExtensions = new ConcurrentHashMap<Class<?>, Object>();
-
 	private ItemFormatterFactory itemFormatterFactory;
 
 	private ItemParserFactory itemParserFactory;
@@ -80,10 +74,6 @@ public final class Monetary {
 	private CurrencyUnitProvider currencyUnitProvider;
 	
 	private HistoricCurrencyUnitProvider historicCurrencyUnitProvider;
-
-	static {
-		INSTANCE.loadExtensions();
-	}
 
 	/**
 	 * Singleton constructor.
@@ -109,55 +99,6 @@ public final class Monetary {
 		return new DefaultServiceLoader();
 	}
 
-	/**
-	 * Loads and registers the {@link ExposedExtensionType} instances. It also
-	 * checks for the types exposed.
-	 */
-	@SuppressWarnings("unchecked")
-	private void loadExtensions() {
-		for (MonetaryExtension t : LOADER.getComponents(MonetaryExtension.class,
-				ExposedExtensionType.class)) {
-			ExposedExtensionType annot = t.getClass().getAnnotation(
-					ExposedExtensionType.class);
-			if (annot != null) {
-				try {
-					if (annot.value() == null) {
-						LOGGER.log(
-								Level.SEVERE,
-								"Monetary extension of type: "
-										+ t.getClass().getName()
-										+ " will be ignored, since it does not expose a type");
-						continue;
-					}
-					if (!annot.value().isAssignableFrom(t.getClass())) {
-						LOGGER.log(
-								Level.SEVERE,
-								"Monetary extension of type: "
-										+ t.getClass().getName()
-										+ " will be ignored, since it does not implement the exposed type: "
-										+ annot.value().getName());
-						continue;
-					}
-					if (this.monetaryExtensions.containsKey(annot.value())) {
-						LOGGER.log(Level.FINEST, "Monetary extension of type: "
-								+ t.getClass().getName() + " already loaded.");
-					} else {
-						this.monetaryExtensions.put(annot.value(), t);
-					}
-				} catch (Exception e) {
-					LOGGER.log(Level.WARNING,
-							"Error loading ExposedExtensionType.", e);
-				}
-			} else {
-				LOGGER.log(
-						Level.WARNING,
-						"Monetary extension is registered with implementationt ype: "
-								+ t.getClass().getName()
-								+ ". It is recommended to decouple it using an API interface type, annotated with @ExposedExtensionType.");
-				this.monetaryExtensions.put(t.getClass(), t);
-			}
-		}
-	}
 
 	/**
 	 * Access the {@link CurrencyUnitProvider} component.
@@ -268,47 +209,6 @@ public final class Monetary {
 			}
 		}
 		return INSTANCE.roundingProvider;
-	}
-
-	/**
-	 * Access a monetary extension by type.
-	 * 
-	 * @param extensionType
-	 * @return The corresponding extension reference, never null.
-	 * @throws IllegalArgumentException
-	 *             if the required extension is not loaded, or does not expose
-	 *             the required interface.
-	 */
-	public static <T> T getExtension(Class<T> extensionType) {
-		@SuppressWarnings("unchecked")
-		T ext = (T) INSTANCE.monetaryExtensions.get(extensionType);
-		if (ext == null) {
-			throw new IllegalArgumentException(
-					"Unsupported monetary extension: " + extensionType);
-		}
-		return ext;
-	}
-
-	/**
-	 * Allows to check for the availability of an extension.
-	 * 
-	 * @param type
-	 *            The exposed extension type.
-	 * @return true, if such an extension type is loaded and registered.
-	 */
-	public static boolean isExtensionAvailable(Class<?> type) {
-		return INSTANCE.monetaryExtensions.containsKey(type);
-	}
-
-	/**
-	 * Provides the list of exposed extension APIs currently registered.
-	 * 
-	 * @see ExposedExtensionType#getExposedType()
-	 * @return the enumeration containing the types of extensions loaded, never
-	 *         null.
-	 */
-	public static Enumeration<Class<?>> getLoadedExtensions() {
-		return Collections.enumeration(INSTANCE.monetaryExtensions.keySet());
 	}
 
 	/**

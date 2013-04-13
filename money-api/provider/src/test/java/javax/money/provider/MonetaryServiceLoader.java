@@ -17,9 +17,6 @@ import javax.money.provider.Monetary.ComponentLoader;
 
 public class MonetaryServiceLoader implements ComponentLoader {
 
-	private ServiceLoader<MonetaryExtension> monetaryComponents = ServiceLoader
-			.load(MonetaryExtension.class);
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getComponent(Class<T> type,
@@ -40,7 +37,7 @@ public class MonetaryServiceLoader implements ComponentLoader {
 
 	}
 
-	private boolean annotationsMatch(MonetaryExtension comp,
+	private boolean annotationsMatch(Object comp,
 			Class<? extends Annotation>[] annotations) {
 		if (annotations == null) {
 			return true;
@@ -58,7 +55,7 @@ public class MonetaryServiceLoader implements ComponentLoader {
 	public <T> List<T> getComponents(Class<T> type,
 			Class<? extends Annotation>... annotations) {
 		List<T> instancesFound = new ArrayList<T>();
-		for (MonetaryExtension comp : monetaryComponents) {
+		for (T comp :  ServiceLoader.load(type)) {
 			if (type.isAssignableFrom(comp.getClass())) {
 				if (annotationsMatch(comp, annotations)) {
 					instancesFound.add((T) comp);

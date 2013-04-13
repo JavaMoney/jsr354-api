@@ -75,28 +75,36 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		this.legalTender = legal;
 		this.virtual = virtual;
 	}
-	
+
 	/**
 	 * Private constructor.
 	 * 
 	 * @param currency
 	 */
 	private MoneyCurrency(Currency currency) {
+		if (currency == null) {
+			throw new IllegalArgumentException("Currency required.");
+		}
 		this.namespace = ISO_NAMESPACE;
 		this.currencyCode = currency.getCurrencyCode();
 		this.numericCode = currency.getNumericCode();
 		this.defaultFractionDigits = currency.getDefaultFractionDigits();
 		this.validFrom = null;
 		this.validUntil = null; // TODO Adapt for hisotoric one, e.g. AFA
-		this.legalTender = !this.currencyCode.startsWith("X"); // TODO check for each code in util.Currency here;
-		this.virtual = this.currencyCode.equals("XXX"); //  TODO check for each code in util.Currency here;
+		this.legalTender = !this.currencyCode.startsWith("X"); // TODO check for
+																// each code in
+																// util.Currency
+																// here;
+		this.virtual = this.currencyCode.equals("XXX"); // TODO check for each
+														// code in util.Currency
+														// here;
 	}
 
 	public static MoneyCurrency of(Currency currency) {
 		String key = ISO_NAMESPACE + ':' + currency.getCurrencyCode();
 		MoneyCurrency cachedItem = CACHED.get(key);
 		if (cachedItem == null) {
-			cachedItem = new MoneyCurrency(currency);
+			cachedItem = new JDKCurrencyAdapter(currency);
 			CACHED.put(key, cachedItem);
 		}
 		return cachedItem;
@@ -359,8 +367,8 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * @author Anatole Tresch
 	 * @author Werner Keil
 	 */
-	private final static class JDKCurrencyAdapter implements
-			LocalizableCurrencyUnit, Serializable, Comparable<CurrencyUnit> {
+	private final static class JDKCurrencyAdapter extends MoneyCurrency
+			implements LocalizableCurrencyUnit {
 
 		/**
 		 * serialVersionUID.
@@ -380,68 +388,8 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		 * @param currency
 		 */
 		private JDKCurrencyAdapter(Currency currency) {
-			if (currency == null) {
-				throw new IllegalArgumentException("Currency required.");
-			}
+			super(currency);
 			this.currency = currency;
-		}
-
-		public boolean isVirtual() {
-			return false;
-		}
-
-		/**
-		 * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
-		 */
-
-		public String getNamespace() {
-			return ISO_NAMESPACE;
-		}
-
-		public Long getValidFrom() {
-			return null;
-		}
-
-		public Long getValidUntil() {
-			return null;
-		}
-
-		public int compareTo(CurrencyUnit currency) {
-			int compare = getNamespace().compareTo(currency.getNamespace());
-			if (compare == 0) {
-				compare = getCurrencyCode().compareTo(
-						currency.getCurrencyCode());
-			}
-			if (compare == 0 && currency.getValidFrom() != null) {
-				compare = 1;
-			} else if (compare == 0 && currency.getValidUntil() != null) {
-				compare = 1;
-			}
-			return compare;
-		}
-
-		public String getCurrencyCode() {
-			return this.currency.getCurrencyCode();
-		}
-
-		public int getNumericCode() {
-			return this.currency.getNumericCode();
-		}
-
-		public int getDefaultFractionDigits() {
-			return this.currency.getDefaultFractionDigits();
-		}
-
-		public String toString() {
-			return this.currency.toString();
-		}
-
-		@Override
-		public boolean isLegalTender() {
-			if (getCurrencyCode().startsWith("X")) {
-				return false;
-			}
-			return true;
 		}
 
 		@Override

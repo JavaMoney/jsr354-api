@@ -11,7 +11,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 
 import org.junit.Test;
 
@@ -683,7 +682,6 @@ public class MoneyTest {
 	 */
 	@Test
 	public void testToEngineeringString() {
-		BigDecimal bd = BigDecimal.valueOf(15716876876.76876876d);
 		assertEquals("CHF 15716876876.76877",
 				Money.of("CHF", 15716876876.76876877d).toEngineeringString());
 	}
@@ -693,7 +691,6 @@ public class MoneyTest {
 	 */
 	@Test
 	public void testToPlainString() {
-		BigDecimal bd = BigDecimal.valueOf(15716876876.76876876d);
 		assertEquals("CHF 15716876876.76877",
 				Money.of("CHF", 15716876876.76876876d).toPlainString());
 	}
@@ -882,13 +879,11 @@ public class MoneyTest {
 	 */
 	@Test
 	public void testAsTypeClassOfTRounding() {
-		Rounding rounding = new Rounding() {
-
+		MonetaryAdjuster rounding = new MonetaryAdjuster() {
 			@Override
-			public MonetaryAmount adjust(MonetaryAmount amount) {
+			public MonetaryAmount apply(MonetaryAmount amount) {
 				return Money.of(amount.getCurrency(), amount.doubleValue() * 2);
 			}
-
 		};
 		assertEquals(Long.valueOf(2L),
 				Money.of("CHF", 1).asType(Long.class, rounding));

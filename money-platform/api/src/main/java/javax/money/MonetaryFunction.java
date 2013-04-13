@@ -1,4 +1,4 @@
-/**
+/*
  * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
  *
  * Specification:  JSR-354  Money and Currency API ("Specification")
@@ -6,25 +6,26 @@
  * Copyright (c) 2012-2013, Credit Suisse
  * All rights reserved.
  */
-package javax.money.provider.impl;
-
-import javax.money.provider.ExposedExtensionType;
-import javax.money.provider.MonetaryExtension;
-import javax.money.provider.ext.TestExtension;
+package javax.money;
 
 /**
- * Simple completely useles (despite testing) implementation of a
- * {@link ExposedExtensionType}.
+ * This interface defines a {@link MonetaryFunction}. It is considered to be
+ * adapted/compatible with {@code java.util.function.Function} as introduced in
+ * Java 8.
  * 
  * @author Anatole Tresch
- * 
+ * @param <T>
+ *            The input type of the function.
+ * @param <R>
+ *            The result type of the function.
  */
-@ExposedExtensionType(TestExtension.class)
-public class TestExtensionImpl implements TestExtension, MonetaryExtension {
+public interface MonetaryFunction<T, R> {
 
-	@Override
-	public String sayHello() {
-		return "Hello!";
-	}
+	/**
+	 * Apply a function to the input argument T, yielding an appropriate result R.
+	 * @param value the input value
+	 * @return the result of the function
+	 */
+	public R apply(T value);
 
 }

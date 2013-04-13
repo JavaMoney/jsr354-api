@@ -30,7 +30,6 @@ import javax.money.format.ItemFormatException;
 import javax.money.format.ItemFormatter;
 import javax.money.format.ItemFormatterFactory;
 import javax.money.format.LocalizationStyle;
-import javax.money.provider.ExposedExtensionType;
 import javax.money.provider.Monetary;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;

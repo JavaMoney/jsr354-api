@@ -19,20 +19,17 @@
  */
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.math.RoundingMode;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
-import javax.money.LocalizableCurrencyUnit;
+import javax.money.MonetaryAdjuster;
 import javax.money.MonetaryAmount;
 import javax.money.Money;
 import javax.money.MoneyCurrency;
 import javax.money.MoneyRounding;
-import javax.money.Rounding;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
@@ -42,7 +39,6 @@ import javax.money.format.ItemParseException;
 import javax.money.format.ItemParser;
 import javax.money.format.LocalizationStyle;
 import javax.money.provider.Monetary;
-
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -114,7 +110,7 @@ public class SmokeTests {
 
 	@Test
 	public void testCurrencyConverter() {
-		Rounding rounding = MoneyRounding.of(2, RoundingMode.HALF_UP);
+		MonetaryAdjuster rounding = MoneyRounding.of(2, RoundingMode.HALF_UP);
 
 		ConversionProvider conv = Monetary.getConversionProvider();
 		assertNotNull(conv);
@@ -131,13 +127,13 @@ public class SmokeTests {
 				MoneyCurrency.of("CHF"));
 		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt,
 				MoneyCurrency.of("EUR"));
-		assertEquals(srcEUR, rounding.adjust(tgt3));
+		assertEquals(srcEUR, rounding.apply(tgt3));
 		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcCHF,
 				MoneyCurrency.of("USD"));
 		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt,
 				MoneyCurrency.of("CHF"));
 		assertEquals(srcCHF, tgt3);
-		assertEquals(srcCHF, rounding.adjust(tgt3));
+		assertEquals(srcCHF, rounding.apply(tgt3));
 	}
 
 	@Test
@@ -175,11 +171,5 @@ public class SmokeTests {
 		CurrencyUnit currency = Monetary.getCurrencyUnitProvider().get(
 				MoneyCurrency.ISO_NAMESPACE, "INR");
 		assertNotNull(currency);
-		assertTrue(currency instanceof LocalizableCurrencyUnit);
-		LocalizableCurrencyUnit lcu = (LocalizableCurrencyUnit) currency;
-		assertEquals("INR", lcu.getSymbol(Locale.ENGLISH));
-		assertEquals("INR", lcu.getSymbol(Locale.GERMAN));
-		assertEquals("Indian Rupee", lcu.getDisplayName(Locale.ENGLISH));
-		assertEquals("Indische Rupie", lcu.getDisplayName(Locale.GERMAN));
 	}
 }

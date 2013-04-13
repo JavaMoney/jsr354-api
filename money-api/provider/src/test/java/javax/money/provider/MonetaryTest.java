@@ -9,20 +9,14 @@
 package javax.money.provider;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Enumeration;
 
 import javax.money.convert.ConversionProvider;
 import javax.money.format.ItemFormatterFactory;
 import javax.money.format.ItemParserFactory;
 import javax.money.provider.Monetary.ComponentLoader;
-import javax.money.provider.ext.TestExtension;
 import javax.money.provider.impl.TestConversionProvider;
 import javax.money.provider.impl.TestCurrencyUnitProvider;
-import javax.money.provider.impl.TestExtensionImpl;
 import javax.money.provider.impl.TestHistoricCurrencyUnitProvider;
 import javax.money.provider.impl.TestItemFormatterFactory;
 import javax.money.provider.impl.TestItemParserFactory;
@@ -116,44 +110,6 @@ public class MonetaryTest {
 		RoundingProvider f = Monetary.getRoundingProvider();
 		assertNotNull(f);
 		assertEquals(TestRoundingProvider.class, f.getClass());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.provider.Monetary#getExtension(java.lang.Class)}.
-	 */
-	@Test
-	public void testGetExtension() {
-		TestExtension ext = Monetary.getExtension(TestExtension.class);
-		assertNotNull(ext);
-		assertEquals(TestExtensionImpl.class, ext.getClass());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.provider.Monetary#isExtensionAvailable(java.lang.Class)}
-	 * .
-	 */
-	@Test
-	public void testIsExtensionAvailable() {
-		assertTrue(Monetary.isExtensionAvailable(TestExtension.class));
-		assertFalse(Monetary.isExtensionAvailable(TestExtensionImpl.class));
-		assertFalse(Monetary.isExtensionAvailable(String.class));
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.provider.Monetary#getLoadedExtensions()}.
-	 */
-	@Test
-	public void testGetLoadedExtensions() {
-		Enumeration<Class<?>> exts = Monetary.getLoadedExtensions();
-		assertTrue(exts.hasMoreElements());
-		while (exts.hasMoreElements()) {
-			Class<?> type = (Class<?>) exts.nextElement();
-			assertEquals(type, TestExtension.class);
-
-		}
 	}
 
 }

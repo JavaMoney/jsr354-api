@@ -33,7 +33,6 @@ import javax.money.ext.RegionProvider;
 import javax.money.ext.RegionType;
 
 import net.java.javamoney.ri.common.AbstractRiComponent;
-import net.java.javamoney.ri.ext.RegionImpl;
 import net.java.javamoney.ri.ext.spi.RegionProviderSpi;
 
 /**

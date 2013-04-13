@@ -23,7 +23,6 @@ import java.util.ServiceLoader;
 
 import javax.money.ext.Region;
 import javax.money.ext.RegionType;
-import javax.money.provider.MonetaryExtension;
 
 /**
  * Implementation of this interface define the regions supported in the system.
@@ -33,7 +32,7 @@ import javax.money.provider.MonetaryExtension;
  * 
  * @author Anatole Tresch
  */
-public interface RegionProviderSpi extends MonetaryExtension{
+public interface RegionProviderSpi {
 
 	/**
 	 * Returns all {@link RegionType}s defined by this {@link RegionProviderSpi}

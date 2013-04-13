@@ -11,7 +11,6 @@ package javax.money.ext;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.provider.MonetaryExtension;
 
 /**
  * This class models the component defined by JSR 354 that provides accessors
@@ -20,7 +19,7 @@ import javax.money.provider.MonetaryExtension;
  * 
  * @author Anatole Tresch
  */
-public interface RegionalCurrencyUnitProvider extends MonetaryExtension {
+public interface RegionalCurrencyUnitProvider {
 
 	/**
 	 * Access all currencies matching a {@link Region}.

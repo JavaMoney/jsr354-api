@@ -8,6 +8,8 @@
  */
 package javax.money.function;
 
+import java.util.Arrays;
+
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryFunction;
 
@@ -27,6 +29,14 @@ public final class Maximum implements
 
 	public static final Maximum of() {
 		return INSTANCE;
+	}
+
+	public static MonetaryAmount from(Iterable<MonetaryAmount> amounts) {
+		return Maximum.of().apply(amounts);
+	}
+
+	public static MonetaryAmount from(MonetaryAmount... amounts) {
+		return Maximum.of().apply(Arrays.asList(amounts));
 	}
 
 	public MonetaryAmount apply(Iterable<MonetaryAmount> amounts) {

@@ -29,6 +29,12 @@ public final class SeparateCurrencies implements
 	private static final SeparateCurrencies INSTANCE = new SeparateCurrencies();
 
 	/**
+	 * Private constructor.
+	 */
+	private SeparateCurrencies() {
+	}
+
+	/**
 	 * Creates a new {@link SeparateCurrencies}, using the given amounts.
 	 * 
 	 * @return the new instance.
@@ -37,10 +43,12 @@ public final class SeparateCurrencies implements
 		return INSTANCE;
 	}
 
-	/**
-	 * Private constructor.
-	 */
-	private SeparateCurrencies() {
+	public static Set<CurrencyUnit> from(Iterable<MonetaryAmount> amounts) {
+		return SeparateCurrencies.of().apply(amounts);
+	}
+
+	public static Set<CurrencyUnit> from(MonetaryAmount... amounts) {
+		return SeparateCurrencies.of().apply(Arrays.asList(amounts));
 	}
 
 	/**

@@ -9,6 +9,7 @@
 package javax.money.function;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +43,16 @@ public final class SeparateAmounts
 	 * Private constructor.
 	 */
 	private SeparateAmounts() {
+	}
+
+	public static Map<CurrencyUnit, Collection<MonetaryAmount>> from(
+			Iterable<MonetaryAmount> amounts) {
+		return SeparateAmounts.of().apply(amounts);
+	}
+
+	public static Map<CurrencyUnit, Collection<MonetaryAmount>> from(
+			MonetaryAmount... amounts) {
+		return SeparateAmounts.of().apply(Arrays.asList(amounts));
 	}
 
 	/**

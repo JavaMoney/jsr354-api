@@ -8,6 +8,8 @@
  */
 package javax.money.function;
 
+import java.util.Arrays;
+
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryFunction;
 
@@ -20,6 +22,22 @@ import javax.money.MonetaryFunction;
 public final class Average implements
 		MonetaryFunction<Iterable<MonetaryAmount>, MonetaryAmount> {
 
+	private static final Average INSTANCE = new Average();
+
+	private Average() {
+	}
+	
+	public static final Average of() {
+		return INSTANCE;
+	}
+
+	public static MonetaryAmount from(Iterable<MonetaryAmount> amounts) {
+		return Average.of().apply(amounts);
+	}
+
+	public static MonetaryAmount from(MonetaryAmount... amounts) {
+		return Average.of().apply(Arrays.asList(amounts));
+	}
 
 	public MonetaryAmount apply(Iterable<MonetaryAmount> amounts) {
 		if (amounts == null) {
@@ -30,10 +48,9 @@ public final class Average implements
 
 		for (MonetaryAmount amount : amounts) {
 			itemNumber++;
-			if(total==null){
+			if (total == null) {
 				total = amount;
-			}
-			else{
+			} else {
 				total = total.add(amount);
 			}
 		}

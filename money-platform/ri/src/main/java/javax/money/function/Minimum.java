@@ -8,6 +8,8 @@
  */
 package javax.money.function;
 
+import java.util.Arrays;
+
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryFunction;
 
@@ -27,6 +29,14 @@ public final class Minimum implements
 
 	public static final Minimum of() {
 		return INSTANCE;
+	}
+
+	public static MonetaryAmount from(Iterable<MonetaryAmount> amounts) {
+		return Minimum.of().apply(amounts);
+	}
+
+	public static MonetaryAmount from(MonetaryAmount... amounts) {
+		return Minimum.of().apply(Arrays.asList(amounts));
 	}
 
 	public MonetaryAmount apply(Iterable<MonetaryAmount> amounts) {

@@ -47,7 +47,7 @@ public final class MajorPart implements MonetaryAdjuster {
 	 */
 	@Override
 	public MonetaryAmount apply(MonetaryAmount amount) {
-		return ofAmount(amount);
+		return fromAmount(amount);
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public final class MajorPart implements MonetaryAdjuster {
 	 *             if the amount is too large for a {@code long}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends MonetaryAmount> T ofAmount(T amount) {
+	public static <T extends MonetaryAmount> T fromAmount(T amount) {
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount required.");
 		}
@@ -87,7 +87,7 @@ public final class MajorPart implements MonetaryAdjuster {
 	 * @throws ArithmeticException
 	 *             if the amount is too large for a {@code long}
 	 */
-	public static long ofLong(MonetaryAmount amount) {
+	public static long fromAsLong(MonetaryAmount amount) {
 		if(amount==null){
 			throw new IllegalArgumentException("Amount required.");
 		}
@@ -108,7 +108,7 @@ public final class MajorPart implements MonetaryAdjuster {
 	 * @throws ArithmeticException
 	 *             if the amount is too large for an {@code int}
 	 */
-	public static int ofInteger(MonetaryAmount amount) {
+	public static int fromAsInteger(MonetaryAmount amount) {
 		if(amount==null){
 			throw new IllegalArgumentException("Amount required.");
 		}

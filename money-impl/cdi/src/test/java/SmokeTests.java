@@ -127,13 +127,13 @@ public class SmokeTests {
 				MoneyCurrency.of("CHF"));
 		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt,
 				MoneyCurrency.of("EUR"));
-		assertEquals(srcEUR, rounding.apply(tgt3));
+		assertEquals(srcEUR.with(rounding), rounding.apply(tgt3));
 		tgt = conv.getCurrencyConverter(RATE_TYPE).convert(srcCHF,
 				MoneyCurrency.of("USD"));
 		tgt3 = conv.getCurrencyConverter(RATE_TYPE).convert(tgt,
 				MoneyCurrency.of("CHF"));
 		assertEquals(srcCHF, tgt3);
-		assertEquals(srcCHF, rounding.apply(tgt3));
+		assertEquals(srcCHF.with(rounding), rounding.apply(tgt3));
 	}
 
 	@Test

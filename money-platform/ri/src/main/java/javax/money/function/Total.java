@@ -8,6 +8,8 @@
  */
 package javax.money.function;
 
+import java.util.Arrays;
+
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryFunction;
 
@@ -20,20 +22,36 @@ import javax.money.MonetaryFunction;
 public final class Total implements
 		MonetaryFunction<Iterable<MonetaryAmount>, MonetaryAmount> {
 
+	private static final Total INSTANCE = new Total();
+
+	private Total() {
+	}
+
+	public static Total of() {
+		return INSTANCE;
+	}
+
+	public static MonetaryAmount from(Iterable<MonetaryAmount> amounts) {
+		return Total.of().apply(amounts);
+	}
+
+	public static MonetaryAmount from(MonetaryAmount... amounts) {
+		return Total.of().apply(Arrays.asList(amounts));
+	}
+
 	public MonetaryAmount apply(Iterable<MonetaryAmount> amounts) {
 		MonetaryAmount result = null;
 		if (amounts == null) {
 			throw new IllegalArgumentException("amounts required.");
 		}
 		for (MonetaryAmount amount : amounts) {
-			if(result==null){
+			if (result == null) {
 				result = amount;
-			}
-			else{
+			} else {
 				result = result.add(amount);
 			}
 		}
-		if(result==null){
+		if (result == null) {
 			throw new IllegalArgumentException("amounts is empty.");
 		}
 		return result;

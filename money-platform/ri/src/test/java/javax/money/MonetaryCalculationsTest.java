@@ -81,8 +81,8 @@ public class MonetaryCalculationsTest {
 	public void testGetMinorPart() {
 		BigDecimal dec = new BigDecimal("135135.151757");
 		Money m = Money.of("CHF", dec);
-		assertEquals(Money.of("CHF", MonetaryCalculations.getMinorLong(m)),
-				MonetaryCalculations.getMinorPart(m));
+		assertEquals(Money.of("CHF", MonetaryCalculations.getMinorLong(m)).longValue(),
+				MonetaryCalculations.getMinorPart(m).longValue());
 	}
 
 	/**

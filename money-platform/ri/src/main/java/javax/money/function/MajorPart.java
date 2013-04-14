@@ -22,8 +22,16 @@ import javax.money.MonetaryAmount;
  */
 public final class MajorPart implements MonetaryAdjuster {
 
+	/**
+	 * The shared instance of this class.
+	 */
 	private MajorPart INSTANCE = new MajorPart();
 
+	/**
+	 * Access the shared instance of {@link MajorPart} for use.
+	 * 
+	 * @return the shared instance, never {@code null}.
+	 */
 	private MajorPart() {
 	}
 

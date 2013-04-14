@@ -20,26 +20,68 @@ import javax.money.MonetaryFunction;
  * @author Anatole Tresch
  */
 public final class Maximum implements
-		MonetaryFunction<Iterable<MonetaryAmount>, MonetaryAmount> {
+		MonetaryFunction<Iterable<? extends MonetaryAmount>, MonetaryAmount> {
 
+	/**
+	 * The shared instance of this class.
+	 */
 	private static final Maximum INSTANCE = new Maximum();
 
+	/**
+	 * Private constructor, there is only one instance of this class, accessible
+	 * calling {@link #of()}.
+	 */
 	private Maximum() {
 	}
 
+	/**
+	 * Access the shared instance of {@link Maximum} for use.
+	 * 
+	 * @return the shared instance, never {@code null}.
+	 */
 	public static final Maximum of() {
 		return INSTANCE;
 	}
 
-	public static MonetaryAmount from(Iterable<MonetaryAmount> amounts) {
+	/**
+	 * Evaluates the maximum of the given amounts.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the maximum.
+	 */
+	public static MonetaryAmount from(Iterable<? extends MonetaryAmount> amounts) {
+		if (amounts == null) {
+			throw new IllegalArgumentException("amounts required.");
+		}
 		return Maximum.of().apply(amounts);
 	}
 
+	/**
+	 * Evaluates the maximum of the given amounts.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the maximum.
+	 */
 	public static MonetaryAmount from(MonetaryAmount... amounts) {
+		if (amounts == null) {
+			throw new IllegalArgumentException("amounts required.");
+		}
 		return Maximum.of().apply(Arrays.asList(amounts));
 	}
 
-	public MonetaryAmount apply(Iterable<MonetaryAmount> amounts) {
+	/**
+	 * Evaluates the maximum of the given amounts.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the maximum.
+	 */
+	public MonetaryAmount apply(Iterable<? extends MonetaryAmount> amounts) {
 		if (amounts == null) {
 			throw new IllegalArgumentException("amounts required.");
 		}

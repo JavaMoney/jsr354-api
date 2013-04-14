@@ -21,11 +21,23 @@ import javax.money.MonetaryAmount;
  */
 public final class MinorPart implements MonetaryAdjuster {
 
+	/**
+	 * The shared instance of this class.
+	 */
 	private MinorPart INSTANCE = new MinorPart();
 
+	/**
+	 * Private constructor, there is only one instance of this class, accessible
+	 * calling {@link #of()}.
+	 */
 	private MinorPart() {
 	}
 
+	/**
+	 * Access the shared instance of {@link MinorPart} for use.
+	 * 
+	 * @return the shared instance, never {@code null}.
+	 */
 	public MinorPart of() {
 		return INSTANCE;
 	}

@@ -25,38 +25,67 @@ import javax.money.MonetaryFunction;
 public final class SeparateCurrencies implements
 		MonetaryFunction<Iterable<MonetaryAmount>, Set<CurrencyUnit>> {
 
-	/** the result with all amounts separated by currency. */
+	/**
+	 * The shared instance of this class.
+	 */
 	private static final SeparateCurrencies INSTANCE = new SeparateCurrencies();
 
 	/**
-	 * Private constructor.
+	 * Private constructor, there is only one instance of this class, accessible
+	 * calling {@link #of()}.
 	 */
 	private SeparateCurrencies() {
 	}
 
 	/**
-	 * Creates a new {@link SeparateCurrencies}, using the given amounts.
+	 * Access the shared instance of {@link SeparateCurrencies} for use.
 	 * 
-	 * @return the new instance.
+	 * @return the shared instance, never {@code null}.
 	 */
 	public static SeparateCurrencies of() {
 		return INSTANCE;
 	}
 
+	/**
+	 * Evaluates the non equal {@link CurrencyUnit} instances of the given
+	 * amounts.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the non equal {@link CurrencyUnit} instances.
+	 */
 	public static Set<CurrencyUnit> from(Iterable<MonetaryAmount> amounts) {
+		if (amounts == null) {
+			throw new IllegalArgumentException("amounts required.");
+		}
 		return SeparateCurrencies.of().apply(amounts);
 	}
 
+	/**
+	 * Evaluates the non equal {@link CurrencyUnit} instances of the given
+	 * amounts.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the non equal {@link CurrencyUnit} instances.
+	 */
 	public static Set<CurrencyUnit> from(MonetaryAmount... amounts) {
+		if (amounts == null) {
+			throw new IllegalArgumentException("amounts required.");
+		}
 		return SeparateCurrencies.of().apply(Arrays.asList(amounts));
 	}
 
 	/**
-	 * Adds the given amounts for separation.
+	 * Evaluates the non equal {@link CurrencyUnit} instances of the given
+	 * amounts.
 	 * 
 	 * @param amounts
-	 *            The amounts.
-	 * @return this instance for building.
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the non equal {@link CurrencyUnit} instances.
 	 */
 	public Set<CurrencyUnit> apply(Iterable<MonetaryAmount> amounts) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();

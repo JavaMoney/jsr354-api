@@ -30,12 +30,20 @@ public final class AmountFilter
 	private Collection<MonetaryAmount> input = new ArrayList<MonetaryAmount>();
 
 	/**
-	 * Creates a new empty{@link AmountFilter}..
-	 * 
-	 * @return the new instance.
+	 * Creates a new empty {@link AmountFilter}.
 	 */
-	public static AmountFilter of() {
-		return new AmountFilter();
+	public AmountFilter() {
+	}
+
+	/**
+	 * Creates a new {@link AmountFilter}, using the given amounts.
+	 * 
+	 * @param amounts
+	 *            the amounts to be added as input, not null.
+	 */
+	public AmountFilter(MonetaryAmount... amounts) {
+		this();
+		add(Arrays.asList(amounts));
 	}
 
 	/**
@@ -43,27 +51,10 @@ public final class AmountFilter
 	 * 
 	 * @param amounts
 	 *            the amounts to be added as input, not null.
-	 * @return the new instance.
 	 */
-	public static AmountFilter of(MonetaryAmount... amounts) {
-		return new AmountFilter().add(Arrays.asList(amounts));
-	}
-
-	/**
-	 * Creates a new instance, using the given amounts.
-	 * 
-	 * @param amounts
-	 *            the amounts to be added as input, not null.
-	 * @return the new instance.
-	 */
-	public static AmountFilter of(Iterable<MonetaryAmount> amounts) {
-		return new AmountFilter().add(amounts);
-	}
-
-	/**
-	 * Private constructor.
-	 */
-	private AmountFilter() {
+	public AmountFilter(Iterable<MonetaryAmount> amounts) {
+		this();
+		add(amounts);
 	}
 
 	/**
@@ -113,7 +104,7 @@ public final class AmountFilter
 	public Collection<MonetaryAmount> apply(
 			final MonetaryFunction<MonetaryAmount, Boolean> predicate) {
 		final List<MonetaryAmount> result = new ArrayList<MonetaryAmount>();
-		AmountVisitor visitor = AmountVisitor.of(this.input);
+		AmountVisitor visitor = new AmountVisitor(this.input);
 		visitor.apply(new MonetaryFunction<MonetaryAmount, Boolean>() {
 			@Override
 			public Boolean apply(MonetaryAmount value) {

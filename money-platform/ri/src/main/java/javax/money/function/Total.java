@@ -22,23 +22,59 @@ import javax.money.MonetaryFunction;
 public final class Total implements
 		MonetaryFunction<Iterable<MonetaryAmount>, MonetaryAmount> {
 
+	/**
+	 * The shared instance of this class.
+	 */
 	private static final Total INSTANCE = new Total();
 
+	/**
+	 * Private constructor, there is only one instance of this class, accessible
+	 * calling {@link #of()}.
+	 */
 	private Total() {
 	}
 
+	/**
+	 * Access the shared instance of {@link Total} for use.
+	 * 
+	 * @return the shared instance, never {@code null}.
+	 */
 	public static Total of() {
 		return INSTANCE;
 	}
 
+	/**
+	 * Evaluates the total sum of the given amounts.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the total sum.
+	 */
 	public static MonetaryAmount from(Iterable<MonetaryAmount> amounts) {
 		return Total.of().apply(amounts);
 	}
 
+	/**
+	 * Evaluates the total sum of the given amounts.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the total sum.
+	 */
 	public static MonetaryAmount from(MonetaryAmount... amounts) {
 		return Total.of().apply(Arrays.asList(amounts));
 	}
 
+	/**
+	 * Evaluates the total sum of the given amounts.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the total sum.
+	 */
 	public MonetaryAmount apply(Iterable<MonetaryAmount> amounts) {
 		MonetaryAmount result = null;
 		if (amounts == null) {

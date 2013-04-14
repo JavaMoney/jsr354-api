@@ -15,31 +15,70 @@ import javax.money.MonetaryFunction;
 
 /**
  * This class allows to calculate the average of some {@link MonetaryAmount}
- * instances.
+ * instances, all of the same currency.
  * 
  * @author Anatole Tresch
  */
 public final class Average implements
-		MonetaryFunction<Iterable<MonetaryAmount>, MonetaryAmount> {
+		MonetaryFunction<Iterable<? extends MonetaryAmount>, MonetaryAmount> {
 
+	/**
+	 * The shared instance of this class.
+	 */
 	private static final Average INSTANCE = new Average();
 
+	/**
+	 * Private constructor, there is only one instance of this class, accessible
+	 * calling {@link #of()}.
+	 */
 	private Average() {
 	}
-	
+
+	/**
+	 * Access the shared instance of {@link Average} for use.
+	 * 
+	 * @return the shared instance, never {@code null}.
+	 */
 	public static final Average of() {
 		return INSTANCE;
 	}
 
-	public static MonetaryAmount from(Iterable<MonetaryAmount> amounts) {
+	/**
+	 * Evaluates the average of the given amounts.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the average.
+	 */
+	public static MonetaryAmount from(Iterable<? extends MonetaryAmount> amounts) {
 		return Average.of().apply(amounts);
 	}
 
+	/**
+	 * Evaluates the average of the given amounts.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the average.
+	 */
 	public static MonetaryAmount from(MonetaryAmount... amounts) {
+		if (amounts == null) {
+			throw new IllegalArgumentException("amounts required.");
+		}
 		return Average.of().apply(Arrays.asList(amounts));
 	}
 
-	public MonetaryAmount apply(Iterable<MonetaryAmount> amounts) {
+	/**
+	 * Evaluates the average of the given amounts.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the average.
+	 */
+	public MonetaryAmount apply(Iterable<? extends MonetaryAmount> amounts) {
 		if (amounts == null) {
 			throw new IllegalArgumentException("amounts required.");
 		}
@@ -53,6 +92,9 @@ public final class Average implements
 			} else {
 				total = total.add(amount);
 			}
+		}
+		if (total == null) {
+			throw new IllegalArgumentException("No amounts to totalize.");
 		}
 		return total.divide(itemNumber);
 	}

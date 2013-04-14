@@ -21,20 +21,27 @@ import javax.money.MonetaryFunction;
  * 
  * @author Anatole Tresch
  */
-public final class AmountVisitor
-		implements
-		MonetaryFunction<MonetaryFunction<MonetaryAmount, Boolean>, 
-		                 Integer> {
+public final class AmountVisitor implements
+		MonetaryFunction<MonetaryFunction<MonetaryAmount, Boolean>, Integer> {
 	/** The input {@link MonetaryAmount} instances to be filtered. */
 	private Collection<MonetaryAmount> input = new ArrayList<MonetaryAmount>();
 
 	/**
-	 * Creates a new {@link SeparateCurrencies}, using the given amounts.
-	 * 
-	 * @return the new instance.
+	 * Creates a new, empty {@link AmountVisitor}.
 	 */
-	public static AmountVisitor of() {
-		return new AmountVisitor();
+	public AmountVisitor() {
+
+	}
+
+	/**
+	 * Creates a new {@link AmountVisitor}, using the given amounts.
+	 * 
+	 * @param amounts
+	 *            the amounts to be visited, not null.
+	 */
+	public AmountVisitor(MonetaryAmount... amounts) {
+		this();
+		add(Arrays.asList(amounts));
 	}
 
 	/**
@@ -44,22 +51,9 @@ public final class AmountVisitor
 	 *            the amounts to be separated, not null.
 	 * @return the new instance.
 	 */
-	public static AmountVisitor of(MonetaryAmount... amounts) {
-		return new AmountVisitor().add(Arrays.asList(amounts));
-	}
-
-	/**
-	 * Creates a new {@link SeparateCurrencies}, using the given amounts.
-	 * 
-	 * @param amounts
-	 *            the amounts to be separated, not null.
-	 * @return the new instance.
-	 */
-	public static AmountVisitor of(Iterable<MonetaryAmount> amounts) {
-		return new AmountVisitor().add(amounts);
-	}
-
-	private AmountVisitor() {
+	public AmountVisitor(Iterable<MonetaryAmount> amounts) {
+		this();
+		add(amounts);
 	}
 
 	/**
@@ -79,6 +73,14 @@ public final class AmountVisitor
 		return this;
 	}
 
+	/**
+	 * Method that allows to add amounts to the visitor, that can be visited
+	 * later.
+	 * 
+	 * @param amounts
+	 *            The amount to be added.
+	 * @return This visitor instance, for chaining.
+	 */
 	public AmountVisitor add(Iterable<MonetaryAmount> amounts) {
 		if (amounts == null) {
 			throw new IllegalArgumentException("amounts required.");
@@ -89,8 +91,15 @@ public final class AmountVisitor
 		return this;
 	}
 
-	public Integer apply(
-			MonetaryFunction<MonetaryAmount, Boolean> predicate) {
+	/**
+	 * This method visits all items in the current {@link AmountVisitor}. The
+	 * passed {@code predicate} signals by its return value, if it has handled
+	 * the current {@link MonetaryAmount} by returning {@code true}.
+	 * 
+	 * @return the sum of calls to the given predicate that evaluated to
+	 *         {@code true}.
+	 */
+	public Integer apply(MonetaryFunction<MonetaryAmount, Boolean> predicate) {
 		int visited = 0;
 		for (MonetaryAmount amt : this.input) {
 			if (predicate.apply(amt)) {

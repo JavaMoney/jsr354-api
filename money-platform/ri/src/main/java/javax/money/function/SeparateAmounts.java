@@ -28,39 +28,72 @@ public final class SeparateAmounts
 		implements
 		MonetaryFunction<Iterable<MonetaryAmount>, Map<CurrencyUnit, Collection<MonetaryAmount>>> {
 
+	/**
+	 * The shared instance of this class.
+	 */
 	private static final SeparateAmounts INSTANCE = new SeparateAmounts();
 
 	/**
-	 * Creates a new {@link SeparateAmounts}, using the given amounts.
+	 * Access the shared instance of {@link SeparateAmount} for use.
 	 * 
-	 * @return the new instance.
+	 * @return the shared instance, never {@code null}.
 	 */
 	public static SeparateAmounts of() {
 		return INSTANCE;
 	}
 
 	/**
-	 * Private constructor.
+	 * Private constructor, there is only one instance of this class, accessible
+	 * calling {@link #of()}.
 	 */
 	private SeparateAmounts() {
 	}
 
+	/**
+	 * Separates the given {@link MonetaryAmount} instances according to their
+	 * {@link CurrencyUnit}.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the separated amounts, with {@link CurrencyUnit} as {@link Map}
+	 *         key.
+	 */
 	public static Map<CurrencyUnit, Collection<MonetaryAmount>> from(
 			Iterable<MonetaryAmount> amounts) {
+		if (amounts == null) {
+			throw new IllegalArgumentException("amounts required.");
+		}
 		return SeparateAmounts.of().apply(amounts);
 	}
 
+	/**
+	 * Separates the given {@link MonetaryAmount} instances according to their
+	 * {@link CurrencyUnit}.
+	 * 
+	 * @param amounts
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the separated amounts, with {@link CurrencyUnit} as {@link Map}
+	 *         key.
+	 */
 	public static Map<CurrencyUnit, Collection<MonetaryAmount>> from(
 			MonetaryAmount... amounts) {
+		if (amounts == null) {
+			throw new IllegalArgumentException("amounts required.");
+		}
 		return SeparateAmounts.of().apply(Arrays.asList(amounts));
 	}
 
 	/**
-	 * Adds the given amounts for separation.
+	 * Separates the given {@link MonetaryAmount} instances according to their
+	 * {@link CurrencyUnit}.
 	 * 
 	 * @param amounts
-	 *            The amounts.
-	 * @return this instance for building.
+	 *            The amounts, at least one instance, not null, all of the same
+	 *            currency.
+	 * @return the separated amounts, with {@link CurrencyUnit} as {@link Map}
+	 *         key.
 	 */
 	public Map<CurrencyUnit, Collection<MonetaryAmount>> apply(
 			Iterable<MonetaryAmount> amounts) {

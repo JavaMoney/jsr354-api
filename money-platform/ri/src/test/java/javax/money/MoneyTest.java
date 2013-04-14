@@ -879,7 +879,7 @@ public class MoneyTest {
 	 */
 	@Test
 	public void testAsTypeClassOfTRounding() {
-		MonetaryAdjuster rounding = new MonetaryAdjuster() {
+		MonetaryOperator rounding = new MonetaryOperator() {
 			@Override
 			public MonetaryAmount apply(MonetaryAmount amount) {
 				return Money.of(amount.getCurrency(), amount.doubleValue() * 2);

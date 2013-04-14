@@ -11,7 +11,7 @@ package javax.money.provider.impl;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryOperator;
 import javax.money.provider.RoundingProvider;
 
 /**
@@ -22,19 +22,19 @@ import javax.money.provider.RoundingProvider;
 public class TestRoundingProvider implements RoundingProvider {
 
 	@Override
-	public MonetaryAdjuster getRounding(CurrencyUnit currency) {
+	public MonetaryOperator getRounding(CurrencyUnit currency) {
 		// empty implementation
 		return null;
 	}
 
 	@Override
-	public MonetaryAdjuster getRounding(CurrencyUnit currency, Long timestamp) {
+	public MonetaryOperator getRounding(CurrencyUnit currency, Long timestamp) {
 		// empty implementation
 		return null;
 	}
 
 	@Override
-	public MonetaryAdjuster getRounding(String name) {
+	public MonetaryOperator getRounding(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}

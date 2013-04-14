@@ -170,7 +170,7 @@ public final class UnisignedMonetaryAmount implements MonetaryAmount {
 	}
 
 	@Override
-	public UnisignedMonetaryAmount with(MonetaryAdjuster adjuster) {
+	public UnisignedMonetaryAmount with(MonetaryOperator adjuster) {
 		return of(this.amount.with(adjuster));
 	}
 

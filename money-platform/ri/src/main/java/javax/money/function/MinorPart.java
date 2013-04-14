@@ -10,7 +10,7 @@ package javax.money.function;
 
 import java.math.BigDecimal;
 
-import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryOperator;
 import javax.money.MonetaryAmount;
 
 /**
@@ -19,7 +19,7 @@ import javax.money.MonetaryAmount;
  * 
  * @author Anatole Tresch
  */
-public final class MinorPart implements MonetaryAdjuster {
+public final class MinorPart implements MonetaryOperator {
 
 	private MinorPart INSTANCE = new MinorPart();
 

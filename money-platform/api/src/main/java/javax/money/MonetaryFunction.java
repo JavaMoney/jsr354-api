@@ -19,6 +19,7 @@ package javax.money;
  * @param <R>
  *            The result type of the function.
  */
+//@FunctionalInterface for Java 9
 public interface MonetaryFunction<T, R> {
 
 	/**

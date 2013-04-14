@@ -795,7 +795,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @see javax.money.MonetaryAmount#adjust(javax.money.AmountAdjuster)
 	 */
 	@Override
-	public MonetaryAmount with(MonetaryAdjuster adjuster) {
+	public MonetaryAmount with(MonetaryOperator adjuster) {
 		return adjuster.apply(this);
 	}
 
@@ -842,7 +842,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @see javax.money.MonetaryAmount#asType(java.lang.Class,
 	 * javax.money.Rounding)
 	 */
-	public <T> T asType(Class<T> type, MonetaryAdjuster adjuster) {
+	public <T> T asType(Class<T> type, MonetaryOperator adjuster) {
 		MonetaryAmount amount = adjuster.apply(this);
 		return amount.asType(type);
 	}

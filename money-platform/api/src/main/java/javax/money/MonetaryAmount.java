@@ -369,13 +369,13 @@ public interface MonetaryAmount {
 	public MonetaryAmount from(Number amount);
 
 	/**
-	 * Adjust a {@link MonetaryAmount} using the given {@link MonetaryAdjuster}.
+	 * Adjust a {@link MonetaryAmount} using the given {@link MonetaryOperator}.
 	 * 
 	 * @param adjuster
 	 *            the adjuster, not null.
 	 * @return the adjusted value, never null.
 	 */
-	public MonetaryAmount with(MonetaryAdjuster adjuster);
+	public MonetaryAmount with(MonetaryOperator adjuster);
 
 
 	// -------------------- Introspection and value methods, similar to

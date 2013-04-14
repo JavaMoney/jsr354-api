@@ -9,19 +9,24 @@
 package javax.money;
 
 /**
- * This interface defines a {@link MonetaryAdjuster}. It is hereby important to
+ * This interface defines a {@link MonetaryOperator}. It is hereby important to
  * distinguish between <i>internal rounding</i> such as implied by the maximal
  * precision/scale of an amount, and <i>rounding</i> applied to a
  * {@link MonetaryAmount} or a calculation algorithm. Since different use cases
- * may require <i>roundings</i> done at very different stages and differently
- * within a complex financial calculation, {@link MonetaryAdjuster} is not
+ * may require <i>rounding</i> done at very different stages and differently
+ * within a complex financial calculation, {@link MonetaryOperator} is not
  * directly attached to a monetary type, e.g. a {@link MonetaryAmount}.
  * <p>
  * Nevertheless the JSR's extensions provide a RoundingMonetaryAmount, which
  * wraps a {@link MonetaryAmount} and adds implicit rounding.
  * 
+ * This interface is considered to be adapted/compatible with {@code java.util.function.UnaryOperator} 
+ * as introduced in Java 8.
+ * 
+ * @author Werner Keil
  * @author Anatole Tresch
  */
-public interface MonetaryAdjuster extends MonetaryFunction<MonetaryAmount,MonetaryAmount> {
+//@FunctionalInterface for Java 9
+public interface MonetaryOperator extends MonetaryFunction<MonetaryAmount,MonetaryAmount> {
 
 }

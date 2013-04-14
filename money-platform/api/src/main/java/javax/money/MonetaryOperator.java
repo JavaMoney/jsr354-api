@@ -20,6 +20,7 @@ package javax.money;
  * Nevertheless the JSR's extensions provide a RoundingMonetaryAmount, which
  * wraps a {@link MonetaryAmount} and adds implicit rounding.
  * 
+ * <p>
  * This interface is considered to be adapted/compatible with {@code java.util.function.UnaryOperator} 
  * as introduced in Java 8.
  * 

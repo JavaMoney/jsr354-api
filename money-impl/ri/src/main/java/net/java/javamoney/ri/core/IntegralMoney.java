@@ -829,10 +829,14 @@ public final class IntegralMoney implements MonetaryAmount,
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount must not be null.");
 		}
-		if (!(this.currency.getNamespace().equals(currency.getNamespace()) || !(this.currency
-				.getCurrencyCode().equals(currency.getCurrencyCode())))) {
+		final CurrencyUnit amountCurrency = amount.getCurrency();
+		if (!(this.currency.getNamespace().equals(amountCurrency.getNamespace())) || 
+				(this.currency.getNamespace().equals(amountCurrency.getNamespace()) && !(this.currency
+				.getCurrencyCode().equals(amountCurrency.getCurrencyCode()))
+				)
+			) {
 			throw new IllegalArgumentException("Currency mismatch: "
-					+ this.currency + '/' + currency);
+					+ this.currency + '/' + amountCurrency);
 		}
 	}
 

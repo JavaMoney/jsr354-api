@@ -174,7 +174,7 @@ public class MoneyTest {
 	 * Test method for
 	 * {@link javax.money.Money#compareTo(javax.money.MonetaryAmount)}.
 	 */
-	@Test
+	@Test(expected = CurrencyMismatchException.class)
 	public void testCompareTo() {
 		Money m1 = Money.of("CHF", 10);
 		Money m2 = Money.of("CHF", 10);

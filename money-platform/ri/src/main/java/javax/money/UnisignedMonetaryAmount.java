@@ -9,7 +9,7 @@
 package javax.money;
 
 /**
- * This class decoreates an arbitrary {@link MonetaryAmount} instance and ensure
+ * This class decorates an arbitrary {@link MonetaryAmount} instance and ensure
  * no negative values can be created using this instance.
  * 
  * @author Anatole Tresch

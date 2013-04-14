@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryOperator;
 import javax.money.MonetaryAmount;
 
 /**
@@ -251,29 +251,29 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	}
 
 	/**
-	 * Creates a {@link MonetaryAdjuster} that is performing conversion as
+	 * Creates a {@link MonetaryOperator} that is performing conversion as
 	 * defined by this rate instance.
 	 * 
-	 * @return an instance of {@link MonetaryAdjuster} performing rate
+	 * @return an instance of {@link MonetaryOperator} performing rate
 	 *         conversion from base to term, or vice versa, never null.
 	 * @see ConvertingAdjuster
 	 */
-	public MonetaryAdjuster asAdjuster() {
+	public MonetaryOperator asAdjuster() {
 		return new ConvertingAdjuster(this);
 	}
 
 	/**
-	 * Creates a {@link MonetaryAdjuster} that is performing conversion as
+	 * Creates a {@link MonetaryOperator} that is performing conversion as
 	 * defined by this rate instance.
 	 * 
 	 * @param mathContext
 	 *            The {@link MathContext} to be used for conversion an rate
 	 *            calculation (e.g. for calculating reverse rates).
-	 * @return an instance of {@link MonetaryAdjuster} performing rate
+	 * @return an instance of {@link MonetaryOperator} performing rate
 	 *         conversion from base to term, or vice versa, never null.
 	 * @see ConvertingAdjuster
 	 */
-	public MonetaryAdjuster asAdjuster(MathContext mathContext) {
+	public MonetaryOperator asAdjuster(MathContext mathContext) {
 		return new ConvertingAdjuster(this).withMathContext(mathContext);
 	}
 
@@ -711,7 +711,7 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	 * 
 	 * @author Anatole Tresch
 	 */
-	public static final class ConvertingAdjuster implements MonetaryAdjuster {
+	public static final class ConvertingAdjuster implements MonetaryOperator {
 		/** THe underlying exchange rate. */
 		private ExchangeRate rate;
 		/** The MathContext used. */

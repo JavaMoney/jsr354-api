@@ -11,7 +11,7 @@ package javax.money.provider;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryOperator;
 
 /**
  * This instance provides default {@link Rounding}, e.g. for ISO currencies.
@@ -28,7 +28,7 @@ public interface RoundingProvider {
 	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
 	 *         {@code null} is returned.
 	 */
-	public MonetaryAdjuster getRounding(String name);
+	public MonetaryOperator getRounding(String name);
 
 	/**
 	 * Access the available rounding ids.
@@ -55,7 +55,7 @@ public interface RoundingProvider {
 	 *         it should be created/registered based on
 	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
 	 */
-	public MonetaryAdjuster getRounding(CurrencyUnit currency);
+	public MonetaryOperator getRounding(CurrencyUnit currency);
 
 	/**
 	 * Access the {@link Rounding} for a given {@link CurrencyUnit} and
@@ -70,6 +70,6 @@ public interface RoundingProvider {
 	 *         it should be created/registered based on
 	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
 	 */
-	public MonetaryAdjuster getRounding(CurrencyUnit currency, Long timestamp);
+	public MonetaryOperator getRounding(CurrencyUnit currency, Long timestamp);
 
 }

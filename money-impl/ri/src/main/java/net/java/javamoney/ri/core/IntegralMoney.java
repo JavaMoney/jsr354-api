@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryOperator;
 import javax.money.MonetaryAmount;
 import javax.money.MoneyCurrency;
 
@@ -829,10 +829,14 @@ public final class IntegralMoney implements MonetaryAmount,
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount must not be null.");
 		}
-		if (!(this.currency.getNamespace().equals(currency.getNamespace()) || !(this.currency
-				.getCurrencyCode().equals(currency.getCurrencyCode())))) {
+		final CurrencyUnit amountCurrency = amount.getCurrency();
+		if (!(this.currency.getNamespace().equals(amountCurrency.getNamespace())) || 
+				(this.currency.getNamespace().equals(amountCurrency.getNamespace()) && !(this.currency
+				.getCurrencyCode().equals(amountCurrency.getCurrencyCode()))
+				)
+			) {
 			throw new IllegalArgumentException("Currency mismatch: "
-					+ this.currency + '/' + currency);
+					+ this.currency + '/' + amountCurrency);
 		}
 	}
 
@@ -841,7 +845,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * @see javax.money.MonetaryAmount#adjust(javax.money.AmountAdjuster)
 	 */
 	@Override
-	public MonetaryAmount with(MonetaryAdjuster adjuster) {
+	public MonetaryAmount with(MonetaryOperator adjuster) {
 		return adjuster.apply(this);
 	}
 

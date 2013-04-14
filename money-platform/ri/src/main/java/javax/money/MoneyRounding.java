@@ -20,9 +20,9 @@ import java.util.Currency;
  * @author Anatole Tresch
  * @see RoundingMode
  */
-public final class MoneyRounding implements MonetaryAdjuster{
+public final class MoneyRounding implements MonetaryOperator{
 
-	private static final MonetaryAdjuster DEFAULT_ROUNDING = new DefaultCurrencyRounding();
+	private static final MonetaryOperator DEFAULT_ROUNDING = new DefaultCurrencyRounding();
 	/** The {@link RoundingMode} used. */
 	private final RoundingMode roundingMode;
 	/** The scale to be applied. */
@@ -45,7 +45,7 @@ public final class MoneyRounding implements MonetaryAdjuster{
 		this.roundingMode = roundingMode;
 	}
 
-	public static MonetaryAdjuster of() {
+	public static MonetaryOperator of() {
 		return DEFAULT_ROUNDING;
 	}
 
@@ -57,7 +57,7 @@ public final class MoneyRounding implements MonetaryAdjuster{
 	 *            The currency, which determines the required precision. As
 	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link MonetaryAdjuster} implementing the
+	 * @return a new instance {@link MonetaryOperator} implementing the
 	 *         rounding.
 	 */
 	public static MoneyRounding of(CurrencyUnit currency,
@@ -67,14 +67,14 @@ public final class MoneyRounding implements MonetaryAdjuster{
 	}
 
 	/**
-	 * Creates an {@link MonetaryAdjuster} for rounding {@link MonetaryAmount}
+	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
 	 * instances given a currency.
 	 * 
 	 * @param currency
 	 *            The currency, which determines the required precision. As
 	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link MonetaryAdjuster} implementing the
+	 * @return a new instance {@link MonetaryOperator} implementing the
 	 *         rounding.
 	 */
 	public static MoneyRounding of(CurrencyUnit currency) {
@@ -91,7 +91,7 @@ public final class MoneyRounding implements MonetaryAdjuster{
 	 *            the required scale
 	 * @param rounding
 	 *            the {@link RoundingMode}, not null.
-	 * @return a new instance {@link MonetaryAdjuster} implementing the
+	 * @return a new instance {@link MonetaryOperator} implementing the
 	 *         rounding.
 	 */
 	public static MoneyRounding of(int scale, RoundingMode rounding) {
@@ -110,7 +110,7 @@ public final class MoneyRounding implements MonetaryAdjuster{
 	 * @author Anatole Tresch
 	 */
 	private static final class DefaultCurrencyRounding implements
-			MonetaryAdjuster {
+			MonetaryOperator {
 
 		@Override
 		public MonetaryAmount apply(MonetaryAmount amount) {

@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryOperator;
 import javax.money.MonetaryAmount;
 import javax.money.Money;
 import javax.money.MoneyCurrency;
@@ -110,7 +110,7 @@ public class SmokeTests {
 
 	@Test
 	public void testCurrencyConverter() {
-		MonetaryAdjuster rounding = MoneyRounding.of(2, RoundingMode.HALF_UP);
+		MonetaryOperator rounding = MoneyRounding.of(2, RoundingMode.HALF_UP);
 
 		ConversionProvider conv = Monetary.getConversionProvider();
 		assertNotNull(conv);

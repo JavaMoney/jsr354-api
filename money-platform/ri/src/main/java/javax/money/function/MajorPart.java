@@ -11,7 +11,7 @@ package javax.money.function;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryOperator;
 import javax.money.MonetaryAmount;
 
 /**
@@ -20,7 +20,7 @@ import javax.money.MonetaryAmount;
  * 
  * @author Anatole Tresch
  */
-public final class MajorPart implements MonetaryAdjuster {
+public final class MajorPart implements MonetaryOperator {
 
 	/**
 	 * The shared instance of this class.
@@ -124,4 +124,6 @@ public final class MajorPart implements MonetaryAdjuster {
 		return number.setScale(0, RoundingMode.DOWN).intValueExact();
 	}
 
+
 }
+

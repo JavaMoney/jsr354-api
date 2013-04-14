@@ -10,8 +10,8 @@ package javax.money.function;
 
 import java.math.BigDecimal;
 
-import javax.money.MonetaryAdjuster;
 import javax.money.MonetaryAmount;
+import javax.money.MonetaryOperator;
 
 /**
  * This class allows to extract the minor part of a {@link MonetaryAmount}
@@ -19,7 +19,7 @@ import javax.money.MonetaryAmount;
  * 
  * @author Anatole Tresch
  */
-public final class MinorPart implements MonetaryAdjuster {
+public final class MinorPart implements MonetaryOperator {
 
 	/**
 	 * The shared instance of this class.

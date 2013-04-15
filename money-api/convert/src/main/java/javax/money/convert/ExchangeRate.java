@@ -80,7 +80,7 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	}
 
 	/**
-	 * Evaluate a BigDecimal from a NUmber preserving maximal information.
+	 * Evaluate a BigDecimal from a Number preserving maximal information.
 	 * 
 	 * @param num
 	 *            the number

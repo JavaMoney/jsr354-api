@@ -84,7 +84,7 @@ public class SmokeTests {
 		logger.debug("Currencies for US: " + currencies);
 		currencies = MonetaryCurrencies.getAll(Locale.CHINA);
 		logger.debug("Currencies for CHINA: " + currencies);
-		currencies = MonetaryCurrencies.getAll(Locale.GERMANY);
+		currencies = MonetaryCurrencies.getAll(Locale.ROOT);
 		logger.debug("Currencies for ROOT (undefined): " + currencies);
 	}
 

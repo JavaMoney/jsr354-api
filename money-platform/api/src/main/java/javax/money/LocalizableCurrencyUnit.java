@@ -16,6 +16,8 @@ import java.util.Locale;
  * 
  * @author Anatole Tresch
  * @author Werner Keil
+ * 
+ * @deprecated likely to be merged with CurrencyUnit
  */
 public interface LocalizableCurrencyUnit extends CurrencyUnit {
 	

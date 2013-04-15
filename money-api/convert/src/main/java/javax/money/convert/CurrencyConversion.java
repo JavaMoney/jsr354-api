@@ -9,7 +9,6 @@
 package javax.money.convert;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
 
 /**

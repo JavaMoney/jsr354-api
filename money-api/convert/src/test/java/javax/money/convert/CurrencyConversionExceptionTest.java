@@ -1,8 +1,6 @@
 package javax.money.convert;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.fail;
-
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 

@@ -9,15 +9,15 @@ The current projcet structure is as follows:
 SE scope:
 ---------
 * money-platform: contains the api/code targeting JDK SE 9.
-  * api: contains the api targeting for JDK SE 9.
-  * ri: contains the reference implementation targeting for JDK SE 9.
+  * api: contains the api targeting JDK SE 9.
+  * ri: contains the reference implementation targeting JDK SE 9.
 
 Standalone scope
 ----------------
 * money-api: contains the standalone API part
   * convert: currency conversion
-  * format: foramtting and parsing
-  * provider: accessors
+  * format: formatting and parsing
+  * provider: accessors / SPI
   * ext: extensions
 * money-impl: contains the standalone implementation artifacts
   * ri: contains the reference implementation, runnable on SE 7 or later

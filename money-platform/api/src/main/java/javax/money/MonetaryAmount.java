@@ -369,6 +369,26 @@ public interface MonetaryAmount {
 	public MonetaryAmount from(Number amount);
 
 	/**
+	 * Returns a copy of this monetary value with the specified amount.
+	 * <p>
+	 * The returned instance will have a currency as returned by
+	 * {@link #getCurrency()} and the new amount. No rounding is performed on
+	 * the amount to be added.
+	 * <p>
+	 * This instance is immutable and unaffected by this method.
+	 * 
+	 * @param currency
+	 *            the target currency
+	 * @param amount
+	 *            the amount to set in the returned instance, not null
+	 * @return the new instance with the input amount and currency set, never
+	 *         null
+	 * @throws ArithmeticException
+	 *             if the scale of the amount is too large
+	 */
+	public MonetaryAmount from(CurrencyUnit currency, Number amount);
+
+	/**
 	 * Adjust a {@link MonetaryAmount} using the given {@link MonetaryOperator}.
 	 * 
 	 * @param adjuster
@@ -376,7 +396,6 @@ public interface MonetaryAmount {
 	 * @return the adjusted value, never null.
 	 */
 	public MonetaryAmount with(MonetaryOperator adjuster);
-
 
 	// -------------------- Introspection and value methods, similar to
 	// java.lang.Number; java.lang.BigDecimal

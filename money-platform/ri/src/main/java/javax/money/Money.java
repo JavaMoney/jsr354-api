@@ -588,6 +588,16 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		checkNumber(amount);
 		return new Money(this.currency, getBigDecimal(amount), this.mathContext);
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.MonetaryAmount#with(CurrencyUnit, java.lang.Number)
+	 */
+	public Money from(CurrencyUnit currency, Number amount) {
+		checkNumber(amount);
+		return new Money(currency, getBigDecimal(amount), this.mathContext);
+	}
 
 	/*
 	 * (non-Javadoc)

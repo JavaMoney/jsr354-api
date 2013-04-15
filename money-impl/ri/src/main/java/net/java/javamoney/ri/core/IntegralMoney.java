@@ -452,6 +452,16 @@ public final class IntegralMoney implements MonetaryAmount,
 	public IntegralMoney from(Number number) {
 		return new IntegralMoney(this.currency, number.longValue());
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.MonetaryAmount#with(java.lang.Number)
+	 */
+	@Override
+	public IntegralMoney from(CurrencyUnit currency, Number number) {
+		return new IntegralMoney(currency, number.longValue());
+	}
 
 	/*
 	 * (non-Javadoc)

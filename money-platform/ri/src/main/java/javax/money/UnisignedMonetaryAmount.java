@@ -170,6 +170,11 @@ public final class UnisignedMonetaryAmount implements MonetaryAmount {
 	}
 
 	@Override
+	public UnisignedMonetaryAmount from(CurrencyUnit currency, Number amount) {
+		return of(this.amount.from(currency, amount));
+	}
+
+	@Override
 	public UnisignedMonetaryAmount with(MonetaryOperator adjuster) {
 		return of(this.amount.with(adjuster));
 	}

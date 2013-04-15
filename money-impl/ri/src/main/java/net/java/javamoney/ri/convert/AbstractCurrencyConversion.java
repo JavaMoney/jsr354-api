@@ -8,6 +8,8 @@
  */
 package net.java.javamoney.ri.convert;
 
+import java.math.BigDecimal;
+
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
 import javax.money.convert.CurrencyConversion;
@@ -50,7 +52,7 @@ public abstract class AbstractCurrencyConversion implements CurrencyConversion {
 			throw new CurrencyConversionException(amount.getCurrency(),
 					rate.getTerm(), null);
 		}
-		return amount.multiply(rate.getFactor());
+		return amount.from(rate.getTerm(), amount.multiply(rate.getFactor()).asType(BigDecimal.class));
 	}
 
 	/*

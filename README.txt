@@ -4,12 +4,12 @@ JSR 354 provides an API for representing, transporting, and performing comprehen
 See the home page for more details:
 http://jcp.org/en/jsr/detail?id=354
 
-The current projcet structure is as follows:
+The current project structure is as follows:
 
 SE scope:
 ---------
-* money-platform: contains the api/code targeting JDK SE 9.
-  * api: contains the api targeting JDK SE 9.
+* money-platform: contains the API/code targeting JDK SE 9.
+  * api: contains the API targeting JDK SE 9.
   * ri: contains the reference implementation targeting JDK SE 9.
 
 Standalone scope

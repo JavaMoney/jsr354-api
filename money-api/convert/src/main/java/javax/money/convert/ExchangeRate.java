@@ -414,20 +414,27 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	}
 
 	/**
-	 * Builder for creating new instances of {@link CurrencyExchangeRate}. Note
-	 * that instances of this class are not thread-safe.
+	 * Builder for creating new instances of {@link ExchangeRate}. Note that
+	 * instances of this class are not thread-safe.
 	 * 
 	 * @author Anatole Tresch
 	 */
 	public static class Builder {
-
+		/** The rate type. */
 		private ExchangeRateType exchangeRateType;
+		/** The base currency. */
 		private CurrencyUnit base;
+		/** The term currency. */
 		private CurrencyUnit term;
+		/** The conversion factor. */
 		private BigDecimal factor;
+		/** The rate provider. */
 		private String provider;
+		/** The timestamp of the rate. */
 		private Long validFrom;
+		/** The ending validity range. */
 		private Long validUntil;
+		/** The chain of invovled rates. */
 		private ExchangeRate[] rateChain;
 
 		/**

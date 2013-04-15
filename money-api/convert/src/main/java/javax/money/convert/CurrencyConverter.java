@@ -13,8 +13,10 @@ import javax.money.MonetaryAmount;
 
 /**
  * This interface defines access to the exchange conversion logic of JavaMoney.
- * It is provided by the Money singleton. It is provided by the Money singleton.
+ * It is provided by a {@link ConversionProvider} implementation.
  * 
+ * @see ConversionProvider
+ * @see MonetaryConversion
  * @author Anatole Tresch
  */
 public interface CurrencyConverter {
@@ -28,72 +30,73 @@ public interface CurrencyConverter {
 	public ExchangeRateType getExchangeRateType();
 
 	/**
-	 * Method that converts the source {@code double} amount in source
-	 * {@link CurrencyUnit} to an {@link MonetaryAmount} with the given target
-	 * {@link CurrencyUnit}.
+	 * Method that converts the source amount to an {@link MonetaryAmount} in
+	 * the given target {@link CurrencyUnit}.
 	 * 
 	 * @param amount
-	 *            The amount.
-	 * @param sourceCurrency
-	 *            The source currency
+	 *            The amount to be converted.
 	 * @param targetCurrency
 	 *            The target currency
-	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried,
-	 *            or {@code null}.
 	 * @return the converted {@code value} as {@code double}.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target);
+	public MonetaryAmount convert(MonetaryAmount amount,
+			CurrencyUnit targetCurrency);
 
 	/**
-	 * Method that converts the source {@code double} amount in source
-	 * {@link CurrencyUnit} to an {@link MonetaryAmount} with the given target
-	 * {@link CurrencyUnit}.
+	 * Method that converts the source amount to an {@link MonetaryAmount} in
+	 * the given target {@link CurrencyUnit}.
 	 * 
 	 * @param amount
 	 *            The amount.
-	 * @param sourceCurrency
-	 *            The source currency
 	 * @param targetCurrency
 	 *            The target currency
 	 * @param timestamp
 	 *            the target timestamp for which the exchange rate is queried,
-	 *            or {@code null}.
-	 * @return the converted {@code value} as {@code double}.
+	 *            or {@code null}, for acquiring a current rate.
+	 * @return the converted {@code MonetaryAmount}, never {@code null}.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
-			Long timestamp);
+	public MonetaryAmount convert(MonetaryAmount amount,
+			CurrencyUnit targetCurrency, Long timestamp);
 
 	/**
-	 * Access a {@link FixedCurrencyConversion} instance for the corresponding
-	 * current {@link ExchangeRate} defined by the parameters passed.
+	 * Access a {@link CurrencyConversion} instance for the corresponding
+	 * current {@link ExchangeRate} defined by the parameters passed.<br/>
+	 * The returned {@link CurrencyConversion} can be passed to
+	 * {@link MonetaryAmount#with(javax.money.MonetaryOperator)} for converting
+	 * a {@link MonetaryAmount}.
 	 * 
+	 * @see CurrencyConversion
+	 * @see FixedCurrencyConversion
 	 * @param base
 	 *            The base currency
 	 * @param term
 	 *            The terminating currency
-	 * @return The according {@link FixedCurrencyConversion}, never null.
+	 * @return The according {@link CurrencyConversion}, never null.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public CurrencyConversion getConversion(CurrencyUnit base,
-			CurrencyUnit term);
+	public CurrencyConversion getConversion(CurrencyUnit base, CurrencyUnit term);
 
 	/**
-	 * Access a {@link FixedCurrencyConversion} instance for the corresponding
-	 * current {@link ExchangeRate} defined by the parameters passed.
+	 * Access a {@link CurrencyConversion} instance for the corresponding
+	 * current {@link ExchangeRate} defined by the parameters passed.<br/>
+	 * The returned {@link CurrencyConversion} can be passed to
+	 * {@link MonetaryAmount#with(javax.money.MonetaryOperator)} for converting
+	 * a {@link MonetaryAmount}.
 	 * 
+	 * @see CurrencyConversion
+	 * @see FixedCurrencyConversion
 	 * @param base
 	 *            The base currency
 	 * @param term
 	 *            The terminating currency
 	 * @param targetTimestamp
 	 *            for which the conversion is targeted.
-	 * @return The according {@link FixedCurrencyConversion}, never null.
+	 * @return The according {@link CurrencyConversion}, never null.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
@@ -104,11 +107,17 @@ public interface CurrencyConverter {
 	 * Access a {@link CurrencyConversion} instance that is bound to the given
 	 * terminating {@link CurrencyUnit}. The base {@link CurrencyUnit} is
 	 * evaluated from the {@link MonetaryAmount} passed within its
-	 * {@link CurrencyConversion#apply(MonetaryAmount)} method.
+	 * {@link CurrencyConversion#apply(MonetaryAmount)} method. The rate
+	 * required for conversion then is accessed lazily from the corresponding
+	 * (owning) {@link ConversionProvider}.<br/>
+	 * The returned {@link CurrencyConversion} can be passed to
+	 * {@link MonetaryAmount#with(javax.money.MonetaryOperator)} for converting
+	 * a {@link MonetaryAmount}.
 	 * 
+	 * @see ConversionProvider
 	 * @param term
 	 *            The terminating currency
-	 * @return The according {@link FixedCurrencyConversion}, never null.
+	 * @return The according {@link CurrencyConversion}, never null.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
@@ -118,12 +127,17 @@ public interface CurrencyConverter {
 	 * Access a {@link CurrencyConversion} instance that is bound to the given
 	 * terminating {@link CurrencyUnit}. The base {@link CurrencyUnit} is
 	 * evaluated from the {@link MonetaryAmount} passed within its
-	 * {@link CurrencyConversion#apply(MonetaryAmount)} method.
+	 * {@link CurrencyConversion#apply(MonetaryAmount)} method. The rate
+	 * required for conversion then is accessed lazily from the corresponding
+	 * (owning) {@link ConversionProvider}.<br/>
+	 * The returned {@link CurrencyConversion} can be passed to
+	 * {@link MonetaryAmount#with(javax.money.MonetaryOperator)} for converting
+	 * a {@link MonetaryAmount}.
 	 * 
 	 * @param term
 	 *            The terminating currency
-	 *            
-	 * @return The according {@link FixedCurrencyConversion}, never null.
+	 * 
+	 * @return The according {@link CurrencyConversion}, never null.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */

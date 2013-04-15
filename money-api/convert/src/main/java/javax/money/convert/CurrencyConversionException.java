@@ -28,7 +28,7 @@ public class CurrencyConversionException extends MonetaryException {
 	/** Target currency. */
 	private CurrencyUnit target;
 
-	/** The acquired target timestamp. */
+	/** The acquired target timestamp, may be null. */
 	private Long timestamp;
 
 	/**

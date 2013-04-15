@@ -9,19 +9,17 @@
 package javax.money.convert;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
 
 /**
  * This interface defines a {@link CurrencyConversion} that is converting to a
  * specific target {@link CurrencyUnit}. Each instance of this class is bound to
  * a specific {@link ConversionProvider}, a term {@link CurrencyUnit} and a
- * target timestamp.
+ * (optional) target timestamp.
  * 
  * @author Anatole Tresch
  */
 public interface CurrencyConversion extends MonetaryOperator {
-
 
 	/**
 	 * Access the terminating {@link CurrencyUnit} of this conversion instance.

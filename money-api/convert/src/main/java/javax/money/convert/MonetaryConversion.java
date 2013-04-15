@@ -16,18 +16,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This interface defines access to the exchange and currency conversion logic
+ * This singleton defines access to the exchange and currency conversion logic
  * of JavaMoney.
  * 
  * @author Anatole Tresch
  */
 public final class MonetaryConversion {
+	/**
+	 * The spi currently active, use {@link ServiceLoader} to register an
+	 * altetrnate implementaiont.
+	 */
+	private static final MonetaryConversionSpi MONETARY_CONVERSION_SPI = loadMonetaryConversionSpi();
 
-	private static MonetaryConversionSpi monetaryConversionSpi = loadMonetaryConversionSpi();
-
+	/**
+	 * Private singleton constructor.
+	 */
 	private MonetaryConversion() {
 	}
 
+	/**
+	 * Method that loads the {@link MonetaryConversionSpi} on class loading.
+	 * 
+	 * @return the instance ot be registered into the shared variable.
+	 */
 	private static MonetaryConversionSpi loadMonetaryConversionSpi() {
 		try {
 			// try loading directly from ServiceLoader
@@ -44,11 +55,39 @@ public final class MonetaryConversion {
 		return new DefaultMonetaryConversionSpi();
 	}
 
+	/**
+	 * This is the spi interface to be implemented that determines how the
+	 * different components are loaded and managed.
+	 * 
+	 * @author Anatole Tresch
+	 */
 	public static interface MonetaryConversionSpi {
+		/**
+		 * Access an instance of {@link ConversionProvider}.
+		 * 
+		 * @param type
+		 *            The rate type.
+		 * @return the provider, if it is a registered rate type, never null.
+		 * @see #isSupportedExchangeRateType(ExchangeRateType)
+		 */
 		ConversionProvider getConversionProvider(ExchangeRateType type);
 
+		/**
+		 * Get all currently registered rate types.
+		 * 
+		 * @return all currently registered rate types
+		 */
 		Collection<ExchangeRateType> getSupportedExchangeRateTypes();
 
+		/**
+		 * Allows to quickly check, if a rate type is supported.
+		 * 
+		 * @param type
+		 *            the rate type
+		 * @return true, if the rate is supported, meaning an according
+		 *         {@link ConversionProvider} can be loaded.
+		 * @see #getConversionProvider(ExchangeRateType)
+		 */
 		boolean isSupportedExchangeRateType(ExchangeRateType type);
 	}
 
@@ -63,7 +102,7 @@ public final class MonetaryConversion {
 	 * @return the {@link ExchangeRateType} if this instance.
 	 */
 	public static ConversionProvider getConversionProvider(ExchangeRateType type) {
-		ConversionProvider provider = monetaryConversionSpi
+		ConversionProvider provider = MONETARY_CONVERSION_SPI
 				.getConversionProvider(type);
 		if (provider == null) {
 			throw new IllegalArgumentException("Unsupported Conversion Type: "
@@ -80,7 +119,7 @@ public final class MonetaryConversion {
 	 *         {@code null}.
 	 */
 	public static Collection<ExchangeRateType> getSupportedExchangeRateTypes() {
-		Collection<ExchangeRateType> rates = monetaryConversionSpi
+		Collection<ExchangeRateType> rates = MONETARY_CONVERSION_SPI
 				.getSupportedExchangeRateTypes();
 		if (rates == null) {
 			throw new IllegalStateException(
@@ -100,23 +139,41 @@ public final class MonetaryConversion {
 	 *         {@link MonetaryConversion} instance.
 	 */
 	public static boolean isSupportedExchangeRateType(ExchangeRateType type) {
-		return monetaryConversionSpi.isSupportedExchangeRateType(type);
+		return MONETARY_CONVERSION_SPI.isSupportedExchangeRateType(type);
 	}
 
+	/**
+	 * This class represents the default implementation of
+	 * {@link MonetaryConversionSpi} used always when no alternative is
+	 * registered within the {@link ServiceLoader}.
+	 * 
+	 * @author Anatole Tresch
+	 * 
+	 */
 	private final static class DefaultMonetaryConversionSpi implements
 			MonetaryConversionSpi {
 
+		/**
+		 * The default does not provide any {@link ConversionProvider} as of
+		 * now.
+		 */
 		@Override
 		public ConversionProvider getConversionProvider(ExchangeRateType type) {
 			throw new IllegalArgumentException(
 					"Unsupported ExchangeRateType type: " + type);
 		}
 
+		/**
+		 * Returns always an empty collection.
+		 */
 		@Override
 		public Collection<ExchangeRateType> getSupportedExchangeRateTypes() {
 			return Collections.emptySet();
 		}
 
+		/**
+		 * Returns always false.
+		 */
 		@Override
 		public boolean isSupportedExchangeRateType(ExchangeRateType type) {
 			return false;

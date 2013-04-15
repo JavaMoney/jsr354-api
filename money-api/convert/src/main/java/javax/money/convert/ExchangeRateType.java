@@ -33,6 +33,13 @@ public final class ExchangeRateType implements Serializable,
 	/** The cache of types. */
 	private static final Map<String, ExchangeRateType> CACHED_INSTANCES = new ConcurrentHashMap<String, ExchangeRateType>();
 
+	/**
+	 * Creates a new instance.
+	 * 
+	 * @param id
+	 *            The rate identifier.
+	 * @return The new rate type.
+	 */
 	public static ExchangeRateType of(String id) {
 		if (id == null) {
 			throw new IllegalArgumentException("id required.");
@@ -45,6 +52,11 @@ public final class ExchangeRateType implements Serializable,
 		return instance;
 	}
 
+	/**
+	 * Get all cached rate types.
+	 * 
+	 * @return all cached rate types.
+	 */
 	public static Collection<ExchangeRateType> getTypes() {
 		return CACHED_INSTANCES.values();
 	}
@@ -116,6 +128,11 @@ public final class ExchangeRateType implements Serializable,
 		return "ExchangeRateType [id=" + id + "]";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
 	@Override
 	public int compareTo(ExchangeRateType o) {
 		if (o == null) {

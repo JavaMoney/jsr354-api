@@ -24,4 +24,3 @@ Standalone scope
   * cdi: contains alternate loader implementation using standalone CDI (weld)
   * java-ee: contains alternate loader targeting EE 6 CDI container integration
 * money-tck: contains the technical compatibility kit (TCK)
-

@@ -31,7 +31,7 @@ import javax.money.MoneyCurrency;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
+import net.java.javamoney.ri.core.spi.CurrencyUnitProvideromponentSpi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 @Singleton
-public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
+public class IsoCurrencyOnlineProvider implements CurrencyUnitProvideromponentSpi {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(IsoCurrencyOnlineProvider.class);

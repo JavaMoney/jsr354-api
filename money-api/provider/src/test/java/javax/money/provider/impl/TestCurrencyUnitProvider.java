@@ -12,7 +12,8 @@ import java.util.Collection;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
-import javax.money.provider.CurrencyUnitProvider;
+import javax.money.MoneyCurrency;
+import javax.money.provider.CurrencyUnitProviderSpi;
 
 /**
  * Empty pseudo implementation for testing only.
@@ -20,58 +21,47 @@ import javax.money.provider.CurrencyUnitProvider;
  * @author Anatole Tresch
  * 
  */
-public class TestCurrencyUnitProvider implements CurrencyUnitProvider {
-
-	@Override
-	public CurrencyUnit get(String namespace, String code) {
-		// empty implementation
-		return null;
-	}
+public class TestCurrencyUnitProvider implements CurrencyUnitProviderSpi {
 
 	@Override
 	public String getDefaultNamespace() {
-		// TODO Auto-generated method stub
-		return null;
+		return MoneyCurrency.ISO_NAMESPACE;
 	}
 
 	@Override
-	public boolean isNamespaceAvailable(String namespace) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Collection<String> getNamespaces() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isAvailable(String code) {
+	public boolean isNamespaceAvailable(String namespace, Long timestamp) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean isAvailable(String namespace, String code) {
+	public Collection<String> getNamespaces(Long timestamp) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CurrencyUnit get(String namespace, String code, Long timestamp) {
+		if (MoneyCurrency.ISO_NAMESPACE.equals(namespace) && timestamp == null) {
+			return MoneyCurrency.of(code);
+		}
+		return null;
+	}
+
+	@Override
+	public boolean isAvailable(String namespace, String code, Long timestamp) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public CurrencyUnit get(String code) {
+	public Collection<CurrencyUnit> getAll(String namespace, Long timestamp) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Collection<CurrencyUnit> getAll(String namespace) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Collection<CurrencyUnit> getAll(Locale locale) {
+	public Collection<CurrencyUnit> getAll(Locale locale, Long timestamp) {
 		// TODO Auto-generated method stub
 		return null;
 	}

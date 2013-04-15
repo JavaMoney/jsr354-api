@@ -18,22 +18,26 @@
  */
 package net.java.javamoney.ri.format.provider.format;
 
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.money.MonetaryAmount;
 import javax.money.MoneyCurrency;
+import javax.money.format.ItemFormat;
 import javax.money.format.ItemFormatException;
-import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.common.AbstractRiComponent;
-import net.java.javamoney.ri.format.spi.ItemFormatterFactorySpi;
+import net.java.javamoney.ri.format.spi.ItemFormatFactorySpi;
 
-public class IsoAmountFormatterFactory extends AbstractRiComponent implements
-		ItemFormatterFactorySpi<MonetaryAmount> {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class IsoAmountFormatterFactory implements
+		ItemFormatFactorySpi<MonetaryAmount> {
+
+	private static final Logger LOG = LoggerFactory
+			.getLogger(IsoAmountFormatterFactory.class);
 
 	@Override
 	public Class<MonetaryAmount> getTargetClass() {
@@ -41,18 +45,23 @@ public class IsoAmountFormatterFactory extends AbstractRiComponent implements
 	}
 
 	@Override
-	public Enumeration<String> getSupportedStyleIds() {
+	public Collection<String> getSupportedStyleIds() {
 		Set<String> supportedRenderTypes = new HashSet<String>();
 		supportedRenderTypes.add(LocalizationStyle.DEFAULT_ID);
-		return Collections.enumeration(supportedRenderTypes);
+		return supportedRenderTypes;
 	}
 
 	@Override
-	public ItemFormatter<MonetaryAmount> getItemFormatter(
-			LocalizationStyle style) throws ItemFormatException {
+	public boolean isSupportedStyle(String styleId) {
+		return getSupportedStyleIds().contains(styleId);
+	}
+
+	@Override
+	public ItemFormat<MonetaryAmount> getItemFormat(LocalizationStyle style)
+			throws ItemFormatException {
 		String namespace = style.getAttribute("namespace", String.class);
 		if (namespace == null) {
-			log.debug("Using default namespace " + MoneyCurrency.ISO_NAMESPACE
+			LOG.debug("Using default namespace " + MoneyCurrency.ISO_NAMESPACE
 					+ " for style: " + style);
 			namespace = MoneyCurrency.ISO_NAMESPACE;
 		}

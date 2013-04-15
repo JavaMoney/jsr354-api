@@ -21,7 +21,9 @@ package net.java.javamoney.ri.format.tokenformatter;
 import java.io.IOException;
 
 import javax.money.format.FormatToken;
+import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
+import javax.money.format.ParseContext;
 
 /**
  * {@link FormatDecorator} that allows to replace the representation of a zero
@@ -65,6 +67,12 @@ public class ZeroValueToken<T extends Number> extends AbstractFormatToken<T> {
 			throw new IllegalStateException("Formatting failed.", e);
 		}
 		return builder.toString();
+	}
+
+	@Override
+	public void parse(ParseContext context, LocalizationStyle style)
+			throws ItemParseException {
+		// not supported...
 	}
 
 }

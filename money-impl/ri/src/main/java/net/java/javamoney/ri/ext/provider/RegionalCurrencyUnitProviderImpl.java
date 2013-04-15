@@ -31,8 +31,8 @@ import javax.money.CurrencyUnit;
 import javax.money.ext.Region;
 import javax.money.ext.RegionalCurrencyUnitProvider;
 
-import net.java.javamoney.ri.common.AbstractRiComponent;
 import net.java.javamoney.ri.ext.spi.RegionalCurrencyUnitProviderSpi;
+import net.java.javamoney.ri.spi.MonetaryLoader;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -41,7 +41,7 @@ import net.java.javamoney.ri.ext.spi.RegionalCurrencyUnitProviderSpi;
  * @author Anatole Tresch
  */
 @Singleton
-public final class RegionalCurrencyUnitProviderImpl extends AbstractRiComponent
+public final class RegionalCurrencyUnitProviderImpl 
 		implements RegionalCurrencyUnitProvider {
 
 	/** Loaded region providers. */
@@ -68,7 +68,7 @@ public final class RegionalCurrencyUnitProviderImpl extends AbstractRiComponent
 	 */
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		List<RegionalCurrencyUnitProviderSpi> loadedList = getSPIProviders(RegionalCurrencyUnitProviderSpi.class);
+		List<RegionalCurrencyUnitProviderSpi> loadedList = MonetaryLoader.getLoader().getComponents(RegionalCurrencyUnitProviderSpi.class);
 		for (RegionalCurrencyUnitProviderSpi provSPI : loadedList) {
 			if (!regionalCurrencyProviders.contains(provSPI)) {
 				this.regionalCurrencyProviders.add(provSPI);

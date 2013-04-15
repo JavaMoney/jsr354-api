@@ -1,133 +1,87 @@
-/*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- * Contributors:
- *    Anatole Tresch - initial implementation.
- */
 package net.java.javamoney.ri.convert.provider;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
-import javax.money.Money;
 import javax.money.convert.ConversionProvider;
+import javax.money.convert.CurrencyConversion;
 import javax.money.convert.CurrencyConversionException;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
-import javax.money.provider.Monetary;
 
+import net.java.javamoney.ri.convert.FixedCurrencyConversion;
+import net.java.javamoney.ri.convert.LazyBoundCurrencyConversion;
 
-/**
- * Implementation of a {@link ConversionProvider} that is simply adapting an
- * existing {@link ExchangeRateProvider}.
- * 
- * @author Anatole Tresch
- */
 public class DefaultCurrencyConverter implements CurrencyConverter {
 
-	private ExchangeRateType exchangeRateType;
+	private ConversionProvider rateProvider;
 
-	public DefaultCurrencyConverter(ExchangeRateType exchangeRateType) {
-		if (exchangeRateType == null) {
-			throw new IllegalArgumentException(
-					"exchangeRateType may not be null.");
+	public DefaultCurrencyConverter(ConversionProvider rateProvider) {
+		if (rateProvider == null) {
+			throw new IllegalArgumentException("rateProvider required.");
 		}
-		this.exchangeRateType = exchangeRateType;
+		this.rateProvider = rateProvider;
 	}
 
 	@Override
 	public ExchangeRateType getExchangeRateType() {
-		return exchangeRateType;
+		return this.rateProvider.getExchangeRateType();
 	}
 
 	@Override
 	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target) {
-		ExchangeRateProvider provider = Monetary.getConversionProvider()
-				.getExchangeRateProvider(exchangeRateType);
-		if (provider == null) {
-			throw new CurrencyConversionException(amount.getCurrency(), target,
-					null, "Undefined exchange rate type: "
-							+ this.exchangeRateType);
-		}
-		ExchangeRate rate = provider.getExchangeRate(amount.getCurrency(),
-				target);
+		ExchangeRate rate = this.rateProvider.getExchangeRate(
+				amount.getCurrency(), target);
 		if (rate == null) {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
 					null, "No rate available.");
 		}
-		return Money.of(target,
-				amount.multiply(rate.getFactor()).asType(Number.class));
+		return new FixedCurrencyConversion(rate).apply(amount);
 	}
 
 	@Override
 	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
 			Long timestamp) {
-		ExchangeRateProvider provider = Monetary.getConversionProvider()
-				.getExchangeRateProvider(exchangeRateType);
-		if (provider == null) {
-			throw new CurrencyConversionException(amount.getCurrency(), target,
-					timestamp, "Undefined exchange rate type: "
-							+ this.exchangeRateType);
-		}
-		ExchangeRate rate = provider.getExchangeRate(amount.getCurrency(),
-				target, timestamp);
+		ExchangeRate rate = this.rateProvider.getExchangeRate(
+				amount.getCurrency(), target, timestamp);
 		if (rate == null) {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
-					timestamp, "Timestamp: " + timestamp);
+					null, "No rate available.");
 		}
-		return Money.of(target,
-				amount.multiply(rate.getFactor()).asType(Number.class));
+		return new FixedCurrencyConversion(rate).apply(amount);
 	}
 
 	@Override
-	public MonetaryAmount convert(Number amount, CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency) {
-		ExchangeRateProvider provider = Monetary.getConversionProvider()
-				.getExchangeRateProvider(exchangeRateType);
-		if (provider == null) {
-			throw new CurrencyConversionException(sourceCurrency,
-					targetCurrency, null, "Undefined exchange rate type: "
-							+ this.exchangeRateType);
-		}
-		ExchangeRate rate = provider.getExchangeRate(sourceCurrency,
-				targetCurrency);
+	public CurrencyConversion getConversion(CurrencyUnit base, CurrencyUnit term) {
+		ExchangeRate rate = this.rateProvider.getExchangeRate(base, term);
 		if (rate == null) {
-			throw new CurrencyConversionException(sourceCurrency,
-					targetCurrency, null);
+			throw new CurrencyConversionException(base, term, null,
+					"No rate available.");
 		}
-		return Money.of(targetCurrency, amount).multiply(rate.getFactor());
+		return new FixedCurrencyConversion(rate);
 	}
 
 	@Override
-	public MonetaryAmount convert(Number amount, CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, Long timestamp) {
-		ExchangeRateProvider provider = Monetary.getConversionProvider()
-				.getExchangeRateProvider(exchangeRateType);
-		if (provider == null) {
-			throw new CurrencyConversionException(sourceCurrency,
-					targetCurrency, timestamp, "Undefined exchange rate type: "
-							+ this.exchangeRateType);
-		}
-		ExchangeRate rate = provider.getExchangeRate(sourceCurrency,
-				targetCurrency, timestamp);
+	public CurrencyConversion getConversion(CurrencyUnit base,
+			CurrencyUnit term, Long targetTimestamp) {
+		ExchangeRate rate = this.rateProvider.getExchangeRate(base, term,
+				targetTimestamp);
 		if (rate == null) {
-			throw new CurrencyConversionException(sourceCurrency,
-					targetCurrency, timestamp, "Timestamp: " + timestamp);
+			throw new CurrencyConversionException(base, term, targetTimestamp,
+					"No rate available.");
 		}
-		return Money.of(targetCurrency, amount).multiply(rate.getFactor());
+		return new FixedCurrencyConversion(rate);
+	}
+
+	@Override
+	public CurrencyConversion getConversion(CurrencyUnit term) {
+		return new LazyBoundCurrencyConversion(term, this.rateProvider);
+	}
+
+	@Override
+	public CurrencyConversion getConversion(CurrencyUnit term,
+			Long targetTimestamp) {
+		return new LazyBoundCurrencyConversion(term, this.rateProvider);
 	}
 
 }

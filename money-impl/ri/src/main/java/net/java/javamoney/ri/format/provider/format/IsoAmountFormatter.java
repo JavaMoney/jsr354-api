@@ -25,14 +25,15 @@ import java.text.DecimalFormatSymbols;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MoneyCurrency;
+import javax.money.format.ItemFormat;
 import javax.money.format.ItemFormatException;
-import javax.money.format.ItemFormatter;
+import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
-import javax.money.provider.Monetary;
+import javax.money.format.MonetaryFormat;
 
 import net.java.javamoney.ri.format.util.StringGrouper;
 
-public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
+public class IsoAmountFormatter implements ItemFormat<MonetaryAmount> {
 
 	private LocalizationStyle style;
 	private LocalizationStyle currencyStyle;
@@ -86,8 +87,8 @@ public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
 
 		if (MoneyCurrency.ISO_NAMESPACE.equals(currencyUnit.getNamespace())) {
 			String currencyString = "";
-			ItemFormatter<CurrencyUnit> cf = Monetary.getItemFormatterFactory()
-					.getItemFormatter(CurrencyUnit.class, currencyStyle);
+			ItemFormat<CurrencyUnit> cf = MonetaryFormat.getItemFormat(
+					CurrencyUnit.class, currencyStyle);
 			// TODO fix grouping for Cores, Lakhs and similar, possibly define
 			// an extension SPI that may be loaded for
 			// special currencies only, thus requiring to override the more
@@ -123,7 +124,8 @@ public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
 							numberString = grouper.group(splitted[0]);
 						}
 						if (splitted.length > 1) {
-							numberString += syms.getDecimalSeparator() + splitted[1];
+							numberString += syms.getDecimalSeparator()
+									+ splitted[1];
 						}
 					} else {
 						numberString = df.format(number).trim();
@@ -160,6 +162,11 @@ public class IsoAmountFormatter implements ItemFormatter<MonetaryAmount> {
 	public void print(Appendable appendable, MonetaryAmount item)
 			throws IOException {
 		appendable.append(format(item));
+	}
+
+	@Override
+	public MonetaryAmount parse(CharSequence text) throws ItemParseException {
+		throw new ItemParseException("Cannot parse amount: not implemented.");
 	}
 
 }

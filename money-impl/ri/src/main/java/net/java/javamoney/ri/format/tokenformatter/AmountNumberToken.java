@@ -20,10 +20,13 @@ package net.java.javamoney.ri.format.tokenformatter;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParsePosition;
 
 import javax.money.MonetaryAmount;
 import javax.money.format.FormatToken;
+import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
+import javax.money.format.ParseContext;
 
 import net.java.javamoney.ri.format.util.StringGrouper;
 
@@ -35,7 +38,8 @@ import net.java.javamoney.ri.format.util.StringGrouper;
  * @param <T>
  *            The item type.
  */
-public class AmountNumberToken<T extends MonetaryAmount> extends AbstractFormatToken<T> {
+public class AmountNumberToken<T extends MonetaryAmount> extends
+		AbstractFormatToken<T> {
 
 	private static final char[] EMPTY_CHAR_ARRAY = new char[0];
 	private static final int[] EMPTY_INT_ARRAY = new int[0];
@@ -154,4 +158,11 @@ public class AmountNumberToken<T extends MonetaryAmount> extends AbstractFormatT
 				.getDecimalFormatSymbols().getDecimalSeparator()));
 	}
 
+	@Override
+	public void parse(ParseContext context, LocalizationStyle style) throws ItemParseException {
+		DecimalFormat format = getNumberFormat(style);
+		ParsePosition pos = new ParsePosition(0);
+		Number number = format.parse(context.getInput().toString(), pos);
+		context.addResult(Number.class, number);
+	}
 }

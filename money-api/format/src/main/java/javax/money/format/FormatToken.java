@@ -20,8 +20,6 @@ package javax.money.format;
 
 import java.io.IOException;
 
-
-
 /**
  * Formats instances of T to a {@link String} or an {@link Appendable}.
  */
@@ -46,6 +44,18 @@ public interface FormatToken<T> {
 	 *             if an IO error occurs
 	 */
 	public void print(Appendable appendable, T item, LocalizationStyle style)
-	throws IOException;
-	
+			throws IOException;
+
+	/**
+	 * Parses an item from the given {@link ParseContext}. Any parsed item
+	 * can be added to the {@link ParseContext} as results.
+	 * 
+	 * @param context
+	 *            the parse context
+	 * @throws ItemParseException
+	 *             thrown, if parsing fails.
+	 */
+	public void parse(ParseContext<T> context, LocalizationStyle style)
+			throws ItemParseException;
+
 }

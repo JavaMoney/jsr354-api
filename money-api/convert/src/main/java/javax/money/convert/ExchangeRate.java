@@ -10,14 +10,11 @@ package javax.money.convert;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryOperator;
-import javax.money.MonetaryAmount;
 
 /**
  * This class models an exchange rate between two currencies.
@@ -82,6 +79,13 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 		this.provider = provider;
 	}
 
+	/**
+	 * Evaluate a BigDecimal from a NUmber preserving maximal information.
+	 * 
+	 * @param num
+	 *            the number
+	 * @return a BigDecimal representing the number.
+	 */
 	private BigDecimal getBigDecimal(Number num) {
 		if (num instanceof BigDecimal) {
 			return (BigDecimal) num;
@@ -248,33 +252,6 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	 */
 	public final Long getValidUntil() {
 		return this.validUntil;
-	}
-
-	/**
-	 * Creates a {@link MonetaryOperator} that is performing conversion as
-	 * defined by this rate instance.
-	 * 
-	 * @return an instance of {@link MonetaryOperator} performing rate
-	 *         conversion from base to term, or vice versa, never null.
-	 * @see ConvertingAdjuster
-	 */
-	public MonetaryOperator asAdjuster() {
-		return new ConvertingAdjuster(this);
-	}
-
-	/**
-	 * Creates a {@link MonetaryOperator} that is performing conversion as
-	 * defined by this rate instance.
-	 * 
-	 * @param mathContext
-	 *            The {@link MathContext} to be used for conversion an rate
-	 *            calculation (e.g. for calculating reverse rates).
-	 * @return an instance of {@link MonetaryOperator} performing rate
-	 *         conversion from base to term, or vice versa, never null.
-	 * @see ConvertingAdjuster
-	 */
-	public MonetaryOperator asAdjuster(MathContext mathContext) {
-		return new ConvertingAdjuster(this).withMathContext(mathContext);
 	}
 
 	/**
@@ -702,104 +679,6 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 			return new ExchangeRate(exchangeRateType, base, term, factor,
 					provider, validFrom, validUntil, rateChain);
 		}
-
-	}
-
-	/**
-	 * Adjuster implementation that models currency conversion, eigther from
-	 * source to term or vice versa, based on the given {@link ExchangeRate}.
-	 * 
-	 * @author Anatole Tresch
-	 */
-	public static final class ConvertingAdjuster implements MonetaryOperator {
-		/** THe underlying exchange rate. */
-		private ExchangeRate rate;
-		/** The MathContext used. */
-		private MathContext mathContext = MathContext.DECIMAL64;
-
-		/**
-		 * Creates a new converting adjuster based on the given
-		 * {@link ExchangeRate}.
-		 * 
-		 * @param rate
-		 *            the base rate, not null.
-		 */
-		public ConvertingAdjuster(ExchangeRate rate) {
-			if (rate == null) {
-				throw new IllegalArgumentException("Rate is required.");
-			}
-			this.rate = rate;
-		}
-
-		/**
-		 * Access the {@link ExchangeRate} this adjuster is based on.
-		 * 
-		 * @return the according rate, never null.
-		 */
-		public ExchangeRate getExchangeRate() {
-			return rate;
-		}
-
-		/**
-		 * Access the {@link MathContext} used by this adjuster.
-		 * 
-		 * @return {@link MathContext} used.
-		 */
-		public MathContext getMathContext() {
-			return mathContext;
-		}
-
-		/**
-		 * Builder styled setter for the {@link MathContext} to be used.
-		 * 
-		 * @param mathContext
-		 *            the {@link MathContext}, not null.
-		 * @return this adjuster instance.
-		 */
-		public ConvertingAdjuster withMathContext(MathContext mathContext) {
-			if (mathContext == null) {
-				throw new IllegalArgumentException("MathContext is required.");
-			}
-			this.mathContext = mathContext;
-			return this;
-		}
-
-		/**
-		 * Adjuster method that converts eighter from source to term or vice
-		 * versa, using the underlying {@link ExchangeRate}.
-		 * 
-		 * @param amount
-		 *            the amount in base or term currency units.
-		 * @return the converted amount in term or base currency.
-		 * @throws CurrencyConversionException
-		 *             if the amount is not convertible.
-		 */
-		public MonetaryAmount apply(MonetaryAmount amount) {
-			CurrencyUnit curr = amount.getCurrency();
-			if (curr.equals(rate.getBase())) {
-				return amount.from(amount.asType(BigDecimal.class)
-						.multiply(rate.getFactor(), this.mathContext));
-			}
-			if (curr.equals(rate.getTerm())) {
-				BigDecimal reverseFactor = BigDecimal.ONE.divide(
-						rate.getFactor(), amount.getScale());
-				return amount.from(amount.asType(BigDecimal.class)
-						.multiply(reverseFactor, MathContext.DECIMAL64));
-			}
-			throw new CurrencyConversionException(rate.getBase(),
-					rate.getTerm(), System.currentTimeMillis(),
-					"Incompatible currency in amount: " + amount.getCurrency());
-		}
-
-		/* (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
-		@Override
-		public String toString() {
-			return "ConvertingAdjuster [rate=" + rate + ", mathContext="
-					+ mathContext + "]";
-		}
-		
 
 	}
 

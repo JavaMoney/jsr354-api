@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.money.provider.Monetary.ComponentLoader;
 
-public class CDIStandaloneLoader implements ComponentLoader {
+public class CDIStandaloneLoader implements
+		net.java.javamoney.ri.spi.MonetaryLoader.ComponentLoader {
 
 	private CDIContainer cdi;
 
@@ -35,7 +35,7 @@ public class CDIStandaloneLoader implements ComponentLoader {
 		cdi = new CDIContainer();
 		cdi.start();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getComponent(Class<T> type,
@@ -87,7 +87,5 @@ public class CDIStandaloneLoader implements ComponentLoader {
 	protected <T> List<T> sortComponents(List<T> list) {
 		return list;
 	}
-
-	
 
 }

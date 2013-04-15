@@ -43,7 +43,7 @@ public interface LocalizableItem {
 	 * 
 	 * @param style
 	 *            the {@link LocalizationStyle} to be attached to this
-	 *            {@link ItemFormatter}, which also contains the target
+	 *            {@link ItemFormat}, which also contains the target
 	 *            {@link Locale} instances to be used, as well as other
 	 *            attributes configuring this instance.
 	 * @return the formatted {@link String}
@@ -83,7 +83,7 @@ public interface LocalizableItem {
 	 *            the appendable to add to, not null
 	 * @param style
 	 *            the {@link LocalizationStyle} to be attached to this
-	 *            {@link ItemFormatter}, which also contains the target
+	 *            {@link ItemFormat}, which also contains the target
 	 *            {@link Locale} instances to be used, as well as other
 	 *            attributes configuring this instance.
 	 * @throws UnsupportedOperationException

@@ -25,8 +25,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.money.provider.Monetary;
-
 /**
  * Regions can be used to segregate or access artifacts (e.g. currencies) either
  * based on geographical, or commercial aspects (e.g. legal units).

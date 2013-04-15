@@ -19,49 +19,49 @@
  */
 package net.java.javamoney.ri.core.spi;
 
-import java.util.Enumeration;
-
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryOperator;
-
-/**
- * This instance provides default {@link Rounding}, e.g. for ISO currencies.
- * 
- * @author Anatole Tresch
- */
-public interface RoundingProviderSpi {
-
-	/**
-	 * Access the {@link Rounding} by id.
-	 * 
-	 * @param name
-	 *            the rounding's id. not null.
-	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
-	 *         {@code null} is returned.
-	 */
-	public MonetaryOperator getRounding(String name);
-
-	/**
-	 * Access the ids, defined by this provider SPI implementation.
-	 * 
-	 * @return the its provided, or {@code null}, when no named {@link Rounding}
-	 *         instances are provided by this implementation.
-	 */
-	public Enumeration<String> getRoundingIds();
-
-	/**
-	 * Access the {@link Rounding} for a given {@link CurrencyUnit} and
-	 * timestamp.
-	 * 
-	 * @param currency
-	 *            the currency instance. not null.
-	 * @param timestamp
-	 *            the target timestamp for the {@link Rounding}, or {@code null}
-	 *            for the current UTC time.
-	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
-	 *         it should be created/registered based on
-	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
-	 */
-	public MonetaryOperator getRounding(CurrencyUnit currency, Long timestamp);
-
-}
+//import java.util.Enumeration;
+//
+//import javax.money.CurrencyUnit;
+//import javax.money.MonetaryOperator;
+//
+///**
+// * This instance provides default {@link Rounding}, e.g. for ISO currencies.
+// * 
+// * @author Anatole Tresch
+// */
+//public interface RoundingProviderSpi {
+//
+//	/**
+//	 * Access the {@link Rounding} by id.
+//	 * 
+//	 * @param name
+//	 *            the rounding's id. not null.
+//	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
+//	 *         {@code null} is returned.
+//	 */
+//	public MonetaryOperator getRounding(String name);
+//
+//	/**
+//	 * Access the ids, defined by this provider SPI implementation.
+//	 * 
+//	 * @return the its provided, or {@code null}, when no named {@link Rounding}
+//	 *         instances are provided by this implementation.
+//	 */
+//	public Enumeration<String> getRoundingIds();
+//
+//	/**
+//	 * Access the {@link Rounding} for a given {@link CurrencyUnit} and
+//	 * timestamp.
+//	 * 
+//	 * @param currency
+//	 *            the currency instance. not null.
+//	 * @param timestamp
+//	 *            the target timestamp for the {@link Rounding}, or {@code null}
+//	 *            for the current UTC time.
+//	 * @return the {@link Rounding}. If no explicit {@link Rounding} is defined,
+//	 *         it should be created/registered based on
+//	 *         {@link CurrencyUnit#getDefaultFractionDigits()}.
+//	 */
+//	public MonetaryOperator getRounding(CurrencyUnit currency, Long timestamp);
+//
+//}

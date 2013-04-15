@@ -8,59 +8,103 @@
  */
 package javax.money.convert;
 
-import java.util.Enumeration;
+import javax.money.CurrencyUnit;
+import javax.money.MonetaryAmount;
+import javax.money.MonetaryOperator;
 
 /**
- * This interface defines access to the exchange and currency conversion logic
- * of JavaMoney.
+ * This interface defines access to the exchange conversion logic of JavaMoney.
+ * It is provided by the Money singleton. It is provided by the Money singleton.
  * 
  * @author Anatole Tresch
  */
 public interface ConversionProvider {
 
 	/**
-	 * Access an instance of {@link CurrencyConverter} for the given
-	 * {@link ExchangeRateType}.
+	 * Access the {@link ExchangeRateType} for this {@link ConversionProvider}
+	 * .
 	 * 
-	 * @param type
-	 *            the exchange rate type that this provider instance is
-	 *            providing data for, not {@code null}.
-	 * 
-	 * @return the {@link ExchangeRateType} if this instance.
+	 * @return the {@link ExchangeRateType}, never null.
 	 */
-	public CurrencyConverter getCurrencyConverter(ExchangeRateType type);
+	public ExchangeRateType getExchangeRateType();
 
 	/**
-	 * Access an instance of {@link ExchangeRateProvider} for the given
-	 * {@link ExchangeRateType}.
+	 * Checks if an exchange of a currency is defined.
 	 * 
 	 * @param type
-	 *            the exchange rate type that this provider instance is
-	 *            providing data for, not {@code null}.
-	 * 
-	 * @return the {@link ExchangeRateType} if this instance.
+	 *            the exchange rate type required that this provider instance is
+	 *            providing data for.
+	 * @param source
+	 *            the source currency
+	 * @param target
+	 *            the target currency
+	 * @return true, if such an exchange is currently defined.
 	 */
-	public ExchangeRateProvider getExchangeRateProvider(ExchangeRateType type);
+	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target);
 
 	/**
-	 * Return all supported {@link ExchangeRateType} instances for which
-	 * {@link ExchangeRateProvider} instances can be obtained.
+	 * Checks if an exchange of a currency is defined.
 	 * 
-	 * @return all supported {@link ExchangeRateType} instances, never
-	 *         {@code null}.
+	 * @param source
+	 *            the source currency
+	 * @param target
+	 *            the target currency
+	 * @param timestamp
+	 *            the target timestamp for which the exchange rate is queried,
+	 *            or {@code null}.
+	 * @return true, if such an exchange is currently defined.
 	 */
-	public Enumeration<ExchangeRateType> getSupportedExchangeRateTypes();
+	public boolean isAvailable(CurrencyUnit CurrencyUnit, CurrencyUnit target,
+			Long timestamp);
 
 	/**
-	 * CHecks if a {@link ExchangeRateProvider} can be accessed for the given
-	 * {@link ExchangeRateType}.
+	 * Get an {@link ConversionRate} for a given timestamp (including historic
+	 * rates).
 	 * 
-	 * @param type
-	 *            the required {@link ExchangeRateType}, not {@code null}.
-	 * @return true, if a {@link ExchangeRateProvider} for this
-	 *         {@link ExchangeRateType} can be obtained from this
-	 *         {@link ConversionProvider} instance.
+	 * @param sourceCurrency
+	 *            The source currency
+	 * @param targetCurrency
+	 *            The target currency
+	 * @param timestamp
+	 *            the target timestamp for which the exchange rate is queried,
+	 *            or {@code null}.
+	 * @return the matching {@link ExchangeRate}, or {@code null}.
 	 */
-	public boolean isSupportedExchangeRateType(ExchangeRateType type);
+	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
+			CurrencyUnit targetCurrency, Long timestamp);
+
+	/**
+	 * Access a exchange rate using the given currencies. The rate may be,
+	 * depending on the data provider, be real-time or deferred.
+	 * 
+	 * @param source
+	 *            source currency.
+	 * @param target
+	 *            target currency.
+	 * @return the matching {@link ExchangeRate}, or {@code null}.
+	 */
+	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target);
+
+	/**
+	 * The method reverses the exchange rate to a rate mapping from target to
+	 * source. Hereby the factor must <b>not</b> be recalculated as
+	 * {@code 1/oldFactor}, since typically reverse rates are not symmetric in
+	 * most cases.
+	 * 
+	 * @return the matching reversed {@link ExchangeRate}, or {@code null}.
+	 */
+	public ExchangeRate getReversed(ExchangeRate rate);
+
+	/**
+	 * Access a {@link CurrencyConverter} that can be applied as a
+	 * {@link MonetaryOperator} to an amount.
+	 * 
+	 * @return a new instance of an corresponding {@link CurrencyConversion},
+	 *         never null.
+	 * @throws CurrencyConversionException
+	 *             If the required target {@link CurrencyUnit} is not supported.
+	 */
+	public CurrencyConverter getConverter();
+
 
 }

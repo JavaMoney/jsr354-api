@@ -28,45 +28,9 @@ public interface CurrencyConverter {
 	public ExchangeRateType getExchangeRateType();
 
 	/**
-	 * Method that converts the source {@link MonetaryAmount} to an
-	 * {@link MonetaryAmount} with the given target {@link CurrencyUnit}.<br/>
-	 * By default this method should use a real time conversion, but may also
-	 * fall back to deferred data.
-	 * 
-	 * @param amount
-	 *            The source amount
-	 * @param target
-	 *            The target currency
-	 * @return The converted amount, never null.
-	 * @throws CurrencyConversionException
-	 *             if conversion failed, or the required data is not available.
-	 */
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target);
-
-	/**
-	 * Method that converts the source {@link MonetaryAmount} to an
-	 * {@link MonetaryAmount} with the given target {@link CurrencyUnit}.
-	 * 
-	 * @param amount
-	 *            The source amount
-	 * @param target
-	 *            The target currency
-	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried,
-	 *            or {@code null}.
-	 * @return The converted amount, never null.
-	 * @throws CurrencyConversionException
-	 *             if conversion failed, or the required data is not available.
-	 */
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
-			Long timestamp);
-
-	/**
 	 * Method that converts the source {@code double} amount in source
 	 * {@link CurrencyUnit} to an {@link MonetaryAmount} with the given target
-	 * {@link CurrencyUnit}.<br/>
-	 * By default this method should use a real time conversion, but may also
-	 * fall back to deferred data.
+	 * {@link CurrencyUnit}.
 	 * 
 	 * @param amount
 	 *            The amount.
@@ -74,12 +38,14 @@ public interface CurrencyConverter {
 	 *            The source currency
 	 * @param targetCurrency
 	 *            The target currency
+	 * @param timestamp
+	 *            the target timestamp for which the exchange rate is queried,
+	 *            or {@code null}.
 	 * @return the converted {@code value} as {@code double}.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public MonetaryAmount convert(Number amount, CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency);
+	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target);
 
 	/**
 	 * Method that converts the source {@code double} amount in source
@@ -99,7 +65,69 @@ public interface CurrencyConverter {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public MonetaryAmount convert(Number amount, CurrencyUnit source,
-			CurrencyUnit target, Long timestamp);
+	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
+			Long timestamp);
+
+	/**
+	 * Access a {@link FixedCurrencyConversion} instance for the corresponding
+	 * current {@link ExchangeRate} defined by the parameters passed.
+	 * 
+	 * @param base
+	 *            The base currency
+	 * @param term
+	 *            The terminating currency
+	 * @return The according {@link FixedCurrencyConversion}, never null.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public CurrencyConversion getConversion(CurrencyUnit base,
+			CurrencyUnit term);
+
+	/**
+	 * Access a {@link FixedCurrencyConversion} instance for the corresponding
+	 * current {@link ExchangeRate} defined by the parameters passed.
+	 * 
+	 * @param base
+	 *            The base currency
+	 * @param term
+	 *            The terminating currency
+	 * @param targetTimestamp
+	 *            for which the conversion is targeted.
+	 * @return The according {@link FixedCurrencyConversion}, never null.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public CurrencyConversion getConversion(CurrencyUnit base,
+			CurrencyUnit term, Long targetTimestamp);
+
+	/**
+	 * Access a {@link CurrencyConversion} instance that is bound to the given
+	 * terminating {@link CurrencyUnit}. The base {@link CurrencyUnit} is
+	 * evaluated from the {@link MonetaryAmount} passed within its
+	 * {@link CurrencyConversion#apply(MonetaryAmount)} method.
+	 * 
+	 * @param term
+	 *            The terminating currency
+	 * @return The according {@link FixedCurrencyConversion}, never null.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public CurrencyConversion getConversion(CurrencyUnit term);
+
+	/**
+	 * Access a {@link CurrencyConversion} instance that is bound to the given
+	 * terminating {@link CurrencyUnit}. The base {@link CurrencyUnit} is
+	 * evaluated from the {@link MonetaryAmount} passed within its
+	 * {@link CurrencyConversion#apply(MonetaryAmount)} method.
+	 * 
+	 * @param term
+	 *            The terminating currency
+	 *            
+	 * @return The according {@link FixedCurrencyConversion}, never null.
+	 * @throws CurrencyConversionException
+	 *             if conversion failed, or the required data is not available.
+	 */
+	public CurrencyConversion getConversion(CurrencyUnit term,
+			Long targetTimestamp);
 
 }

@@ -32,8 +32,11 @@ import javax.money.ext.Region;
 import javax.money.ext.RegionProvider;
 import javax.money.ext.RegionType;
 
-import net.java.javamoney.ri.common.AbstractRiComponent;
 import net.java.javamoney.ri.ext.spi.RegionProviderSpi;
+import net.java.javamoney.ri.spi.MonetaryLoader;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -42,12 +45,14 @@ import net.java.javamoney.ri.ext.spi.RegionProviderSpi;
  * @author Anatole Tresch
  */
 @Singleton
-public final class RegionProviderImpl extends AbstractRiComponent implements
-		RegionProvider {
+public final class RegionProviderImpl implements RegionProvider {
 	/** Singleton instance. */
 	private static final RegionProviderImpl INSTANCE = new RegionProviderImpl();
 	/** Loaded region providers. */
 	private List<RegionProviderSpi> regionProviders;
+
+	private static final Logger LOG = LoggerFactory
+			.getLogger(RegionProviderImpl.class);
 
 	public RegionProviderImpl() {
 		reload();
@@ -63,7 +68,6 @@ public final class RegionProviderImpl extends AbstractRiComponent implements
 		return RegionProvider.class;
 	}
 
-
 	/**
 	 * This method reloads the providers available from the
 	 * {@link ServiceLoader}. This adds providers that were not yet visible
@@ -71,7 +75,8 @@ public final class RegionProviderImpl extends AbstractRiComponent implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		regionProviders = getSPIProviders(RegionProviderSpi.class);
+		regionProviders = MonetaryLoader.getLoader().getComponents(
+				RegionProviderSpi.class);
 	}
 
 	/**
@@ -108,7 +113,7 @@ public final class RegionProviderImpl extends AbstractRiComponent implements
 		for (RegionProviderSpi prov : INSTANCE.regionProviders) {
 			Region[] regions = prov.getRegions(type);
 			if (regions == null || regions.length == 0) {
-				log.warn("Provider did not provide any regions: "
+				LOG.warn("Provider did not provide any regions: "
 						+ prov.getClass().getName());
 			} else {
 				result.addAll(Arrays.asList(regions));
@@ -127,7 +132,7 @@ public final class RegionProviderImpl extends AbstractRiComponent implements
 		for (RegionProviderSpi prov : INSTANCE.regionProviders) {
 			Region[] regions = prov.getRegions();
 			if (regions == null) {
-				log.warn("Provider did not provide any regions: "
+				LOG.warn("Provider did not provide any regions: "
 						+ prov.getClass().getName());
 			} else {
 				result.addAll(Arrays.asList(regions));
@@ -152,7 +157,6 @@ public final class RegionProviderImpl extends AbstractRiComponent implements
 		}
 		return result;
 	}
-
 
 	@Override
 	public Region getRootRegion(String id) {

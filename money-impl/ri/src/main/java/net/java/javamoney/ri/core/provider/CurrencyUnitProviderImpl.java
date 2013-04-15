@@ -35,12 +35,11 @@ import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 import javax.money.UnknownCurrencyException;
 import javax.money.ext.RegionType;
-import javax.money.provider.CurrencyUnitProvider;
-import javax.money.provider.Monetary;
+import javax.money.provider.CurrencyUnitProviderSpi;
 
-import net.java.javamoney.ri.common.AbstractRiComponent;
 import net.java.javamoney.ri.core.spi.CurrencyUnitMappingSpi;
-import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
+import net.java.javamoney.ri.core.spi.CurrencyUnitProvideromponentSpi;
+import net.java.javamoney.ri.spi.MonetaryLoader;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -50,15 +49,15 @@ import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
  * @author Werner Keil
  */
 @Singleton
-public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
-		CurrencyUnitProvider {
+public class CurrencyUnitProviderImpl implements
+		CurrencyUnitProviderSpi {
 	/**
 	 * System property used to redefine the default namespace for
 	 * {@link CurrencyUnit} instances.
 	 */
 	private static final String DEFAULT_NAMESPACE_PROP = "javax.money.defaultCurrencyNamespace";
 	/** Loaded currency providers. */
-	private Map<String, List<CurrencyUnitProviderSpi>> currencyProviders = new ConcurrentHashMap<String, List<CurrencyUnitProviderSpi>>();
+	private Map<String, List<CurrencyUnitProvideromponentSpi>> currencyProviders = new ConcurrentHashMap<String, List<CurrencyUnitProvideromponentSpi>>();
 	/** Loaded currency mappers. */
 	private Set<CurrencyUnitMappingSpi> mappers = new HashSet<CurrencyUnitMappingSpi>();
 	/** The default namespace used. */
@@ -82,19 +81,19 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		List<CurrencyUnitProviderSpi> loadedList = Monetary.getLoader()
-				.getComponents(CurrencyUnitProviderSpi.class);
-		for (CurrencyUnitProviderSpi currencyProviderSPI : loadedList) {
-			List<CurrencyUnitProviderSpi> provList = this.currencyProviders
+		List<CurrencyUnitProvideromponentSpi> loadedList = MonetaryLoader.getLoader()
+				.getComponents(CurrencyUnitProvideromponentSpi.class);
+		for (CurrencyUnitProvideromponentSpi currencyProviderSPI : loadedList) {
+			List<CurrencyUnitProvideromponentSpi> provList = this.currencyProviders
 					.get(currencyProviderSPI.getNamespace());
 			if (provList == null) {
-				provList = new ArrayList<CurrencyUnitProviderSpi>();
+				provList = new ArrayList<CurrencyUnitProvideromponentSpi>();
 				this.currencyProviders.put(currencyProviderSPI.getNamespace(),
 						provList);
 			}
 			provList.add(currencyProviderSPI);
 		}
-		List<CurrencyUnitMappingSpi> loadedMapperList = Monetary.getLoader()
+		List<CurrencyUnitMappingSpi> loadedMapperList = MonetaryLoader.getLoader()
 				.getComponents(CurrencyUnitMappingSpi.class);
 		for (CurrencyUnitMappingSpi currencyMappingSPI : loadedMapperList) {
 			mappers.add(currencyMappingSPI);
@@ -108,12 +107,12 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
 	 * java.lang.String, long)
 	 */
 	public CurrencyUnit get(String namespace, String code, Long timestamp) {
-		List<CurrencyUnitProviderSpi> provList = currencyProviders
+		List<CurrencyUnitProvideromponentSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
 			return null;
 		}
-		for (CurrencyUnitProviderSpi prov : provList) {
+		for (CurrencyUnitProvideromponentSpi prov : provList) {
 			CurrencyUnit currency = prov.getCurrency(code, timestamp);
 			if (currency != null) {
 				return currency;
@@ -135,12 +134,12 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
 
 	public Collection<CurrencyUnit> getAll(String namespace, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		List<CurrencyUnitProviderSpi> provList = currencyProviders
+		List<CurrencyUnitProvideromponentSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
 			return null;
 		}
-		for (CurrencyUnitProviderSpi prov : provList) {
+		for (CurrencyUnitProvideromponentSpi prov : provList) {
 			CurrencyUnit[] currencies = prov.getCurrencies(null);
 			if (currencies != null) {
 				result.addAll(Arrays.asList(currencies));
@@ -160,9 +159,9 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
 
 	public Collection<CurrencyUnit> getAll(Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		for (List<CurrencyUnitProviderSpi> provList : currencyProviders
+		for (List<CurrencyUnitProvideromponentSpi> provList : currencyProviders
 				.values()) {
-			for (CurrencyUnitProviderSpi prov : provList) {
+			for (CurrencyUnitProvideromponentSpi prov : provList) {
 				CurrencyUnit[] currencies = prov.getCurrencies(timestamp);
 				if (currencies != null) {
 					result.addAll(Arrays.asList(currencies));
@@ -186,12 +185,12 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
 
 	public boolean isAvailable(String namespace, String code, Long start,
 			Long end) {
-		List<CurrencyUnitProviderSpi> provList = currencyProviders
+		List<CurrencyUnitProvideromponentSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
 			return false;
 		}
-		for (CurrencyUnitProviderSpi prov : provList) {
+		for (CurrencyUnitProvideromponentSpi prov : provList) {
 			if (prov.isAvailable(code, start, end)) {
 				return true;
 			}
@@ -199,11 +198,13 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
 		return false;
 	}
 
-	public boolean isNamespaceAvailable(String namespace) {
+	public boolean isNamespaceAvailable(String namespace, Long timestamp) {
+		// TODO add support for historization
 		return this.currencyProviders.containsKey(namespace);
 	}
 
-	public Collection<String> getNamespaces() {
+	public Collection<String> getNamespaces(Long timestamp) {
+		// TODO add support for historization
 		return this.currencyProviders.keySet();
 	}
 
@@ -213,9 +214,9 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
 
 	public Set<CurrencyUnit> getAll(Locale locale, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		for (List<CurrencyUnitProviderSpi> provList : currencyProviders
+		for (List<CurrencyUnitProvideromponentSpi> provList : currencyProviders
 				.values()) {
-			for (CurrencyUnitProviderSpi prov : provList) {
+			for (CurrencyUnitProvideromponentSpi prov : provList) {
 				CurrencyUnit[] currencies = prov.getCurrencies(locale,
 						timestamp);
 				if (currencies != null) {
@@ -229,16 +230,6 @@ public class CurrencyUnitProviderImpl extends AbstractRiComponent implements
 	@Override
 	public String getDefaultNamespace() {
 		return this.defaultNamespace;
-	}
-
-	@Override
-	public CurrencyUnit get(String code) {
-		return get(this.defaultNamespace, code);
-	}
-
-	@Override
-	public boolean isAvailable(String code) {
-		return isAvailable(getDefaultNamespace(), code);
 	}
 
 }

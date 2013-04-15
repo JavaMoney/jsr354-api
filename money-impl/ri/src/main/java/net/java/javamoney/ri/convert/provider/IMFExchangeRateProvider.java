@@ -30,15 +30,16 @@ import java.util.Map;
 
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
+import javax.money.convert.ConversionProvider;
+import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
-public class IMFExchangeRateProvider implements ExchangeRateProvider {
+public class IMFExchangeRateProvider implements ConversionProvider {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(IMFExchangeRateProvider.class);
@@ -46,6 +47,9 @@ public class IMFExchangeRateProvider implements ExchangeRateProvider {
 	private Map<CurrencyUnit, ExchangeRate> currencyToSDRMap = new HashMap<CurrencyUnit, ExchangeRate>();
 
 	private Map<CurrencyUnit, ExchangeRate> sDRToCurrency = new HashMap<CurrencyUnit, ExchangeRate>();
+
+	private CurrencyConverter currencyConverter = new DefaultCurrencyConverter(
+			this);
 
 	public void loadRates() {
 		InputStream is = null;
@@ -162,7 +166,13 @@ public class IMFExchangeRateProvider implements ExchangeRateProvider {
 
 	@Override
 	public ExchangeRate getReversed(ExchangeRate rate) {
-		// TODO Auto-generated method stub
-		return null;
+		return getExchangeRate(rate.getTerm(), rate.getBase(),
+				rate.getValidFrom());
 	}
+
+	@Override
+	public CurrencyConverter getConverter() {
+		return currencyConverter;
+	}
+
 }

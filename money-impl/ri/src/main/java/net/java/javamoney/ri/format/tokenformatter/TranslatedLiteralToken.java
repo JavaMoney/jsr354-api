@@ -21,7 +21,12 @@ package net.java.javamoney.ri.format.tokenformatter;
 import java.util.ResourceBundle;
 
 import javax.money.format.FormatToken;
+import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
+import javax.money.format.ParseContext;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * {@link FormatToken} that adds a localizable {@link String}, read by key from
@@ -36,6 +41,7 @@ public class TranslatedLiteralToken<T> extends AbstractFormatToken<T> {
 
 	private String bundle;
 	private String key;
+	private Logger LOG = LoggerFactory.getLogger(TranslatedLiteralToken.class);
 
 	public TranslatedLiteralToken(String key) {
 		if (key == null) {
@@ -73,11 +79,10 @@ public class TranslatedLiteralToken<T> extends AbstractFormatToken<T> {
 		return this.key;
 	}
 
-	protected String getToken(T item,
-			javax.money.format.LocalizationStyle style) {
+	protected String getToken(T item, javax.money.format.LocalizationStyle style) {
 		return getTokenInternal(style);
 	};
-	
+
 	private String getTokenInternal(LocalizationStyle style) {
 		if (bundle == null) {
 			return String.valueOf(key);
@@ -91,14 +96,13 @@ public class TranslatedLiteralToken<T> extends AbstractFormatToken<T> {
 		}
 	}
 
-//	@Override
-//	public void parse(ParseContext context) throws ItemParseException {
-//		javax.money.format.LocalizationStyle style = context.getLocalizationStyle();
-//		String token = getTokenInternal(style);
-//		if(!context.consume(token)){
-//			if(!isOptional()){
-//				throw new ItemParseException("Expected: " + token, context.getCurrentText().toString(), -1);
-//			}
-//		}
-//	}
+	@Override
+	public void parse(ParseContext context, LocalizationStyle style)
+			throws ItemParseException {
+		String token = getTokenInternal(style);
+		if (!context.consume(token)) {
+			LOG.debug("Optional: " + token + " not found at "
+						+ context.getInput().toString());
+		}
+	}
 }

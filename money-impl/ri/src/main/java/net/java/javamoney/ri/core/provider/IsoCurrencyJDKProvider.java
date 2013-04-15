@@ -28,9 +28,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
+import javax.money.provider.CurrencyUnitProviderSpi;
 
-import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
-
+import net.java.javamoney.ri.core.spi.CurrencyUnitProvideromponentSpi;
 
 /**
  * Basic implementation of a {@link CurrencyUnitProviderSpi} that provides the
@@ -40,7 +40,7 @@ import net.java.javamoney.ri.core.spi.CurrencyUnitProviderSpi;
  * @author Werner Keil
  */
 @Singleton
-public class IsoCurrencyJDKProvider implements CurrencyUnitProviderSpi {
+public class IsoCurrencyJDKProvider implements CurrencyUnitProvideromponentSpi {
 
 	private final Map<String, CurrencyUnit> currencies = new ConcurrentHashMap<String, CurrencyUnit>();
 

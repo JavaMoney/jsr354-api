@@ -22,7 +22,9 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import javax.money.format.FormatToken;
+import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
+import javax.money.format.ParseContext;
 
 import net.java.javamoney.ri.format.util.StringGrouper;
 
@@ -153,23 +155,23 @@ public class NumberToken<T extends Number> extends AbstractFormatToken<T> {
 				.getDecimalFormatSymbols().getDecimalSeparator()));
 	}
 
-//	@Override
-//	public void parse(ParseContext context) throws ItemParseException {
-//		DecimalFormat df = getNumberFormat(context.getLocalizationStyle());
-//		if(context.getLocalizationStyle().getAttribute("enforceGrouping", Boolean.class)){
-//			df.setGroupingUsed(true);
-//		}
-//		else{
-//			df.setGroupingUsed(false);
-//		}
-//		String token = context.getNextToken();
-//		Number num;
-//		try {
-//			num = df.parse(token);
-//		} catch (java.text.ParseException e) {
-//			throw new ItemParseException("Failed to parse number.", token, e.getErrorOffset(), e);
-//		}
-//		context.setAttribute(Number.class, num);
-//		context.consume(token);
-//	}
+	@Override
+	public void parse(ParseContext context, LocalizationStyle style) throws ItemParseException {
+		DecimalFormat df = getNumberFormat(style);
+		if(style.getAttribute("enforceGrouping", Boolean.class)){
+			df.setGroupingUsed(true);
+		}
+		else{
+			df.setGroupingUsed(false);
+		}
+		String token = context.lookupNextToken();
+		Number num;
+		try {
+			num = df.parse(token);
+		} catch (java.text.ParseException e) {
+			throw new ItemParseException("Failed to parse number from '"+ token, e);
+		}
+		context.addResult(Number.class, num);
+		context.consume(token);
+	}
 }

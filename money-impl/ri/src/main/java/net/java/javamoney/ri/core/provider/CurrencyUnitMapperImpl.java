@@ -27,11 +27,10 @@ import java.util.Set;
 
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
-import javax.money.provider.CurrencyUnitMapper;
-import javax.money.provider.Monetary;
+import javax.money.provider.CurrencyUnitMapperSpi;
 
-import net.java.javamoney.ri.common.AbstractRiComponent;
 import net.java.javamoney.ri.core.spi.CurrencyUnitMappingSpi;
+import net.java.javamoney.ri.spi.MonetaryLoader;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -41,8 +40,8 @@ import net.java.javamoney.ri.core.spi.CurrencyUnitMappingSpi;
  * @author Werner Keil
  */
 @Singleton
-public class CurrencyUnitMapperImpl extends AbstractRiComponent implements
-		CurrencyUnitMapper {
+public class CurrencyUnitMapperImpl implements
+		CurrencyUnitMapperSpi {
 	/** Loaded currency mappers. */
 	private Set<CurrencyUnitMappingSpi> mappers = new HashSet<CurrencyUnitMappingSpi>();
 
@@ -60,7 +59,7 @@ public class CurrencyUnitMapperImpl extends AbstractRiComponent implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		List<CurrencyUnitMappingSpi> loadedMapperList = Monetary.getLoader()
+		List<CurrencyUnitMappingSpi> loadedMapperList = MonetaryLoader.getLoader()
 				.getComponents(CurrencyUnitMappingSpi.class);
 		for (CurrencyUnitMappingSpi currencyMappingSPI : loadedMapperList) {
 			mappers.add(currencyMappingSPI);
@@ -99,16 +98,6 @@ public class CurrencyUnitMapperImpl extends AbstractRiComponent implements
 			}
 		}
 		return null;
-	}
-
-	@Override
-	public List<CurrencyUnit> mapAll(String targetNamespace, Long timestamp,
-			CurrencyUnit... units) {
-		List<CurrencyUnit> result = new ArrayList<CurrencyUnit>();
-		for (CurrencyUnit unit : units) {
-			result.add(map(targetNamespace, timestamp, unit));
-		}
-		return result;
 	}
 
 }

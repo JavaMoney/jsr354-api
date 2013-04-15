@@ -19,25 +19,24 @@
 package net.java.javamoney.ri.format.provider.format;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
+import javax.money.format.ItemFormat;
 import javax.money.format.ItemFormatException;
-import javax.money.format.ItemFormatter;
 import javax.money.format.LocalizationStyle;
 
 import net.java.javamoney.ri.format.provider.format.IsoCurrencyFormatter.RenderedField;
-import net.java.javamoney.ri.format.spi.ItemFormatterFactorySpi;
+import net.java.javamoney.ri.format.spi.ItemFormatFactorySpi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class IsoCurrencyFormatterFactory implements
-		ItemFormatterFactorySpi<CurrencyUnit> {
+		ItemFormatFactorySpi<CurrencyUnit> {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(IsoCurrencyFormatterFactory.class);
@@ -48,17 +47,22 @@ public class IsoCurrencyFormatterFactory implements
 	}
 
 	@Override
-	public Enumeration<String> getSupportedStyleIds() {
+	public Collection<String> getSupportedStyleIds() {
 		Set<String> supportedRenderTypes = new HashSet<String>();
 		for (IsoCurrencyFormatter.RenderedField f : IsoCurrencyFormatter.RenderedField
 				.values()) {
 			supportedRenderTypes.add(f.name());
 		}
-		return Collections.enumeration(supportedRenderTypes);
+		return supportedRenderTypes;
 	}
 
 	@Override
-	public ItemFormatter<CurrencyUnit> getItemFormatter(LocalizationStyle style)
+	public boolean isSupportedStyle(String styleId) {
+		return getSupportedStyleIds().contains(styleId);
+	}
+
+	@Override
+	public ItemFormat<CurrencyUnit> getItemFormat(LocalizationStyle style)
 			throws ItemFormatException {
 		String renderedFieldValue = style.getId();
 		try {
@@ -72,13 +76,7 @@ public class IsoCurrencyFormatterFactory implements
 		if (namespace == null) {
 			namespace = MoneyCurrency.ISO_NAMESPACE;
 		}
-		if (MoneyCurrency.ISO_NAMESPACE.equals(namespace)) {
-			return new IsoCurrencyFormatter(style);
-		}
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Not able to return a currency formatter for " + style);
-		}
-		return null;
+		return new IsoCurrencyFormatter(style);
 	}
 
 }

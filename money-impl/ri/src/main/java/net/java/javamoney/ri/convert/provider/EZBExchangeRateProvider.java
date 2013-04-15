@@ -20,7 +20,6 @@ package net.java.javamoney.ri.convert.provider;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,8 +32,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
+import javax.money.convert.ConversionProvider;
+import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.ExchangeRateType;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -57,7 +57,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Anatole Tresch
  */
 @Singleton
-public class EZBExchangeRateProvider implements ExchangeRateProvider {
+public class EZBExchangeRateProvider implements ConversionProvider {
 	/** URL for the last 90 days data feed. */
 	private static final String DAILY90_RATES_URL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
 	/** URL for the daily data feed. */
@@ -79,6 +79,8 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 	/** The {@link ExchangeRateType} of this provider. */
 	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
 			.of("EZB");
+	
+	private CurrencyConverter currencyConverter = new DefaultCurrencyConverter(this);
  
 	/**
 	 * Constructor, also loads initial data.
@@ -371,8 +373,12 @@ public class EZBExchangeRateProvider implements ExchangeRateProvider {
 
 	@Override
 	public ExchangeRate getReversed(ExchangeRate rate) {
-		// TODO Auto-generated method stub
-		return null;
+		return getExchangeRate(rate.getTerm(), rate.getBase(), rate.getValidFrom());
+	}
+
+	@Override
+	public CurrencyConverter getConverter() {
+		return currencyConverter;
 	}
 
 }

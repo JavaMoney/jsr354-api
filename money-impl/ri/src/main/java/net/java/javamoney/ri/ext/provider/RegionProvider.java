@@ -20,7 +20,6 @@
  */
 package net.java.javamoney.ri.ext.provider;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -29,7 +28,6 @@ import java.util.Set;
 
 import javax.inject.Singleton;
 import javax.money.ext.Region;
-import javax.money.ext.RegionProvider;
 import javax.money.ext.RegionType;
 
 import net.java.javamoney.ri.ext.spi.RegionProviderSpi;
@@ -45,27 +43,15 @@ import org.slf4j.LoggerFactory;
  * @author Anatole Tresch
  */
 @Singleton
-public final class RegionProviderImpl implements RegionProvider {
-	/** Singleton instance. */
-	private static final RegionProviderImpl INSTANCE = new RegionProviderImpl();
+public final class RegionProvider {
 	/** Loaded region providers. */
 	private List<RegionProviderSpi> regionProviders;
 
 	private static final Logger LOG = LoggerFactory
-			.getLogger(RegionProviderImpl.class);
+			.getLogger(RegionProvider.class);
 
-	public RegionProviderImpl() {
+	public RegionProvider() {
 		reload();
-	}
-
-	/**
-	 * This method defined that this implementation is exposed as
-	 * {@link RegionProvider}.
-	 * 
-	 * @return {@link RegionProvider}.class
-	 */
-	public Class<RegionProvider> getExposedType() {
-		return RegionProvider.class;
 	}
 
 	/**
@@ -91,7 +77,7 @@ public final class RegionProviderImpl implements RegionProvider {
 	 *             if the region does not exist.
 	 */
 	public Region get(String identifier, RegionType type) {
-		for (RegionProviderSpi prov : INSTANCE.regionProviders) {
+		for (RegionProviderSpi prov : regionProviders) {
 			Region reg = prov.getRegion(identifier, type);
 			if (reg != null) {
 				return reg;
@@ -108,18 +94,18 @@ public final class RegionProviderImpl implements RegionProvider {
 	 *            The region type, not null.
 	 * @return the regions found, never null.
 	 */
-	public Region[] getAll(RegionType type) {
+	public Collection<Region> getAll(RegionType type) {
 		Set<Region> result = new HashSet<Region>();
-		for (RegionProviderSpi prov : INSTANCE.regionProviders) {
-			Region[] regions = prov.getRegions(type);
-			if (regions == null || regions.length == 0) {
+		for (RegionProviderSpi prov : regionProviders) {
+			Collection<Region> regions = prov.getRegions(type);
+			if (regions == null || regions.isEmpty()) {
 				LOG.warn("Provider did not provide any regions: "
 						+ prov.getClass().getName());
 			} else {
-				result.addAll(Arrays.asList(regions));
+				result.addAll(regions);
 			}
 		}
-		return result.toArray(new Region[result.size()]);
+		return result;
 	}
 
 	/**
@@ -127,18 +113,18 @@ public final class RegionProviderImpl implements RegionProvider {
 	 * 
 	 * @return the regions found, never null.
 	 */
-	public Region[] getAll() {
+	public Collection<Region> getAll() {
 		Set<Region> result = new HashSet<Region>();
-		for (RegionProviderSpi prov : INSTANCE.regionProviders) {
-			Region[] regions = prov.getRegions();
-			if (regions == null) {
+		for (RegionProviderSpi prov : regionProviders) {
+			Collection<Region> regions = prov.getRegions();
+			if (regions == null || regions.isEmpty()) {
 				LOG.warn("Provider did not provide any regions: "
 						+ prov.getClass().getName());
 			} else {
-				result.addAll(Arrays.asList(regions));
+				result.addAll(regions);
 			}
 		}
-		return result.toArray(new Region[result.size()]);
+		return result;
 	}
 
 	/**
@@ -146,9 +132,8 @@ public final class RegionProviderImpl implements RegionProvider {
 	 * 
 	 * @return the regions found, never null.
 	 */
-	@Override
 	public Collection<Region> getRootRegions() {
-		Region[] regions = getAll();
+		Collection<Region> regions = getAll();
 		Set<Region> result = new HashSet<Region>();
 		for (Region region : regions) {
 			if (region.getParent() == null) {
@@ -158,7 +143,6 @@ public final class RegionProviderImpl implements RegionProvider {
 		return result;
 	}
 
-	@Override
 	public Region getRootRegion(String id) {
 		throw new UnsupportedOperationException("Not implemented");
 	}

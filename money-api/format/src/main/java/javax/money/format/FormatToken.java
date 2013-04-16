@@ -1,32 +1,27 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Specification:  JSR-354  Money and Currency API ("Specification")
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- * Contributors:
- *    Anatole Tresch - initial implementation
+ * Copyright (c) 2012-2013, Credit Suisse
+ * All rights reserved.
  */
 package javax.money.format;
 
 import java.io.IOException;
 
+
 /**
  * Formats instances of T to a {@link String} or an {@link Appendable}.
+ * Instances of this can be added to a {@link BuildableItemFormat} to assemble a
+ * complex input/output format.
+ * 
+ * @author Anatole Tresch
  */
 public interface FormatToken<T> {
 
 	/**
-	 * Prints a item value to an {@code Appendable}.
+	 * Prints an item value to an {@code Appendable}.
 	 * <p>
 	 * Example implementations of {@code Appendable} are {@code StringBuilder},
 	 * {@code StringBuffer} or {@code Writer}. Note that {@code StringBuilder}
@@ -47,8 +42,11 @@ public interface FormatToken<T> {
 			throws IOException;
 
 	/**
-	 * Parses an item from the given {@link ParseContext}. Any parsed item
-	 * can be added to the {@link ParseContext} as results.
+	 * Parses an item from the given {@link ParseContext}. Any parsed item can
+	 * be added to the {@link ParseContext} using
+	 * {@link ParseContext#addResult(Object, Object)} as results. At the end of
+	 * the parsing process an instance of {@link ItemFactory} is transferring
+	 * the results parsed into the target item to be parsed.
 	 * 
 	 * @param context
 	 *            the parse context

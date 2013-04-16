@@ -10,7 +10,6 @@ package javax.money;
 
 import java.io.Serializable;
 import java.util.Currency;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -100,6 +99,13 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 														// here;
 	}
 
+	/**
+	 * Access a new instance based on {@link Currency}.
+	 * 
+	 * @param currency
+	 *            the currency unitm not null.
+	 * @return the new instance, never null.
+	 */
 	public static MoneyCurrency of(Currency currency) {
 		String key = ISO_NAMESPACE + ':' + currency.getCurrencyCode();
 		MoneyCurrency cachedItem = CACHED.get(key);
@@ -110,10 +116,30 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		return cachedItem;
 	}
 
+	/**
+	 * Access a new instance based on the ISO currency code. The code must
+	 * return a {@link Currency} when passed to
+	 * {@link Currency#getInstance(String)}.
+	 * 
+	 * @param currencyCode
+	 *            the ISO currency code, not null.
+	 * @return the corresponding {@link MonetaryCurrency} instance.
+	 */
 	public static MoneyCurrency of(String currencyCode) {
 		return of(Currency.getInstance(currencyCode));
 	}
 
+	/**
+	 * Access a new instance based on the ISO currency code. The code must
+	 * return a {@link Currency} when passed to
+	 * {@link Currency#getInstance(String)}.
+	 * 
+	 * @param namespace
+	 *            the target namespace.
+	 * @param currencyCode
+	 *            the ISO currency code, not null.
+	 * @return the corresponding {@link MonetaryCurrency} instance.
+	 */
 	public static MoneyCurrency of(String namespace, String currencyCode) {
 		String key = namespace + ':' + currencyCode;
 		MoneyCurrency cu = CACHED.get(key);
@@ -123,6 +149,12 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		return cu;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.CurrencyUnit#isVirtual()
+	 */
+	@Override
 	public boolean isVirtual() {
 		return virtual;
 	}
@@ -130,35 +162,76 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	/**
 	 * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
 	 */
+	@Override
 	public String getNamespace() {
 		return namespace;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.CurrencyUnit#getValidFrom()
+	 */
+	@Override
 	public Long getValidFrom() {
 		return validFrom;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.CurrencyUnit#getValidUntil()
+	 */
+	@Override
 	public Long getValidUntil() {
 		return validUntil;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.CurrencyUnit#getCurrencyCode()
+	 */
+	@Override
 	public String getCurrencyCode() {
 		return currencyCode;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.CurrencyUnit#getNumericCode()
+	 */
+	@Override
 	public int getNumericCode() {
 		return numericCode;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.CurrencyUnit#getDefaultFractionDigits()
+	 */
+	@Override
 	public int getDefaultFractionDigits() {
 		return defaultFractionDigits;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.CurrencyUnit#isLegalTender()
+	 */
 	@Override
 	public boolean isLegalTender() {
 		return legalTender;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
 	public int compareTo(CurrencyUnit currency) {
 		int compare = getNamespace().compareTo(currency.getNamespace());
 		if (compare == 0) {
@@ -198,6 +271,12 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		return namespace + ':' + currencyCode;
 	}
 
+	/**
+	 * Builder class that supports building complex instances of
+	 * {@link MoneyCurrency}.
+	 * 
+	 * @author Anatole Tresch
+	 */
 	public static final class Builder {
 		/** namespace for this currency. */
 		private String namespace;
@@ -216,18 +295,44 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		/** true for virtual currencies. */
 		private boolean virtual = false;
 
+		/**
+		 * Creates a new {@link Builder}.
+		 */
 		public Builder() {
 		}
 
+		/**
+		 * Creates a new {@link Builder}, starting with the according ISO
+		 * currency.
+		 * 
+		 * @param currencyCode
+		 *            the ISO currency code.
+		 */
 		public Builder(String currencyCode) {
 			this(ISO_NAMESPACE, currencyCode);
 		}
 
+		/**
+		 * Creates a new {@link Builder}, starting with the namespace and code
+		 * given.
+		 * 
+		 * @param namespace
+		 *            the taregt namespace
+		 * @param currencyCode
+		 *            the currency code
+		 */
 		public Builder(String namespace, String currencyCode) {
 			setNamespace(namespace);
 			setCurrencyCode(currencyCode);
 		}
 
+		/**
+		 * Set the namespace.
+		 * 
+		 * @param namespace
+		 *            the namespace, not null
+		 * @return the builder, for chaining
+		 */
 		public Builder setNamespace(String namespace) {
 			if (namespace == null) {
 				throw new IllegalArgumentException("namespace may not be null.");
@@ -236,6 +341,13 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 			return this;
 		}
 
+		/**
+		 * Set the currency code.
+		 * 
+		 * @param namespace
+		 *            the currency code, not null
+		 * @return the builder, for chaining
+		 */
 		public Builder setCurrencyCode(String currencyCode) {
 			if (currencyCode == null) {
 				throw new IllegalArgumentException(
@@ -245,6 +357,13 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 			return this;
 		}
 
+		/**
+		 * Set the default fraction digits.
+		 * 
+		 * @param defaultFractionDigits
+		 *            the default fraction digits
+		 * @return the builder, for chaining
+		 */
 		public Builder setDefaultFractionDigits(int defaultFractionDigits) {
 			if (defaultFractionDigits < -1) {
 				throw new IllegalArgumentException(
@@ -255,6 +374,13 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 			return this;
 		}
 
+		/**
+		 * Set the numeric currency code.
+		 * 
+		 * @param numericCode
+		 *            the numeric currency code
+		 * @return the builder, for chaining
+		 */
 		public Builder setNumericCode(int numericCode) {
 			if (numericCode < -1) {
 				throw new IllegalArgumentException(
@@ -264,67 +390,158 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 			return this;
 		}
 
+		/**
+		 * Sets the start UTC timestamp for the currenciy's validity.
+		 * 
+		 * @param validFrom
+		 *            the start UTC timestamp
+		 * @return the builder, for chaining
+		 */
 		public Builder setValidFrom(Long validFrom) {
 			this.validFrom = validFrom;
 			return this;
 		}
 
+		/**
+		 * Sets the end UTC timestamp for the currenciy's validity.
+		 * 
+		 * @param validUntil
+		 *            the ending UTC timestamp
+		 * @return the builder, for chaining
+		 */
 		public Builder setValidUntil(Long validUntil) {
 			this.validUntil = validUntil;
 			return this;
 		}
 
+		/**
+		 * Sets the legal tender attribute.
+		 * 
+		 * @param legalTender
+		 *            true, if the currency is a legal tender
+		 * @return the builder, for chaining
+		 */
 		public Builder setLegalTender(boolean legalTender) {
 			this.legalTender = legalTender;
 			return this;
 		}
 
+		/**
+		 * Sets the virtual attribute.
+		 * 
+		 * @param virtual
+		 *            true, if the currency is a virtual currency.
+		 * @return the builder, for chaining
+		 */
 		public Builder setVirtual(boolean virtual) {
 			this.virtual = virtual;
 			return this;
 		}
 
+		/**
+		 * Get the current namespace attribute set.
+		 * 
+		 * @return the namespace value, or null.
+		 */
 		public String getNamespace() {
 			return this.namespace;
 		}
 
+		/**
+		 * Get the current currency code attribute set.
+		 * 
+		 * @return the currency code value, or null.
+		 */
 		public String getCurrencyCode() {
 			return this.currencyCode;
 		}
 
+		/**
+		 * Get the current fraction digits attribute set.
+		 * 
+		 * @return the currency fraction digits value.
+		 */
 		public int getDefaultFractionDigits() {
 			return this.defaultFractionDigits;
 		}
 
+		/**
+		 * Get the current numeric code attribute set.
+		 * 
+		 * @return the numeric code value.
+		 */
 		public int getNumericCode() {
 			return this.numericCode;
 		}
 
+		/**
+		 * Get the starting validity period timestamp.
+		 * 
+		 * @return the starting validity period tiemstamp, or null..
+		 */
 		public Long getValidFrom() {
 			return this.validFrom;
 		}
 
+		/**
+		 * Get the ending validity period timestamp.
+		 * 
+		 * @return the ending validity period tiemstamp, or null..
+		 */
 		public Long getValidUntil() {
 			return this.validUntil;
 		}
 
+		/**
+		 * Access the legal tender attribute.
+		 * 
+		 * @return the attribute value.
+		 */
 		public boolean isLegalTender() {
 			return this.legalTender;
 		}
 
+		/**
+		 * Access the virtual attribute.
+		 * 
+		 * @return the attribute value.
+		 */
 		public boolean isVirtual() {
 			return this.virtual;
 		}
 
+		/**
+		 * Checks if this {@link Builder} instance can create a
+		 * {@link MoneyCurrency}.
+		 * 
+		 * @see #build()
+		 * @return true, if the builder can build.
+		 */
 		public boolean isBuildable() {
 			return namespace != null && currencyCode != null;
 		}
 
-		public CurrencyUnit build() {
+		/**
+		 * Builds a new currency instance, the instance build is not cached
+		 * internally.
+		 * 
+		 * @see #build(boolean)
+		 * @return a new instance of {@link MoneyCurrency}.
+		 */
+		public MoneyCurrency build() {
 			return build(true);
 		}
 
-		public CurrencyUnit build(boolean cache) {
+		/**
+		 * Builds a new currency instance, which ia additinoally stored to the
+		 * internal cache for reuse.
+		 * 
+		 * @param cache
+		 *            flag to optionally store the instance created into the
+		 *            locale cache.
+		 * @return a new instance of {@link MoneyCurrency}.
+		 */
+		public MoneyCurrency build(boolean cache) {
 			if (!isBuildable()) {
 				throw new IllegalStateException(
 						"Can not build CurrencyUnitImpl.");
@@ -367,8 +584,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * @author Anatole Tresch
 	 * @author Werner Keil
 	 */
-	private final static class JDKCurrencyAdapter extends MoneyCurrency
-			implements LocalizableCurrencyUnit {
+	private final static class JDKCurrencyAdapter extends MoneyCurrency {
 
 		/**
 		 * serialVersionUID.
@@ -392,25 +608,16 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 			this.currency = currency;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Object#toString()
+		 */
 		@Override
-		public String getSymbol() {
-			return this.currency.getSymbol();
+		public String toString() {
+			return ISO_NAMESPACE + ':' + getCurrencyCode();
 		}
 
-		@Override
-		public String getSymbol(Locale locale) {
-			return this.currency.getSymbol(locale);
-		}
-
-		@Override
-		public String getDisplayName() {
-			return this.currency.getDisplayName();
-		}
-
-		@Override
-		public String getDisplayName(Locale locale) {
-			return this.currency.getDisplayName(locale);
-		}
 	}
 
 }

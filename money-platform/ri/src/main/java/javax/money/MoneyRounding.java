@@ -20,7 +20,7 @@ import java.util.Currency;
  * @author Anatole Tresch
  * @see RoundingMode
  */
-public final class MoneyRounding implements MonetaryOperator{
+public final class MoneyRounding implements MonetaryOperator {
 
 	private static final MonetaryOperator DEFAULT_ROUNDING = new DefaultCurrencyRounding();
 	/** The {@link RoundingMode} used. */
@@ -45,6 +45,14 @@ public final class MoneyRounding implements MonetaryOperator{
 		this.roundingMode = roundingMode;
 	}
 
+	/**
+	 * Creates a rounding that can be added as {@link MonetaryFunction} to
+	 * chained calculations. The instance will lookup the concrete
+	 * {@link MoneyRounding} based on the input {@link MonetaryAmount}'s
+	 * {@link CurrencyUnit}.
+	 * 
+	 * @return the (shared= rounding instance.
+	 */
 	public static MonetaryOperator of() {
 		return DEFAULT_ROUNDING;
 	}
@@ -98,11 +106,16 @@ public final class MoneyRounding implements MonetaryOperator{
 		return new MoneyRounding(scale, rounding);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.money.MonetaryFunction#apply(java.lang.Object)
+	 */
 	@Override
 	public MonetaryAmount apply(MonetaryAmount value) {
-		return value.from(value.asType(BigDecimal.class).setScale(this.scale, this.roundingMode));
+		return value.from(value.asType(BigDecimal.class).setScale(this.scale,
+				this.roundingMode));
 	}
-	
+
 	/**
 	 * Default Rounding that rounds a {@link MonetaryAmount} based on tis
 	 * {@link Currency}.

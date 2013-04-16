@@ -147,7 +147,6 @@ public class SmokeTests {
 		assertEquals(1.0d, amount.doubleValue(), 0);
 
 		LocalizationStyle.Builder b = new LocalizationStyle.Builder("CODE", Locale.GERMANY);
-//		b.setAttribute("namespace", "test");
 		ItemFormat<CurrencyUnit> formatter2 = MonetaryFormat.getItemFormat(
 				CurrencyUnit.class, b.build());
 		CurrencyUnit cur = formatter2.parse("CHF");

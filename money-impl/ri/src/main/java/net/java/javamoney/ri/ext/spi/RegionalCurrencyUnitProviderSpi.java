@@ -19,9 +19,12 @@
  */
 package net.java.javamoney.ri.ext.spi;
 
+import java.util.Collection;
+
 import javax.money.CurrencyUnit;
 import javax.money.ext.Region;
-import javax.money.ext.RegionalCurrencyUnitProvider;
+
+import net.java.javamoney.ri.ext.provider.RegionalCurrencyUnitProvider;
 
 /**
  * This class models the component defined by JSR 354 that provides accessors
@@ -39,7 +42,7 @@ public interface RegionalCurrencyUnitProviderSpi {
 	 *            the target locale, not null.
 	 * @return the currencies found, or null.
 	 */
-	public CurrencyUnit[] getAll(Region region);
+	public Collection<CurrencyUnit> getAll(Region region);
 
 	/**
 	 * Access all currencies matching a {@link Region}, valid at the given
@@ -52,7 +55,7 @@ public interface RegionalCurrencyUnitProviderSpi {
 	 *            timestamp.
 	 * @return the currencies found, or null.
 	 */
-	public CurrencyUnit[] getAll(Region region, Long timestamp);
+	public Collection<CurrencyUnit> getAll(Region region, Long timestamp);
 
 	/**
 	 * Access all legal tenders for a region.
@@ -65,6 +68,7 @@ public interface RegionalCurrencyUnitProviderSpi {
 	 * @return The {@link CurrencyUnit} instances valid for a given
 	 *         {@link Region}.
 	 */
-	public CurrencyUnit[] getLegalTenders(Region region, Long timestamp);
+	public Collection<CurrencyUnit> getLegalTenders(Region region,
+			Long timestamp);
 
 }

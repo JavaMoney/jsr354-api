@@ -24,7 +24,6 @@ import java.util.Currency;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
-import javax.money.LocalizableCurrencyUnit;
 import javax.money.MoneyCurrency;
 import javax.money.format.ItemFormat;
 import javax.money.format.ItemFormatException;
@@ -104,24 +103,9 @@ public class IsoCurrencyFormatter implements ItemFormat<CurrencyUnit> {
 				return isoCurrency.getDisplayName(this.style
 						.getTranslationLocale());
 			}
-		} else {
-			if (item instanceof LocalizableCurrencyUnit) {
-				return formatLocalized((LocalizableCurrencyUnit) item);
-			}
-		}
+		} 
 		// Overall fallback, return code...
 		return item.getCurrencyCode();
-	}
-
-	private String formatLocalized(LocalizableCurrencyUnit item) {
-		switch (renderedField) {
-		case DISPLAYNAME:
-			return item.getDisplayName(this.style.getTranslationLocale());
-		case SYMBOL:
-			return item.getSymbol(this.style.getTranslationLocale());
-		default:
-			return item.getCurrencyCode();
-		}
 	}
 
 	@Override

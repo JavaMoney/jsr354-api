@@ -1,5 +1,10 @@
-/**
- * 
+/*
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
+ *
+ * Specification:  JSR-354  Money and Currency API ("Specification")
+ *
+ * Copyright (c) 2012-2013, Credit Suisse
+ * All rights reserved.
  */
 package javax.money.format;
 
@@ -14,7 +19,9 @@ import java.util.Locale;
 import org.junit.Test;
 
 /**
- * @author Anatole
+ * Tests class for {@link MonetaryFormat}.
+ * 
+ * @author Anatole Tresch
  * 
  */
 public class MonetaryFormatTest {
@@ -44,17 +51,19 @@ public class MonetaryFormatTest {
 		assertTrue(MonetaryFormat.isSupportedStyle(Integer.class, "Integer"));
 		assertFalse(MonetaryFormat.isSupportedStyle(Integer.class, "String"));
 		assertFalse(MonetaryFormat.isSupportedStyle(Double.class, "Integer"));
-		
+
 	}
 
 	/**
 	 * Test method for
 	 * {@link javax.money.format.MonetaryFormat#getItemFormat(java.lang.Class, javax.money.format.LocalizationStyle)}
 	 * .
-	 * @throws ItemParseException 
+	 * 
+	 * @throws ItemParseException
 	 */
 	@Test
-	public void testGetItemFormatterClassOfTLocalizationStyle() throws ItemParseException {
+	public void testGetItemFormatterClassOfTLocalizationStyle()
+			throws ItemParseException {
 		ItemFormat<String> formatter = MonetaryFormat.getItemFormat(
 				String.class, LocalizationStyle.of(Locale.ENGLISH));
 		assertEquals("testest", formatter.format("testest"));
@@ -69,7 +78,8 @@ public class MonetaryFormatTest {
 	 * Test method for
 	 * {@link javax.money.format.MonetaryFormat#getItemFormat(java.lang.Class, java.util.Locale)}
 	 * .
-	 * @throws ItemParseException 
+	 * 
+	 * @throws ItemParseException
 	 */
 	@Test
 	public void testGetItemFormatterClassOfTLocale() throws ItemParseException {
@@ -82,6 +92,5 @@ public class MonetaryFormatTest {
 		assertEquals("", formatter.parse("testest"));
 		assertEquals("", formatter.parse("gugus"));
 	}
-
 
 }

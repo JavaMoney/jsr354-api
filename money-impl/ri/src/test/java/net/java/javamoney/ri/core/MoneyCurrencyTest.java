@@ -26,10 +26,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Currency;
-import java.util.Locale;
 
 import javax.money.CurrencyUnit;
-import javax.money.LocalizableCurrencyUnit;
 import javax.money.MoneyCurrency;
 
 import org.junit.Test;
@@ -219,7 +217,7 @@ public class MoneyCurrencyTest {
 		String toString = cur1.toString();
 		assertNotNull(toString);
 		assertTrue("Does not contain currency code.", toString.contains("USD"));
-		assertFalse("Does contain ISO namespace!",
+		assertTrue("Does contain ISO namespace!",
 				toString.contains(MoneyCurrency.ISO_NAMESPACE));
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder();
 		builder.setNamespace("Test");

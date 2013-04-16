@@ -11,8 +11,8 @@ import java.util.Collection;
 import java.util.Locale;
 
 import javax.money.format.BuildableItemFormat;
-import javax.money.format.BuildableItemFormat.LiteralToken;
 import javax.money.format.FormatToken;
+import javax.money.format.LiteralToken;
 import javax.money.format.LocalizationStyle;
 
 import net.java.javamoney.ri.format.tokenformatter.NumberToken;

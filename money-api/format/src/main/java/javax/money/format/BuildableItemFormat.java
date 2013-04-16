@@ -1,4 +1,4 @@
-/**
+/*
  * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
  *
  * Specification:  JSR-354  Money and Currency API ("Specification")
@@ -16,10 +16,9 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.money.MonetaryFunction;
-import javax.money.format.ParseContext.ItemFactory;
 
 /**
- * This class implements a {@link ItemFormat} based on an ordered list of
+ * This class implements a format based on an ordered list of
  * {@link FormatToken} instances.
  * 
  * @author Anatole Tresch
@@ -140,6 +139,28 @@ public class BuildableItemFormat<T> {
 	}
 
 	/**
+	 * This method creates an {@link ItemFormat} based on this instance, hereby
+	 * a {@link DefaultItemFactory} is used to extract the item to be returned
+	 * from the {@link ParseContext}'s results.
+	 * 
+	 * @return the {@link ItemFormat} instance, never null.
+	 */
+	public ItemFormat<T> toItemFormat() {
+		return toItemFormat(new DefaultItemFactory<T>(getTargetClass()));
+	}
+
+	/**
+	 * This method creates an {@link ItemFormat} based on this instance, hereby
+	 * using the given a {@link ItemFactory} to extract the item to be returned
+	 * from the {@link ParseContext}'s results.
+	 * 
+	 * @return the {@link ItemFormat} instance, never null.
+	 */
+	public ItemFormat<T> toItemFormat(ItemFactory<T> itemFactory) {
+		return new BuiltItemFormatAdapter<T>(this, itemFactory);
+	}
+
+	/**
 	 * Parses the input text into an item of type T.
 	 * 
 	 * @param text
@@ -180,6 +201,17 @@ public class BuildableItemFormat<T> {
 	 */
 	public LocalizationStyle getStyle() {
 		return this.style;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "BuildableItemFormat [targetType=" + targetType + ", style="
+				+ style + ", tokens=" + tokens + "]";
 	}
 
 	/**
@@ -354,57 +386,84 @@ public class BuildableItemFormat<T> {
 	}
 
 	/**
-	 * {@link FormatToken} which adds an arbitrary literal constant value to the
-	 * output.
+	 * Adapter implementation that implements the {@link ItemFormat} interface
+	 * based on a {@link BuildableItemFormat} and a {@link ItemFactory}.
 	 * 
 	 * @author Anatole Tresch
 	 * 
 	 * @param <T>
-	 *            The item type.
+	 *            the target type
 	 */
-	public static final class LiteralToken<R> implements FormatToken<R> {
-		/** The literal part. */
-		private String token;
+	private final static class BuiltItemFormatAdapter<T> implements
+			ItemFormat<T> {
+		/** the base {@link BuildableItemFormat} instance. */
+		private BuildableItemFormat<T> buildItemFormat;
+		/** The {@link ItemFactory} used. */
+		private ItemFactory<T> itemFactory;
 
 		/**
-		 * Constructor.
+		 * Creates a new instance.
 		 * 
-		 * @param token
-		 *            The literal token part.
+		 * @param buildItemFormat
+		 *            the base buildItemFormat, not null.
+		 * @param itemFactory
+		 *            the itemFactory to be used, not null.
 		 */
-		public LiteralToken(String token) {
-			if (token == null) {
-				throw new IllegalArgumentException("Token is required.");
-			}
-			this.token = token;
+		BuiltItemFormatAdapter(BuildableItemFormat<T> buildItemFormat,
+				ItemFactory<T> itemFactory) {
+			this.buildItemFormat = buildItemFormat;
+			this.itemFactory = itemFactory;
 		}
 
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * javax.money.format.FormatToken#parse(javax.money.format.ParseContext,
-		 * javax.money.format.LocalizationStyle)
+		 * @see javax.money.format.ItemFormat#getTargetClass()
 		 */
 		@Override
-		public void parse(ParseContext<R> context, LocalizationStyle style)
-				throws ItemParseException {
-			if (!context.consume(token)) {
-				throw new ItemParseException("Expected '" + token + "' in "
-						+ context.getInput().toString());
-			}
+		public Class<T> getTargetClass() {
+			return this.buildItemFormat.getTargetClass();
 		}
 
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see javax.money.format.FormatToken#print(java.lang.Appendable,
-		 * java.lang.Object, javax.money.format.LocalizationStyle)
+		 * @see javax.money.format.ItemFormat#getStyle()
 		 */
 		@Override
-		public void print(Appendable appendable, R item, LocalizationStyle style)
-				throws IOException {
-			appendable.append(this.token);
+		public LocalizationStyle getStyle() {
+			return this.buildItemFormat.getStyle();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see javax.money.format.ItemFormat#format(java.lang.Object)
+		 */
+		@Override
+		public String format(T item) {
+			return this.buildItemFormat.format(item);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see javax.money.format.ItemFormat#print(java.lang.Appendable,
+		 * java.lang.Object)
+		 */
+		@Override
+		public void print(Appendable appendable, T item) throws IOException {
+			this.buildItemFormat.print(appendable, item);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see javax.money.format.ItemFormat#parse(java.lang.CharSequence)
+		 */
+		@Override
+		public T parse(CharSequence text) throws ItemParseException {
+			return this.buildItemFormat.parse(text, this.itemFactory);
 		}
 
 		/*
@@ -414,70 +473,8 @@ public class BuildableItemFormat<T> {
 		 */
 		@Override
 		public String toString() {
-			return "LiteralToken [token=" + token + "]";
-		}
-
-	}
-
-	/**
-	 * Default implementation of {@link ItemFactory} that looks up resulting
-	 * item under the class or class name key.
-	 * 
-	 * @author Anatole Tresch
-	 * 
-	 * @param <T>
-	 *            teh item type.
-	 */
-	public static final class DefaultItemFactory<T> implements ItemFactory<T> {
-		/** The item class. */
-		private Class<T> itemClass;
-
-		/**
-		 * Constructor.
-		 * 
-		 * @param itemClass
-		 *            The item class, not null.
-		 */
-		public DefaultItemFactory(Class<T> itemClass) {
-			this.itemClass = itemClass;
-		}
-
-		/**
-		 * Accesses the final item from the {@link ParseContext}.
-		 * 
-		 * @param context
-		 *            the {@link ParseContext}.
-		 * @return the item parsed.
-		 * @throws IllegalStateException
-		 *             , if the item could not be found.
-		 * @see #isComplete(ParseContext)
-		 */
-		@Override
-		public T apply(ParseContext<T> context) {
-			T item = context.getResult(itemClass, itemClass);
-			if (item == null) {
-				item = context.getResult(itemClass.getName(), itemClass);
-			}
-			if (item == null) {
-				throw new IllegalStateException("Parsing is not complete.");
-			}
-			return item;
-		}
-
-		/**
-		 * CHecks if the required item is availalbe within the
-		 * {@link ParseContext}, using the class or fully qualified class name
-		 * as a key.
-		 * 
-		 * @param context
-		 *            the {@link ParseContext}.
-		 * @return true, if the item parsed was found or can be created.
-		 * @see #apply(ParseContext)
-		 */
-		@Override
-		public boolean isComplete(ParseContext<T> context) {
-			return context.getResult(itemClass, itemClass) != null
-					|| context.getResult(itemClass.getName(), itemClass) != null;
+			return "BuiltItemFormat [buildItemFormat=" + buildItemFormat
+					+ ", itemFactory=" + itemFactory + "]";
 		}
 
 	}

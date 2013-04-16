@@ -19,6 +19,7 @@
  */
 package net.java.javamoney.ri.ext.spi;
 
+import java.util.Collection;
 import java.util.ServiceLoader;
 
 import javax.money.ext.Region;
@@ -40,7 +41,7 @@ public interface RegionProviderSpi {
 	 * 
 	 * @return the {@link RegionType}s to be defined.
 	 */
-	public RegionType[] getRegionTypes();
+	public Collection<RegionType> getRegionTypes();
 
 	/**
 	 * Access a region.
@@ -61,13 +62,13 @@ public interface RegionProviderSpi {
 	 *            The required region type.
 	 * @return the regions to be added, not null.
 	 */
-	public Region[] getRegions(RegionType type);
+	public Collection<Region> getRegions(RegionType type);
 
 	/**
 	 * Access all regions provided by this region provider.
 	 * 
 	 * @return the regions to be added, not null.
 	 */
-	public Region[] getRegions();
+	public Collection<Region> getRegions();
 
 }

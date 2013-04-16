@@ -35,7 +35,6 @@ public class ConversionProviderImpl implements MonetaryConversionSpi {
 
 	private Map<ExchangeRateType, ConversionProvider> conversionProviders = new ConcurrentHashMap<ExchangeRateType, ConversionProvider>();
 
-	@SuppressWarnings("unchecked")
 	public ConversionProviderImpl() {
 		reload();
 	}

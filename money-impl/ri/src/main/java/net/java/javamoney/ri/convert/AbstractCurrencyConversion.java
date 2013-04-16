@@ -17,7 +17,7 @@ import javax.money.convert.CurrencyConversionException;
 import javax.money.convert.ExchangeRate;
 
 /**
- * Abstract base class used for implementing currrency conversion.
+ * Abstract base class used for implementing currency conversion.
  * 
  * @author Anatole Tresch
  */

@@ -98,7 +98,7 @@ public interface ConversionProvider {
 	 * Access a {@link CurrencyConverter} that can be applied as a
 	 * {@link MonetaryOperator} to an amount.
 	 * 
-	 * @return a new instance of an corresponding {@link CurrencyConversion},
+	 * @return a new instance of a corresponding {@link CurrencyConverter},
 	 *         never null.
 	 * @throws CurrencyConversionException
 	 *             If the required target {@link CurrencyUnit} is not supported.

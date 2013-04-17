@@ -13,7 +13,7 @@ import java.io.IOException;
 
 /**
  * Formats instances of T to a {@link String} or an {@link Appendable}.
- * Instances of this can be added to a {@link BuildableItemFormat} to assemble a
+ * Instances of this can be added to a {@link ItemFormatBuilder} to assemble a
  * complex input/output format.
  * 
  * @author Anatole Tresch

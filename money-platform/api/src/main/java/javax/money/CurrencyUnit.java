@@ -70,7 +70,7 @@ public interface CurrencyUnit {
 	 * <p>
 	 * Different currencies have different numbers of fractional digits by
 	 * default. * For example, 'GBP' has 2 fractional digits, but 'JPY' has
-	 * zero. * Pseudo-currencies are indicated by -1. *
+	 * zero. * virtual currencies or those with no applicable fractional are indicated by -1. *
 	 * <p>
 	 * This method matches the API of <type>java.util.Currency</type>.
 	 * 

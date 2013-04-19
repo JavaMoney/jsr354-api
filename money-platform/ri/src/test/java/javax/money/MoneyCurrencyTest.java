@@ -115,7 +115,7 @@ public class MoneyCurrencyTest {
 
 	@Test
 	public void testToString() {
-		assertEquals("CHF", MoneyCurrency.of("CHF").toString());
+		assertEquals("ISO-4217:CHF", MoneyCurrency.of("CHF").toString());
 	}
 
 }

@@ -1,1 +1,1 @@
-net.java.javamoney.ri.convert.ConversionProviderImpl
+net.java.javamoney.ri.convert.MonetaryConversionSpiImpl

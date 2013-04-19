@@ -31,11 +31,11 @@ import javax.money.convert.MonetaryConversion.MonetaryConversionSpi;
 import net.java.javamoney.ri.spi.MonetaryLoader;
 
 @Singleton
-public class ConversionProviderImpl implements MonetaryConversionSpi {
+public class MonetaryConversionSpiImpl implements MonetaryConversionSpi {
 
 	private Map<ExchangeRateType, ConversionProvider> conversionProviders = new ConcurrentHashMap<ExchangeRateType, ConversionProvider>();
 
-	public ConversionProviderImpl() {
+	public MonetaryConversionSpiImpl() {
 		reload();
 	}
 

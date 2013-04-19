@@ -39,7 +39,7 @@ import javax.money.convert.ExchangeRateType;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import net.java.javamoney.ri.core.provider.IsoCurrencyOnlineProvider;
+import net.java.javamoney.ri.ext.impl.IsoCurrencyOnlineProvider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Anatole Tresch
  */
 @Singleton
-public class EZBExchangeRateProvider implements ConversionProvider {
+public class EZBConversionProvider implements ConversionProvider {
 	/** URL for the last 90 days data feed. */
 	private static final String DAILY90_RATES_URL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
 	/** URL for the daily data feed. */
@@ -85,7 +85,7 @@ public class EZBExchangeRateProvider implements ConversionProvider {
 	/**
 	 * Constructor, also loads initial data.
 	 */
-	public EZBExchangeRateProvider() {
+	public EZBConversionProvider() {
 		saxParserFactory.setNamespaceAware(false);
 		saxParserFactory.setValidating(false);
 		loadCurrent();

@@ -39,10 +39,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
-public class IMFExchangeRateProvider implements ConversionProvider {
+public class IMFConversionProvider implements ConversionProvider {
 
 	private static final Logger LOGGER = LoggerFactory
-			.getLogger(IMFExchangeRateProvider.class);
+			.getLogger(IMFConversionProvider.class);
 
 	private Map<CurrencyUnit, ExchangeRate> currencyToSDRMap = new HashMap<CurrencyUnit, ExchangeRate>();
 

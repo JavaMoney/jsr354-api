@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation
  *    Werner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri.core.provider;
+package net.java.javamoney.ri.ext.provider;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,7 +29,7 @@ import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
 import javax.money.ext.MonetaryCurrencies.CurrencyUnitMapperSpi;
 
-import net.java.javamoney.ri.core.spi.CurrencyUnitMappingSpi;
+import net.java.javamoney.ri.ext.spi.CurrencyUnitMappingSpi;
 import net.java.javamoney.ri.spi.MonetaryLoader;
 
 /**

@@ -8,7 +8,8 @@
  */
 package javax.money;
 
-import static javax.money.Money.Checker.*;
+import static javax.money.Money.Checker.checkAmountParameter;
+import static javax.money.Money.Checker.checkNumber;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -588,7 +589,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		checkNumber(amount);
 		return new Money(this.currency, getBigDecimal(amount), this.mathContext);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -714,7 +715,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @see javax.money.MonetaryAmount#toEngineeringString()
 	 */
 	public String toEngineeringString() {
-		return this.currency.toString() + ' '
+		return this.currency.getCurrencyCode() + ' '
 				+ this.number.toEngineeringString();
 	}
 
@@ -724,7 +725,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 * @see javax.money.MonetaryAmount#toPlainString()
 	 */
 	public String toPlainString() {
-		return this.currency.toString() + ' ' + this.number.toPlainString();
+		return this.currency.getCurrencyCode() + ' '
+				+ this.number.toPlainString();
 	}
 
 	/*
@@ -864,21 +866,22 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 	 */
 	@Override
 	public String toString() {
-		return currency.toString() + ' ' + number;
+		return currency.getCurrencyCode() + ' ' + number;
 	}
-	
+
 	/**
-	 * This is an inner checker class for aspects of  {@link MonetaryAmount}.
-	 * It may be used by multiple implementations (inside the same package) to avoid code duplication.
+	 * This is an inner checker class for aspects of {@link MonetaryAmount}. It
+	 * may be used by multiple implementations (inside the same package) to
+	 * avoid code duplication.
 	 * 
 	 * This class is for internal use only.
 	 * 
 	 * @author Werner Keil
 	 */
 	static final class Checker {
-		private Checker() {		
+		private Checker() {
 		}
-		
+
 		/**
 		 * Internal method to check for correct number parameter.
 		 * 
@@ -893,25 +896,27 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		}
 
 		/**
-		 * Method to check if a currency is compatible with this amount instance.
+		 * Method to check if a currency is compatible with this amount
+		 * instance.
 		 * 
 		 * @param amount
 		 *            The monetary amount to be compared to, never null.
 		 * @throws IllegalArgumentException
 		 *             If the amount is null, or the amount's currency is not
-		 *             compatible (same {@link CurrencyUnit#getNamespace()} and same
-		 *             {@link CurrencyUnit#getCurrencyCode()}).
+		 *             compatible (same {@link CurrencyUnit#getNamespace()} and
+		 *             same {@link CurrencyUnit#getCurrencyCode()}).
 		 */
-		static final void checkAmountParameter(CurrencyUnit currency, MonetaryAmount amount) {
+		static final void checkAmountParameter(CurrencyUnit currency,
+				MonetaryAmount amount) {
 			if (amount == null) {
 				throw new IllegalArgumentException("Amount must not be null.");
 			}
 			final CurrencyUnit amountCurrency = amount.getCurrency();
-			if (!(currency.getNamespace().equals(amountCurrency.getNamespace())) || 
-					(currency.getNamespace().equals(amountCurrency.getNamespace()) && !(currency
-					.getCurrencyCode().equals(amountCurrency.getCurrencyCode()))
-					)
-				) {
+			if (!(currency.getNamespace().equals(amountCurrency.getNamespace()))
+					|| (currency.getNamespace().equals(
+							amountCurrency.getNamespace()) && !(currency
+							.getCurrencyCode().equals(amountCurrency
+							.getCurrencyCode())))) {
 				throw new CurrencyMismatchException(currency, amountCurrency);
 			}
 		}

@@ -16,7 +16,7 @@
  * Contributors:
  *    Anatole Tresch - initial implementation
  */
-package net.java.javamoney.ri.format.provider.format;
+package net.java.javamoney.ri.format.impl;
 
 import java.io.IOException;
 import java.util.Arrays;

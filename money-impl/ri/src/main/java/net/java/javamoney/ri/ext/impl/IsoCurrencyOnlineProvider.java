@@ -16,7 +16,7 @@
  * Contributors:
  *    Anatole Tresch - initial implementation.
  */
-package net.java.javamoney.ri.core.provider;
+package net.java.javamoney.ri.ext.impl;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import javax.money.MoneyCurrency;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import net.java.javamoney.ri.core.spi.CurrencyUnitProvideromponentSpi;
+import net.java.javamoney.ri.ext.spi.CurrencyUnitProviderComponentSpi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 @Singleton
-public class IsoCurrencyOnlineProvider implements CurrencyUnitProvideromponentSpi {
+public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderComponentSpi {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(IsoCurrencyOnlineProvider.class);

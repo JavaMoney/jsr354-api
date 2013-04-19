@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation
  *    Werner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri.core.provider;
+package net.java.javamoney.ri.ext.provider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,8 +37,8 @@ import javax.money.UnknownCurrencyException;
 import javax.money.ext.MonetaryCurrencies.CurrencyUnitProviderSpi;
 import javax.money.ext.RegionType;
 
-import net.java.javamoney.ri.core.spi.CurrencyUnitMappingSpi;
-import net.java.javamoney.ri.core.spi.CurrencyUnitProvideromponentSpi;
+import net.java.javamoney.ri.ext.spi.CurrencyUnitMappingSpi;
+import net.java.javamoney.ri.ext.spi.CurrencyUnitProviderComponentSpi;
 import net.java.javamoney.ri.spi.MonetaryLoader;
 
 /**
@@ -57,7 +57,7 @@ public class CurrencyUnitProviderImpl implements
 	 */
 	private static final String DEFAULT_NAMESPACE_PROP = "javax.money.defaultCurrencyNamespace";
 	/** Loaded currency providers. */
-	private Map<String, List<CurrencyUnitProvideromponentSpi>> currencyProviders = new ConcurrentHashMap<String, List<CurrencyUnitProvideromponentSpi>>();
+	private Map<String, List<CurrencyUnitProviderComponentSpi>> currencyProviders = new ConcurrentHashMap<String, List<CurrencyUnitProviderComponentSpi>>();
 	/** Loaded currency mappers. */
 	private Set<CurrencyUnitMappingSpi> mappers = new HashSet<CurrencyUnitMappingSpi>();
 	/** The default namespace used. */
@@ -81,13 +81,13 @@ public class CurrencyUnitProviderImpl implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		List<CurrencyUnitProvideromponentSpi> loadedList = MonetaryLoader.getLoader()
-				.getComponents(CurrencyUnitProvideromponentSpi.class);
-		for (CurrencyUnitProvideromponentSpi currencyProviderSPI : loadedList) {
-			List<CurrencyUnitProvideromponentSpi> provList = this.currencyProviders
+		List<CurrencyUnitProviderComponentSpi> loadedList = MonetaryLoader.getLoader()
+				.getComponents(CurrencyUnitProviderComponentSpi.class);
+		for (CurrencyUnitProviderComponentSpi currencyProviderSPI : loadedList) {
+			List<CurrencyUnitProviderComponentSpi> provList = this.currencyProviders
 					.get(currencyProviderSPI.getNamespace());
 			if (provList == null) {
-				provList = new ArrayList<CurrencyUnitProvideromponentSpi>();
+				provList = new ArrayList<CurrencyUnitProviderComponentSpi>();
 				this.currencyProviders.put(currencyProviderSPI.getNamespace(),
 						provList);
 			}
@@ -107,12 +107,12 @@ public class CurrencyUnitProviderImpl implements
 	 * java.lang.String, long)
 	 */
 	public CurrencyUnit get(String namespace, String code, Long timestamp) {
-		List<CurrencyUnitProvideromponentSpi> provList = currencyProviders
+		List<CurrencyUnitProviderComponentSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
 			return null;
 		}
-		for (CurrencyUnitProvideromponentSpi prov : provList) {
+		for (CurrencyUnitProviderComponentSpi prov : provList) {
 			CurrencyUnit currency = prov.getCurrency(code, timestamp);
 			if (currency != null) {
 				return currency;
@@ -134,12 +134,12 @@ public class CurrencyUnitProviderImpl implements
 
 	public Collection<CurrencyUnit> getAll(String namespace, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		List<CurrencyUnitProvideromponentSpi> provList = currencyProviders
+		List<CurrencyUnitProviderComponentSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
 			return null;
 		}
-		for (CurrencyUnitProvideromponentSpi prov : provList) {
+		for (CurrencyUnitProviderComponentSpi prov : provList) {
 			CurrencyUnit[] currencies = prov.getCurrencies(null);
 			if (currencies != null) {
 				result.addAll(Arrays.asList(currencies));
@@ -159,9 +159,9 @@ public class CurrencyUnitProviderImpl implements
 
 	public Collection<CurrencyUnit> getAll(Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		for (List<CurrencyUnitProvideromponentSpi> provList : currencyProviders
+		for (List<CurrencyUnitProviderComponentSpi> provList : currencyProviders
 				.values()) {
-			for (CurrencyUnitProvideromponentSpi prov : provList) {
+			for (CurrencyUnitProviderComponentSpi prov : provList) {
 				CurrencyUnit[] currencies = prov.getCurrencies(timestamp);
 				if (currencies != null) {
 					result.addAll(Arrays.asList(currencies));
@@ -185,12 +185,12 @@ public class CurrencyUnitProviderImpl implements
 
 	public boolean isAvailable(String namespace, String code, Long start,
 			Long end) {
-		List<CurrencyUnitProvideromponentSpi> provList = currencyProviders
+		List<CurrencyUnitProviderComponentSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
 			return false;
 		}
-		for (CurrencyUnitProvideromponentSpi prov : provList) {
+		for (CurrencyUnitProviderComponentSpi prov : provList) {
 			if (prov.isAvailable(code, start, end)) {
 				return true;
 			}
@@ -214,9 +214,9 @@ public class CurrencyUnitProviderImpl implements
 
 	public Set<CurrencyUnit> getAll(Locale locale, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		for (List<CurrencyUnitProvideromponentSpi> provList : currencyProviders
+		for (List<CurrencyUnitProviderComponentSpi> provList : currencyProviders
 				.values()) {
-			for (CurrencyUnitProvideromponentSpi prov : provList) {
+			for (CurrencyUnitProviderComponentSpi prov : provList) {
 				CurrencyUnit[] currencies = prov.getCurrencies(locale,
 						timestamp);
 				if (currencies != null) {

@@ -17,7 +17,7 @@
  * Contributors:
  *    Anatole Tresch - initial version.
  */
-package net.java.javamoney.ri.core.spi;
+package net.java.javamoney.ri.ext.spi;
 
 import java.util.Locale;
 import java.util.ServiceLoader;
@@ -34,7 +34,7 @@ import javax.money.CurrencyUnit;
  * 
  * @author Anatole Tresch
  */
-public interface CurrencyUnitProvideromponentSpi {
+public interface CurrencyUnitProviderComponentSpi {
 
 	/**
 	 * The currency namespace provided by this instance.

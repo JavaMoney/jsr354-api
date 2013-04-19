@@ -16,43 +16,38 @@
  * Contributors:
  *    Anatole Tresch - initial implementation
  */
-package net.java.javamoney.ri.format.provider.format;
+package net.java.javamoney.ri.format.impl;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.money.CurrencyUnit;
+import javax.money.MonetaryAmount;
 import javax.money.MoneyCurrency;
 import javax.money.format.ItemFormat;
 import javax.money.format.ItemFormatException;
 import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.format.provider.format.IsoCurrencyFormatter.RenderedField;
 import net.java.javamoney.ri.format.spi.ItemFormatFactorySpi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IsoCurrencyFormatterFactory implements
-		ItemFormatFactorySpi<CurrencyUnit> {
+public class IsoAmountFormatterFactory implements
+		ItemFormatFactorySpi<MonetaryAmount> {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(IsoCurrencyFormatterFactory.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(IsoAmountFormatterFactory.class);
 
 	@Override
-	public Class<CurrencyUnit> getTargetClass() {
-		return CurrencyUnit.class;
+	public Class<MonetaryAmount> getTargetClass() {
+		return MonetaryAmount.class;
 	}
 
 	@Override
 	public Collection<String> getSupportedStyleIds() {
 		Set<String> supportedRenderTypes = new HashSet<String>();
-		for (IsoCurrencyFormatter.RenderedField f : IsoCurrencyFormatter.RenderedField
-				.values()) {
-			supportedRenderTypes.add(f.name());
-		}
+		supportedRenderTypes.add(LocalizationStyle.DEFAULT_ID);
 		return supportedRenderTypes;
 	}
 
@@ -62,21 +57,26 @@ public class IsoCurrencyFormatterFactory implements
 	}
 
 	@Override
-	public ItemFormat<CurrencyUnit> getItemFormat(LocalizationStyle style)
+	public ItemFormat<MonetaryAmount> getItemFormat(LocalizationStyle style)
 			throws ItemFormatException {
-		String renderedFieldValue = style.getId();
-		try {
-			IsoCurrencyFormatter.RenderedField.valueOf(renderedFieldValue
-					.toUpperCase());
-		} catch (Exception e) {
-			throw new IllegalArgumentException("style's ID must one of "
-					+ Arrays.toString(RenderedField.values()));
-		}
 		String namespace = style.getAttribute("namespace", String.class);
 		if (namespace == null) {
+			LOG.debug("Using default namespace " + MoneyCurrency.ISO_NAMESPACE
+					+ " for style: " + style);
 			namespace = MoneyCurrency.ISO_NAMESPACE;
 		}
-		return new IsoCurrencyFormatter(style);
+		if (!MoneyCurrency.ISO_NAMESPACE.equals(namespace)) {
+			throw new ItemFormatException("Only " + MoneyCurrency.ISO_NAMESPACE
+					+ " is supported as namespace, was:" + style);
+		}
+		String renderedFieldValue = (String) style.getAttribute(
+				"currencyRendering", String.class);
+		if (renderedFieldValue == null) {
+			renderedFieldValue = "CODE";
+		}
+		LocalizationStyle currencyStyle = new LocalizationStyle.Builder(
+				renderedFieldValue, style.getNumberLocale()).build();
+		return new IsoAmountFormatter(style, currencyStyle);
 	}
 
 }

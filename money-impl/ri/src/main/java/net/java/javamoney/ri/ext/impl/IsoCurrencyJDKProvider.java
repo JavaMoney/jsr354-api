@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation.
  *    Werner Keil - extension and adjustment.
  */
-package net.java.javamoney.ri.core.provider;
+package net.java.javamoney.ri.ext.impl;
 
 import java.util.Currency;
 import java.util.Locale;
@@ -30,7 +30,7 @@ import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 import javax.money.ext.MonetaryCurrencies.CurrencyUnitProviderSpi;
 
-import net.java.javamoney.ri.core.spi.CurrencyUnitProvideromponentSpi;
+import net.java.javamoney.ri.ext.spi.CurrencyUnitProviderComponentSpi;
 
 /**
  * Basic implementation of a {@link CurrencyUnitProviderSpi} that provides the
@@ -40,7 +40,7 @@ import net.java.javamoney.ri.core.spi.CurrencyUnitProvideromponentSpi;
  * @author Werner Keil
  */
 @Singleton
-public class IsoCurrencyJDKProvider implements CurrencyUnitProvideromponentSpi {
+public class IsoCurrencyJDKProvider implements CurrencyUnitProviderComponentSpi {
 
 	private final Map<String, CurrencyUnit> currencies = new ConcurrentHashMap<String, CurrencyUnit>();
 

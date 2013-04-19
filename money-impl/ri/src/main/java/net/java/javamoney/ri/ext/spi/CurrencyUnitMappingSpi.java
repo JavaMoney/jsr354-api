@@ -17,7 +17,7 @@
  * Contributors:
  *    Anatole Tresch - initial version.
  */
-package net.java.javamoney.ri.core.spi;
+package net.java.javamoney.ri.ext.spi;
 
 import java.util.ServiceLoader;
 

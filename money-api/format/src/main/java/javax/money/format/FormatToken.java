@@ -44,7 +44,7 @@ public interface FormatToken<T> {
 	/**
 	 * Parses an item from the given {@link ParseContext}. Any parsed item can
 	 * be added to the {@link ParseContext} using
-	 * {@link ParseContext#addResult(Object, Object)} as results. At the end of
+	 * {@link ParseContext#addParseResult(Object, Object)} as results. At the end of
 	 * the parsing process an instance of {@link ItemFactory} is transferring
 	 * the results parsed into the target item to be parsed.
 	 * 

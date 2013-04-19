@@ -17,11 +17,11 @@ import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
 import javax.money.convert.MonetaryConversion;
+import javax.money.ext.MonetaryCurrencies;
 import javax.money.format.ItemFormat;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormat;
-import javax.money.provider.MonetaryCurrencies;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -71,16 +71,6 @@ public class SmokeTests {
 		assertEquals(2.0d, amount3.doubleValue(), 0);
 	}
 
-	@Test
-	public void testGettingCurrenciesPerLocale() {
-		Collection<CurrencyUnit> currencies = MonetaryCurrencies
-				.getAll(Locale.US);
-		logger.debug("Currencies for US: " + currencies);
-		currencies = MonetaryCurrencies.getAll(Locale.CHINA);
-		logger.debug("Currencies for CHINA: " + currencies);
-		currencies = MonetaryCurrencies.getAll(Locale.GERMANY);
-		logger.debug("Currencies for ROOT (undefined): " + currencies);
-	}
 
 	@Test
 	public void testExchange() {

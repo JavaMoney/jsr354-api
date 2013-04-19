@@ -21,7 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.RoundingMode;
-import java.util.Collection;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
@@ -34,11 +33,11 @@ import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
 import javax.money.convert.MonetaryConversion;
+import javax.money.ext.MonetaryCurrencies;
 import javax.money.format.ItemFormat;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormat;
-import javax.money.provider.MonetaryCurrencies;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -75,17 +74,6 @@ public class SmokeTests {
 		assertEquals(1.0d, amount1.doubleValue(), 0);
 		assertEquals(1.0d, amount2.doubleValue(), 0);
 		assertEquals(2.0d, amount3.doubleValue(), 0);
-	}
-
-	@Test
-	public void testGettingCurrenciesPerLocale() {
-		Collection<CurrencyUnit> currencies = MonetaryCurrencies
-				.getAll(Locale.US);
-		logger.debug("Currencies for US: " + currencies);
-		currencies = MonetaryCurrencies.getAll(Locale.CHINA);
-		logger.debug("Currencies for CHINA: " + currencies);
-		currencies = MonetaryCurrencies.getAll(Locale.ROOT);
-		logger.debug("Currencies for ROOT (undefined): " + currencies);
 	}
 
 	@Test
@@ -140,7 +128,8 @@ public class SmokeTests {
 		// Using parsers
 		try {
 			ItemFormat<CurrencyUnit> parser = MonetaryFormat.getItemFormat(
-					CurrencyUnit.class, LocalizationStyle.of("ID", Locale.ENGLISH));
+					CurrencyUnit.class,
+					LocalizationStyle.of("ID", Locale.ENGLISH));
 			CurrencyUnit cur = parser.parse("CHF");
 			assertNotNull(cur);
 			assertEquals("CHF", cur.getCurrencyCode());
@@ -152,12 +141,11 @@ public class SmokeTests {
 	@Test
 	public void testGettingFormatters() {
 		// Using formatters
-		CurrencyUnit currency = MonetaryCurrencies.get(
-				"ISO-4217", "CHF");
+		CurrencyUnit currency = MonetaryCurrencies.get("ISO-4217", "CHF");
 		MonetaryAmount amount = Money.of(currency, 1.0d);
 		ItemFormat<MonetaryAmount> formatter = MonetaryFormat.getItemFormat(
-						MonetaryAmount.class,
-						LocalizationStyle.of("CODE", Locale.GERMANY));
+				MonetaryAmount.class,
+				LocalizationStyle.of("CODE", Locale.GERMANY));
 		System.out.println("Formatted amount: " + formatter.format(amount));
 		assertEquals(1.0d, amount.doubleValue(), 0);
 	}

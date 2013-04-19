@@ -13,16 +13,15 @@
 
 	<modules>
 		<module>convert</module>
-		<module>ext</module>
 		<module>format</module>
-		<module>provider</module>
+		<module>ext</module>
 	</modules>
 	<description>JSR 354 (Money and Currency) - Public API</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>javax.money</groupId>
-			<artifactId>money-api-platform</artifactId>
+			<artifactId>money-platform-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

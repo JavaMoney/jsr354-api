@@ -13,8 +13,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.money.convert.ExchangeRateType;
-
 /**
  * Defines the different region types available. This allows to segregate
  * different grouping strategy types.

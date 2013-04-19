@@ -41,12 +41,17 @@
 		<dependencies>
 			<dependency>
 				<groupId>javax.money</groupId>
-				<artifactId>money-api-provider</artifactId>
+				<artifactId>money-api-ext</artifactId>
 				<version>${javax.money.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.money</groupId>
-				<artifactId>money-api-ext</artifactId>
+				<artifactId>money-api-convert</artifactId>
+				<version>${javax.money.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.money</groupId>
+				<artifactId>money-api-format</artifactId>
 				<version>${javax.money.version}</version>
 			</dependency>
 			<dependency>
@@ -81,11 +86,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>javax.money</groupId>
-			<artifactId>money-api-provider</artifactId>
+			<artifactId>money-api-ext</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.money</groupId>
-			<artifactId>money-api-ext</artifactId>
+			<artifactId>money-api-convert</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.money</groupId>
+			<artifactId>money-api-format</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.money</groupId>

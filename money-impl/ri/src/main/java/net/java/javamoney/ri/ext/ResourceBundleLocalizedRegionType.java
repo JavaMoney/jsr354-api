@@ -18,13 +18,6 @@
  */
 package net.java.javamoney.ri.ext;
 
-import java.io.IOException;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import javax.money.ext.RegionType;
-import javax.money.format.LocalizableItem;
-import javax.money.format.LocalizationStyle;
 //
 ///**
 // * This class implements a {@link LocalizableRegionType} based on a
@@ -130,3 +123,4 @@ import javax.money.format.LocalizationStyle;
 //	}
 //
 //}
+

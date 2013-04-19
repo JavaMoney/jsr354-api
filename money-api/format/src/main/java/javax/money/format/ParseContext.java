@@ -205,7 +205,7 @@ public final class ParseContext<T> {
 	 * @param value
 	 *            The result value
 	 */
-	public void addResult(Object key, Object value) {
+	public void addParseResult(Object key, Object value) {
 		this.results.put(key, value);
 	}
 
@@ -214,7 +214,7 @@ public final class ParseContext<T> {
 	 * 
 	 * @return the unmodifiable map of the results.
 	 */
-	public Map<Object, Object> getParseResult() {
+	public Map<Object, Object> getParseResults() {
 		return Collections.unmodifiableMap(this.results);
 	}
 

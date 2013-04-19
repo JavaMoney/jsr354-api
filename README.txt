@@ -17,7 +17,6 @@ Standalone scope
 * money-api: contains the standalone API part
   * convert: currency conversion
   * format: formatting and parsing
-  * provider: accessors / SPI
   * ext: extensions
 * money-impl: contains the standalone implementation artifacts
   * ri: contains the reference implementation, runnable on SE 7 or later

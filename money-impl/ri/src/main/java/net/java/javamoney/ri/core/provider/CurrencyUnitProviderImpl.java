@@ -34,8 +34,8 @@ import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 import javax.money.UnknownCurrencyException;
+import javax.money.ext.MonetaryCurrencies.CurrencyUnitProviderSpi;
 import javax.money.ext.RegionType;
-import javax.money.provider.CurrencyUnitProviderSpi;
 
 import net.java.javamoney.ri.core.spi.CurrencyUnitMappingSpi;
 import net.java.javamoney.ri.core.spi.CurrencyUnitProvideromponentSpi;

@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.MonetaryConversion.MonetaryConversionSpi;
 
 /**
  * This singleton defines access to the exchange and currency conversion logic
@@ -36,26 +35,6 @@ public final class MonetaryRegions {
 	 * Private singleton constructor.
 	 */
 	private MonetaryRegions() {
-	}
-
-	/**
-	 * Method that loads the {@link MonetaryConversionSpi} on class loading.
-	 * 
-	 * @return the instance ot be registered into the shared variable.
-	 */
-	private static MonetaryRegionSpi loadMonetaryRegionSpi() {
-		try {
-			// try loading directly from ServiceLoader
-			Iterator<MonetaryRegionSpi> instances = ServiceLoader.load(
-					MonetaryRegionSpi.class).iterator();
-			if (instances.hasNext()) {
-				return instances.next();
-			}
-		} catch (Throwable e) {
-			Logger.getLogger(MonetaryRegionSpi.class.getName()).log(Level.INFO,
-					"No MonetaryRegionSpi registered, using  default.", e);
-		}
-		return new DefaultMonetaryRegionSpi();
 	}
 
 	/**
@@ -140,7 +119,7 @@ public final class MonetaryRegions {
 	 * @return true if the currency is accepted as legal tender in the current
 	 *         region.
 	 */
-	public static boolean isLegalTCurrencyUnit(CurrencyUnit currency,
+	public static boolean isLegalCurrencyUnit(CurrencyUnit currency,
 			Region region, long timestamp) {
 		return MONETARY_REGION_SPI.isLegalCurrencyUnit(currency, region,
 				timestamp);
@@ -249,6 +228,26 @@ public final class MonetaryRegions {
 		 */
 		public Set<CurrencyUnit> getLegalCurrencyUnits(Region region,
 				Long timestamp);
+	}
+
+	/**
+	 * Method that loads the {@link MonetaryConversionSpi} on class loading.
+	 * 
+	 * @return the instance ot be registered into the shared variable.
+	 */
+	private static MonetaryRegionSpi loadMonetaryRegionSpi() {
+		try {
+			// try loading directly from ServiceLoader
+			Iterator<MonetaryRegionSpi> instances = ServiceLoader.load(
+					MonetaryRegionSpi.class).iterator();
+			if (instances.hasNext()) {
+				return instances.next();
+			}
+		} catch (Throwable e) {
+			Logger.getLogger(MonetaryRegionSpi.class.getName()).log(Level.INFO,
+					"No MonetaryRegionSpi registered, using  default.", e);
+		}
+		return new DefaultMonetaryRegionSpi();
 	}
 
 	/**

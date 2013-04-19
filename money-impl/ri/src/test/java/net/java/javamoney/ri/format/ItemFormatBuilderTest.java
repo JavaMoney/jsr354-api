@@ -10,13 +10,13 @@ import java.text.DecimalFormatSymbols;
 import java.util.Collection;
 import java.util.Locale;
 
+import javax.money.format.FormatToken;
 import javax.money.format.ItemFormat;
 import javax.money.format.ItemFormatBuilder;
-import javax.money.format.FormatToken;
 import javax.money.format.LiteralToken;
 import javax.money.format.LocalizationStyle;
 
-import net.java.javamoney.ri.format.tokenformatter.NumberToken;
+import net.java.javamoney.ri.format.tokens.NumberToken;
 
 import org.junit.Test;
 
@@ -29,35 +29,35 @@ public class ItemFormatBuilderTest {
 
 	@Test
 	public void testAddTokenFormatTokenOfT() throws IOException {
-		ItemFormatBuilder<Double> b = new ItemFormatBuilder<Double>(
-				Double.class);
-		b.addToken(new LiteralToken<Double>("test- "));
+		ItemFormatBuilder<Number> b = new ItemFormatBuilder<Number>(
+				Number.class);
+		b.addToken(new LiteralToken<Number>("test- "));
 		DecimalFormat df = new DecimalFormat("#0.0#");
 		DecimalFormatSymbols syms = df.getDecimalFormatSymbols();
 		syms.setDecimalSeparator(':');
 		df.setDecimalFormatSymbols(syms);
-		b.addToken(new NumberToken<Double>(df).setNumberGroupChars(',', '\'')
+		b.addToken(new NumberToken(df).setNumberGroupChars(',', '\'')
 				.setNumberGroupSizes(2, 2, 3));
 		b.setLocalizationStyle(LocalizationStyle.of(Locale.FRENCH));
-		ItemFormat<Double> f = b.build();
+		ItemFormat<Number> f = b.build();
 		assertNotNull(f);
 		assertEquals("test- 12'345'67,89:12", f.format(123456789.123456789d));
 	}
 
 	@Test
 	public void testAddTokenString() throws IOException {
-		ItemFormatBuilder<Double> b = new ItemFormatBuilder<Double>(
-				Double.class);
+		ItemFormatBuilder<Number> b = new ItemFormatBuilder<Number>(
+				Number.class);
 		b.addLiteral("test- ");
 		b.addLiteral("BEF+ ");
 		DecimalFormat f = new DecimalFormat("#0.0#");
 		DecimalFormatSymbols symbols = f.getDecimalFormatSymbols();
 		symbols.setDecimalSeparator(':');
 		f.setDecimalFormatSymbols(symbols);
-		b.addToken(new NumberToken<Double>(f).setNumberGroupChars(',', '\'')
+		b.addToken(new NumberToken(f).setNumberGroupChars(',', '\'')
 				.setNumberGroupSizes(2, 2, 3));
 		b.setLocalizationStyle(LocalizationStyle.of(Locale.FRENCH));
-		ItemFormat<Double> sf = b.build();
+		ItemFormat<Number> sf = b.build();
 		assertNotNull(sf);
 		assertEquals("test- BEF+ 12'345'67,89:12",
 				sf.format(123456789.123456789d));
@@ -102,12 +102,12 @@ public class ItemFormatBuilderTest {
 
 	@Test
 	public void testToFormatterLocalizationStyle() {
-		ItemFormatBuilder<Double> b = new ItemFormatBuilder<Double>(
-				Double.class);
-		b.addToken(new LiteralToken<Double>("test "));
-		b.addToken(new NumberToken<Double>());
+		ItemFormatBuilder<Number> b = new ItemFormatBuilder<Number>(
+				Number.class);
+		b.addToken(new LiteralToken<Number>("test "));
+		b.addToken(new NumberToken());
 		b.setLocalizationStyle(LocalizationStyle.of(Locale.CHINESE));
-		ItemFormat<Double> f = b.build();
+		ItemFormat<Number> f = b.build();
 		assertNotNull(f);
 		assertEquals("test 123,456,789.123", f.format(123456789.123456789d));
 		b.setLocalizationStyle(LocalizationStyle.of(Locale.GERMAN));

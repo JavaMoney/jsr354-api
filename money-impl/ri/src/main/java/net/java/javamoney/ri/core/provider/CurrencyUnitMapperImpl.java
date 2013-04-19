@@ -27,7 +27,7 @@ import java.util.Set;
 
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
-import javax.money.provider.CurrencyUnitMapperSpi;
+import javax.money.ext.MonetaryCurrencies.CurrencyUnitMapperSpi;
 
 import net.java.javamoney.ri.core.spi.CurrencyUnitMappingSpi;
 import net.java.javamoney.ri.spi.MonetaryLoader;

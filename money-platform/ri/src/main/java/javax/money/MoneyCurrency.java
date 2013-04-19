@@ -10,6 +10,7 @@ package javax.money;
 
 import java.io.Serializable;
 import java.util.Currency;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -584,7 +585,8 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * @author Anatole Tresch
 	 * @author Werner Keil
 	 */
-	private final static class JDKCurrencyAdapter extends MoneyCurrency {
+	private final static class JDKCurrencyAdapter extends MoneyCurrency
+			implements Localizable {
 
 		/**
 		 * serialVersionUID.
@@ -616,6 +618,16 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		@Override
 		public String toString() {
 			return ISO_NAMESPACE + ':' + getCurrencyCode();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see javax.money.Localizable#getDisplayName(java.util.Locale)
+		 */
+		@Override
+		public String getDisplayName(Locale locale) {
+			return currency.getDisplayName(locale);
 		}
 
 	}

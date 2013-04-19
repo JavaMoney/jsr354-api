@@ -31,7 +31,7 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.money</groupId>
-			<artifactId>money-api-platform</artifactId>
+			<artifactId>money-platform-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

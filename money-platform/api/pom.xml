@@ -6,7 +6,7 @@
 		<groupId>javax.money</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>money-platform-api</artifactId>
+	<artifactId>money-api-platform</artifactId>
 	<name>JSR 354 (Money and Currency) - Platform API</name>
 	<description>This part is targeted for inclusion into JDK SE 9. Since JDK integration also contains the default implementations, this module
 	over all contains an API, as well as according implementations.</description>

@@ -11,7 +11,7 @@
 	<description>Technical Compatibility Kit (TCK) of JSR 354</description>
 
 	<properties>
-		<javax.money.version>1.0-SNAPSHOT</javax.money.version>
+		<javamoney.version>1.0-SNAPSHOT</javamoney.version>
 		<slf4j.version>1.6.1</slf4j.version>
 	</properties>
 	
@@ -27,12 +27,12 @@
 			<dependency>
 				<groupId>javax.money</groupId>
 				<artifactId>money-api-provider</artifactId>
-				<version>${javax.money.version}</version>
+				<version>${javamoney.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.money</groupId>
 				<artifactId>money-api-ext</artifactId>
-				<version>${javax.money.version}</version>
+				<version>${javamoney.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>

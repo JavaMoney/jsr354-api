@@ -32,6 +32,8 @@ import javax.money.MonetaryAmount;
 import javax.money.Money;
 import javax.money.MoneyCurrency;
 
+import net.java.javamoney.ri.IntegralMoney;
+
 import org.junit.Test;
 
 public class MoneyTest {

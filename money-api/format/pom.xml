@@ -23,6 +23,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>javax.money</groupId>
+			<artifactId>money-api-platform</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.money</groupId>
 			<artifactId>money-platform-ri</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>

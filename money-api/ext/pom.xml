@@ -30,6 +30,7 @@
 			<groupId>javax.money</groupId>
 			<artifactId>money-platform-ri</artifactId>
 			<version>${project.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

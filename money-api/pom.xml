@@ -12,6 +12,7 @@
 	<name>JSR354 - Java Money and Currency API</name>
 
 	<modules>
+	    <module>platform</module>
 		<module>convert</module>
 		<module>format</module>
 		<module>ext</module>
@@ -19,11 +20,6 @@
 	<description>JSR 354 (Money and Currency) - Public API</description>
 
 	<dependencies>
-		<dependency>
-			<groupId>javax.money</groupId>
-			<artifactId>money-api-platform</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

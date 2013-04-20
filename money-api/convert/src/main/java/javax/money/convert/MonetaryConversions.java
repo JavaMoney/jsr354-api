@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * 
  * @author Anatole Tresch
  */
-public final class MonetaryConversion {
+public final class MonetaryConversions {
 	/**
 	 * The spi currently active, use {@link ServiceLoader} to register an
 	 * altetrnate implementaiont.
@@ -31,7 +31,7 @@ public final class MonetaryConversion {
 	/**
 	 * Private singleton constructor.
 	 */
-	private MonetaryConversion() {
+	private MonetaryConversions() {
 	}
 
 	/**
@@ -48,7 +48,7 @@ public final class MonetaryConversion {
 				return instances.next();
 			}
 		} catch (Throwable e) {
-			Logger.getLogger(MonetaryConversion.class.getName()).log(
+			Logger.getLogger(MonetaryConversions.class.getName()).log(
 					Level.INFO,
 					"No MonetaryConversionSpi registered, using  default.", e);
 		}
@@ -136,7 +136,7 @@ public final class MonetaryConversion {
 	 *            the required {@link ExchangeRateType}, not {@code null}.
 	 * @return true, if a {@link ConversionProvider} for this
 	 *         {@link ExchangeRateType} can be obtained from this
-	 *         {@link MonetaryConversion} instance.
+	 *         {@link MonetaryConversions} instance.
 	 */
 	public static boolean isSupportedExchangeRateType(ExchangeRateType type) {
 		return MONETARY_CONVERSION_SPI.isSupportedExchangeRateType(type);

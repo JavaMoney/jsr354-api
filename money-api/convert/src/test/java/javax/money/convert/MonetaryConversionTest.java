@@ -15,7 +15,7 @@ public class MonetaryConversionTest {
 
 	@Test
 	public void testGetConversionProvider() {
-		ConversionProvider prov = MonetaryConversion
+		ConversionProvider prov = MonetaryConversions
 				.getConversionProvider(ExchangeRateType.of("test"));
 		assertTrue(prov != null);
 		assertEquals(DummyConversionProvider.class, prov.getClass());
@@ -23,7 +23,7 @@ public class MonetaryConversionTest {
 
 	@Test
 	public void testGetSupportedExchangeRateTypes() {
-		Collection<ExchangeRateType> types = MonetaryConversion
+		Collection<ExchangeRateType> types = MonetaryConversions
 				.getSupportedExchangeRateTypes();
 		assertNotNull(types);
 		assertTrue(types.size() == 1);
@@ -32,9 +32,9 @@ public class MonetaryConversionTest {
 
 	@Test
 	public void testIsSupportedExchangeRateType() {
-		assertTrue(MonetaryConversion
+		assertTrue(MonetaryConversions
 				.isSupportedExchangeRateType(ExchangeRateType.of("test")));
-		assertFalse(MonetaryConversion
+		assertFalse(MonetaryConversions
 				.isSupportedExchangeRateType(ExchangeRateType.of("test2")));
 	}
 

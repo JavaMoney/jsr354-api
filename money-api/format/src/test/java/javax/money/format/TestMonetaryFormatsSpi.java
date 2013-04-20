@@ -13,16 +13,16 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.money.format.MonetaryFormat.MonetaryFormatSpi;
+import javax.money.format.MonetaryFormats.MonetaryFormatsSpi;
 
 /**
- * Tests class registered into {@link MonetaryFormat} to test
- * {@link MonetaryFormat}.
+ * Tests class registered into {@link MonetaryFormats} to test
+ * {@link MonetaryFormats}.
  * 
  * @author Anatole Tresch
  * 
  */
-public class TestMonetaryFormatSpi implements MonetaryFormatSpi {
+public class TestMonetaryFormatsSpi implements MonetaryFormatsSpi {
 
 	@Override
 	public Collection<String> getSupportedStyleIds(Class<?> targetType) {

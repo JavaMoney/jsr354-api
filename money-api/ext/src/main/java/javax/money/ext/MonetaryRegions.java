@@ -29,7 +29,7 @@ public final class MonetaryRegions {
 	 * The spi currently active, use {@link ServiceLoader} to register an
 	 * alternate implementation.
 	 */
-	private static final MonetaryRegionSpi MONETARY_REGION_SPI = loadMonetaryRegionSpi();
+	private static final MonetaryRegionsSpi MONETARY_REGION_SPI = loadMonetaryRegionSpi();
 
 	/**
 	 * Private singleton constructor.
@@ -160,7 +160,7 @@ public final class MonetaryRegions {
 	 * 
 	 * @author Anatole Tresch
 	 */
-	public static interface MonetaryRegionSpi {
+	public static interface MonetaryRegionsSpi {
 
 		/**
 		 * Access all regions available, that have no parent region. It is
@@ -235,19 +235,19 @@ public final class MonetaryRegions {
 	 * 
 	 * @return the instance ot be registered into the shared variable.
 	 */
-	private static MonetaryRegionSpi loadMonetaryRegionSpi() {
+	private static MonetaryRegionsSpi loadMonetaryRegionSpi() {
 		try {
 			// try loading directly from ServiceLoader
-			Iterator<MonetaryRegionSpi> instances = ServiceLoader.load(
-					MonetaryRegionSpi.class).iterator();
+			Iterator<MonetaryRegionsSpi> instances = ServiceLoader.load(
+					MonetaryRegionsSpi.class).iterator();
 			if (instances.hasNext()) {
 				return instances.next();
 			}
 		} catch (Throwable e) {
-			Logger.getLogger(MonetaryRegionSpi.class.getName()).log(Level.INFO,
+			Logger.getLogger(MonetaryRegionsSpi.class.getName()).log(Level.INFO,
 					"No MonetaryRegionSpi registered, using  default.", e);
 		}
-		return new DefaultMonetaryRegionSpi();
+		return new DefaultMonetaryRegionsSpi();
 	}
 
 	/**
@@ -258,8 +258,8 @@ public final class MonetaryRegions {
 	 * @author Anatole Tresch
 	 * 
 	 */
-	private final static class DefaultMonetaryRegionSpi implements
-			MonetaryRegionSpi {
+	private final static class DefaultMonetaryRegionsSpi implements
+			MonetaryRegionsSpi {
 		/*
 		 * (non-Javadoc)
 		 * 

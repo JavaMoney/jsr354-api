@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.money.format.ItemFormat;
 import javax.money.format.ItemFormatException;
 import javax.money.format.LocalizationStyle;
-import javax.money.format.MonetaryFormat.MonetaryFormatSpi;
+import javax.money.format.MonetaryFormats.MonetaryFormatsSpi;
 
 import net.java.javamoney.ri.format.spi.ItemFormatFactorySpi;
 import net.java.javamoney.ri.spi.MonetaryLoader;
@@ -36,7 +36,7 @@ import net.java.javamoney.ri.spi.MonetaryLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ItemFormatFactoryImpl implements MonetaryFormatSpi {
+public class ItemFormatFactoryImpl implements MonetaryFormatsSpi {
 
 	@SuppressWarnings("rawtypes")
 	private Map<Class, Set<ItemFormatFactorySpi>> formatMap = new ConcurrentHashMap<Class, Set<ItemFormatFactorySpi>>();

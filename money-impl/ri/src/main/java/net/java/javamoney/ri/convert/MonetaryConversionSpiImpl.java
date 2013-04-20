@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Singleton;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.MonetaryConversion.MonetaryConversionSpi;
+import javax.money.convert.MonetaryConversions.MonetaryConversionSpi;
 
 import net.java.javamoney.ri.spi.MonetaryLoader;
 

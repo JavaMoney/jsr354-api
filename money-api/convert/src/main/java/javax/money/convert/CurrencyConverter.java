@@ -16,7 +16,7 @@ import javax.money.MonetaryAmount;
  * It is provided by a {@link ConversionProvider} implementation.
  * 
  * @see ConversionProvider
- * @see MonetaryConversion
+ * @see MonetaryConversions
  * @author Anatole Tresch
  */
 public interface CurrencyConverter {

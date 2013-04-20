@@ -29,7 +29,7 @@ import javax.money.format.ItemFormat;
 import javax.money.format.ItemFormatException;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
-import javax.money.format.MonetaryFormat;
+import javax.money.format.MonetaryFormats;
 
 import net.java.javamoney.ri.format.util.StringGrouper;
 
@@ -87,7 +87,7 @@ public class IsoAmountFormatter implements ItemFormat<MonetaryAmount> {
 
 		if (MoneyCurrency.ISO_NAMESPACE.equals(currencyUnit.getNamespace())) {
 			String currencyString = "";
-			ItemFormat<CurrencyUnit> cf = MonetaryFormat.getItemFormat(
+			ItemFormat<CurrencyUnit> cf = MonetaryFormats.getItemFormat(
 					CurrencyUnit.class, currencyStyle);
 			// TODO fix grouping for Cores, Lakhs and similar, possibly define
 			// an extension SPI that may be loaded for

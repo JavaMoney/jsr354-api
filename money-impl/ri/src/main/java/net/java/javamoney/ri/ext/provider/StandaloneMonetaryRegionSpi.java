@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.ext.MonetaryRegions.MonetaryRegionSpi;
+import javax.money.ext.MonetaryRegions.MonetaryRegionsSpi;
 import javax.money.ext.Region;
 
-public class StandaloneMonetaryRegionSpi implements MonetaryRegionSpi {
+public class StandaloneMonetaryRegionSpi implements MonetaryRegionsSpi {
 
 	private RegionProvider regionsProvider = new RegionProvider();
 	private RegionalCurrencyUnitProvider regionalCurrencyProvider = new RegionalCurrencyUnitProvider();

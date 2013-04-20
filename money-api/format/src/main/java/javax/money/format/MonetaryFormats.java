@@ -22,28 +22,28 @@ import java.util.logging.Logger;
  * 
  * @author Anatole Tresch
  */
-public final class MonetaryFormat {
+public final class MonetaryFormats {
 
-	private static MonetaryFormatSpi monetaryFormatSpi = loadMonetaryFormatSpi();
+	private static MonetaryFormatsSpi monetaryFormatSpi = loadMonetaryFormatSpi();
 
-	private MonetaryFormat() {
+	private MonetaryFormats() {
 	}
 
-	private static MonetaryFormatSpi loadMonetaryFormatSpi() {
-		MonetaryFormatSpi spi = null;
+	private static MonetaryFormatsSpi loadMonetaryFormatSpi() {
+		MonetaryFormatsSpi spi = null;
 		try {
 			// try loading directly from ServiceLoader
-			Iterator<MonetaryFormatSpi> instances = ServiceLoader.load(
-					MonetaryFormatSpi.class).iterator();
+			Iterator<MonetaryFormatsSpi> instances = ServiceLoader.load(
+					MonetaryFormatsSpi.class).iterator();
 			if (instances.hasNext()) {
 				spi = instances.next();
 				return spi;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(MonetaryFormat.class.getName()).log(Level.INFO,
+			Logger.getLogger(MonetaryFormats.class.getName()).log(Level.INFO,
 					"No MonetaryFormatSpi found, using  default.", e);
 		}
-		return new DefaultMonetaryFormatSpi();
+		return new DefaultMonetaryFormatsSpi();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public final class MonetaryFormat {
 		Collection<String> styleIDs = monetaryFormatSpi
 				.getSupportedStyleIds(targetType);
 		if (styleIDs == null) {
-			Logger.getLogger(MonetaryFormat.class.getName()).log(
+			Logger.getLogger(MonetaryFormats.class.getName()).log(
 					Level.WARNING,
 					"MonetaryFormatSpi.getSupportedStyleIds returned null for "
 							+ targetType);
@@ -140,7 +140,7 @@ public final class MonetaryFormat {
 		return getItemFormat(targetType, LocalizationStyle.of(locale));
 	}
 
-	public static interface MonetaryFormatSpi {
+	public static interface MonetaryFormatsSpi {
 		/**
 		 * Return the style id's supported by this
 		 * {@link ItemFormatterFactorySpi} instance.
@@ -185,8 +185,8 @@ public final class MonetaryFormat {
 
 	}
 
-	private static final class DefaultMonetaryFormatSpi implements
-			MonetaryFormatSpi {
+	private static final class DefaultMonetaryFormatsSpi implements
+			MonetaryFormatsSpi {
 
 		@Override
 		public Collection<String> getSupportedStyleIds(Class<?> targetType) {

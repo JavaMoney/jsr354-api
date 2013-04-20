@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.MonetaryConversion.MonetaryConversionSpi;
+import javax.money.convert.MonetaryConversions.MonetaryConversionSpi;
 
 public class TestMonetaryConversionSpi implements MonetaryConversionSpi {
 

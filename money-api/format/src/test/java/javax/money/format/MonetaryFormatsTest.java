@@ -19,21 +19,21 @@ import java.util.Locale;
 import org.junit.Test;
 
 /**
- * Tests class for {@link MonetaryFormat}.
+ * Tests class for {@link MonetaryFormats}.
  * 
  * @author Anatole Tresch
  * 
  */
-public class MonetaryFormatTest {
+public class MonetaryFormatsTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.format.MonetaryFormat#getSupportedStyleIds(java.lang.Class)}
+	 * {@link javax.money.format.MonetaryFormats#getSupportedStyleIds(java.lang.Class)}
 	 * .
 	 */
 	@Test
 	public void testGetSupportedStyleIds() {
-		Collection<String> ids = MonetaryFormat
+		Collection<String> ids = MonetaryFormats
 				.getSupportedStyleIds(String.class);
 		assertNotNull(ids);
 		assertTrue(ids.size() == 1);
@@ -42,21 +42,21 @@ public class MonetaryFormatTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.format.MonetaryFormat#isSupportedStyle(java.lang.Class, java.lang.String)}
+	 * {@link javax.money.format.MonetaryFormats#isSupportedStyle(java.lang.Class, java.lang.String)}
 	 * .
 	 */
 	@Test
 	public void testIsSupportedStyle() {
-		assertTrue(MonetaryFormat.isSupportedStyle(String.class, "String"));
-		assertTrue(MonetaryFormat.isSupportedStyle(Integer.class, "Integer"));
-		assertFalse(MonetaryFormat.isSupportedStyle(Integer.class, "String"));
-		assertFalse(MonetaryFormat.isSupportedStyle(Double.class, "Integer"));
+		assertTrue(MonetaryFormats.isSupportedStyle(String.class, "String"));
+		assertTrue(MonetaryFormats.isSupportedStyle(Integer.class, "Integer"));
+		assertFalse(MonetaryFormats.isSupportedStyle(Integer.class, "String"));
+		assertFalse(MonetaryFormats.isSupportedStyle(Double.class, "Integer"));
 
 	}
 
 	/**
 	 * Test method for
-	 * {@link javax.money.format.MonetaryFormat#getItemFormat(java.lang.Class, javax.money.format.LocalizationStyle)}
+	 * {@link javax.money.format.MonetaryFormats#getItemFormat(java.lang.Class, javax.money.format.LocalizationStyle)}
 	 * .
 	 * 
 	 * @throws ItemParseException
@@ -64,7 +64,7 @@ public class MonetaryFormatTest {
 	@Test
 	public void testGetItemFormatterClassOfTLocalizationStyle()
 			throws ItemParseException {
-		ItemFormat<String> formatter = MonetaryFormat.getItemFormat(
+		ItemFormat<String> formatter = MonetaryFormats.getItemFormat(
 				String.class, LocalizationStyle.of(Locale.ENGLISH));
 		assertEquals("testest", formatter.format("testest"));
 		assertEquals("gugus", formatter.format("gugus"));
@@ -76,14 +76,14 @@ public class MonetaryFormatTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.format.MonetaryFormat#getItemFormat(java.lang.Class, java.util.Locale)}
+	 * {@link javax.money.format.MonetaryFormats#getItemFormat(java.lang.Class, java.util.Locale)}
 	 * .
 	 * 
 	 * @throws ItemParseException
 	 */
 	@Test
 	public void testGetItemFormatterClassOfTLocale() throws ItemParseException {
-		ItemFormat<String> formatter = MonetaryFormat.getItemFormat(
+		ItemFormat<String> formatter = MonetaryFormats.getItemFormat(
 				String.class, Locale.ENGLISH);
 		assertEquals("testest", formatter.format("testest"));
 		assertEquals("gugus", formatter.format("gugus"));

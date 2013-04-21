@@ -20,7 +20,7 @@
 		<basedir>.</basedir>
 		<!-- Dependency versions -->
 		<junit.version>4.8.2</junit.version>
-		<javamoney.version>1.0-b01</javamoney.version>
+		<javamoney.version>${project.version}</javamoney.version>
 		<slf4j.version>1.6.1</slf4j.version>
 	</properties>
 

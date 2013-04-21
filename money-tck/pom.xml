@@ -61,10 +61,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>javax.money</groupId>
-			<artifactId>money-api-provider</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.money</groupId>
 			<artifactId>money-api-ext</artifactId>
 		</dependency>
 		<dependency>

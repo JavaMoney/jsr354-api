@@ -7,16 +7,16 @@
 		<version>1.0-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<artifactId>money-api</artifactId>
+	<artifactId>money-platform</artifactId>
 	<packaging>pom</packaging>
-	<name>JSR 354 (Money and Currency) - Standalone API</name>
-
+	<name>JSR 354 (Money and Currency) - Platform</name>
+	<description>JSR 354 (Money and Currency) - Platform part targeting SE environment.</description>
+	
 	<modules>
-		<module>convert</module>
-		<module>format</module>
-		<module>ext</module>
+	    <module>api</module>
+		<module>ri</module>
 	</modules>
-	<description>JSR 354 (Money and Currency) - Public API</description>
+	
 
 	<dependencies>
 		<dependency>

@@ -25,6 +25,7 @@ import java.util.Locale;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.MonetaryCurrencies;
 import javax.money.MonetaryOperator;
 import javax.money.Money;
 import javax.money.MoneyCurrency;
@@ -33,7 +34,6 @@ import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
 import javax.money.convert.MonetaryConversions;
-import javax.money.ext.MonetaryCurrencies;
 import javax.money.format.ItemFormat;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;

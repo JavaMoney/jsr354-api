@@ -6,7 +6,7 @@
  * Copyright (c) 2012-2013, Credit Suisse
  * All rights reserved.
  */
-package javax.money.ext;
+package javax.money;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.money.CurrencyUnit;
-import javax.money.MoneyCurrency;
 import javax.money.UnknownCurrencyException;
 
 /**

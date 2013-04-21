@@ -6,14 +6,14 @@
  * Copyright (c) 2012-2013, Credit Suisse
  * All rights reserved.
  */
-package javax.money.ext;
+package javax.money;
 
 import java.util.Collection;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
-import javax.money.ext.MonetaryCurrencies.CurrencyUnitProviderSpi;
+import javax.money.MonetaryCurrencies.CurrencyUnitProviderSpi;
 
 /**
  * Empty pseudo implementation for testing only.

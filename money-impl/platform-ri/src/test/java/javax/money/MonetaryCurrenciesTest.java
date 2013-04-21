@@ -6,14 +6,14 @@
  * Copyright (c) 2012-2013, Credit Suisse
  * All rights reserved.
  */
-package javax.money.ext;
+package javax.money;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryCurrencies;
 import javax.money.MoneyCurrency;
-import javax.money.ext.MonetaryCurrencies;
 
 import org.junit.Test;
 

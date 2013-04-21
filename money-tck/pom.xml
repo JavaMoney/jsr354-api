@@ -4,14 +4,14 @@
 	<parent>
 		<artifactId>jsr354</artifactId>
 		<groupId>javax.money</groupId>
-		<version>1.0-SNAPSHOT</version>
+		<version>0.4-EDR1</version>
 	</parent>
 	<artifactId>money-tck</artifactId>
 	<name>JSR 354 (Money and Currency) - TCK</name>
 	<description>Technical Compatibility Kit (TCK) of JSR 354</description>
 
 	<properties>
-		<javamoney.version>1.0-SNAPSHOT</javamoney.version>
+		<javamoney.version>1.0-b01</javamoney.version>
 		<slf4j.version>1.6.1</slf4j.version>
 	</properties>
 	
@@ -82,5 +82,5 @@
 		</dependency>
 	</dependencies>
 	<groupId>net.java.javamoney</groupId>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.4-EDR1</version>
 </project>

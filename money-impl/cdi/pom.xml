@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>money-impl</artifactId>
 		<groupId>net.java.javamoney</groupId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0-b01</version>
 	</parent>
 	<artifactId>money-cdi</artifactId>
 	<name>JSR 354 (Money and Currency) - CDI Standalone Support</name>

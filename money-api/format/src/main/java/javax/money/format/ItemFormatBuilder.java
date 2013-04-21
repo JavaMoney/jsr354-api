@@ -196,7 +196,7 @@ public class ItemFormatBuilder<T> {
 	 */
 	public ItemFormat<T> build() {
 		if(this.itemFactory==null){
-			return new TokenizedItemFormat<T>(targetType, style, new DefaultItemFactory<>(targetType), tokens);
+			return new TokenizedItemFormat<T>(targetType, style, new DefaultItemFactory<T>(targetType), tokens);
 		}
 		return new TokenizedItemFormat<T>(targetType, style, itemFactory, tokens);
 	}

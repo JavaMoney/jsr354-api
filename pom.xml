@@ -517,7 +517,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 			</plugin>
-
 		</plugins>
 	</reporting>
 
@@ -590,8 +589,30 @@
 			</roles>
 		</developer>
 		<developer>
-			<id>-</id>
+			<id>jezdavies</id>
 			<name>Jeremy Davies</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>-</id>
+			<name>Mathias Bücker</name>
+			<organization>Credit Suisse</organization>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>-</id>
+			<name>Benjamin Cotton</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>-</id>
+			<name>Simon Martinelli</name>
 			<roles>
 				<role>Expert Group Member</role>
 			</roles>

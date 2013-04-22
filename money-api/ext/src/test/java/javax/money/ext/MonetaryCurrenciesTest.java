@@ -13,6 +13,7 @@ import org.junit.Test;
 
 /**
  * @author Anatole
+ * @author Werner
  * 
  */
 public class MonetaryCurrenciesTest {

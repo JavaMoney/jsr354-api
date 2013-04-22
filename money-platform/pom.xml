@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>jsr354</artifactId>
 		<groupId>javax.money</groupId>
-		<version>0.4-EDR1</version>
+		<version>0.5-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>money-platform</artifactId>

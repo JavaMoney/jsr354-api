@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>javax.money</groupId>
 		<artifactId>jsr354</artifactId>
-		<version>0.4-EDR1</version>
+		<version>0.5-SNAPSHOT</version>
 	</parent>
 	<artifactId>money-impl</artifactId>
 	<groupId>net.java.javamoney</groupId>
@@ -33,8 +33,8 @@
 
 	<modules>
 		<module>ri</module>
-		<!-- module>cdi</module>
-		<module>java-ee</module  -->
+		<module>cdi</module>
+		<module>java-ee</module>
 	</modules>
 
 	<dependencyManagement>

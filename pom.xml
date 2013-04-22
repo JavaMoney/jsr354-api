@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>javax.money</groupId>
 	<artifactId>jsr354</artifactId>
-	<version>0.4-EDR1</version>
+	<version>0.5-SNAPSHOT</version>
 	<name>JSR 354 (Money and Currency)</name>
 	<url>http://java.net/projects/javamoney</url>
 	<packaging>pom</packaging>

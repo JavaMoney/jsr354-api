@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>money-platform</artifactId>
 		<groupId>javax.money</groupId>
-		<version>0.4-EDR1</version>
+		<version>0.5-SNAPSHOT</version>
 	</parent>
 	<artifactId>money-platform-ri</artifactId>
 	<name>JSR 354 (Money and Currency) - Platform Implementation</name>

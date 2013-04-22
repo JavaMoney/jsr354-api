@@ -403,10 +403,6 @@ public final class MonetaryCurrencies {
 			return Collections.emptySet();
 		}
 
-		@Override
-		public Collection<CurrencyUnit> getAll(Locale locale, Long timestamp) {
-			return Collections.emptySet();
-		}
 	}
 
 	private static final class DefaultCurrencyUnitMapperSpi implements
@@ -505,19 +501,6 @@ public final class MonetaryCurrencies {
 		 * @return the currencies found.
 		 */
 		public Collection<CurrencyUnit> getAll(String namespace, Long timestamp);
-
-		/**
-		 * Access all currencies matching a {@link Locale}, valid at the given
-		 * timestamp.
-		 * 
-		 * @param locale
-		 *            the target locale, not null.
-		 * @param timestamp
-		 *            The target UTC timestamp, or {@code null} for the current
-		 *            UTC timestamp.
-		 * @return the currencies found, never null.
-		 */
-		public Collection<CurrencyUnit> getAll(Locale locale, Long timestamp);
 
 	}
 

@@ -16,12 +16,13 @@
  * Contributors:
  *    Anatole Tresch - initial implementation
  */
-package net.java.javamoney.ri.format.provider;
+package net.java.javamoney.ri.format.impl;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,19 +32,18 @@ import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormats.MonetaryFormatsSpi;
 
 import net.java.javamoney.ri.format.spi.ItemFormatFactorySpi;
-import net.java.javamoney.ri.spi.MonetaryLoader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ItemFormatFactoryImpl implements MonetaryFormatsSpi {
+public class ServiceLoaderMonetaryFormatsSpi implements MonetaryFormatsSpi {
 
 	@SuppressWarnings("rawtypes")
 	private Map<Class, Set<ItemFormatFactorySpi>> formatMap = new ConcurrentHashMap<Class, Set<ItemFormatFactorySpi>>();
 
-	private static final Logger LOG = LoggerFactory.getLogger(ItemFormatFactoryImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ServiceLoaderMonetaryFormatsSpi.class);
 	
-	public ItemFormatFactoryImpl() {
+	public ServiceLoaderMonetaryFormatsSpi() {
 		loadSpi();
 	}
 
@@ -99,8 +99,7 @@ public class ItemFormatFactoryImpl implements MonetaryFormatsSpi {
 	 * checks for the types exposed.
 	 */
 	private void loadSpi() {
-		for (ItemFormatFactorySpi t : MonetaryLoader.getLoader().getComponents(
-				ItemFormatFactorySpi.class)) {
+		for (ItemFormatFactorySpi t : ServiceLoader.load(ItemFormatFactorySpi.class)){
 			try {
 				if (t.getTargetClass() == null) {
 					throw new IllegalArgumentException(

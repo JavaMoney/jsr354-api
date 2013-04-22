@@ -39,7 +39,7 @@ import javax.money.convert.ExchangeRateType;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import net.java.javamoney.ri.ext.impl.IsoCurrencyOnlineProvider;
+import net.java.javamoney.ri.ext.provider.IsoCurrencyOnlineProvider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

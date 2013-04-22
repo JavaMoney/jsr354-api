@@ -24,7 +24,7 @@ import java.util.Collection;
 import javax.money.CurrencyUnit;
 import javax.money.ext.Region;
 
-import net.java.javamoney.ri.ext.provider.RegionalCurrencyUnitProvider;
+import net.java.javamoney.ri.ext.impl.RegionalCurrencyUnitProvider;
 
 /**
  * This class models the component defined by JSR 354 that provides accessors

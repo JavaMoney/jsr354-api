@@ -7,9 +7,12 @@ import javax.money.CurrencyUnit;
 import javax.money.ext.MonetaryRegions.MonetaryRegionsSpi;
 import javax.money.ext.Region;
 
+import net.java.javamoney.ri.ext.impl.ServiceLoaderRegionProvider;
+import net.java.javamoney.ri.ext.impl.RegionalCurrencyUnitProvider;
+
 public class StandaloneMonetaryRegionSpi implements MonetaryRegionsSpi {
 
-	private RegionProvider regionsProvider = new RegionProvider();
+	private ServiceLoaderRegionProvider regionsProvider = new ServiceLoaderRegionProvider();
 	private RegionalCurrencyUnitProvider regionalCurrencyProvider = new RegionalCurrencyUnitProvider();
 	
 	@Override
@@ -30,7 +33,7 @@ public class StandaloneMonetaryRegionSpi implements MonetaryRegionsSpi {
 	@Override
 	public boolean isLegalCurrencyUnit(CurrencyUnit currency, Region region,
 			Long timestamp) {
-		return regionalCurrencyProvider.isLegalTCurrencyUnit(currency, region, timestamp);
+		return regionalCurrencyProvider.isLegalCurrencyUnit(currency, region, timestamp);
 	}
 
 	@Override

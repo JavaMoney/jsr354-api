@@ -8,12 +8,8 @@
  */
 package javax.money.ext;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
-import javax.money.ext.MonetaryCurrencies;
+import javax.money.UnknownCurrencyException;
 
 import org.junit.Test;
 
@@ -23,21 +19,14 @@ import org.junit.Test;
  */
 public class MonetaryCurrenciesTest {
 
-	@Test
+	@Test(expected = UnknownCurrencyException.class)
 	public void testGetString() {
-		CurrencyUnit unit = MonetaryCurrencies.get("CHF");
-		assertNotNull(unit);
-		assertEquals("CHF", unit.getCurrencyCode());
-		assertEquals(MoneyCurrency.ISO_NAMESPACE, unit.getNamespace());
+		MonetaryCurrencies.get("CHF");
 	}
 
-	@Test
+	@Test(expected = UnknownCurrencyException.class)
 	public void testGetStringString() {
-		CurrencyUnit unit = MonetaryCurrencies.get(MoneyCurrency.ISO_NAMESPACE,
-				"CHF");
-		assertNotNull(unit);
-		assertEquals("CHF", unit.getCurrencyCode());
-		assertEquals(MoneyCurrency.ISO_NAMESPACE, unit.getNamespace());
+		MonetaryCurrencies.get(MoneyCurrency.ISO_NAMESPACE, "CHF");
 	}
 
 }

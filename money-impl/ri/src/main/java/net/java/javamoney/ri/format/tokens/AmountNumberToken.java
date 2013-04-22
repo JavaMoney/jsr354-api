@@ -28,7 +28,6 @@ import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.ParseContext;
 
-import net.java.javamoney.ri.format.util.StringGrouper;
 
 /**
  * {@link FormatToken} which allows to format a {@link Number} type.

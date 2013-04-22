@@ -24,14 +24,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.java.javamoney.ri.spi.ComponentLoader;
+
 
 public class CDIStandaloneLoader implements
-		net.java.javamoney.ri.spi.MonetaryLoader.ComponentLoader {
+		ComponentLoader {
 
 	private CDIContainer cdi;
 
-	@Override
-	public void init() {
+	public CDIStandaloneLoader() {
 		cdi = new CDIContainer();
 		cdi.start();
 	}

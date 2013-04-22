@@ -31,7 +31,7 @@ import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormats;
 
-import net.java.javamoney.ri.format.util.StringGrouper;
+import net.java.javamoney.ri.format.tokens.StringGrouper;
 
 public class IsoAmountFormatter implements ItemFormat<MonetaryAmount> {
 

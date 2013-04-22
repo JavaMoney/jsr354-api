@@ -81,17 +81,4 @@ public class TestCurrencyUnitProvider implements CurrencyUnitProviderSpi {
 		return currencyUnits;
 	}
 
-	@Override
-	public Collection<CurrencyUnit> getAll(Locale locale, Long timestamp) {
-		if (timestamp != null) {
-			return Collections.emptySet();
-		}
-		Set<CurrencyUnit> currencyUnits = new HashSet<CurrencyUnit>();
-		Currency jdkCurrency = Currency.getInstance(locale);
-		if (jdkCurrency != null) {
-			currencyUnits.add(MoneyCurrency.of(jdkCurrency));
-		}
-		return currencyUnits;
-	}
-
 }

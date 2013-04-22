@@ -18,8 +18,9 @@
  *    Anatole Tresch - initial version.
  *    Wernner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri.ext.provider;
+package net.java.javamoney.ri.ext.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +32,6 @@ import javax.money.ext.Region;
 import javax.money.ext.RegionType;
 
 import net.java.javamoney.ri.ext.spi.RegionProviderSpi;
-import net.java.javamoney.ri.spi.MonetaryLoader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,15 +42,14 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Anatole Tresch
  */
-@Singleton
-public final class RegionProvider {
+public final class ServiceLoaderRegionProvider {
 	/** Loaded region providers. */
-	private List<RegionProviderSpi> regionProviders;
+	private List<RegionProviderSpi> regionProviders = new ArrayList<RegionProviderSpi>();
 
 	private static final Logger LOG = LoggerFactory
-			.getLogger(RegionProvider.class);
+			.getLogger(ServiceLoaderRegionProvider.class);
 
-	public RegionProvider() {
+	public ServiceLoaderRegionProvider() {
 		reload();
 	}
 
@@ -61,8 +60,10 @@ public final class RegionProvider {
 	 */
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		regionProviders = MonetaryLoader.getLoader().getComponents(
-				RegionProviderSpi.class);
+		regionProviders.clear();
+		for(RegionProviderSpi prov: ServiceLoader.load(RegionProviderSpi.class)){
+			regionProviders.add(prov);
+		}
 	}
 
 	/**

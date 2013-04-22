@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation
  *    Werner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri.ext.provider;
+package net.java.javamoney.ri.ext.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,15 +30,14 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 import javax.money.UnknownCurrencyException;
 import javax.money.ext.MonetaryCurrencies.CurrencyUnitProviderSpi;
+import javax.money.ext.RegionType;
 
 import net.java.javamoney.ri.ext.spi.CurrencyUnitMappingSpi;
 import net.java.javamoney.ri.ext.spi.CurrencyUnitProviderComponentSpi;
-import net.java.javamoney.ri.spi.MonetaryLoader;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -47,9 +46,7 @@ import net.java.javamoney.ri.spi.MonetaryLoader;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-@Singleton
-public class CurrencyUnitProviderImpl implements
-		CurrencyUnitProviderSpi {
+public class ServiceLoaderCurrencyUnitProviderSpi implements CurrencyUnitProviderSpi {
 	/**
 	 * System property used to redefine the default namespace for
 	 * {@link CurrencyUnit} instances.
@@ -65,7 +62,7 @@ public class CurrencyUnitProviderImpl implements
 	/**
 	 * COnstructor, also loading the registered spi's.
 	 */
-	public CurrencyUnitProviderImpl() {
+	public ServiceLoaderCurrencyUnitProviderSpi() {
 		String ns = System.getProperty(DEFAULT_NAMESPACE_PROP);
 		if (ns != null) {
 			this.defaultNamespace = ns;
@@ -80,9 +77,8 @@ public class CurrencyUnitProviderImpl implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		List<CurrencyUnitProviderComponentSpi> loadedList = MonetaryLoader.getLoader()
-				.getComponents(CurrencyUnitProviderComponentSpi.class);
-		for (CurrencyUnitProviderComponentSpi currencyProviderSPI : loadedList) {
+		for (CurrencyUnitProviderComponentSpi currencyProviderSPI : ServiceLoader
+				.load(CurrencyUnitProviderComponentSpi.class)) {
 			List<CurrencyUnitProviderComponentSpi> provList = this.currencyProviders
 					.get(currencyProviderSPI.getNamespace());
 			if (provList == null) {
@@ -92,9 +88,8 @@ public class CurrencyUnitProviderImpl implements
 			}
 			provList.add(currencyProviderSPI);
 		}
-		List<CurrencyUnitMappingSpi> loadedMapperList = MonetaryLoader.getLoader()
-				.getComponents(CurrencyUnitMappingSpi.class);
-		for (CurrencyUnitMappingSpi currencyMappingSPI : loadedMapperList) {
+		for (CurrencyUnitMappingSpi currencyMappingSPI : ServiceLoader
+				.load(CurrencyUnitMappingSpi.class)) {
 			mappers.add(currencyMappingSPI);
 		}
 	}

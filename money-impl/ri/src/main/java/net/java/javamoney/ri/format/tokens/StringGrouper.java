@@ -16,7 +16,7 @@
  * Contributors:
  *    Anatole Tresch - initial implementation
  */
-package net.java.javamoney.ri.format.util;
+package net.java.javamoney.ri.format.tokens;
 
 /**
  * Small utility class that supports flexible grouping of an input String using

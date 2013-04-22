@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation
  *    Werner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri.ext.provider;
+package net.java.javamoney.ri.ext.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,12 +25,10 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.Set;
 
-import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
 import javax.money.ext.MonetaryCurrencies.CurrencyUnitMapperSpi;
 
 import net.java.javamoney.ri.ext.spi.CurrencyUnitMappingSpi;
-import net.java.javamoney.ri.spi.MonetaryLoader;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -39,8 +37,7 @@ import net.java.javamoney.ri.spi.MonetaryLoader;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-@Singleton
-public class CurrencyUnitMapperImpl implements
+public class ServiceLoaderCurrencyUnitMapperSpi implements
 		CurrencyUnitMapperSpi {
 	/** Loaded currency mappers. */
 	private Set<CurrencyUnitMappingSpi> mappers = new HashSet<CurrencyUnitMappingSpi>();
@@ -48,7 +45,7 @@ public class CurrencyUnitMapperImpl implements
 	/**
 	 * COnstructor, also loading the registered spi's.
 	 */
-	public CurrencyUnitMapperImpl() {
+	public ServiceLoaderCurrencyUnitMapperSpi() {
 		reload();
 	}
 
@@ -59,9 +56,7 @@ public class CurrencyUnitMapperImpl implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		List<CurrencyUnitMappingSpi> loadedMapperList = MonetaryLoader.getLoader()
-				.getComponents(CurrencyUnitMappingSpi.class);
-		for (CurrencyUnitMappingSpi currencyMappingSPI : loadedMapperList) {
+		for (CurrencyUnitMappingSpi currencyMappingSPI : ServiceLoader.load(CurrencyUnitMappingSpi.class)) {
 			mappers.add(currencyMappingSPI);
 		}
 	}

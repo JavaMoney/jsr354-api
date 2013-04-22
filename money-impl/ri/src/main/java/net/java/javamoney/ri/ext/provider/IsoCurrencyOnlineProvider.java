@@ -16,7 +16,7 @@
  * Contributors:
  *    Anatole Tresch - initial implementation.
  */
-package net.java.javamoney.ri.ext.impl;
+package net.java.javamoney.ri.ext.provider;
 
 import java.net.URL;
 import java.util.ArrayList;

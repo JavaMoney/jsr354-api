@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import javax.money.CurrencyUnit;
-import javax.money.convert.MonetaryConversions.MonetaryConversionSpi;
+import javax.money.convert.MonetaryConversions.MonetaryConversionsSpi;
 
-public class TestMonetaryConversionSpi implements MonetaryConversionSpi {
+public class TestMonetaryConversionSpi implements MonetaryConversionsSpi {
 
 	private ConversionProvider dummyProvider = new DummyConversionProvider();
 	@Override

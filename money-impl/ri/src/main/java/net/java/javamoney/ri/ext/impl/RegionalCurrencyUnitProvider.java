@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation
  *    Wernner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri.ext.provider;
+package net.java.javamoney.ri.ext.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +31,6 @@ import javax.money.CurrencyUnit;
 import javax.money.ext.Region;
 
 import net.java.javamoney.ri.ext.spi.RegionalCurrencyUnitProviderSpi;
-import net.java.javamoney.ri.spi.MonetaryLoader;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -39,7 +38,6 @@ import net.java.javamoney.ri.spi.MonetaryLoader;
  * 
  * @author Anatole Tresch
  */
-@Singleton
 public final class RegionalCurrencyUnitProvider {
 
 	/** Loaded region providers. */
@@ -59,16 +57,13 @@ public final class RegionalCurrencyUnitProvider {
 	 */
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		List<RegionalCurrencyUnitProviderSpi> loadedList = MonetaryLoader
-				.getLoader().getComponents(
-						RegionalCurrencyUnitProviderSpi.class);
-		for (RegionalCurrencyUnitProviderSpi provSPI : loadedList) {
+		for (RegionalCurrencyUnitProviderSpi provSPI : ServiceLoader
+				.load(RegionalCurrencyUnitProviderSpi.class)) {
 			if (!regionalCurrencyProviders.contains(provSPI)) {
 				this.regionalCurrencyProviders.add(provSPI);
 			}
 		}
 	}
-
 
 	public Set<CurrencyUnit> getAll(Region region, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
@@ -81,7 +76,7 @@ public final class RegionalCurrencyUnitProvider {
 		return result;
 	}
 
-	public boolean isLegalTCurrencyUnit(CurrencyUnit currency, Region region,
+	public boolean isLegalCurrencyUnit(CurrencyUnit currency, Region region,
 			Long timestamp) {
 		Set<CurrencyUnit> tenders = getLegalCurrencyUnits(region, timestamp);
 		for (CurrencyUnit currencyUnit : tenders) {
@@ -100,7 +95,8 @@ public final class RegionalCurrencyUnitProvider {
 	public Set<CurrencyUnit> getLegalCurrencyUnits(Region region, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		for (RegionalCurrencyUnitProviderSpi prov : regionalCurrencyProviders) {
-			Collection<CurrencyUnit> currencies = prov.getLegalTenders(region, timestamp);
+			Collection<CurrencyUnit> currencies = prov.getLegalTenders(region,
+					timestamp);
 			if (currencies != null) {
 				result.addAll(currencies);
 			}

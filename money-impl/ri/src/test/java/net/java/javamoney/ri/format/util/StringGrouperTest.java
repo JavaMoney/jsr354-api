@@ -2,7 +2,7 @@ package net.java.javamoney.ri.format.util;
 
 import junit.framework.Assert;
 
-import net.java.javamoney.ri.format.util.StringGrouper;
+import net.java.javamoney.ri.format.tokens.StringGrouper;
 
 import org.junit.Test;
 

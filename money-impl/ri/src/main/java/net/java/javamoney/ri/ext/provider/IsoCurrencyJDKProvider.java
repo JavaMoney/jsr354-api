@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation.
  *    Werner Keil - extension and adjustment.
  */
-package net.java.javamoney.ri.ext.impl;
+package net.java.javamoney.ri.ext.provider;
 
 import java.util.Currency;
 import java.util.Locale;

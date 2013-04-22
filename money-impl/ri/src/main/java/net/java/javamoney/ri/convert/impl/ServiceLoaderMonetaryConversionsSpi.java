@@ -16,33 +16,29 @@
  * Contributors:
  *    Anatole Tresch - initial implementation.
  */
-package net.java.javamoney.ri.convert;
+package net.java.javamoney.ri.convert.impl;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.inject.Singleton;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRateType;
-import javax.money.convert.MonetaryConversions.MonetaryConversionSpi;
+import javax.money.convert.MonetaryConversions.MonetaryConversionsSpi;
 
-import net.java.javamoney.ri.spi.MonetaryLoader;
-
-@Singleton
-public class MonetaryConversionSpiImpl implements MonetaryConversionSpi {
+public class ServiceLoaderMonetaryConversionsSpi implements MonetaryConversionsSpi {
 
 	private Map<ExchangeRateType, ConversionProvider> conversionProviders = new ConcurrentHashMap<ExchangeRateType, ConversionProvider>();
 
-	public MonetaryConversionSpiImpl() {
+	public ServiceLoaderMonetaryConversionsSpi() {
 		reload();
 	}
 
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		for (ConversionProvider prov : MonetaryLoader.getLoader()
-				.getComponents(ConversionProvider.class)) {
+		for (ConversionProvider prov : ServiceLoader.load(ConversionProvider.class)) {
 			this.conversionProviders.put(prov.getExchangeRateType(), prov);
 		}
 	}

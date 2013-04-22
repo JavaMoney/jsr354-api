@@ -26,7 +26,7 @@ public final class MonetaryConversions {
 	 * The spi currently active, use {@link ServiceLoader} to register an
 	 * altetrnate implementaiont.
 	 */
-	private static final MonetaryConversionSpi MONETARY_CONVERSION_SPI = loadMonetaryConversionSpi();
+	private static final MonetaryConversionsSpi MONETARY_CONVERSION_SPI = loadMonetaryConversionSpi();
 
 	/**
 	 * Private singleton constructor.
@@ -35,15 +35,15 @@ public final class MonetaryConversions {
 	}
 
 	/**
-	 * Method that loads the {@link MonetaryConversionSpi} on class loading.
+	 * Method that loads the {@link MonetaryConversionsSpi} on class loading.
 	 * 
 	 * @return the instance ot be registered into the shared variable.
 	 */
-	private static MonetaryConversionSpi loadMonetaryConversionSpi() {
+	private static MonetaryConversionsSpi loadMonetaryConversionSpi() {
 		try {
 			// try loading directly from ServiceLoader
-			Iterator<MonetaryConversionSpi> instances = ServiceLoader.load(
-					MonetaryConversionSpi.class).iterator();
+			Iterator<MonetaryConversionsSpi> instances = ServiceLoader.load(
+					MonetaryConversionsSpi.class).iterator();
 			if (instances.hasNext()) {
 				return instances.next();
 			}
@@ -52,7 +52,7 @@ public final class MonetaryConversions {
 					Level.INFO,
 					"No MonetaryConversionSpi registered, using  default.", e);
 		}
-		return new DefaultMonetaryConversionSpi();
+		return new DefaultMonetaryConversionsSpi();
 	}
 
 	/**
@@ -61,7 +61,7 @@ public final class MonetaryConversions {
 	 * 
 	 * @author Anatole Tresch
 	 */
-	public static interface MonetaryConversionSpi {
+	public static interface MonetaryConversionsSpi {
 		/**
 		 * Access an instance of {@link ConversionProvider}.
 		 * 
@@ -144,14 +144,14 @@ public final class MonetaryConversions {
 
 	/**
 	 * This class represents the default implementation of
-	 * {@link MonetaryConversionSpi} used always when no alternative is
+	 * {@link MonetaryConversionsSpi} used always when no alternative is
 	 * registered within the {@link ServiceLoader}.
 	 * 
 	 * @author Anatole Tresch
 	 * 
 	 */
-	private final static class DefaultMonetaryConversionSpi implements
-			MonetaryConversionSpi {
+	private final static class DefaultMonetaryConversionsSpi implements
+			MonetaryConversionsSpi {
 
 		/**
 		 * The default does not provide any {@link ConversionProvider} as of

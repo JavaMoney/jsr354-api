@@ -9,22 +9,21 @@
 package javax.money.ext;
 
 import javax.money.MoneyCurrency;
-import javax.money.UnknownCurrencyException;
-
 import org.junit.Test;
 
 /**
  * @author Anatole
+ * @author Werner
  * 
  */
 public class MonetaryCurrenciesTest {
 
-	@Test(expected = UnknownCurrencyException.class)
+	@Test
 	public void testGetString() {
 		MonetaryCurrencies.get("CHF");
 	}
 
-	@Test(expected = UnknownCurrencyException.class)
+	@Test
 	public void testGetStringString() {
 		MonetaryCurrencies.get(MoneyCurrency.ISO_NAMESPACE, "CHF");
 	}

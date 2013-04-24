@@ -7,12 +7,12 @@ import javax.money.CurrencyUnit;
 import javax.money.ext.MonetaryRegions.MonetaryRegionsSpi;
 import javax.money.ext.Region;
 
-import net.java.javamoney.ri.ext.impl.ServiceLoaderRegionProvider;
+import net.java.javamoney.ri.ext.impl.SERegionProvider;
 import net.java.javamoney.ri.ext.impl.RegionalCurrencyUnitProvider;
 
 public class StandaloneMonetaryRegionSpi implements MonetaryRegionsSpi {
 
-	private ServiceLoaderRegionProvider regionsProvider = new ServiceLoaderRegionProvider();
+	private SERegionProvider regionsProvider = new SERegionProvider();
 	private RegionalCurrencyUnitProvider regionalCurrencyProvider = new RegionalCurrencyUnitProvider();
 	
 	@Override

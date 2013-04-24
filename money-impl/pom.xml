@@ -33,6 +33,7 @@
 
 	<modules>
 		<module>ri</module>
+		<module>se</module>
 		<module>cdi</module>
 		<module>java-ee</module>
 	</modules>

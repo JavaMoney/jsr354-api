@@ -100,7 +100,6 @@ public class SmokeTests {
 		MonetaryOperator rounding = MoneyRounding.of(2, RoundingMode.HALF_UP);
 
 		MonetaryAmount srcCHF = Money.of(MoneyCurrency.of("CHF"), 100.15);
-		MonetaryAmount srcUSD = Money.of(MoneyCurrency.of("USD"), 100.15);
 		MonetaryAmount srcEUR = Money.of(MoneyCurrency.of("EUR"), 100.15);
 
 		MonetaryAmount tgt = MonetaryConversions

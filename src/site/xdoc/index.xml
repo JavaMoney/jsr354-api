@@ -87,7 +87,7 @@ Various documentation is available:
 <section name="Releases">
 <p>
 There are no final releases yet!
-<a href="http://java.net/projects/javamoney/downloads/">Release 1.0-SNAPSHOT</a>
+<a href="http://java.net/projects/javamoney/downloads/">Release 0.5-SNAPSHOT</a>
 is the current development release intended for feedback.
 The code is fully tested, but there may yet be bugs and the API may yet change.
 There should be no great reason why it cannot be used in production if you can cope with future API change.

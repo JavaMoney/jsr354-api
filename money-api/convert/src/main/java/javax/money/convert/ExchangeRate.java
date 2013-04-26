@@ -205,18 +205,18 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	}
 
 	/**
-	 * Get the source currency.
+	 * Get the base (source) currency.
 	 * 
-	 * @return the source currency.
+	 * @return the base currency.
 	 */
 	public final CurrencyUnit getBase() {
 		return this.base;
 	}
 
 	/**
-	 * Get the target currency.
+	 * Get the term (target) currency.
 	 * 
-	 * @return the target currency.
+	 * @return the term currency.
 	 */
 	public final CurrencyUnit getTerm() {
 		return this.term;

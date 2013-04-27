@@ -36,7 +36,6 @@ public class SEMonetaryConversionsSpi implements MonetaryConversionsSpi {
 		reload();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void reload() {
 		for (ConversionProvider prov : ServiceLoader.load(ConversionProvider.class)) {
 			this.conversionProviders.put(prov.getExchangeRateType(), prov);

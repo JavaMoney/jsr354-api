@@ -18,6 +18,9 @@ import javax.money.CurrencyUnit;
 
 /**
  * This class models an exchange rate between two currencies.
+ * @version 0.4
+ * @see <a
+ *      href="https://en.wikipedia.org/wiki/Exchange_rate#Quotations">Wikipedia: Exchange Rate (Quotations)</a>
  * 
  * @author Werner Keil
  * @author Anatole Tresch

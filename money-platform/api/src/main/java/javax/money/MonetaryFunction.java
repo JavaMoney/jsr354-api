@@ -14,6 +14,8 @@ package javax.money;
  * Java 8.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
+ * @version 0.9
  * @param <T>
  *            The input type of the function.
  * @param <R>

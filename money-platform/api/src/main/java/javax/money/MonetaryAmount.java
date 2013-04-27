@@ -18,6 +18,7 @@ import java.math.BigDecimal;
  * Since {@link Number} is not an interface, this type is not extending
  * {@link Number}.
  * 
+ * @version 0.4
  * @author Anatole Tresch
  * @author Werner Keil
  */

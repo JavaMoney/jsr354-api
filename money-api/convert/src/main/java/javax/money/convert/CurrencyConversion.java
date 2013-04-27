@@ -17,7 +17,9 @@ import javax.money.MonetaryOperator;
  * a specific {@link ConversionProvider}, a term {@link CurrencyUnit} and a
  * (optional) target timestamp.
  * 
+ * @version 0.9
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public interface CurrencyConversion extends MonetaryOperator {
 

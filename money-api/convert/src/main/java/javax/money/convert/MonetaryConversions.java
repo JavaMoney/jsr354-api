@@ -20,11 +20,12 @@ import java.util.logging.Logger;
  * of JavaMoney.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public final class MonetaryConversions {
 	/**
-	 * The spi currently active, use {@link ServiceLoader} to register an
-	 * altetrnate implementaiont.
+	 * The SPI currently active, use {@link ServiceLoader} to register an
+	 * alternate implementation.
 	 */
 	private static final MonetaryConversionsSpi MONETARY_CONVERSION_SPI = loadMonetaryConversionSpi();
 
@@ -56,7 +57,7 @@ public final class MonetaryConversions {
 	}
 
 	/**
-	 * This is the spi interface to be implemented that determines how the
+	 * This is the SPI to be implemented that determines how the
 	 * different components are loaded and managed.
 	 * 
 	 * @author Anatole Tresch

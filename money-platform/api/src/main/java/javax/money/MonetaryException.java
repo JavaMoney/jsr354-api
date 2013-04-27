@@ -14,6 +14,7 @@ package javax.money;
  * <p>
  * This exception makes no guarantees about immutability or thread-safety.
  * 
+ * @version 0.9
  * @author Werner Keil
  */
 public abstract class MonetaryException extends RuntimeException {

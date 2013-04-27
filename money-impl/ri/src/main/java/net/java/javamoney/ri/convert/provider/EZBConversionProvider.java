@@ -18,6 +18,8 @@
  */
 package net.java.javamoney.ri.convert.provider;
 
+import static net.java.javamoney.ri.convert.provider.EZBConversionProvider.DataFeed.*;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.net.URL;
@@ -39,8 +41,6 @@ import javax.money.convert.ExchangeRateType;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import net.java.javamoney.ri.ext.provider.IsoCurrencyOnlineProvider;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
@@ -49,26 +49,58 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * This class implements an {@link ExchangeRateProviderSpi} that loads data from
- * the European Central Bank datafeed (XML). It loads the current exchange
+ * the European Central Bank data feed (XML). It loads the current exchange
  * rates, as well as historic rates for the past 90 days. By calling
  * {@link #loadHistoric()} the provider loads all data up to 1999 into its
  * historic data cache.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 @Singleton
 public class EZBConversionProvider implements ConversionProvider {
-	/** URL for the last 90 days data feed. */
-	private static final String DAILY90_RATES_URL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
-	/** URL for the daily data feed. */
-	private static final String DAILY_RATES_URL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
-	/** URL for the historic data feed. */
-	private static final String HISTORIC_RATES_URL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml";
-	/** Source currency of the loaded rates is always EUR. */
-	private static final CurrencyUnit SOURCE_CURRENCY = MoneyCurrency.of("EUR");
+
+	/**
+	 * Statistics data feeds provided by the European Central Bank
+	 * 
+	 * @author Werner Keil
+	 * @see <a href="http://www.ecb.int/stats/services/html/index.en.html">ECB: Statistics data services</a>
+	 * 
+	 */
+	public static enum DataFeed {
+		/** Daily data feed. */
+		DAILY("http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+				false),
+		/** Data feed for the last 90 days. */
+		LAST_90_DAYS(
+				"http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml",
+				true),
+		/** Historic data feed. */
+		HISTORIC("http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml",
+				true);
+
+		private final String url;
+		private final boolean historic;
+
+		private DataFeed(String u, boolean hist) {
+			url = u;
+			historic = hist;
+		}
+
+		String getUrl() {
+			return url;
+		}
+
+		boolean isHistoric() {
+			return historic;
+		}
+	}
+
+	/** Base currency of the loaded rates is always EUR. */
+	public static final CurrencyUnit BASE_CURRENCY = MoneyCurrency.of("EUR");
 	/** The logger used. */
 	private static final Logger LOGGER = LoggerFactory
-			.getLogger(IsoCurrencyOnlineProvider.class);
+			.getLogger(EZBConversionProvider.class);
 
 	/** Historic exchange rates, rate timestamp as UTC long. */
 	private Map<Long, Map<String, ExchangeRate>> historicRates = new ConcurrentHashMap<Long, Map<String, ExchangeRate>>();
@@ -77,74 +109,45 @@ public class EZBConversionProvider implements ConversionProvider {
 	/** Parser factory. */
 	private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 	/** The {@link ExchangeRateType} of this provider. */
-	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
+	public static final ExchangeRateType RATE_TYPE = ExchangeRateType
 			.of("EZB");
-	
-	private CurrencyConverter currencyConverter = new DefaultCurrencyConverter(this);
- 
+
+	private CurrencyConverter currencyConverter = new DefaultCurrencyConverter(
+			this);
+
 	/**
 	 * Constructor, also loads initial data.
 	 */
 	public EZBConversionProvider() {
 		saxParserFactory.setNamespaceAware(false);
 		saxParserFactory.setValidating(false);
-		loadCurrent();
-		loadRates90();
+		loadRates(DAILY);
+		loadRates(LAST_90_DAYS);
 	}
 
 	/**
-	 * (Re)load the current daily data feed.
+	 * (Re)load the given data feed.
 	 */
-	public void loadCurrent() {
-		int oldSize = this.currentRates.size();
+	public void loadRates(DataFeed feed) {
+		final int oldSize = (feed.isHistoric() ? this.historicRates.size()
+				: this.currentRates.size());
 		try {
-			URL url = new URL(DAILY_RATES_URL);
+			URL url = new URL(feed.getUrl());
 			SAXParser parser = saxParserFactory.newSAXParser();
 			parser.parse(url.openStream(), new RateReadingHandler(true));
 		} catch (Exception e) {
 			LOGGER.debug("Error", e);
 		}
-		LOGGER.info("Loaded exchange rates for days:"
-				+ (this.currentRates.size() - oldSize));
-	}
-
-	/**
-	 * (Re)load the full historic daily data feed up to 1999.
-	 */
-	public void loadHistoric() {
-		int oldSize = this.historicRates.size();
-		try {
-			URL url = new URL(HISTORIC_RATES_URL);
-			SAXParser parser = saxParserFactory.newSAXParser();
-			parser.parse(url.openStream(), new RateReadingHandler(false));
-		} catch (Exception e) {
-			LOGGER.debug("Error", e);
-		}
-		LOGGER.info("Loaded exchange rates for days:"
-				+ (this.historicRates.size() - oldSize));
-	}
-
-	/**
-	 * (Re)load the historic data feed for the last 90 days.
-	 */
-	public void loadRates90() {
-		int oldSize = this.historicRates.size();
-		try {
-			URL url = new URL(DAILY90_RATES_URL);
-			SAXParser parser = saxParserFactory.newSAXParser();
-			parser.parse(url.openStream(), new RateReadingHandler(false));
-		} catch (Exception e) {
-			LOGGER.debug("Error", e);
-		}
-		LOGGER.info("Loaded exchange rates for days:"
-				+ (this.historicRates.size() - oldSize));
+		int newSize = (feed.isHistoric() ? this.historicRates.size()
+				: this.currentRates.size());
+		LOGGER.info("Loaded " + feed.toString() + " exchange rates for days:"
+				+ (newSize - oldSize));
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * javax.money.convert.spi.ExchangeRateProviderSpi#getExchangeRateType
+	 * @see javax.money.convert.spi.ExchangeRateProviderSpi#getExchangeRateType
 	 * ()
 	 */
 	@Override
@@ -155,13 +158,12 @@ public class EZBConversionProvider implements ConversionProvider {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * javax.money.convert.spi.ExchangeRateProviderSpi#getExchangeRate
+	 * @see javax.money.convert.spi.ExchangeRateProviderSpi#getExchangeRate
 	 * (javax .money.CurrencyUnit, javax.money.CurrencyUnit, java.lang.Long)
 	 */
 	@Override
-	public ExchangeRate getExchangeRate(CurrencyUnit base,
-			CurrencyUnit term, Long timestamp) {
+	public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term,
+			Long timestamp) {
 		if (!MoneyCurrency.ISO_NAMESPACE.equals(base.getNamespace())
 				|| !MoneyCurrency.ISO_NAMESPACE.equals(term.getNamespace())) {
 			return null;
@@ -219,7 +221,7 @@ public class EZBConversionProvider implements ConversionProvider {
 					timestamp);
 			ExchangeRate rate2 = getExchangeRate(MoneyCurrency.of("EUR"), term,
 					timestamp);
-			if(rate1!=null || rate2!=null){
+			if (rate1 != null || rate2 != null) {
 				builder.setFactor(rate1.getFactor().multiply(rate2.getFactor()));
 				builder.setExchangeRateChain(rate1, rate2);
 				return builder.build();
@@ -238,9 +240,9 @@ public class EZBConversionProvider implements ConversionProvider {
 			throw new IllegalArgumentException("Rate null is not reversable.");
 		}
 		return new ExchangeRate(rate.getExchangeRateType(), rate.getTerm(),
-				rate.getBase(), BigDecimal.ONE.divide(rate
-						.getFactor(), MathContext.DECIMAL64), rate.getProvider(), rate.getValidFrom(),
-				rate.getValidUntil());
+				rate.getBase(), BigDecimal.ONE.divide(rate.getFactor(),
+						MathContext.DECIMAL64), rate.getProvider(),
+				rate.getValidFrom(), rate.getValidUntil());
 	}
 
 	/**
@@ -318,8 +320,8 @@ public class EZBConversionProvider implements ConversionProvider {
 	/**
 	 * Method to add a currency exchange rate.
 	 * 
-	 * @param tgtCurrency
-	 *            the target currency, mapped from EUR.
+	 * @param term
+	 *            the term (target) currency, mapped from EUR.
 	 * @param timestamp
 	 *            The target day.
 	 * @param rate
@@ -327,18 +329,18 @@ public class EZBConversionProvider implements ConversionProvider {
 	 * @param loadCurrent
 	 *            Flag, if current or historic data is loaded.
 	 */
-	void addRate(CurrencyUnit tgtCurrency, Long timestamp, BigDecimal rate,
+	void addRate(CurrencyUnit term, Long timestamp, BigDecimal rate,
 			boolean loadCurrent) {
 		ExchangeRate.Builder builder = new ExchangeRate.Builder();
-		builder.setBase(SOURCE_CURRENCY);
-		builder.setTerm(tgtCurrency);
+		builder.setBase(BASE_CURRENCY);
+		builder.setTerm(term);
 		builder.setValidFrom(timestamp);
 		builder.setProvider("European Central Bank");
 		builder.setFactor(rate);
 		builder.setExchangeRateType(RATE_TYPE);
 		ExchangeRate exchangeRate = builder.build();
 		if (loadCurrent) {
-			this.currentRates.put(tgtCurrency.getCurrencyCode(), exchangeRate);
+			this.currentRates.put(term.getCurrencyCode(), exchangeRate);
 		} else {
 			Map<String, ExchangeRate> rateMap = this.historicRates
 					.get(timestamp);
@@ -351,7 +353,7 @@ public class EZBConversionProvider implements ConversionProvider {
 					}
 				}
 			}
-			rateMap.put(tgtCurrency.getCurrencyCode(), exchangeRate);
+			rateMap.put(term.getCurrencyCode(), exchangeRate);
 		}
 	}
 
@@ -373,7 +375,8 @@ public class EZBConversionProvider implements ConversionProvider {
 
 	@Override
 	public ExchangeRate getReversed(ExchangeRate rate) {
-		return getExchangeRate(rate.getTerm(), rate.getBase(), rate.getValidFrom());
+		return getExchangeRate(rate.getTerm(), rate.getBase(),
+				rate.getValidFrom());
 	}
 
 	@Override

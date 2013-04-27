@@ -81,7 +81,7 @@ public final class RegionalCurrencyUnitProvider {
 		return result;
 	}
 
-	public boolean isLegalTCurrencyUnit(CurrencyUnit currency, Region region,
+	boolean isLegalTCurrencyUnit(CurrencyUnit currency, Region region,
 			Long timestamp) {
 		Set<CurrencyUnit> tenders = getLegalCurrencyUnits(region, timestamp);
 		for (CurrencyUnit currencyUnit : tenders) {

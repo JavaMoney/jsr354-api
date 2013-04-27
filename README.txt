@@ -8,14 +8,14 @@ The current project structure is as follows:
 
 ---------
 * money-platform: contains core platform modules eventually targeting Java SE 9.
-  * api: contains the API targeting JDK SE 9.
-  * ri: contains the platform part of the RI targeting JDK SE 9.
+  * api: contains the API targeting Java 9.
+  * ri: contains the platform part of the RI targeting Java 9.
 * money-api: contains the main API part
   * convert: currency conversion
   * format: formatting and parsing
   * ext: extensions
 * money-impl: contains the main implementation artifacts
-  * ri: contains the reference implementation, runnable on SE 7 or later
+  * ri: contains the reference implementation (RI), runnable on SE 7 or later
   * cdi: contains alternate loader implementation using stand-alone CDI (weld)
   * java-ee: contains alternate loader targeting EE 6 CDI container integration
 * money-tck: contains the technical compatibility kit (TCK)

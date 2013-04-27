@@ -25,6 +25,7 @@ import java.math.MathContext;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
@@ -96,8 +97,9 @@ public class EZBConversionProvider implements ConversionProvider {
 		}
 	}
 
+	private static final String BASE_CURRENCY_CODE = "EUR";
 	/** Base currency of the loaded rates is always EUR. */
-	public static final CurrencyUnit BASE_CURRENCY = MoneyCurrency.of("EUR");
+	public static final CurrencyUnit BASE_CURRENCY = MoneyCurrency.of(BASE_CURRENCY_CODE);
 	/** The logger used. */
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(EZBConversionProvider.class);
@@ -185,15 +187,15 @@ public class EZBConversionProvider implements ConversionProvider {
 			if (historicRates.isEmpty()) {
 				return null;
 			}
-			GregorianCalendar cal = new GregorianCalendar(
+			final Calendar cal = new GregorianCalendar(
 					TimeZone.getTimeZone("UTC"));
 			if (timestamp != null) {
 				cal.setTimeInMillis(timestamp);
 			}
-			cal.set(GregorianCalendar.HOUR, 0);
-			cal.set(GregorianCalendar.MINUTE, 0);
-			cal.set(GregorianCalendar.SECOND, 0);
-			cal.set(GregorianCalendar.MILLISECOND, 0);
+			cal.set(Calendar.HOUR, 0);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+			cal.set(Calendar.MILLISECOND, 0);
 			Long targetTS = Long.valueOf(cal.getTimeInMillis());
 			builder.setValidFrom(targetTS);
 			Map<String, ExchangeRate> targetRates = this.historicRates
@@ -204,22 +206,22 @@ public class EZBConversionProvider implements ConversionProvider {
 			sourceRate = targetRates.get(base.getCurrencyCode());
 			targetRate = targetRates.get(term.getCurrencyCode());
 		}
-		if ("EUR".equals(base.getCurrencyCode())
-				&& "EUR".equals(term.getCurrencyCode())) {
+		if (BASE_CURRENCY_CODE.equals(base.getCurrencyCode())
+				&& BASE_CURRENCY_CODE.equals(term.getCurrencyCode())) {
 			builder.setFactor(BigDecimal.ONE);
 			return builder.build();
-		} else if ("EUR".equals(term.getCurrencyCode())) {
+		} else if (BASE_CURRENCY_CODE.equals(term.getCurrencyCode())) {
 			if (sourceRate == null) {
 				return null;
 			}
 			return reverse(sourceRate);
-		} else if ("EUR".equals(base.getCurrencyCode())) {
+		} else if (BASE_CURRENCY_CODE.equals(base.getCurrencyCode())) {
 			return targetRate;
 		} else {
 			// Get Conversion base as derived rate: base -> EUR -> term
-			ExchangeRate rate1 = getExchangeRate(base, MoneyCurrency.of("EUR"),
+			ExchangeRate rate1 = getExchangeRate(base, MoneyCurrency.of(BASE_CURRENCY_CODE),
 					timestamp);
-			ExchangeRate rate2 = getExchangeRate(MoneyCurrency.of("EUR"), term,
+			ExchangeRate rate2 = getExchangeRate(MoneyCurrency.of(BASE_CURRENCY_CODE), term,
 					timestamp);
 			if (rate1 != null || rate2 != null) {
 				builder.setFactor(rate1.getFactor().multiply(rate2.getFactor()));
@@ -335,7 +337,7 @@ public class EZBConversionProvider implements ConversionProvider {
 		builder.setBase(BASE_CURRENCY);
 		builder.setTerm(term);
 		builder.setValidFrom(timestamp);
-		builder.setProvider("European Central Bank");
+		builder.setProvider("European Central Bank"); // TODO i18n?
 		builder.setFactor(rate);
 		builder.setExchangeRateType(RATE_TYPE);
 		ExchangeRate exchangeRate = builder.build();
@@ -383,5 +385,4 @@ public class EZBConversionProvider implements ConversionProvider {
 	public CurrencyConverter getConverter() {
 		return currencyConverter;
 	}
-
 }

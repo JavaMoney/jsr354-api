@@ -6,20 +6,16 @@ http://jcp.org/en/jsr/detail?id=354
 
 The current project structure is as follows:
 
-SE scope:
 ---------
-* money-platform: contains the API/code targeting JDK SE 9.
+* money-platform: contains core platform modules eventually targeting Java SE 9.
   * api: contains the API targeting JDK SE 9.
-  * ri: contains the reference implementation targeting JDK SE 9.
-
-Standalone scope
-----------------
-* money-api: contains the standalone API part
+  * ri: contains the platform part of the RI targeting JDK SE 9.
+* money-api: contains the main API part
   * convert: currency conversion
   * format: formatting and parsing
   * ext: extensions
-* money-impl: contains the standalone implementation artifacts
+* money-impl: contains the main implementation artifacts
   * ri: contains the reference implementation, runnable on SE 7 or later
-  * cdi: contains alternate loader implementation using standalone CDI (weld)
+  * cdi: contains alternate loader implementation using stand-alone CDI (weld)
   * java-ee: contains alternate loader targeting EE 6 CDI container integration
 * money-tck: contains the technical compatibility kit (TCK)

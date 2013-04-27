@@ -44,7 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SmokeTests {
-	private static final Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(SmokeTests.class);
 
 	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
@@ -57,7 +57,7 @@ public class SmokeTests {
 		MonetaryAmount amount1 = Money.of(currency, 1.0d);
 		MonetaryAmount amount2 = Money.of(currency, 1.0d);
 		MonetaryAmount amount3 = amount1.add(amount2);
-		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
+		LOGGER.debug(amount1 + " + " + amount2 + " = " + amount3);
 		assertEquals("ISO-4217", currency.getNamespace());
 		assertEquals(1.0d, amount1.doubleValue(), 0);
 		assertEquals(1.0d, amount2.doubleValue(), 0);
@@ -70,7 +70,7 @@ public class SmokeTests {
 		Money amount1 = Money.of("CHF", 1.0d);
 		Money amount2 = Money.of("CHF", 1.0d);
 		MonetaryAmount amount3 = amount1.add(amount2);
-		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
+		LOGGER.debug(amount1 + " + " + amount2 + " = " + amount3);
 		assertEquals(1.0d, amount1.doubleValue(), 0);
 		assertEquals(1.0d, amount2.doubleValue(), 0);
 		assertEquals(2.0d, amount3.doubleValue(), 0);
@@ -133,7 +133,7 @@ public class SmokeTests {
 			assertNotNull(cur);
 			assertEquals("CHF", cur.getCurrencyCode());
 		} catch (ItemParseException e) {
-			logger.debug("Error", e);
+			LOGGER.debug("Error", e);
 		}
 	}
 

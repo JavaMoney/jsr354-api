@@ -18,7 +18,7 @@ import java.math.BigDecimal;
  * Since {@link Number} is not an interface, this type is not extending
  * {@link Number}.
  * 
- * @version 0.4.1
+ * @version 0.4.2
  * @author Anatole Tresch
  * @author Werner Keil
  */
@@ -254,7 +254,7 @@ public interface MonetaryAmount {
 	 * @return <tt>this<sup>n</sup></tt>
 	 * @throws ArithmeticException
 	 *             if {@code n} is out of range.
-	 * @since 1.5
+	 * @since 1.0
 	 */
 	public MonetaryAmount pow(int n);
 

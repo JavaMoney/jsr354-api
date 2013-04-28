@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>money-api</artifactId>
 	<packaging>pom</packaging>
-	<name>JSR 354 (Money and Currency) - Standalone API</name>
+	<name>JSR 354 (Money and Currency) - Main APIs</name>
 
 	<modules>
 		<module>convert</module>

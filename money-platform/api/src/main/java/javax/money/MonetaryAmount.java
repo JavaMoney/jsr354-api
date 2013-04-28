@@ -18,7 +18,7 @@ import java.math.BigDecimal;
  * Since {@link Number} is not an interface, this type is not extending
  * {@link Number}.
  * 
- * @version 0.4
+ * @version 0.4.1
  * @author Anatole Tresch
  * @author Werner Keil
  */
@@ -390,13 +390,13 @@ public interface MonetaryAmount {
 	public MonetaryAmount from(CurrencyUnit currency, Number amount);
 
 	/**
-	 * Adjust a {@link MonetaryAmount} using the given {@link MonetaryOperator}.
+	 * Applies the given {@link MonetaryOperator} to this {@link MonetaryAmount}.
 	 * 
-	 * @param adjuster
-	 *            the adjuster, not null.
-	 * @return the adjusted value, never null.
+	 * @param operator
+	 *            the operator, not null.
+	 * @return the result of the operation, never null.
 	 */
-	public MonetaryAmount with(MonetaryOperator adjuster);
+	public MonetaryAmount with(MonetaryOperator operator);
 
 	// -------------------- Introspection and value methods, similar to
 	// java.lang.Number; java.lang.BigDecimal
@@ -596,7 +596,7 @@ public interface MonetaryAmount {
 	// -------------------------------------------- Misc
 
 	/**
-	 * * Gets the monetary amount using the passed target type. This method
+	 * Gets the monetary amount using the passed target type. This method
 	 * allows to support different return types, depending of the concrete
 	 * implementation. E.g. {@link BigDecimal}, {@link java.lang.Number} and the
 	 * numeric wrapper types should be supported within SE environments, whereas

@@ -18,6 +18,9 @@ import javax.money.CurrencyUnit;
 
 /**
  * This class models an exchange rate between two currencies.
+ * @version 0.4
+ * @see <a
+ *      href="https://en.wikipedia.org/wiki/Exchange_rate#Quotations">Wikipedia: Exchange Rate (Quotations)</a>
  * 
  * @author Werner Keil
  * @author Anatole Tresch
@@ -262,8 +265,37 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 	 * @return true, if the rate is valid for use.
 	 */
 	public final boolean isValid() {
-		return validUntil == null
-				|| validUntil.longValue() <= System.currentTimeMillis();
+		return isValid(null);
+	}
+	
+	/**
+	 * Method to quickly check if an {@link ExchangeRate} is valid for a given
+	 * timestamp.
+	 * 
+	 * @param timestamp
+	 *            the timestamp, or null.
+	 * @return true, if the rate is valid.
+	 */
+	public boolean isValid(Long timestamp) {
+		long ts = System.currentTimeMillis();
+		if(timestamp==null){
+			if(validUntil != null && validUntil.longValue()<ts){
+				return false;
+			}
+			if(validFrom != null && validFrom.longValue()>ts){
+				return false;
+			}
+		}
+		else{
+			ts = timestamp.longValue();
+			if(validUntil != null && validUntil.longValue()<ts){
+				return false;
+			}
+			if(validFrom != null && validFrom.longValue()>ts){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**

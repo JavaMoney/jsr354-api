@@ -18,6 +18,7 @@ import javax.money.MonetaryAmount;
  * @see ConversionProvider
  * @see MonetaryConversions
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public interface CurrencyConverter {
 
@@ -50,17 +51,17 @@ public interface CurrencyConverter {
 	 * 
 	 * @param amount
 	 *            The amount.
-	 * @param targetCurrency
-	 *            The target currency
+	 * @param term
+	 *            The term (target) currency
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried,
+	 *            the target time stamp for which the exchange rate is queried,
 	 *            or {@code null}, for acquiring a current rate.
 	 * @return the converted {@code MonetaryAmount}, never {@code null}.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public MonetaryAmount convert(MonetaryAmount amount,
-			CurrencyUnit targetCurrency, Long timestamp);
+			CurrencyUnit term, Long timestamp);
 
 	/**
 	 * Access a {@link CurrencyConversion} instance for the corresponding

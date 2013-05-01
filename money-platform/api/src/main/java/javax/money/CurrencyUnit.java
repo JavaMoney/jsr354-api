@@ -8,21 +8,23 @@
  */
 package javax.money;
 
-import java.util.Currency;
-
 /**
  * A unit of currency.
  * <p>
- * This class represents a unit of currency such as the British Pound, Euro, US
- * Dollar, BitCoins or other.
+ * This interface represents a unit of currency such as the British Pound, Euro, US
+ * Dollar, Bitcoin or other.
  * <p>
  * Currencies can be distinguished within separate arbitrary currency name
  * spaces, whereas as {@link #ISO_NAMESPACE} will be the the most commonly used
- * one, similar to {@link Currency}.
+ * one, similar to {@link java.util.Currency}.
  * 
+ * @version 0.4
  * @author Werner Keil
  * @author Stephen Colebourne
  * @author Anatole Tresch
+ * 
+ * @see <a
+ *      href="https://en.wikipedia.org/wiki/Currency">Wikipedia: Currency</a>
  */
 public interface CurrencyUnit {
 

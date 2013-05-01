@@ -53,14 +53,14 @@ public class SECurrencyUnitProviderSpi implements CurrencyUnitProviderSpi {
 	 */
 	private static final String DEFAULT_NAMESPACE_PROP = "javax.money.defaultCurrencyNamespace";
 	/** Loaded currency providers. */
-	private Map<String, List<CurrencyUnitProviderComponentSpi>> currencyProviders = new ConcurrentHashMap<String, List<CurrencyUnitProviderComponentSpi>>();
+	private final Map<String, List<CurrencyUnitProviderComponentSpi>> currencyProviders = new ConcurrentHashMap<String, List<CurrencyUnitProviderComponentSpi>>();
 	/** Loaded currency mappers. */
-	private Set<CurrencyUnitMappingSpi> mappers = new HashSet<CurrencyUnitMappingSpi>();
+	private final Set<CurrencyUnitMappingSpi> mappers = new HashSet<CurrencyUnitMappingSpi>();
 	/** The default namespace used. */
 	private String defaultNamespace = MoneyCurrency.ISO_NAMESPACE;
 
 	/**
-	 * COnstructor, also loading the registered spi's.
+	 * Constructor, also loading the registered spi's.
 	 */
 	public SECurrencyUnitProviderSpi() {
 		String ns = System.getProperty(DEFAULT_NAMESPACE_PROP);
@@ -75,7 +75,6 @@ public class SECurrencyUnitProviderSpi implements CurrencyUnitProviderSpi {
 	 * {@link ServiceLoader}. This adds providers that were not yet visible
 	 * before.
 	 */
-	@SuppressWarnings("unchecked")
 	public void reload() {
 		for (CurrencyUnitProviderComponentSpi currencyProviderSPI : ServiceLoader
 				.load(CurrencyUnitProviderComponentSpi.class)) {

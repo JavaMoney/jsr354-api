@@ -12,9 +12,14 @@ import javax.money.convert.ExchangeRateType;
 import net.java.javamoney.ri.convert.FixedCurrencyConversion;
 import net.java.javamoney.ri.convert.LazyBoundCurrencyConversion;
 
+/**
+ * @author Anatole Tresch
+ * @author Werner Keil
+ *
+ */
 public class DefaultCurrencyConverter implements CurrencyConverter {
 
-	private ConversionProvider rateProvider;
+	private final ConversionProvider rateProvider;
 
 	public DefaultCurrencyConverter(ConversionProvider rateProvider) {
 		if (rateProvider == null) {

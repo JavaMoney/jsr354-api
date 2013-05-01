@@ -24,6 +24,7 @@ package javax.money;
  * This interface is considered to be adapted/compatible with {@code java.util.function.UnaryOperator} 
  * as introduced in Java 8.
  * 
+ * @version 0.9
  * @author Werner Keil
  * @author Anatole Tresch
  */

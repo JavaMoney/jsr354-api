@@ -15,7 +15,7 @@
  *
  * Contributors:
  *    Anatole Tresch - initial implementation
- *    Wernner Keil - extensions and adaptions.
+ *    Werner Keil - extensions and adaptions.
  */
 package net.java.javamoney.ri;
 

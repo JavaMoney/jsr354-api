@@ -31,8 +31,10 @@ public class SmokeTests {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SmokeTests.class);
 
-	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
+	private static final ExchangeRateType EZB_RATE_TYPE = ExchangeRateType
 			.of("EZB");
+	private static final ExchangeRateType IMF_RATE_TYPE = ExchangeRateType
+			.of("IMF");
 
 	@Test
 	public void testCreateAmounts() {
@@ -73,9 +75,9 @@ public class SmokeTests {
 
 
 	@Test
-	public void testExchange() {
+	public void testExchangeEZB() {
 		ConversionProvider prov = MonetaryConversions
-				.getConversionProvider(RATE_TYPE);
+				.getConversionProvider(EZB_RATE_TYPE);
 		assertNotNull(prov);
 		ExchangeRate rate1 = prov.getExchangeRate(MoneyCurrency.of("CHF"),
 				MoneyCurrency.of("EUR"));
@@ -85,6 +87,25 @@ public class SmokeTests {
 				MoneyCurrency.of("USD"));
 		ExchangeRate rate4 = prov.getExchangeRate(MoneyCurrency.of("USD"),
 				MoneyCurrency.of("CHF"));
+		System.out.println(rate1);
+		System.out.println(rate2);
+		System.out.println(rate3);
+		System.out.println(rate4);
+	}
+	
+	@Test
+	public void testExchangeIMF() {
+		ConversionProvider prov = MonetaryConversions
+				.getConversionProvider(IMF_RATE_TYPE);
+		assertNotNull(prov);
+		ExchangeRate rate1 = prov.getExchangeRate(MoneyCurrency.of("CHF"),
+				MoneyCurrency.of("EUR"));
+		ExchangeRate rate2 = prov.getExchangeRate(MoneyCurrency.of("EUR"),
+				MoneyCurrency.of("CHF"));
+		ExchangeRate rate3 = prov.getExchangeRate(MoneyCurrency.of("CHF"),
+				MoneyCurrency.of("GBP"));
+		ExchangeRate rate4 = prov.getExchangeRate(MoneyCurrency.of("USD"),
+				MoneyCurrency.of("AED"));
 		System.out.println(rate1);
 		System.out.println(rate2);
 		System.out.println(rate3);
@@ -100,26 +121,26 @@ public class SmokeTests {
 		MonetaryAmount srcEUR = Money.of("EUR", 100.15);
 
 		MonetaryAmount tgt = MonetaryConversions
-				.getConversionProvider(RATE_TYPE).getConverter()
+				.getConversionProvider(EZB_RATE_TYPE).getConverter()
 				.convert(srcCHF, MoneyCurrency.of("EUR"));
 		MonetaryAmount tgt2 = MonetaryConversions
-				.getConversionProvider(RATE_TYPE).getConverter()
+				.getConversionProvider(EZB_RATE_TYPE).getConverter()
 				.convert(tgt, MoneyCurrency.of("CHF"));
 		assertEquals(srcCHF, tgt2);
-		tgt = MonetaryConversions.getConversionProvider(RATE_TYPE)
+		tgt = MonetaryConversions.getConversionProvider(EZB_RATE_TYPE)
 				.getConverter().convert(srcEUR, MoneyCurrency.of("CHF"));
-		tgt2 = MonetaryConversions.getConversionProvider(RATE_TYPE)
+		tgt2 = MonetaryConversions.getConversionProvider(EZB_RATE_TYPE)
 				.getConverter().convert(tgt, MoneyCurrency.of("EUR"));
 		assertEquals(srcEUR, tgt2);
-		tgt = MonetaryConversions.getConversionProvider(RATE_TYPE)
+		tgt = MonetaryConversions.getConversionProvider(EZB_RATE_TYPE)
 				.getConverter().convert(srcCHF, MoneyCurrency.of("USD"));
-		tgt2 = MonetaryConversions.getConversionProvider(RATE_TYPE)
+		tgt2 = MonetaryConversions.getConversionProvider(EZB_RATE_TYPE)
 				.getConverter()
 				.convert(Money.of("CHF", 100.15d), MoneyCurrency.of("USD"));
 		assertEquals(tgt, tgt2);
-		tgt = MonetaryConversions.getConversionProvider(RATE_TYPE)
+		tgt = MonetaryConversions.getConversionProvider(EZB_RATE_TYPE)
 				.getConverter().convert(srcUSD, MoneyCurrency.of("CHF"));
-		tgt2 = MonetaryConversions.getConversionProvider(RATE_TYPE)
+		tgt2 = MonetaryConversions.getConversionProvider(EZB_RATE_TYPE)
 				.getConverter()
 				.convert(Money.of("USD", 100.15d), MoneyCurrency.of("CHF"));
 		assertEquals(tgt, tgt2);

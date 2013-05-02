@@ -73,10 +73,31 @@ public class IMFConversionProvider implements ConversionProvider {
 			currenciesByName.put(currency.getDisplayName(Locale.ENGLISH),
 					MoneyCurrency.of(currency));
 		}
+		// Additional IMF differing codes:
+		currenciesByName.put("U.K. Pound Sterling", MoneyCurrency.of("GBP"));
+		currenciesByName.put("U.S. Dollar", MoneyCurrency.of("USD"));
+		currenciesByName.put("Bahrain Dinar", MoneyCurrency.of("BHD"));
+		currenciesByName.put("Botswana Pula", MoneyCurrency.of("BWP"));
+		currenciesByName.put("Czech Koruna", MoneyCurrency.of("CZK"));
+		currenciesByName.put("Icelandic Krona", MoneyCurrency.of("ISK"));
+		currenciesByName.put("Korean Won", MoneyCurrency.of("KRW"));
+		currenciesByName.put("Rial Omani", MoneyCurrency.of("OMR"));
+		currenciesByName.put("Nuevo Sol", MoneyCurrency.of("PEN"));
+		currenciesByName.put("Qatar Riyal", MoneyCurrency.of("QAR"));
+		currenciesByName.put("Saudi Arabian Riyal", MoneyCurrency.of("SAR"));
+		currenciesByName.put("Sri Lanka Rupee", MoneyCurrency.of("LKR"));
+		currenciesByName.put("Trinidad And Tobago Dollar", MoneyCurrency.of("TTD"));
+		currenciesByName.put("U.A.E. Dirham", MoneyCurrency.of("AED"));
+		currenciesByName.put("Peso Uruguayo", MoneyCurrency.of("UYU"));
+		currenciesByName.put("Bolivar Fuerte", MoneyCurrency.of("VEF"));
 	}
-
+	
 	private CurrencyConverter currencyConverter = new DefaultCurrencyConverter(
 			this);
+
+	public IMFConversionProvider() {
+		loadRates();
+	}
 
 	public void loadRates() {
 		InputStream is = null;
@@ -106,7 +127,8 @@ public class IMFConversionProvider implements ConversionProvider {
 		BufferedReader pr = new BufferedReader(new InputStreamReader(
 				inputStream));
 		String line = pr.readLine();
-		int fieldType = 0;
+		int lineType = 0;
+		boolean currencyToSdr = true;
 		// SDRs per Currency unit (2)
 		//
 		// Currency January 31, 2013 January 30, 2013 January 29, 2013
@@ -119,30 +141,41 @@ public class IMFConversionProvider implements ConversionProvider {
 		// Currency January 31, 2013 January 30, 2013 January 29, 2013
 		// January 28, 2013 January 25, 2013
 		// Euro 1.137520 1.137760 1.143840 1.142570 1.140510
+		List<Long> timestamps = null;
 		while (line != null) {
-			List<Long> timestamps = null;
+			if(line.trim().isEmpty()){
+				line = pr.readLine();
+				continue;
+			}
 			if (line.startsWith("SDRs per Currency unit")) {
-				fieldType = 1;
+				currencyToSdr = false;
+				line = pr.readLine();
+				continue;
 			} else if (line.startsWith("Currency units per SDR")) {
-				fieldType = 2;
-			} else if (line.startsWith("Currency ")) {
+				currencyToSdr = true;
+				line = pr.readLine();
+				continue;
+			} else if (line.startsWith("Currency")) {
 				timestamps = readTimestamps(line);
+				line = pr.readLine();
+				continue;
 			}
 			String[] parts = line.split("\\t");
 			CurrencyUnit currency = currenciesByName.get(parts[0]);
 			if (currency == null) {
 				LOGGER.warn("Unknown currency from, IMF data feed: " + parts[0]);
+				line = pr.readLine();
 				continue;
 			}
-			double[] values = parseValues(f, parts);
+			Double[] values = parseValues(f, parts);
 			for (int i = 0; i < values.length; i++) {
-				Long fromTS = timestamps.get(i);
-				Long toTS = null;
-				if (i != 0) {
-					toTS = timestamps.get(i - 1);
+				if(values[i]==null){
+					continue;
 				}
-				if (fieldType == 1) { // Currency -> SDR
-					List<ExchangeRate> rates = newCurrencyToSdr.get(currency);
+				Long fromTS = timestamps.get(i);
+				Long toTS = fromTS + 3600L * 1000L * 24L; // One day
+				if (currencyToSdr) { // Currency -> SDR
+					List<ExchangeRate> rates = this.currencyToSdr.get(currency);
 					if (rates == null) {
 						rates = new ArrayList<ExchangeRate>(5);
 						newCurrencyToSdr.put(currency, rates);
@@ -150,8 +183,8 @@ public class IMFConversionProvider implements ConversionProvider {
 					ExchangeRate rate = new ExchangeRate(RATE_TYPE, currency,
 							SDR, values[i], PROVIDER_URL, fromTS, toTS);
 					rates.add(rate);
-				} else if (fieldType == 2) { // SDR -> Currency
-					List<ExchangeRate> rates = newSdrToCurrency.get(currency);
+				} else { // SDR -> Currency
+					List<ExchangeRate> rates = this.sdrToCurrency.get(currency);
 					if (rates == null) {
 						rates = new ArrayList<ExchangeRate>(5);
 						newSdrToCurrency.put(currency, rates);
@@ -173,49 +206,40 @@ public class IMFConversionProvider implements ConversionProvider {
 		this.currencyToSdr = newCurrencyToSdr;
 	}
 
-	private double[] parseValues(NumberFormat f, String[] parts)
+	private Double[] parseValues(NumberFormat f, String[] parts)
 			throws ParseException {
-		double[] result = new double[parts.length];
-		for (int i = 0; i < parts.length; i++) {
-			result[i] = f.parse(parts[i]).doubleValue();
+		Double[] result = new Double[parts.length-1];
+		for (int i = 1; i < parts.length; i++) {
+			if(parts[i].isEmpty()){
+				continue;
+			}
+			result[i-1] = f.parse(parts[i]).doubleValue();
 		}
 		return result;
 	}
 
 	private List<Long> readTimestamps(String line) throws ParseException {
-		// January 28, 2013 January 25, 2013
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
-		int start = 0;
-		int end = -1;
-		List<Long> dates = new ArrayList<Long>(5);
-		while (start >= 0) {
-			end = line.indexOf(", ", start);
-			if (end > 0) {
-				end = line.indexOf(' ', end);
-			}
-			String value = null;
-			if (end > 0) {
-				value = line.substring(start, end);
-			} else {
-				value = line.substring(start);
-			}
-			dates.add(sdf.parse(value).getTime());
+		// Currency	May 01, 2013	April 30, 2013	April 29, 2013	April 26, 2013	April 25, 2013
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM DD, yyyy", Locale.ENGLISH);
+		String[] parts = line.split("\\\t");
+		List<Long> dates = new ArrayList<Long>(parts.length);
+		for(int i=1; i<parts.length;i++){
+			dates.add(sdf.parse(parts[i]).getTime());
 		}
 		return dates;
 	}
 
 	@Override
-	public ExchangeRate getExchangeRate(CurrencyUnit base,
-			CurrencyUnit term, Long timestamp) {
+	public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term,
+			Long timestamp) {
 		ExchangeRate rate1 = lookupRate(currencyToSdr.get(base), timestamp);
 		ExchangeRate rate2 = lookupRate(sdrToCurrency.get(term), timestamp);
-		if(base.equals(SDR)){
+		if (base.equals(SDR)) {
 			return rate2;
-		}
-		else if(term.equals(SDR)){
+		} else if (term.equals(SDR)) {
 			return rate1;
 		}
-		if(rate1==null || rate2 == null){
+		if (rate1 == null || rate2 == null) {
 			return null;
 		}
 		ExchangeRate.Builder builder = new ExchangeRate.Builder();
@@ -225,19 +249,25 @@ public class IMFConversionProvider implements ConversionProvider {
 		builder.setTerm(term);
 		builder.setFactor(rate1.getFactor().multiply(rate2.getFactor()));
 		builder.setExchangeRateChain(rate1, rate2);
+		builder.setValidFrom(Math.max(rate1.getValidFrom(),rate2.getValidFrom()));
+		builder.setValidUntil(Math.min(rate1.getValidUntil(),rate2.getValidUntil()));
 		return builder.build();
 	}
 
 	private ExchangeRate lookupRate(List<ExchangeRate> list, Long timestamp) {
-		if(list==null){
+		if (list == null) {
 			return null;
 		}
+		ExchangeRate found = null;
 		for (ExchangeRate rate : list) {
-			if(rate.isValid(timestamp)){
+			if (rate.isValid(timestamp)) {
 				return rate;
 			}
+			if(found==null){
+				found = rate;
+			}
 		}
-		return null;
+		return found;
 	}
 
 	@Override

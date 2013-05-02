@@ -11,7 +11,7 @@ package javax.money;
 import java.util.Locale;
 
 /**
- * This interface is implemented by types that are localiable for display.
+ * This interface is implemented by types that are localizable for display.
  * 
  * @TODO check if this class can be moved to {@code java.util} or at least "format" module.
  * 

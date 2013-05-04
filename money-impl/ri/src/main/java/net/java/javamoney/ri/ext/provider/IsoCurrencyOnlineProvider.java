@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
+import javax.money.Localizable;
 import javax.money.MoneyCurrency;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -79,7 +80,7 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderComponentS
 		}
 	}
 
-	private final class ISOCurrency implements CurrencyUnit {
+	private final class ISOCurrency implements CurrencyUnit, Localizable {
 		private Locale country;
 		private String currencyName;
 		private String currencyCode;

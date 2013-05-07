@@ -104,7 +104,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * Access a new instance based on {@link Currency}.
 	 * 
 	 * @param currency
-	 *            the currency unitm not null.
+	 *            the currency unit not null.
 	 * @return the new instance, never null.
 	 */
 	public static MoneyCurrency of(Currency currency) {
@@ -586,7 +586,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * @author Werner Keil
 	 */
 	private final static class JDKCurrencyAdapter extends MoneyCurrency
-			implements Localizable {
+			implements Displayable {
 
 		/**
 		 * serialVersionUID.
@@ -623,7 +623,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see javax.money.Localizable#getDisplayName(java.util.Locale)
+		 * @see javax.money.Displayable#getDisplayName(java.util.Locale)
 		 */
 		@Override
 		public String getDisplayName(Locale locale) {

@@ -11,21 +11,23 @@ package javax.money;
 import java.util.Locale;
 
 /**
- * This interface is implemented by types that are localizable for display.
+ * This interface is implemented by types that are displayble for particular locales.
  * 
  * @TODO check if this class can be moved to {@code java.util} or at least "format" module.
  * 
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public interface Localizable {
+public interface Displayable {
 
 	/**
-	 * Access a display name for the item, that can be shown for display.
+	 * Gets the name that is suitable for displaying this item for
+     * the specified locale. 
 	 * 
-	 * @param locale
-	 *            The {@link Locale} to be used.
-	 * @return the formatted display name
+     * @param locale the locale for which a display name is
+     * needed
+     * @return the display name for the specified locale
+     * @exception NullPointerException if <code>locale</code> is null
 	 */
 	public String getDisplayName(Locale locale);
 

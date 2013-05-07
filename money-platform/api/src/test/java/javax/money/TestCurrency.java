@@ -10,6 +10,7 @@ package javax.money;
 
 import java.io.Serializable;
 import java.util.Currency;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -343,7 +344,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 	 * @author Werner Keil
 	 */
 	private final static class JDKCurrencyAdapter implements CurrencyUnit,
-			Serializable, Comparable<CurrencyUnit> {
+			Displayable, Serializable, Comparable<CurrencyUnit> {
 
 		/**
 		 * serialVersionUID.
@@ -418,8 +419,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 		public String toString() {
 			return this.currency.toString();
 		}
-
-		@Override
+		
 		public boolean isLegalTender() {
 			if (getCurrencyCode().startsWith("X")) {
 				return false;
@@ -427,6 +427,9 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 			return true;
 		}
 
+		public String getDisplayName(Locale locale) {
+			return this.currency.getDisplayName(locale);
+		}
 	}
 
 }

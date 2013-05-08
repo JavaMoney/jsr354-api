@@ -10,8 +10,6 @@ package javax.money.function;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
-
 import javax.money.MonetaryOperator;
 import javax.money.MonetaryAmount;
 
@@ -135,8 +133,8 @@ public final class Percent implements MonetaryOperator {
 	 * generate .03
 	 * 
 	 * @return java.math.BigDecimal
-	 * @param s
-	 *            java.lang.String
+	 * @param b
+	 *            java.math.BigDecimal
 	 */
 	private static BigDecimal calcPercent(BigDecimal b) {
 		return b.divide(ONE_HUNDRED, DEFAULT_MATH_CONTEXT); // we now have .03

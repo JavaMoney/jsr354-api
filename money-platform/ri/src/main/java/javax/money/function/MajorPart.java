@@ -25,7 +25,7 @@ public final class MajorPart implements MonetaryOperator {
 	/**
 	 * The shared instance of this class.
 	 */
-	private MajorPart INSTANCE = new MajorPart();
+	private static final MajorPart INSTANCE = new MajorPart();
 
 	/**
 	 * Access the shared instance of {@link MajorPart} for use.
@@ -35,7 +35,7 @@ public final class MajorPart implements MonetaryOperator {
 	private MajorPart() {
 	}
 
-	public MajorPart of() {
+	public static MajorPart of() {
 		return INSTANCE;
 	}
 	
@@ -74,7 +74,7 @@ public final class MajorPart implements MonetaryOperator {
 	@SuppressWarnings("unchecked")
 	public static <T extends MonetaryAmount> T fromAmount(T amount) {
 		if (amount == null) {
-			throw new IllegalArgumentException("Amount required.");
+			throw new NullPointerException("Amount required.");
 		}
 		BigDecimal number = amount.asType(BigDecimal.class);
 		return (T) amount.from(number.setScale(0,
@@ -123,7 +123,5 @@ public final class MajorPart implements MonetaryOperator {
 		BigDecimal number = amount.asType(BigDecimal.class);
 		return number.setScale(0, RoundingMode.DOWN).intValueExact();
 	}
-
-
 }
 

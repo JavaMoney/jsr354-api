@@ -73,11 +73,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		checkNumber(number);
 		this.currency = currency;
 		this.mathContext = mathContext;
-		if (number instanceof BigDecimal) {
-			this.number = (BigDecimal) number;
-		} else {
-			this.number = new BigDecimal(number.doubleValue(), mathContext);
-		}
+		this.number = getBigDecimal(number, mathContext);
 	}
 
 	/**
@@ -181,7 +177,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		return new Money(MoneyCurrency.of(currencyCode), number, mathContext);
 	}
 
-/**
+    /**
 	 * Factory method creating a zero instance with the given {@code currency);
 	 * @param currency the target currency of the amount being created.
 	 * @return
@@ -190,7 +186,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 		return new Money(currency, BigDecimal.ZERO, getDefaultMathContext());
 	}
 
-/**
+    /**
 	 * Factory method creating a zero instance with the given {@code currency);
 	 * @param currency the target currency of the amount being created.
 	 * @return
@@ -339,6 +335,14 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
 			return BigDecimal.valueOf(num.longValue());
 		}
 		return BigDecimal.valueOf(num.doubleValue());
+	}
+	
+	private BigDecimal getBigDecimal(Number number, MathContext mathContext) {
+		if (number instanceof BigDecimal) {
+			return (BigDecimal) number;
+		} else {
+			return new BigDecimal(number.doubleValue(), mathContext);
+		}
 	}
 
 	/*

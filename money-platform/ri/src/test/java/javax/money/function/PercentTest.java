@@ -28,6 +28,13 @@ public class PercentTest {
 		assertNotNull(perc);
 	}
 	
+	
+	@Test
+	public void testApply() {
+		Money m = Money.of("CHF", BigDecimal.valueOf(2.35d));
+		assertEquals(Money.of("CHF", BigDecimal.valueOf(0.235d)), Percent.of(BigDecimal.TEN).apply(m));
+	}
+	
 	@Test
 	public void testApply10() {
 		Money m = Money.of("CHF", 3);

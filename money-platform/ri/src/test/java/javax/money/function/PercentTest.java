@@ -54,7 +54,7 @@ public class PercentTest {
 	
 	@Test
 	public void testToString() {
-		assertEquals("15 %",
+		assertEquals("15%",
 				Percent.of(BigDecimal.valueOf(15)).toString());
 	}
 }

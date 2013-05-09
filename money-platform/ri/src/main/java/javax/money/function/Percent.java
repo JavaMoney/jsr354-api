@@ -8,8 +8,11 @@
  */
 package javax.money.function;
 
+import static java.text.NumberFormat.getPercentInstance;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
+
 import javax.money.MonetaryOperator;
 import javax.money.MonetaryAmount;
 
@@ -17,6 +20,7 @@ import javax.money.MonetaryAmount;
  * This class allows to extract the percentage of a {@link MonetaryAmount}
  * instance.
  * 
+ * @version 0.5
  * @author Werner Keil
  */
 public final class Percent implements MonetaryOperator {
@@ -25,7 +29,6 @@ public final class Percent implements MonetaryOperator {
 	private static final BigDecimal ONE_HUNDRED = new BigDecimal(100, DEFAULT_MATH_CONTEXT);
 	
 	private final BigDecimal percentValue;
-	private final BigDecimal calculatedValue;
 
 	/**
 	 * Access the shared instance of {@link Percent} for use.
@@ -33,8 +36,7 @@ public final class Percent implements MonetaryOperator {
 	 * @return the shared instance, never {@code null}.
 	 */
 	private Percent(final BigDecimal decimal) {
-		percentValue = decimal;
-		calculatedValue = calcPercent(decimal);
+		percentValue = calcPercent(decimal);
 	}
 
 	private static MathContext initDefaultMathContext() {
@@ -74,7 +76,7 @@ public final class Percent implements MonetaryOperator {
 	 */
 	@Override
 	public MonetaryAmount apply(MonetaryAmount amount) {
-		return amount.multiply(calculatedValue);
+		return amount.multiply(percentValue);
 	}
 	
 	/*
@@ -84,17 +86,7 @@ public final class Percent implements MonetaryOperator {
 	 */
 	@Override
 	public String toString() {
-		return String.valueOf(percentValue) + " %";
-	}
-	
-	private static final BigDecimal getBigDecimal(Number num) {
-		if (num instanceof BigDecimal) {
-			return (BigDecimal) num;
-		}
-		if (num instanceof Long) {
-			return BigDecimal.valueOf(num.longValue());
-		}
-		return BigDecimal.valueOf(num.doubleValue());
+		return getPercentInstance().format(percentValue);
 	}
 	
 	private static BigDecimal getBigDecimal(Number number, MathContext mathContext) {
@@ -106,29 +98,6 @@ public final class Percent implements MonetaryOperator {
 	}
 	
 	/**
-	 * Gets the percentage of the amount.
-	 * <p>
-	 * This returns the monetary amount in percent. 
-	 * For example, for 10% 'EUR 2.35'
-	 * will return 0.235.
-	 * <p>
-	 * This method matches the API of {@link java.math.BigDecimal}.
-	 * 
-	 * @return the major units part of the amount
-	 * @throws ArithmeticException
-	 *             if the amount is too large for a {@code long}
-	 */
-	@SuppressWarnings("unchecked")
-//	public static <T extends MonetaryAmount> T fromAmount(T amount) {
-//		if (amount == null) {
-//			throw new NullPointerException("Amount required.");
-//		}
-//		final BigDecimal number = amount.asType(BigDecimal.class);
-//		return (T) amount.from(number.setScale(0,
-//				RoundingMode.DOWN));
-//	}
-
-	/**
 	 * Calculate a BigDecimal value for a Percent e.g. "3" (3 percent) will
 	 * generate .03
 	 * 
@@ -136,7 +105,7 @@ public final class Percent implements MonetaryOperator {
 	 * @param b
 	 *            java.math.BigDecimal
 	 */
-	private static BigDecimal calcPercent(BigDecimal b) {
+	private static final BigDecimal calcPercent(BigDecimal b) {
 		return b.divide(ONE_HUNDRED, DEFAULT_MATH_CONTEXT); // we now have .03
 	}
 }

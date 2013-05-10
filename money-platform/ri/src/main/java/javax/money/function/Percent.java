@@ -89,7 +89,7 @@ public final class Percent implements MonetaryOperator {
 		return getPercentInstance().format(percentValue);
 	}
 	
-	private static BigDecimal getBigDecimal(Number number, MathContext mathContext) {
+	private static final BigDecimal getBigDecimal(Number number, MathContext mathContext) {
 		if (number instanceof BigDecimal) {
 			return (BigDecimal) number;
 		} else {
@@ -102,10 +102,10 @@ public final class Percent implements MonetaryOperator {
 	 * generate .03
 	 * 
 	 * @return java.math.BigDecimal
-	 * @param b
+	 * @param decimal
 	 *            java.math.BigDecimal
 	 */
-	private static final BigDecimal calcPercent(BigDecimal b) {
-		return b.divide(ONE_HUNDRED, DEFAULT_MATH_CONTEXT); // we now have .03
+	private static final BigDecimal calcPercent(BigDecimal decimal) {
+		return decimal.divide(ONE_HUNDRED, DEFAULT_MATH_CONTEXT); // we now have .03
 	}
 }

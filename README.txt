@@ -8,9 +8,9 @@ The current project structure is as follows:
 
 ---------
 * money-platform: contains core platform modules eventually targeting future Java versions like SE 9.
-  * api: contains the API targeting the Java Platform.
+  * api: contains the API/Spec targeting the Java Platform.
   * ri: contains the platform part of the RI targeting Java SE.
-* money-api: contains the main API part
+* money-api: contains the main API/Spec
   * convert: currency conversion
   * format: formatting and parsing
   * ext: extensions

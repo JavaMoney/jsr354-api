@@ -50,7 +50,7 @@ public abstract class AbstractCurrencyConversion implements CurrencyConversion {
 		ExchangeRate rate = getExchangeRate(amount);
 		if (rate == null || !amount.getCurrency().equals(rate.getBase())) {
 			throw new CurrencyConversionException(amount.getCurrency(),
-					rate.getTerm(), null);
+					rate == null ? null: rate.getTerm(), null);
 		}
 		return amount.from(rate.getTerm(), amount.multiply(rate.getFactor()).asType(BigDecimal.class));
 	}

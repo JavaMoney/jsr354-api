@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>money-api</artifactId>
 		<groupId>javax.money</groupId>
-		<version>0.3-SNAPSHOT</version>
+		<version>0.5-SNAPSHOT</version>
 	</parent>
 	<artifactId>money-api-format</artifactId>
 	<name>JSR 354 (Money and Currency) - Format API</name>
@@ -23,8 +23,14 @@
 	<dependencies>
 		<dependency>
 			<groupId>javax.money</groupId>
-			<artifactId>money-api-core</artifactId>
+			<artifactId>money-api-platform</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.money</groupId>
+			<artifactId>money-platform-ri</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

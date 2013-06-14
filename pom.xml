@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>javax.money</groupId>
 	<artifactId>jsr354</artifactId>
-	<version>0.3-SNAPSHOT</version>
-	<name>Java Money and Currency</name>
+	<version>0.5-SNAPSHOT</version>
+	<name>JSR 354 (Money and Currency)</name>
 	<url>http://java.net/projects/javamoney</url>
 	<packaging>pom</packaging>
 
@@ -17,23 +17,29 @@
 		<basedir>.</basedir>
 		<!-- Dependency versions -->
 		<junit.version>4.8.2</junit.version>
+
+		<license.licenseName>jcp_spec</license.licenseName>
+		<license.licenseResolver>src/license</license.licenseResolver>
+
 	</properties>
 
 	<modules>
-		<!-- module>jdk-stub</module  -->
+		<module>money-platform</module>
 		<module>money-api</module>
-		<module>money-ri</module>
+		<module>money-impl</module>
 		<module>money-tck</module>
 	</modules>
 
 	<licenses>
 		<license>
-			<name>Spec</name>
+			<name>Spec License</name>
+			<comments>Spec</comments>
 			<url>LICENSE.txt</url>
 		</license>
 		<license>
-			<name>RI + TCK</name>
+			<name>Apache License version 2.0</name>
 			<url>LICENSE_RI-TCK.txt</url>
+			<comments>RI + TCK</comments>
 		</license>
 	</licenses>
 
@@ -106,6 +112,21 @@
 		</extensions>
 		<pluginManagement>
 			<plugins>
+				<!-- ======================================================= -->
+				<!-- Packaging (OSGi bundle) -->
+				<!-- ======================================================= -->
+				<plugin>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>maven-bundle-plugin</artifactId>
+					<version>2.3.5</version>
+					<extensions>true</extensions>
+					<configuration>
+						<instructions>
+							<Export-Package>javax.money.*</Export-Package>
+							<Private-Package>!*</Private-Package>
+						</instructions>
+					</configuration>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
@@ -124,11 +145,8 @@
 									<requireJavaVersion>
 										<version>1.7.0</version>
 									</requireJavaVersion>
-									<!-- requirePluginVersions>
-										<banLatest>true</banLatest>
-										<banRelease>true</banRelease>
-										<banSnapshots>true</banSnapshots>
-									</requirePluginVersions -->
+									<!-- requirePluginVersions> <banLatest>true</banLatest> <banRelease>true</banRelease> 
+										<banSnapshots>true</banSnapshots> </requirePluginVersions -->
 								</rules>
 							</configuration>
 						</execution>
@@ -280,6 +298,11 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>license-maven-plugin</artifactId> 
+				<version>1.4</version> <executions> <execution> <id>first</id> <goals> <goal>update-file-header</goal> 
+				</goals> <phase>process-sources</phase> </execution> </executions> </plugin> -->
+		</plugins>
 	</build>
 
 	<reporting>
@@ -494,7 +517,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 			</plugin>
-
 		</plugins>
 	</reporting>
 
@@ -504,7 +526,7 @@
 			<name>Anatole Tresch</name>
 			<organization>Credit Suisse</organization>
 			<roles>
-				<role>Specicifaction Lead</role>
+				<role>Specification Lead</role>
 			</roles>
 		</developer>
 		<developer>
@@ -567,8 +589,30 @@
 			</roles>
 		</developer>
 		<developer>
-			<id>-</id>
+			<id>jezdavies</id>
 			<name>Jeremy Davies</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>-</id>
+			<name>Mathias Bücker</name>
+			<organization>Credit Suisse</organization>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>-</id>
+			<name>Benjamin Cotton</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>-</id>
+			<name>Simon Martinelli</name>
 			<roles>
 				<role>Expert Group Member</role>
 			</roles>
@@ -588,6 +632,7 @@
 
 	<profiles>
 		<profile>
+			<id>sign</id>
 			<activation>
 				<property>
 					<name>sign</name>
@@ -625,5 +670,62 @@
 				</plugins>
 			</build>
 		</profile>
+
+		<profile>
+			<id>license</id>
+			<activation>
+				<property>
+					<name>license</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<!-- ======================================================= -->
+						<!-- License -->
+						<!-- ======================================================= -->
+						<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>license-maven-plugin</artifactId> 
+							<version>1.4</version> </plugin> -->
+						<plugin>
+							<groupId>com.google.code.maven-license-plugin</groupId>
+							<artifactId>maven-license-plugin</artifactId>
+							<version>1.4.0</version>
+							<configuration>
+								<excludes>
+									<exclude>target/**</exclude>
+									<exclude>LICENSE*.txt</exclude>
+									<exclude>README.*</exclude>
+									<exclude>checkstyle*.*</exclude>
+									<exclude>*.css</exclude>
+								</excludes>
+							</configuration>
+						</plugin>
+						<!-- TODO enable this only for major upgrades (ensure to copy LICENSE.txt 
+							to LICENSE.bak first) -->
+					</plugins>
+				</pluginManagement>
+				<plugins>
+					<!-- Usage: mvn clean deploy -Dgpg.passphrase=yourpassphrase ; Or sign 
+						already deployed artifact: $ mvn gpg:sign-and-deploy-file > -DpomFile=target/myapp-1.0.pom 
+						> -Dfile=target/myapp-1.0.jar > -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ 
+						> -DrepositoryId=sonatype-nexus-staging -->
+					<plugin>
+						<groupId>com.google.code.maven-license-plugin</groupId>
+						<artifactId>maven-license-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>format</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 	</profiles>
+	<inceptionYear>2012</inceptionYear>
 </project>

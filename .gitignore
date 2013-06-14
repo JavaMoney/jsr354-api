@@ -8,3 +8,14 @@
 /javamoney-api/ext/bin
 /javamoney-api/format/bin
 /javamoney-api/singleton/bin
+/money-impl/cdi/.settings/org.eclipse.wst.common.component
+/money-impl/cdi/.settings/org.eclipse.wst.common.project.facet.core.xml
+/money-impl/java-ee/.settings/org.eclipse.wst.common.component
+/money-impl/java-ee/.settings/org.eclipse.wst.common.project.facet.core.xml
+/money-impl/ri/.settings/org.eclipse.wst.common.project.facet.core.xml
+/money-impl/ri/.settings/org.eclipse.wst.common.component
+/money-platform/api/.settings/org.eclipse.wst.common.component
+/money-platform/api/.settings/org.eclipse.wst.common.project.facet.core.xml
+/money-api/platform/.settings
+/money-platform/api/.settings/*.prefs
+/money-platform/.settings

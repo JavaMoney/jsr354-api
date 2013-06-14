@@ -1,36 +1,17 @@
 /*
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
+ *
+ * Specification:  JSR-354  Money and Currency API ("Specification")
+ *
  * Copyright (c) 2012-2013, Credit Suisse
- *
  * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *  * Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- *
- *  * Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- *  * Neither the name of JSR-354 nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package javax.money.ext;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Defines the different region types available. This allows to segregate
@@ -38,13 +19,123 @@ package javax.money.ext;
  * 
  * @author Anatole Tresch
  */
-public interface RegionType{
+public final class RegionType implements Serializable, Comparable<RegionType> {
 
 	/**
-	 * Return the type's identifier.
-	 * 
-	 * @return the unique identifier.
+	 * serialVersionUID.
 	 */
-	public String getId();
+	private static final long serialVersionUID = -921476180849747654L;
+
+	/** Shared cache of types instantiated with the #of(String) method. */
+	private static final Map<String, RegionType> TYPE_CACHE = new ConcurrentHashMap<String, RegionType>();
+
+	/** The type's id. */
+	private String id;
+
+	/**
+	 * Constructor for the instance.
+	 * 
+	 * @param id
+	 *            The type's identifier, not {@code null}
+	 */
+	public RegionType(String id) {
+		if (id == null || id.isEmpty()) {
+			throw new IllegalArgumentException("id null or empty.");
+		}
+		this.id = id;
+	}
+
+	/**
+	 * Access an {@link RegionType} by id. Instances with the same id will be
+	 * shared.
+	 * 
+	 * @param id
+	 *            The rate's identifier.
+	 * @return the corresponding type, never {@code null}.
+	 */
+	public static RegionType of(String id) {
+		RegionType type = TYPE_CACHE.get(id);
+		if (type != null) {
+			return type;
+		}
+		type = new RegionType(id);
+		TYPE_CACHE.put(id, type);
+		return type;
+	}
+
+	/**
+	 * Access all region types.
+	 * @return
+	 */
+	public static Collection<RegionType> getTypes() {
+		return TYPE_CACHE.values();
+	}
+	
+	/**
+	 * Get the (non localized) identifier of the {@link ExchangeRateType}.
+	 * 
+	 * @return The identifier, never null.
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RegionType other = (RegionType) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "RegionType [id=" + id + "]";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(RegionType o) {
+		if (o == null) {
+			return -1;
+		}
+		return this.id.compareTo(o.id);
+	}
 
 }

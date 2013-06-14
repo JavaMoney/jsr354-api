@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  #%L
+  Java Money and Currency
+  %%
+  Copyright (C) 2012 - 2013 JSR 354 - Expert Group
+  %%
+  CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
+  
+  Specification:  <JSR-354  Money and Currency API > ("Specification")
+  #L%
+  -->
+
 
 <document>
 
@@ -75,7 +87,7 @@ Various documentation is available:
 <section name="Releases">
 <p>
 There are no final releases yet!
-<a href="http://java.net/projects/javamoney/downloads/">Release 0.3-SNAPSHOT</a>
+<a href="http://java.net/projects/javamoney/downloads/">Release 0.5-SNAPSHOT</a>
 is the current development release intended for feedback.
 The code is fully tested, but there may yet be bugs and the API may yet change.
 There should be no great reason why it cannot be used in production if you can cope with future API change.

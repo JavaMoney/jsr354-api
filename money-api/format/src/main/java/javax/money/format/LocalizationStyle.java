@@ -1,38 +1,14 @@
 /*
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
+ *
+ * Specification:  JSR-354  Money and Currency API ("Specification")
+ *
  * Copyright (c) 2012-2013, Credit Suisse
- *
  * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *  * Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- *
- *  * Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- *  * Neither the name of JSR-354 nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package javax.money.format;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -55,7 +31,6 @@ import java.util.Map;
  * {@link #of(Locale)}.
  * 
  * @author Anatole Tresch
- * @TODO check if this class can be moved to {@code java.util}.
  */
 public class LocalizationStyle implements Serializable {
 
@@ -76,14 +51,7 @@ public class LocalizationStyle implements Serializable {
 	/** The style's name, by default ({@link #DEFAULT_ID}. */
 	private String id;
 	/** The style's generic properties. */
-	private Map<String, Object> attributes = Collections
-			.synchronizedMap(new HashMap<String, Object>());
-
-	/**
-	 * Flag to make a localization style read only, so it can be used (and
-	 * cached) similar to a immutable object.
-	 */
-	private boolean readOnly = false;
+	private Map<String, Object> attributes = new HashMap<String, Object>();
 
 	/**
 	 * Creates a new instance of a style. This method will use the Locale
@@ -92,58 +60,9 @@ public class LocalizationStyle implements Serializable {
 	 * @param id
 	 *            The style's identifier (not null).
 	 */
-	public LocalizationStyle(String id) {
-		this(id, Locale.getDefault());
-	}
-
-	/**
-	 * Creates a new instance of a style.
-	 * 
-	 * @param id
-	 *            The style's identifier (not null).
-	 * @param locale
-	 *            the default locale to be used for all locale usages.
-	 */
-	public LocalizationStyle(String id, Locale locale) {
-		this(id, locale, locale);
-	}
-
-	/**
-	 * Creates a new instance of a style.
-	 * 
-	 * @param id
-	 *            The style's identifier (not null).
-	 * @param translationLocale
-	 *            the default locale (translation locale) to be used for all
-	 *            locale usages.
-	 * @param numberLocale
-	 *            the locale to be used for numbers.
-	 */
-	public LocalizationStyle(String id, Locale translationLocale,
-			Locale numberLocale) {
-		if (id == null) {
-			throw new IllegalArgumentException("ID must not be null.");
-		}
+	private LocalizationStyle(String id, Map<String, Object> attributes) {
 		this.id = id;
-		if (translationLocale != null) {
-			setTranslationLocale(translationLocale);
-		}
-		if (numberLocale != null) {
-			setNumberLocale(numberLocale);
-		}
-	}
-
-	/**
-	 * Creates a new instance of a style. This method will copy all attributes
-	 * and properties from the given style. The style created will not be
-	 * read-only, even when the base style is read-only.
-	 * 
-	 * @param baseStyle
-	 *            The style to be used as a base style.
-	 */
-	public LocalizationStyle(LocalizationStyle baseStyle) {
-		this.attributes.putAll(baseStyle.getAttributes());
-		this.id = baseStyle.getId();
+		this.attributes.putAll(attributes);
 	}
 
 	/**
@@ -157,38 +76,6 @@ public class LocalizationStyle implements Serializable {
 	 */
 	public boolean isDefault() {
 		return DEFAULT_ID.equals(getId());
-	}
-
-	/**
-	 * This method allows to check, if the given style can be changed or, if it
-	 * read only.
-	 * 
-	 * @return true, if the style is read-only.
-	 */
-	public final boolean isReadOnly() {
-		return readOnly;
-	}
-
-	/**
-	 * This method renders this style instance into an immutable instance.
-	 * Subsequent calls to {@link #setAttribute(String, Serializable)},
-	 * {@link #setDateLocale(Locale)}, {@link #setNumberLocale(Locale)},
-	 * {@link #setTimeLocale(Locale)}or {@link #removeAttribute(String)} will
-	 * throw an {@link IllegalStateException}.
-	 */
-	public void setImmutable() {
-		this.readOnly = true;
-	}
-
-	/**
-	 * Method used to simply create a {@link IllegalStateException}, if this
-	 * instance is read-only. This prevents duplicating the corresponding code.
-	 */
-	private void throwsExceptionIfReadonly() {
-		if (readOnly) {
-			throw new IllegalStateException(
-					"This instance is immutable and can not be ^changed.");
-		}
 	}
 
 	/**
@@ -242,54 +129,6 @@ public class LocalizationStyle implements Serializable {
 	}
 
 	/**
-	 * Set the style's locale for formatting/parsing of numbers.
-	 * 
-	 * @param locale
-	 *            The number locale to be used, or null for falling back to the
-	 *            number locale.
-	 * @return the number locale previously set, or null.
-	 */
-	public final Locale setTranslationLocale(Locale locale) {
-		return (Locale) setAttribute(TRANSLATION_LOCALE, locale);
-	}
-
-	/**
-	 * Set the style's locale for formatting/parsing of dates.
-	 * 
-	 * @param locale
-	 *            The date locale to be used, or null for falling back to the
-	 *            translation locale.
-	 * @return the date locale previously set, or null.
-	 */
-	public final Locale setDateLocale(Locale locale) {
-		return (Locale) setAttribute(DATE_LOCALE, locale);
-	}
-
-	/**
-	 * Set the style's locale for formatting/parsing of time.
-	 * 
-	 * @param locale
-	 *            The time locale to be used, or null for falling back to the
-	 *            translation locale.
-	 * @return the time locale previously set, or null.
-	 */
-	public final Locale setTimeLocale(Locale locale) {
-		return (Locale) setAttribute(TIME_LOCALE, locale);
-	}
-
-	/**
-	 * Set the style's locale for formatting/parsing of numbers.
-	 * 
-	 * @param locale
-	 *            The number locale to be used, or null for falling back to the
-	 *            number locale.
-	 * @return the number locale previously set, or null.
-	 */
-	public final Locale setNumberLocale(Locale locale) {
-		return (Locale) setAttribute(NUMBER_LOCALE, locale);
-	}
-
-	/**
 	 * Get the style's locale for formatting/parsing of time data.
 	 * 
 	 * @return the time locale
@@ -308,30 +147,7 @@ public class LocalizationStyle implements Serializable {
 	 * @return the properties defined
 	 */
 	public final Map<String, Object> getAttributes() {
-		synchronized (attributes) {
-			return new HashMap<String, Object>(attributes);
-		}
-	}
-
-	/**
-	 * Sets the given property. This method is meant for adding custom
-	 * properties. Setting a predefined property, e.g. {@link #DATE_LOCALE} will
-	 * throw an {@link IllegalArgumentException}.
-	 * 
-	 * @param key
-	 *            The target key
-	 * @param value
-	 *            The target value
-	 * @return The object previously set, or null.
-	 * @throws IllegalArgumentException
-	 *             if the key passed equals to a key used for a predefined
-	 *             property.
-	 */
-	public Object setAttribute(String key, Object value) {
-		throwsExceptionIfReadonly();
-		synchronized (attributes) {
-			return attributes.put(key, value);
-		}
+		return new HashMap<String, Object>(attributes);
 	}
 
 	/**
@@ -343,28 +159,7 @@ public class LocalizationStyle implements Serializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getAttribute(String key, Class<T> type) {
-		synchronized (attributes) {
-			return (T) attributes.get(key);
-		}
-	}
-
-	/**
-	 * Removes the given property. This method is meant for removing custom
-	 * properties. Setting a predefined property, e.g. {@link #DATE_LOCALE} will
-	 * throw an {@link IllegalArgumentException}.
-	 * 
-	 * @param key
-	 *            The key to be removed
-	 * @return The object previously set, or null.
-	 * @throws IllegalArgumentException
-	 *             if the key passed equals to a key used for a predefined
-	 *             property.
-	 */
-	public Object removeAttribute(String key) {
-		throwsExceptionIfReadonly();
-		synchronized (attributes) {
-			return attributes.remove(key);
-		}
+		return (T) attributes.get(key);
 	}
 
 	/*
@@ -376,10 +171,8 @@ public class LocalizationStyle implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		synchronized (attributes) {
-			result = prime * result
-					+ ((attributes == null) ? 0 : attributes.hashCode());
-		}
+		result = prime * result
+				+ ((attributes == null) ? 0 : attributes.hashCode());
 		return result;
 	}
 
@@ -397,13 +190,11 @@ public class LocalizationStyle implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		LocalizationStyle other = (LocalizationStyle) obj;
-		synchronized (attributes) {
-			if (attributes == null) {
-				if (other.attributes != null)
-					return false;
-			} else if (!attributes.equals(other.attributes))
+		if (attributes == null) {
+			if (other.attributes != null)
 				return false;
-		}
+		} else if (!attributes.equals(other.attributes))
+			return false;
 		return true;
 	}
 
@@ -414,10 +205,8 @@ public class LocalizationStyle implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		synchronized (attributes) {
-			return "LocalizationContext [id=" + id + ", properties="
-					+ attributes + "]";
-		}
+		return "LocalizationContext [id=" + id + ", properties=" + attributes
+				+ "]";
 	}
 
 	/**
@@ -429,7 +218,7 @@ public class LocalizationStyle implements Serializable {
 	 * @return the {@link LocalizationStyle} created.
 	 */
 	public static LocalizationStyle of(Locale locale) {
-		return new LocalizationStyle(DEFAULT_ID, locale);
+		return new Builder(DEFAULT_ID, locale).build();
 	}
 
 	/**
@@ -443,7 +232,7 @@ public class LocalizationStyle implements Serializable {
 	 * @return the {@link LocalizationStyle} created.
 	 */
 	public static LocalizationStyle of(String styleId, Locale locale) {
-		return new LocalizationStyle(styleId, locale);
+		return new Builder(styleId, locale).build();
 	}
 
 	/**
@@ -454,6 +243,323 @@ public class LocalizationStyle implements Serializable {
 	 */
 	public boolean isDefaultStyle() {
 		return DEFAULT_ID.equals(getId());
+	}
+
+	/**
+	 * Builder to create new instances of {@link LocalizationStyle}.
+	 * 
+	 * @author Anatole Tresch
+	 */
+	public static final class Builder {
+
+		/** The style's name, by default ({@link #DEFAULT_ID}. */
+		private String id;
+
+		/** The style's generic properties. */
+		private Map<String, Object> attributes = new HashMap<String, Object>();
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param locale
+		 *            The target {@link Locale}
+		 * @return the {@link LocalizationStyle} created.
+		 */
+		public Builder(Locale locale) {
+			this(DEFAULT_ID, locale);
+		}
+
+		/**
+		 * Creates a new instance of {@link LocalizationStyle}.
+		 * 
+		 * @return a new instance of {@link LocalizationStyle}, never
+		 *         {@code null}
+		 * @throws IllegalStateException
+		 *             if this builder can not create a new instance.
+		 * @see #isBuildable()
+		 */
+		public LocalizationStyle build() {
+			if (!isBuildable()) {
+				throw new IllegalStateException(
+						"Builder can not build a LocalizationStyle.");
+			}
+			return new LocalizationStyle(this.id, this.attributes);
+		}
+
+		/**
+		 * Checks if all required data is set to create a new
+		 * {@link LocalizationStyle}.
+		 * 
+		 * @return true, if a new instance of {@link LocalizationStyle} can be
+		 *         built.
+		 */
+		public boolean isBuildable() {
+			if (this.id == null || this.id.isEmpty()) {
+				return false;
+			}
+			if (getTranslationLocale() == null) {
+				return false;
+			}
+			return true;
+		}
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param style
+		 *            the style's identifier, not null.
+		 */
+		public Builder(String style) {
+			this(style, Locale.getDefault());
+		}
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param styleId
+		 *            The style's id.
+		 * @param locale
+		 *            The target {@link Locale}
+		 * @return the {@link LocalizationStyle} created.
+		 */
+		public Builder(String styleId, Locale locale) {
+			setId(styleId);
+			setTranslationLocale(locale);
+		}
+
+		/**
+		 * Creates a new instance of a style.
+		 * 
+		 * @param id
+		 *            The style's identifier (not null).
+		 * @param translationLocale
+		 *            the default locale (translation locale) to be used for all
+		 *            locale usages.
+		 * @param numberLocale
+		 *            the locale to be used for numbers.
+		 */
+		public Builder(String id, Locale translationLocale, Locale numberLocale) {
+			if (id == null) {
+				throw new IllegalArgumentException("ID must not be null.");
+			}
+			this.id = id;
+			if (translationLocale != null) {
+				setTranslationLocale(translationLocale);
+			}
+			if (numberLocale != null) {
+				setNumberLocale(numberLocale);
+			}
+		}
+
+		/**
+		 * Creates a new instance of a style. This method will copy all
+		 * attributes and properties from the given style. The style created
+		 * will not be read-only, even when the base style is read-only.
+		 * 
+		 * @param baseStyle
+		 *            The style to be used as a base style.
+		 */
+		public Builder(LocalizationStyle baseStyle) {
+			this.attributes.putAll(baseStyle.getAttributes());
+			this.id = baseStyle.getId();
+		}
+
+		/**
+		 * Method allows to check, if a given style is a default style, which is
+		 * equivalent to a style id equal to {@link #DEFAULT_ID}.
+		 * 
+		 * @return true, if the instance is a default style.
+		 */
+		public boolean isDefaultStyle() {
+			return DEFAULT_ID.equals(getId());
+		}
+
+		/**
+		 * Sets the style's id.
+		 * 
+		 * @param id
+		 * @return
+		 */
+		public Builder setId(String id) {
+			if (id == null) {
+				throw new IllegalArgumentException("style id required.");
+			}
+			this.id = id;
+			return this;
+		}
+
+		/**
+		 * Get the style's identifier, not null.
+		 * 
+		 * @return the style's id.
+		 */
+		public String getId() {
+			return id;
+		}
+
+		/**
+		 * Get the style's (default) locale used for translation of textual
+		 * values, and (if not specified explicitly as a fallback) for date,
+		 * time and numbers.
+		 * 
+		 * @return the translation (default) locale
+		 */
+		public final Locale getTranslationLocale() {
+			Locale locale = getAttribute(TRANSLATION_LOCALE, Locale.class);
+			if (locale != null) {
+				return locale;
+			}
+			return Locale.getDefault();
+		}
+
+		/**
+		 * Get the style's locale used for formatting/parsing of numbers.
+		 * 
+		 * @return the number locale
+		 */
+		public final Locale getNumberLocale() {
+			Locale locale = getAttribute(NUMBER_LOCALE, Locale.class);
+			if (locale != null) {
+				return locale;
+			}
+			return getTranslationLocale();
+		}
+
+		/**
+		 * Get the style's locale for formatting/parsing of date instances.
+		 * 
+		 * @return the date locale
+		 */
+		public final Locale getDateLocale() {
+			Locale locale = getAttribute(DATE_LOCALE, Locale.class);
+			if (locale != null) {
+				return locale;
+			}
+			return getTranslationLocale();
+		}
+
+		/**
+		 * Get the style's locale for formatting/parsing of time data.
+		 * 
+		 * @return the time locale
+		 */
+		public final Locale getTimeLocale() {
+			Locale locale = getAttribute(TIME_LOCALE, Locale.class);
+			if (locale != null) {
+				return locale;
+			}
+			return getDateLocale();
+		}
+
+		/**
+		 * Get the current defined properties fo this style.
+		 * 
+		 * @return the properties defined
+		 */
+		public final Map<String, Object> getAttributes() {
+			return new HashMap<String, Object>(attributes);
+		}
+
+		/**
+		 * Sets the given property. This method is meant for adding custom
+		 * properties. Setting a predefined property, e.g. {@link #DATE_LOCALE}
+		 * will throw an {@link IllegalArgumentException}.
+		 * 
+		 * @param key
+		 *            The target key
+		 * @param value
+		 *            The target value
+		 * @return The object previously set, or null.
+		 * @throws IllegalArgumentException
+		 *             if the key passed equals to a key used for a predefined
+		 *             property.
+		 */
+		public Builder setAttribute(String key, Object value) {
+			attributes.put(key, value);
+			return this;
+		}
+
+		/**
+		 * Read a property from this style.
+		 * 
+		 * @param key
+		 *            The property's key
+		 * @return the current property value, or null.
+		 */
+		@SuppressWarnings("unchecked")
+		public <T> T getAttribute(String key, Class<T> type) {
+			return (T) attributes.get(key);
+		}
+
+		/**
+		 * Removes the given property. This method is meant for removing custom
+		 * properties. Setting a predefined property, e.g. {@link #DATE_LOCALE}
+		 * will throw an {@link IllegalArgumentException}.
+		 * 
+		 * @param key
+		 *            The key to be removed
+		 * @return The object previously set, or null.
+		 * @throws IllegalArgumentException
+		 *             if the key passed equals to a key used for a predefined
+		 *             property.
+		 */
+		public Builder removeAttribute(String key) {
+			attributes.remove(key);
+			return this;
+		}
+
+		/**
+		 * Set the style's locale for formatting/parsing of numbers.
+		 * 
+		 * @param locale
+		 *            The number locale to be used, or null for falling back to
+		 *            the number locale.
+		 * @return the number locale previously set, or null.
+		 */
+		public final Builder setTranslationLocale(Locale locale) {
+			this.attributes.put(TRANSLATION_LOCALE, locale);
+			return this;
+		}
+
+		/**
+		 * Set the style's locale for formatting/parsing of dates.
+		 * 
+		 * @param locale
+		 *            The date locale to be used, or null for falling back to
+		 *            the translation locale.
+		 * @return the date locale previously set, or null.
+		 */
+		public final Builder setDateLocale(Locale locale) {
+			this.attributes.put(DATE_LOCALE, locale);
+			return this;
+		}
+
+		/**
+		 * Set the style's locale for formatting/parsing of time.
+		 * 
+		 * @param locale
+		 *            The time locale to be used, or null for falling back to
+		 *            the translation locale.
+		 * @return the time locale previously set, or null.
+		 */
+		public final Builder setTimeLocale(Locale locale) {
+			this.attributes.put(TIME_LOCALE, locale);
+			return this;
+		}
+
+		/**
+		 * Set the style's locale for formatting/parsing of numbers.
+		 * 
+		 * @param locale
+		 *            The number locale to be used, or null for falling back to
+		 *            the number locale.
+		 * @return the number locale previously set, or null.
+		 */
+		public final Builder setNumberLocale(Locale locale) {
+			this.attributes.put(NUMBER_LOCALE, locale);
+			return this;
+		}
+
 	}
 
 }

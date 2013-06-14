@@ -3,3 +3,19 @@ JSR 354: Money and Currency API
 JSR 354 provides an API for representing, transporting, and performing comprehensive calculations with Money and Currency. 
 See the home page for more details:
 http://jcp.org/en/jsr/detail?id=354
+
+The current project structure is as follows:
+
+---------
+* money-platform: contains core platform modules eventually targeting future Java versions like SE 9.
+  * api: contains the API/Spec targeting the Java Platform.
+  * ri: contains the platform part of the RI targeting Java SE.
+* money-api: contains the main API/Spec
+  * convert: currency conversion
+  * format: formatting and parsing
+  * ext: extensions
+* money-impl: contains the main implementation artifacts
+  * ri: contains the reference implementation (RI), runnable on SE 7 or later
+  * cdi: contains alternate loader implementation using stand-alone CDI (weld)
+  * java-ee: contains alternate loader targeting EE 6 CDI container integration
+* money-tck: contains the technical compatibility kit (TCK)

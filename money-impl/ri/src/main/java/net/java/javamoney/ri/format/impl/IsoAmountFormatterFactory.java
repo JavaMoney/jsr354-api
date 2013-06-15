@@ -51,6 +51,15 @@ public class IsoAmountFormatterFactory implements
 		supportedRenderTypes.add(LocalizationStyle.DEFAULT_ID);
 		return supportedRenderTypes;
 	}
+	
+	@Override
+	public LocalizationStyle getLocalizationStyle(Class<?> targetType, String styleId) {
+	    LocalizationStyle style = LocalizationStyle.of(targetType, styleId);
+	    if(LocalizationStyle.DEFAULT_ID.equals(styleId)){
+		style = new LocalizationStyle.Builder(targetType, styleId).build(true);
+	    }
+	    return style;
+	}
 
 	@Override
 	public boolean isSupportedStyle(String styleId) {
@@ -79,5 +88,6 @@ public class IsoAmountFormatterFactory implements
 				renderedFieldValue).setAttribute("currencyRendering", renderedFieldValue).build();
 		return new IsoAmountFormatter(style, currencyStyle);
 	}
+
 
 }

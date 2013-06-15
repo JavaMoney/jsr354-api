@@ -217,7 +217,7 @@ public class MoneyCurrency_BuilderTest {
 				.setNamespace("testBuildBoolean").setCurrencyCode("cd")
 				.setLegalTender(true).setVirtual(false)
 				.setDefaultFractionDigits(101).setNumericCode(7);
-		CurrencyUnit cu = builder.build(true);
+		CurrencyUnit cu = builder.build(false);
 		assertEquals("testBuildBoolean", cu.getNamespace());
 		assertEquals("cd", cu.getCurrencyCode());
 		assertEquals(101, cu.getDefaultFractionDigits());

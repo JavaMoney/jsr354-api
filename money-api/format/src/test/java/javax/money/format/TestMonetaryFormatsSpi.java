@@ -95,4 +95,16 @@ public class TestMonetaryFormatsSpi implements MonetaryFormatsSpi {
 
 	}
 
+	@Override
+	public LocalizationStyle getLocalizationStyle(Class<?> targetType, String styleId) {
+	    if(targetType.getSimpleName().equals(styleId)){
+		LocalizationStyle style = LocalizationStyle.of(targetType, styleId);
+		if(style==null){
+		    style = new LocalizationStyle.Builder(targetType, styleId).build(true);
+		}
+		return style;
+	    }
+	    return null;
+	}
+
 }

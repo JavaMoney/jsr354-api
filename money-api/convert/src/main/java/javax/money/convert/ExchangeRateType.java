@@ -53,15 +53,6 @@ public final class ExchangeRateType implements Serializable,
 	}
 
 	/**
-	 * Get all cached rate types.
-	 * 
-	 * @return all cached rate types.
-	 */
-	public static Collection<ExchangeRateType> getTypes() {
-		return CACHED_INSTANCES.values();
-	}
-
-	/**
 	 * Constructs a new instance of an ExchangeRateType..
 	 * 
 	 * @param id

@@ -11,9 +11,12 @@
 package javax.money.format;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -93,6 +96,26 @@ public final class LocalizationStyle implements Serializable {
      */
     public static final LocalizationStyle of(Class<?> targetType) {
 	return of(targetType, LocalizationStyle.DEFAULT_ID);
+    }
+
+    /**
+     * Collects all styles currently registerd within the style cache for the
+     * given type.
+     * 
+     * @param targetType
+     *            the target type, not {@code null}.
+     * @return a set of style identifiers for the given type, never null.
+     */
+    public static Collection<String> getSupportedStyleIds(Class<?> targetType) {
+	Set<String> result = new HashSet<String>();
+	String className = targetType.getName();
+	for (String key : STYLE_CACHE.keySet()) {
+	    int index = key.indexOf('_');
+	    if (className.equals(key.substring(0, index))) {
+		result.add(key.substring(index + 1));
+	    }
+	}
+	return result;
     }
 
     /**
@@ -280,7 +303,6 @@ public final class LocalizationStyle implements Serializable {
 	    this.targetType = baseStyle.getTargetType();
 	}
 
-
 	/**
 	 * Creates a new instance of {@link LocalizationStyle}.
 	 * 
@@ -342,7 +364,6 @@ public final class LocalizationStyle implements Serializable {
 	public Builder() {
 	}
 
-	
 	/**
 	 * Method allows to check, if a given style is a default style, which is
 	 * equivalent to a style id equal to {@link #DEFAULT_ID}.

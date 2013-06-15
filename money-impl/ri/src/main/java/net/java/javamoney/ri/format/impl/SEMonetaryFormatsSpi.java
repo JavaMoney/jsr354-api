@@ -119,4 +119,13 @@ public class SEMonetaryFormatsSpi implements MonetaryFormatsSpi {
 			}
 		}
 	}
+
+	@Override
+	public LocalizationStyle getLocalizationStyle(Class<?> targetType, String styleId) {
+	    LocalizationStyle style = LocalizationStyle.of(targetType, styleId);
+	    if(style==null){
+		style = new LocalizationStyle.Builder(targetType, styleId).build();
+	    }
+	    return style;
+	}
 }

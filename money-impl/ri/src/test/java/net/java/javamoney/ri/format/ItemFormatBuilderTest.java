@@ -38,7 +38,7 @@ public class ItemFormatBuilderTest {
 		df.setDecimalFormatSymbols(syms);
 		b.addToken(new NumberToken(df).setNumberGroupChars(',', '\'')
 				.setNumberGroupSizes(2, 2, 3));
-		b.setLocalizationStyle(LocalizationStyle.of(Number.class));
+		b.setLocalizationStyle(new LocalizationStyle.Builder(Number.class).build());
 		ItemFormat<Number> f = b.build();
 		assertNotNull(f);
 		assertEquals("test- 12'345'67,89:12", f.format(123456789.123456789d, Locale.FRENCH));
@@ -56,7 +56,7 @@ public class ItemFormatBuilderTest {
 		f.setDecimalFormatSymbols(symbols);
 		b.addToken(new NumberToken(f).setNumberGroupChars(',', '\'')
 				.setNumberGroupSizes(2, 2, 3));
-		b.setLocalizationStyle(LocalizationStyle.of(Number.class));
+		b.setLocalizationStyle(new LocalizationStyle.Builder(Number.class).build());
 		ItemFormat<Number> sf = b.build();
 		assertNotNull(sf);
 		assertEquals("test- BEF+ 12'345'67,89:12",
@@ -106,11 +106,11 @@ public class ItemFormatBuilderTest {
 				Number.class);
 		b.addToken(new LiteralToken<Number>("test "));
 		b.addToken(new NumberToken());
-		b.setLocalizationStyle(LocalizationStyle.of(Number.class));
+		b.setLocalizationStyle(new LocalizationStyle.Builder(Number.class).build());
 		ItemFormat<Number> f = b.build();
 		assertNotNull(f);
 		assertEquals("test 123,456,789.123", f.format(123456789.123456789d, Locale.CHINESE));
-		b.setLocalizationStyle(LocalizationStyle.of(Number.class));
+		b.setLocalizationStyle(new LocalizationStyle.Builder(Number.class).build());
 		f = b.build();
 		assertNotNull(f);
 		assertEquals("test 123.456.789,123", f.format(123456789.123456789d,Locale.GERMAN));

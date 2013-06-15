@@ -140,24 +140,6 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 		if (compare == 0) {
 			compare = getCurrencyCode().compareTo(currency.getCurrencyCode());
 		}
-		if (compare == 0) {
-			if (validFrom == null && currency.getValidFrom() != null) {
-				compare = -1;
-			} else if (validFrom != null && currency.getValidFrom() == null) {
-				compare = 1;
-			} else if (validFrom != null) {
-				compare = validFrom.compareTo(currency.getValidFrom());
-			}
-		}
-		if (compare == 0) {
-			if (validUntil == null && currency.getValidUntil() != null) {
-				compare = -1;
-			} else if (validUntil != null && currency.getValidUntil() == null) {
-				compare = 1;
-			} else if (validUntil != null) {
-				compare = validUntil.compareTo(currency.getValidUntil());
-			}
-		}
 		return compare;
 	}
 
@@ -395,11 +377,6 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 			if (compare == 0) {
 				compare = getCurrencyCode().compareTo(
 						currency.getCurrencyCode());
-			}
-			if (compare == 0 && currency.getValidFrom() != null) {
-				compare = 1;
-			} else if (compare == 0 && currency.getValidUntil() != null) {
-				compare = 1;
 			}
 			return compare;
 		}

@@ -44,10 +44,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	private final int numericCode;
 	/** fraction digits, or -1. */
 	private final int defaultFractionDigits;
-	/** valid from, or {@code null}. */
-	private final Long validFrom;
-	/** valid until, or {@code null}. */
-	private final Long validUntil;
 	/** true, if legal tender. */
 	private final boolean legalTender;
 	/** true, if it is a virtual currency. */
@@ -64,14 +60,11 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * @param currency
 	 */
 	private MoneyCurrency(String namespace, String code, int numCode,
-			int fractionDigits, Long validFrom, Long validUntil, boolean legal,
-			boolean virtual) {
+			int fractionDigits, boolean legal, boolean virtual) {
 		this.namespace = namespace;
 		this.currencyCode = code;
 		this.numericCode = numCode;
 		this.defaultFractionDigits = fractionDigits;
-		this.validFrom = validFrom;
-		this.validUntil = validUntil;
 		this.legalTender = legal;
 		this.virtual = virtual;
 	}
@@ -89,8 +82,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		this.currencyCode = currency.getCurrencyCode();
 		this.numericCode = currency.getNumericCode();
 		this.defaultFractionDigits = currency.getDefaultFractionDigits();
-		this.validFrom = null;
-		this.validUntil = null; // TODO Adapt for hisotoric one, e.g. AFA
 		this.legalTender = !this.currencyCode.startsWith("X"); // TODO check for
 																// each code in
 																// util.Currency
@@ -155,7 +146,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * 
 	 * @see javax.money.CurrencyUnit#isVirtual()
 	 */
-	@Override
 	public boolean isVirtual() {
 		return virtual;
 	}
@@ -163,7 +153,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	/**
 	 * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
 	 */
-	@Override
 	public String getNamespace() {
 		return namespace;
 	}
@@ -171,29 +160,8 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.CurrencyUnit#getValidFrom()
-	 */
-	@Override
-	public Long getValidFrom() {
-		return validFrom;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.CurrencyUnit#getValidUntil()
-	 */
-	@Override
-	public Long getValidUntil() {
-		return validUntil;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see javax.money.CurrencyUnit#getCurrencyCode()
 	 */
-	@Override
 	public String getCurrencyCode() {
 		return currencyCode;
 	}
@@ -203,7 +171,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * 
 	 * @see javax.money.CurrencyUnit#getNumericCode()
 	 */
-	@Override
 	public int getNumericCode() {
 		return numericCode;
 	}
@@ -213,7 +180,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * 
 	 * @see javax.money.CurrencyUnit#getDefaultFractionDigits()
 	 */
-	@Override
 	public int getDefaultFractionDigits() {
 		return defaultFractionDigits;
 	}
@@ -223,7 +189,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * 
 	 * @see javax.money.CurrencyUnit#isLegalTender()
 	 */
-	@Override
 	public boolean isLegalTender() {
 		return legalTender;
 	}
@@ -238,24 +203,17 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		if (compare == 0) {
 			compare = getCurrencyCode().compareTo(currency.getCurrencyCode());
 		}
-		if (compare == 0) {
-			if (validFrom == null && currency.getValidFrom() != null) {
-				compare = -1;
-			} else if (validFrom != null && currency.getValidFrom() == null) {
-				compare = 1;
-			} else if (validFrom != null) {
-				compare = validFrom.compareTo(currency.getValidFrom());
-			}
-		}
-		if (compare == 0) {
-			if (validUntil == null && currency.getValidUntil() != null) {
-				compare = -1;
-			} else if (validUntil != null && currency.getValidUntil() == null) {
-				compare = 1;
-			} else if (validUntil != null) {
-				compare = validUntil.compareTo(currency.getValidUntil());
-			}
-		}
+		/*
+		 * if (compare == 0) { if (validFrom == null && currency.getValidFrom()
+		 * != null) { compare = -1; } else if (validFrom != null &&
+		 * currency.getValidFrom() == null) { compare = 1; } else if (validFrom
+		 * != null) { compare = validFrom.compareTo(currency.getValidFrom()); }
+		 * } if (compare == 0) { if (validUntil == null &&
+		 * currency.getValidUntil() != null) { compare = -1; } else if
+		 * (validUntil != null && currency.getValidUntil() == null) { compare =
+		 * 1; } else if (validUntil != null) { compare =
+		 * validUntil.compareTo(currency.getValidUntil()); } }
+		 */
 		return compare;
 	}
 
@@ -287,10 +245,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		private int numericCode = -1;
 		/** fraction digits, or -1. */
 		private int defaultFractionDigits = -1;
-		/** valid from, or {@code null}. */
-		private Long validFrom;
-		/** valid until, or {@code null}. */
-		private Long validUntil;
 		/** true, if legal tender. */
 		private boolean legalTender = true;
 		/** true for virtual currencies. */
@@ -392,30 +346,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		}
 
 		/**
-		 * Sets the start UTC timestamp for the currenciy's validity.
-		 * 
-		 * @param validFrom
-		 *            the start UTC timestamp
-		 * @return the builder, for chaining
-		 */
-		public Builder setValidFrom(Long validFrom) {
-			this.validFrom = validFrom;
-			return this;
-		}
-
-		/**
-		 * Sets the end UTC timestamp for the currenciy's validity.
-		 * 
-		 * @param validUntil
-		 *            the ending UTC timestamp
-		 * @return the builder, for chaining
-		 */
-		public Builder setValidUntil(Long validUntil) {
-			this.validUntil = validUntil;
-			return this;
-		}
-
-		/**
 		 * Sets the legal tender attribute.
 		 * 
 		 * @param legalTender
@@ -476,24 +406,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		}
 
 		/**
-		 * Get the starting validity period timestamp.
-		 * 
-		 * @return the starting validity period tiemstamp, or null..
-		 */
-		public Long getValidFrom() {
-			return this.validFrom;
-		}
-
-		/**
-		 * Get the ending validity period timestamp.
-		 * 
-		 * @return the ending validity period tiemstamp, or null..
-		 */
-		public Long getValidUntil() {
-			return this.validUntil;
-		}
-
-		/**
 		 * Access the legal tender attribute.
 		 * 
 		 * @return the attribute value.
@@ -548,31 +460,18 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 						"Can not build CurrencyUnitImpl.");
 			}
 			if (cache) {
-				if (validUntil != null) {
-					LOGGER.warning("CurrencyUnit build: Can only cache currencies that have no validity constraints.");
-					cache = false;
-				}
-				if (validFrom != null) {
-					if (validFrom.longValue() > System.currentTimeMillis()) {
-						LOGGER.warning("CurrencyUnit build: Can only cache currencies that are already valid.");
-						cache = false;
-					}
-				}
-			}
-			if (cache) {
 				String key = namespace + ':' + currencyCode;
 				MoneyCurrency current = CACHED.get(key);
 				if (current == null) {
 					current = new MoneyCurrency(namespace, currencyCode,
-							numericCode, defaultFractionDigits, validFrom,
-							validUntil, legalTender, virtual);
+							numericCode, defaultFractionDigits, legalTender,
+							virtual);
 					CACHED.put(key, current);
 				}
 				return current;
 			}
 			return new MoneyCurrency(namespace, currencyCode, numericCode,
-					defaultFractionDigits, validFrom, validUntil, legalTender,
-					virtual);
+					defaultFractionDigits, legalTender, virtual);
 		}
 	}
 
@@ -613,21 +512,20 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		/*
 		 * (non-Javadoc)
 		 * 
+		 * @see javax.money.Displayable#getDisplayName(java.util.Locale)
+		 */
+		public String getDisplayName(Locale locale) {
+			return currency.getDisplayName(locale);
+		}
+		
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see java.lang.Object#toString()
 		 */
 		@Override
 		public String toString() {
 			return ISO_NAMESPACE + ':' + getCurrencyCode();
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see javax.money.Displayable#getDisplayName(java.util.Locale)
-		 */
-		@Override
-		public String getDisplayName(Locale locale) {
-			return currency.getDisplayName(locale);
 		}
 
 	}

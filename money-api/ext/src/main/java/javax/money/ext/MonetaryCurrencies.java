@@ -235,6 +235,11 @@ public final class MonetaryCurrencies {
 		return isAvailable(getDefaultNamespace(), code, timestamp);
 	}
 
+	public static CurrencyValidityInfo getCurrencyValidityData(String type){
+		throw new UnsupportedOperationException("Not yet implemented.");
+	}
+	
+	
 	/**
 	 * Access all currencies available for a given namespace, timestamp.
 	 * 

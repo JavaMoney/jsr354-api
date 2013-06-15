@@ -1,18 +1,22 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
- *
- * Specification:  JSR-354  Money and Currency API ("Specification")
- *
- * Copyright (c) 2012-2013, Credit Suisse
- * All rights reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
+ * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
+ * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
+ * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
+ * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
+ * BUTTON AT THE BOTTOM OF THIS PAGE.
+ * 
+ * Specification: JSR-354 Money and Currency API ("Specification")
+ * 
+ * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money;
 
 /**
  * A unit of currency.
  * <p>
- * This interface represents a unit of currency such as the British Pound, Euro, US
- * Dollar, Bitcoin or other.
+ * This interface represents a unit of currency such as the British Pound, Euro,
+ * US Dollar, Bitcoin or other.
  * <p>
  * Currencies can be distinguished within separate arbitrary currency name
  * spaces, whereas as {@link #ISO_NAMESPACE} will be the the most commonly used
@@ -23,8 +27,7 @@ package javax.money;
  * @author Stephen Colebourne
  * @author Anatole Tresch
  * 
- * @see <a
- *      href="https://en.wikipedia.org/wiki/Currency">Wikipedia: Currency</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Currency">Wikipedia: Currency</a>
  */
 public interface CurrencyUnit {
 
@@ -72,7 +75,8 @@ public interface CurrencyUnit {
 	 * <p>
 	 * Different currencies have different numbers of fractional digits by
 	 * default. * For example, 'GBP' has 2 fractional digits, but 'JPY' has
-	 * zero. * virtual currencies or those with no applicable fractional are indicated by -1. *
+	 * zero. * virtual currencies or those with no applicable fractional are
+	 * indicated by -1. *
 	 * <p>
 	 * This method matches the API of <type>java.util.Currency</type>.
 	 * 
@@ -95,23 +99,5 @@ public interface CurrencyUnit {
 	 * @return true if this is a virtual currency.
 	 */
 	public boolean isVirtual();
-
-	/**
-	 * Get the timestamp from when this currency instance is valid.<br/>
-	 * This is useful for historic currencies.
-	 * 
-	 * @return the UTC timestamp from where this instance is valid. If not
-	 *         defined {@code null} should be returned.
-	 */
-	public Long getValidFrom();
-
-	/**
-	 * Get the timestamp until when this currency instance is valid.<br/>
-	 * This is useful for historic currencies.
-	 * 
-	 * @return the UTC timestamp until when this instance is valid. If not
-	 *         defined {@code null} should be returned.
-	 */
-	public Long getValidUntil();
 
 }

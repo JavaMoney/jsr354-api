@@ -113,16 +113,6 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderComponentS
 		}
 
 		@Override
-		public Long getValidFrom() {
-			return null;
-		}
-
-		@Override
-		public Long getValidUntil() {
-			return null;
-		}
-
-		@Override
 		public String toString() {
 			return getNamespace() + ':' + this.currencyCode;
 		}

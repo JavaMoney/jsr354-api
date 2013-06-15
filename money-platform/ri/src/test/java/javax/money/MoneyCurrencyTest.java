@@ -58,20 +58,6 @@ public class MoneyCurrencyTest {
 	}
 
 	@Test
-	public void testGetValidFrom() {
-		CurrencyUnit cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "CHF");
-		assertNotNull(cur);
-		assertNull(cur.getValidFrom());
-	}
-
-	@Test
-	public void testGetValidUntil() {
-		CurrencyUnit cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "CHF");
-		assertNotNull(cur);
-		assertNull(cur.getValidUntil());
-	}
-
-	@Test
 	public void testGetCurrencyCode() {
 		CurrencyUnit cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "CHF");
 		assertNotNull(cur);

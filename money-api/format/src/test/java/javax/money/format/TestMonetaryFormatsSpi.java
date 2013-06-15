@@ -11,6 +11,7 @@ package javax.money.format;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.money.format.MonetaryFormats.MonetaryFormatsSpi;
@@ -43,7 +44,7 @@ public class TestMonetaryFormatsSpi implements MonetaryFormatsSpi {
 	@SuppressWarnings("unchecked")
 	public <T> ItemFormat<T> getItemFormat(Class<T> targetType,
 			LocalizationStyle style) throws ItemFormatException {
-		if (style.isDefault()) {
+		if (style.isDefaultStyle()) {
 			return new DummyItemFormatter(style, targetType);
 		}
 		return null;
@@ -72,18 +73,18 @@ public class TestMonetaryFormatsSpi implements MonetaryFormatsSpi {
 		}
 
 		@Override
-		public String format(Object item) {
+		public String format(Object item, Locale locale) {
 			return String.valueOf(item);
 		}
 
 		@Override
-		public void print(Appendable appendable, Object item)
+		public void print(Appendable appendable, Object item, Locale locale)
 				throws IOException {
 			appendable.append(String.valueOf(item));
 		}
 
 		@Override
-		public Object parse(CharSequence text) throws ItemParseException {
+		public Object parse(CharSequence text, Locale locale) throws ItemParseException {
 			try {
 				return targetClass.newInstance();
 			} catch (Exception e) {

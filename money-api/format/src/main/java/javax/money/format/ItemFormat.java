@@ -48,7 +48,7 @@ public interface ItemFormat<T> {
 	 * @throws ItemFormatException
 	 *             if there is a problem while printing
 	 */
-	public String format(T item);
+	public String format(T item, Locale locale);
 
 	/**
 	 * Prints a item value to an {@code Appendable}.
@@ -61,6 +61,7 @@ public interface ItemFormat<T> {
 	 *            the appendable to add to, not null
 	 * @param item
 	 *            the item to print, not null
+         * @param locale the main target {@link Locale} to be used, not null
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws ItemFormatException
@@ -68,7 +69,7 @@ public interface ItemFormat<T> {
 	 * @throws IOException
 	 *             if an IO error occurs
 	 */
-	public void print(Appendable appendable, T item) throws IOException;
+	public void print(Appendable appendable, T item, Locale locale) throws IOException;
 	
 	/**
 	 * Fully parses the text into an instance of T.
@@ -85,13 +86,14 @@ public interface ItemFormat<T> {
 	 * 
 	 * @param text
 	 *            the text to parse, not null
+         * @param locale the main target {@link Locale} to be used, not null
 	 * @return the parsed value, never null
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to parse
 	 * @throws ItemParseException
 	 *             if there is a problem while parsing
 	 */
-	public T parse(CharSequence text) throws ItemParseException;
+	public T parse(CharSequence text, Locale locale) throws ItemParseException;
 
 
 }

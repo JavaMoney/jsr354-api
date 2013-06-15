@@ -137,7 +137,7 @@ public final class MonetaryFormats {
 	 */
 	public static <T> ItemFormat<T> getItemFormat(Class<T> targetType,
 			Locale locale) throws ItemFormatException {
-		return getItemFormat(targetType, LocalizationStyle.of(locale));
+		return getItemFormat(targetType, LocalizationStyle.of(targetType));
 	}
 
 	public static interface MonetaryFormatsSpi {

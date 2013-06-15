@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MoneyCurrency;
 import javax.money.format.ItemFormat;
@@ -74,8 +75,8 @@ public class IsoAmountFormatterFactory implements
 		if (renderedFieldValue == null) {
 			renderedFieldValue = "CODE";
 		}
-		LocalizationStyle currencyStyle = new LocalizationStyle.Builder(
-				renderedFieldValue, style.getNumberLocale()).build();
+		LocalizationStyle currencyStyle = new LocalizationStyle.Builder(CurrencyUnit.class,
+				renderedFieldValue).setAttribute("currencyRendering", renderedFieldValue).build();
 		return new IsoAmountFormatter(style, currencyStyle);
 	}
 

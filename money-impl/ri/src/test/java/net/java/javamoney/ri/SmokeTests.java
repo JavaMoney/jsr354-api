@@ -153,14 +153,14 @@ public class SmokeTests {
 		MonetaryAmount amount = Money.of(currency, 1.0d);
 		ItemFormat<MonetaryAmount> formatter = MonetaryFormats.getItemFormat(
 				MonetaryAmount.class,
-				LocalizationStyle.of("CODE", Locale.GERMANY));
-		System.out.println("Formatted amount: " + formatter.format(amount));
+				LocalizationStyle.of(CurrencyUnit.class, "CODE"));
+		System.out.println("Formatted amount: " + formatter.format(amount, Locale.GERMANY));
 		assertEquals(1.0d, amount.doubleValue(), 0);
 
-		LocalizationStyle.Builder b = new LocalizationStyle.Builder("CODE", Locale.GERMANY);
+		LocalizationStyle.Builder b = new LocalizationStyle.Builder(CurrencyUnit.class, "CODE");
 		ItemFormat<CurrencyUnit> formatter2 = MonetaryFormats.getItemFormat(
 				CurrencyUnit.class, b.build());
-		CurrencyUnit cur = formatter2.parse("CHF");
+		CurrencyUnit cur = formatter2.parse("CHF", Locale.GERMANY);
 		assertNotNull(cur);
 		assertEquals("CHF", cur.getCurrencyCode());
 	}

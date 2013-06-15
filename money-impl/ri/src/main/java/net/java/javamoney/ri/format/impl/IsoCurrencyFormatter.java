@@ -83,7 +83,7 @@ public class IsoCurrencyFormatter implements ItemFormat<CurrencyUnit> {
 
 	@SuppressWarnings("incomplete-switch")
 	@Override
-	public String format(CurrencyUnit item) {
+	public String format(CurrencyUnit item, Locale locale) {
 		// try to check for non localizaed formats
 		switch (renderedField) {
 		case ID:
@@ -98,10 +98,9 @@ public class IsoCurrencyFormatter implements ItemFormat<CurrencyUnit> {
 			Currency isoCurrency = Currency.getInstance(item.getCurrencyCode());
 			switch (renderedField) {
 			case SYMBOL:
-				return isoCurrency.getSymbol(this.style.getTranslationLocale());
+				return isoCurrency.getSymbol(locale);
 			case DISPLAYNAME:
-				return isoCurrency.getDisplayName(this.style
-						.getTranslationLocale());
+				return isoCurrency.getDisplayName(locale);
 			}
 		} 
 		// Overall fallback, return code...
@@ -109,13 +108,13 @@ public class IsoCurrencyFormatter implements ItemFormat<CurrencyUnit> {
 	}
 
 	@Override
-	public void print(Appendable appendable, CurrencyUnit item)
+	public void print(Appendable appendable, CurrencyUnit item, Locale locale)
 			throws IOException {
-		appendable.append(format(item));
+		appendable.append(format(item, locale));
 	}
 
 	@Override
-	public CurrencyUnit parse(CharSequence text) throws ItemParseException {
+	public CurrencyUnit parse(CharSequence text, Locale locale) throws ItemParseException {
 		// try to check for non localizaed formats
 		String namespace = this.style.getAttribute("namespace", String.class);
 		if (namespace == null) {

@@ -67,13 +67,13 @@ public class MonetaryFormatsTest {
 	public void testGetItemFormatterClassOfTLocalizationStyle()
 			throws ItemParseException {
 		ItemFormat<String> formatter = MonetaryFormats.getItemFormat(
-				String.class, LocalizationStyle.of(Locale.ENGLISH));
-		assertEquals("testest", formatter.format("testest"));
-		assertEquals("gugus", formatter.format("gugus"));
-		assertEquals(LocalizationStyle.of(Locale.ENGLISH), formatter.getStyle());
+				String.class, LocalizationStyle.of(String.class));
+		assertEquals("testest", formatter.format("testest", Locale.ENGLISH));
+		assertEquals("gugus", formatter.format("gugus", Locale.ENGLISH));
+		assertEquals(LocalizationStyle.of(String.class), formatter.getStyle());
 		assertEquals(String.class, formatter.getTargetClass());
-		assertEquals("", formatter.parse("testest"));
-		assertEquals("", formatter.parse("gugus"));
+		assertEquals("", formatter.parse("testest", Locale.ENGLISH));
+		assertEquals("", formatter.parse("gugus", Locale.ENGLISH));
 	}
 
 	/**
@@ -87,13 +87,12 @@ public class MonetaryFormatsTest {
 	@Ignore
 	public void testGetItemFormatterClassOfTLocale() throws ItemParseException {
 		ItemFormat<String> formatter = MonetaryFormats.getItemFormat(
-				String.class, Locale.ENGLISH);
-		assertEquals("testest", formatter.format("testest"));
-		assertEquals("gugus", formatter.format("gugus"));
-		assertEquals(LocalizationStyle.of(Locale.ENGLISH), formatter.getStyle());
+				String.class, LocalizationStyle.of(String.class));
+		assertEquals("testest", formatter.format("testest", Locale.ENGLISH));
+		assertEquals("gugus", formatter.format("gugus", Locale.ENGLISH));
 		assertEquals(String.class, formatter.getTargetClass());
-		assertEquals("", formatter.parse("testest"));
-		assertEquals("", formatter.parse("gugus"));
+		assertEquals("", formatter.parse("testest", Locale.ENGLISH));
+		assertEquals("", formatter.parse("gugus", Locale.ENGLISH));
 	}
 
 }

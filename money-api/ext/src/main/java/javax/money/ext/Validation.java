@@ -20,6 +20,6 @@ package javax.money.ext;
 //@FunctionalInterface
 public interface Validation<T>{
     
-    void validate(T item, ValidationResult result);
+    void validate(T item, ValidationResult<?> result);
 	
 }

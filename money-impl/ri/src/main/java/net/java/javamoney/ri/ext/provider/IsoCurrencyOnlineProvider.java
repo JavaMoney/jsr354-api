@@ -141,6 +141,11 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderComponentS
 			}
 			return true;
 		}
+
+		@Override
+		public int getCashRounding() {
+		    return -1;
+		}
 	}
 
 	private class CountryHandler extends DefaultHandler {

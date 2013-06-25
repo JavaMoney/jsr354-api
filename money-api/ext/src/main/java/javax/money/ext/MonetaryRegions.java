@@ -66,88 +66,22 @@ public final class MonetaryRegions {
         return MONETARY_REGION_SPI.getRootRegion(id);
     }
 
-    /**
-     * Access all currencies matching a {@link Region}.
-     *
-     * @param locale the target locale, not null.
-     * @return the currencies found, never null.
-     */
-    public static Set<CurrencyUnit> getAll(Region region) {
-        return MONETARY_REGION_SPI.getAll(region, null);
+    public Region getRegion(String regionRoot, String path){
+	Region rootRegion = MONETARY_REGION_SPI.getRootRegion(regionRoot);
+	if(rootRegion==null){
+	    throw new IllegalArgumentException("No such regions.");
+	}
+	return rootRegion.getChild(path);
     }
-
-    /**
-     * Access all currencies matching a {@link Region}, valid at the given
-     * timestamp.
-     *
-     * @param locale the target locale, not null.
-     * @param timestamp The target UTC timestamp, or -1 for the current UTC
-     * timestamp.
-     * @return the currencies found, never null.
-     */
-    public static Set<CurrencyUnit> getAll(Region region, Long timestamp) {
-        return MONETARY_REGION_SPI.getAll(region, timestamp);
+    
+    public Region getRegion(String regionRoot, RegionType type, String id){
+	Region rootRegion = MONETARY_REGION_SPI.getRootRegion(regionRoot);
+	if(rootRegion==null){
+	    throw new IllegalArgumentException("No such regions.");
+	}
+	return rootRegion.lookupRegion(type, id);
     }
-
-    /**
-     * This method allows to evaluate if a {@link CurrencyUnit} is a legal
-     * tender for a certain region, or country. For example Indian rupee are
-     * accepted also as legal tender in Nepal and Buthan, whereas Nepalese rupee
-     * or Bhutanese ngultrum are not accepted as legal tender in India.
-     *
-     * @param currency The currency to be requested, not null.
-     * @param region The region to be requested, not null.
-     * @return true if the currency is accepted as legal tender in the current
-     * region.
-     */
-    public static boolean isLegalCurrencyUnit(CurrencyUnit currency,
-            Region region) {
-        return MONETARY_REGION_SPI.isLegalCurrencyUnit(currency, region, null);
-    }
-
-    /**
-     * This method allows to evaluate if a {@link CurrencyUnit} is a legal
-     * tender for a certain region, or country. For example Indian rupee are
-     * accepted also as legal tender in Nepal and Buthan, whereas Nepalese rupee
-     * or Bhutanese ngultrum are not accepted as legal tender in India.
-     *
-     * @param currency The currency to be requested, not null.
-     * @param region The region to be requested, not null.
-     * @param timestamp the UTC timestamp, or null for the current time.
-     * @return true if the currency is accepted as legal tender in the current
-     * region.
-     */
-    public static boolean isLegalCurrencyUnit(CurrencyUnit currency,
-            Region region, long timestamp) {
-        return MONETARY_REGION_SPI.isLegalCurrencyUnit(currency, region,
-                timestamp);
-    }
-
-    /**
-     * This method allows to evaluate the {@link CurrencyUnit} accepted as legal
-     * tenders for a {@link Region}.
-     *
-     * @param region The region to be requested, not null.
-     * @return the {@link CurrencyUnit} to be known as legal tenders for the
-     * given region, never null.
-     */
-    public static Set<CurrencyUnit> getLegalCurrencyUnits(Region region) {
-        return MONETARY_REGION_SPI.getLegalCurrencyUnits(region, null);
-    }
-
-    /**
-     * This method allows to evaluate the {@link CurrencyUnit} accepted as legal
-     * tenders for a {@link Region}.
-     *
-     * @param region The region to be requested, not null.
-     * @param timestamp the UTC timestamp, or null for the current time.
-     * @return the {@link CurrencyUnit} to be known as legal tenders for the
-     * given region, never null.
-     */
-    public static Set<CurrencyUnit> getLegalCurrencyUnits(Region region,
-            Long timestamp) {
-        return MONETARY_REGION_SPI.getLegalCurrencyUnits(region, timestamp);
-    }
+    
 
     /**
      * This is the spi interface to be implemented that determines how the

@@ -12,68 +12,102 @@ package javax.money.ext;
 
 import java.io.Serializable;
 
-import javax.money.CurrencyUnit;
-
-public abstract class ValidityInfo<S,T> implements Serializable, Comparable<ValidityInfo<S,T>> {
+/**
+ * This abstract base class models a validity of an item S related to a
+ * reference T.
+ * 
+ * @author Anatole
+ * 
+ * @param <T>
+ *            the item, e.g. a CurrencyUnit
+ * @param <R>
+ *            the validity reference, e.g. a Region.
+ */
+public abstract class ValidityInfo<T, R> implements Serializable, Comparable<ValidityInfo<R, T>> {
 
     private static final long serialVersionUID = 1258686258819748870L;
-    private S item;
-    private T referenceItem;
+
+    private T item;
+    private R referenceItem;
     private Long from;
     private Long to;
-    private String validityType;
-    
-    public ValidityInfo(S item, T referenceItem, String validityType, Long from, Long to) {
-	if(item==null){
+    private String validitySource;
+
+    /**
+     * Creates an instance of ValidityInfo.
+     * 
+     * @param item
+     *            the item, not null.
+     * @param referenceItem
+     *            , the reference, not null.
+     * @param validitySource
+     *            the validity source.
+     * @param from
+     *            the UTC timestamp, defining the start of the validity range.
+     * @param to
+     *            the UTC timestamp, defining the end of the validity range.
+     */
+    public ValidityInfo(T item, R referenceItem, String validitySource, Long from, Long to) {
+	if (item == null) {
 	    throw new IllegalArgumentException("Currency required.");
 	}
-	if(referenceItem==null){
+	if (referenceItem == null) {
 	    throw new IllegalArgumentException("Reference Item required.");
 	}
-	if(validityType==null){
-	    throw new IllegalArgumentException("Validity Type required.");
+	if (validitySource == null) {
+	    throw new IllegalArgumentException("Validity Source required.");
 	}
 	this.item = item;
 	this.referenceItem = referenceItem;
 	this.from = from;
 	this.to = to;
-	this.validityType = validityType;
+	this.validitySource = validitySource;
     }
 
-    public S getItem() {
+    /**
+     * Access the item for which the validity is defined.
+     * 
+     * @return the item, never null.
+     */
+    public T getItem() {
 	return item;
     }
 
-    public void setItem(S item) {
-	this.item = item;
-    }
-
-    public T getReferenceItem() {
+    /**
+     * Access the type or range for which the item T is valid.
+     * 
+     * @return the ference instance, never null.
+     */
+    public R getReferenceItem() {
 	return referenceItem;
     }
 
-    public void setReferenceItem(T referenceItem) {
-	this.referenceItem = referenceItem;
-    }
-
+    /**
+     * Access the starting UTC timestamp for which the item T is valid, related
+     * to R.
+     * 
+     * @return the starting UTC timestamp, or null.
+     */
     public Long getFrom() {
 	return from;
     }
 
-    public void setFrom(Long from) {
-	this.from = from;
-    }
-
+    /**
+     * Access the ending UTC timestamp for which the item T is valid, related to
+     * R.
+     * 
+     * @return the starting UTC timestamp, or null.
+     */
     public Long getTo() {
 	return to;
     }
 
-    public void setTo(Long to) {
-	this.to = to;
-    }
-
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
     @Override
-    public int compareTo(ValidityInfo arg0) {
+    public int compareTo(ValidityInfo other) {
 	// TODO Auto-generated method stub
 	return 0;
     }

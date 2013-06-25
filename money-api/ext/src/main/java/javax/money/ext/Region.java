@@ -383,4 +383,8 @@ public class Region implements Serializable, Comparable<Region> {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
+	public Region lookupRegion(RegionType type, String id2) {
+	    throw new UnsupportedOperationException("Not yet implemented");
+	}
+
 }

@@ -14,8 +14,8 @@
 package javax.money.ext;
 
 /**
- *
- * @author Anatole
+ * Simple interface modeling an arbitrary validation.
+ * @author Anatole Tresch
  */
 //@FunctionalInterface
 public interface Validation<T>{

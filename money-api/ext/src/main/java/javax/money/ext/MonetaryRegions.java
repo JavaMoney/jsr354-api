@@ -122,33 +122,6 @@ public final class MonetaryRegions {
          */
         public Set<CurrencyUnit> getAll(Region region, Long timestamp);
 
-        /**
-         * This method allows to evaluate if a {@link CurrencyUnit} is a legal
-         * tender for a certain region, or country. For example Indian rupee are
-         * accepted also as legal tender in Nepal and Buthan, whereas Nepalese
-         * rupee or Bhutanese ngultrum are not accepted as legal tender in
-         * India.
-         *
-         * @param currency The currency to be requested, not null.
-         * @param region The region to be requested, not null.
-         * @param timestamp the UTC timestamp, or null for the current time.
-         * @return true if the currency is accepted as legal tender in the
-         * current region.
-         */
-        public boolean isLegalCurrencyUnit(CurrencyUnit currency,
-                Region region, Long timestamp);
-
-        /**
-         * This method allows to evaluate the {@link CurrencyUnit} accepted as
-         * legal tenders for a {@link Region}.
-         *
-         * @param region The region to be requested, not null.
-         * @param timestamp the UTC timestamp, or null for the current time.
-         * @return the {@link CurrencyUnit} to be known as legal tenders for the
-         * given region, never null.
-         */
-        public Set<CurrencyUnit> getLegalCurrencyUnits(Region region,
-                Long timestamp);
     }
 
     /**
@@ -216,34 +189,6 @@ public final class MonetaryRegions {
          */
         @Override
         public Set<CurrencyUnit> getAll(Region region, Long timestamp) {
-            // TODO Provide minimal implementation of regions here
-            return Collections.emptySet();
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * javax.money.ext.MonetaryRegions.MonetaryRegionSpi#isLegalCurrencyUnit
-         * (javax.money.CurrencyUnit, javax.money.ext.Region, java.lang.Long)
-         */
-        @Override
-        public boolean isLegalCurrencyUnit(CurrencyUnit currency,
-                Region region, Long timestamp) {
-            // TODO Provide minimal implementation of regions here
-            throw new UnsupportedOperationException("Not implemented.");
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * javax.money.ext.MonetaryRegions.MonetaryRegionSpi#getLegalCurrencyUnits
-         * (javax.money.ext.Region, java.lang.Long)
-         */
-        @Override
-        public Set<CurrencyUnit> getLegalCurrencyUnits(Region region,
-                Long timestamp) {
             // TODO Provide minimal implementation of regions here
             return Collections.emptySet();
         }

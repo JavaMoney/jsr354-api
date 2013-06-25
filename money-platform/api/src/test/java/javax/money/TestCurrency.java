@@ -134,6 +134,11 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 	public boolean isLegalTender() {
 		return legalTender;
 	}
+        
+        @Override
+        public int getCashRounding() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
 
 	public int compareTo(CurrencyUnit currency) {
 		int compare = getNamespace().compareTo(currency.getNamespace());
@@ -407,6 +412,11 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 		public String getDisplayName(Locale locale) {
 			return this.currency.getDisplayName(locale);
 		}
+
+                @Override
+                public int getCashRounding() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
 	}
 
 }

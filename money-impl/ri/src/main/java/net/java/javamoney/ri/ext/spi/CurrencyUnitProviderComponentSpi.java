@@ -19,6 +19,7 @@
  */
 package net.java.javamoney.ri.ext.spi;
 
+import java.util.Collection;
 import java.util.Locale;
 import java.util.ServiceLoader;
 
@@ -50,16 +51,13 @@ public interface CurrencyUnitProviderComponentSpi {
 	 * @param code
 	 *            The code of the currency required. This code with the name
 	 *            space uniquely identify a currency instance.
-	 * @param timestamp
-	 *            The target UTC timestamp, or {@code null} for the current UTC
-	 *            timestamp.
 	 * @return The currency unit to used, or null. Hereby the implementation
 	 *         should return immutable and final instances of
 	 *         {@link CurrencyUnit}. It is the responsibility of the
 	 *         implementation to implement caching of currency instances
 	 *         (recommended).
 	 */
-	public CurrencyUnit getCurrency(String code, Long timestamp);
+	public CurrencyUnit getCurrency(String code);
 
 	/**
 	 * Get the available currencies for the given {@link Locale}.
@@ -71,7 +69,7 @@ public interface CurrencyUnitProviderComponentSpi {
 	 *            timestamp.
 	 * @return the currencies found, or null.
 	 */
-	public CurrencyUnit[] getCurrencies(Locale locale, Long timestamp);
+	public Collection<CurrencyUnit> getCurrencies(Locale locale);
 
 	/**
 	 * Get the currencies available.
@@ -81,7 +79,7 @@ public interface CurrencyUnitProviderComponentSpi {
 	 *            timestamp.
 	 * @return the currencies found, or null.
 	 */
-	public CurrencyUnit[] getCurrencies(Long timestamp);
+	public Collection<CurrencyUnit> getCurrencies();
 
 	/**
 	 * Method that allows to check if a currency is available for a given time
@@ -89,12 +87,8 @@ public interface CurrencyUnitProviderComponentSpi {
 	 * 
 	 * @param code
 	 *            the required code within this namespace, never null.
-	 * @param start
-	 *            the start UTC timestamp, or {@code null}
-	 * @param end
-	 *            the end UTC timestamp, or {@code null}
 	 * @return true, if the code is defined.
 	 */
-	public boolean isAvailable(String code, Long start, Long end);
+	public boolean isAvailable(String code);
 
 }

@@ -27,15 +27,4 @@ public class StandaloneMonetaryRegionSpi implements MonetaryRegionsSpi {
 		return regionalCurrencyProvider.getAll(region, timestamp);
 	}
 
-	@Override
-	public boolean isLegalCurrencyUnit(CurrencyUnit currency, Region region,
-			Long timestamp) {
-		return regionalCurrencyProvider.isLegalTCurrencyUnit(currency, region, timestamp);
-	}
-
-	@Override
-	public Set<CurrencyUnit> getLegalCurrencyUnits(Region region, Long timestamp) {
-		return regionalCurrencyProvider.getLegalCurrencyUnits(region, timestamp);
-	}
-
 }

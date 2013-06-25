@@ -81,30 +81,4 @@ public final class RegionalCurrencyUnitProvider {
 		return result;
 	}
 
-	boolean isLegalTCurrencyUnit(CurrencyUnit currency, Region region,
-			Long timestamp) {
-		Set<CurrencyUnit> tenders = getLegalCurrencyUnits(region, timestamp);
-		for (CurrencyUnit currencyUnit : tenders) {
-			if (!currencyUnit.getNamespace().equals(currency.getNamespace())) {
-				continue;
-			}
-			if (!currencyUnit.getCurrencyCode().equals(
-					currency.getCurrencyCode())) {
-				continue;
-			}
-			return true;
-		}
-		return false;
-	}
-
-	public Set<CurrencyUnit> getLegalCurrencyUnits(Region region, Long timestamp) {
-		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		for (RegionalCurrencyUnitProviderSpi prov : regionalCurrencyProviders) {
-			Collection<CurrencyUnit> currencies = prov.getLegalTenders(region, timestamp);
-			if (currencies != null) {
-				result.addAll(currencies);
-			}
-		}
-		return result;
-	}
 }

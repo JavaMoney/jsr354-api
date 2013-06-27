@@ -87,7 +87,7 @@ public final class MonetaryRegions {
      * This is the spi interface to be implemented that determines how the
      * different components are loaded and managed.
      *
-     * @author Anatole Tresch
+     * @author Anatole Tresch 
      */
     public static interface MonetaryRegionsSpi {
 

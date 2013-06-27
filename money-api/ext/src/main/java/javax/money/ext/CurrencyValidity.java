@@ -36,7 +36,7 @@ public interface CurrencyValidity {
      * @param validityReferenceType
      * @return
      */
-    public <T> Collection<CurrencyValidityInfo> getValidityInfo(Region region);
+    public <T> Collection<ValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region);
 
     /**
      * Access validities for the given reference, starting from the given
@@ -47,7 +47,7 @@ public interface CurrencyValidity {
      * @param timestamp
      * @return
      */
-    public <T> Collection<CurrencyValidityInfo> getValidityInfo(Region region, long timestamp);
+    public <T> Collection<ValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region, long timestamp);
 
     /**
      * Access validities for the given reference, constraint by the given time
@@ -59,7 +59,7 @@ public interface CurrencyValidity {
      * @param to
      * @return
      */
-    public <T> Collection<CurrencyValidityInfo> getValidityInfo(Region region,
+    public <T> Collection<ValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region,
 	    long from, long to);
 
     /**
@@ -69,7 +69,7 @@ public interface CurrencyValidity {
      *            the target locale, not null.
      * @return the currencies found, never null.
      */
-    public Collection<CurrencyValidityInfo> getAll(Region region);
+    public Collection<ValidityInfo<CurrencyUnit, Region>> getAll(Region region);
 
     /**
      * Access all currencies matching a {@link Region}, valid at the given
@@ -81,7 +81,7 @@ public interface CurrencyValidity {
      *            The target UTC timestamp, or -1 for the current UTC timestamp.
      * @return the currencies found, never null.
      */
-    public Collection<CurrencyValidityInfo> getAll(Region region, long timestamp);
+    public Collection<ValidityInfo<CurrencyUnit, Region>> getAll(Region region, long timestamp);
 
     
     /**
@@ -91,7 +91,7 @@ public interface CurrencyValidity {
      *            The target namespace, not null.
      * @return the currencies found.
      */
-    public Collection<CurrencyValidityInfo> getAll(Region region, String namespace);
+    public Collection<ValidityInfo<CurrencyUnit, Region>> getAll(Region region, String namespace);
 
     /**
      * This method allows to evaluate if a {@link CurrencyUnit} is a legal

@@ -11,27 +11,33 @@
 package javax.money.ext;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * This abstract base class models a validity of an item S related to a
  * reference T.
  * 
- * @author Anatole
+ * @author Anatole Tresch
  * 
  * @param <T>
- *            the item, e.g. a CurrencyUnit
+ *            the item type, e.g. CurrencyUnit
  * @param <R>
- *            the validity reference, e.g. a Region.
+ *            the validity reference type, e.g. Region.
  */
-public abstract class ValidityInfo<T, R> implements Serializable, Comparable<ValidityInfo<R, T>> {
-
+public final class ValidityInfo<T, R> implements Serializable, Comparable<ValidityInfo<R, T>> {
+    /** Serial version UID. */
     private static final long serialVersionUID = 1258686258819748870L;
-
-    private T item;
-    private R referenceItem;
-    private Long from;
-    private Long to;
-    private String validitySource;
+    /* The item for which this ValidityInfo is for. */
+    private final T item;
+    /** THe reference type to which this validity is related. */
+    private final R referenceItem;
+    /** The starting UTC timestamp for the validity period, or null. */
+    private final Long from;
+    /** The ending UTC timestamp for the validity period, or null. */
+    private final Long to;
+    /** The source that provides this validity data. */
+    private final String validitySource;
 
     /**
      * Creates an instance of ValidityInfo.
@@ -83,33 +89,225 @@ public abstract class ValidityInfo<T, R> implements Serializable, Comparable<Val
     }
 
     /**
-     * Access the starting UTC timestamp for which the item T is valid, related
+     * Access the starting UTC timestamp from which the item T is valid, related
      * to R.
      * 
      * @return the starting UTC timestamp, or null.
      */
-    public Long getFrom() {
-	return from;
+    public Long getStartTimeInMillis() {
+	if (from != null) {
+	    return from;
+	}
+	return null;
     }
 
     /**
-     * Access the ending UTC timestamp for which the item T is valid, related to
+     * Access the ending UTC timestamp until the item T is valid, related to R.
+     * 
+     * @return the ending UTC timestamp, or null.
+     */
+    public Long getToTimeInMillis() {
+	if (to != null) {
+	    return to;
+	}
+	return null;
+    }
+
+    /**
+     * Access the starting GregorianCalendar from which the item T is valid,
+     * related to R.
+     * 
+     * @return the starting GregorianCalendar, or null.
+     */
+    public GregorianCalendar getFrom() {
+	return getFrom(GregorianCalendar.class);
+    }
+
+    /**
+     * Access the starting Calendar from which the item T is valid, related to
      * R.
      * 
-     * @return the starting UTC timestamp, or null.
+     * @param type
+     *            The calendar type required. The type must have a public
+     *            parameterless constructor and must be initializable by calling
+     *            Calendar#setTimeInMillis(Long).
+     * @return the starting Calendar instance, or null.
      */
-    public Long getTo() {
-	return to;
+    public <C extends Calendar> C getFrom(Class<C> type) {
+	if (from != null) {
+	    C cal;
+	    try {
+		cal = (C) type.newInstance();
+	    } catch (InstantiationException | IllegalAccessException e) {
+		throw new IllegalArgumentException("Calendar type is not instantiatable.", e);
+	    }
+	    cal.setTimeInMillis(from);
+	    return cal;
+	}
+	return null;
+    }
+
+    /**
+     * Access the ending GregorianCalendar until which the item T is valid,
+     * related to R.
+     * 
+     * @return the ending GregorianCalendar, or null.
+     */
+    public GregorianCalendar getTo() {
+	return getTo(GregorianCalendar.class);
+    }
+
+    /**
+     * Access the starting Calendar until which the item T is valid, related to
+     * R.
+     * 
+     * @param type
+     *            The calendar type required. The type must have a public
+     *            parameterless constructor and must be initializable by calling
+     *            Calendar#setTimeInMillis(Long).
+     * @return the ending Calendar instance, or null.
+     */
+    public <C extends Calendar> C getTo(Class<C> type) {
+	if (to != null) {
+	    C cal;
+	    try {
+		cal = (C) type.newInstance();
+	    } catch (InstantiationException | IllegalAccessException e) {
+		throw new IllegalArgumentException("Calendar type is not instantiatable.", e);
+	    }
+	    cal.setTimeInMillis(to);
+	    return cal;
+	}
+	return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((from == null) ? 0 : from.hashCode());
+	result = prime * result + ((item == null) ? 0 : item.hashCode());
+	result = prime * result + ((referenceItem == null) ? 0 : referenceItem.hashCode());
+	result = prime * result + ((to == null) ? 0 : to.hashCode());
+	result = prime * result + ((validitySource == null) ? 0 : validitySource.hashCode());
+	return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	@SuppressWarnings("rawtypes")
+	ValidityInfo other = (ValidityInfo) obj;
+	if (from == null) {
+	    if (other.from != null)
+		return false;
+	} else if (!from.equals(other.from))
+	    return false;
+	if (item == null) {
+	    if (other.item != null)
+		return false;
+	} else if (!item.equals(other.item))
+	    return false;
+	if (referenceItem == null) {
+	    if (other.referenceItem != null)
+		return false;
+	} else if (!referenceItem.equals(other.referenceItem))
+	    return false;
+	if (to == null) {
+	    if (other.to != null)
+		return false;
+	} else if (!to.equals(other.to))
+	    return false;
+	if (validitySource == null) {
+	    if (other.validitySource != null)
+		return false;
+	} else if (!validitySource.equals(other.validitySource))
+	    return false;
+	return true;
     }
 
     /*
      * (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public int compareTo(ValidityInfo other) {
-	// TODO Auto-generated method stub
-	return 0;
+	if (this == other)
+	    return 0;
+	if (other == null)
+	    return -1;
+	int compare = 0;
+	if (item instanceof Comparable) {
+	    if (item == null) {
+		if (other.item != null)
+		    compare = 1;
+	    } else {
+		if (other.item == null) {
+		    compare = -1;
+		} else
+		    compare = ((Comparable) item).compareTo(other.item);
+	    }
+	}
+	if (compare == 0 && referenceItem instanceof Comparable) {
+	    if (referenceItem == null) {
+		if (other.referenceItem != null)
+		    compare = 1;
+	    } else {
+		if (other.referenceItem == null) {
+		    compare = -1;
+		} else
+		    compare = ((Comparable) referenceItem).compareTo(other.referenceItem);
+	    }
+	}
+	if (from == null) {
+	    if (other.from != null)
+		compare = 1;
+	} else {
+	    if (other.from == null) {
+		compare = -1;
+	    } else {
+		if (other.from == null) {
+		    compare = -1;
+		} else
+		    compare = ((Comparable) from).compareTo(other.from);
+	    }
+	}
+	if (compare == 0) {
+	    if (to == null) {
+		if (other.to != null)
+		    compare = 1;
+	    } else {
+		if (other.to == null) {
+		    compare = -1;
+		} else
+		    compare = ((Comparable) to).compareTo(other.to);
+	    }
+	}
+	if (compare == 0) {
+	    if (validitySource == null) {
+		if (other.validitySource != null)
+		    compare = 1;
+	    } else {
+		if (other.validitySource == null) {
+		    compare = -1;
+		} else
+		    compare = ((Comparable) validitySource).compareTo(other.validitySource);
+	    }
+	}
+	return compare;
     }
-
 }

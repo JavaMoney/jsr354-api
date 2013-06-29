@@ -37,8 +37,8 @@ public class ExchangeRateTest {
 		assertEquals(ExchangeRateType.of("test"), rate.getExchangeRateType());
 		assertEquals(Arrays.asList(new ExchangeRate[]{rate}), rate.getExchangeRateChain());
 		assertEquals("myProvider", rate.getProvider());
-		assertEquals(10, rate.getValidFrom().longValue());
-		assertEquals(100, rate.getValidUntil().longValue());
+		assertEquals(10, rate.getValidToTimeInMillis().longValue());
+		assertEquals(100, rate.getValidToTimeInMillis().longValue());
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class ExchangeRateTest {
 		assertEquals(Arrays.asList(new ExchangeRate[]{rate1, rate2}), rate.getExchangeRateChain());
 		assertEquals("myProvider", rate.getProvider());
 		assertNull(rate.getValidFrom());
-		assertNull(rate.getValidUntil());
+		assertNull(rate.getValidToTimeInMillis());
 	}
 
 	@Test
@@ -77,8 +77,8 @@ public class ExchangeRateTest {
 		assertEquals(ExchangeRateType.of("test"), rate.getExchangeRateType());
 		assertEquals(Arrays.asList(new ExchangeRate[]{rate1, rate2}), rate.getExchangeRateChain());
 		assertEquals("myProvider", rate.getProvider());
-		assertEquals(10, rate.getValidFrom().longValue());
-		assertEquals(100, rate.getValidUntil().longValue());
+		assertEquals(10, rate.getValidFromTimeInMillis().longValue());
+		assertEquals(100, rate.getValidToTimeInMillis().longValue());
 	}
 
 	

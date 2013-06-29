@@ -54,6 +54,40 @@ public final class ValidityInfo<T, R> implements Serializable, Comparable<Validi
      * @param item the item, not null.
      * @param referenceItem , the reference, not null.
      * @param validitySource the validity source.
+     * @param from the calendar instance, defining the start of the validity range.
+     * @param to the calendar instance, defining the end of the validity range.
+     */
+    public ValidityInfo(T item, R referenceItem, String validitySource, Calendar from, Calendar to) {
+        if (item == null) {
+            throw new IllegalArgumentException("Currency required.");
+        }
+        if (referenceItem == null) {
+            throw new IllegalArgumentException("Reference Item required.");
+        }
+        if (validitySource == null) {
+            throw new IllegalArgumentException("Validity Source required.");
+        }
+        this.item = item;
+        this.referenceItem = referenceItem;
+        if (from != null) {
+            this.from = from.getTimeInMillis();
+        } else {
+            this.from = null;
+        }
+        if (to != null) {
+            this.to = to.getTimeInMillis();
+        } else {
+            this.to = null;
+        }
+        this.validitySource = validitySource;
+    }
+
+    /**
+     * Creates an instance of ValidityInfo.
+     *
+     * @param item the item, not null.
+     * @param referenceItem , the reference, not null.
+     * @param validitySource the validity source.
      * @param from the UTC timestamp, defining the start of the validity range.
      * @param to the UTC timestamp, defining the end of the validity range.
      */
@@ -90,8 +124,7 @@ public final class ValidityInfo<T, R> implements Serializable, Comparable<Validi
      * {@code true}:
      * <ul>
      * <li><@code from == null || from <= current UTC timestamp}</li> <li><@code
-     * to ==
-     * null || to >= current UTC timestamp}</li>
+     * to == null || to >= current UTC timestamp}</li>
      * </ul>
      *
      * @return {@code true} if the validity is currently valid.
@@ -110,7 +143,7 @@ public final class ValidityInfo<T, R> implements Serializable, Comparable<Validi
     public boolean isLowerBound() {
         return from != null;
     }
-    
+
     /**
      * Method to easily check if the {@code from} is not {@code null}.
      *

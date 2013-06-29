@@ -171,7 +171,7 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
      */
     public ExchangeRate(ExchangeRateType conversionType, CurrencyUnit base,
             CurrencyUnit term, Number factor, String provider, Long validFrom,
-            Long validUntil, ExchangeRate... chain) {
+            Long validTo, ExchangeRate... chain) {
         this(conversionType, base, term, factor, provider);
         setExchangeRateChain(chain);
         this.validFrom = validFrom;
@@ -704,7 +704,7 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
          *
          * @return the starting UTC timestamp, or null.
          */
-        public Long getFromTimeInMillis() {
+        public Long getValidFromTimeInMillis() {
             if (validFrom != null) {
                 return validFrom;
             }
@@ -717,7 +717,7 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
          *
          * @return the ending UTC timestamp, or null.
          */
-        public Long getToTimeInMillis() {
+        public Long getValidToTimeInMillis() {
             if (validTo != null) {
                 return validTo;
             }
@@ -731,7 +731,7 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
          * @return the starting GregorianCalendar, or null.
          */
         public GregorianCalendar getValidFrom() {
-            return getFrom(GregorianCalendar.class);
+            return getValidFrom(GregorianCalendar.class);
         }
 
         /**
@@ -743,7 +743,7 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
          * Calendar#setTimeInMillis(Long).
          * @return the starting Calendar instance, or null.
          */
-        public <C extends Calendar> C getFrom(Class<C> type) {
+        public <C extends Calendar> C getValidFrom(Class<C> type) {
             if (validFrom != null) {
                 C cal;
                 try {

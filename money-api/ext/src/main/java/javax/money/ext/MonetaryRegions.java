@@ -1,15 +1,12 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE 
- * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. 
- * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY 
- * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE 
- * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" 
- * BUTTON AT THE BOTTOM OF THIS PAGE.
- *
- * Specification:  JSR-354  Money and Currency API ("Specification")
- *
- * Copyright (c) 2012-2013, Credit Suisse
- * All rights reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
+ * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
+ * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
+ * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
+ * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
+ * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
+ * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * reserved.
  */
 package javax.money.ext;
 
@@ -26,7 +23,7 @@ import javax.money.CurrencyUnit;
 /**
  * This singleton defines access to the exchange and currency conversion logic
  * of JavaMoney.
- *
+ * 
  * @author Anatole Tresch
  */
 public final class MonetaryRegions {
@@ -44,155 +41,90 @@ public final class MonetaryRegions {
     }
 
     /**
-     * Access all regions available, that have no parent region. It is possible
-     * to define different regional hierarchies at the same time, whereas the
-     * ids of the root regions must be unique among all root regions
-     *
-     * @return all {@link Region}s available without a parent, never null.
+     * Get a set of region providers registered.
+     * 
+     * @return the ids of the registered region providers.
      */
-    public static Collection<Region> getRootRegions() {
-        return MONETARY_REGION_SPI.getRootRegions();
+    public static Set<String> getRegionProviders() {
+	return MONETARY_REGION_SPI.getRegionProviders();
     }
 
     /**
-     * Since ids of root regions must be unique a regional tree can be accessed
-     * using this id.
-     *
-     * @see #getRootRegions()
-     * @param id the root region's id
-     * @return the root region, or null.
+     * Access all a region info, determined by the given provider.
+     * 
+     * @param provider
+     *            the region provider. * @return all {@link Region}s available
+     *            without a parent, never null.
      */
-    public static Region getRootRegion(String id) {
-        return MONETARY_REGION_SPI.getRootRegion(id);
+    public static RegionInfo getRegionInfo(String provider) {
+	return MONETARY_REGION_SPI.getRegionInfo(provider);
     }
-
-    public Region getRegion(String regionRoot, String path){
-	Region rootRegion = MONETARY_REGION_SPI.getRootRegion(regionRoot);
-	if(rootRegion==null){
-	    throw new IllegalArgumentException("No such regions.");
-	}
-	return rootRegion.getChild(path);
-    }
-    
-    public Region getRegion(String regionRoot, RegionType type, String id){
-	Region rootRegion = MONETARY_REGION_SPI.getRootRegion(regionRoot);
-	if(rootRegion==null){
-	    throw new IllegalArgumentException("No such regions.");
-	}
-	return rootRegion.lookupRegion(type, id);
-    }
-    
 
     /**
      * This is the spi interface to be implemented that determines how the
      * different components are loaded and managed.
-     *
-     * @author Anatole Tresch 
+     * 
+     * @author Anatole Tresch
      */
     public static interface MonetaryRegionsSpi {
 
-        /**
-         * Access all regions available, that have no parent region. It is
-         * possible to define different regional hierarchies at the same time,
-         * whereas the ids of the root regions must be unique among all root
-         * regions
-         *
-         * @return all {@link Region}s available without a parent, never null.
-         */
-        public Collection<Region> getRootRegions();
+	/**
+	 * Get a set of region providers registered.
+	 * 
+	 * @return the ids of the registered region providers.
+	 */
+	public Set<String> getRegionProviders();
 
-        /**
-         * Since ids of root regions must be unique a regional tree can be
-         * accessed using this id.
-         *
-         * @see #getRootRegions()
-         * @param id the root region's id
-         * @return the root region, or null.
-         */
-        public Region getRootRegion(String id);
-
-        /**
-         * Access all currencies matching a {@link Region}, valid at the given
-         * timestamp.
-         *
-         * @param locale the target locale, not null.
-         * @param timestamp The target UTC timestamp, or -1 for the current UTC
-         * timestamp.
-         * @return the currencies found, never null.
-         */
-        public Set<CurrencyUnit> getAll(Region region, Long timestamp);
+	/**
+	 * Access all a region info, determined by the given provider.
+	 * 
+	 * @param provider
+	 *            the region provider. * @return all {@link Region}s
+	 *            available without a parent, never null.
+	 */
+	public RegionInfo getRegionInfo(String provider);
 
     }
 
     /**
      * Method that loads the {@link MonetaryConversionSpi} on class loading.
-     *
+     * 
      * @return the instance ot be registered into the shared variable.
      */
     private static MonetaryRegionsSpi loadMonetaryRegionSpi() {
-        try {
-            // try loading directly from ServiceLoader
-            Iterator<MonetaryRegionsSpi> instances = ServiceLoader.load(
-                    MonetaryRegionsSpi.class).iterator();
-            if (instances.hasNext()) {
-                return instances.next();
-            }
-        } catch (Throwable e) {
-            Logger.getLogger(MonetaryRegionsSpi.class.getName()).log(Level.INFO,
-                    "No MonetaryRegionSpi registered, using  default.", e);
-        }
-        return new DefaultMonetaryRegionsSpi();
+	try {
+	    // try loading directly from ServiceLoader
+	    Iterator<MonetaryRegionsSpi> instances = ServiceLoader.load(MonetaryRegionsSpi.class).iterator();
+	    if (instances.hasNext()) {
+		return instances.next();
+	    }
+	} catch (Throwable e) {
+	    Logger.getLogger(MonetaryRegionsSpi.class.getName()).log(Level.INFO,
+		    "No MonetaryRegionSpi registered, using  default.", e);
+	}
+	return new DefaultMonetaryRegionsSpi();
     }
 
     /**
      * This class represents the default implementation of
      * {@link MonetaryConversionSpi} used always when no alternative is
      * registered within the {@link ServiceLoader}.
-     *
+     * 
      * @author Anatole Tresch
-     *
+     * 
      */
-    private final static class DefaultMonetaryRegionsSpi implements
-            MonetaryRegionsSpi {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * javax.money.ext.MonetaryRegions.MonetaryRegionSpi#getRootRegions()
-         */
+    private final static class DefaultMonetaryRegionsSpi implements MonetaryRegionsSpi {
 
-        @Override
-        public Collection<Region> getRootRegions() {
-            // TODO Provide minimal implementation of regions here
-            return Collections.emptySet();
-        }
+	@Override
+	public Set<String> getRegionProviders() {
+	    return Collections.emptySet();
+	}
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * javax.money.ext.MonetaryRegions.MonetaryRegionSpi#getRootRegion(java
-         * .lang.String)
-         */
-        @Override
-        public Region getRootRegion(String id) {
-            // TODO Provide minimal implementation of regions here
-            return null;
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * javax.money.ext.MonetaryRegions.MonetaryRegionSpi#getAll(javax.money
-         * .ext.Region, java.lang.Long)
-         */
-        @Override
-        public Set<CurrencyUnit> getAll(Region region, Long timestamp) {
-            // TODO Provide minimal implementation of regions here
-            return Collections.emptySet();
-        }
-
+	@Override
+	public RegionInfo getRegionInfo(String provider) {
+	    return null;
+	}
+	
     }
 
 }

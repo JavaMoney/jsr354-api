@@ -20,11 +20,13 @@
 package net.java.javamoney.ri.ext.provider;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.ext.MonetaryRegions.MonetaryRegionsSpi;
 import javax.money.ext.Region;
+import javax.money.ext.RegionInfo;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -34,22 +36,18 @@ import javax.money.ext.Region;
  */
 public class StandaloneMonetaryRegionSpi implements MonetaryRegionsSpi {
 
-	private RegionProvider regionsProvider = new RegionProvider();
-	private RegionalCurrencyUnitProvider regionalCurrencyProvider = new RegionalCurrencyUnitProvider();
-	
+// TODO
+
 	@Override
-	public Collection<Region> getRootRegions() {
-		return regionsProvider.getRootRegions();
+	public Set<String> getRegionProviders() {
+	    // TODO Auto-generated method stub
+	    return Collections.emptySet();
 	}
 
 	@Override
-	public Region getRootRegion(String id) {
-		return regionsProvider.getRootRegion(id);
-	}
-
-	@Override
-	public Set<CurrencyUnit> getAll(Region region, Long timestamp) {
-		return regionalCurrencyProvider.getAll(region, timestamp);
+	public RegionInfo getRegionInfo(String provider) {
+	    // TODO Auto-generated method stub
+	    return null;
 	}
 
 }

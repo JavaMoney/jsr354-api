@@ -23,7 +23,7 @@ import java.util.GregorianCalendar;
  * @param <T> the item type, e.g. CurrencyUnit
  * @param <R> the validity reference type, e.g. Region.
  */
-public final class ValidityInfo<T, R> implements Serializable, Comparable<ValidityInfo<R, T>> {
+public class ValidityInfo<T> implements Serializable, Comparable<ValidityInfo<T>> {
 
     /**
      * Serial version UID.
@@ -31,10 +31,6 @@ public final class ValidityInfo<T, R> implements Serializable, Comparable<Validi
     private static final long serialVersionUID = 1258686258819748870L;
     /* The item for which this ValidityInfo is for. */
     private final T item;
-    /**
-     * THe reference type to which this validity is related.
-     */
-    private final R referenceItem;
     /**
      * The starting UTC timestamp for the validity period, or null.
      */
@@ -57,18 +53,14 @@ public final class ValidityInfo<T, R> implements Serializable, Comparable<Validi
      * @param from the calendar instance, defining the start of the validity range.
      * @param to the calendar instance, defining the end of the validity range.
      */
-    public ValidityInfo(T item, R referenceItem, String validitySource, Calendar from, Calendar to) {
+    public ValidityInfo(T item, String validitySource, Calendar from, Calendar to) {
         if (item == null) {
             throw new IllegalArgumentException("Currency required.");
-        }
-        if (referenceItem == null) {
-            throw new IllegalArgumentException("Reference Item required.");
         }
         if (validitySource == null) {
             throw new IllegalArgumentException("Validity Source required.");
         }
         this.item = item;
-        this.referenceItem = referenceItem;
         if (from != null) {
             this.from = from.getTimeInMillis();
         } else {
@@ -91,18 +83,14 @@ public final class ValidityInfo<T, R> implements Serializable, Comparable<Validi
      * @param from the UTC timestamp, defining the start of the validity range.
      * @param to the UTC timestamp, defining the end of the validity range.
      */
-    public ValidityInfo(T item, R referenceItem, String validitySource, Long from, Long to) {
+    public ValidityInfo(T item, String validitySource, Long from, Long to) {
         if (item == null) {
             throw new IllegalArgumentException("Currency required.");
-        }
-        if (referenceItem == null) {
-            throw new IllegalArgumentException("Reference Item required.");
         }
         if (validitySource == null) {
             throw new IllegalArgumentException("Validity Source required.");
         }
         this.item = item;
-        this.referenceItem = referenceItem;
         this.from = from;
         this.to = to;
         this.validitySource = validitySource;
@@ -160,15 +148,6 @@ public final class ValidityInfo<T, R> implements Serializable, Comparable<Validi
      */
     public T getItem() {
         return item;
-    }
-
-    /**
-     * Access the type or range for which the item T is valid.
-     *
-     * @return the ference instance, never null.
-     */
-    public R getReferenceItem() {
-        return referenceItem;
     }
 
     /**
@@ -272,7 +251,6 @@ public final class ValidityInfo<T, R> implements Serializable, Comparable<Validi
         int result = 1;
         result = prime * result + ((from == null) ? 0 : from.hashCode());
         result = prime * result + ((item == null) ? 0 : item.hashCode());
-        result = prime * result + ((referenceItem == null) ? 0 : referenceItem.hashCode());
         result = prime * result + ((to == null) ? 0 : to.hashCode());
         result = prime * result + ((validitySource == null) ? 0 : validitySource.hashCode());
         return result;
@@ -307,13 +285,6 @@ public final class ValidityInfo<T, R> implements Serializable, Comparable<Validi
                 return false;
             }
         } else if (!item.equals(other.item)) {
-            return false;
-        }
-        if (referenceItem == null) {
-            if (other.referenceItem != null) {
-                return false;
-            }
-        } else if (!referenceItem.equals(other.referenceItem)) {
             return false;
         }
         if (to == null) {
@@ -357,19 +328,6 @@ public final class ValidityInfo<T, R> implements Serializable, Comparable<Validi
                     compare = -1;
                 } else {
                     compare = ((Comparable) item).compareTo(other.item);
-                }
-            }
-        }
-        if (compare == 0 && referenceItem instanceof Comparable) {
-            if (referenceItem == null) {
-                if (other.referenceItem != null) {
-                    compare = 1;
-                }
-            } else {
-                if (other.referenceItem == null) {
-                    compare = -1;
-                } else {
-                    compare = ((Comparable) referenceItem).compareTo(other.referenceItem);
                 }
             }
         }

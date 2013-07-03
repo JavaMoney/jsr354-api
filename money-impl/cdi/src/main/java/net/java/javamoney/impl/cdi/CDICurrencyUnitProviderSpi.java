@@ -20,6 +20,7 @@
 package net.java.javamoney.impl.cdi;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -28,12 +29,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.enterprise.inject.Instance;
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 import javax.money.UnknownCurrencyException;
 import javax.money.ext.MonetaryCurrencies.CurrencyUnitProviderSpi;
 import javax.money.ext.RegionType;
 
+import net.java.javamoney.ri.ext.spi.CurrencyUnitMappingSpi;
 import net.java.javamoney.ri.ext.spi.CurrencyUnitProviderComponentSpi;
 
 /**
@@ -51,6 +54,8 @@ public class CDICurrencyUnitProviderSpi implements CurrencyUnitProviderSpi {
 	private static final String DEFAULT_NAMESPACE_PROP = "javax.money.defaultCurrencyNamespace";
 	/** Loaded currency providers. */
 	private Map<String, List<CurrencyUnitProviderComponentSpi>> currencyProviders = new ConcurrentHashMap<String, List<CurrencyUnitProviderComponentSpi>>();
+	/** Loaded currency mappers. */
+	private Instance<CurrencyUnitMappingSpi> mappers;
 	/** The default namespace used. */
 	private String defaultNamespace = MoneyCurrency.ISO_NAMESPACE;
 
@@ -73,6 +78,7 @@ public class CDICurrencyUnitProviderSpi implements CurrencyUnitProviderSpi {
 			}
 			provList.add(currencyProviderSPI);
 		}
+		mappers = CDIContainer.getInstances(CurrencyUnitMappingSpi.class);
 	}
 
 	/*

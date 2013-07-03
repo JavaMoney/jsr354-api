@@ -180,8 +180,8 @@ public final class MonetaryCurrencies {
     }
 
     /**
-     * Access an instance of the CurrencyValidity for the required
-     * validity source.
+     * Access an instance of the CurrencyValidity for the required validity
+     * source.
      * 
      * @param provider
      *            the validity provider.
@@ -326,8 +326,24 @@ public final class MonetaryCurrencies {
 	 */
 	public String getDefaultNamespace();
 
+	/**
+	 * Access all regions for a given namespace.
+	 * 
+	 * @param namespace
+	 *            the namespace, not null.
+	 * @return the regions that belong to the given namespace.
+	 */
 	public Collection<CurrencyUnit> getAll(String namespace);
 
+	/**
+	 * Access a {@link CurrencyUnit} by namespace and code.
+	 * 
+	 * @param namespace
+	 *            the namespace, not null.
+	 * @param code
+	 *            the code, not null.
+	 * @return the {@link CurrencyUnit} found.
+	 */
 	public CurrencyUnit get(String namespace, String code);
 
 	/**

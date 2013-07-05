@@ -23,7 +23,7 @@ import java.util.GregorianCalendar;
  * @param <T> the item type, e.g. CurrencyUnit
  * @param <R> the validity reference type, e.g. Region.
  */
-public class SpecifiedValidityInfo<T, R> extends ValidityInfo<T> {
+public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 
     /**
      * Serial version UID.
@@ -44,7 +44,7 @@ public class SpecifiedValidityInfo<T, R> extends ValidityInfo<T> {
      * @param from the calendar instance, defining the start of the validity range.
      * @param to the calendar instance, defining the end of the validity range.
      */
-    public SpecifiedValidityInfo(T item, R referenceItem, String validitySource, Calendar from, Calendar to) {
+    public RelatedValidityInfo(T item, R referenceItem, String validitySource, Calendar from, Calendar to) {
         super(item, validitySource, from, to);
         if (referenceItem == null) {
             throw new IllegalArgumentException("Reference Item required.");
@@ -61,7 +61,7 @@ public class SpecifiedValidityInfo<T, R> extends ValidityInfo<T> {
      * @param from the UTC timestamp, defining the start of the validity range.
      * @param to the UTC timestamp, defining the end of the validity range.
      */
-    public SpecifiedValidityInfo(T item, R referenceItem, String validitySource, Long from, Long to) {
+    public RelatedValidityInfo(T item, R referenceItem, String validitySource, Long from, Long to) {
 	super(item, validitySource, from, to);
         if (referenceItem == null) {
             throw new IllegalArgumentException("Reference Item required.");
@@ -107,7 +107,7 @@ public class SpecifiedValidityInfo<T, R> extends ValidityInfo<T> {
             return false;
         }
         @SuppressWarnings("rawtypes")
-        SpecifiedValidityInfo other = (SpecifiedValidityInfo) obj;
+        RelatedValidityInfo other = (RelatedValidityInfo) obj;
         if(!super.equals(other)){
             return false;
         }
@@ -138,10 +138,10 @@ public class SpecifiedValidityInfo<T, R> extends ValidityInfo<T> {
         if (compare != 0){
             return compare;
         }
-        if(!(other instanceof SpecifiedValidityInfo)){
+        if(!(other instanceof RelatedValidityInfo)){
             return -1;
         }
-        SpecifiedValidityInfo otherRef = (SpecifiedValidityInfo)other;
+        RelatedValidityInfo otherRef = (RelatedValidityInfo)other;
         
         if (compare == 0 && referenceItem instanceof Comparable) {
             if (referenceItem == null) {

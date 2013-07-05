@@ -16,12 +16,11 @@ import java.util.GregorianCalendar;
 
 /**
  * This abstract base class models a validity of an item S related to a
- * reference T.
+ * timeline. Hereby a validity may be undefined, when it starts or when it ends.
  *
  * @author Anatole Tresch
  *
- * @param <T> the item type, e.g. CurrencyUnit
- * @param <R> the validity reference type, e.g. Region.
+ * @param <T> the item type, e.g. a Region
  */
 public class ValidityInfo<T> implements Serializable, Comparable<ValidityInfo<T>> {
 
@@ -48,9 +47,9 @@ public class ValidityInfo<T> implements Serializable, Comparable<ValidityInfo<T>
      * Creates an instance of ValidityInfo.
      *
      * @param item the item, not null.
-     * @param referenceItem , the reference, not null.
      * @param validitySource the validity source.
-     * @param from the calendar instance, defining the start of the validity range.
+     * @param from the calendar instance, defining the start of the validity
+     * range.
      * @param to the calendar instance, defining the end of the validity range.
      */
     public ValidityInfo(T item, String validitySource, Calendar from, Calendar to) {
@@ -78,7 +77,6 @@ public class ValidityInfo<T> implements Serializable, Comparable<ValidityInfo<T>
      * Creates an instance of ValidityInfo.
      *
      * @param item the item, not null.
-     * @param referenceItem , the reference, not null.
      * @param validitySource the validity source.
      * @param from the UTC timestamp, defining the start of the validity range.
      * @param to the UTC timestamp, defining the end of the validity range.

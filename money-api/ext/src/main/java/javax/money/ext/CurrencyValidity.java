@@ -69,7 +69,7 @@ public interface CurrencyValidity {
      *            the target locale, not null.
      * @return the currencies found, never null.
      */
-    public Collection<SpecifiedValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region);
+    public Collection<RelatedValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region);
 
     /**
      * Access all currencies matching a {@link Region}, valid at the given
@@ -81,7 +81,7 @@ public interface CurrencyValidity {
      *            The target UTC timestamp, or -1 for the current UTC timestamp.
      * @return the currencies found, never null.
      */
-    public Collection<SpecifiedValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region, long timestamp);
+    public Collection<RelatedValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region, long timestamp);
 
     
     /**
@@ -91,7 +91,7 @@ public interface CurrencyValidity {
      *            The target namespace, not null.
      * @return the currencies found.
      */
-    public Collection<SpecifiedValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region, String namespace);
+    public Collection<RelatedValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region, String namespace);
 
     /**
      * This method allows to evaluate if a {@link CurrencyUnit} is a legal

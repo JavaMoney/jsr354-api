@@ -79,8 +79,8 @@ public interface Region {
      *            the required type, not null.
      * @return the region found, or null.
      */
-    public Region selectParent(RegionType type);
-    
+    public Region selectParent(RegionFilter filter);
+
     /**
      * Select a collection of regions selected by the given filter.
      * 
@@ -88,7 +88,7 @@ public interface Region {
      *            the region selector, null will return all regions.
      * @return the regions selected.
      */
-    public Collection<Region> selectChildren(RegionFilter filter);
+    public Collection<Region> select(RegionFilter filter);
 
     /**
      * Lookup a child region with the given id.
@@ -97,7 +97,7 @@ public interface Region {
      *            the child code, not null.
      * @return the child found, or null.
      */
-    public Region getChildByCode(String code);
+    public Region getRegionByCode(String code);
 
     /**
      * Lookup a child region with the given id.
@@ -106,6 +106,17 @@ public interface Region {
      *            the child numeric code.
      * @return the child found, or null.
      */
-    public Region getChildByNumericCode(int code);
+    public Region getRegionByNumericCode(int code);
+
+    /**
+     * Access a {@link Region} using the region path, which allows access of a
+     * {@link Region} from the tree, e.g. {@code WORLD/EUROPE/GERMANY} or
+     * {@code STANDARDS/ISO/GER}.
+     * 
+     * @param path
+     *            the path to be accessed, not {@code null}.
+     * @return the {@link Region} found, or {@code null}.
+     */
+    public Region getRegionByPath(String path);
 
 }

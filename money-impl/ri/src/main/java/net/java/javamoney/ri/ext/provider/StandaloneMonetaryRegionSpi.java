@@ -23,10 +23,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-import javax.money.CurrencyUnit;
 import javax.money.ext.MonetaryRegions.MonetaryRegionsSpi;
 import javax.money.ext.Region;
-import javax.money.ext.RegionInfo;
+import javax.money.ext.RegionType;
+import javax.money.ext.RegionValidity;
 
 /**
  * This class models the singleton defined by JSR 354 that provides accessors
@@ -39,13 +39,47 @@ public class StandaloneMonetaryRegionSpi implements MonetaryRegionsSpi {
 // TODO
 
 	@Override
-	public Set<String> getRegionProviders() {
-	    // TODO Auto-generated method stub
+	public Set<String> getRegionValidityProviders() {
 	    return Collections.emptySet();
 	}
 
 	@Override
-	public RegionInfo getRegionInfo(String provider) {
+	public RegionValidity getRegionValidity(String provider) {
+	    throw new IllegalArgumentException("Unsupported: " + provider);
+	}
+
+	@Override
+	public Region getRegionTree(int numericId) {
+	    // TODO Auto-generated method stub
+	    return null;
+	}
+
+	@Override
+	public Region getRegionTree(String id) {
+	    // TODO Auto-generated method stub
+	    return null;
+	}
+
+	@Override
+	public Collection<Region> getRegionTrees() {
+	    // TODO Auto-generated method stub
+	    return null;
+	}
+
+	@Override
+	public Region getRegion(RegionType type, int numericId) {
+	    // TODO Auto-generated method stub
+	    return null;
+	}
+
+	@Override
+	public Region getRegion(RegionType type, String code) {
+	    // TODO Auto-generated method stub
+	    return null;
+	}
+
+	@Override
+	public Set<RegionType> getRegionTypes() {
 	    // TODO Auto-generated method stub
 	    return null;
 	}

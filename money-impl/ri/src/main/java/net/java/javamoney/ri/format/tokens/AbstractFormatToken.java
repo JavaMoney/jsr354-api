@@ -19,6 +19,7 @@
 package net.java.javamoney.ri.format.tokens;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.money.format.FormatToken;
 import javax.money.format.LocalizationStyle;
@@ -33,12 +34,12 @@ import javax.money.format.LocalizationStyle;
  */
 public abstract class AbstractFormatToken<T> implements FormatToken<T> {
 
-	protected abstract String getToken(T item, LocalizationStyle style);
+	protected abstract String getToken(T item, Locale locale, LocalizationStyle style);
 
 	@Override
-	public void print(Appendable appendable, T item, LocalizationStyle style)
+	public void print(Appendable appendable, T item, Locale locale, LocalizationStyle style)
 			throws IOException {
-		String token = adjustPreformatted(getToken(adjustValue(item), style));
+		String token = adjustPreformatted(getToken(adjustValue(item), locale, style));
 		if (token == null) {
 			throw new IllegalStateException("Token may not be null.");
 		}

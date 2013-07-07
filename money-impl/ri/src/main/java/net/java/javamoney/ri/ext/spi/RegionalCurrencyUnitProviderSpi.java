@@ -57,18 +57,4 @@ public interface RegionalCurrencyUnitProviderSpi {
 	 */
 	public Collection<CurrencyUnit> getAll(Region region, Long timestamp);
 
-	/**
-	 * Access all legal tenders for a region.
-	 * 
-	 * @see RegionalCurrencyUnitProvider#getLegalCurrencyUnits(Region)
-	 * @param region
-	 *            The target region, not null.
-	 * @param timestamp
-	 *            the target timestamp, may be null, meaning now.
-	 * @return The {@link CurrencyUnit} instances valid for a given
-	 *         {@link Region}.
-	 */
-	public Collection<CurrencyUnit> getLegalTenders(Region region,
-			Long timestamp);
-
 }

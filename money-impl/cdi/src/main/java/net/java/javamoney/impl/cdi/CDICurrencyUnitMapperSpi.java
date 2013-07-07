@@ -68,8 +68,8 @@ public class CDICurrencyUnitMapperSpi implements CurrencyUnitMapperSpi {
 	}
 
 	@Override
-	public CurrencyUnit map(String targetNamespace, Long timestamp,
-			CurrencyUnit currencyUnit) {
+	public CurrencyUnit map(String targetNamespace,
+			CurrencyUnit currencyUnit, Long timestamp) {
 		if (timestamp == null) {
 			return map(targetNamespace, currencyUnit);
 		}

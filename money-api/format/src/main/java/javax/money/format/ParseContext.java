@@ -11,8 +11,8 @@ package javax.money.format;
 import java.text.ParsePosition;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
-
 
 /**
  * Context used when parsing items.
@@ -49,10 +49,10 @@ public final class ParseContext<T> {
 		if (text == null) {
 			throw new IllegalArgumentException("test is required");
 		}
-		this.originalInput = text;
 		if (itemFactory == null) {
 			throw new IllegalArgumentException("itemFactory is required");
 		}
+		this.originalInput = text;
 		this.itemFactory = itemFactory;
 	}
 

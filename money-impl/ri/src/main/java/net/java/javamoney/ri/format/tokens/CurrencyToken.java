@@ -18,6 +18,7 @@
  */
 package net.java.javamoney.ri.format.tokens;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.money.CurrencyUnit;
@@ -61,7 +62,7 @@ public class CurrencyToken extends
 		return this.displayType;
 	}
 
-	protected String getToken(CurrencyUnit unit, javax.money.format.LocalizationStyle style) {
+	protected String getToken(CurrencyUnit unit, Locale locale, javax.money.format.LocalizationStyle style) {
 		switch (displayType) {
 		case CODE:
 			return unit.getCurrencyCode();
@@ -75,12 +76,12 @@ public class CurrencyToken extends
 							CurrencyUnit.class,
 							new LocalizationStyle.Builder(style).setAttribute(
 									"renderField", "displayName").build());
-			return cf1.format(unit);
+			return cf1.format(unit, locale);
 		case SYMBOL:
 			ItemFormat<CurrencyUnit> cf2 = MonetaryFormats.getItemFormat(
 					CurrencyUnit.class, new LocalizationStyle.Builder(style)
 							.setAttribute("renderField", "symbol").build());
-			return cf2.format(unit);
+			return cf2.format(unit, locale);
 		case FULLCODE:
 		default:
 			return unit.getNamespace() + ':' + unit.getCurrencyCode();
@@ -88,7 +89,7 @@ public class CurrencyToken extends
 	}
 
 	@Override
-	public void parse(ParseContext context, LocalizationStyle style)
+	public void parse(ParseContext context, Locale locale, LocalizationStyle style)
 			throws ItemParseException {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}

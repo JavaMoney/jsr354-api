@@ -99,14 +99,14 @@ public class SECurrencyUnitProviderSpi implements CurrencyUnitProviderSpi {
 	 * @see javax.money.CurrencyUnitProvider#get(java.lang.String,
 	 * java.lang.String, long)
 	 */
-	public CurrencyUnit get(String namespace, String code, Long timestamp) {
+	public CurrencyUnit get(String namespace, String code) {
 		List<CurrencyUnitProviderComponentSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
 			return null;
 		}
 		for (CurrencyUnitProviderComponentSpi prov : provList) {
-			CurrencyUnit currency = prov.getCurrency(code, timestamp);
+			CurrencyUnit currency = prov.getCurrency(code);
 			if (currency != null) {
 				return currency;
 			}
@@ -122,10 +122,6 @@ public class SECurrencyUnitProviderSpi implements CurrencyUnitProviderSpi {
 	 * @return the regions found, never null.
 	 */
 	public Collection<CurrencyUnit> getAll(String namespace) {
-		return getAll(namespace, null);
-	}
-
-	public Collection<CurrencyUnit> getAll(String namespace, Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		List<CurrencyUnitProviderComponentSpi> provList = currencyProviders
 				.get(namespace);
@@ -133,9 +129,9 @@ public class SECurrencyUnitProviderSpi implements CurrencyUnitProviderSpi {
 			return null;
 		}
 		for (CurrencyUnitProviderComponentSpi prov : provList) {
-			CurrencyUnit[] currencies = prov.getCurrencies(null);
+			Collection<CurrencyUnit> currencies = prov.getCurrencies();
 			if (currencies != null) {
-				result.addAll(Arrays.asList(currencies));
+				result.addAll(currencies);
 			}
 		}
 		return result;
@@ -147,73 +143,49 @@ public class SECurrencyUnitProviderSpi implements CurrencyUnitProviderSpi {
 	 * @return the regions found, never null.
 	 */
 	public Collection<CurrencyUnit> getAll() {
-		return getAll((Long) null);
-	}
-
-	public Collection<CurrencyUnit> getAll(Long timestamp) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		for (List<CurrencyUnitProviderComponentSpi> provList : currencyProviders
 				.values()) {
 			for (CurrencyUnitProviderComponentSpi prov : provList) {
-				CurrencyUnit[] currencies = prov.getCurrencies(timestamp);
+				Collection<CurrencyUnit> currencies = prov.getCurrencies();
 				if (currencies != null) {
-					result.addAll(Arrays.asList(currencies));
+					result.addAll(currencies);
 				}
 			}
 		}
 		return result;
 	}
 
-	public CurrencyUnit get(String namespace, String code) {
-		return get(namespace, code, null);
-	}
-
 	public boolean isAvailable(String namespace, String code) {
-		return isAvailable(namespace, code, null, null);
-	}
-
-	public boolean isAvailable(String namespace, String code, Long timestamp) {
-		return isAvailable(namespace, code, timestamp, null);
-	}
-
-	public boolean isAvailable(String namespace, String code, Long start,
-			Long end) {
 		List<CurrencyUnitProviderComponentSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
 			return false;
 		}
 		for (CurrencyUnitProviderComponentSpi prov : provList) {
-			if (prov.isAvailable(code, start, end)) {
+			if (prov.isAvailable(code)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public boolean isNamespaceAvailable(String namespace, Long timestamp) {
-		// TODO add support for historization
+	public boolean isNamespaceAvailable(String namespace) {
 		return this.currencyProviders.containsKey(namespace);
 	}
 
-	public Collection<String> getNamespaces(Long timestamp) {
-		// TODO add support for historization
+	public Collection<String> getNamespaces() {
 		return this.currencyProviders.keySet();
 	}
 
-	public Collection<CurrencyUnit> getAll(Locale locale) {
-		return getAll(locale, null);
-	}
-
-	public Set<CurrencyUnit> getAll(Locale locale, Long timestamp) {
+	public Set<CurrencyUnit> getAll(Locale locale) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		for (List<CurrencyUnitProviderComponentSpi> provList : currencyProviders
 				.values()) {
 			for (CurrencyUnitProviderComponentSpi prov : provList) {
-				CurrencyUnit[] currencies = prov.getCurrencies(locale,
-						timestamp);
+				Collection<CurrencyUnit> currencies = prov.getCurrencies(locale);
 				if (currencies != null) {
-					result.addAll(Arrays.asList(currencies));
+					result.addAll(currencies);
 				}
 			}
 		}

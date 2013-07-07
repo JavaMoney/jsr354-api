@@ -128,8 +128,8 @@ public class SmokeTests {
 		try {
 			ItemFormat<CurrencyUnit> parser = MonetaryFormats.getItemFormat(
 					CurrencyUnit.class,
-					LocalizationStyle.of("ID", Locale.ENGLISH));
-			CurrencyUnit cur = parser.parse("CHF");
+					LocalizationStyle.of(CurrencyUnit.class, "ID"));
+			CurrencyUnit cur = parser.parse("CHF", Locale.ENGLISH);
 			assertNotNull(cur);
 			assertEquals("CHF", cur.getCurrencyCode());
 		} catch (ItemParseException e) {
@@ -144,8 +144,8 @@ public class SmokeTests {
 		MonetaryAmount amount = Money.of(currency, 1.0d);
 		ItemFormat<MonetaryAmount> formatter = MonetaryFormats.getItemFormat(
 				MonetaryAmount.class,
-				LocalizationStyle.of("CODE", Locale.GERMANY));
-		System.out.println("Formatted amount: " + formatter.format(amount));
+				LocalizationStyle.of(MonetaryAmount.class, "CODE"));
+		System.out.println("Formatted amount: " + formatter.format(amount, Locale.GERMANY));
 		assertEquals(1.0d, amount.doubleValue(), 0);
 	}
 

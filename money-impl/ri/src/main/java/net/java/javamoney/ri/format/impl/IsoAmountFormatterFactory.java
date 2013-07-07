@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MoneyCurrency;
 import javax.money.format.ItemFormat;
@@ -50,6 +51,15 @@ public class IsoAmountFormatterFactory implements
 		supportedRenderTypes.add(LocalizationStyle.DEFAULT_ID);
 		return supportedRenderTypes;
 	}
+	
+	@Override
+	public LocalizationStyle getLocalizationStyle(Class<?> targetType, String styleId) {
+	    LocalizationStyle style = LocalizationStyle.of(targetType, styleId);
+	    if(LocalizationStyle.DEFAULT_ID.equals(styleId)){
+		style = new LocalizationStyle.Builder(targetType, styleId).build(true);
+	    }
+	    return style;
+	}
 
 	@Override
 	public boolean isSupportedStyle(String styleId) {
@@ -74,9 +84,10 @@ public class IsoAmountFormatterFactory implements
 		if (renderedFieldValue == null) {
 			renderedFieldValue = "CODE";
 		}
-		LocalizationStyle currencyStyle = new LocalizationStyle.Builder(
-				renderedFieldValue, style.getNumberLocale()).build();
+		LocalizationStyle currencyStyle = new LocalizationStyle.Builder(CurrencyUnit.class,
+				renderedFieldValue).setAttribute("currencyRendering", renderedFieldValue).build();
 		return new IsoAmountFormatter(style, currencyStyle);
 	}
+
 
 }

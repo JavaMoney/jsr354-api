@@ -9,6 +9,7 @@
 package javax.money.format;
 
 import java.io.IOException;
+import java.util.Locale;
 
 
 /**
@@ -31,6 +32,10 @@ public interface FormatToken<T> {
 	 *            the appendable to add to, not null
 	 * @param item
 	 *            the item to print, not null
+         * @param locale 
+         *             the {@link Locale} to be used, not null.
+         * @param style 
+         *             the {@link LocalizationStyle} to be used.
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 * @throws ItemFormatException
@@ -38,7 +43,7 @@ public interface FormatToken<T> {
 	 * @throws IOException
 	 *             if an IO error occurs
 	 */
-	public void print(Appendable appendable, T item, LocalizationStyle style)
+	public void print(Appendable appendable, T item, Locale locale, LocalizationStyle style)
 			throws IOException;
 
 	/**
@@ -50,10 +55,14 @@ public interface FormatToken<T> {
 	 * 
 	 * @param context
 	 *            the parse context
+         * @param locale 
+         *             the {@link Locale} to be used, not null.
+         * @param style 
+         *             the {@link LocalizationStyle} to be used.
 	 * @throws ItemParseException
 	 *             thrown, if parsing fails.
 	 */
-	public void parse(ParseContext<T> context, LocalizationStyle style)
+	public void parse(ParseContext<T> context, Locale locale, LocalizationStyle style)
 			throws ItemParseException;
 
 }

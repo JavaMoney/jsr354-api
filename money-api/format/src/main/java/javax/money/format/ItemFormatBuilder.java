@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class implements a format based on an ordered list of
@@ -301,9 +302,9 @@ public class ItemFormatBuilder<T> {
 		 * @throws IOException
 		 *             forwarded exception thrown by the {@link Appendable}.
 		 */
-		public void print(Appendable appendable, T item) throws IOException {
+		public void print(Appendable appendable, T item, Locale locale) throws IOException {
 			for (FormatToken<T> token : tokens) {
-				token.print(appendable, item, style);
+				token.print(appendable, item, locale, style);
 			}
 		}
 
@@ -316,12 +317,12 @@ public class ItemFormatBuilder<T> {
 		 * @throws ItemFormatException
 		 *             If formatting fails.
 		 */
-		public String format(T item) {
+		public String format(T item, Locale locale) {
 			StringBuilder builder = new StringBuilder();
 			try {
-				print(builder, item);
+                            print(builder, item, locale);
 			} catch (IOException e) {
-				throw new ItemFormatException("Error foratting of " + item, e);
+                            throw new ItemFormatException("Error foratting of " + item, e);
 			}
 			return builder.toString();
 		}
@@ -335,11 +336,11 @@ public class ItemFormatBuilder<T> {
 		 * @throws ItemParseException
 		 *             If parsing failed.
 		 */
-		public T parse(CharSequence text)
+		public T parse(CharSequence text, Locale locale)
 				throws ItemParseException {
 			ParseContext<T> ctx = new ParseContext<T>(text, itemFactory);
 			for (FormatToken<T> token : tokens) {
-				token.parse(ctx, style);
+				token.parse(ctx, locale, style);
 				if (ctx.isComplete()) {
 					return ctx.getItem();
 				}

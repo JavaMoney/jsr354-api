@@ -20,6 +20,7 @@ package net.java.javamoney.ri.format.tokens;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import javax.money.format.FormatToken;
 import javax.money.format.ItemParseException;
@@ -119,11 +120,10 @@ public class NumberToken extends AbstractFormatToken<Number> {
 		return this;
 	}
 
-	protected DecimalFormat getNumberFormat(LocalizationStyle style) {
+	protected DecimalFormat getNumberFormat(Locale locale, LocalizationStyle style) {
 		DecimalFormat formatUsed = this.format;
 		if (formatUsed == null) {
-			formatUsed = (DecimalFormat) DecimalFormat.getInstance(style
-					.getNumberLocale());
+			formatUsed = (DecimalFormat) DecimalFormat.getInstance(locale);
 		}
 		if (this.numberGroup != null) { // this.fractionGroup!=null ||
 			formatUsed.setGroupingUsed(false);
@@ -132,8 +132,8 @@ public class NumberToken extends AbstractFormatToken<Number> {
 	}
 
 	@Override
-	protected String getToken(Number item, LocalizationStyle style) {
-		DecimalFormat format = getNumberFormat(style);
+	protected String getToken(Number item, Locale locale, LocalizationStyle style) {
+		DecimalFormat format = getNumberFormat(locale, style);
 		if (this.numberGroup == null) { // || this.fractionGroup==null
 			return format.format(item);
 		}
@@ -155,9 +155,9 @@ public class NumberToken extends AbstractFormatToken<Number> {
 	}
 
 	@Override
-	public void parse(ParseContext context, LocalizationStyle style)
+	public void parse(ParseContext context, Locale locale, LocalizationStyle style)
 			throws ItemParseException {
-		DecimalFormat df = getNumberFormat(style);
+		DecimalFormat df = getNumberFormat(locale, style);
 		if (style.getAttribute("enforceGrouping", Boolean.class)) {
 			df.setGroupingUsed(true);
 		} else {

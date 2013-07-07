@@ -21,6 +21,7 @@ package net.java.javamoney.ri.format.impl;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
@@ -81,7 +82,7 @@ public class IsoAmountFormatter implements ItemFormat<MonetaryAmount> {
 	}
 
 	@Override
-	public String format(MonetaryAmount item) throws ItemFormatException {
+	public String format(MonetaryAmount item, Locale locale) throws ItemFormatException {
 		CurrencyUnit currencyUnit = item.getCurrency();
 		StringBuilder result = new StringBuilder();
 
@@ -93,8 +94,12 @@ public class IsoAmountFormatter implements ItemFormat<MonetaryAmount> {
 			// an extension SPI that may be loaded for
 			// special currencies only, thus requiring to override the more
 			// advanced cases only ;-)
+			Locale numberLocale = style.getAttribute("numberLocale", Locale.class);
+			if(numberLocale == null){
+				numberLocale = locale;
+			}
 			DecimalFormat df = (DecimalFormat) DecimalFormat
-					.getCurrencyInstance(style.getNumberLocale());
+					.getCurrencyInstance(numberLocale);
 			DecimalFormatSymbols syms = df.getDecimalFormatSymbols();
 			syms.setCurrencySymbol("");
 			df.setDecimalFormatSymbols(syms);
@@ -141,10 +146,10 @@ public class IsoAmountFormatter implements ItemFormat<MonetaryAmount> {
 			case NONE:
 				return numberString;
 			case LEADING:
-				currencyString = cf.format(item.getCurrency());
+				currencyString = cf.format(item.getCurrency(), locale);
 				return currencyString + sep + numberString;
 			case TRAILING:
-				currencyString = cf.format(item.getCurrency());
+				currencyString = cf.format(item.getCurrency(), locale);
 				return numberString + sep + currencyString;
 			}
 		}
@@ -159,13 +164,13 @@ public class IsoAmountFormatter implements ItemFormat<MonetaryAmount> {
 	}
 
 	@Override
-	public void print(Appendable appendable, MonetaryAmount item)
+	public void print(Appendable appendable, MonetaryAmount item, Locale locale)
 			throws IOException {
-		appendable.append(format(item));
+		appendable.append(format(item, locale));
 	}
 
 	@Override
-	public MonetaryAmount parse(CharSequence text) throws ItemParseException {
+	public MonetaryAmount parse(CharSequence text, Locale locale) throws ItemParseException {
 		throw new ItemParseException("Cannot parse amount: not implemented.");
 	}
 

@@ -244,7 +244,7 @@ public class EZBConversionProvider implements ConversionProvider {
 		return new ExchangeRate(rate.getExchangeRateType(), rate.getTerm(),
 				rate.getBase(), BigDecimal.ONE.divide(rate.getFactor(),
 						MathContext.DECIMAL64), rate.getProvider(),
-				rate.getValidFrom(), rate.getValidUntil());
+				rate.getValidFromTimeInMillis(), rate.getValidToTimeInMillis());
 	}
 
 	/**
@@ -378,7 +378,7 @@ public class EZBConversionProvider implements ConversionProvider {
 	@Override
 	public ExchangeRate getReversed(ExchangeRate rate) {
 		return getExchangeRate(rate.getTerm(), rate.getBase(),
-				rate.getValidFrom());
+				rate.getValidFromTimeInMillis());
 	}
 
 	@Override

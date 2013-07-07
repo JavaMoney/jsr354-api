@@ -9,6 +9,7 @@ import javax.money.convert.MonetaryConversions.MonetaryConversionsSpi;
 public class TestMonetaryConversionSpi implements MonetaryConversionsSpi {
 
 	private ConversionProvider dummyProvider = new DummyConversionProvider();
+	
 	@Override
 	public ConversionProvider getConversionProvider(ExchangeRateType type) {
 		if(ExchangeRateType.of("test").equals(type)){

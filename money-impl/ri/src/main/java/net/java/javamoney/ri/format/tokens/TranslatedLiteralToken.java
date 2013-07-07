@@ -18,6 +18,7 @@
  */
 package net.java.javamoney.ri.format.tokens;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.money.format.FormatToken;
@@ -79,17 +80,17 @@ public class TranslatedLiteralToken<T> extends AbstractFormatToken<T> {
 		return this.key;
 	}
 
-	protected String getToken(T item, javax.money.format.LocalizationStyle style) {
-		return getTokenInternal(style);
+	protected String getToken(T item, Locale locale, javax.money.format.LocalizationStyle style) {
+		return getTokenInternal(locale, style);
 	};
 
-	private String getTokenInternal(LocalizationStyle style) {
+	private String getTokenInternal(Locale locale, LocalizationStyle style) {
 		if (bundle == null) {
 			return String.valueOf(key);
 		}
 		try {
 			ResourceBundle rb = ResourceBundle.getBundle(bundle,
-					style.getTranslationLocale());
+					locale);
 			return rb.getString(key);
 		} catch (Exception e) {
 			return String.valueOf(key);
@@ -97,9 +98,9 @@ public class TranslatedLiteralToken<T> extends AbstractFormatToken<T> {
 	}
 
 	@Override
-	public void parse(ParseContext context, LocalizationStyle style)
+	public void parse(ParseContext context, Locale locale, LocalizationStyle style)
 			throws ItemParseException {
-		String token = getTokenInternal(style);
+		String token = getTokenInternal(locale, style);
 		if (!context.consume(token)) {
 			LOG.debug("Optional: " + token + " not found at "
 						+ context.getInput().toString());

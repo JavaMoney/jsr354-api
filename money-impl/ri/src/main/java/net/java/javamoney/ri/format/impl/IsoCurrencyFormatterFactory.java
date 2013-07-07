@@ -55,6 +55,23 @@ public class IsoCurrencyFormatterFactory implements
 		}
 		return supportedRenderTypes;
 	}
+	
+	@Override
+	public LocalizationStyle getLocalizationStyle(Class<?> targetType, String styleId) {
+	    LocalizationStyle style = LocalizationStyle.of(targetType, styleId);
+	    if(LocalizationStyle.DEFAULT_ID.equals(styleId)){
+		style = new LocalizationStyle.Builder(targetType, styleId).build(true);
+	    }
+	    try{
+		RenderedField.valueOf(styleId);
+		style = new LocalizationStyle.Builder(targetType, styleId).build(true);
+	    }
+	    catch(Exception e){
+		// it is not a valid style...
+		return style;
+	    }
+	    return style;
+	}
 
 	@Override
 	public boolean isSupportedStyle(String styleId) {

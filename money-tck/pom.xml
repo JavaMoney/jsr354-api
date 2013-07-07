@@ -9,19 +9,25 @@
 	<artifactId>money-tck</artifactId>
 	<name>JSR 354 (Money and Currency) - TCK</name>
 	<description>Technical Compatibility Kit (TCK) of JSR 354</description>
+	<groupId>org.javamoney</groupId>
+	<version>0.5-SNAPSHOT</version>
 
 	<properties>
 		<javamoney.version>${project.version}</javamoney.version>
 		<slf4j.version>1.6.1</slf4j.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jboss.test.audit.version>1.1.0.Final</jboss.test.audit.version>
+		<java.source.version>1.7</java.source.version>
+		<java.target.version>1.7</java.target.version>
 	</properties>
-	
+
 	<licenses>
 		<license>
 			<name>Apache License version 2.0</name>
 			<url>LICENSE.txt</url>
 		</license>
 	</licenses>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -48,7 +54,7 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jul-to-slf4j</artifactId>
-				 <version>${slf4j.version}</version>
+				<version>${slf4j.version}</version>
 			</dependency>
 
 			<dependency>
@@ -59,14 +65,9 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		<dependency>
-			<groupId>javax.money</groupId>
-			<artifactId>money-api-ext</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-		</dependency>
+		<!-- dependency> <groupId>javax.money</groupId> <artifactId>money-api-ext</artifactId> 
+			</dependency> <dependency> <groupId>javax.inject</groupId> <artifactId>javax.inject</artifactId> 
+			</dependency -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -80,7 +81,89 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.test-audit</groupId>
+			<artifactId>jboss-test-audit-api</artifactId>
+			<version>${jboss.test.audit.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.test-audit</groupId>
+			<artifactId>jboss-test-audit-impl</artifactId>
+			<version>${jboss.test.audit.version}</version>
+		</dependency>
 	</dependencies>
-	<groupId>net.java.javamoney</groupId>
-	<version>0.5-SNAPSHOT</version>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+				<version>2.0.4</version>
+				<configuration>
+					<defaultOutputDirectory>${basedir}/target/coverage-report</defaultOutputDirectory>
+					<processors>
+						<processor>org.jboss.test.audit.report.CoverageProcessor</processor>
+					</processors>
+					<compilerArguments>-AauditXml=tck.xml -AoutputDir=${basedir}/target/coverage-report -source ${java.source.version}
+                        -target ${java.target.version}
+					</compilerArguments>
+					<!-- -source ${java.source.version} -target ${java.target.version} -->
+				</configuration>
+				<executions>
+					<execution>
+						<id>process</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>process-test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.bsc.maven</groupId>
+										<artifactId>
+											maven-processor-plugin
+										</artifactId>
+										<versionRange>
+											[2.0.4,)
+										</versionRange>
+										<goals>
+											<goal>process-test</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<repositories>
+		<repository>
+			<id>jboss-maven2-brew</id>
+			<name>JBoss Maven 2 Brew Repository</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+			<layout>default</layout>
+
+		</repository>
+	</repositories>
+
 </project>

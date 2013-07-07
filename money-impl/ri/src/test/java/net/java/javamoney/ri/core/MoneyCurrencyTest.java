@@ -112,26 +112,6 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getValidFrom()}.
-	 */
-	@Test
-	public void testGetValidFrom() {
-		CurrencyUnit cur = MoneyCurrency.of("USD");
-		assertNull(cur.getValidFrom());
-	}
-
-	/**
-	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getValidUntil()}.
-	 */
-	@Test
-	public void testGetValidUntil() {
-		CurrencyUnit cur = MoneyCurrency.of("USD");
-		assertNull(cur.getValidUntil());
-	}
-
-	/**
-	 * Test method for
 	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getCurrencyCode()}.
 	 */
 	@Test

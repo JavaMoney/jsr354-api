@@ -37,8 +37,8 @@ public class ExchangeRateTest {
 		assertEquals(ExchangeRateType.of("test"), rate.getExchangeRateType());
 		assertEquals(Arrays.asList(new ExchangeRate[]{rate}), rate.getExchangeRateChain());
 		assertEquals("myProvider", rate.getProvider());
-		assertEquals(10, rate.getValidFrom().longValue());
-		assertEquals(100, rate.getValidUntil().longValue());
+		assertEquals(10, rate.getValidFromTimeInMillis().longValue());
+		assertEquals(100, rate.getValidToTimeInMillis().longValue());
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class ExchangeRateTest {
 		assertEquals(Arrays.asList(new ExchangeRate[]{rate1, rate2}), rate.getExchangeRateChain());
 		assertEquals("myProvider", rate.getProvider());
 		assertNull(rate.getValidFrom());
-		assertNull(rate.getValidUntil());
+		assertNull(rate.getValidToTimeInMillis());
 	}
 
 	@Test
@@ -77,8 +77,8 @@ public class ExchangeRateTest {
 		assertEquals(ExchangeRateType.of("test"), rate.getExchangeRateType());
 		assertEquals(Arrays.asList(new ExchangeRate[]{rate1, rate2}), rate.getExchangeRateChain());
 		assertEquals("myProvider", rate.getProvider());
-		assertEquals(10, rate.getValidFrom().longValue());
-		assertEquals(100, rate.getValidUntil().longValue());
+		assertEquals(10, rate.getValidFromTimeInMillis().longValue());
+		assertEquals(100, rate.getValidToTimeInMillis().longValue());
 	}
 
 	
@@ -91,9 +91,9 @@ public class ExchangeRateTest {
 		ExchangeRate rate2 = new ExchangeRate(ExchangeRateType.of("test"),baseTerm,term,1.4,"myProvider");
 		// derived rate
 		ExchangeRate rate = new ExchangeRate(ExchangeRateType.of("test"),base,term,0.8 * 1.4,"myProvider", 10L, 100L, rate1, rate2);
-		assertEquals("ExchangeRate [type=test, base=ISO-4217:CHF, term=ISO-4217:USD, factor=1.1199999999999999, validFrom=10, validUntil=100, provider=myProvider]",rate.toString());
+		assertEquals("ExchangeRate [type=test, base=ISO-4217:CHF, term=ISO-4217:USD, factor=1.1199999999999999, validFrom=10, validTo=100, provider=myProvider]",rate.toString());
 		rate = new ExchangeRate(ExchangeRateType.of("test"),base,term,1.5,"myProvider");
-		assertEquals("ExchangeRate [type=test, base=ISO-4217:CHF, term=ISO-4217:USD, factor=1.5, validFrom=null, validUntil=null, provider=myProvider]",rate.toString());
+		assertEquals("ExchangeRate [type=test, base=ISO-4217:CHF, term=ISO-4217:USD, factor=1.5, validFrom=null, validTo=null, provider=myProvider]",rate.toString());
 	}
 
 }

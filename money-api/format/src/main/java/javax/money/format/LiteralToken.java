@@ -9,69 +9,71 @@
 package javax.money.format;
 
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * {@link FormatToken} which adds an arbitrary literal constant value to the
  * output.
- * 
+ *
  * @author Anatole Tresch
- * 
- * @param <T>
- *            The item type.
+ *
+ * @param <T> The item type.
  */
 public final class LiteralToken<R> implements FormatToken<R> {
-	/** The literal part. */
-	private String token;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param token
-	 *            The literal token part.
-	 */
-	public LiteralToken(String token) {
-		if (token == null) {
-			throw new IllegalArgumentException("Token is required.");
-		}
-		this.token = token;
-	}
+    /**
+     * The literal part.
+     */
+    private String token;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.money.format.FormatToken#parse(javax.money.format.ParseContext,
-	 * javax.money.format.LocalizationStyle)
-	 */
-	@Override
-	public void parse(ParseContext<R> context, LocalizationStyle style)
-			throws ItemParseException {
-		if (!context.consume(token)) {
-			throw new ItemParseException("Expected '" + token + "' in "
-					+ context.getInput().toString());
-		}
-	}
+    /**
+     * Constructor.
+     *
+     * @param token The literal token part.
+     */
+    public LiteralToken(String token) {
+        if (token == null) {
+            throw new IllegalArgumentException("Token is required.");
+        }
+        this.token = token;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.format.FormatToken#print(java.lang.Appendable,
-	 * java.lang.Object, javax.money.format.LocalizationStyle)
-	 */
-	@Override
-	public void print(Appendable appendable, R item, LocalizationStyle style)
-			throws IOException {
-		appendable.append(this.token);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * javax.money.format.FormatToken#parse(javax.money.format.ParseContext,java.util.Locale,
+     * javax.money.format.LocalizationStyle)
+     */
+    @Override
+    public void parse(ParseContext<R> context, Locale locale, LocalizationStyle style)
+            throws ItemParseException {
+        if (!context.consume(token)) {
+            throw new ItemParseException("Expected '" + token + "' in "
+                    + context.getInput().toString());
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "LiteralToken [token=" + token + "]";
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.money.format.FormatToken#print(java.lang.Appendable,
+     * java.lang.Object, java.util.Locale, javax.money.format.LocalizationStyle)
+     */
+    @Override
+    public void print(Appendable appendable, R item, Locale locale, LocalizationStyle style)
+            throws IOException {
+        appendable.append(this.token);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "LiteralToken [token=" + token + "]";
+    }
 
 }

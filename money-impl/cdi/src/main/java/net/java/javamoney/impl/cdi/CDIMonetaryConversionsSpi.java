@@ -35,9 +35,10 @@ public class CDIMonetaryConversionsSpi implements MonetaryConversionsSpi {
 
 	private Map<ExchangeRateType, ConversionProvider> conversionProviders = new ConcurrentHashMap<ExchangeRateType, ConversionProvider>();
 
-	public CDIMonetaryConversionsSpi() {
-		for (ConversionProvider prov : CDIContainer.getInstances(ConversionProvider.class)) {
-			this.conversionProviders.put(prov.getExchangeRateType(), prov);
+	@Inject
+	public CDIMonetaryConversionsSpi(Instance<ConversionProvider> spis) {
+		for (ConversionProvider prov : spis) {
+		    this.conversionProviders.put(prov.getExchangeRateType(), prov);
 		}
 	}
 

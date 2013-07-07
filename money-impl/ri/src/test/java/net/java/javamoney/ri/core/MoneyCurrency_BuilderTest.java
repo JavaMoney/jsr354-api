@@ -149,34 +149,6 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setValidFrom(java.lang.Long)}
-	 * and {@link javax.money.CurrencyUnitImpl.Builder#getValidFrom()}.
-	 */
-	@Test
-	public void testGetSetValidFrom() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setValidFrom(Long.valueOf(10));
-		assertEquals(Long.valueOf(10), builder.getValidFrom());
-		builder.setValidFrom(null);
-		assertNull(builder.getValidFrom());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setValidUntil(java.lang.Long)}
-	 * .
-	 */
-	@Test
-	public void testSetValidUntil() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setValidUntil(Long.valueOf(10));
-		assertEquals(Long.valueOf(10), builder.getValidUntil());
-		builder.setValidUntil(null);
-		assertNull(builder.getValidUntil());
-	}
-
-	/**
-	 * Test method for
 	 * {@link javax.money.CurrencyUnitImpl.Builder#setLegalTender(boolean)} and
 	 * {@link javax.money.CurrencyUnitImpl.Builder#hasLegalTender()}.
 	 */
@@ -205,19 +177,6 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#getValidUntil()} .
-	 */
-	@Test
-	public void testGetSetValidUntil() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setValidUntil(Long.valueOf(10));
-		assertEquals(Long.valueOf(10), builder.getValidUntil());
-		builder.setValidUntil(null);
-		assertNull(builder.getValidUntil());
-	}
-
-	/**
-	 * Test method for
 	 * {@link javax.money.CurrencyUnitImpl.Builder#isBuildable()}.
 	 */
 	@Test
@@ -238,14 +197,12 @@ public class MoneyCurrency_BuilderTest {
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
 				.setNamespace("ns").setCurrencyCode("cd").setLegalTender(true)
 				.setVirtual(false).setDefaultFractionDigits(101)
-				.setNumericCode(7).setValidFrom(10L).setValidUntil(100L);
+				.setNumericCode(7);
 		CurrencyUnit cu = builder.build();
 		assertEquals("ns", cu.getNamespace());
 		assertEquals("cd", cu.getCurrencyCode());
 		assertEquals(101, cu.getDefaultFractionDigits());
 		assertEquals(7, cu.getNumericCode());
-		assertEquals(Long.valueOf(10L), cu.getValidFrom());
-		assertEquals(Long.valueOf(100L), cu.getValidUntil());
 		assertTrue(cu.isLegalTender());
 		assertFalse(cu.isVirtual());
 	}
@@ -259,21 +216,16 @@ public class MoneyCurrency_BuilderTest {
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
 				.setNamespace("testBuildBoolean").setCurrencyCode("cd")
 				.setLegalTender(true).setVirtual(false)
-				.setDefaultFractionDigits(101).setNumericCode(7)
-				.setValidFrom(10L).setValidUntil(100L);
-		CurrencyUnit cu = builder.build(true);
+				.setDefaultFractionDigits(101).setNumericCode(7);
+		CurrencyUnit cu = builder.build(false);
 		assertEquals("testBuildBoolean", cu.getNamespace());
 		assertEquals("cd", cu.getCurrencyCode());
 		assertEquals(101, cu.getDefaultFractionDigits());
 		assertEquals(7, cu.getNumericCode());
-		assertEquals(Long.valueOf(10L), cu.getValidFrom());
-		assertEquals(Long.valueOf(100L), cu.getValidUntil());
 		assertTrue(cu.isLegalTender());
 		assertFalse(cu.isVirtual());
 		CurrencyUnit cu2 = MoneyCurrency.of("testBuildBoolean", "cd");
 		assertTrue(cu2 != cu);
-		builder.setValidFrom(System.currentTimeMillis());
-		builder.setValidUntil(null);
 		cu = builder.build(true);
 		cu2 = MoneyCurrency.of("testBuildBoolean", "cd");
 		assertTrue(cu2 == cu);

@@ -56,16 +56,16 @@ public class ExchangeRate_BuilderTest extends Builder {
 		assertNull(b.getBase());
 		ExchangeRate.Builder b2 = b.setValidFrom(100L);
 		assertTrue(b == b2);
-		assertEquals(Long.valueOf(100), b.getValidFrom());
+		assertEquals(Long.valueOf(100), b.getValidFromTimeInMillis());
 	}
 
 	@Test
 	public void testGetSetValidUntil() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
 		assertNull(b.getBase());
-		ExchangeRate.Builder b2 = b.setValidUntil(100L);
+		ExchangeRate.Builder b2 = b.setValidTo(100L);
 		assertTrue(b == b2);
-		assertEquals(Long.valueOf(100), b.getValidUntil());
+		assertEquals(Long.valueOf(100), b.getValidToTimeInMillis());
 	}
 
 	@Test

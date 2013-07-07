@@ -21,6 +21,7 @@ package net.java.javamoney.ri.format.tokens;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParsePosition;
+import java.util.Locale;
 
 import javax.money.MonetaryAmount;
 import javax.money.format.FormatToken;
@@ -122,11 +123,10 @@ public class AmountNumberToken<T extends MonetaryAmount> extends
 		return this;
 	}
 
-	protected DecimalFormat getNumberFormat(LocalizationStyle style) {
+	protected DecimalFormat getNumberFormat(Locale locale, LocalizationStyle style) {
 		DecimalFormat formatUsed = this.format;
 		if (formatUsed == null) {
-			formatUsed = (DecimalFormat) DecimalFormat.getInstance(style
-					.getNumberLocale());
+			formatUsed = (DecimalFormat) DecimalFormat.getInstance(locale);
 		}
 		if (this.numberGroup != null) { // this.fractionGroup!=null ||
 			formatUsed.setGroupingUsed(false);
@@ -135,8 +135,8 @@ public class AmountNumberToken<T extends MonetaryAmount> extends
 	}
 
 	@Override
-	protected String getToken(T item, LocalizationStyle style) {
-		DecimalFormat format = getNumberFormat(style);
+	protected String getToken(T item, Locale locale, LocalizationStyle style) {
+		DecimalFormat format = getNumberFormat(locale, style);
 		if (this.numberGroup == null) { // || this.fractionGroup==null
 			return format.format(item);
 		}
@@ -158,8 +158,8 @@ public class AmountNumberToken<T extends MonetaryAmount> extends
 	}
 
 	@Override
-	public void parse(ParseContext context, LocalizationStyle style) throws ItemParseException {
-		DecimalFormat format = getNumberFormat(style);
+	public void parse(ParseContext context, Locale locale, LocalizationStyle style) throws ItemParseException {
+		DecimalFormat format = getNumberFormat(locale, style);
 		ParsePosition pos = new ParsePosition(0);
 		Number number = format.parse(context.getInput().toString(), pos);
 		context.addParseResult(Number.class, number);

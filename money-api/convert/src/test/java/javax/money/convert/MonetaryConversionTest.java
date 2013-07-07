@@ -1,15 +1,16 @@
 package javax.money.convert;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
-import org.junit.Ignore;
+import javax.money.convert.TestMonetaryConversionSpi.DummyConversionProvider;
+
 import org.junit.Test;
 
-@Ignore
 public class MonetaryConversionTest {
 
 	@Test
@@ -17,15 +18,16 @@ public class MonetaryConversionTest {
 		ConversionProvider prov = MonetaryConversions
 				.getConversionProvider(ExchangeRateType.of("test"));
 		assertTrue(prov != null);
-		//assertEquals(DummyConversionProvider.class, prov.getClass());
+		assertEquals(DummyConversionProvider.class, prov.getClass());
 	}
 
 	@Test
 	public void testGetSupportedExchangeRateTypes() {
+		ExchangeRateType.of("test");
 		Collection<ExchangeRateType> types = MonetaryConversions
-				.getSupportedExchangeRateTypes();
+			.getSupportedExchangeRateTypes();
 		assertNotNull(types);
-		assertTrue(types.size() == 1);
+		assertTrue(types.size() >= 1);
 		assertTrue(types.contains(ExchangeRateType.of("test")));
 	}
 

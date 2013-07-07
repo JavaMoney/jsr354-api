@@ -19,6 +19,7 @@
 package net.java.javamoney.ri.format.tokens;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.money.format.FormatToken;
 import javax.money.format.ItemParseException;
@@ -56,13 +57,13 @@ public class ZeroValueToken<T extends Number> extends AbstractFormatToken<T> {
 	}
 
 	@Override
-	protected String getToken(T item, LocalizationStyle style) {
+	protected String getToken(T item, Locale locale, LocalizationStyle style) {
 		if (item.doubleValue() == 0.0d || item.doubleValue() == -0.0d) {
 			return zeroValue;
 		}
 		StringBuilder builder = new StringBuilder();
 		try {
-			this.decorated.print(builder, item, style);
+			this.decorated.print(builder, item, locale, style);
 		} catch (IOException e) {
 			throw new IllegalStateException("Formatting failed.", e);
 		}
@@ -70,7 +71,7 @@ public class ZeroValueToken<T extends Number> extends AbstractFormatToken<T> {
 	}
 
 	@Override
-	public void parse(ParseContext context, LocalizationStyle style)
+	public void parse(ParseContext context, Locale locale, LocalizationStyle style)
 			throws ItemParseException {
 		// not supported...
 	}

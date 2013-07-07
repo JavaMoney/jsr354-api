@@ -249,8 +249,8 @@ public class IMFConversionProvider implements ConversionProvider {
 		builder.setTerm(term);
 		builder.setFactor(rate1.getFactor().multiply(rate2.getFactor()));
 		builder.setExchangeRateChain(rate1, rate2);
-		builder.setValidFrom(Math.max(rate1.getValidFrom(),rate2.getValidFrom()));
-		builder.setValidUntil(Math.min(rate1.getValidUntil(),rate2.getValidUntil()));
+		builder.setValidFrom(Math.max(rate1.getValidFromTimeInMillis(),rate2.getValidFromTimeInMillis()));
+		builder.setValidTo(Math.min(rate1.getValidToTimeInMillis(),rate2.getValidToTimeInMillis()));
 		return builder.build();
 	}
 
@@ -294,7 +294,7 @@ public class IMFConversionProvider implements ConversionProvider {
 	@Override
 	public ExchangeRate getReversed(ExchangeRate rate) {
 		return getExchangeRate(rate.getTerm(), rate.getBase(),
-				rate.getValidFrom());
+				rate.getValidFromTimeInMillis());
 	}
 
 	@Override

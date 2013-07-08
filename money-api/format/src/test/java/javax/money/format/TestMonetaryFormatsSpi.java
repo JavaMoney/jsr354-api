@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.money.format.MonetaryFormats.MonetaryFormatsSpi;
+import javax.money.format.spi.MonetaryFormatsSingletonSpi;
 
 /**
  * Tests class registered into {@link MonetaryFormats} to test
@@ -23,7 +23,7 @@ import javax.money.format.MonetaryFormats.MonetaryFormatsSpi;
  * @author Anatole Tresch
  * 
  */
-public class TestMonetaryFormatsSpi implements MonetaryFormatsSpi {
+public class TestMonetaryFormatsSpi implements MonetaryFormatsSingletonSpi {
 
 	@Override
 	public Collection<String> getSupportedStyleIds(Class<?> targetType) {

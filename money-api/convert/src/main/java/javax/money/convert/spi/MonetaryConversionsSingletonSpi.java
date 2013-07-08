@@ -1,6 +1,12 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
+ * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
+ * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
+ * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
+ * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
+ * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
+ * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * reserved.
  */
 package javax.money.convert.spi;
 
@@ -9,8 +15,10 @@ import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRateType;
 
 /**
- * This is the SPI to be implemented that determines how the different
- * components are loaded and managed.
+ * This is the spi to be implemented that is registered into the
+ * {@code MonetaryConversion} singleton accessor using {@code ServiceLoader}.
+ * This interface allows to implement the component loading differently, e.g.
+ * using the {@code ServiceLoader} or by using aan IoC container.
  *
  * @author Anatole Tresch
  */
@@ -41,5 +49,4 @@ public interface MonetaryConversionsSingletonSpi {
      * @see #getConversionProvider(ExchangeRateType)
      */
     boolean isSupportedExchangeRateType(ExchangeRateType type);
-    
 }

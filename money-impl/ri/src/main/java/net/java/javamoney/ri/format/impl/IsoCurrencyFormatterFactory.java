@@ -30,7 +30,7 @@ import javax.money.format.ItemFormatException;
 import javax.money.format.LocalizationStyle;
 
 import net.java.javamoney.ri.format.impl.IsoCurrencyFormatter.RenderedField;
-import net.java.javamoney.ri.format.spi.ItemFormatFactorySpi;
+import javax.money.format.spi.ItemFormatFactorySpi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

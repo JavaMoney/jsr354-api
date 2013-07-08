@@ -1,30 +1,45 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
- * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
- * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
- * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
- * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
- * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
- * reserved.
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
-package javax.money.ext.spi;
+package net.java.javamoney.ri.ext.se;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.money.CurrencyUnit;
 import javax.money.UnknownCurrencyException;
 import javax.money.ext.CurrencyValidity;
+import javax.money.ext.MonetaryCurrencies;
+import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
 
-/**
- * This interface must be implemented and registered using the
- * {@code ServiceLoader}. It backs up the {@code MonetaryCurrencies} singleton.
- *
- * @author Anatole Tresch
- */
-public interface MonetaryCurrenciesSingletonSpi {
+public class SEMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesSingletonSpi {
+
+    /**
+     * System property used to redefine the default namespace for
+     * {@link CurrencyUnit} instances.
+     */
+    private static final String DEFAULT_NAMESPACE_PROP = "javax.money.defaultCurrencyNamespace";
+    /**
+     * The default namespace used.
+     */
+    private String defaultNamespace = "ISO-4217";
+    private SECurrencyUnitProviderService currencyUnitProvider = new SECurrencyUnitProviderService();
+    private SECurrencyUnitMapperService currencyUnitMapper = new SECurrencyUnitMapperService();
+
+    public SEMonetaryCurrenciesSingletonSpi() {
+        String ns = System.getProperty(DEFAULT_NAMESPACE_PROP);
+        if (ns != null) {
+            defaultNamespace = ns;
+        }
+    }
 
     /**
      * Access the default namespace that this {@link CurrencyUnitProviderSpi}
@@ -35,7 +50,9 @@ public interface MonetaryCurrenciesSingletonSpi {
      *
      * @return the default namespace used.
      */
-    public String getDefaultNamespace();
+    public String getDefaultNamespace() {
+        return defaultNamespace;
+    }
 
     /**
      * This method allows to evaluate, if the given currency name space is
@@ -44,7 +61,9 @@ public interface MonetaryCurrenciesSingletonSpi {
      * @param namespace the required name space
      * @return true, if the name space exists.
      */
-    public boolean isNamespaceAvailable(String namespace);
+    public boolean isNamespaceAvailable(String namespace) {
+        return currencyUnitProvider.isNamespaceAvailable(namespace);
+    }
 
     /**
      * This method allows to access all name spaces currently defined.
@@ -52,7 +71,9 @@ public interface MonetaryCurrenciesSingletonSpi {
      *
      * @return the array of currently defined name space.
      */
-    public Collection<String> getNamespaces();
+    public Collection<String> getNamespaces() {
+        return currencyUnitProvider.getNamespaces();
+    }
 
     /*-- Access of current currencies --*/
     /**
@@ -65,7 +86,9 @@ public interface MonetaryCurrenciesSingletonSpi {
      * currency.
      * @return true, if the currency is defined.
      */
-    public boolean isAvailable(String code);
+    public boolean isAvailable(String code) {
+        return currencyUnitProvider.isAvailable(getDefaultNamespace(), code);
+    }
 
     /**
      * Checks if a currency is defined using its name space and code.
@@ -75,7 +98,9 @@ public interface MonetaryCurrenciesSingletonSpi {
      * currency.
      * @return true, if the currency is defined.
      */
-    public boolean isAvailable(String namespace, String code);
+    public boolean isAvailable(String namespace, String code) {
+        return currencyUnitProvider.isAvailable(namespace, code);
+    }
 
     /**
      * Access a currency using its name space and code. This is a convenience
@@ -88,7 +113,9 @@ public interface MonetaryCurrenciesSingletonSpi {
      * @return The currency found, never null.
      * @throws UnknownCurrencyException if the required currency is not defined.
      */
-    public CurrencyUnit get(String namespace, String code);
+    public CurrencyUnit get(String namespace, String code) {
+        return currencyUnitProvider.get(namespace, code);
+    }
 
     /**
      * Access a currency using its code. This is a convenience method for
@@ -101,7 +128,9 @@ public interface MonetaryCurrenciesSingletonSpi {
      * @return The currency found, never null.
      * @throws UnknownCurrencyException if the required currency is not defined.
      */
-    public CurrencyUnit get(String code);
+    public CurrencyUnit get(String code) {
+        return get(getDefaultNamespace(), code);
+    }
 
     /**
      * This method maps the given {@link CurrencyUnit} to another
@@ -111,7 +140,9 @@ public interface MonetaryCurrenciesSingletonSpi {
      * @param targetNamespace the target namespace, never {@code null}.
      * @return The mapped {@link CurrencyUnit}, or null.
      */
-    public CurrencyUnit map(String targetNamespace, CurrencyUnit currencyUnit);
+    public CurrencyUnit map(String targetNamespace, CurrencyUnit currencyUnit) {
+        return currencyUnitMapper.map(targetNamespace, null, currencyUnit);
+    }
 
     /**
      * This method maps the given {@link CurrencyUnit} to another
@@ -121,15 +152,13 @@ public interface MonetaryCurrenciesSingletonSpi {
      * @param targetNamespace the target namespace, never {@code null}.
      * @return The mapped {@link CurrencyUnit}, or null.
      */
-    public CurrencyUnit map(String targetNamespace, long timestamp, CurrencyUnit currencyUnit);
+    public CurrencyUnit map(String targetNamespace, long timestamp, CurrencyUnit currencyUnit) {
+        return currencyUnitMapper.map(targetNamespace, timestamp, currencyUnit);
+    }
 
-    /**
-     * Access a list of provider ids for the {@link ValidityProvider}
-     *
-     * @return the {@link ValidityProvider} ids available, never null.
-     * @see #getCurrencyValidity(java.lang.String)
-     */
-    public Set<String> getValidityProviders();
+    public Set<String> getValidityProviders() {
+        return Collections.emptySet();
+    }
 
     /**
      * Access an instance of the CurrencyValidity for the required validity
@@ -138,7 +167,9 @@ public interface MonetaryCurrenciesSingletonSpi {
      * @param provider the validity provider.
      * @return
      */
-    public CurrencyValidity getCurrencyValidity(String provider);
+    public CurrencyValidity getCurrencyValidity(String provider) {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * This method maps the given {@link CurrencyUnit} instances to another
@@ -150,19 +181,29 @@ public interface MonetaryCurrenciesSingletonSpi {
      * a unit could not be mapped, the according array element will be
      * {@code null}.
      */
-    public List<CurrencyUnit> mapAll(String targetNamespace, CurrencyUnit... units);
+    public List<CurrencyUnit> mapAll(String targetNamespace, CurrencyUnit... units) {
+        List<CurrencyUnit> resultList = new ArrayList<CurrencyUnit>();
+        for (CurrencyUnit currencyUnit : units) {
+            CurrencyUnit result = currencyUnitMapper.map(targetNamespace, null, currencyUnit);
+            if (result == null) {
+                throw new IllegalArgumentException("Cannot map curreny " + currencyUnit + " to namespace "
+                        + targetNamespace);
+            }
+            resultList.add(result);
+        }
+        return resultList;
+    }
 
-    /**
-     * This method maps the given {@link CurrencyUnit} instances to another
-     * {@link CurrencyUnit} instances with the given target namespace.
-     *
-     * @param targetNamespace the target namespace, never {@code null}.
-     * @param timestamp The target UTC timestamp.
-     * @param units The source units, never {@code null}.
-     *
-     * @return The mapped {@link CurrencyUnit} instances (same array length). If
-     * a unit could not be mapped, the according array element will be
-     * {@code null}.
-     */
-    public List<CurrencyUnit> mapAll(String targetNamespace, long timestamp, CurrencyUnit... units);
+    public List<CurrencyUnit> mapAll(String targetNamespace, long timestamp, CurrencyUnit... units) {
+        List<CurrencyUnit> resultList = new ArrayList<CurrencyUnit>();
+        for (CurrencyUnit currencyUnit : units) {
+            CurrencyUnit result = currencyUnitMapper.map(targetNamespace, timestamp, currencyUnit);
+            if (result == null) {
+                throw new IllegalArgumentException("Cannot map curreny " + currencyUnit + " to namespace "
+                        + targetNamespace);
+            }
+            resultList.add(result);
+        }
+        return resultList;
+    }
 }

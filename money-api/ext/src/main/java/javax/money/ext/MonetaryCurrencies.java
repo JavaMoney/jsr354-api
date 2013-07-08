@@ -37,23 +37,8 @@ import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
  */
 public final class MonetaryCurrencies {
 
-    /**
-     * System property used to redefine the default namespace for
-     * {@link CurrencyUnit} instances.
-     */
-    private static final String DEFAULT_NAMESPACE_PROP = "javax.money.defaultCurrencyNamespace";
-    /** The default namespace used. */
-    private static String defaultNamespace = "ISO-4217";
-    
     private static final MonetaryCurrenciesSingletonSpi CURRENCIES_SPI = loadMonetaryCurrenciesSpi();
 
-    static{
-        String ns = System.getProperty(DEFAULT_NAMESPACE_PROP);
-	if (ns != null) {
-	    defaultNamespace = ns;
-	}
-    }
-    
     /**
      * Singleton constructor.
      */

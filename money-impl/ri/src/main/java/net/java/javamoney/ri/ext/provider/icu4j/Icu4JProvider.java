@@ -9,7 +9,7 @@ import javax.money.ext.Region;
 import javax.money.ext.RegionType;
 
 import net.java.javamoney.ri.ext.BuildableRegion;
-import net.java.javamoney.ri.ext.spi.RegionProviderSpi;
+import javax.money.ext.spi.RegionProviderSpi;
 
 public class Icu4JProvider implements RegionProviderSpi {
 
@@ -47,6 +47,11 @@ public class Icu4JProvider implements RegionProviderSpi {
     public Collection<Region> getRegions() {
 	// TODO Auto-generated method stub
 	return null;
+    }
+
+    @Override
+    public Region getRegion(int numericId, RegionType type) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

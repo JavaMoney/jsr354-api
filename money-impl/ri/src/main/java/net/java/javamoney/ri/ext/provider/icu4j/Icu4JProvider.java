@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import javax.inject.Singleton;
 
 import javax.money.ext.Region;
 import javax.money.ext.RegionType;
@@ -11,6 +12,7 @@ import javax.money.ext.RegionType;
 import net.java.javamoney.ri.ext.BuildableRegion;
 import javax.money.ext.spi.RegionProviderSpi;
 
+@Singleton
 public class Icu4JProvider implements RegionProviderSpi {
 
     private Set<RegionType> regionTypes = new HashSet<RegionType>();

@@ -1,2 +1,2 @@
-net.java.javamoney.ri.ext.provider.IsoCurrencyJDKProvider
-net.java.javamoney.ri.ext.provider.IsoCurrencyOnlineProvider
+net.java.javamoney.ri.ext.provider.iso.IsoCurrencyJDKProvider
+net.java.javamoney.ri.ext.provider.iso.IsoCurrencyOnlineProvider

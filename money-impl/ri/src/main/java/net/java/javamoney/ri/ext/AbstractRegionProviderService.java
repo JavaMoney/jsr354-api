@@ -29,7 +29,6 @@ import javax.money.ext.RegionType;
 import javax.money.ext.RegionValidity;
 
 import javax.money.ext.spi.RegionProviderSpi;
-import net.java.javamoney.ri.ext.se.SEMonetaryRegionsSingletonSpi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +42,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractRegionProviderService {
 
     private static final Logger LOG = LoggerFactory
-            .getLogger(SEMonetaryRegionsSingletonSpi.class);
+            .getLogger(AbstractRegionProviderService.class);
 
 
     /**

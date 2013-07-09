@@ -22,7 +22,6 @@ import javax.money.ext.Region;
 import javax.money.ext.RegionFilter;
 import javax.money.ext.RegionType;
 
-import net.java.javamoney.ri.ext.se.SEMonetaryRegionsSingletonSpi;
 
 /**
  * Regions can be used to segregate or access artifacts (e.g. currencies) either

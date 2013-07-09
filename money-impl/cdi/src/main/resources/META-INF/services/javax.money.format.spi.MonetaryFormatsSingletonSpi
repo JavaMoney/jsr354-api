@@ -1,1 +1,1 @@
-net.java.javamoney.ri.format.impl.CDIMonetaryFormatsSingletonSpi
+net.java.javamoney.ri.format.CDIMonetaryFormatsSingletonSpi

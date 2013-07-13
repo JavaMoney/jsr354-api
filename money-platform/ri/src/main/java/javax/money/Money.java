@@ -16,6 +16,7 @@ import static javax.money.Money.Checker.checkNumber;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Default immutable implementation of {@link MonetaryAmount}.
@@ -315,13 +316,24 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
     }
 
     private BigDecimal getBigDecimal(Number num) {
-	if (num instanceof BigDecimal) {
-	    return (BigDecimal) num;
-	}
-	if (num instanceof Long) {
-	    return BigDecimal.valueOf(num.longValue());
-	}
-	return BigDecimal.valueOf(num.doubleValue());
+		if (num instanceof BigDecimal) {
+		    return (BigDecimal) num;
+		}
+		if (num instanceof Long || num instanceof Integer) {
+		    return BigDecimal.valueOf(num.longValue());
+		}
+		if (num instanceof Float || num instanceof Double) {
+			return new BigDecimal(num.toString());
+	    }
+		if (num instanceof Byte || num instanceof AtomicLong) {
+			return BigDecimal.valueOf(num.longValue());
+    	}
+		try {
+			// Avoid imprecise conversion to double value if at all possible
+			return new BigDecimal(num.toString());
+		} catch (NumberFormatException e) {		
+		}
+		return BigDecimal.valueOf(num.doubleValue());
     }
 
     private BigDecimal getBigDecimal(Number number, MathContext mathContext) {

@@ -13,7 +13,7 @@ package javax.money.ext;
 import java.util.Collection;
 
 /**
- * This models a subtree within a {@link RegionTree}, that is transparently
+ * This models a subtree within a {@link RegionNode}, that is transparently
  * modelled/provided by another subtree within the global region trees. This can
  * be useful to fill up zhe possible child values with regions already existing.
  * E.g. A sales representative's organization may contain several countries,
@@ -24,7 +24,7 @@ import java.util.Collection;
  *
  * @author Anatole Tresch
  */
-public interface LinkedRegionTree extends RegionTree {
+public interface LinkedRegionTree extends RegionNode {
 
     /**
      * This method returns the effective tree path, starting with a current root

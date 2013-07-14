@@ -13,7 +13,7 @@ package javax.money.ext.spi;
 import java.util.Collection;
 
 import javax.money.ext.Region;
-import javax.money.ext.RegionTree;
+import javax.money.ext.RegionNode;
 import javax.money.ext.RegionType;
 
 /**

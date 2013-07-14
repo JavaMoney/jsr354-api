@@ -70,39 +70,14 @@ public final class Regions {
     }
 
     /**
-     * Get the set of {@link RegionValidity} provider identifiers currently
-     * registered. The identifiers are required for accessing
-     * {@link RegionValidity} from {@link #RegionValidity(String)}.
+     * Access the {@link RegionValidity} service.
      *
-     * @return the identifiers of the registered {@link RegionValidity}
-     * providers.
-     */
-    public static Set<String> getRegionValidityProviders() {
-        return REGION_SPI.getRegionValidityProviders();
-    }
-
-    /**
-     * This method allows to determine if a given {@link RegionValidity}
-     * provider is currently available.
-     *
-     * @param provider The {@link RegionValidity} provider id.
-     * @return {@code true} if a {@link RegionValidity} provider with the given
-     * identifier is registered.
-     */
-    public static boolean isValidityProviderAvailable(String provider) {
-        return REGION_SPI.getRegionValidityProviders().contains(provider);
-    }
-
-    /**
-     * Access a {@link RegionValidity}, determined by the given provider.
-     *
-     * @param provider the {@link RegionValidity} provider identifier.
      * @return the {@link RegionValidity} for accessing historic regional data
-     * provided by the given provider.
+     * provided by the registered validity providers.
      * @throws IllegalArgumentException If the given provider is not available.
      */
-    public static RegionValidity getRegionValidity(String provider) {
-        return REGION_SPI.getRegionValidity(provider);
+    public static RegionValidity getRegionValidity() {
+        return REGION_SPI.getRegionValidity();
     }
 
     /**
@@ -112,31 +87,31 @@ public final class Regions {
      *
      * @return all {@link Region}s available without a parent, never null.
      */
-    public static Collection<RegionTree> getRegionForest() {
+    public static Collection<RegionNode> getRegionForest() {
         return REGION_SPI.getRegionForest();
     }
 
     /**
-     * Thnis method constructs a RegionTree using the given region as root
+     * Thnis method constructs a RegionNode using the given region as root
      * region.
      *
      * @param region the root region, not {@code null}.
      * @return the region tree, never {@code null}.
      */
-    public static RegionTree getRegionTree(Region region) {
-        return REGION_SPI.getRegionTree(region);
+    public static RegionNode getRegionNode(Region region) {
+        return REGION_SPI.getRegionNode(region);
     }
 
     /**
-     * Access a {@link RegionTree} using the region's hierarchy starting from
+     * Access a {@link RegionNode} using the region's hierarchy starting from
      * the given root {@link Region}.
      *
      * @param path the path to be accessed, not {@code null}.
-     * @return the {@link RegionTree} starting at the position defined by
+     * @return the {@link RegionNode} starting at the position defined by
      * {@code path}, never {@code null}.
      * @throws IllegalArgumentException if the path can not be resolved.
      */
-    public static RegionTree getRegionTree(String path) {
+    public static RegionNode getRegionNode(String path) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
     
@@ -191,22 +166,17 @@ public final class Regions {
         }
 
         @Override
-        public Set<String> getRegionValidityProviders() {
+        public RegionValidity getRegionValidity() {
+            throw new IllegalArgumentException("DefaultProvider:.");
+        }
+
+        @Override
+        public Collection<RegionNode> getRegionForest() {
             return Collections.emptySet();
         }
 
         @Override
-        public RegionValidity getRegionValidity(String provider) {
-            throw new IllegalArgumentException("DefaultProvider: Invalid provider: " + provider);
-        }
-
-        @Override
-        public Collection<RegionTree> getRegionForest() {
-            return Collections.emptySet();
-        }
-
-        @Override
-        public RegionTree getRegionTree(Region region) {
+        public RegionNode getRegionNode(Region region) {
             throw new IllegalArgumentException("DefaultProvider: no such region tree: " + region);
         }
     }

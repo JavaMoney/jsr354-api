@@ -21,7 +21,7 @@ import java.util.Collection;
  * 
  * @author Anatole Tresch
  */
-public interface RegionTree {
+public interface RegionNode {
 
     /**
      * Get the corresponding region.
@@ -36,14 +36,14 @@ public interface RegionTree {
      * @return the parent region, or null, if this region has no parent (is a
      *         root region).
      */
-    public RegionTree getParent();
+    public RegionNode getParent();
 
     /**
      * Access all direct child regions.
      * 
      * @return all direct child regions, never null.
      */
-    public Collection<RegionTree> getChildren();
+    public Collection<RegionNode> getChildren();
 
     /**
      * Determines if the given region is contained within this region tree.
@@ -64,7 +64,7 @@ public interface RegionTree {
      *            the required type, not null.
      * @return the region found, or null.
      */
-    public RegionTree selectParent(RegionFilter filter);
+    public RegionNode selectParent(RegionFilter filter);
 
     /**
      * Select a collection of regions selected by the given filter.
@@ -73,7 +73,7 @@ public interface RegionTree {
      *            the region selector, null will return all regions.
      * @return the regions selected.
      */
-    public Collection<RegionTree> select(RegionFilter filter);
+    public Collection<RegionNode> select(RegionFilter filter);
 
     /**
      * Access a {@link Region} using the region path, which allows access of a
@@ -84,6 +84,6 @@ public interface RegionTree {
      *            the path to be accessed, not {@code null}.
      * @return the {@link Region} found, or {@code null}.
      */
-    public RegionTree getRegionTree(String path);
+    public RegionNode getRegionTree(String path);
 
 }

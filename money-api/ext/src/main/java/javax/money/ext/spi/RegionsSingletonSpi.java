@@ -13,7 +13,7 @@ package javax.money.ext.spi;
 import java.util.Collection;
 import java.util.Set;
 import javax.money.ext.Region;
-import javax.money.ext.RegionTree;
+import javax.money.ext.RegionNode;
 import javax.money.ext.RegionType;
 import javax.money.ext.RegionValidity;
 
@@ -69,7 +69,7 @@ public interface RegionsSingletonSpi {
      * @throws IllegalArgumentException if the {@link Region} instances matching
      * are ambiguous.
      */
-    public RegionTree getRegionTree(Region region);
+    public RegionNode getRegionNode(Region region);
 
     /**
      * Get all root {@link Region} instances that are the starting points of the
@@ -77,7 +77,7 @@ public interface RegionsSingletonSpi {
      *
      * @return The root region of the different region trees.
      */
-    public Collection<RegionTree> getRegionForest();
+    public Collection<RegionNode> getRegionForest();
 
 //    /**
 //     * Access a {@link Region} by its {@link RegionType} and its numeric id.
@@ -91,7 +91,7 @@ public interface RegionsSingletonSpi {
 //     * @throws IllegalArgumentException if the {@link Region} instances matching
 //     * are ambiguous.
 //     */
-//    public RegionTree getRegionTree(RegionType type, int numericId);
+//    public RegionNode getRegionTree(RegionType type, int numericId);
 //
 //    /**
 //     * Access a {@link Region} by its {@link RegionType} and its code.
@@ -102,21 +102,12 @@ public interface RegionsSingletonSpi {
 //     * @throws IllegalArgumentException if the {@link Region} instances matching
 //     * are ambiguous.
 //     */
-//    public RegionTree getRegionTree(RegionType type, String code);
-    
-      /**
-     * Get a set of {@link RegionValidity} provider identifiers registered.
-     *
-     * @return the {@link RegionValidity} identifiers of the registered region
-     * providers, not {@code null}, but may be empty.
-     */
-    public Set<String> getRegionValidityProviders();
-    
+//    public RegionNode getRegionTree(RegionType type, String code);
+
      /**
-     * Get a {@link RegionValidity} from the given provider.
+     * Get a {@link RegionValidity} service.
      *
-     * @param provider
      * @return
      */
-    public RegionValidity getRegionValidity(String provider);
+    public RegionValidity getRegionValidity();
 }

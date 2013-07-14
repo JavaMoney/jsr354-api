@@ -42,20 +42,13 @@ public interface RegionProviderSpi {
     public Collection<Region> getRegions(RegionType type);
 
     /**
-     * Access all regions provided by this region provider.
-     *
-     * @return the regions to be added, not null.
-     */
-    public Collection<Region> getRegions();
-
-    /**
      * Access a region.
      *
      * @param identifier The region's id.
      * @param type The required region type.
      * @return The corresponding region, or null.
      */
-    public Region getRegion(String identifier, RegionType type);
+    public Region getRegion(RegionType type, String identifier);
 
     /**
      * Access a region.
@@ -64,5 +57,5 @@ public interface RegionProviderSpi {
      * @param type The required region type.
      * @return The corresponding region, or null.
      */
-    public Region getRegion(int numericId, RegionType type);
+    public Region getRegion(RegionType type, int numericId);
 }

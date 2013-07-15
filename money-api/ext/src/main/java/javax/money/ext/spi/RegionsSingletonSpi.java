@@ -11,6 +11,7 @@
 package javax.money.ext.spi;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Set;
 import javax.money.ext.Region;
 import javax.money.ext.RegionNode;
@@ -49,6 +50,22 @@ public interface RegionsSingletonSpi {
      * are ambiguous.
      */
     public Region getRegion(RegionType type, String code);
+    
+    /**
+     * Access a region using a {@link Locale}.
+     *
+     * @param locale The required locale.
+     * @return the corresponding region, or null.
+     */
+    public Region getRegion(Locale locale);
+    
+    /**
+     * Access all regions provided for a given {@link RegionType}.
+     *
+     * @param type The required region type.
+     * @return the known regions of that type, not null.
+     */
+    public Collection<Region> getRegions(RegionType type);
 
     /**
      * Access all region types defined by this provider.
@@ -79,30 +96,6 @@ public interface RegionsSingletonSpi {
      */
     public Collection<RegionNode> getRegionForest();
 
-//    /**
-//     * Access a {@link Region} by its {@link RegionType} and its numeric id.
-//     * <i>Note:</i> The numeric id may not be defined by a region, in this case
-//     * access the region using its {@code code}.
-//     *
-//     * @see #getRegion(RegionType, String)
-//     * @param type The {@link RegionType}
-//     * @param numericId The numeric id.
-//     * @return The matching {@link Region}, or {@code null}.
-//     * @throws IllegalArgumentException if the {@link Region} instances matching
-//     * are ambiguous.
-//     */
-//    public RegionNode getRegionTree(RegionType type, int numericId);
-//
-//    /**
-//     * Access a {@link Region} by its {@link RegionType} and its code.
-//     *
-//     * @param type The {@link RegionType}
-//     * @param numericId The numeric id.
-//     * @return The matching {@link Region}, or {@code null}.
-//     * @throws IllegalArgumentException if the {@link Region} instances matching
-//     * are ambiguous.
-//     */
-//    public RegionNode getRegionTree(RegionType type, String code);
 
      /**
      * Get a {@link RegionValidity} service.

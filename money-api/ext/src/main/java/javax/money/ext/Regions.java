@@ -14,6 +14,7 @@ import javax.money.ext.spi.RegionsSingletonSpi;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.logging.Level;
@@ -67,6 +68,26 @@ public final class Regions {
      */
     public Region getRegion(RegionType type, int code) {
         return REGION_SPI.getRegion(type, code);
+    }
+    
+    /**
+     * Access a region using a {@link Locale}.
+     *
+     * @param locale The required locale.
+     * @return the corresponding region, or null.
+     */
+    public Region getRegion(Locale locale){
+        return REGION_SPI.getRegion(locale);
+    }
+    
+    /**
+     * Access all regions of a given region type.
+     *
+     * @param type the region type, not null.
+     * @return the region found, or null.
+     */
+    public Collection<Region> getRegions(RegionType type) {
+        return REGION_SPI.getRegions(type);
     }
 
     /**
@@ -178,6 +199,16 @@ public final class Regions {
         @Override
         public RegionNode getRegionNode(Region region) {
             throw new IllegalArgumentException("DefaultProvider: no such region tree: " + region);
+        }
+
+        @Override
+        public Region getRegion(Locale locale) {
+            return null;
+        }
+
+        @Override
+        public Collection<Region> getRegions(RegionType type) {
+            return Collections.emptySet();
         }
     }
 }

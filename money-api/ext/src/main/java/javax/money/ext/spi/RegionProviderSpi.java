@@ -11,6 +11,7 @@
 package javax.money.ext.spi;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.ServiceLoader;
 
 import javax.money.ext.Region;
@@ -58,4 +59,13 @@ public interface RegionProviderSpi {
      * @return The corresponding region, or null.
      */
     public Region getRegion(RegionType type, int numericId);
+    
+    /**
+     * Access a region using a {@link Locale}.
+     *
+     * @param locale The required locale.
+     * @return the corresponding region, or null.
+     */
+    public Region getRegion(Locale locale);
+    
 }

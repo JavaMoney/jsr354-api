@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>money-platform</artifactId>
-		<groupId>javax.money</groupId>
+		<artifactId>money-impl</artifactId>
+		<groupId>net.java.javamoney</groupId>
 		<version>0.5-SNAPSHOT</version>
 	</parent>
-	<artifactId>money-api-platform</artifactId>
-	<name>JSR 354 (Money and Currency) - Platform API</name>
+	<artifactId>money-ri-platform</artifactId>
+	<name>JSR 354 (Money and Currency) - Platform Implementation</name>
 	<description>This part is targeted for inclusion into JDK SE 9. Since JDK integration also contains the default implementations, this module
 	over all contains an API, as well as according implementations.</description>
 	<packaging>jar</packaging>
@@ -22,13 +22,18 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>javax.money</groupId>
+			<artifactId>money-api</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
 	</dependencies>
-	
 </project>

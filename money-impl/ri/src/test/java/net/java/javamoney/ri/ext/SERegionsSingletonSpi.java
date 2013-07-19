@@ -21,12 +21,14 @@
 package net.java.javamoney.ri.ext;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.money.ext.Region;
+import javax.money.ext.RegionNode;
 import javax.money.ext.RegionType;
 import javax.money.ext.RegionValidity;
-import javax.money.ext.spi.MonetaryRegionsSingletonSpi;
+import javax.money.ext.spi.RegionsSingletonSpi;
 
 import net.java.javamoney.ri.ext.AbstractRegionProviderService;
 import net.java.javamoney.ri.ext.AbstractRegionalCurrencyUnitProviderService;
@@ -40,10 +42,10 @@ import org.slf4j.LoggerFactory;
  *
  * @author Anatole Tresch
  */
-public class SEMonetaryRegionsSingletonSpi implements MonetaryRegionsSingletonSpi {
+public class SERegionsSingletonSpi implements RegionsSingletonSpi {
 
     private static final Logger LOG = LoggerFactory
-            .getLogger(SEMonetaryRegionsSingletonSpi.class);
+            .getLogger(SERegionsSingletonSpi.class);
     
     /**
      * Loaded region providers.
@@ -56,28 +58,8 @@ public class SEMonetaryRegionsSingletonSpi implements MonetaryRegionsSingletonSp
     private AbstractRegionalCurrencyUnitProviderService regionalCurrencyUnitProviderService = new SERegionalCurrencyUnitProviderService();
 
 
-    public Region getRegionTree(String id) {
-        return regionProviderService.getRegionTree(id);
-    }
-
-    @Override
-    public Set<String> getRegionValidityProviders() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public RegionValidity getRegionValidity(String provider) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Region getRegionTree(int numericId) {
-        return regionProviderService.getRegionTree(numericId);
-    }
-
-    @Override
-    public Collection<Region> getRegionTrees() {
-        return regionProviderService.getRegionTrees();
+    public Region getRootRegion(String id) {
+        return regionProviderService.getRootRegion(id);
     }
 
     @Override
@@ -93,5 +75,35 @@ public class SEMonetaryRegionsSingletonSpi implements MonetaryRegionsSingletonSp
     @Override
     public Set<RegionType> getRegionTypes() {
         return regionProviderService.getRegionTypes();
+    }
+
+    @Override
+    public Region getRegion(Locale locale) {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    @Override
+    public Collection<Region> getRegions(RegionType type) {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    @Override
+    public RegionNode getRegionNode(Region region) {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    @Override
+    public Collection<RegionNode> getRegionForest() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    @Override
+    public RegionValidity getRegionValidity() {
+	// TODO Auto-generated method stub
+	return null;
     }
 }

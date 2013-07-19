@@ -12,16 +12,9 @@
 package net.java.javamoney.ri.ext;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.money.ext.Region;
-import javax.money.ext.RegionFilter;
 import javax.money.ext.RegionType;
-
 
 /**
  * Regions can be used to segregate or access artifacts (e.g. currencies) either
@@ -32,13 +25,15 @@ import javax.money.ext.RegionType;
  * 
  * @author Anatole Tresch
  */
-public class BuildableRegion implements Region, Serializable, Comparable<Region> {
+public class DefaultRegion implements Region, Serializable, Comparable<Region> {
 
     /**
      * serialID.
      */
     private static final long serialVersionUID = -8957470024522944264L;
 
+    
+    
     /** The region code of a region, unique within a region type. */
     private String regionCode;
     /**
@@ -50,12 +45,6 @@ public class BuildableRegion implements Region, Serializable, Comparable<Region>
     /** The region's type. */
     private RegionType regionType;
 
-    /**
-     * The parent region, or {@code null}.
-     */
-    private BuildableRegion parent;
-
-    private Set<Region> childRegions = new HashSet<>();
 
     /**
      * Creates a region. Regions should only be accessed using the accessor
@@ -67,36 +56,7 @@ public class BuildableRegion implements Region, Serializable, Comparable<Region>
      * @param type
      *            the region's type, not null.
      */
-    public BuildableRegion(String id, RegionType regionType) {
-	this(id, regionType, null, null);
-    }
-
-    /**
-     * Creates a region. Regions should only be accessed using the accessor
-     * method {@link Monetary#getExtension(Class)}, passing
-     * {@link RegionProvider} as type.
-     * 
-     * @param id
-     *            the region's id, not null.
-     * @param type
-     *            the region's type, not null.
-     */
-    public BuildableRegion(String id, RegionType regionType, BuildableRegion parent) {
-	this(id, regionType, parent, null);
-    }
-
-    /**
-     * Creates a region. Regions should only be accessed using the accessor
-     * method {@link Monetary#getExtension(Class)}, passing
-     * {@link RegionProvider} as type.
-     * 
-     * @param id
-     *            the region's id, not null.
-     * @param type
-     *            the region's type, not null.
-     */
-    public BuildableRegion(String id, RegionType regionType, BuildableRegion parent,
-	    Collection<BuildableRegion> childRegions) {
+    public DefaultRegion(String id, RegionType regionType) {
 	if (id == null) {
 	    throw new IllegalArgumentException("id is required.");
 	}
@@ -105,10 +65,6 @@ public class BuildableRegion implements Region, Serializable, Comparable<Region>
 	}
 	this.regionCode = id;
 	this.regionType = regionType;
-	this.parent = parent;
-	if (childRegions != null) {
-	    this.childRegions.addAll(childRegions);
-	}
     }
 
     /**
@@ -137,11 +93,6 @@ public class BuildableRegion implements Region, Serializable, Comparable<Region>
      */
     public RegionType getRegionType() {
 	return this.regionType;
-    }
-
-    @Override
-    public Region getRegionByPath(String path) {
-	throw new UnsupportedOperationException("Not yet implemented.");
     }
 
     /*
@@ -181,7 +132,7 @@ public class BuildableRegion implements Region, Serializable, Comparable<Region>
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	BuildableRegion other = (BuildableRegion) obj;
+	DefaultRegion other = (DefaultRegion) obj;
 	if (regionCode == null) {
 	    if (other.regionCode != null)
 		return false;
@@ -201,48 +152,6 @@ public class BuildableRegion implements Region, Serializable, Comparable<Region>
 	return "Region [regionType=" + regionType + ", regionCode=" + regionCode + ", numericCode=" + numericCode + "]";
     }
 
-    public boolean contains(Region region) {
-	if (this.childRegions.contains(region)) {
-	    return true;
-	}
-	for (Region current : childRegions) {
-	    if (current.contains(region)) {
-		return true;
-	    }
-	}
-	return false;
-    }
-
-    public Collection<Region> getChildren() {
-	return Collections.unmodifiableCollection(childRegions);
-    }
-
-    public Collection<Region> select(RegionFilter filter) {
-	return Collections.unmodifiableCollection(childRegions);
-    }
-
-    public Region getParent() {
-	return this.parent;
-    }
-
-    public Region selectParent(RegionFilter filter) {
-	Region parent = this.parent;
-	while (parent != null) {
-	    if (filter.accept(parent)) {
-		return parent;
-	    }
-	    parent = parent.getParent();
-	}
-	return null;
-    }
-
-    public Region getRegionByCode(String code) {
-	throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    public Region getRegionByNumericCode(int code) {
-	throw new UnsupportedOperationException("Not yet implemented");
-    }
 
     /**
      * Regions can be used to segregate or access artifacts (e.g. currencies)
@@ -260,13 +169,6 @@ public class BuildableRegion implements Region, Serializable, Comparable<Region>
 
 	/** The region's type. */
 	private RegionType regionType;
-
-	/**
-	 * The parent region, or {@code null}.
-	 */
-	private BuildableRegion parent;
-
-	private Set<BuildableRegion> childRegions = new HashSet<BuildableRegion>();
 
 	/**
 	 * Creates a {@link RegionBuilder}. Regions should only be accessed
@@ -319,7 +221,7 @@ public class BuildableRegion implements Region, Serializable, Comparable<Region>
 	 * (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	public int compareTo(BuildableRegion o) {
+	public int compareTo(Region o) {
 	    int compare = ((Comparable<RegionType>) this.regionType).compareTo(o.getRegionType());
 	    if (compare == 0) {
 		compare = this.id.compareTo(o.getRegionCode());
@@ -340,18 +242,6 @@ public class BuildableRegion implements Region, Serializable, Comparable<Region>
 	    return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.ext.Region#getChildRegions()
-	 */
-	public Set<BuildableRegion> getChildRegions() {
-	    return childRegions;
-	}
-
-	public BuildableRegion getParentRegion() {
-	    return this.parent;
-	}
-
 	public Builder setId(String id) {
 	    this.id = id;
 	    return this;
@@ -365,31 +255,13 @@ public class BuildableRegion implements Region, Serializable, Comparable<Region>
 	    return this;
 	}
 
-	public Builder addChildRegions(BuildableRegion... regions) {
-	    this.childRegions.addAll(Arrays.asList(regions));
-	    return this;
-	}
-
-	public Builder removeChildRegions(BuildableRegion... regions) {
-	    this.childRegions.removeAll(Arrays.asList(regions));
-	    return this;
-	}
-
-	public void clearChildren() {
-	    this.childRegions.clear();
-	}
-
-	public Builder setParentRegion(BuildableRegion parent) {
-	    this.parent = parent;
-	    return this;
-	}
 
 	public boolean isBuildable() {
 	    return this.id != null && this.regionType != null;
 	}
 
-	public BuildableRegion build() {
-	    return new BuildableRegion(this.id, this.regionType, this.parent, this.childRegions);
+	public DefaultRegion build() {
+	    return new DefaultRegion(this.id, this.regionType);
 	}
 
 	/*
@@ -398,8 +270,7 @@ public class BuildableRegion implements Region, Serializable, Comparable<Region>
 	 */
 	@Override
 	public String toString() {
-	    return "RegionBuilderImpl [id=" + id + ", regionType=" + regionType + ", parent=" + parent
-		    + ", childRegions=" + childRegions + "]";
+	    return "RegionBuilderImpl [id=" + id + ", regionType=" + regionType + "]";
 	}
 
     }

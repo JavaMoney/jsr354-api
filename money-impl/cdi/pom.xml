@@ -6,7 +6,7 @@
 		<groupId>net.java.javamoney</groupId>
 		<version>0.5-SNAPSHOT</version>
 	</parent>
-	<artifactId>money-impl-cdi</artifactId>
+	<artifactId>money-java-se-cdi</artifactId>
 	<name>JSR 354 (Money and Currency) - CDI  Support</name>
 	<description>Implementation of JSR 354 (CDI).</description>
 

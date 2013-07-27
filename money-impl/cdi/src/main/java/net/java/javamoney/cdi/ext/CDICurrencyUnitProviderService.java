@@ -17,7 +17,7 @@
  *    Anatole Tresch - initial implementation
  *    Werner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri.ext;
+package net.java.javamoney.cdi.ext;
 
 import net.java.javamoney.ri.ext.AbstractCurrencyUnitProviderService;
 import java.util.ServiceLoader;

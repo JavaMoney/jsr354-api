@@ -16,11 +16,13 @@
  * Contributors:
  *    Anatole Tresch - initial implementation
  */
-package net.java.javamoney.ri.format;
+package net.java.javamoney.cdi.format;
 
 
 import javax.money.format.spi.ItemFormatFactorySpi;
+
 import net.java.javamoney.cdi.CDIContainer;
+import net.java.javamoney.ri.format.AbstractMonetaryFormatsSingletonSpi;
 
 public class CDIMonetaryFormatsSingletonSpi extends AbstractMonetaryFormatsSingletonSpi {
 

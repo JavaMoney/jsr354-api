@@ -1,1 +1,1 @@
-net.java.javamoney.ri.convert.CDIMonetaryConversionsSingletonSpi
+net.java.javamoney.cdi.convert.CDIMonetaryConversionsSingletonSpi

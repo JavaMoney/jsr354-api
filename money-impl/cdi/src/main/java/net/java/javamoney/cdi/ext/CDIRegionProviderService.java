@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.java.javamoney.ri.ext;
+package net.java.javamoney.cdi.ext;
 
 import net.java.javamoney.ri.ext.AbstractRegionProviderService;
 import java.util.ArrayList;

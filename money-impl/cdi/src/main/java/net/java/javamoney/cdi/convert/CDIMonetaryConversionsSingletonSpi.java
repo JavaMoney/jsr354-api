@@ -16,12 +16,11 @@
  * Contributors:
  *    Anatole Tresch - initial implementation.
  */
-package net.java.javamoney.ri.convert;
+package net.java.javamoney.cdi.convert;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.money.convert.ConversionProvider;

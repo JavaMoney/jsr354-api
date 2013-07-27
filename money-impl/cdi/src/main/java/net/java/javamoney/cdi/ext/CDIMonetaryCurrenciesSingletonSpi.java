@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.java.javamoney.ri.ext;
+package net.java.javamoney.cdi.ext;
 
 import java.util.ArrayList;
 import java.util.Collection;

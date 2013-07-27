@@ -18,7 +18,7 @@
  *    Anatole Tresch - initial version.
  *    Wernner Keil - extensions and adaptions.
  */
-package net.java.javamoney.ri.ext;
+package net.java.javamoney.cdi.ext;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -29,6 +29,9 @@ import javax.money.ext.RegionNode;
 import javax.money.ext.RegionType;
 import javax.money.ext.RegionValidity;
 import javax.money.ext.spi.RegionsSingletonSpi;
+
+import net.java.javamoney.ri.ext.AbstractRegionProviderService;
+import net.java.javamoney.ri.ext.AbstractRegionalCurrencyUnitProviderService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

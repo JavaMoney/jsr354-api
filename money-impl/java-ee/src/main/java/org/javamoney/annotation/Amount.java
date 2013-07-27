@@ -16,7 +16,7 @@
  * Contributors:
  *    Werner Keil - initial implementation.
  */
-package net.java.javamoney.impl.cdi.qualifiers;
+package org.javamoney.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

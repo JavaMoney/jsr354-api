@@ -12,6 +12,7 @@
 	<name>JSR 354 (Money and Currency) - Main APIs</name>
 
 	<modules>
+		<module>platform</module>
 		<module>convert</module>
 		<module>format</module>
 		<module>ext</module>

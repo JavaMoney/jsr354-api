@@ -10,6 +10,7 @@
  */
 package javax.money.format;
 
+import javax.money.format.spi.MonetaryFormatsSingletonSpi;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -26,19 +27,23 @@ import java.util.logging.Logger;
  */
 public final class MonetaryFormats {
 
-    private static MonetaryFormatsSpi monetaryFormatSpi = loadMonetaryFormatSpi();
+    private static MonetaryFormatsSingletonSpi monetaryFormatSpi = loadMonetaryFormatSpi();
 
     private MonetaryFormats() {
     }
 
-    private static MonetaryFormatsSpi loadMonetaryFormatSpi() {
-	MonetaryFormatsSpi spi = null;
+    private static MonetaryFormatsSingletonSpi loadMonetaryFormatSpi() {
+	MonetaryFormatsSingletonSpi spi = null;
 	try {
 	    // try loading directly from ServiceLoader
-	    Iterator<MonetaryFormatsSpi> instances = ServiceLoader.load(MonetaryFormatsSpi.class).iterator();
+	    Iterator<MonetaryFormatsSingletonSpi> instances = ServiceLoader.load(MonetaryFormatsSingletonSpi.class).iterator();
 	    if (instances.hasNext()) {
 		spi = instances.next();
-		return spi;
+                if (instances.hasNext()) {
+                throw new IllegalStateException("Ambigous reference to spi (only "
+                        + "one can be registered: " + MonetaryFormatsSingletonSpi.class.getName());
+                }
+                return spi;
 	    }
 	} catch (Exception e) {
 	    Logger.getLogger(MonetaryFormats.class.getName()).log(Level.INFO,
@@ -168,53 +173,7 @@ public final class MonetaryFormats {
 	}
     }
 
-    public static interface MonetaryFormatsSpi {
-	/**
-	 * Return the style id's supported by this
-	 * {@link ItemFormatterFactorySpi} instance.
-	 * 
-	 * @see LocalizationStyle#getId()
-	 * @param targetType
-	 *            the target type, never {@code null}.
-	 * @return the supported style ids, never {@code null}.
-	 */
-	public Collection<String> getSupportedStyleIds(Class<?> targetType);
-
-	public LocalizationStyle getLocalizationStyle(Class<?> targetType, String styleId);
-
-	/**
-	 * Method allows to check if a named style is supported.
-	 * 
-	 * @param targetType
-	 *            the target type, never {@code null}.
-	 * @param styleId
-	 *            The style id.
-	 * @return true, if a spi implementation is able to provide an
-	 *         {@link ItemFormat} for the given style.
-	 */
-	public boolean isSupportedStyle(Class<?> targetType, String styleId);
-
-	/**
-	 * This method returns an instance of an {@link ItemFormat} .
-	 * 
-	 * @param targetType
-	 *            the target type, never {@code null}.
-	 * @param style
-	 *            the {@link LocalizationStyle} to be attached to this
-	 *            {@link ItemFormat}, which also contains the target
-	 *            {@link Locale} instances to be used, as well as other
-	 *            attributes configuring this instance.
-	 * @return the formatter required, if available.
-	 * @throws ItemFormatException
-	 *             if the {@link LocalizationStyle} passed can not be used
-	 *             for configuring the {@link ItemFormat} and no matching
-	 *             {@link ItemFormat} could be provided.
-	 */
-	public <T> ItemFormat<T> getItemFormat(Class<T> targetType, LocalizationStyle style) throws ItemFormatException;
-
-    }
-
-    private static final class DefaultMonetaryFormatsSpi implements MonetaryFormatsSpi {
+    private static final class DefaultMonetaryFormatsSpi implements MonetaryFormatsSingletonSpi {
 
 	@Override
 	public Collection<String> getSupportedStyleIds(Class<?> targetType) {

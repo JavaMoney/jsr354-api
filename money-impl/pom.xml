@@ -32,6 +32,7 @@
 	</licenses>
 
 	<modules>
+		<module>platform</module>
 		<module>ri</module>
 		<module>java-se</module>
 		<module>cdi</module>

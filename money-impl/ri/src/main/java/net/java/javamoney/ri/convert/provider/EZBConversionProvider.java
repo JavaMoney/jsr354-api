@@ -244,7 +244,7 @@ public class EZBConversionProvider implements ConversionProvider {
 		return new ExchangeRate(rate.getExchangeRateType(), rate.getTerm(),
 				rate.getBase(), BigDecimal.ONE.divide(rate.getFactor(),
 						MathContext.DECIMAL64), rate.getProvider(),
-				rate.getValidFromTimeInMillis(), rate.getValidToTimeInMillis());
+				rate.getValidFromTimeInMillis(), rate.getValidToTimeInMillis()); 
 	}
 
 	/**

@@ -4,5 +4,4 @@ import javax.inject.Singleton;
 
 @Singleton
 public class CDIComponentProducer {
-
 }

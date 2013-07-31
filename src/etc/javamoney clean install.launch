@@ -15,5 +15,9 @@
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 </listAttribute>
+<<<<<<< HEAD
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/jsr354}"/>
+=======
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${project_loc}"/>
+>>>>>>> branch 'master' of https://github.com/JavaMoney/javamoney.git
 </launchConfiguration>

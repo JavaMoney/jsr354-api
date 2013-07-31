@@ -57,11 +57,6 @@
 				<version>${javamoney.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>javax.money</groupId>
-				<artifactId>money-platform-ri</artifactId>
-				<version>${javamoney.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
@@ -97,10 +92,6 @@
 		<dependency>
 			<groupId>javax.money</groupId>
 			<artifactId>money-api-format</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.money</groupId>
-			<artifactId>money-platform-ri</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>

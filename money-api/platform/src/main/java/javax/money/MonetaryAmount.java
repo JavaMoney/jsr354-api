@@ -8,8 +8,6 @@
  */
 package javax.money;
 
-import java.math.BigDecimal;
-
 /**
  * Interface defining a monetary amount. The effective internal representation
  * of an amount may vary depending on the implementation used. Nevertheless
@@ -18,7 +16,7 @@ import java.math.BigDecimal;
  * Since {@link Number} is not an interface, this type is not extending
  * {@link Number}.
  * 
- * @version 0.4.2
+ * @version 0.4.3
  * @author Anatole Tresch
  * @author Werner Keil
  */

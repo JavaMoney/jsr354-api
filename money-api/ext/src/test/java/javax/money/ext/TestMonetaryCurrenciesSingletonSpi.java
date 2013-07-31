@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.MoneyCurrency;
+import javax.money.TestCurrency;
 import javax.money.UnknownCurrencyException;
 import javax.money.ext.spi.CurrencyUnitProviderSpi;
 import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
@@ -33,17 +33,17 @@ public class TestMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesSin
 
     @Override
     public String getDefaultNamespace() {
-	return MoneyCurrency.ISO_NAMESPACE;
+	return TestCurrency.ISO_NAMESPACE;
     }
 
     @Override
     public boolean isAvailable(String namespace, String currencyCode) {
-	return MoneyCurrency.of(namespace, currencyCode) != null;
+	return TestCurrency.of(namespace, currencyCode) != null;
     }
 
     @Override
     public CurrencyUnit get(String namespace, String currencyCode) {
-	CurrencyUnit unit = MoneyCurrency.of(namespace, currencyCode);
+	CurrencyUnit unit = TestCurrency.of(namespace, currencyCode);
 	if (unit != null) {
 	    return unit;
 	}

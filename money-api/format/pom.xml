@@ -26,11 +26,11 @@
 			<artifactId>money-api-platform</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
+<!-- 		<dependency>
 			<groupId>javax.money</groupId>
-			<artifactId>money-platform-ri</artifactId>
+			<artifactId>money-ri-platform</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 </project>

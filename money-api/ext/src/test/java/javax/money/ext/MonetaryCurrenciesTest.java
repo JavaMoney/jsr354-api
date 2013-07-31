@@ -8,7 +8,7 @@
  */
 package javax.money.ext;
 
-import javax.money.MoneyCurrency;
+import javax.money.TestCurrency;
 import org.junit.Test;
 
 /**
@@ -25,7 +25,7 @@ public class MonetaryCurrenciesTest {
 
 	@Test
 	public void testGetStringString() {
-		MonetaryCurrencies.get(MoneyCurrency.ISO_NAMESPACE, "CHF");
+		MonetaryCurrencies.get(TestCurrency.ISO_NAMESPACE, "CHF");
 	}
 
 }

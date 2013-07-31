@@ -11,7 +11,7 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 
 import javax.money.CurrencyUnit;
-import javax.money.MoneyCurrency;
+import javax.money.TestCurrency;
 import javax.money.convert.ExchangeRate.Builder;
 
 import org.junit.Test;
@@ -36,18 +36,18 @@ public class ExchangeRate_BuilderTest extends Builder {
 	public void testGetSetBase() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
 		assertNull(b.getBase());
-		ExchangeRate.Builder b2 = b.setBase(MoneyCurrency.of("CHF"));
+		ExchangeRate.Builder b2 = b.setBase(TestCurrency.of("CHF"));
 		assertTrue(b == b2);
-		assertEquals(MoneyCurrency.of("CHF"), b.getBase());
+		assertEquals(TestCurrency.of("CHF"), b.getBase());
 	}
 
 	@Test
 	public void testGetSetTerm() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
 		assertNull(b.getBase());
-		ExchangeRate.Builder b2 = b.setTerm(MoneyCurrency.of("CHF"));
+		ExchangeRate.Builder b2 = b.setTerm(TestCurrency.of("CHF"));
 		assertTrue(b == b2);
-		assertEquals(MoneyCurrency.of("CHF"), b.getTerm());
+		assertEquals(TestCurrency.of("CHF"), b.getTerm());
 	}
 
 	@Test
@@ -70,9 +70,9 @@ public class ExchangeRate_BuilderTest extends Builder {
 
 	@Test
 	public void testGetSetExchangeRateChain() {
-		CurrencyUnit base = MoneyCurrency.of("CHF");
-		CurrencyUnit baseTerm = MoneyCurrency.of("EUR");
-		CurrencyUnit term = MoneyCurrency.of("USD");
+		CurrencyUnit base = TestCurrency.of("CHF");
+		CurrencyUnit baseTerm = TestCurrency.of("EUR");
+		CurrencyUnit term = TestCurrency.of("USD");
 		ExchangeRate rate1 = new ExchangeRate(ExchangeRateType.of("test"),base,baseTerm,0.8,"myProvider");
 		ExchangeRate rate2 = new ExchangeRate(ExchangeRateType.of("test"),baseTerm,term,1.4,"myProvider");
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
@@ -119,9 +119,9 @@ public class ExchangeRate_BuilderTest extends Builder {
 		assertFalse(b.isBuildeable());
 		b.setExchangeRateType(ExchangeRateType.of("test"));
 		assertFalse(b.isBuildeable());
-		b.setBase(MoneyCurrency.of("CHF"));
+		b.setBase(TestCurrency.of("CHF"));
 		assertFalse(b.isBuildeable());
-		b.setTerm(MoneyCurrency.of("CHF"));
+		b.setTerm(TestCurrency.of("CHF"));
 		assertFalse(b.isBuildeable());
 		b.setFactor(2.0);
 		assertTrue(b.isBuildeable());
@@ -129,9 +129,9 @@ public class ExchangeRate_BuilderTest extends Builder {
 
 	@Test
 	public void testBuild() {
-		CurrencyUnit base = MoneyCurrency.of("CHF");
-		CurrencyUnit baseTerm = MoneyCurrency.of("EUR");
-		CurrencyUnit term = MoneyCurrency.of("USD");
+		CurrencyUnit base = TestCurrency.of("CHF");
+		CurrencyUnit baseTerm = TestCurrency.of("EUR");
+		CurrencyUnit term = TestCurrency.of("USD");
 		ExchangeRate rate1 = new ExchangeRate(ExchangeRateType.of("test"),base,baseTerm,0.8,"myProvider");
 		ExchangeRate rate2 = new ExchangeRate(ExchangeRateType.of("test"),baseTerm,term,1.4,"myProvider");
 		
@@ -146,8 +146,8 @@ public class ExchangeRate_BuilderTest extends Builder {
 		
 		b = new ExchangeRate.Builder();
 		b.setExchangeRateType(ExchangeRateType.of("test"));
-		b.setBase(MoneyCurrency.of("CHF"));
-		b.setTerm(MoneyCurrency.of("USD"));
+		b.setBase(TestCurrency.of("CHF"));
+		b.setTerm(TestCurrency.of("USD"));
 		b.setExchangeRateChain(rate1, rate2);
 		b.setFactor(2.0);
 		rate = b.build();

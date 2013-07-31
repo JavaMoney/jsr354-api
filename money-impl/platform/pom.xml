@@ -29,11 +29,11 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+<!-- 		<dependency>
 			<groupId>javax.money</groupId>
 			<artifactId>money-api</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 </project>

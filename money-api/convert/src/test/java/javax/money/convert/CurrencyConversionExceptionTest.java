@@ -2,7 +2,7 @@ package javax.money.convert;
 
 import static org.junit.Assert.*;
 import javax.money.CurrencyUnit;
-import javax.money.MoneyCurrency;
+import javax.money.TestCurrency;
 
 import org.junit.Test;
 
@@ -10,33 +10,33 @@ public class CurrencyConversionExceptionTest {
 
 	@Test
 	public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitLongString() {
-		CurrencyUnit base = MoneyCurrency.of("CHF");
-		CurrencyUnit term = MoneyCurrency.of("EUR");
+		CurrencyUnit base = TestCurrency.of("CHF");
+		CurrencyUnit term = TestCurrency.of("EUR");
 		CurrencyConversionException ex = new CurrencyConversionException(base, term, 100L, "test");
 		assertEquals(null, ex.getCause());
 		assertEquals(base, ex.getBase());
 		assertEquals(term, ex.getTerm());
 		assertEquals(Long.valueOf(100), ex.getTimestamp());
-		assertEquals("Cannot convert ISO-4217:CHF into ISO-4217:EUR: test", ex.getMessage());
+		assertEquals("Cannot convert CHF into EUR: test", ex.getMessage());
 	}
 
 	@Test
 	public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitLong() {
-		CurrencyUnit base = MoneyCurrency.of("CHF");
-		CurrencyUnit term = MoneyCurrency.of("EUR");
+		CurrencyUnit base = TestCurrency.of("CHF");
+		CurrencyUnit term = TestCurrency.of("EUR");
 		CurrencyConversionException ex = new CurrencyConversionException(base, term, 100L);
 		assertEquals(null, ex.getCause());
 		assertEquals(base, ex.getBase());
 		assertEquals(term, ex.getTerm());
 		assertEquals(Long.valueOf(100), ex.getTimestamp());
-		assertEquals("Cannot convert ISO-4217:CHF into ISO-4217:EUR", ex.getMessage());
+		assertEquals("Cannot convert CHF into EUR", ex.getMessage());
 	}
 	
 
 	@Test
 	public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitLongStringThrowable() {
-		CurrencyUnit base = MoneyCurrency.of("CHF");
-		CurrencyUnit term = MoneyCurrency.of("EUR");
+		CurrencyUnit base = TestCurrency.of("CHF");
+		CurrencyUnit term = TestCurrency.of("EUR");
 		Exception cause = new Exception("cause");
 		CurrencyConversionException ex = new CurrencyConversionException(base, term, 100L, "test", cause);
 		assertEquals(cause, ex.getCause());
@@ -49,11 +49,11 @@ public class CurrencyConversionExceptionTest {
 
 	@Test
 	public void testToString() {
-		CurrencyUnit base = MoneyCurrency.of("CHF");
-		CurrencyUnit term = MoneyCurrency.of("EUR");
+		CurrencyUnit base = TestCurrency.of("CHF");
+		CurrencyUnit term = TestCurrency.of("EUR");
 		Exception cause = new Exception("cause");
 		CurrencyConversionException ex = new CurrencyConversionException(base, term, 100L, "test", cause);
-		assertEquals("CurrencyConversionException [source=ISO-4217:CHF, target=ISO-4217:EUR, timestamp=100]: test", ex.toString());
+		assertEquals("CurrencyConversionException [source=CHF, target=EUR, timestamp=100]: test", ex.toString());
 	}
 
 }

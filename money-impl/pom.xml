@@ -58,7 +58,7 @@
 			</dependency>
 			<dependency>
 				<groupId>javax.money</groupId>
-				<artifactId>money-platform-ri</artifactId>
+				<artifactId>money-ri-platform</artifactId>
 				<version>${javamoney.version}</version>
 			</dependency>
 			<dependency>
@@ -98,10 +98,7 @@
 			<groupId>javax.money</groupId>
 			<artifactId>money-api-format</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>javax.money</groupId>
-			<artifactId>money-platform-ri</artifactId>
-		</dependency>
+		
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>

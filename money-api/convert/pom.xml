@@ -20,17 +20,19 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>javax.money</groupId>
 			<artifactId>money-api-platform</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>javax.money</groupId>
-			<artifactId>money-platform-ri</artifactId>
+			<artifactId>money-api-platform</artifactId>
 			<version>${project.version}</version>
+			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

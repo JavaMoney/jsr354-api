@@ -100,4 +100,9 @@ public class TestMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesSin
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+	@Override
+	public Collection<CurrencyUnit> getAll(String namespace) {
+		return TestCurrency.allFromNamespace(namespace);
+	}
+
 }

@@ -1,10 +1,14 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
- *
- * Specification:  JSR-354  Money and Currency API ("Specification")
- *
- * Copyright (c) 2012-2013, Credit Suisse
- * All rights reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
+ * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
+ * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
+ * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
+ * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
+ * BUTTON AT THE BOTTOM OF THIS PAGE.
+ * 
+ * Specification: JSR-354 Money and Currency API ("Specification")
+ * 
+ * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money;
 
@@ -52,33 +56,6 @@ public interface MonetaryAmount {
 	public MonetaryAmount add(MonetaryAmount augend);
 
 	/**
-	 * Returns a {@code MonetaryAmount} whose value is {@code (this +
-	 * augend)}, and whose scale is {@code max(this.getScale(),
-	 * augend.getScale())}.
-	 * 
-	 * @param augend
-	 *            value to be added to this {@code MonetaryAmount}.
-	 * @return {@code this + augend}
-	 */
-	public MonetaryAmount add(Number augend);
-
-	/**
-	 * Returns a {@code MonetaryAmount} whose value is {@code (this /
-	 * divisor)}, and whose preferred scale is {@code (this.getScale() -
-	 * divisor.getScale())}; if the exact quotient cannot be represented
-	 * (because it has a non-terminating decimal expansion) an
-	 * {@code ArithmeticException} is thrown.
-	 * 
-	 * @param divisor
-	 *            value by which this {@code MonetaryAmount} is to be divided.
-	 * @throws ArithmeticException
-	 *             if the exact quotient does not have a terminating decimal
-	 *             expansion
-	 * @return {@code this / divisor}
-	 */
-	public MonetaryAmount divide(MonetaryAmount divisor);
-
-	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this /
 	 * divisor)}, and whose preferred scale is {@code (this.getScale() -
 	 * divisor.getScale())}; if the exact quotient cannot be represented
@@ -116,30 +93,6 @@ public interface MonetaryAmount {
 	 * @see #divideToIntegralValue(MonetaryAmount)
 	 * @see #remainder(MonetaryAmount)
 	 */
-	public MonetaryAmount[] divideAndRemainder(MonetaryAmount divisor);
-
-	/**
-	 * Returns a two-element {@code MonetaryAmount} array containing the result
-	 * of {@code divideToIntegralValue} followed by the result of
-	 * {@code remainder} on the two operands.
-	 * 
-	 * <p>
-	 * Note that if both the integer quotient and remainder are needed, this
-	 * method is faster than using the {@code divideToIntegralValue} and
-	 * {@code remainder} methods separately because the division need only be
-	 * carried out once.
-	 * 
-	 * @param divisor
-	 *            value by which this {@code MonetaryAmount} is to be divided,
-	 *            and the remainder computed.
-	 * @return a two element {@code MonetaryAmount} array: the quotient (the
-	 *         result of {@code divideToIntegralValue}) is the initial element
-	 *         and the remainder is the final element.
-	 * @throws ArithmeticException
-	 *             if {@code divisor==0}
-	 * @see #divideToIntegralValue(MonetaryAmount)
-	 * @see #remainder(MonetaryAmount)
-	 */
 	public MonetaryAmount[] divideAndRemainder(Number divisor);
 
 	/**
@@ -154,32 +107,7 @@ public interface MonetaryAmount {
 	 * @throws ArithmeticException
 	 *             if {@code divisor==0}
 	 */
-	public MonetaryAmount divideToIntegralValue(MonetaryAmount divisor);
-
-	/**
-	 * Returns a {@code MonetaryAmount} whose value is the integer part of the
-	 * quotient {@code (this / divisor)} rounded down. The preferred scale of
-	 * the result is {@code (this.getScale() -
-	 * divisor.getScale())}.
-	 * 
-	 * @param divisor
-	 *            value by which this {@code MonetaryAmount} is to be divided.
-	 * @return The integer part of {@code this / divisor}.
-	 * @throws ArithmeticException
-	 *             if {@code divisor==0}
-	 */
 	public MonetaryAmount divideToIntegralValue(Number divisor);
-
-	/**
-	 * Returns a {@code MonetaryAmount} whose value is <tt>(this &times;
-	 * multiplicand)</tt>, and whose scale is {@code (this.getScale() +
-	 * multiplicand.getScale())}.
-	 * 
-	 * @param multiplicand
-	 *            value to be multiplied by this {@code MonetaryAmount}.
-	 * @return {@code this * multiplicand}
-	 */
-	public MonetaryAmount multiply(MonetaryAmount multiplicand);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is <tt>(this &times;
@@ -225,17 +153,6 @@ public interface MonetaryAmount {
 	public MonetaryAmount subtract(MonetaryAmount subtrahend);
 
 	/**
-	 * Returns a {@code MonetaryAmount} whose value is {@code (this -
-	 * subtrahend)}, and whose scale is {@code max(this.getScale(),
-	 * subtrahend.getScale())}.
-	 * 
-	 * @param subtrahend
-	 *            value to be subtracted from this {@code MonetaryAmount}.
-	 * @return {@code this - subtrahend}
-	 */
-	public MonetaryAmount subtract(Number subtrahend);
-
-	/**
 	 * Returns a {@code MonetaryAmount} whose value is
 	 * <tt>(this<sup>n</sup>)</tt>, The power is computed exactly, to unlimited
 	 * precision.
@@ -269,23 +186,6 @@ public interface MonetaryAmount {
 	 * @return the size of an ulp of {@code this}
 	 */
 	public MonetaryAmount ulp();
-
-	/**
-	 * Returns a {@code MonetaryAmount} whose value is {@code (this % divisor)}.
-	 * 
-	 * <p>
-	 * The remainder is given by
-	 * {@code this.subtract(this.divideToIntegralValue(divisor).multiply(divisor))}
-	 * . Note that this is not the modulo operation (the result can be
-	 * negative).
-	 * 
-	 * @param divisor
-	 *            value by which this {@code MonetaryAmount} is to be divided.
-	 * @return {@code this % divisor}.
-	 * @throws ArithmeticException
-	 *             if {@code divisor==0}
-	 */
-	public MonetaryAmount remainder(MonetaryAmount divisor);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this % divisor)}.
@@ -355,7 +255,9 @@ public interface MonetaryAmount {
 	 * <p>
 	 * The returned instance will have a currency as returned by
 	 * {@link #getCurrency()} and the new amount. No rounding is performed on
-	 * the amount to be added.
+	 * the amount to be added.<br/>
+	 * The instance created also inherits the precision/scale properties from
+	 * this instance.
 	 * <p>
 	 * This instance is immutable and unaffected by this method.
 	 * 
@@ -372,7 +274,9 @@ public interface MonetaryAmount {
 	 * <p>
 	 * The returned instance will have a currency as returned by
 	 * {@link #getCurrency()} and the new amount. No rounding is performed on
-	 * the amount to be added.
+	 * the amount to be added.<br/>
+	 * The instance created also inherits the precision/scale properties from
+	 * this instance.
 	 * <p>
 	 * This instance is immutable and unaffected by this method.
 	 * 
@@ -388,7 +292,8 @@ public interface MonetaryAmount {
 	public MonetaryAmount from(CurrencyUnit currency, Number amount);
 
 	/**
-	 * Applies the given {@link MonetaryOperator} to this {@link MonetaryAmount}.
+	 * Applies the given {@link MonetaryOperator} to this {@link MonetaryAmount}
+	 * .
 	 * 
 	 * @param operator
 	 *            the operator, not null.
@@ -594,8 +499,8 @@ public interface MonetaryAmount {
 	// -------------------------------------------- Misc
 
 	/**
-	 * Gets the monetary amount using the passed target type. This method
-	 * allows to support different return types, depending of the concrete
+	 * Gets the monetary amount using the passed target type. This method allows
+	 * to support different return types, depending of the concrete
 	 * implementation. E.g. {@link BigDecimal}, {@link java.lang.Number} and the
 	 * numeric wrapper types should be supported within SE environments, whereas
 	 * on other environments, it may be different.

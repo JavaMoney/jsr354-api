@@ -202,4 +202,9 @@ public class CDIMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesSing
         }
         return resultList;
     }
+    
+    @Override
+	public Collection<CurrencyUnit> getAll(String namespace) {
+		return currencyUnitProvider.getAll(namespace);
+	}
 }

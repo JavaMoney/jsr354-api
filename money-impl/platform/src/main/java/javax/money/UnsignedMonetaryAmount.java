@@ -78,25 +78,6 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 		return of(this.amount.add(augend));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#add(java.lang.Number)
-	 */
-	@Override
-	public UnsignedMonetaryAmount add(Number augend) {
-		return of(this.amount.add(augend));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#divide(javax.money.MonetaryAmount)
-	 */
-	@Override
-	public UnsignedMonetaryAmount divide(MonetaryAmount divisor) {
-		return of(this.amount.divide(divisor));
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -111,18 +92,6 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * javax.money.MonetaryAmount#divideAndRemainder(javax.money.MonetaryAmount)
-	 */
-	@Override
-	public UnsignedMonetaryAmount[] divideAndRemainder(MonetaryAmount divisor) {
-		MonetaryAmount[] res = this.amount.divideAndRemainder(divisor);
-		return new UnsignedMonetaryAmount[] { of(res[0]), of(res[1]) };
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see javax.money.MonetaryAmount#divideAndRemainder(java.lang.Number)
 	 */
 	@Override
@@ -131,17 +100,6 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 		return new UnsignedMonetaryAmount[] { of(res[0]), of(res[1]) };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.money.MonetaryAmount#divideToIntegralValue(javax.money.MonetaryAmount
-	 * )
-	 */
-	@Override
-	public UnsignedMonetaryAmount divideToIntegralValue(MonetaryAmount divisor) {
-		return of(this.amount.divideToIntegralValue(divisor));
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -151,16 +109,6 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	@Override
 	public UnsignedMonetaryAmount divideToIntegralValue(Number divisor) {
 		return of(this.amount.divideToIntegralValue(divisor));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#multiply(javax.money.MonetaryAmount)
-	 */
-	@Override
-	public UnsignedMonetaryAmount multiply(MonetaryAmount multiplicand) {
-		return of(this.amount.multiply(multiplicand));
 	}
 
 	/*
@@ -203,15 +151,6 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 		return of(this.amount.subtract(subtrahend));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#subtract(java.lang.Number)
-	 */
-	@Override
-	public UnsignedMonetaryAmount subtract(Number subtrahend) {
-		return of(this.amount.subtract(subtrahend));
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -231,16 +170,6 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	@Override
 	public UnsignedMonetaryAmount ulp() {
 		return of(this.amount.ulp());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#remainder(javax.money.MonetaryAmount)
-	 */
-	@Override
-	public UnsignedMonetaryAmount remainder(MonetaryAmount divisor) {
-		return of(this.amount.remainder(divisor));
 	}
 
 	/*

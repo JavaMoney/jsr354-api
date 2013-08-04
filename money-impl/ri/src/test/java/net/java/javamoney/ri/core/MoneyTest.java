@@ -83,9 +83,8 @@ public class MoneyTest {
 	@Test
 	public void testDivideAndRemainder_BigDecimal() {
 		MonetaryAmount money1 = Money.of(EURO, BigDecimal.ONE);
-		MonetaryAmount money2 = Money.of(EURO, new BigDecimal(
+		MonetaryAmount[] divideAndRemainder = money1.divideAndRemainder(new BigDecimal(
 				"0.50000000000000000001"));
-		MonetaryAmount[] divideAndRemainder = money1.divideAndRemainder(money2);
 		assertThat(divideAndRemainder[0].asType(BigDecimal.class),
 				equalTo(BigDecimal.ONE));
 		assertThat(divideAndRemainder[1].asType(BigDecimal.class),
@@ -95,9 +94,8 @@ public class MoneyTest {
 	@Test
 	public void testDivideToIntegralValue_BigDecimal() {
 		MonetaryAmount money1 = Money.of(EURO, BigDecimal.ONE);
-		MonetaryAmount money2 = Money.of(EURO, new BigDecimal(
+		MonetaryAmount result = money1.divideToIntegralValue(new BigDecimal(
 				"0.50000000000000000001"));
-		MonetaryAmount result = money1.divideToIntegralValue(money2);
 		assertThat(result.asType(BigDecimal.class), equalTo(BigDecimal.ONE));
 	}
 	
@@ -106,8 +104,8 @@ public class MoneyTest {
 		MonetaryAmount money1 = Money.of(EURO, BigDecimal.ONE);
 		long start = System.currentTimeMillis();
 		for(int i=0; i<100000;i++){
-			money1 = money1.add(1234567);
-			money1 = money1.subtract(232323);
+			money1 = money1.add(Money.of(EURO, 1234567));
+			money1 = money1.subtract(Money.of(EURO, 232323));
 			money1 = money1.multiply(3);
 			money1 = money1.divide(3);
 		}
@@ -118,8 +116,8 @@ public class MoneyTest {
 		MonetaryAmount money2 = IntegralMoney.of(EURO, BigDecimal.ONE);
 		start = System.currentTimeMillis();
 		for(int i=0; i<100000;i++){
-			money2 = money2.add(1234567);
-			money2 = money2.subtract(232323);
+			money2 = money2.add(Money.of(EURO, 1234567));
+			money2 = money2.subtract(Money.of(EURO, 232323));
 			money2 = money2.multiply(3);
 			money2 = money2.divide(3);
 		}

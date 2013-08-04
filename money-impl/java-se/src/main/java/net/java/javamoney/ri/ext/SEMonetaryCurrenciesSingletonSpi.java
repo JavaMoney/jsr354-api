@@ -206,4 +206,9 @@ public class SEMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesSingl
         }
         return resultList;
     }
+
+	@Override
+	public Collection<CurrencyUnit> getAll(String namespace) {
+		return currencyUnitProvider.getAll(namespace);
+	}
 }

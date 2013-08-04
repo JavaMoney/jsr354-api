@@ -83,8 +83,7 @@ public class IntegralMoneyTest {
 	@Test
 	public void testDivideAndRemainder() {
 		MonetaryAmount money1 = IntegralMoney.of(EURO, 1000);
-		MonetaryAmount money2 = IntegralMoney.of(EURO, 11);
-		MonetaryAmount[] divideAndRemainder = money1.divideAndRemainder(money2);
+		MonetaryAmount[] divideAndRemainder = money1.divideAndRemainder(11);
 		assertEquals(90L, divideAndRemainder[0].longValue());
 		assertEquals(10L, divideAndRemainder[1].longValue());
 	}
@@ -92,8 +91,7 @@ public class IntegralMoneyTest {
 	@Test
 	public void testDivideToIntegralValue() {
 		MonetaryAmount money1 = IntegralMoney.of(EURO, 1000);
-		MonetaryAmount money2 = IntegralMoney.of(EURO, 5);
-		MonetaryAmount result = money1.divideToIntegralValue(money2);
+		MonetaryAmount result = money1.divideToIntegralValue(5);
 		assertEquals(200L, result.longValue());
 	}
 }

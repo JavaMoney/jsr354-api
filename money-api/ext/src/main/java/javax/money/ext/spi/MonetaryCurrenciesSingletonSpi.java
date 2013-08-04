@@ -165,4 +165,15 @@ public interface MonetaryCurrenciesSingletonSpi {
      * {@code null}.
      */
     public List<CurrencyUnit> mapAll(String targetNamespace, long timestamp, CurrencyUnit... units);
+
+	/**
+     * Access all currencies for a given namespace. 
+     * @see #getNamespaces()
+     * @see #getDefaultNamespace()
+     * @param namespace The target namespace, not null.
+     * @return The currencies found, never null.
+     * @throws UnknownCurrencyException if the required namespace is not defined.
+     */
+    public Collection<CurrencyUnit> getAll(String namespace);
+    
 }

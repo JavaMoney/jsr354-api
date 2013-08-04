@@ -11,6 +11,8 @@
 package javax.money;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.Map;
@@ -426,5 +428,9 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
 									   // Templates.
 	}
     }
+
+	public static Collection<CurrencyUnit> allFromNamespace(String namespace2) {
+		return Collections.emptySet();
+	}
 
 }

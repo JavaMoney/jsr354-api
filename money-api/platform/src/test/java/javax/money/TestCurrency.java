@@ -23,6 +23,7 @@ import java.util.logging.Logger;
  * Adapter that implements the new {@link CurrencyUnit} interface using the
  * JDK's {@link Currency}.
  * 
+ * @version 0.5
  * @author Anatole Tresch
  * @author Werner Keil
  */
@@ -371,13 +372,13 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
 	    return ISO_NAMESPACE;
 	}
 
-	public Long getValidFrom() {
-	    return null;
-	}
-
-	public Long getValidUntil() {
-	    return null;
-	}
+//	public Long getValidFrom() {
+//	    return null;
+//	}
+//
+//	public Long getValidUntil() {
+//	    return null;
+//	}
 
 	public int compareTo(CurrencyUnit currency) {
 	    int compare = getNamespace().compareTo(currency.getNamespace());
@@ -429,6 +430,8 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
 	}
     }
 
+    // TODO this isn't used and does not exist anywhere else in this form. Will it be used and if so, 
+    // consider changing it to a pattern similar as getAvailableCurrencies() (including the type Set, unless Collection provides value)
 	public static Collection<CurrencyUnit> allFromNamespace(String namespace2) {
 		return Collections.emptySet();
 	}

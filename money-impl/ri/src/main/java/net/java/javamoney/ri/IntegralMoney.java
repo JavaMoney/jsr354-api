@@ -30,6 +30,7 @@ import javax.money.MoneyCurrency;
 /**
  * Default immutable implementation of {@link MonetaryAmount}.
  * 
+ * @version 0.4
  * @author Anatole Tresch
  * @author Werner Keil
  */

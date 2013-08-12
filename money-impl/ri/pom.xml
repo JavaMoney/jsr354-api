@@ -45,8 +45,7 @@
 	<dependencies>
 		<dependency>
 			<artifactId>money-ri-platform</artifactId>
-			<groupId>net.java.javamoney</groupId>
-			<version>${project.version}</version>
+			<groupId>javax.money</groupId>
 		</dependency>
 		<dependency>
 			<artifactId>money-api</artifactId>

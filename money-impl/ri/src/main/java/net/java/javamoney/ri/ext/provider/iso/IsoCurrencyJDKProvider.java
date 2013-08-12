@@ -46,11 +46,11 @@ public class IsoCurrencyJDKProvider implements CurrencyUnitProviderSpi {
     }
 
     public String getNamespace() {
-	return MoneyCurrency.ISO_NAMESPACE;
+    	return MoneyCurrency.ISO_NAMESPACE;
     }
 
     public CurrencyUnit get(String code) {
-	return this.currencies.get(code);
+    	return this.currencies.get(code);
     }
 
 //    public Collection<CurrencyUnit> getCurrencies(Locale locale) {
@@ -66,11 +66,11 @@ public class IsoCurrencyJDKProvider implements CurrencyUnitProviderSpi {
 //    }
 
     public Collection<CurrencyUnit> getAll() {
-	return Collections.unmodifiableCollection(this.currencies.values());
+    	return Collections.unmodifiableCollection(this.currencies.values());
     }
 
     public boolean isAvailable(String code) {
-	return this.currencies.containsKey(code);
+    	return this.currencies.containsKey(code);
     }
 
 }

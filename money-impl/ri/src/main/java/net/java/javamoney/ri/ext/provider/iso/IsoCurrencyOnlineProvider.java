@@ -54,9 +54,9 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
     
     private final SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 
-    private final Map<String, String> countryCodeMap = new ConcurrentHashMap<String, String>();
+    private Map<String, String> countryCodeMap = new ConcurrentHashMap<String, String>();
 
-    private final Map<String, CurrencyUnit> currencies = new ConcurrentHashMap<String, CurrencyUnit>();
+    private Map<String, CurrencyUnit> currencies = new ConcurrentHashMap<String, CurrencyUnit>();
     
     private final Properties prop = new Properties();
     
@@ -326,7 +326,10 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 	public void run() {
 	    loadCountries();
 	    loadCurrencies();
-	    System.out.println("Currencies loaded from ISO:" + IsoCurrencyOnlineProvider.this.currencies.values());
+	    LOGGER.debug("Currencies loaded from ISO:" + IsoCurrencyOnlineProvider.this.currencies.values() + 
+	    		(IsoCurrencyOnlineProvider.this.countryCodeMap != null ? " for " + 
+	    				IsoCurrencyOnlineProvider.this.countryCodeMap.size() + " countries" : 
+	    				""));
 	}
 
     }

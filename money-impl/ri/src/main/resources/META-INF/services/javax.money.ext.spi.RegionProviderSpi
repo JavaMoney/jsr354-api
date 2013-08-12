@@ -1,1 +1,1 @@
-net.java.javamoney.ri.ext.provider.icu4j.Icu4JProvider
+net.java.javamoney.ri.ext.provider.icu4j.ICURegionProvider

@@ -13,12 +13,19 @@ import javax.money.ext.spi.RegionProviderSpi;
 
 import net.java.javamoney.ri.ext.DefaultRegion;
 
+/**
+ * ICU4J implementation of a {@link RegionProviderSpi} that provides 
+ * regions based on the Unicode CLDR.
+ * 
+ * @author Anatole Tresch
+ * @author Werner Keil
+ */
 @Singleton
-public class Icu4JProvider implements RegionProviderSpi {
+public class ICURegionProvider implements RegionProviderSpi {
 
     private Set<RegionType> regionTypes = new HashSet<RegionType>();
 
-    public Icu4JProvider() {
+    public ICURegionProvider() {
 	for (com.ibm.icu.util.Region.RegionType rt : com.ibm.icu.util.Region.RegionType.values()) {
 	    this.regionTypes.add(RegionType.of(rt.name()));
 	}

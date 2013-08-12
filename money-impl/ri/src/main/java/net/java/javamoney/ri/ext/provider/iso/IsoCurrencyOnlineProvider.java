@@ -7,13 +7,16 @@
  * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
  * OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
- * Contributors: Anatole Tresch - initial implementation.
+ * Contributors: 
+ * 		Anatole Tresch - initial implementation.
+ * 		Werner Keil - fixed and externalized Web Service URL
  */
 package net.java.javamoney.ri.ext.provider.iso;
 
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,6 +35,14 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * Online implementation of a {@link CurrencyUnitProviderSpi} that provides the
+ * ISO 4217 currencies available from the JDK {@link Currency} class.
+ * 
+ * @author Anatole Tresch
+ * @author Werner Keil
+ * @see <a href="www.currency-iso.org">Currency Code Services – ISO 4217 Maintenance Agency</a>
+ */
 @Singleton
 public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
@@ -44,9 +55,9 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
     private Map<String, CurrencyUnit> currencies = new ConcurrentHashMap<String, CurrencyUnit>();
 
     public IsoCurrencyOnlineProvider() {
-	saxParserFactory.setNamespaceAware(false);
-	saxParserFactory.setValidating(false);
-	new CurrencyLoader().start();
+    	saxParserFactory.setNamespaceAware(false);
+    	saxParserFactory.setValidating(false);
+    	new CurrencyLoader().start();
     }
 
     public void loadCurrencies() {
@@ -71,33 +82,27 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
     }
 
     private final class ISOCurrency implements CurrencyUnit, Displayable {
-	private Locale country;
 	private String currencyName;
 	private String currencyCode;
 	private int numericCode;
 	private int minorUnits;
 
-	@Override
 	public String getNamespace() {
 	    return MoneyCurrency.ISO_NAMESPACE;
 	}
 
-	@Override
 	public String getCurrencyCode() {
 	    return currencyCode;
 	}
 
-	@Override
 	public int getNumericCode() {
 	    return numericCode;
 	}
 
-	@Override
 	public int getDefaultFractionDigits() {
 	    return minorUnits;
 	}
 
-	@Override
 	public boolean isVirtual() {
 	    return false;
 	}
@@ -232,9 +237,8 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 		String countryName = text.toString();
 		String code = countryCodeMap.get(countryName);
 		if (code != null) {
-		    currency.country = new Locale("", code);
+		    new Locale("", code);
 		} else {
-		    currency.country = Locale.ROOT;
 		}
 	    } else if ("CURRENCY".equals(qName)) {
 		currency.currencyName = text.toString();

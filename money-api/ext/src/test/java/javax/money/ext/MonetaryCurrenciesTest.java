@@ -12,8 +12,8 @@ import javax.money.TestCurrency;
 import org.junit.Test;
 
 /**
- * @author Anatole
- * @author Werner
+ * @author Anatole Tresch
+ * @author Werner Keil
  * 
  */
 public class MonetaryCurrenciesTest {

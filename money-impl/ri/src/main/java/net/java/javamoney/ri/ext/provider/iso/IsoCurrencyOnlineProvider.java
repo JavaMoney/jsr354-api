@@ -48,11 +48,11 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IsoCurrencyOnlineProvider.class);
 
-    private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+    private final SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 
-    private Map<String, String> countryCodeMap = new ConcurrentHashMap<String, String>();
+    private final Map<String, String> countryCodeMap = new ConcurrentHashMap<String, String>();
 
-    private Map<String, CurrencyUnit> currencies = new ConcurrentHashMap<String, CurrencyUnit>();
+    private final Map<String, CurrencyUnit> currencies = new ConcurrentHashMap<String, CurrencyUnit>();
 
     public IsoCurrencyOnlineProvider() {
     	saxParserFactory.setNamespaceAware(false);
@@ -239,22 +239,23 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 		if (code != null) {
 		    new Locale("", code);
 		} else {
+			// TODO is this a no-op?
 		}
 	    } else if ("CURRENCY".equals(qName)) {
-		currency.currencyName = text.toString();
+	    	currency.currencyName = text.toString();
 	    } else if ("ALPHABETIC_CODE".equals(qName)) {
-		currency.currencyCode = text.toString();
+	    	currency.currencyCode = text.toString();
 	    } else if ("NUMERIC_CODE".equals(qName)) {
-		String value = text.toString();
-		if (!value.isEmpty()) {
-		    try {
-			currency.numericCode = Integer.valueOf(value);
-		    } catch (NumberFormatException nfe) {
-			currency.numericCode = -1;
-		    }
-		} else {
-		    currency.numericCode = -1;
-		}
+			String value = text.toString();
+			if (!value.isEmpty()) {
+			    try {
+				currency.numericCode = Integer.valueOf(value);
+			    } catch (NumberFormatException nfe) {
+				currency.numericCode = -1;
+			    }
+			} else {
+			    currency.numericCode = -1;
+			}
 	    } else if ("MINOR_UNIT".equals(qName)) {
 		String value = text.toString();
 		if (!value.isEmpty()) {
@@ -273,12 +274,12 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
     @Override
     public String getNamespace() {
-	return MoneyCurrency.ISO_NAMESPACE;
+    	return MoneyCurrency.ISO_NAMESPACE;
     }
 
     @Override
     public CurrencyUnit get(String code) {
-	return this.currencies.get(code);
+    	return this.currencies.get(code);
     }
 
 //    @Override
@@ -297,12 +298,12 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
     @Override
     public Collection<CurrencyUnit> getAll() {
-	return Collections.unmodifiableCollection(this.currencies.values());
+    	return Collections.unmodifiableCollection(this.currencies.values());
     }
 
     @Override
     public boolean isAvailable(String code) {
-	return this.currencies.containsKey(code);
+    	return this.currencies.containsKey(code);
     }
 
     private final class CurrencyLoader extends Thread {

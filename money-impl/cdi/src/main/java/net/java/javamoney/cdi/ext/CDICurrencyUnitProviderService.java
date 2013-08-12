@@ -20,10 +20,7 @@
 package net.java.javamoney.cdi.ext;
 
 import net.java.javamoney.ri.ext.AbstractCurrencyUnitProviderService;
-import java.util.ServiceLoader;
-
 import javax.money.CurrencyUnit;
-import javax.money.ext.spi.CurrencyUnitMapperSpi;
 import javax.money.ext.spi.CurrencyUnitProviderSpi;
 import net.java.javamoney.cdi.CDIContainer;
 

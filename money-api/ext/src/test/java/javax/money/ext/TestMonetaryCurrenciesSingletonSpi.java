@@ -11,16 +11,12 @@
 package javax.money.ext;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Currency;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.TestCurrency;
 import javax.money.UnknownCurrencyException;
-import javax.money.ext.spi.CurrencyUnitProviderSpi;
 import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
 
 /**

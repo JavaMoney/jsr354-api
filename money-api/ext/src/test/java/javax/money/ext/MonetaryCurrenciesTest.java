@@ -8,6 +8,8 @@
  */
 package javax.money.ext;
 
+import static org.junit.Assert.*;
+
 import javax.money.TestCurrency;
 import org.junit.Test;
 
@@ -20,7 +22,7 @@ public class MonetaryCurrenciesTest {
 
 	@Test
 	public void testGetString() {
-		MonetaryCurrencies.get("CHF");
+		assertEquals("CHF", MonetaryCurrencies.get("CHF").getCurrencyCode());
 	}
 
 	@Test
@@ -28,4 +30,8 @@ public class MonetaryCurrenciesTest {
 		MonetaryCurrencies.get(TestCurrency.ISO_NAMESPACE, "CHF");
 	}
 
+	@Test
+	public void testGetAllIso() {
+		assertNotNull(MonetaryCurrencies.getAll(TestCurrency.ISO_NAMESPACE));
+	}
 }

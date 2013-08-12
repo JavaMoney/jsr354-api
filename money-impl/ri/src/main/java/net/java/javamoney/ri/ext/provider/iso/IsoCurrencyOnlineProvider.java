@@ -13,12 +13,14 @@
  */
 package net.java.javamoney.ri.ext.provider.iso;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Singleton;
@@ -48,12 +50,16 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IsoCurrencyOnlineProvider.class);
 
+    private final static String PROP_FILE = "/currencyprovider.properties";
+    
     private final SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 
     private final Map<String, String> countryCodeMap = new ConcurrentHashMap<String, String>();
 
     private final Map<String, CurrencyUnit> currencies = new ConcurrentHashMap<String, CurrencyUnit>();
-
+    
+    private final Properties prop = new Properties();
+    
     public IsoCurrencyOnlineProvider() {
     	saxParserFactory.setNamespaceAware(false);
     	saxParserFactory.setValidating(false);
@@ -61,24 +67,29 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
     }
 
     public void loadCurrencies() {
-	try {
-	    URL url = new URL("http://www.currency-iso.org/dam/isocy/downloads/dl_iso_table_a1.xml");
-	    SAXParser parser = saxParserFactory.newSAXParser();
-	    parser.parse(url.openStream(), new CurrencyHandler());
-	} catch (Exception e) {
-	    LOGGER.debug("Error", e);
-	}
+		try (InputStream in = getClass().getResourceAsStream(PROP_FILE)) {
+			prop.load(in);
+			final String urlAddress = prop.getProperty(getClass().getSimpleName() + ".currencies");
+		    URL url = new URL(urlAddress);
+		    LOGGER.debug("Loading " + urlAddress);
+		    SAXParser parser = saxParserFactory.newSAXParser();
+		    parser.parse(url.openStream(), new CurrencyHandler());
+		} catch (Exception e) {
+		    LOGGER.warn("Error", e);
+		}
     }
 
     public void loadCountries() {
-	try {
-	    URL url = new URL(
-		    "http://www.iso.org/iso/home/standards/country_codes/country_names_and_code_elements_xml.htm");
-	    SAXParser parser = saxParserFactory.newSAXParser();
-	    parser.parse(url.openStream(), new CountryHandler());
-	} catch (Exception e) {
-	    LOGGER.error("Error", e);
-	}
+    	try (InputStream in = getClass().getResourceAsStream(PROP_FILE)) {
+			prop.load(in);
+			final String urlAddress = prop.getProperty(getClass().getSimpleName() + ".countries");
+			LOGGER.debug("Loading " + urlAddress);
+		    URL url = new URL(urlAddress);
+		    SAXParser parser = saxParserFactory.newSAXParser();
+		    parser.parse(url.openStream(), new CountryHandler());
+		} catch (Exception e) {
+		    LOGGER.warn("Error", e);
+		}
     }
 
     private final class ISOCurrency implements CurrencyUnit, Displayable {
@@ -315,7 +326,7 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 	public void run() {
 	    loadCountries();
 	    loadCurrencies();
-	    LOGGER.debug("Currencies loaded from ISO:" + IsoCurrencyOnlineProvider.this.currencies.values());
+	    System.out.println("Currencies loaded from ISO:" + IsoCurrencyOnlineProvider.this.currencies.values());
 	}
 
     }

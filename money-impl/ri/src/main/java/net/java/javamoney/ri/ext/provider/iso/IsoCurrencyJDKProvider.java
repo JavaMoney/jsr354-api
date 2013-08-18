@@ -40,6 +40,8 @@ public class IsoCurrencyJDKProvider implements CurrencyUnitProviderSpi {
 
     private final Map<String, CurrencyUnit> currencies = new ConcurrentHashMap<String, CurrencyUnit>();
 
+    
+    
     public IsoCurrencyJDKProvider() {
 	Set<Currency> jdkCurrencies = Currency.getAvailableCurrencies();
 	for (Currency jdkCurrency : jdkCurrencies) {

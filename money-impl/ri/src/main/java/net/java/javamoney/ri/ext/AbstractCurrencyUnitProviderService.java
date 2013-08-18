@@ -32,7 +32,6 @@ import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 import javax.money.UnknownCurrencyException;
 import javax.money.ext.RegionType;
-import javax.money.ext.spi.CurrencyUnitMapperSpi;
 import javax.money.ext.spi.CurrencyUnitProviderSpi;
 
 

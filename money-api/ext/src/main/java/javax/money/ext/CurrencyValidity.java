@@ -29,38 +29,6 @@ public interface CurrencyValidity {
      */
     public String getValiditySource();
 
-//    /**
-//     * Access current validities for the given reference.
-//     * 
-//     * @param currencyUnit
-//     * @param validityReferenceType
-//     * @return
-//     */
-//    public <T> Collection<ReferencedValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region);
-//
-//    /**
-//     * Access validities for the given reference, starting from the given
-//     * timestamp, until now.
-//     * 
-//     * @param currencyUnit
-//     * @param validityReferenceType
-//     * @param timestamp
-//     * @return
-//     */
-//    public <T> Collection<ReferencedValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region, long timestamp);
-//
-//    /**
-//     * Access validities for the given reference, constraint by the given time
-//     * period.
-//     * 
-//     * @param currencyUnit
-//     * @param validityReferenceType
-//     * @param from
-//     * @param to
-//     * @return
-//     */
-//    public <T> Collection<ReferencedValidityInfo<CurrencyUnit, Region>> getValidityInfo(Region region,
-//	    long from, long to);
 
     /**
      * Access all currencies matching a {@link Region}.

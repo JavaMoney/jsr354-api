@@ -27,11 +27,11 @@ import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
 
 /**
  * This is the service component for accessing Java Money Currencies, evaluating
- * currency namespaces, access gistoric currencies and map between currencies.
+ * currency namespaces, access historic currencies and map between currencies.
  * 
  * @author Anatole Tresch
  * @author Werner Keil
- * @version 0.9
+ * @version 0.9.1
  */
 public final class MonetaryCurrencies {
 
@@ -46,7 +46,7 @@ public final class MonetaryCurrencies {
 	/**
 	 * Method that loads the {@link MonetaryConversionsSpi} on class loading.
 	 * 
-	 * @return the instance ot be registered into the shared variable.
+	 * @return the instance or be registered into the shared variable.
 	 */
 	private static MonetaryCurrenciesSingletonSpi loadMonetaryCurrenciesSpi() {
 		try {

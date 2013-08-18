@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Default immutable implementation of {@link MonetaryAmount}.
  * 
+ * @version 0.5
  * @author Anatole Tresch
  * @author Werner Keil
  */
@@ -403,8 +404,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
      * @see javax.money.MonetaryAmount#divideToIntegralValue(Number) )D
      */
     public Money divideToIntegralValue(Number divisor) {
-	BigDecimal dec = this.number.divideToIntegralValue(getBigDecimal(divisor), this.mathContext);
-	return new Money(this.currency, dec, this.mathContext);
+    	BigDecimal dec = this.number.divideToIntegralValue(getBigDecimal(divisor), this.mathContext);
+    	return new Money(this.currency, dec, this.mathContext);
     }
 
     /*
@@ -412,9 +413,9 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
      * @see javax.money.MonetaryAmount#multiply(javax.money.MonetaryAmount)
      */
     public Money multiply(MonetaryAmount multiplicand) {
-	checkAmountParameter(this.currency, multiplicand);
-	BigDecimal dec = this.number.multiply(multiplicand.asType(BigDecimal.class), this.mathContext);
-	return new Money(this.currency, dec, this.mathContext);
+    	checkAmountParameter(this.currency, multiplicand);
+    	BigDecimal dec = this.number.multiply(multiplicand.asType(BigDecimal.class), this.mathContext);
+    	return new Money(this.currency, dec, this.mathContext);
     }
 
     /*
@@ -422,8 +423,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
      * @see javax.money.MonetaryAmount#multiply(Number)
      */
     public Money multiply(Number multiplicand) {
-	BigDecimal dec = this.number.multiply(getBigDecimal(multiplicand), this.mathContext);
-	return new Money(this.currency, dec, this.mathContext);
+    	BigDecimal dec = this.number.multiply(getBigDecimal(multiplicand), this.mathContext);
+    	return new Money(this.currency, dec, this.mathContext);
     }
 
     /*
@@ -431,7 +432,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
      * @see javax.money.MonetaryAmount#negate()
      */
     public Money negate() {
-	return new Money(this.currency, this.number.negate(this.mathContext), this.mathContext);
+    	return new Money(this.currency, this.number.negate(this.mathContext), this.mathContext);
     }
 
     /*
@@ -439,7 +440,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
      * @see javax.money.MonetaryAmount#plus()
      */
     public Money plus() {
-	return new Money(this.currency, this.number.plus(this.mathContext), this.mathContext);
+    	return new Money(this.currency, this.number.plus(this.mathContext), this.mathContext);
     }
 
     /*

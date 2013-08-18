@@ -11,6 +11,8 @@
 package javax.money.ext;
 
 import java.util.Collection;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Regions can be used to segregate or access artifacts (e.g. currencies) either
@@ -23,26 +25,46 @@ import java.util.Collection;
  */
 public interface Region {
 
-    /**
-     * Get the region's type.
-     * 
-     * @return the region's type, never null.
-     */
-    public RegionType getRegionType();
+	/**
+	 * Get the region's type.
+	 * 
+	 * @return the region's type, never null.
+	 */
+	public RegionType getRegionType();
 
-    /**
-     * Access the region's code. The code is unique in combination with the
-     * region type.
-     * 
-     * @return the region's type, never null.
-     */
-    public String getRegionCode();
+	/**
+	 * Access the region's code. The code is unique in combination with the
+	 * region type.
+	 * 
+	 * @return the region's type, never null.
+	 */
+	public String getRegionCode();
 
-    /**
-     * Get the region's numeric code. If not defined -1 is returned.
-     * 
-     * @return the numeric region ode, or -1.
-     */
-    public int getNumericRegionCode();
+	/**
+	 * Get the region's numeric code. If not defined -1 is returned.
+	 * 
+	 * @return the numeric region ode, or -1.
+	 */
+	public int getNumericRegionCode();
+
+	/**
+	 * Return the time zones valid for this region (in the long form, e.g.
+	 * Europe/Berlin). If the region has subregions, by default, the timezones
+	 * returned should be the transitive closure of all timezones of all child
+	 * regions. Nevertheless there might be use cases were the child regions
+	 * must not transitively define the parents timezones, so transitivity is
+	 * not enforced by this JSR.<br/>
+	 * Additionally all ids returned should be known by {@link TimeZone}.
+	 * 
+	 * @return the timezone ids of this region, never {@code null}.
+	 */
+	public Collection<String> getTimezoneIds();
+
+	/**
+	 * Return according {@link Locale}.
+	 * 
+	 * @return
+	 */
+	public Locale getLocale();
 
 }

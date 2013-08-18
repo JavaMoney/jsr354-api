@@ -10,6 +10,7 @@
  */
 package javax.money.ext;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -23,67 +24,106 @@ import java.util.Collection;
  */
 public interface RegionNode {
 
-    /**
-     * Get the corresponding region.
-     * 
-     * @return the region, never null.
-     */
-    public Region getRegion();
+	/**
+	 * Get the corresponding region.
+	 * 
+	 * @return the region, never null.
+	 */
+	public Region getRegion();
 
-    /**
-     * Get the direct parent region of this region.
-     * 
-     * @return the parent region, or null, if this region has no parent (is a
-     *         root region).
-     */
-    public RegionNode getParent();
+	/**
+	 * Get the direct parent region of this region.
+	 * 
+	 * @return the parent region, or null, if this region has no parent (is a
+	 *         root region).
+	 */
+	public RegionNode getParent();
 
-    /**
-     * Access all direct child regions.
-     * 
-     * @return all direct child regions, never null.
-     */
-    public Collection<RegionNode> getChildren();
+	/**
+	 * Access all direct child regions.
+	 * 
+	 * @return all direct child regions, never null.
+	 */
+	public Collection<RegionNode> getChildren();
 
-    /**
-     * Determines if the given region is contained within this region tree.
-     * 
-     * @param region
-     *            the region being looked up, null hereby is never contained.
-     * @return true if the given region is a direct or indirect child of this
-     *         region instance.
-     */
-    public boolean contains(Region region);
+	/**
+	 * Determines if the given region is contained within this region tree.
+	 * 
+	 * @param region
+	 *            the region being looked up, null hereby is never contained.
+	 * @return true if the given region is a direct or indirect child of this
+	 *         region instance.
+	 */
+	public boolean contains(Region region);
 
-    /**
-     * Select the parent region with the given type. This method will navigate
-     * up the region tree and select the first parent encountered that has the
-     * given region type.
-     * 
-     * @param type
-     *            the required type, not null.
-     * @return the region found, or null.
-     */
-    public RegionNode selectParent(RegionFilter filter);
+	/**
+	 * Select the parent region with the given type. This method will navigate
+	 * up the region tree and select the first parent encountered that has the
+	 * given region type.
+	 * 
+	 * @param type
+	 *            the required type, not null.
+	 * @return the region found, or null.
+	 */
+	public RegionNode selectParent(RegionFilter filter);
 
-    /**
-     * Select a collection of regions selected by the given filter.
-     * 
-     * @param filter
-     *            the region selector, null will return all regions.
-     * @return the regions selected.
-     */
-    public Collection<RegionNode> select(RegionFilter filter);
+	/**
+	 * Select a collection of regions selected by the given filter.
+	 * 
+	 * @param filter
+	 *            the region selector, null will return all regions.
+	 * @return the regions selected.
+	 */
+	public Collection<RegionNode> select(RegionFilter filter);
 
-    /**
-     * Access a {@link Region} using the region path, which allows access of a
-     * {@link Region} from the tree, e.g. {@code WORLD/EUROPE/GERMANY} or
-     * {@code STANDARDS/ISO/GER}.
-     * 
-     * @param path
-     *            the path to be accessed, not {@code null}.
-     * @return the {@link Region} found, or {@code null}.
-     */
-    public RegionNode getRegionTree(String path);
+	/**
+	 * Access a {@link Region} using the region path, which allows access of a
+	 * {@link Region} from the tree, e.g. {@code WORLD/EUROPE/GERMANY} or
+	 * {@code STANDARDS/ISO/GER}.
+	 * 
+	 * @param path
+	 *            the path to be accessed, not {@code null}.
+	 * @return the {@link Region} found, or {@code null}.
+	 */
+	public RegionNode getRegionTree(String path);
+
+	/**
+	 * Access a direct child of the {@link Region}.
+	 * 
+	 * @param path
+	 *            the path, e.g. a/b/c, never {@code null}.
+	 * @return The {@link RegionNode} found.
+	 * @throws IllegalArgumentException
+	 *             , if the path is not matching!
+	 */
+	public RegionNode getSubRegion(String path);
+
+	/**
+	 * Get a String representation of the region tree.
+	 * 
+	 * @return the according tree as text.
+	 */
+	public String getAsText();
+
+	/**
+	 * Get a String representation of the region tree.
+	 * 
+	 * @param intend
+	 *            THe intend to use for formatting
+	 * @return the according tree as text.
+	 */
+	public String getAsText(String intend);
+
+	/**
+	 * Print the tree to the given {@link Appendable}, using the given
+	 * intend.
+	 * 
+	 * @param b
+	 *            The {@link Appendable} to use.
+	 * @param intend
+	 *            THe intend to use for formatting
+	 * @throws IOException 
+	 */
+	public void printTree(Appendable b, String intend) throws IOException;
 
 }

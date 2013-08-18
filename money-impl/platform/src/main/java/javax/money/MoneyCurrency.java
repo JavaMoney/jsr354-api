@@ -15,12 +15,12 @@ import java.util.Currency;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
  * Adapter that implements the new {@link CurrencyUnit} interface using the
  * JDK's {@link Currency}.
  * 
+ * @version 0.5
  * @author Anatole Tresch
  * @author Werner Keil
  */
@@ -54,7 +54,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
 
     private static final Map<String, MoneyCurrency> CACHED = new ConcurrentHashMap<String, MoneyCurrency>();
 
-    private static final Logger LOGGER = Logger.getLogger(MoneyCurrency.class.getName());
+    //private static final Logger LOGGER = Logger.getLogger(MoneyCurrency.class.getName());
 
     /**
      * Private constructor.
@@ -62,12 +62,12 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
      * @param currency
      */
     private MoneyCurrency(String namespace, String code, int numCode, int fractionDigits, boolean legal, boolean virtual) {
-	this.namespace = namespace;
-	this.currencyCode = code;
-	this.numericCode = numCode;
-	this.defaultFractionDigits = fractionDigits;
-	this.legalTender = legal;
-	this.virtual = virtual;
+		this.namespace = namespace;
+		this.currencyCode = code;
+		this.numericCode = numCode;
+		this.defaultFractionDigits = fractionDigits;
+		this.legalTender = legal;
+		this.virtual = virtual;
     }
 
     /**
@@ -76,17 +76,17 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
      * @param currency
      */
     private MoneyCurrency(Currency currency) {
-	if (currency == null) {
-	    throw new IllegalArgumentException("Currency required.");
-	}
-	this.namespace = ISO_NAMESPACE;
-	this.currencyCode = currency.getCurrencyCode();
-	this.numericCode = currency.getNumericCode();
-	this.defaultFractionDigits = currency.getDefaultFractionDigits();
-	this.legalTender = !this.currencyCode.startsWith("X"); // TODO check for
-	this.virtual = this.currencyCode.equals("XXX"); // TODO check for each
-							// code in util.Currency
-							// here;
+		if (currency == null) {
+		    throw new IllegalArgumentException("Currency required.");
+		}
+		this.namespace = ISO_NAMESPACE;
+		this.currencyCode = currency.getCurrencyCode();
+		this.numericCode = currency.getNumericCode();
+		this.defaultFractionDigits = currency.getDefaultFractionDigits();
+		this.legalTender = !this.currencyCode.startsWith("X"); // TODO check for
+		this.virtual = this.currencyCode.equals("XXX"); // TODO check for each
+								// code in util.Currency
+								// here;
     }
 
     /**
@@ -97,13 +97,13 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
      * @return the new instance, never null.
      */
     public static MoneyCurrency of(Currency currency) {
-	String key = ISO_NAMESPACE + ':' + currency.getCurrencyCode();
-	MoneyCurrency cachedItem = CACHED.get(key);
-	if (cachedItem == null) {
-	    cachedItem = new JDKCurrencyAdapter(currency);
-	    CACHED.put(key, cachedItem);
-	}
-	return cachedItem;
+		String key = ISO_NAMESPACE + ':' + currency.getCurrencyCode();
+		MoneyCurrency cachedItem = CACHED.get(key);
+		if (cachedItem == null) {
+		    cachedItem = new JDKCurrencyAdapter(currency);
+		    CACHED.put(key, cachedItem);
+		}
+		return cachedItem;
     }
 
     /**
@@ -116,7 +116,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
      * @return the corresponding {@link MonetaryCurrency} instance.
      */
     public static MoneyCurrency of(String currencyCode) {
-	return of(Currency.getInstance(currencyCode));
+    	return of(Currency.getInstance(currencyCode));
     }
 
     /**
@@ -144,14 +144,14 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
      * @see javax.money.CurrencyUnit#isVirtual()
      */
     public boolean isVirtual() {
-	return virtual;
+    	return virtual;
     }
 
     /**
      * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
      */
     public String getNamespace() {
-	return namespace;
+    	return namespace;
     }
 
     /*
@@ -159,7 +159,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
      * @see javax.money.CurrencyUnit#getCurrencyCode()
      */
     public String getCurrencyCode() {
-	return currencyCode;
+    	return currencyCode;
     }
 
     /*
@@ -167,7 +167,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
      * @see javax.money.CurrencyUnit#getNumericCode()
      */
     public int getNumericCode() {
-	return numericCode;
+    	return numericCode;
     }
 
     /*
@@ -175,7 +175,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
      * @see javax.money.CurrencyUnit#getDefaultFractionDigits()
      */
     public int getDefaultFractionDigits() {
-	return defaultFractionDigits;
+    	return defaultFractionDigits;
     }
 
     /*

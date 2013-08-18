@@ -13,13 +13,15 @@
 package net.java.javamoney.ri.ext;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.money.ext.Region;
 import javax.money.ext.RegionType;
 import javax.money.ext.RegionValidity;
-
 import javax.money.ext.spi.RegionProviderSpi;
 
 import org.slf4j.Logger;
@@ -33,141 +35,146 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractRegionProviderService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractRegionProviderService.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(AbstractRegionProviderService.class);
 
-    /**
-     * Access all regions for a given {@link RegionType}.
-     * 
-     * @param type
-     *            The region type, not null.
-     * @return the regions found, never null.
-     */
-    private Collection<Region> getAll(RegionType type) {
-	Set<Region> result = new HashSet<Region>();
-	for (RegionProviderSpi prov : getRegionProviderSpis()) {
-	    Collection<Region> regions = prov.getRegions(type);
-	    if (regions == null || regions.isEmpty()) {
-		LOG.warn("Provider did not provide any regions: " + prov.getClass().getName());
-	    } else {
-		result.addAll(regions);
-	    }
-	}
-	return result;
-    }
-
-    /**
-     * Access all regions.
-     * 
-     * @return the regions found, never null.
-     */
-    private Collection<Region> getAll() {
-	Set<Region> result = new HashSet<Region>();
-	for (RegionProviderSpi prov : getRegionProviderSpis()) {
-	    Collection<RegionType> types = prov.getRegionTypes();
-	    for (RegionType t : types) {
-		Collection<Region> regions = prov.getRegions(t);
-		if (regions == null || regions.isEmpty()) {
-		    LOG.warn("Provider did not provide any regions: " + prov.getClass().getName());
-		} else {
-		    result.addAll(regions);
+	/**
+	 * Access all regions for a given {@link RegionType}.
+	 * 
+	 * @param type
+	 *            The region type, not null.
+	 * @return the regions found, never null.
+	 */
+	private Collection<Region> getAll(RegionType type) {
+		Set<Region> result = new HashSet<Region>();
+		for (RegionProviderSpi prov : getRegionProviderSpis()) {
+			Collection<Region> regions = prov.getRegions(type);
+			if (regions == null || regions.isEmpty()) {
+				LOG.warn("Provider did not provide any regions: "
+						+ prov.getClass().getName());
+			} else {
+				result.addAll(regions);
+			}
 		}
-	    }
+		return result;
 	}
-	return result;
-    }
 
-    public Region getRootRegion(String id) {
-	throw new UnsupportedOperationException("Not implemented");
-    }
-
-    public Set<String> getRegionValidityProviders() {
-	throw new UnsupportedOperationException("Not supported yet."); // To
-								       // change
-								       // body
-								       // of
-								       // generated
-								       // methods,
-								       // choose
-								       // Tools
-								       // |
-								       // Templates.
-    }
-
-    public RegionValidity getRegionValidity(String provider) {
-	throw new UnsupportedOperationException("Not supported yet."); // To
-								       // change
-								       // body
-								       // of
-								       // generated
-								       // methods,
-								       // choose
-								       // Tools
-								       // |
-								       // Templates.
-    }
-
-//    public Region getRegionTree(int numericId) {
-//	for (Region region : getRegionTrees()) {
-//	    if (region.getNumericRegionCode() == numericId) {
-//		return region;
-//	    }
-//	}
-//	throw new IllegalArgumentException("So such reagion tree " + numericId);
-//    }
-//
-//    public Region getRegionTree(String id) {
-//	for (Region region : getRegionTrees()) {
-//	    if (region.getRegionCode().equals(id)) {
-//		return region;
-//	    }
-//	}
-//	throw new IllegalArgumentException("So such reagion tree " + id);
-//    }
-//
-//    public Collection<Region> getRegionTrees() {
-//	Collection<Region> regions = getAll();
-//	Set<Region> result = new HashSet<Region>();
-//	for (Region region : regions) {
-//	    if (region.getParent() == null) {
-//		result.add(region);
-//	    }
-//	}
-//	return result;
-//    }
-
-    public Region getRegion(RegionType type, int numericId) {
-	for (RegionProviderSpi prov : getRegionProviderSpis()) {
-	    Region reg = prov.getRegion(type, numericId);
-	    if (reg != null) {
-		return reg;
-	    }
+	/**
+	 * Access all regions.
+	 * 
+	 * @return the regions found, never null.
+	 */
+	private Collection<Region> getAll() {
+		Set<Region> result = new HashSet<Region>();
+		for (RegionProviderSpi prov : getRegionProviderSpis()) {
+			Collection<RegionType> types = prov.getRegionTypes();
+			for (RegionType t : types) {
+				Collection<Region> regions = prov.getRegions(t);
+				if (regions == null || regions.isEmpty()) {
+					LOG.warn("Provider did not provide any regions: "
+							+ prov.getClass().getName());
+				} else {
+					result.addAll(regions);
+				}
+			}
+		}
+		return result;
 	}
-	throw new IllegalArgumentException("So such reagion " + type + ':' + numericId);
-    }
 
-    public Region getRegion(RegionType type, String code) {
-	for (RegionProviderSpi prov : getRegionProviderSpis()) {
-	    Region reg = prov.getRegion(type, code);
-	    if (reg != null) {
-		return reg;
-	    }
+	public Set<String> getRegionValidityProviders() {
+		throw new UnsupportedOperationException("Not supported yet."); // To
+		// change
+		// body
+		// of
+		// generated
+		// methods,
+		// choose
+		// Tools
+		// |
+		// Templates.
 	}
-	throw new IllegalArgumentException("So such reagion " + type + ':' + code);
-    }
 
-    public Set<RegionType> getRegionTypes() {
-	throw new UnsupportedOperationException("Not supported yet."); // To
-								       // change
-								       // body
-								       // of
-								       // generated
-								       // methods,
-								       // choose
-								       // Tools
-								       // |
-								       // Templates.
-    }
+	public RegionValidity getRegionValidity(String provider) {
+		throw new UnsupportedOperationException("Not supported yet."); // To
+		// change
+		// body
+		// of
+		// generated
+		// methods,
+		// choose
+		// Tools
+		// |
+		// Templates.
+	}
 
-    protected abstract Iterable<RegionProviderSpi> getRegionProviderSpis();
+	public Region getRegion(RegionType type, int numericId) {
+		for (RegionProviderSpi prov : getRegionProviderSpis()) {
+			Region reg = prov.getRegion(type, numericId);
+			if (reg != null) {
+				return reg;
+			}
+		}
+		throw new IllegalArgumentException("So such reagion " + type + ':'
+				+ numericId);
+	}
+
+	public Region getRegion(RegionType type, String code) {
+		for (RegionProviderSpi prov : getRegionProviderSpis()) {
+			Region reg = prov.getRegion(type, code);
+			if (reg != null) {
+				return reg;
+			}
+		}
+		throw new IllegalArgumentException("So such reagion " + type + ':'
+				+ code);
+	}
+
+	public Set<RegionType> getRegionTypes() {
+		Set<RegionType> result = new HashSet<RegionType>();
+		for (RegionProviderSpi prov : getRegionProviderSpis()) {
+			Collection<RegionType> regionTypes = prov.getRegionTypes();
+			if (regionTypes == null || regionTypes.isEmpty()) {
+				LOG.warn("Provider did not provide any regions: "
+						+ prov.getClass().getName());
+			} else {
+				result.addAll(regionTypes);
+			}
+		}
+		return result;
+	}
+
+	public Collection<Region> getRegions(RegionType type) {
+		Set<Region> result = new HashSet<Region>();
+		for (RegionProviderSpi prov : getRegionProviderSpis()) {
+			Collection<Region> regions = prov.getRegions(type);
+			if (regions == null || regions.isEmpty()) {
+				LOG.warn("Provider did not provide any regions: "
+						+ prov.getClass().getName());
+			} else {
+				result.addAll(regions);
+			}
+		}
+		return result;
+	}
+
+	public Region getRegion(Locale locale) {
+		for (RegionProviderSpi prov : getRegionProviderSpis()) {
+			Region region = prov.getRegion(locale);
+			if (region != null) {
+				return region;
+			}
+		}
+		return null;
+	}
+
+	protected abstract Iterable<RegionProviderSpi> getRegionProviderSpis();
+
+	public Map<Class, RegionProviderSpi> getRegisteredRegionProviderSpis() {
+		Map<Class, RegionProviderSpi> regionProviders = new HashMap<Class, RegionProviderSpi>();
+		for (RegionProviderSpi prov : getRegionProviderSpis()) {
+			regionProviders.put(prov.getClass(), prov);
+		}
+		return regionProviders;
+	}
 
 }

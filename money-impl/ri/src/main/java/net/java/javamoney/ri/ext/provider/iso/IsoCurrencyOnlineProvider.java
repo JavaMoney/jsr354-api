@@ -7,17 +7,20 @@
  * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
  * OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
- * Contributors: Anatole Tresch - initial implementation.
+ * Contributors: 
+ * 		Anatole Tresch - initial implementation.
+ * 		Werner Keil - fixed and externalized Web Service URL
  */
 package net.java.javamoney.ri.ext.provider.iso;
 
+import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Singleton;
@@ -34,72 +37,83 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * Online implementation of a {@link CurrencyUnitProviderSpi} that provides the
+ * ISO 4217 currencies available from the JDK {@link Currency} class.
+ * 
+ * @author Anatole Tresch
+ * @author Werner Keil
+ * @see <a href="www.currency-iso.org">Currency Code Services – ISO 4217 Maintenance Agency</a>
+ */
 @Singleton
 public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IsoCurrencyOnlineProvider.class);
 
-    private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+    private final static String PROP_FILE = "/currencyprovider.properties";
+    
+    private final SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 
     private Map<String, String> countryCodeMap = new ConcurrentHashMap<String, String>();
 
     private Map<String, CurrencyUnit> currencies = new ConcurrentHashMap<String, CurrencyUnit>();
-
+    
+    private final Properties prop = new Properties();
+    
     public IsoCurrencyOnlineProvider() {
-	saxParserFactory.setNamespaceAware(false);
-	saxParserFactory.setValidating(false);
-	new CurrencyLoader().start();
+    	saxParserFactory.setNamespaceAware(false);
+    	saxParserFactory.setValidating(false);
+    	new CurrencyLoader().start();
     }
 
     public void loadCurrencies() {
-	try {
-	    URL url = new URL("http://www.currency-iso.org/dam/isocy/downloads/dl_iso_table_a1.xml");
-	    SAXParser parser = saxParserFactory.newSAXParser();
-	    parser.parse(url.openStream(), new CurrencyHandler());
-	} catch (Exception e) {
-	    LOGGER.debug("Error", e);
-	}
+		try (InputStream in = getClass().getResourceAsStream(PROP_FILE)) {
+			prop.load(in);
+			final String urlAddress = prop.getProperty(getClass().getSimpleName() + ".currencies");
+		    URL url = new URL(urlAddress);
+		    LOGGER.debug("Loading " + urlAddress);
+		    SAXParser parser = saxParserFactory.newSAXParser();
+		    parser.parse(url.openStream(), new CurrencyHandler());
+		} catch (Exception e) {
+		    LOGGER.warn("Error", e);
+		}
     }
 
     public void loadCountries() {
-	try {
-	    URL url = new URL(
-		    "http://www.iso.org/iso/home/standards/country_codes/country_names_and_code_elements_xml.htm");
-	    SAXParser parser = saxParserFactory.newSAXParser();
-	    parser.parse(url.openStream(), new CountryHandler());
-	} catch (Exception e) {
-	    LOGGER.error("Error", e);
-	}
+    	try (InputStream in = getClass().getResourceAsStream(PROP_FILE)) {
+			prop.load(in);
+			final String urlAddress = prop.getProperty(getClass().getSimpleName() + ".countries");
+			LOGGER.debug("Loading " + urlAddress);
+		    URL url = new URL(urlAddress);
+		    SAXParser parser = saxParserFactory.newSAXParser();
+		    parser.parse(url.openStream(), new CountryHandler());
+		} catch (Exception e) {
+		    LOGGER.warn("Error", e);
+		}
     }
 
     private final class ISOCurrency implements CurrencyUnit, Displayable {
-	private Locale country;
 	private String currencyName;
 	private String currencyCode;
 	private int numericCode;
 	private int minorUnits;
 
-	@Override
 	public String getNamespace() {
 	    return MoneyCurrency.ISO_NAMESPACE;
 	}
 
-	@Override
 	public String getCurrencyCode() {
 	    return currencyCode;
 	}
 
-	@Override
 	public int getNumericCode() {
 	    return numericCode;
 	}
 
-	@Override
 	public int getDefaultFractionDigits() {
 	    return minorUnits;
 	}
 
-	@Override
 	public boolean isVirtual() {
 	    return false;
 	}
@@ -234,25 +248,25 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 		String countryName = text.toString();
 		String code = countryCodeMap.get(countryName);
 		if (code != null) {
-		    currency.country = new Locale("", code);
+		    new Locale("", code);
 		} else {
-		    currency.country = Locale.ROOT;
+			// TODO is this a no-op?
 		}
 	    } else if ("CURRENCY".equals(qName)) {
-		currency.currencyName = text.toString();
+	    	currency.currencyName = text.toString();
 	    } else if ("ALPHABETIC_CODE".equals(qName)) {
-		currency.currencyCode = text.toString();
+	    	currency.currencyCode = text.toString();
 	    } else if ("NUMERIC_CODE".equals(qName)) {
-		String value = text.toString();
-		if (!value.isEmpty()) {
-		    try {
-			currency.numericCode = Integer.valueOf(value);
-		    } catch (NumberFormatException nfe) {
-			currency.numericCode = -1;
-		    }
-		} else {
-		    currency.numericCode = -1;
-		}
+			String value = text.toString();
+			if (!value.isEmpty()) {
+			    try {
+				currency.numericCode = Integer.valueOf(value);
+			    } catch (NumberFormatException nfe) {
+				currency.numericCode = -1;
+			    }
+			} else {
+			    currency.numericCode = -1;
+			}
 	    } else if ("MINOR_UNIT".equals(qName)) {
 		String value = text.toString();
 		if (!value.isEmpty()) {
@@ -271,12 +285,12 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
     @Override
     public String getNamespace() {
-	return MoneyCurrency.ISO_NAMESPACE;
+    	return MoneyCurrency.ISO_NAMESPACE;
     }
 
     @Override
     public CurrencyUnit get(String code) {
-	return this.currencies.get(code);
+    	return this.currencies.get(code);
     }
 
 //    @Override
@@ -295,12 +309,12 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
     @Override
     public Collection<CurrencyUnit> getAll() {
-	return Collections.unmodifiableCollection(this.currencies.values());
+    	return Collections.unmodifiableCollection(this.currencies.values());
     }
 
     @Override
     public boolean isAvailable(String code) {
-	return this.currencies.containsKey(code);
+    	return this.currencies.containsKey(code);
     }
 
     private final class CurrencyLoader extends Thread {
@@ -312,7 +326,10 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 	public void run() {
 	    loadCountries();
 	    loadCurrencies();
-	    LOGGER.debug("Currencies loaded from ISO:" + IsoCurrencyOnlineProvider.this.currencies.values());
+	    LOGGER.debug("Currencies loaded from ISO:" + IsoCurrencyOnlineProvider.this.currencies.values() + 
+	    		(IsoCurrencyOnlineProvider.this.countryCodeMap != null ? " for " + 
+	    				IsoCurrencyOnlineProvider.this.countryCodeMap.size() + " countries" : 
+	    				""));
 	}
 
     }

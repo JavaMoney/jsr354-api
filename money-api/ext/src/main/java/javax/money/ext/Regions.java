@@ -10,7 +10,6 @@
  */
 package javax.money.ext;
 
-import javax.money.ext.spi.RegionsSingletonSpi;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -20,195 +19,216 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.money.ext.spi.RegionsSingletonSpi;
+
 /**
  * This singleton defines access to the region logic of JavaMoney.
- *
+ * 
  * @author Anatole Tresch
  */
 public final class Regions {
 
-    /**
-     * The spi currently active, use {@link ServiceLoader} to register an
-     * implementation.
-     */
-    private static final RegionsSingletonSpi REGION_SPI = loadMonetaryRegionSpi();
+	/**
+	 * The spi currently active, use {@link ServiceLoader} to register an
+	 * implementation.
+	 */
+	private static final RegionsSingletonSpi REGION_SPI = loadMonetaryRegionSpi();
 
-    /**
-     * Private singleton constructor.
-     */
-    private Regions() {
-    }
+	/**
+	 * Private singleton constructor.
+	 */
+	private Regions() {
+	}
 
-    /**
-     * Access the currently available {@link RegionType} instances.
-     *
-     * @return the currently available {@link RegionType} instances, never null.
-     */
-    public Set<RegionType> getRegionTypes() {
-        return REGION_SPI.getRegionTypes();
-    }
+	/**
+	 * Access the currently available {@link RegionType} instances.
+	 * 
+	 * @return the currently available {@link RegionType} instances, never null.
+	 */
+	public static Set<RegionType> getRegionTypes() {
+		return REGION_SPI.getRegionTypes();
+	}
 
-    /**
-     * Access a region by region type and the region code.
-     *
-     * @param type the region type, not null.
-     * @param code the region code, not null.
-     * @return the region found, or null.
-     */
-    public Region getRegion(RegionType type, String code) {
-        return REGION_SPI.getRegion(type, code);
-    }
+	/**
+	 * Access a region by region type and the region code.
+	 * 
+	 * @param type
+	 *            the region type, not null.
+	 * @param code
+	 *            the region code, not null.
+	 * @return the region found, or null.
+	 */
+	public static Region getRegion(RegionType type, String code) {
+		return REGION_SPI.getRegion(type, code);
+	}
 
-    /**
-     * Access a region by region type and the numeric region code.
-     *
-     * @param type the region type, not null.
-     * @param code the numeric region code, not null.
-     * @return the region found, or null.
-     */
-    public Region getRegion(RegionType type, int code) {
-        return REGION_SPI.getRegion(type, code);
-    }
-    
-    /**
-     * Access a region using a {@link Locale}.
-     *
-     * @param locale The required locale.
-     * @return the corresponding region, or null.
-     */
-    public Region getRegion(Locale locale){
-        return REGION_SPI.getRegion(locale);
-    }
-    
-    /**
-     * Access all regions of a given region type.
-     *
-     * @param type the region type, not null.
-     * @return the region found, or null.
-     */
-    public Collection<Region> getRegions(RegionType type) {
-        return REGION_SPI.getRegions(type);
-    }
+	/**
+	 * Access a region by region type and the numeric region code.
+	 * 
+	 * @param type
+	 *            the region type, not null.
+	 * @param code
+	 *            the numeric region code, not null.
+	 * @return the region found, or null.
+	 */
+	public static Region getRegion(RegionType type, int code) {
+		return REGION_SPI.getRegion(type, code);
+	}
 
-    /**
-     * Access the {@link RegionValidity} service.
-     *
-     * @return the {@link RegionValidity} for accessing historic regional data
-     * provided by the registered validity providers.
-     * @throws IllegalArgumentException If the given provider is not available.
-     */
-    public static RegionValidity getRegionValidity() {
-        return REGION_SPI.getRegionValidity();
-    }
+	/**
+	 * Access a region using a {@link Locale}.
+	 * 
+	 * @param locale
+	 *            The required locale.
+	 * @return the corresponding region, or null.
+	 */
+	public static Region getRegion(Locale locale) {
+		return REGION_SPI.getRegion(locale);
+	}
 
-    /**
-     * Access all regions available, that have no parent region. It is possible
-     * to define different regional hierarchies at the same time, whereas the
-     * ids of the root regions must be unique among all root regions
-     *
-     * @return all {@link Region}s available without a parent, never null.
-     */
-    public static Collection<RegionNode> getRegionForest() {
-        return REGION_SPI.getRegionForest();
-    }
+	/**
+	 * Access all regions of a given region type.
+	 * 
+	 * @param type
+	 *            the region type, not null.
+	 * @return the region found, or null.
+	 */
+	public static Collection<Region> getRegions(RegionType type) {
+		return REGION_SPI.getRegions(type);
+	}
 
-    /**
-     * Thnis method constructs a RegionNode using the given region as root
-     * region.
-     *
-     * @param region the root region, not {@code null}.
-     * @return the region tree, never {@code null}.
-     */
-    public static RegionNode getRegionNode(Region region) {
-        return REGION_SPI.getRegionNode(region);
-    }
+	/**
+	 * Access the {@link RegionValidity} service.
+	 * 
+	 * @return the {@link RegionValidity} for accessing historic regional data
+	 *         provided by the registered validity providers.
+	 * @throws IllegalArgumentException
+	 *             If the given provider is not available.
+	 */
+	public static RegionValidity getRegionValidity() {
+		return REGION_SPI.getRegionValidity();
+	}
 
-    /**
-     * Access a {@link RegionNode} using the region's hierarchy starting from
-     * the given root {@link Region}.
-     *
-     * @param path the path to be accessed, not {@code null}.
-     * @return the {@link RegionNode} starting at the position defined by
-     * {@code path}, never {@code null}.
-     * @throws IllegalArgumentException if the path can not be resolved.
-     */
-    public static RegionNode getRegionNode(String path) {
-        throw new UnsupportedOperationException("Not yet implemented.");
-    }
-    
-    /**
-     * Method that loads the {@link MonetaryConversionSpi} on class loading.
-     *
-     * @return the instance ot be registered into the shared variable.
-     */
-    private static RegionsSingletonSpi loadMonetaryRegionSpi() {
-        try {
-            // try loading directly from ServiceLoader
-            Iterator<RegionsSingletonSpi> instances = ServiceLoader.load(RegionsSingletonSpi.class).iterator();
-            RegionsSingletonSpi spiLoaded = null;
-            if (instances.hasNext()) {
-                spiLoaded = instances.next();
-                if (instances.hasNext()) {
-                    throw new IllegalStateException("Ambigous reference to spi (only "
-                            + "one can be registered: " + RegionsSingletonSpi.class.getName());
-                }
-                return spiLoaded;
-            }
-        } catch (Throwable e) {
-            Logger.getLogger(RegionsSingletonSpi.class.getName()).log(Level.INFO,
-                    "No MonetaryRegionSpi registered, using  default.", e);
-        }
-        return new DefaultMonetaryRegionsSpi();
-    }
+	/**
+	 * Access the defined region trees.
+	 * 
+	 * @see #getRegionTree(String)
+	 * @return the set of defined region trees, accessible calling
+	 *         {@link #getRegionTree(String)}.
+	 */
+	public static Set<String> getRegionTreeIds() {
+		return REGION_SPI.getRegionTreeIds();
+	}
 
-    /**
-     * This class represents the default implementation of
-     * {@link MonetaryConversionSpi} used always when no alternative is
-     * registered within the {@link ServiceLoader}.
-     *
-     * @author Anatole Tresch
-     *
-     */
-    private final static class DefaultMonetaryRegionsSpi implements RegionsSingletonSpi {
+	/**
+	 * Get the given region tree, for a list call {@link #getRegionTreeIds()}
+	 * beforehand.
+	 * 
+	 * @see #getRegionTreeIds()
+	 * @param id
+	 *            The tree name
+	 * @return the region tree.
+	 * @throws IllegalArgumentException
+	 *             if no such region tree is available.
+	 */
+	public static RegionNode getRegionTree(String treeId) {
+		return REGION_SPI.getRegionTree(treeId);
+	}
 
-        @Override
-        public Region getRegion(RegionType type, int numericId) {
-            return null;
-        }
+	/**
+	 * Access a {@link RegionNode} using the region's hierarchy starting from
+	 * the given root {@link Region}.
+	 * 
+	 * @param path
+	 *            the path to be accessed, not {@code null}.
+	 * @return the {@link RegionNode} starting at the position defined by
+	 *         {@code path}, never {@code null}.
+	 * @throws IllegalArgumentException
+	 *             if the path can not be resolved.
+	 */
+	public static RegionNode getRegionNode(String path) {
+		throw new UnsupportedOperationException("Not yet implemented.");
+	}
 
-        @Override
-        public Region getRegion(RegionType type, String code) {
-            return null;
-        }
+	/**
+	 * Method that loads the {@link MonetaryConversionSpi} on class loading.
+	 * 
+	 * @return the instance ot be registered into the shared variable.
+	 */
+	private static RegionsSingletonSpi loadMonetaryRegionSpi() {
+		try {
+			// try loading directly from ServiceLoader
+			Iterator<RegionsSingletonSpi> instances = ServiceLoader.load(
+					RegionsSingletonSpi.class).iterator();
+			RegionsSingletonSpi spiLoaded = null;
+			if (instances.hasNext()) {
+				spiLoaded = instances.next();
+				if (instances.hasNext()) {
+					throw new IllegalStateException(
+							"Ambigous reference to spi (only "
+									+ "one can be registered: "
+									+ RegionsSingletonSpi.class.getName());
+				}
+				return spiLoaded;
+			}
+		} catch (Throwable e) {
+			Logger.getLogger(RegionsSingletonSpi.class.getName()).log(
+					Level.INFO,
+					"No MonetaryRegionSpi registered, using  default.", e);
+		}
+		return new DefaultMonetaryRegionsSpi();
+	}
 
-        @Override
-        public Set<RegionType> getRegionTypes() {
-            return Collections.emptySet();
-        }
+	/**
+	 * This class represents the default implementation of
+	 * {@link MonetaryConversionSpi} used always when no alternative is
+	 * registered within the {@link ServiceLoader}.
+	 * 
+	 * @author Anatole Tresch
+	 * 
+	 */
+	private final static class DefaultMonetaryRegionsSpi implements
+			RegionsSingletonSpi {
 
-        @Override
-        public RegionValidity getRegionValidity() {
-            throw new IllegalArgumentException("DefaultProvider:.");
-        }
+		@Override
+		public Region getRegion(RegionType type, int numericId) {
+			return null;
+		}
 
-        @Override
-        public Collection<RegionNode> getRegionForest() {
-            return Collections.emptySet();
-        }
+		@Override
+		public Region getRegion(RegionType type, String code) {
+			return null;
+		}
 
-        @Override
-        public RegionNode getRegionNode(Region region) {
-            throw new IllegalArgumentException("DefaultProvider: no such region tree: " + region);
-        }
+		@Override
+		public Set<RegionType> getRegionTypes() {
+			return Collections.emptySet();
+		}
 
-        @Override
-        public Region getRegion(Locale locale) {
-            return null;
-        }
+		@Override
+		public RegionValidity getRegionValidity() {
+			throw new IllegalArgumentException("DefaultProvider:.");
+		}
 
-        @Override
-        public Collection<Region> getRegions(RegionType type) {
-            return Collections.emptySet();
-        }
-    }
+		@Override
+		public Set<String> getRegionTreeIds() {
+			return Collections.emptySet();
+		}
+
+		@Override
+		public RegionNode getRegionTree(String treeId) {
+			throw new IllegalArgumentException(
+					"DefaultProvider: no such region tree: " + treeId);
+		}
+
+		@Override
+		public Region getRegion(Locale locale) {
+			return null;
+		}
+
+		@Override
+		public Collection<Region> getRegions(RegionType type) {
+			return Collections.emptySet();
+		}
+	}
 }

@@ -16,8 +16,8 @@ import javax.money.MonetaryAmount;
 import javax.money.MonetaryFunction;
 
 /**
- * This class allows instances of {@link MonetaryAmount} to be filtered by
- * arbitrary predicates.
+ * This class allows instances of {@link MonetaryAmount} to be visited with
+ * selection of arbitrary predicates.
  * 
  * @author Anatole Tresch
  */

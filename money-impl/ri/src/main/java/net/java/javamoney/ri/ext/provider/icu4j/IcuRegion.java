@@ -1,4 +1,4 @@
-package net.java.javamoney.ri.ext.provider.icu;
+package net.java.javamoney.ri.ext.provider.icu4j;
 
 import java.util.Arrays;
 import java.util.Collection;

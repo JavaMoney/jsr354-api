@@ -2,8 +2,10 @@ package net.java.javamoney.ri.ext.provider.icu4j;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Singleton;
@@ -11,78 +13,86 @@ import javax.money.ext.Region;
 import javax.money.ext.RegionType;
 import javax.money.ext.spi.RegionProviderSpi;
 
-import net.java.javamoney.ri.ext.DefaultRegion;
-
-/**
- * ICU4J implementation of a {@link RegionProviderSpi} that provides 
- * regions based on the Unicode CLDR.
- * 
- * @author Anatole Tresch
- * @author Werner Keil
- */
 @Singleton
 public class ICURegionProvider implements RegionProviderSpi {
 
-    private Set<RegionType> regionTypes = new HashSet<RegionType>();
+	private Set<RegionType> regionTypes = new HashSet<RegionType>();
 
-    public ICURegionProvider() {
-	for (com.ibm.icu.util.Region.RegionType rt : com.ibm.icu.util.Region.RegionType.values()) {
-	    this.regionTypes.add(RegionType.of(rt.name()));
+	private Map<String, Region> regions = new HashMap<String, Region>();
+
+	// CLDR/world/continents/territories
+
+	public ICURegionProvider() {
+		reload();
 	}
-    }
 
-    @Override
-    public Collection<RegionType> getRegionTypes() {
-	return Collections.unmodifiableSet(regionTypes);
-    }
-
-    @Override
-    public Region getRegion(RegionType type, String code) {
-	Set<com.ibm.icu.util.Region> icuRegions = com.ibm.icu.util.Region
-		.getAvailable(com.ibm.icu.util.Region.RegionType.valueOf(type.getId()));
-	for (com.ibm.icu.util.Region icuRegion : icuRegions) {
-	    if(icuRegion.toString().equals(code)){
-		Region region = new DefaultRegion(icuRegion.toString(), RegionType.of(icuRegion.getType().name()));
-		// TODO add region...
-		return region;
-	    }
+	private void reload() {
+		Region world = null;
+		regionTypes.clear();
+		for (com.ibm.icu.util.Region.RegionType rt : com.ibm.icu.util.Region.RegionType
+				.values()) {
+			this.regionTypes.add(RegionType.of(rt.name()));
+			Set<com.ibm.icu.util.Region> icuRegions = com.ibm.icu.util.Region
+					.getAvailable(com.ibm.icu.util.Region.RegionType
+							.valueOf(rt.name()));
+			for (com.ibm.icu.util.Region icuRegion : icuRegions) {
+				RegionType type = RegionType.of(icuRegion.getType().name());
+				regionTypes.add(type);
+				Region region = new IcuRegion(icuRegion, type);
+				regions.put(region.getRegionCode(), region);
+				if(region.getRegionType().equals(RegionType.WORLD)){
+					world = region;
+				}
+			}
+		}
+		Set<com.ibm.icu.util.Region> icuRegions = com.ibm.icu.util.Region
+				.getAvailable(com.ibm.icu.util.Region.RegionType.WORLD);
 	}
-	return null;
-    }
 
-    @Override
-    public Collection<Region> getRegions(RegionType type) {
-	Set<com.ibm.icu.util.Region> icuRegions = com.ibm.icu.util.Region
-		.getAvailable(com.ibm.icu.util.Region.RegionType.valueOf(type.getId()));
-	Set<Region> result = new HashSet<Region>();
-	for (com.ibm.icu.util.Region icuRegion : icuRegions) {
-	    Region region = new DefaultRegion(icuRegion.toString(), RegionType.of(icuRegion.getType().name()));
-	    // TODO add region...
-	    result.add(region);
+
+	@Override
+	public Collection<RegionType> getRegionTypes() {
+		return Collections.unmodifiableSet(regionTypes);
 	}
-	return result;
-    }
 
-
-    @Override
-    public Region getRegion(RegionType type, int numericId) {
-	Set<com.ibm.icu.util.Region> icuRegions = com.ibm.icu.util.Region
-		.getAvailable(com.ibm.icu.util.Region.RegionType.valueOf(type.getId()));
-	for (com.ibm.icu.util.Region icuRegion : icuRegions) {
-	    if(icuRegion.getNumericCode() == numericId){
-		Region region = new DefaultRegion(icuRegion.toString(), RegionType.of(icuRegion.getType().name()));
-		// TODO add region...
-		return region;
-	    }
+	@Override
+	public Region getRegion(RegionType type, String code) {
+		com.ibm.icu.util.Region icuRegion = com.ibm.icu.util.Region
+				.getInstance(code);
+		if (icuRegion != null) {
+			Region region = this.regions.get(code);
+			if(region.getRegionType().equals(type)){
+				return region;
+			}
+		}
+		return null;
 	}
-	return null;
-    }
 
-    @Override
-    public Region getRegion(Locale locale) {
-	return null;
-    }
+	@Override
+	public Collection<Region> getRegions(RegionType type) {
+		Set<Region> result = new HashSet<Region>();
+		for (Region region : regions.values()) {
+			if (region.getRegionType().equals(type)) {
+				result.add(region);
+			}
+		}
+		return result;
+	}
 
-   
+	@Override
+	public Region getRegion(RegionType type, int numericId) {
+		for (Region region : regions.values()) {
+			if (region.getRegionType().equals(type)
+					&& region.getNumericRegionCode() == numericId) {
+				return region;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Region getRegion(Locale locale) {
+		return regions.get(locale.getCountry());
+	}
 
 }

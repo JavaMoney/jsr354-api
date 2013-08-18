@@ -1,4 +1,4 @@
-package net.java.javamoney.ri.ext.provider.icu.res;
+package net.java.javamoney.ri.ext.provider.icu4j.res;
 //
 //import java.io.ByteArrayInputStream;
 //import java.io.InputStream;

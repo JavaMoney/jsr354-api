@@ -1,4 +1,4 @@
-package net.java.javamoney.ri.ext.provider.icu;
+package net.java.javamoney.ri.ext.provider.icu4j;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import net.java.javamoney.ri.ext.BuildableRegionNode;
 import net.java.javamoney.ri.ext.BuildableRegionNode.Builder;
 
 @Singleton
-public class CLDRRegionTreeProvider implements RegionTreeProviderSpi {
+public class ICURegionTreeProvider implements RegionTreeProviderSpi {
 
 	private BuildableRegionNode regionTree;
 
@@ -26,8 +26,8 @@ public class CLDRRegionTreeProvider implements RegionTreeProviderSpi {
 
 	@Override
 	public void init(Map<Class, RegionProviderSpi> providers) {
-		CLDRRegionProvider regionProvider = (CLDRRegionProvider) providers
-				.get(CLDRRegionProvider.class);
+		ICURegionProvider regionProvider = (ICURegionProvider) providers
+				.get(ICURegionProvider.class);
 		com.ibm.icu.util.Region icuWorld = com.ibm.icu.util.Region.getAvailable(com.ibm.icu.util.Region.RegionType.WORLD).iterator().next();
 		Region root = regionProvider.getRegion(RegionType.WORLD, icuWorld.toString());
 		Builder treeBuilder = new BuildableRegionNode.Builder(root);
@@ -35,7 +35,7 @@ public class CLDRRegionTreeProvider implements RegionTreeProviderSpi {
 		regionTree = treeBuilder.build();
 	}
 
-	private void populateRegionNode(CLDRRegionProvider regionProvider,
+	private void populateRegionNode(ICURegionProvider regionProvider,
 			BuildableRegionNode.Builder regionNode) {
 		for (com.ibm.icu.util.Region rt : ((IcuRegion)regionNode.getRegion()).getIcuRegion().getContainedRegions()) {
 			RegionType type = RegionType.of(rt.getType().name());

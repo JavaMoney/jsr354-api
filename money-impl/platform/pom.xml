@@ -36,4 +36,5 @@
 			<type>pom</type>
 		</dependency> -->
 	</dependencies>
+	<groupId>javax.money</groupId>
 </project>

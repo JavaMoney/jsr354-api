@@ -15,7 +15,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * This abstract base class models a validity of an item S related to a
+ * This base class models a validity of an item T related to a
  * timeline. Hereby a validity may be undefined, when it starts or when it ends.
  * 
  * @author Anatole Tresch

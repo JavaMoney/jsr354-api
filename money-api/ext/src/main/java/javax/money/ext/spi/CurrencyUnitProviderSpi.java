@@ -14,7 +14,7 @@ import java.util.Collection;
 import javax.money.CurrencyUnit;
 
 /**
- * This class models the component defined by JSR 354 that provides accessors
+ * This class models the component defined by JSR 354 that provides accessory
  * for {@link CurrencyUnit}. It is provided by the Monetary singleton.
  *
  * @author Anatole Tresch

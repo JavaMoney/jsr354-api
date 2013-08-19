@@ -13,7 +13,7 @@ package javax.money.ext;
 import java.util.Calendar;
 
 /**
- * This abstract base class models a validity of an item S related to a
+ * This class models a validity of an item S related to a
  * reference T.
  * 
  * @author Anatole Tresch

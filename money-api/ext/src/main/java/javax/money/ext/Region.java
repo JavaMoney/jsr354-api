@@ -14,9 +14,14 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import javax.money.CurrencyUnit;
+
 /**
  * Regions can be used to segregate or access artifacts (e.g. currencies) either
- * based on geographical, or commercial aspects (e.g. legal units).
+ * based on geographical, or commercial aspects (e.g. legal units).<br/>
+ * Hereby a {@link Region}, similarly to {@link CurrencyUnit} does only provide
+ * a representation type, whereas the validity and existence of regions must be
+ * quiried from {@link RegionValidity} provider.
  * 
  * @see <a href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">UN M.49:
  *      UN Statistics Division Country or area & region codes</a>
@@ -36,7 +41,7 @@ public interface Region {
 	 * Access the region's code. The code is unique in combination with the
 	 * region type.
 	 * 
-	 * @return the region's type, never null.
+	 * @return the region's type, never {@code null}.
 	 */
 	public String getRegionCode();
 
@@ -61,9 +66,10 @@ public interface Region {
 	public Collection<String> getTimezoneIds();
 
 	/**
-	 * Return according {@link Locale}.
+	 * Return according {@link Locale}, if possible.
 	 * 
-	 * @return
+	 * @return the corresponding {@link Locale} for that {@link Region}, may
+	 *         also return {@code null}.
 	 */
 	public Locale getLocale();
 

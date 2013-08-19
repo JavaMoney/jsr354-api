@@ -17,14 +17,14 @@ import javax.money.ext.RegionNode;
 
 /**
  * Implementation of this interface define the regions supported in the system.
- * Each provider may hereby serve several region types.
+ * Each provider hereby serves exact one region tree.
  * 
  * @author Anatole Tresch
  */
 public interface RegionTreeProviderSpi {
 
 	/**
-	 * Get the id of the forest provided by this provider.
+	 * Get the id of the tree provided by this provider.
 	 * 
 	 * @return
 	 */
@@ -35,15 +35,15 @@ public interface RegionTreeProviderSpi {
 	 * 
 	 * @param regionProviders
 	 *            the region providers loaded, to be used for accessing
-	 *            {@link Region} entries.
+	 *            {@link Region} entries to be organized in a {@link RegionNode}
+	 *            tree structure.
 	 */
 	public void init(Map<Class, RegionProviderSpi> regionProviders);
 
 	/**
-	 * Access a set of Region instances that are defined to be graph root
-	 * regions, which are identifiable entry points into the region graph.
+	 * Access the root {@link RegionNode} of the region tree provided.
 	 * 
-	 * @return the root graph {@link Region}s defined by this spi, not null.
+	 * @return the root node, never {@code null}.
 	 */
 	public RegionNode getRegionTree();
 

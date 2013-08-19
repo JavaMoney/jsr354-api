@@ -12,8 +12,6 @@ package javax.money.ext;
 
 import java.util.Collection;
 
-import javax.money.CurrencyUnit;
-
 /**
  * This interface models the validity services for currencies, provided by a
  * validity source.

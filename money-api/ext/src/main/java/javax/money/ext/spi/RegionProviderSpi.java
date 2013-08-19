@@ -12,10 +12,8 @@ package javax.money.ext.spi;
 
 import java.util.Collection;
 import java.util.Locale;
-import java.util.ServiceLoader;
 
 import javax.money.ext.Region;
-import javax.money.ext.RegionNode;
 import javax.money.ext.RegionType;
 
 /**

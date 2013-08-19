@@ -15,8 +15,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * This base class models a validity of an item T related to a
- * timeline. Hereby a validity may be undefined, when it starts or when it ends.
+ * This base class models a validity of an item T related to a timeline. Hereby
+ * a validity may be undefined, when it starts or when it ends.
  * 
  * @author Anatole Tresch
  * 
@@ -195,9 +195,10 @@ public class ValidityInfo<T> implements Serializable,
 
 	/**
 	 * Return the target time zone for the given validity, which allows to
-	 * distinct validities for regions that embrace several timezones.
-	 * Additonally the timezone, combined with the UTC timestamp allows to
-	 * reconstruct the local date within the according {@link Region}.
+	 * distinct validities that may embrace several timezones (e.g. for
+	 * regions). Additionally the timezone, combined with the UTC timestamp
+	 * allows to reconstruct the local date (e.g. within the according
+	 * {@link Region}).
 	 * 
 	 * @return the target timezone id of this validity, never {@code null}.
 	 */

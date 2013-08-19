@@ -1,2 +1,2 @@
-net.java.javamoney.ri.ext.provider.icu.CLDRRegionProvider
-net.java.javamoney.ri.ext.provider.icu.ISORegionProvider
+net.java.javamoney.ri.ext.provider.icu4j.ICURegionProvider
+net.java.javamoney.ri.ext.provider.icu4j.ISORegionProvider

@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.money.ext.Region;
-import javax.money.ext.RegionNode;
+import javax.money.ext.RegionTreeNode;
 import javax.money.ext.RegionType;
 import javax.money.ext.RegionValidity;
 import javax.money.ext.spi.RegionProviderSpi;
@@ -91,7 +91,7 @@ public class SERegionsSingletonSpi implements RegionsSingletonSpi {
 	}
 
 	@Override
-	public RegionNode getRegionTree(String treeId) {
+	public RegionTreeNode getRegionTree(String treeId) {
 		return regionTreeProviderService.getRegionTree(treeId);
 	}
 

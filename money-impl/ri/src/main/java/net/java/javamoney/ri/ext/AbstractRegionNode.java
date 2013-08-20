@@ -7,13 +7,13 @@ import java.util.List;
 
 import javax.money.ext.Region;
 import javax.money.ext.RegionFilter;
-import javax.money.ext.RegionNode;
+import javax.money.ext.RegionTreeNode;
 
-public abstract class AbstractRegionNode implements RegionNode {
+public abstract class AbstractRegionNode implements RegionTreeNode {
 
 	private Region region;
-	private RegionNode parent;
-	private List<RegionNode> childNodes = new ArrayList<RegionNode>();
+	private RegionTreeNode parent;
+	private List<RegionTreeNode> childNodes = new ArrayList<RegionTreeNode>();
 
 	
 	public AbstractRegionNode() {
@@ -26,22 +26,22 @@ public abstract class AbstractRegionNode implements RegionNode {
 	}
 
 	@Override
-	public RegionNode getParent() {
+	public RegionTreeNode getParent() {
 		return parent;
 	}
 
-	public void setParent(RegionNode parent) {
+	public void setParent(RegionTreeNode parent) {
 		this.parent = parent;
 	}
 
 	@Override
-	public Collection<RegionNode> getChildren() {
+	public Collection<RegionTreeNode> getChildren() {
 		return Collections.unmodifiableCollection(childNodes);
 	}
 
 	@Override
 	public boolean contains(Region region) {
-		for (RegionNode regionNode : childNodes) {
+		for (RegionTreeNode regionNode : childNodes) {
 			if (regionNode.getRegion().equals(region)) {
 				return true;
 			}
@@ -53,8 +53,8 @@ public abstract class AbstractRegionNode implements RegionNode {
 	}
 
 	@Override
-	public RegionNode selectParent(RegionFilter filter) {
-		RegionNode regionNode = parent;
+	public RegionTreeNode selectParent(RegionFilter filter) {
+		RegionTreeNode regionNode = parent;
 		while (regionNode != null) {
 			if (filter.accept(regionNode)) {
 				return regionNode;
@@ -65,9 +65,9 @@ public abstract class AbstractRegionNode implements RegionNode {
 	}
 
 	@Override
-	public Collection<RegionNode> select(RegionFilter filter) {
-		List<RegionNode> result = new ArrayList<RegionNode>();
-		for (RegionNode regionNode : childNodes) {
+	public Collection<RegionTreeNode> select(RegionFilter filter) {
+		List<RegionTreeNode> result = new ArrayList<RegionTreeNode>();
+		for (RegionTreeNode regionNode : childNodes) {
 			if (filter.accept(regionNode)) {
 				result.add(regionNode);
 			}
@@ -76,9 +76,9 @@ public abstract class AbstractRegionNode implements RegionNode {
 	}
 
 	@Override
-	public RegionNode getRegionTree(String path) {
+	public RegionTreeNode getRegionTree(String path) {
 		String[] paths = path.split("/");
-		RegionNode current = this;
+		RegionTreeNode current = this;
 		for (String pathElem : paths) {
 			current = current.getSubRegion(pathElem.trim());
 			if (current == null) {

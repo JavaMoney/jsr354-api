@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.money.ext.Region;
-import javax.money.ext.RegionNode;
+import javax.money.ext.RegionTreeNode;
 import javax.money.ext.RegionType;
 import javax.money.ext.RegionValidity;
 
@@ -107,5 +107,5 @@ public interface RegionsSingletonSpi {
 	 *            The tree name
 	 * @return the region tree.
 	 */
-	public RegionNode getRegionTree(String id);
+	public RegionTreeNode getRegionTree(String id);
 }

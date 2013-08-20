@@ -25,7 +25,7 @@ import java.util.Collection;
  * 
  * @author Anatole Tresch
  */
-public interface RegionNode {
+public interface RegionTreeNode {
 
 	/**
 	 * Get the corresponding region.
@@ -40,14 +40,14 @@ public interface RegionNode {
 	 * @return the parent region, or null, if this region has no parent (is a
 	 *         root region).
 	 */
-	public RegionNode getParent();
+	public RegionTreeNode getParent();
 
 	/**
 	 * Access all direct child regions.
 	 * 
 	 * @return all direct child regions, never null.
 	 */
-	public Collection<RegionNode> getChildren();
+	public Collection<RegionTreeNode> getChildren();
 
 	/**
 	 * Determines if the given region is contained within this region tree.
@@ -68,7 +68,7 @@ public interface RegionNode {
 	 *            the required type, not null.
 	 * @return the region found, or null.
 	 */
-	public RegionNode selectParent(RegionFilter filter);
+	public RegionTreeNode selectParent(RegionFilter filter);
 
 	/**
 	 * Select a collection of regions selected by the given filter.
@@ -77,7 +77,7 @@ public interface RegionNode {
 	 *            the region selector, null will return all regions.
 	 * @return the regions selected.
 	 */
-	public Collection<RegionNode> select(RegionFilter filter);
+	public Collection<RegionTreeNode> select(RegionFilter filter);
 
 	/**
 	 * Access a {@link Region} using the region path, which allows access of a
@@ -88,18 +88,18 @@ public interface RegionNode {
 	 *            the path to be accessed, not {@code null}.
 	 * @return the {@link Region} found, or {@code null}.
 	 */
-	public RegionNode getRegionTree(String path);
+	public RegionTreeNode getRegionTree(String path);
 
 	/**
 	 * Access a direct child of the {@link Region}.
 	 * 
 	 * @param path
 	 *            the path, e.g. a/b/c, never {@code null}.
-	 * @return The {@link RegionNode} found.
+	 * @return The {@link RegionTreeNode} found.
 	 * @throws IllegalArgumentException
 	 *             , if the path is not matching!
 	 */
-	public RegionNode getSubRegion(String path);
+	public RegionTreeNode getSubRegion(String path);
 
 	/**
 	 * Get a String representation of the region tree.

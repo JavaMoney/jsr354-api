@@ -131,22 +131,22 @@ public final class Regions {
 	 * @throws IllegalArgumentException
 	 *             if no such region tree is available.
 	 */
-	public static RegionNode getRegionTree(String treeId) {
+	public static RegionTreeNode getRegionTree(String treeId) {
 		return REGION_SPI.getRegionTree(treeId);
 	}
 
 	/**
-	 * Access a {@link RegionNode} using the region's hierarchy starting from
+	 * Access a {@link RegionTreeNode} using the region's hierarchy starting from
 	 * the given root {@link Region}.
 	 * 
 	 * @param path
 	 *            the path to be accessed, not {@code null}.
-	 * @return the {@link RegionNode} starting at the position defined by
+	 * @return the {@link RegionTreeNode} starting at the position defined by
 	 *         {@code path}, never {@code null}.
 	 * @throws IllegalArgumentException
 	 *             if the path can not be resolved.
 	 */
-	public static RegionNode getRegionNode(String path) {
+	public static RegionTreeNode getRegionNode(String path) {
 		throw new UnsupportedOperationException("Not yet implemented.");
 	}
 
@@ -216,7 +216,7 @@ public final class Regions {
 		}
 
 		@Override
-		public RegionNode getRegionTree(String treeId) {
+		public RegionTreeNode getRegionTree(String treeId) {
 			throw new IllegalArgumentException(
 					"DefaultProvider: no such region tree: " + treeId);
 		}

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import javax.inject.Singleton;
 import javax.money.ext.Region;
-import javax.money.ext.RegionNode;
+import javax.money.ext.RegionTreeNode;
 import javax.money.ext.RegionType;
 import javax.money.ext.spi.RegionProviderSpi;
 import javax.money.ext.spi.RegionTreeProviderSpi;
@@ -48,7 +48,7 @@ public class ICURegionTreeProvider implements RegionTreeProviderSpi {
 	}
 
 	@Override
-	public RegionNode getRegionTree() {
+	public RegionTreeNode getRegionTree() {
 		return regionTree;
 	}
 

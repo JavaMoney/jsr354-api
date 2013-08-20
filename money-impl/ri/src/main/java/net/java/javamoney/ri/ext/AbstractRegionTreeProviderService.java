@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.money.ext.Region;
-import javax.money.ext.RegionNode;
+import javax.money.ext.RegionTreeNode;
 import javax.money.ext.spi.RegionProviderSpi;
 import javax.money.ext.spi.RegionTreeProviderSpi;
 
@@ -78,11 +78,11 @@ public abstract class AbstractRegionTreeProviderService {
 	 * 
 	 * @return the root graph {@link Region}s defined by this spi, not null.
 	 */
-	public RegionNode getRegionTree(String treeId) {
+	public RegionTreeNode getRegionTree(String treeId) {
 		for (RegionTreeProviderSpi prov : getRegionTreeProviderSpis()) {
 			try {
 				if (treeId.equals(prov.getTreeId())) {
-					RegionNode node = prov.getRegionTree();
+					RegionTreeNode node = prov.getRegionTree();
 					if (node == null) {
 						LOG.error("Error accessing RegionTree: " + treeId
 								+ " from " + prov.getClass().getName()

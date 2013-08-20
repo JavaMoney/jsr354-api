@@ -8,12 +8,15 @@
  * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
  * reserved.
  */
-package javax.money.ext;
+package net.java.javamoney.ri.ext;
 
 import java.util.Collection;
 
+import javax.money.ext.RegionFilter;
+import javax.money.ext.RegionTreeNode;
+
 /**
- * This models a subtree within a {@link RegionNode}, that is transparently
+ * This models a subtree within a {@link RegionTreeNode}, that is transparently
  * modelled/provided by another subtree within the global region trees. This can
  * be useful to fill up zhe possible child values with regions already existing.
  * E.g. A sales representative's organization may contain several countries,
@@ -24,7 +27,7 @@ import java.util.Collection;
  *
  * @author Anatole Tresch
  */
-public interface LinkedRegionTree extends RegionNode {
+public interface LinkedRegionNode extends RegionTreeNode {
 
     /**
      * This method returns the effective tree path, starting with a current root

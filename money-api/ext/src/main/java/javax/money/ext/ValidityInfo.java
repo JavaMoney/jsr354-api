@@ -52,6 +52,11 @@ public class ValidityInfo<T> implements Serializable,
 	private final String targetTimezoneId;
 
 	/**
+	 * Additional user data associated with that {@link ValidityInfo} instance.
+	 */
+	private Object userData;
+
+	/**
 	 * Creates an instance of ValidityInfo.
 	 * 
 	 * @param item
@@ -115,6 +120,37 @@ public class ValidityInfo<T> implements Serializable,
 	}
 
 	/**
+	 * Access the user data.
+	 * 
+	 * @return the user data associated with this instance, or null.
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getUserData() {
+		return (T) userData;
+	}
+
+	/**
+	 * Sets the user data of this instance.
+	 * 
+	 * @param data
+	 */
+	public void setUserData(Object data) {
+		this.userData = data;
+	}
+
+	/**
+	 * Get the user data type, or null, if no user data is present.
+	 * 
+	 * @return the user data type, or null.
+	 */
+	public Class<?> getUserDataType() {
+		if (userData != null) {
+			return userData.getClass();
+		}
+		return null;
+	}
+
+	/**
 	 * Method to quickly determine if a validity is not defined, meaning
 	 * {@code from} as well as {@code to} is {@code null}.
 	 * 
@@ -174,7 +210,7 @@ public class ValidityInfo<T> implements Serializable,
 	 * 
 	 * @return the starting UTC timestamp, or null.
 	 */
-	public Long getStartTimeInMillis() {
+	public Long getFromTimeInMillis() {
 		if (from != null) {
 			return from;
 		}

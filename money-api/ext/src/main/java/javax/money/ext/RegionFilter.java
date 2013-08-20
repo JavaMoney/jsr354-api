@@ -22,9 +22,9 @@ public interface RegionFilter {
 	/**
 	 * Filter method used to determine which {@link Region} instances should be
 	 * included within a result set returned by
-	 * {@link RegionNode#select(RegionFilter)} or
-	 * {@link RegionNode#selectParent(RegionFilter)}. This method is called by
-	 * the {@link RegionNode} instance for each {@link Region} instance during
+	 * {@link RegionTreeNode#select(RegionFilter)} or
+	 * {@link RegionTreeNode#selectParent(RegionFilter)}. This method is called by
+	 * the {@link RegionTreeNode} instance for each {@link Region} instance during
 	 * tree traversal.
 	 * 
 	 * @param region
@@ -32,6 +32,6 @@ public interface RegionFilter {
 	 * @return {@code true} if the {@link Region} should be included in the
 	 *         result.
 	 */
-	public boolean accept(RegionNode region);
+	public boolean accept(RegionTreeNode region);
 
 }

@@ -21,7 +21,7 @@ import java.util.Set;
 
 import javax.money.ext.Region;
 import javax.money.ext.RegionFilter;
-import javax.money.ext.RegionNode;
+import javax.money.ext.RegionTreeNode;
 
 /**
  * Regions can be used to segregate or access artifacts (e.g. currencies) either
@@ -32,8 +32,8 @@ import javax.money.ext.RegionNode;
  * 
  * @author Anatole Tresch
  */
-public class BuildableRegionNode implements RegionNode, Serializable,
-		Comparable<RegionNode> {
+public class BuildableRegionNode implements RegionTreeNode, Serializable,
+		Comparable<RegionTreeNode> {
 
 	/**
 	 * serialID.
@@ -45,9 +45,9 @@ public class BuildableRegionNode implements RegionNode, Serializable,
 	/**
 	 * The parent region, or {@code null}.
 	 */
-	private RegionNode parent;
+	private RegionTreeNode parent;
 
-	private Set<RegionNode> childRegions = new HashSet<>();
+	private Set<RegionTreeNode> childRegions = new HashSet<>();
 
 	/**
 	 * Creates a region. Regions should only be accessed using the accessor
@@ -73,7 +73,7 @@ public class BuildableRegionNode implements RegionNode, Serializable,
 	 * @param type
 	 *            the region's type, not null.
 	 */
-	public BuildableRegionNode(Region region, RegionNode parent) {
+	public BuildableRegionNode(Region region, RegionTreeNode parent) {
 		this(region, parent, null);
 	}
 
@@ -87,8 +87,8 @@ public class BuildableRegionNode implements RegionNode, Serializable,
 	 * @param type
 	 *            the region's type, not null.
 	 */
-	public BuildableRegionNode(Region region, RegionNode parent,
-			Collection<RegionNode> childRegions) {
+	public BuildableRegionNode(Region region, RegionTreeNode parent,
+			Collection<RegionTreeNode> childRegions) {
 		if (region == null) {
 			throw new IllegalArgumentException("region is required.");
 		}
@@ -96,7 +96,7 @@ public class BuildableRegionNode implements RegionNode, Serializable,
 		this.parent = parent;
 		if (childRegions != null) {
 			this.childRegions.addAll(childRegions);
-			for (RegionNode regionNode : childRegions) {
+			for (RegionTreeNode regionNode : childRegions) {
 				if (regionNode instanceof BuildableRegionNode) {
 					((BuildableRegionNode) regionNode).parent = this;
 				}
@@ -176,13 +176,13 @@ public class BuildableRegionNode implements RegionNode, Serializable,
 	public void printTree(Appendable b, String intend) throws IOException {
 		b.append(intend + toString()).append("\n");
 		intend = intend + "  ";
-		for (RegionNode region : getChildren()) {
+		for (RegionTreeNode region : getChildren()) {
 			region.printTree(b, intend);
 		}
 	}
 
 	public boolean contains(Region region) {
-		for (RegionNode current : childRegions) {
+		for (RegionTreeNode current : childRegions) {
 			if (current.getRegion().equals(region)) {
 				return true;
 			}
@@ -191,25 +191,25 @@ public class BuildableRegionNode implements RegionNode, Serializable,
 	}
 
 	@Override
-	public RegionNode getSubRegion(String path) {
+	public RegionTreeNode getSubRegion(String path) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Collection<RegionNode> getChildren() {
+	public Collection<RegionTreeNode> getChildren() {
 		return Collections.unmodifiableCollection(childRegions);
 	}
 
-	public Collection<RegionNode> select(RegionFilter filter) {
+	public Collection<RegionTreeNode> select(RegionFilter filter) {
 		return Collections.unmodifiableCollection(childRegions);
 	}
 
-	public RegionNode getParent() {
+	public RegionTreeNode getParent() {
 		return this.parent;
 	}
 
-	public RegionNode selectParent(RegionFilter filter) {
-		RegionNode parent = this.parent;
+	public RegionTreeNode selectParent(RegionFilter filter) {
+		RegionTreeNode parent = this.parent;
 		while (parent != null) {
 			if (filter.accept(parent)) {
 				return parent;
@@ -244,9 +244,9 @@ public class BuildableRegionNode implements RegionNode, Serializable,
 		/**
 		 * The parent region, or {@code null}.
 		 */
-		private RegionNode parent;
+		private RegionTreeNode parent;
 
-		private Set<RegionNode> childRegions = new HashSet<RegionNode>();
+		private Set<RegionTreeNode> childRegions = new HashSet<RegionTreeNode>();
 
 		/**
 		 * Creates a {@link RegionBuilder}. Regions should only be accessed
@@ -314,11 +314,11 @@ public class BuildableRegionNode implements RegionNode, Serializable,
 		 * 
 		 * @see javax.money.ext.Region#getChildRegions()
 		 */
-		public Set<RegionNode> getChildRegions() {
+		public Set<RegionTreeNode> getChildRegions() {
 			return childRegions;
 		}
 
-		public RegionNode getParentRegion() {
+		public RegionTreeNode getParentRegion() {
 			return this.parent;
 		}
 
@@ -330,12 +330,12 @@ public class BuildableRegionNode implements RegionNode, Serializable,
 			return this;
 		}
 
-		public Builder addChildRegions(RegionNode... regions) {
+		public Builder addChildRegions(RegionTreeNode... regions) {
 			this.childRegions.addAll(Arrays.asList(regions));
 			return this;
 		}
 
-		public Builder removeChildRegions(RegionNode... regions) {
+		public Builder removeChildRegions(RegionTreeNode... regions) {
 			this.childRegions.removeAll(Arrays.asList(regions));
 			return this;
 		}
@@ -344,7 +344,7 @@ public class BuildableRegionNode implements RegionNode, Serializable,
 			this.childRegions.clear();
 		}
 
-		public Builder setParentRegion(RegionNode parent) {
+		public Builder setParentRegion(RegionTreeNode parent) {
 			this.parent = parent;
 			return this;
 		}
@@ -373,12 +373,12 @@ public class BuildableRegionNode implements RegionNode, Serializable,
 	}
 
 	@Override
-	public RegionNode getRegionTree(String path) {
+	public RegionTreeNode getRegionTree(String path) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public int compareTo(RegionNode o) {
+	public int compareTo(RegionTreeNode o) {
 		return ((Comparable<Region>) this.region).compareTo(o.getRegion());
 	}
 

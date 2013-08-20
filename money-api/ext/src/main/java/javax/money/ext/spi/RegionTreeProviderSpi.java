@@ -13,7 +13,7 @@ package javax.money.ext.spi;
 import java.util.Map;
 
 import javax.money.ext.Region;
-import javax.money.ext.RegionNode;
+import javax.money.ext.RegionTreeNode;
 
 /**
  * Implementation of this interface define the regions supported in the system.
@@ -35,16 +35,16 @@ public interface RegionTreeProviderSpi {
 	 * 
 	 * @param regionProviders
 	 *            the region providers loaded, to be used for accessing
-	 *            {@link Region} entries to be organized in a {@link RegionNode}
+	 *            {@link Region} entries to be organized in a {@link RegionTreeNode}
 	 *            tree structure.
 	 */
 	public void init(Map<Class, RegionProviderSpi> regionProviders);
 
 	/**
-	 * Access the root {@link RegionNode} of the region tree provided.
+	 * Access the root {@link RegionTreeNode} of the region tree provided.
 	 * 
 	 * @return the root node, never {@code null}.
 	 */
-	public RegionNode getRegionTree();
+	public RegionTreeNode getRegionTree();
 
 }

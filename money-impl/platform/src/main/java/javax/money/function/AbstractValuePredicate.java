@@ -75,4 +75,13 @@ public abstract class AbstractValuePredicate<T> implements
 	protected abstract boolean isPredicateTrue(MonetaryAmount value,
 			Set<T> acceptedValues);
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + " [acceptedValues=" + acceptedValues + "]";
+	}
+
+	
 }

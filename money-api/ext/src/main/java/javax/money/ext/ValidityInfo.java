@@ -13,6 +13,7 @@ package javax.money.ext;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * This base class models a validity of an item T related to a timeline. Hereby
@@ -272,6 +273,7 @@ public class ValidityInfo<T> implements Serializable,
 						"Calendar type is not instantiatable.", e);
 			}
 			cal.setTimeInMillis(from);
+			cal.setTimeZone(TimeZone.getTimeZone(targetTimezoneId));
 			return cal;
 		}
 		return null;
@@ -307,6 +309,7 @@ public class ValidityInfo<T> implements Serializable,
 						"Calendar type is not instantiatable.", e);
 			}
 			cal.setTimeInMillis(to);
+			cal.setTimeZone(TimeZone.getTimeZone(targetTimezoneId));
 			return cal;
 		}
 		return null;

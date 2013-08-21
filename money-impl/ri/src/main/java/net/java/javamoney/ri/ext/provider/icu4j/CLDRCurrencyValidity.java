@@ -36,6 +36,11 @@ public class CLDRCurrencyValidity implements CurrencyValidity {
 			for (CurrencyRegionRecord data : currencyData.getEntries()) {
 				for (String tzName : region.getTimezoneIds()) {
 					TimeZone tz = TimeZone.getTimeZone(tzName);
+					if(tz.getID().equals("GMT")){
+						// the timezone was not recognized by the JDK, ignore it!
+						// TODO implement a more intelligent variant here...
+						continue;
+					}
 					int[] from = data.getFromYMD();
 					Calendar fromCal = null;
 					Calendar toCal = null;

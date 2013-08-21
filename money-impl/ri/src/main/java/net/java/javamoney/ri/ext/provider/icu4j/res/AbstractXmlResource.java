@@ -51,6 +51,7 @@ public abstract class AbstractXmlResource {
 		docBuilderFactory.setIgnoringComments(true);
 		docBuilderFactory.setIgnoringElementContentWhitespace(true);
 		docBuilderFactory.setValidating(false);
+		loadResource();
 	}
 
 	public boolean isReloadRequired() {

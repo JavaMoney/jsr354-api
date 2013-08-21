@@ -32,30 +32,33 @@ public class CLDRCurrencyValidity implements CurrencyValidity {
 		Currency4Region currencyData = CLDRSupplementalData.getInstance()
 				.getCurrencyData(region.getRegionCode());
 		List<RelatedValidityInfo<CurrencyUnit, Region>> result = new ArrayList<RelatedValidityInfo<CurrencyUnit, Region>>();
-		for (CurrencyRegionRecord data : currencyData.getEntries()) {
-			for (String tzName : region.getTimezoneIds()) {
-				TimeZone tz = TimeZone.getTimeZone(tzName);
-				int[] from = data.getFromYMD();
-				Calendar fromCal = null;
-				Calendar toCal = null;
-				if (from != null) {
-					fromCal = new GregorianCalendar(tz);
-					fromCal.clear();
-					fromCal.setTimeZone(tz);
-					fromCal.set(from[0], from[1], from[2]);
+		if (currencyData != null) {
+			for (CurrencyRegionRecord data : currencyData.getEntries()) {
+				for (String tzName : region.getTimezoneIds()) {
+					TimeZone tz = TimeZone.getTimeZone(tzName);
+					int[] from = data.getFromYMD();
+					Calendar fromCal = null;
+					Calendar toCal = null;
+					if (from != null) {
+						fromCal = new GregorianCalendar(tz);
+						fromCal.clear();
+						fromCal.setTimeZone(tz);
+						fromCal.set(from[0], from[1], from[2]);
+					}
+					int[] to = data.getToYMD();
+					if (to != null) {
+						toCal = new GregorianCalendar(tz);
+						toCal.clear();
+						toCal.setTimeZone(tz);
+						toCal.set(to[0], to[1], to[2]);
+					}
+					RelatedValidityInfo<CurrencyUnit, Region> vi = new RelatedValidityInfo<CurrencyUnit, Region>(
+							MonetaryCurrencies.get(data.getCurrencyCode()),
+							region,
+							"CLDR", fromCal, toCal, tzName);
+					vi.setUserData(data);
+					result.add(vi);
 				}
-				int[] to = data.getToYMD();
-				if (to != null) {
-					toCal = new GregorianCalendar(tz);
-					toCal.clear();
-					toCal.setTimeZone(tz);
-					toCal.set(to[0], to[1], to[2]);
-				}
-				RelatedValidityInfo<CurrencyUnit, Region> vi = new RelatedValidityInfo<CurrencyUnit, Region>(
-						MonetaryCurrencies.get(data.getCurrencyCode()), region,
-						"CLDR", fromCal, toCal, tzName);
-				vi.setUserData(data);
-				result.add(vi);
 			}
 		}
 		return result;

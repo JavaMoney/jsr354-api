@@ -21,7 +21,7 @@ public class DefaultResourceCache implements ResourceCache {
 	private static final String SUFFIX = ".dat";
 
 	private File localDir = new File(
-			System.getProperty("temp.dir/.resourceCache"));
+			System.getProperty("temp.dir", ".resourceCache"));
 
 	private Map<String, File> cachedResources = new ConcurrentHashMap<>();
 

@@ -187,4 +187,10 @@ public class SmokeTests {
 		System.out.println("ISO=" + Regions.getRegionTree("ISO").getAsText());
 		System.out.println("ISO3=" + Regions.getRegionTree("ISO3").getAsText());
 	}
+	
+	@Test
+	public void testCurrencyRegionValidities() throws InterruptedException {
+		System.out.println("Validity providers: " + MonetaryCurrencies.getValidityProviders());
+		System.out.println("Currencies for Germany: " + MonetaryCurrencies.getCurrencyValidity("CLDR").getValidityInfo(Regions.getRegion(Locale.GERMANY)));
+	}
 }

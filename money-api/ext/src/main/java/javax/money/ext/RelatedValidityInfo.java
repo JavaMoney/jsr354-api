@@ -11,10 +11,10 @@
 package javax.money.ext;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
- * This class models a validity of an item S related to a
- * reference T.
+ * This class models a validity of an item S related to a reference T.
  * 
  * @author Anatole Tresch
  * 
@@ -175,6 +175,29 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 			}
 		}
 		return compare;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "RelatedValidityInfo [item=" + getItem()
+				+ ", ref=" + referenceItem + ", from=" + formatTime(getFrom())
+				+ ", to="
+				+ formatTime(getTo()) + ", userData=" + (getUserData()==null?"-":getUserData().getClass().getName()) + "]";
+	}
+
+	private String formatTime(GregorianCalendar time) {
+		if(time==null){
+			return "-";
+		}
+		StringBuilder b = new StringBuilder();
+		b.append(time.get(Calendar.YEAR)).append("-").append(time.get(Calendar.MONTH)).append("-").append(time.get(Calendar.DAY_OF_MONTH));
+		b.append(" ").append(time.getTimeZone().getID());
+		return b.toString();
 	}
 
 }

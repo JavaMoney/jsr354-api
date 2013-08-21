@@ -24,7 +24,7 @@ public final class CLDRSupplementalData extends AbstractXmlResource {
 	 * iso4217="FRF" from="1960-01-01" to="2002-02-17"/> <currency iso4217="ADP"
 	 * from="1936-01-01" to="2001-12-31"/> </region>
 	 */
-	private Map<String, Currency4Region> currencyRegionData = new HashMap<String, Currency4Region>();
+	private Map<String, Currency4Region> currencyRegionData;
 
 	private CLDRSupplementalData() throws MalformedURLException {
 		super(
@@ -32,7 +32,7 @@ public final class CLDRSupplementalData extends AbstractXmlResource {
 				new URL(
 						"http://unicode.org/repos/cldr/trunk/common/supplemental/supplementalData.xml"),
 				CLDRSupplementalData.class
-						.getResource("java-money/defaults/SupplementalData.xml"));
+						.getResource("/java-money/defaults/cldr/supplementalData.xml"));
 	}
 
 	public static CLDRSupplementalData getInstance() {
@@ -51,33 +51,22 @@ public final class CLDRSupplementalData extends AbstractXmlResource {
 	@Override
 	protected void documentReloaded() {
 		// load currencies
-		Map<String, Currency4Region> currencyRegionData = new HashMap<String, Currency4Region>();
-
-		NodeList nl = getDocument().getDocumentElement()
-				.getElementsByTagName("currencyData");
-
-		for (int i = 0; i < nl.getLength(); i++) {
-			Node node = nl.item(i);
-			// if ("fractions".equals(node.getNodeName())) {
-			// NodeList infoNodes = node.getChildNodes();
-			// for (int j = 0; j < infoNodes.getLength(); j++) {
-			// CurrencyData cd = new CurrencyData(infoNodes.item(j));
-			// currencyDataMap.put(cd.getCode(), cd);
-			// }
-			// }
-			// else
-			if ("region".equals(node.getNodeName())) {
-				String regionCode = node.getAttributes()
+		Map<String, Currency4Region> data = new HashMap<String, Currency4Region>();
+		try {
+			NodeList nl = getDocument().getDocumentElement()
+					.getElementsByTagName("region");
+			for (int i = 0; i < nl.getLength(); i++) {
+				Node childNode = nl.item(i);
+				String regionCode = childNode.getAttributes()
 						.getNamedItem("iso3166").getNodeValue();
-				NodeList currencyNodes = node.getChildNodes();
-				for (int j = 0; j < currencyNodes.getLength(); j++) {
-					Currency4Region currencyEntry = new Currency4Region(
-							currencyNodes.item(j));
-					currencyRegionData.put(regionCode, currencyEntry);
-				}
+				Currency4Region currencyEntry = new Currency4Region(
+						regionCode, childNode);
+				data.put(regionCode, currencyEntry);
 			}
+			this.currencyRegionData = data;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		this.currencyRegionData = currencyRegionData;
 	}
 
 	public Currency4Region getCurrencyData(String countryCode) {
@@ -89,13 +78,14 @@ public final class CLDRSupplementalData extends AbstractXmlResource {
 		private String regionCode;
 		private List<CurrencyRegionRecord> entries = new ArrayList<CurrencyRegionRecord>();
 
-		public Currency4Region(Node item) {
-			regionCode = item.getAttributes().getNamedItem("is03166")
-					.getNodeValue();
+		public Currency4Region(String regionCode, Node item) {
+			this.regionCode = regionCode;
 			NodeList nl = item.getChildNodes();
 			for (int i = 0; i < nl.getLength(); i++) {
 				Node childNode = nl.item(i);
-				entries.add(new CurrencyRegionRecord(regionCode, childNode));
+				if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+					entries.add(new CurrencyRegionRecord(regionCode, childNode));
+				}
 			}
 			// <region iso3166="AF">
 			// <currency iso4217="AFN" from="2002-10-07"/>
@@ -132,22 +122,24 @@ public final class CLDRSupplementalData extends AbstractXmlResource {
 		private boolean legalTender = true;
 
 		public CurrencyRegionRecord(String regionCode, Node item) {
-			this.regionCode = regionCode;
-			NamedNodeMap attrs = item.getAttributes();
-			this.currencyCode = attrs.getNamedItem("iso4217").getNodeValue();
-			String from = attrs.getNamedItem("from").getNodeValue();
-			String[] dtParts = from.split("-");
-			this.fromYMD = new int[3];
-			this.fromYMD[0] = Integer.parseInt(dtParts[0]);
-			this.fromYMD[1] = Integer.parseInt(dtParts[1]);
-			this.fromYMD[2] = Integer.parseInt(dtParts[2]);
 			// <region iso3166="AF">
 			// <currency iso4217="AFN" from="2002-10-07"/>
 			// <currency iso4217="AFA" from="1927-03-14" to="2002-12-31"/>
+			this.regionCode = regionCode;
+			NamedNodeMap attrs = item.getAttributes();
+			this.currencyCode = attrs.getNamedItem("iso4217").getNodeValue();
+			if (attrs.getNamedItem("from") != null) {
+				String from = attrs.getNamedItem("from").getNodeValue();
+				String[] dtParts = from.split("-");
+				this.fromYMD = new int[3];
+				this.fromYMD[0] = Integer.parseInt(dtParts[0]);
+				this.fromYMD[1] = Integer.parseInt(dtParts[1]);
+				this.fromYMD[2] = Integer.parseInt(dtParts[2]);
+			}
 			String to = null;
 			if (attrs.getNamedItem("to") != null) {
 				to = attrs.getNamedItem("to").getNodeValue();
-				dtParts = to.split("-");
+				String[] dtParts = to.split("-");
 				this.toYMD = new int[3];
 				this.toYMD[0] = Integer.parseInt(dtParts[0]);
 				this.toYMD[1] = Integer.parseInt(dtParts[1]);
@@ -200,10 +192,10 @@ public final class CLDRSupplementalData extends AbstractXmlResource {
 					+ Arrays.toString(fromYMD) + ", toYMD="
 					+ Arrays.toString(toYMD) + "]";
 		}
-
 	}
 
 	public String getSource() {
 		return "http://unicode.org/repos/cldr/trunk/common/supplemental/supplementalData.xml";
 	}
+	
 }

@@ -42,7 +42,7 @@ public interface CurrencyConverter {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public MonetaryAmount convert(MonetaryAmount amount,
+	public <T extends MonetaryAmount> T convert(T amount,
 			CurrencyUnit targetCurrency);
 
 	/**
@@ -60,7 +60,7 @@ public interface CurrencyConverter {
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
-	public MonetaryAmount convert(MonetaryAmount amount,
+	public <T extends MonetaryAmount> T  convert(T amount,
 			CurrencyUnit term, Long timestamp);
 
 	/**
@@ -102,7 +102,7 @@ public interface CurrencyConverter {
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public CurrencyConversion getConversion(CurrencyUnit base,
-			CurrencyUnit term, Long targetTimestamp);
+			CurrencyUnit term, long targetTimestamp);
 
 	/**
 	 * Access a {@link CurrencyConversion} instance that is bound to the given
@@ -137,12 +137,13 @@ public interface CurrencyConverter {
 	 * 
 	 * @param term
 	 *            The terminating currency
-	 * 
+	 * @param targetTimestamp
+	 *            for which the conversion is targeted.
 	 * @return The according {@link CurrencyConversion}, never null.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
 	public CurrencyConversion getConversion(CurrencyUnit term,
-			Long targetTimestamp);
+			long targetTimestamp);
 
 }

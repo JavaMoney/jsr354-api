@@ -157,14 +157,8 @@ public class EZBConversionProvider implements ConversionProvider {
 		return RATE_TYPE;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.convert.spi.ExchangeRateProviderSpi#getExchangeRate
-	 * (javax .money.CurrencyUnit, javax.money.CurrencyUnit, java.lang.Long)
-	 */
-	@Override
-	public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term,
+
+	protected ExchangeRate getExchangeRateInternal(CurrencyUnit base, CurrencyUnit term,
 			Long timestamp) {
 		if (!MoneyCurrency.ISO_NAMESPACE.equals(base.getNamespace())
 				|| !MoneyCurrency.ISO_NAMESPACE.equals(term.getNamespace())) {
@@ -337,7 +331,7 @@ public class EZBConversionProvider implements ConversionProvider {
 		builder.setBase(BASE_CURRENCY);
 		builder.setTerm(term);
 		builder.setValidFrom(timestamp);
-		builder.setProvider("European Central Bank"); // TODO i18n?
+		builder.setProvider("European Central Bank");
 		builder.setFactor(rate);
 		builder.setExchangeRateType(RATE_TYPE);
 		ExchangeRate exchangeRate = builder.build();
@@ -361,18 +355,18 @@ public class EZBConversionProvider implements ConversionProvider {
 
 	@Override
 	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target) {
-		return isAvailable(src, target, null);
+		return getExchangeRate(src, target) != null;
 	}
 
 	@Override
 	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
-			Long timestamp) {
+			long timestamp) {
 		return getExchangeRate(src, target, timestamp) != null;
 	}
 
 	@Override
 	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target) {
-		return getExchangeRate(source, target, null);
+		return getExchangeRateInternal(source, target, null);
 	}
 
 	@Override
@@ -384,5 +378,11 @@ public class EZBConversionProvider implements ConversionProvider {
 	@Override
 	public CurrencyConverter getConverter() {
 		return currencyConverter;
+	}
+
+	@Override
+	public ExchangeRate getExchangeRate(CurrencyUnit base,
+			CurrencyUnit term, long timestamp) {
+		return getExchangeRateInternal(base, term, timestamp);
 	}
 }

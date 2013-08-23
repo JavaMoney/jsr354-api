@@ -34,18 +34,18 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 	}
 
 	@Override
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target) {
+	public <T extends MonetaryAmount> T  convert(T amount, CurrencyUnit target) {
 		ExchangeRate rate = this.rateProvider.getExchangeRate(
 				amount.getCurrency(), target);
 		if (rate == null) {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
 					null, "No rate available.");
 		}
-		return new FixedCurrencyConversion(rate).apply(amount);
+		return (T)new FixedCurrencyConversion(rate).apply(amount);
 	}
 
 	@Override
-	public MonetaryAmount convert(MonetaryAmount amount, CurrencyUnit target,
+	public <T extends MonetaryAmount> T convert(T amount, CurrencyUnit target,
 			Long timestamp) {
 		ExchangeRate rate = this.rateProvider.getExchangeRate(
 				amount.getCurrency(), target, timestamp);
@@ -53,7 +53,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
 					null, "No rate available.");
 		}
-		return new FixedCurrencyConversion(rate).apply(amount);
+		return (T)new FixedCurrencyConversion(rate).apply(amount);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 
 	@Override
 	public CurrencyConversion getConversion(CurrencyUnit base,
-			CurrencyUnit term, Long targetTimestamp) {
+			CurrencyUnit term, long targetTimestamp) {
 		ExchangeRate rate = this.rateProvider.getExchangeRate(base, term,
 				targetTimestamp);
 		if (rate == null) {
@@ -85,8 +85,8 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 
 	@Override
 	public CurrencyConversion getConversion(CurrencyUnit term,
-			Long targetTimestamp) {
-		return new LazyBoundCurrencyConversion(term, this.rateProvider);
+			long targetTimestamp) {
+		return new LazyBoundCurrencyConversion(term, this.rateProvider, targetTimestamp);
 	}
 
 }

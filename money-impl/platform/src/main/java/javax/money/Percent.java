@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package javax.money.function;
+package javax.money;
 
 import static java.text.NumberFormat.getPercentInstance;
 

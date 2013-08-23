@@ -43,13 +43,13 @@ public class TestMonetaryConversionSpi implements MonetaryConversionsSingletonSp
 
 		@Override
 		public boolean isAvailable(CurrencyUnit CurrencyUnit,
-				CurrencyUnit target, Long timestamp) {
+				CurrencyUnit target, long timestamp) {
 			return false;
 		}
 
 		@Override
 		public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
-				CurrencyUnit targetCurrency, Long timestamp) {
+				CurrencyUnit targetCurrency, long timestamp) {
 			return null;
 		}
 

@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 
 import javax.money.Money;
+import javax.money.Percent;
 
 import org.junit.Test;
 

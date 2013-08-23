@@ -33,56 +33,54 @@ public interface ConversionProvider {
 	 * @param type
 	 *            the exchange rate type required that this provider instance is
 	 *            providing data for.
-	 * @param source
-	 *            the source currency
-	 * @param target
-	 *            the target currency
+	 * @param base
+	 *            the base currency
+	 * @param term
+	 *            the term currency
 	 * @return true, if such an exchange is currently defined.
 	 */
-	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target);
+	public boolean isAvailable(CurrencyUnit base, CurrencyUnit term);
 
 	/**
 	 * Checks if an exchange of a currency is defined.
 	 * 
-	 * @param source
-	 *            the source currency
-	 * @param target
-	 *            the target currency
+	 * @param base
+	 *            the base currency
+	 * @param term
+	 *            the term currency
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried,
-	 *            or {@code null}.
+	 *            the target timestamp for which the exchange rate is queried.
 	 * @return true, if such an exchange is currently defined.
 	 */
-	public boolean isAvailable(CurrencyUnit CurrencyUnit, CurrencyUnit target,
-			Long timestamp);
+	public boolean isAvailable(CurrencyUnit base, CurrencyUnit term,
+			long timestamp);
 
 	/**
 	 * Get an {@link ConversionRate} for a given timestamp (including historic
 	 * rates).
 	 * 
-	 * @param sourceCurrency
-	 *            The source currency
-	 * @param targetCurrency
-	 *            The target currency
+	 * @param base
+	 *            The base currency
+	 * @param term
+	 *            The term currency
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried,
-	 *            or {@code null}.
+	 *            the target timestamp for which the exchange rate is queried.
 	 * @return the matching {@link ExchangeRate}, or {@code null}.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit sourceCurrency,
-			CurrencyUnit targetCurrency, Long timestamp);
+	public ExchangeRate getExchangeRate(CurrencyUnit base,
+			CurrencyUnit term, long timestamp);
 
 	/**
 	 * Access a exchange rate using the given currencies. The rate may be,
 	 * depending on the data provider, be real-time or deferred.
 	 * 
-	 * @param source
-	 *            source currency.
-	 * @param target
-	 *            target currency.
+	 * @param base
+	 *            base currency.
+	 * @param term
+	 *            term currency.
 	 * @return the matching {@link ExchangeRate}, or {@code null}.
 	 */
-	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target);
+	public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term);
 
 	/**
 	 * The method reverses the exchange rate to a rate mapping from target to

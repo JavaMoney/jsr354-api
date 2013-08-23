@@ -229,8 +229,7 @@ public class IMFConversionProvider implements ConversionProvider {
 		return dates;
 	}
 
-	@Override
-	public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term,
+	protected ExchangeRate getExchangeRateInternal(CurrencyUnit base, CurrencyUnit term,
 			Long timestamp) {
 		ExchangeRate rate1 = lookupRate(currencyToSdr.get(base), timestamp);
 		ExchangeRate rate2 = lookupRate(sdrToCurrency.get(term), timestamp);
@@ -277,18 +276,18 @@ public class IMFConversionProvider implements ConversionProvider {
 
 	@Override
 	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target) {
-		return isAvailable(src, target, null);
+		return getExchangeRateInternal(src, target, null) != null;
 	}
 
 	@Override
 	public boolean isAvailable(CurrencyUnit src, CurrencyUnit target,
-			Long timestamp) {
+			long timestamp) {
 		return getExchangeRate(src, target, timestamp) != null;
 	}
 
 	@Override
 	public ExchangeRate getExchangeRate(CurrencyUnit source, CurrencyUnit target) {
-		return getExchangeRate(source, target, null);
+		return getExchangeRateInternal(source, target, null);
 	}
 
 	@Override
@@ -300,6 +299,12 @@ public class IMFConversionProvider implements ConversionProvider {
 	@Override
 	public CurrencyConverter getConverter() {
 		return currencyConverter;
+	}
+
+	@Override
+	public ExchangeRate getExchangeRate(CurrencyUnit base,
+			CurrencyUnit term, long timestamp) {
+		return getExchangeRateInternal(base, term, timestamp);
 	}
 
 }

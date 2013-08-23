@@ -41,6 +41,12 @@ public class LazyBoundCurrencyConversion extends AbstractCurrencyConversion
 		}
 		this.termCurrency = termCurrency;
 	}
+	
+	public LazyBoundCurrencyConversion(CurrencyUnit termCurrency,
+			ConversionProvider rateProvider, long targetTimestamp) {
+		this(termCurrency, rateProvider);
+		this.targetTimestamp = targetTimestamp;
+	}
 
 	/**
 	 * Access the terminating {@link CurrencyUnit} of this conversion instance.

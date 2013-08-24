@@ -213,11 +213,11 @@ public class EZBConversionProvider implements ConversionProvider {
 			return targetRate;
 		} else {
 			// Get Conversion base as derived rate: base -> EUR -> term
-			ExchangeRate rate1 = getExchangeRate(base, MoneyCurrency.of(BASE_CURRENCY_CODE),
+			ExchangeRate rate1 = getExchangeRateInternal(base, MoneyCurrency.of(BASE_CURRENCY_CODE),
 					timestamp);
-			ExchangeRate rate2 = getExchangeRate(MoneyCurrency.of(BASE_CURRENCY_CODE), term,
+			ExchangeRate rate2 = getExchangeRateInternal(MoneyCurrency.of(BASE_CURRENCY_CODE), term,
 					timestamp);
-			if (rate1 != null || rate2 != null) {
+			if (rate1 != null || rate2 != null) { // TODO why OR, this could cause NPE?
 				builder.setFactor(rate1.getFactor().multiply(rate2.getFactor()));
 				builder.setExchangeRateChain(rate1, rate2);
 				return builder.build();

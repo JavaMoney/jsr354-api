@@ -215,25 +215,11 @@ public class EZBConversionProvider implements ConversionProvider {
 			return targetRate;
 		} else {
 			// Get Conversion base as derived rate: base -> EUR -> term
-			ExchangeRate rate1 = null;
-			if (timestamp != null) {
-				rate1 = getExchangeRate(base,
+			ExchangeRate rate1 = getExchangeRateInternal(base,
 						MoneyCurrency.of(BASE_CURRENCY_CODE), timestamp);
-			}
-			else {
-				rate1 = getExchangeRate(base,
-						MoneyCurrency.of(BASE_CURRENCY_CODE));
-			}
-			ExchangeRate rate2 = null;
-			if (timestamp != null) {
-				rate2 = getExchangeRate(MoneyCurrency.of(BASE_CURRENCY_CODE),
+			ExchangeRate rate2  = getExchangeRateInternal(MoneyCurrency.of(BASE_CURRENCY_CODE),
 						term,
 						timestamp);
-			}
-			else {
-				rate2 = getExchangeRate(MoneyCurrency.of(BASE_CURRENCY_CODE),
-						term);
-			}
 			if (rate1 != null || rate2 != null) {
 				builder.setFactor(rate1.getFactor().multiply(rate2.getFactor()));
 				builder.setExchangeRateChain(rate1, rate2);

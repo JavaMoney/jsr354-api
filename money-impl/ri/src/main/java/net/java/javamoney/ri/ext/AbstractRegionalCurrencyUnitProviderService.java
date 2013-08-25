@@ -18,35 +18,35 @@
  *    Wernner Keil - extensions and adaptions.
  */
 package net.java.javamoney.ri.ext;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.money.CurrencyUnit;
-import javax.money.ext.Region;
-
-import javax.money.ext.spi.RegionalCurrencyUnitProviderSpi;
-
-/**
- * This class models the singleton defined by JSR 354 that provides accessors
- * for {@link CurrencyUnit}.
- * 
- * @author Anatole Tresch
- */
-public abstract class AbstractRegionalCurrencyUnitProviderService {
-
-	public Set<CurrencyUnit> getAll(Region region, Long timestamp) {
-		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
-		for (RegionalCurrencyUnitProviderSpi prov : getRegionalCurrentyUnitProviderSpis()) {
-			Collection<CurrencyUnit> currencies = prov.getAll(region, timestamp);
-			if (currencies != null) {
-				result.addAll(currencies);
-			}
-		}
-		return result;
-	}
-
-    protected abstract Iterable<RegionalCurrencyUnitProviderSpi> getRegionalCurrentyUnitProviderSpis();
-        
-}
+//
+//import java.util.Collection;
+//import java.util.HashSet;
+//import java.util.Set;
+//
+//import javax.money.CurrencyUnit;
+//import javax.money.ext.Region;
+//
+//import javax.money.ext.spi.RegionalCurrencyUnitProviderSpi;
+//
+///**
+// * This class models the singleton defined by JSR 354 that provides accessors
+// * for {@link CurrencyUnit}.
+// * 
+// * @author Anatole Tresch
+// */
+//public abstract class AbstractRegionalCurrencyUnitProviderService {
+//
+//	public Set<CurrencyUnit> getAll(Region region, Long timestamp) {
+//		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
+//		for (RegionalCurrencyUnitProviderSpi prov : getRegionalCurrentyUnitProviderSpis()) {
+//			Collection<CurrencyUnit> currencies = prov.getAll(region, timestamp);
+//			if (currencies != null) {
+//				result.addAll(currencies);
+//			}
+//		}
+//		return result;
+//	}
+//
+//    protected abstract Iterable<RegionalCurrencyUnitProviderSpi> getRegionalCurrentyUnitProviderSpis();
+//        
+//}

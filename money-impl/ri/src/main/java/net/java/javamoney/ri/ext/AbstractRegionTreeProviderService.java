@@ -25,13 +25,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class models the singleton defined by JSR 354 that provides accessors
- * for {@link RegionImpl}.
+ * This class models the an internal service class, that provides the base
+ * method used by the {@link RegionsSingletonSpi} implementation. It
+ * is extended for different runtime scenarios, hereby allowing the spi
+ * implementation loaded using different mechanisms.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public abstract class AbstractRegionTreeProviderService {
-
+	/** The logger used. */
 	private static final Logger LOG = LoggerFactory
 			.getLogger(AbstractRegionTreeProviderService.class);
 
@@ -99,6 +102,13 @@ public abstract class AbstractRegionTreeProviderService {
 		return null;
 	}
 
+	/**
+	 * Method to return all {@link RegionTreeProviderSpi} instances. This allows
+	 * to use different loading mechanisms, depending on the target runtime
+	 * environment.
+	 * 
+	 * @return the {@link RegionTreeProviderSpi} instances loaded.
+	 */
 	protected abstract Iterable<RegionTreeProviderSpi> getRegionTreeProviderSpis();
 
 }

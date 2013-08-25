@@ -1,24 +1,24 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- * Contributors:
- *    Anatole Tresch - initial implementation.
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * Contributors: Anatole Tresch - initial implementation.
  */
 package net.java.javamoney.ri.convert.provider;
 
-import static net.java.javamoney.ri.convert.provider.EZBConversionProvider.DataFeed.*;
+import static net.java.javamoney.ri.convert.provider.EZBConversionProvider.DataFeed.DAILY;
+import static net.java.javamoney.ri.convert.provider.EZBConversionProvider.DataFeed.LAST_90_DAYS;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -65,7 +65,8 @@ public class EZBConversionProvider implements ConversionProvider {
 	 * Statistics data feeds provided by the European Central Bank
 	 * 
 	 * @author Werner Keil
-	 * @see <a href="http://www.ecb.int/stats/services/html/index.en.html">ECB: Statistics data services</a>
+	 * @see <a href="http://www.ecb.int/stats/services/html/index.en.html">ECB:
+	 *      Statistics data services</a>
 	 * 
 	 */
 	public static enum DataFeed {
@@ -99,7 +100,8 @@ public class EZBConversionProvider implements ConversionProvider {
 
 	private static final String BASE_CURRENCY_CODE = "EUR";
 	/** Base currency of the loaded rates is always EUR. */
-	public static final CurrencyUnit BASE_CURRENCY = MoneyCurrency.of(BASE_CURRENCY_CODE);
+	public static final CurrencyUnit BASE_CURRENCY = MoneyCurrency
+			.of(BASE_CURRENCY_CODE);
 	/** The logger used. */
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(EZBConversionProvider.class);
@@ -157,8 +159,8 @@ public class EZBConversionProvider implements ConversionProvider {
 		return RATE_TYPE;
 	}
 
-
-	protected ExchangeRate getExchangeRateInternal(CurrencyUnit base, CurrencyUnit term,
+	protected ExchangeRate getExchangeRateInternal(CurrencyUnit base,
+			CurrencyUnit term,
 			Long timestamp) {
 		if (!MoneyCurrency.ISO_NAMESPACE.equals(base.getNamespace())
 				|| !MoneyCurrency.ISO_NAMESPACE.equals(term.getNamespace())) {
@@ -213,10 +215,25 @@ public class EZBConversionProvider implements ConversionProvider {
 			return targetRate;
 		} else {
 			// Get Conversion base as derived rate: base -> EUR -> term
-			ExchangeRate rate1 = getExchangeRate(base, MoneyCurrency.of(BASE_CURRENCY_CODE),
-					timestamp);
-			ExchangeRate rate2 = getExchangeRate(MoneyCurrency.of(BASE_CURRENCY_CODE), term,
-					timestamp);
+			ExchangeRate rate1 = null;
+			if (timestamp != null) {
+				rate1 = getExchangeRate(base,
+						MoneyCurrency.of(BASE_CURRENCY_CODE), timestamp);
+			}
+			else {
+				rate1 = getExchangeRate(base,
+						MoneyCurrency.of(BASE_CURRENCY_CODE));
+			}
+			ExchangeRate rate2 = null;
+			if (timestamp != null) {
+				rate2 = getExchangeRate(MoneyCurrency.of(BASE_CURRENCY_CODE),
+						term,
+						timestamp);
+			}
+			else {
+				rate2 = getExchangeRate(MoneyCurrency.of(BASE_CURRENCY_CODE),
+						term);
+			}
 			if (rate1 != null || rate2 != null) {
 				builder.setFactor(rate1.getFactor().multiply(rate2.getFactor()));
 				builder.setExchangeRateChain(rate1, rate2);
@@ -238,7 +255,7 @@ public class EZBConversionProvider implements ConversionProvider {
 		return new ExchangeRate(rate.getExchangeRateType(), rate.getTerm(),
 				rate.getBase(), BigDecimal.ONE.divide(rate.getFactor(),
 						MathContext.DECIMAL64), rate.getProvider(),
-				rate.getValidFromTimeInMillis(), rate.getValidToTimeInMillis()); 
+				rate.getValidFromTimeInMillis(), rate.getValidToTimeInMillis());
 	}
 
 	/**

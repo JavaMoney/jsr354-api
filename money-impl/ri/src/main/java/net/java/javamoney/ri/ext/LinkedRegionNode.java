@@ -10,8 +10,6 @@
  */
 package net.java.javamoney.ri.ext;
 
-import java.util.Collection;
-
 import javax.money.ext.RegionFilter;
 import javax.money.ext.RegionTreeNode;
 

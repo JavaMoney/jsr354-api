@@ -15,6 +15,7 @@
  */
 package javax.money.function;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.money.MonetaryAmount;
@@ -31,8 +32,7 @@ import javax.money.MonetaryFunction;
  * 
  * @author Anatole Tresch
  */
-public class CountPredicate extends
-		AbstractValuePredicate<MonetaryFunction<MonetaryAmount, Boolean>> {
+public class CountPredicate<T> extends AbstractMultiPredicate<T> {
 	/** The minimal number of items that must match, or null. */
 	private Integer min;
 	/** The maximal number of items that must match, or null. */
@@ -49,7 +49,7 @@ public class CountPredicate extends
 	 *            The minimal number, or {@code null} to remove the condition.
 	 * @return this, for chaining.
 	 */
-	public CountPredicate withMinMatching(Integer min) {
+	public CountPredicate<T> withMinMatching(Integer min) {
 		this.min = min;
 		return this;
 	}
@@ -63,7 +63,7 @@ public class CountPredicate extends
 	 *            The maximal number, or {@code null} to remove the condition.
 	 * @return this, for chaining.
 	 */
-	public CountPredicate withMaxMatching(Integer max) {
+	public CountPredicate<T> withMaxMatching(Integer max) {
 		this.max = max;
 		return this;
 	}
@@ -76,10 +76,9 @@ public class CountPredicate extends
 	 * .MonetaryAmount, java.util.Set)
 	 */
 	@Override
-	protected boolean isPredicateTrue(MonetaryAmount value,
-			Set<MonetaryFunction<MonetaryAmount, Boolean>> acceptedValues) {
-		resetCurrentNum();
-		for (MonetaryFunction<MonetaryAmount, Boolean> subPredicate : acceptedValues) {
+	protected boolean isPredicateTrue(T value,
+			Set<MonetaryFunction<T, Boolean>> predicates) {
+		for (MonetaryFunction<T, Boolean> subPredicate : predicates) {
 			if (subPredicate.apply(value)) {
 				currentNum++;
 				if (checkMaxFailed()) {
@@ -124,6 +123,23 @@ public class CountPredicate extends
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public CountPredicate<T> clearPredicates() {
+		return (CountPredicate<T>) super.clearPredicates();
+	}
+
+	@Override
+	public CountPredicate<T> withPredicates(
+			Collection<MonetaryFunction<T, Boolean>> predicates) {
+		return (CountPredicate<T>) super.withPredicates(predicates);
+	}
+
+	@Override
+	public CountPredicate<T> withPredicates(
+			MonetaryFunction<T, Boolean>... predicates) {
+		return (CountPredicate<T>) super.withPredicates(predicates);
 	}
 
 	/*

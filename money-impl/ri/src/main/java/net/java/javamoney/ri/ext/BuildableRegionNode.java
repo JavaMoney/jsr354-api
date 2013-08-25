@@ -25,29 +25,22 @@ import javax.money.ext.RegionTreeNode;
 
 /**
  * Regions can be used to segregate or access artifacts (e.g. currencies) either
- * based on geographical, or commercial aspects (e.g. legal units).
+ * based on geographical, or commercial aspects (e.g. legal units). This
+ * implementation provides a class with an according Builder for creation.
  * 
  * @see <a href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">UN M.49:
  *      UN Statistics Division Country or area & region codes</a>
  * 
  * @author Anatole Tresch
  */
-public class BuildableRegionNode implements RegionTreeNode, Serializable,
+public class BuildableRegionNode extends AbstractRegionNode implements
+		RegionTreeNode, Serializable,
 		Comparable<RegionTreeNode> {
 
 	/**
 	 * serialID.
 	 */
 	private static final long serialVersionUID = -8957470024522944264L;
-
-	private Region region;
-
-	/**
-	 * The parent region, or {@code null}.
-	 */
-	private RegionTreeNode parent;
-
-	private Set<RegionTreeNode> childRegions = new HashSet<>();
 
 	/**
 	 * Creates a region. Regions should only be accessed using the accessor
@@ -60,7 +53,7 @@ public class BuildableRegionNode implements RegionTreeNode, Serializable,
 	 *            the region's type, not null.
 	 */
 	public BuildableRegionNode(Region region) {
-		this(region, null, null);
+		setRegion(region);
 	}
 
 	/**
@@ -74,7 +67,8 @@ public class BuildableRegionNode implements RegionTreeNode, Serializable,
 	 *            the region's type, not null.
 	 */
 	public BuildableRegionNode(Region region, RegionTreeNode parent) {
-		this(region, parent, null);
+		setRegion(region);
+		setParent(parent);
 	}
 
 	/**
@@ -89,144 +83,19 @@ public class BuildableRegionNode implements RegionTreeNode, Serializable,
 	 */
 	public BuildableRegionNode(Region region, RegionTreeNode parent,
 			Collection<RegionTreeNode> childRegions) {
-		if (region == null) {
-			throw new IllegalArgumentException("region is required.");
-		}
-		this.region = region;
-		this.parent = parent;
+		setRegion(region);
+		setParent(parent);
 		if (childRegions != null) {
-			this.childRegions.addAll(childRegions);
+			getChildNodes().addAll(childRegions);
 			for (RegionTreeNode regionNode : childRegions) {
 				if (regionNode instanceof BuildableRegionNode) {
-					((BuildableRegionNode) regionNode).parent = this;
+					((BuildableRegionNode) regionNode).setParent(this);
 				}
 			}
 		}
 	}
 
-	/**
-	 * Access the region.
-	 * 
-	 * @return the node's region, never null.
-	 */
-	public Region getRegion() {
-		return this.region;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((region == null) ? 0 : region.hashCode());
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		BuildableRegionNode other = (BuildableRegionNode) obj;
-		if (region == null) {
-			if (other.region != null)
-				return false;
-		} else if (!region.equals(other.region))
-			return false;
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "BuildableRegionNode [region=" + region + "]";
-	}
-
-	public String getAsText() {
-		return getAsText("");
-	}
-
-	public String getAsText(String intend) {
-		StringBuilder b = new StringBuilder();
-		try {
-			printTree(b, intend);
-		} catch (IOException e) {
-			e.printStackTrace(); // TODO
-			b.append("Error: " + e);
-		}
-		return b.toString();
-	}
-
-	public void printTree(Appendable b, String intend) throws IOException {
-		b.append(intend + toString()).append("\n");
-		intend = intend + "  ";
-		for (RegionTreeNode region : getChildren()) {
-			region.printTree(b, intend);
-		}
-	}
-
-	public boolean contains(Region region) {
-		for (RegionTreeNode current : childRegions) {
-			if (current.getRegion().equals(region)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public RegionTreeNode getSubRegion(String path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Collection<RegionTreeNode> getChildren() {
-		return Collections.unmodifiableCollection(childRegions);
-	}
-
-	public Collection<RegionTreeNode> select(RegionFilter filter) {
-		return Collections.unmodifiableCollection(childRegions);
-	}
-
-	public RegionTreeNode getParent() {
-		return this.parent;
-	}
-
-	public RegionTreeNode selectParent(RegionFilter filter) {
-		RegionTreeNode parent = this.parent;
-		while (parent != null) {
-			if (filter.accept(parent)) {
-				return parent;
-			}
-			parent = parent.getParent();
-		}
-		return null;
-	}
-
-	public Region getRegionByCode(String code) {
-		throw new UnsupportedOperationException("Not yet implemented");
-	}
-
-	public Region getRegionByNumericCode(int code) {
-		throw new UnsupportedOperationException("Not yet implemented");
-	}
-
+	
 	/**
 	 * Regions can be used to segregate or access artifacts (e.g. currencies)
 	 * either based on geographical, or commercial aspects (e.g. legal units).
@@ -370,16 +239,6 @@ public class BuildableRegionNode implements RegionTreeNode, Serializable,
 					+ "]";
 		}
 
-	}
-
-	@Override
-	public RegionTreeNode getRegionTree(String path) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public int compareTo(RegionTreeNode o) {
-		return ((Comparable<Region>) this.region).compareTo(o.getRegion());
 	}
 
 }

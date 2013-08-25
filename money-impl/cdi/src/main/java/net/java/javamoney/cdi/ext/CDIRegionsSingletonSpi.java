@@ -26,12 +26,10 @@ import java.util.Set;
 import javax.money.ext.Region;
 import javax.money.ext.RegionTreeNode;
 import javax.money.ext.RegionType;
-import javax.money.ext.RegionValidity;
 import javax.money.ext.spi.RegionsSingletonSpi;
 
 import net.java.javamoney.ri.ext.AbstractRegionProviderService;
 import net.java.javamoney.ri.ext.AbstractRegionTreeProviderService;
-import net.java.javamoney.ri.ext.AbstractRegionalCurrencyUnitProviderService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,10 +55,6 @@ public class CDIRegionsSingletonSpi implements RegionsSingletonSpi {
 	 */
 	private AbstractRegionTreeProviderService regionTreeProviderService = new CDIRegionTreeProviderService();
 
-	/**
-	 * Loaded currency/region providers.
-	 */
-	private AbstractRegionalCurrencyUnitProviderService regionalCurrencyUnitProviderService = new CDIRegionalCurrencyUnitProviderService();
 
 	@Override
 	public Region getRegion(RegionType type, int numericId) {
@@ -95,11 +89,5 @@ public class CDIRegionsSingletonSpi implements RegionsSingletonSpi {
 	@Override
 	public Set<String> getRegionTreeIds() {
 		return regionTreeProviderService.getRegionTreeIds();
-	}
-
-	@Override
-	public RegionValidity getRegionValidity() {
-		throw new UnsupportedOperationException(
-				"Not yet implemented in JSR 354 RI.");
 	}
 }

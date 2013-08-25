@@ -223,21 +223,21 @@ public final class MonetaryCurrencies {
 		return CURRENCIES_SPI.map(targetNamespace, timestamp, currencyUnit);
 	}
 
-	public static Set<String> getValidityProviders() {
-		return CURRENCIES_SPI.getValidityProviders();
-	}
-
-	/**
-	 * Access an instance of the CurrencyValidity for the required validity
-	 * source.
-	 * 
-	 * @param provider
-	 *            the validity provider.
-	 * @return
-	 */
-	public static CurrencyValidity getCurrencyValidity(String provider) {
-		return CURRENCIES_SPI.getCurrencyValidity(provider);
-	}
+//	public static Set<String> getCurrencyValidityProviders() {
+//		return CURRENCIES_SPI.getCurrencyValidityProviders();
+//	}
+//
+//	/**
+//	 * Access an instance of the CurrencyValidity for the required validity
+//	 * source.
+//	 * 
+//	 * @param provider
+//	 *            the validity provider.
+//	 * @return
+//	 */
+//	public static CurrencyValidity getCurrencyValidity(String provider) {
+//		return CURRENCIES_SPI.getCurrencyValidity(provider);
+//	}
 
 	/**
 	 * This method maps the given {@link CurrencyUnit} instances to another
@@ -404,21 +404,21 @@ public final class MonetaryCurrencies {
 			return null;
 		}
 
-		public Set<String> getValidityProviders() {
-			return Collections.emptySet();
-		}
-
-		/**
-		 * Access an instance of the CurrencyValidity for the required validity
-		 * source.
-		 * 
-		 * @param provider
-		 *            the validity provider.
-		 * @return
-		 */
-		public CurrencyValidity getCurrencyValidity(String provider) {
-			throw new UnsupportedOperationException(ERROR_MESSAGE);
-		}
+//		public Set<String> getCurrencyValidityProviders() {
+//			return Collections.emptySet();
+//		}
+//
+//		/**
+//		 * Access an instance of the CurrencyValidity for the required validity
+//		 * source.
+//		 * 
+//		 * @param provider
+//		 *            the validity provider.
+//		 * @return
+//		 */
+//		public CurrencyValidity getCurrencyValidity(String provider) {
+//			throw new UnsupportedOperationException(ERROR_MESSAGE);
+//		}
 
 		/**
 		 * This method maps the given {@link CurrencyUnit} instances to another

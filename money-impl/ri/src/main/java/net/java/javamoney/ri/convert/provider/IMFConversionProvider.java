@@ -1,20 +1,19 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- * Contributors:
- *    Anatole Tresch - initial implementation.
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * Contributors: Anatole Tresch - initial implementation.
  */
 package net.java.javamoney.ri.convert.provider;
 
@@ -46,6 +45,13 @@ import javax.money.convert.ExchangeRateType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Implements a {@link ConversionProvider} that loads the IMF conversion data.
+ * In most cases this provider will provide chaind rates, since IMF always is
+ * converting from/to the IMF <i>SDR</i> currency unit.
+ * 
+ * @author Anatole Tresch
+ */
 @Singleton
 public class IMFConversionProvider implements ConversionProvider {
 
@@ -86,12 +92,13 @@ public class IMFConversionProvider implements ConversionProvider {
 		currenciesByName.put("Qatar Riyal", MoneyCurrency.of("QAR"));
 		currenciesByName.put("Saudi Arabian Riyal", MoneyCurrency.of("SAR"));
 		currenciesByName.put("Sri Lanka Rupee", MoneyCurrency.of("LKR"));
-		currenciesByName.put("Trinidad And Tobago Dollar", MoneyCurrency.of("TTD"));
+		currenciesByName.put("Trinidad And Tobago Dollar",
+				MoneyCurrency.of("TTD"));
 		currenciesByName.put("U.A.E. Dirham", MoneyCurrency.of("AED"));
 		currenciesByName.put("Peso Uruguayo", MoneyCurrency.of("UYU"));
 		currenciesByName.put("Bolivar Fuerte", MoneyCurrency.of("VEF"));
 	}
-	
+
 	private CurrencyConverter currencyConverter = new DefaultCurrencyConverter(
 			this);
 
@@ -143,7 +150,7 @@ public class IMFConversionProvider implements ConversionProvider {
 		// Euro 1.137520 1.137760 1.143840 1.142570 1.140510
 		List<Long> timestamps = null;
 		while (line != null) {
-			if(line.trim().isEmpty()){
+			if (line.trim().isEmpty()) {
 				line = pr.readLine();
 				continue;
 			}
@@ -169,7 +176,7 @@ public class IMFConversionProvider implements ConversionProvider {
 			}
 			Double[] values = parseValues(f, parts);
 			for (int i = 0; i < values.length; i++) {
-				if(values[i]==null){
+				if (values[i] == null) {
 					continue;
 				}
 				Long fromTS = timestamps.get(i);
@@ -208,28 +215,31 @@ public class IMFConversionProvider implements ConversionProvider {
 
 	private Double[] parseValues(NumberFormat f, String[] parts)
 			throws ParseException {
-		Double[] result = new Double[parts.length-1];
+		Double[] result = new Double[parts.length - 1];
 		for (int i = 1; i < parts.length; i++) {
-			if(parts[i].isEmpty()){
+			if (parts[i].isEmpty()) {
 				continue;
 			}
-			result[i-1] = f.parse(parts[i]).doubleValue();
+			result[i - 1] = f.parse(parts[i]).doubleValue();
 		}
 		return result;
 	}
 
 	private List<Long> readTimestamps(String line) throws ParseException {
-		// Currency	May 01, 2013	April 30, 2013	April 29, 2013	April 26, 2013	April 25, 2013
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM DD, yyyy", Locale.ENGLISH);
+		// Currency May 01, 2013 April 30, 2013 April 29, 2013 April 26, 2013
+		// April 25, 2013
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM DD, yyyy",
+				Locale.ENGLISH);
 		String[] parts = line.split("\\\t");
 		List<Long> dates = new ArrayList<Long>(parts.length);
-		for(int i=1; i<parts.length;i++){
+		for (int i = 1; i < parts.length; i++) {
 			dates.add(sdf.parse(parts[i]).getTime());
 		}
 		return dates;
 	}
 
-	protected ExchangeRate getExchangeRateInternal(CurrencyUnit base, CurrencyUnit term,
+	protected ExchangeRate getExchangeRateInternal(CurrencyUnit base,
+			CurrencyUnit term,
 			Long timestamp) {
 		ExchangeRate rate1 = lookupRate(currencyToSdr.get(base), timestamp);
 		ExchangeRate rate2 = lookupRate(sdrToCurrency.get(term), timestamp);
@@ -248,8 +258,10 @@ public class IMFConversionProvider implements ConversionProvider {
 		builder.setTerm(term);
 		builder.setFactor(rate1.getFactor().multiply(rate2.getFactor()));
 		builder.setExchangeRateChain(rate1, rate2);
-		builder.setValidFrom(Math.max(rate1.getValidFromTimeInMillis(),rate2.getValidFromTimeInMillis()));
-		builder.setValidTo(Math.min(rate1.getValidToTimeInMillis(),rate2.getValidToTimeInMillis()));
+		builder.setValidFrom(Math.max(rate1.getValidFromTimeInMillis(),
+				rate2.getValidFromTimeInMillis()));
+		builder.setValidTo(Math.min(rate1.getValidToTimeInMillis(),
+				rate2.getValidToTimeInMillis()));
 		return builder.build();
 	}
 
@@ -262,7 +274,7 @@ public class IMFConversionProvider implements ConversionProvider {
 			if (rate.isValid(timestamp)) {
 				return rate;
 			}
-			if(found==null){
+			if (found == null) {
 				found = rate;
 			}
 		}

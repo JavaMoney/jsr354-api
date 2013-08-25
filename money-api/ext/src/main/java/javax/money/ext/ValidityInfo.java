@@ -31,8 +31,9 @@ public class ValidityInfo<T> implements Serializable,
 	 * Serial version UID.
 	 */
 	private static final long serialVersionUID = 1258686258819748870L;
-	/* The item for which this ValidityInfo is for. */
-	private final T item;
+	
+	/** The item for which this ValidityInfo is for. */
+	private final T itemClass;
 	/**
 	 * The starting UTC timestamp for the validity period, or null.
 	 */
@@ -53,6 +54,11 @@ public class ValidityInfo<T> implements Serializable,
 	private final String targetTimezoneId;
 
 	/**
+	 * The type of validity.
+	 */
+	private ValidityType validityType;
+
+	/**
 	 * Additional user data associated with that {@link ValidityInfo} instance.
 	 */
 	private Object userData;
@@ -70,15 +76,21 @@ public class ValidityInfo<T> implements Serializable,
 	 * @param to
 	 *            the calendar instance, defining the end of the validity range.
 	 */
-	public ValidityInfo(T item, String validitySource, Calendar from,
+	public ValidityInfo(T item, ValidityType validityType,
+			String validitySource, Calendar from,
 			Calendar to, String targetTimezoneId) {
 		if (item == null) {
 			throw new IllegalArgumentException("Currency required.");
 		}
+		if (validityType == null) {
+			throw new IllegalArgumentException("ValidityType required.");
+		}
 		if (validitySource == null) {
 			throw new IllegalArgumentException("Validity Source required.");
 		}
-		this.item = item;
+		this.itemClass = item;
+		this.validityType = validityType;
+		this.validitySource = validitySource;
 		if (from != null) {
 			this.from = from.getTimeInMillis();
 		} else {
@@ -89,7 +101,7 @@ public class ValidityInfo<T> implements Serializable,
 		} else {
 			this.to = null;
 		}
-		this.validitySource = validitySource;
+
 		this.targetTimezoneId = targetTimezoneId;
 	}
 
@@ -105,19 +117,34 @@ public class ValidityInfo<T> implements Serializable,
 	 * @param to
 	 *            the UTC timestamp, defining the end of the validity range.
 	 */
-	public ValidityInfo(T item, String validitySource, Long from, Long to,
+	public ValidityInfo(T item, ValidityType validityType,
+			String validitySource, Long from, Long to,
 			String targetTimezoneId) {
 		if (item == null) {
 			throw new IllegalArgumentException("Currency required.");
 		}
+		if (validityType == null) {
+			throw new IllegalArgumentException("ValidityType required.");
+		}
 		if (validitySource == null) {
 			throw new IllegalArgumentException("Validity Source required.");
 		}
-		this.item = item;
+		this.itemClass = item;
+		this.validityType = validityType;
+		this.validitySource = validitySource;
 		this.from = from;
 		this.to = to;
-		this.validitySource = validitySource;
 		this.targetTimezoneId = targetTimezoneId;
+	}
+
+	/**
+	 * Returns the type of validity this instance represents.
+	 * 
+	 * @see ValidityType
+	 * @return the validity type, never {@code null}.
+	 */
+	public ValidityType getValidityType() {
+		return this.validityType;
 	}
 
 	/**
@@ -126,7 +153,7 @@ public class ValidityInfo<T> implements Serializable,
 	 * @return the user data associated with this instance, or null.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getUserData() {
+	public Object getUserData() {
 		return (T) userData;
 	}
 
@@ -137,18 +164,6 @@ public class ValidityInfo<T> implements Serializable,
 	 */
 	public void setUserData(Object data) {
 		this.userData = data;
-	}
-
-	/**
-	 * Get the user data type, or null, if no user data is present.
-	 * 
-	 * @return the user data type, or null.
-	 */
-	public Class<?> getUserDataType() {
-		if (userData != null) {
-			return userData.getClass();
-		}
-		return null;
 	}
 
 	/**
@@ -202,7 +217,7 @@ public class ValidityInfo<T> implements Serializable,
 	 * @return the item, never null.
 	 */
 	public T getItem() {
-		return item;
+		return itemClass;
 	}
 
 	/**
@@ -325,7 +340,7 @@ public class ValidityInfo<T> implements Serializable,
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((from == null) ? 0 : from.hashCode());
-		result = prime * result + ((item == null) ? 0 : item.hashCode());
+		result = prime * result + ((itemClass == null) ? 0 : itemClass.hashCode());
 		result = prime * result + ((to == null) ? 0 : to.hashCode());
 		result = prime * result
 				+ ((validitySource == null) ? 0 : validitySource.hashCode());
@@ -357,11 +372,11 @@ public class ValidityInfo<T> implements Serializable,
 		} else if (!from.equals(other.from)) {
 			return false;
 		}
-		if (item == null) {
-			if (other.item != null) {
+		if (itemClass == null) {
+			if (other.itemClass != null) {
 				return false;
 			}
-		} else if (!item.equals(other.item)) {
+		} else if (!itemClass.equals(other.itemClass)) {
 			return false;
 		}
 		if (to == null) {
@@ -396,16 +411,16 @@ public class ValidityInfo<T> implements Serializable,
 			return -1;
 		}
 		int compare = 0;
-		if (item instanceof Comparable) {
-			if (item == null) {
-				if (other.item != null) {
+		if (itemClass instanceof Comparable) {
+			if (itemClass == null) {
+				if (other.itemClass != null) {
 					compare = 1;
 				}
 			} else {
-				if (other.item == null) {
+				if (other.itemClass == null) {
 					compare = -1;
 				} else {
-					compare = ((Comparable) item).compareTo(other.item);
+					compare = ((Comparable) itemClass).compareTo(other.itemClass);
 				}
 			}
 		}

@@ -17,11 +17,13 @@ import java.util.Set;
 import javax.money.ext.Region;
 import javax.money.ext.RegionTreeNode;
 import javax.money.ext.RegionType;
-import javax.money.ext.RegionValidity;
 
 /**
  * This is the region spi interface to be registered using {@code ServiceLoader}
- * and that is used by the {@link MonetaryRegions} singleton.
+ * and that is used by the {@link MonetaryRegions} singleton as its internal
+ * implementation. It is responsible for loading and managing of
+ * {@link RegionProviderSpi} and {@link RegionTreeProviderSpi} instances and
+ * delegating according calls to the appropriate providers.
  * 
  * @author Anatole Tresch
  */
@@ -81,13 +83,6 @@ public interface RegionsSingletonSpi {
 	 *         provider.
 	 */
 	public Set<RegionType> getRegionTypes();
-
-	/**
-	 * Get a {@link RegionValidity} service.
-	 * 
-	 * @return
-	 */
-	public RegionValidity getRegionValidity();
 
 	/**
 	 * Access the defined region trees.

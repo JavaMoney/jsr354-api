@@ -50,9 +50,10 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 	 * @param to
 	 *            the calendar instance, defining the end of the validity range.
 	 */
-	public RelatedValidityInfo(T item, R referenceItem, String validitySource,
+	public RelatedValidityInfo(T item, R referenceItem,
+			ValidityType validityType, String validitySource,
 			Calendar from, Calendar to, String targetTimezoneId) {
-		super(item, validitySource, from, to, targetTimezoneId);
+		super(item, validityType, validitySource, from, to, targetTimezoneId);
 		if (referenceItem == null) {
 			throw new IllegalArgumentException("Reference Item required.");
 		}
@@ -73,9 +74,10 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 	 * @param to
 	 *            the UTC timestamp, defining the end of the validity range.
 	 */
-	public RelatedValidityInfo(T item, R referenceItem, String validitySource,
+	public RelatedValidityInfo(T item, R referenceItem,
+			ValidityType validityType, String validitySource,
 			Long from, Long to, String targetTimezoneId) {
-		super(item, validitySource, from, to, targetTimezoneId);
+		super(item, validityType, validitySource, from, to, targetTimezoneId);
 		if (referenceItem == null) {
 			throw new IllegalArgumentException("Reference Item required.");
 		}
@@ -184,18 +186,34 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 	 */
 	@Override
 	public String toString() {
-		return "RelatedValidityInfo [item=" + getItem()
-				+ ", ref=" + referenceItem + ", from=" + formatTime(getFrom())
+		return "RelatedValidityInfo [item="
+				+ getItem()
+				+ ", ref="
+				+ referenceItem
+				+ ", from="
+				+ formatTime(getFrom())
 				+ ", to="
-				+ formatTime(getTo()) + ", userData=" + (getUserData()==null?"-":getUserData().getClass().getName()) + "]";
+				+ formatTime(getTo())
+				+ ", userData="
+				+ (getUserData() == null ? "-" : getUserData().getClass()
+						.getName()) + "]";
 	}
 
+	/**
+	 * Format the given time as {@code "YYYY-MM-dd timezoneID"}.
+	 * 
+	 * @param time
+	 *            the time
+	 * @return the formatted time, or {@code '-'}, when time is {@code null}.
+	 */
 	private String formatTime(GregorianCalendar time) {
-		if(time==null){
+		if (time == null) {
 			return "-";
 		}
 		StringBuilder b = new StringBuilder();
-		b.append(time.get(Calendar.YEAR)).append("-").append(time.get(Calendar.MONTH)).append("-").append(time.get(Calendar.DAY_OF_MONTH));
+		b.append(time.get(Calendar.YEAR)).append("-")
+				.append(time.get(Calendar.MONTH)).append("-")
+				.append(time.get(Calendar.DAY_OF_MONTH));
 		b.append(" ").append(time.getTimeZone().getID());
 		return b.toString();
 	}

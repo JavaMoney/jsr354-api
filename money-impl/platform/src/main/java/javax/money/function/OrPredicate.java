@@ -15,9 +15,9 @@
  */
 package javax.money.function;
 
+import java.util.Collection;
 import java.util.Set;
 
-import javax.money.MonetaryAmount;
 import javax.money.MonetaryFunction;
 
 /**
@@ -27,8 +27,8 @@ import javax.money.MonetaryFunction;
  * 
  * @author Anatole Tresch
  */
-public class OrPredicate extends
-		AbstractValuePredicate<MonetaryFunction<MonetaryAmount, Boolean>> {
+public class OrPredicate<T> extends
+		AbstractMultiPredicate<T> {
 
 	/** Flag if {@code xor} is modelled, instead of {@code or} (default). */
 	private boolean exclusive = false;
@@ -41,10 +41,10 @@ public class OrPredicate extends
 	 * .MonetaryAmount, java.util.Set)
 	 */
 	@Override
-	protected boolean isPredicateTrue(MonetaryAmount value,
-			Set<MonetaryFunction<MonetaryAmount, Boolean>> acceptedValues) {
+	protected boolean isPredicateTrue(T value,
+			Set<MonetaryFunction<T, Boolean>> acceptedValues) {
 		boolean currentValue = false;
-		for (MonetaryFunction<MonetaryAmount, Boolean> subPredicate : acceptedValues) {
+		for (MonetaryFunction<T, Boolean> subPredicate : acceptedValues) {
 			if (!subPredicate.apply(value)) {
 				if (exclusive) {
 					if (currentValue) {
@@ -67,9 +67,26 @@ public class OrPredicate extends
 	 *            set to true to let the precidate model a XOR operation.
 	 * @return this for chaining.
 	 */
-	public OrPredicate withXOR(boolean exclusiveOR) {
+	public OrPredicate<T> withXOR(boolean exclusiveOR) {
 		this.exclusive = exclusiveOR;
 		return this;
+	}
+
+	@Override
+	public OrPredicate<T> clearPredicates() {
+		return (OrPredicate<T>) super.clearPredicates();
+	}
+
+	@Override
+	public OrPredicate<T> withPredicates(
+			Collection<MonetaryFunction<T, Boolean>> predicates) {
+		return (OrPredicate<T>) super.withPredicates(predicates);
+	}
+
+	@Override
+	public OrPredicate<T> withPredicates(
+			MonetaryFunction<T, Boolean>... predicates) {
+		return (OrPredicate<T>) super.withPredicates(predicates);
 	}
 
 	/*

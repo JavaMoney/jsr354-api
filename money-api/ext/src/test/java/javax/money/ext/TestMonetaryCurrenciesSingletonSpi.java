@@ -77,16 +77,6 @@ public class TestMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesSin
     }
 
     @Override
-    public Set<String> getValidityProviders() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public CurrencyValidity getCurrencyValidity(String provider) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public List<CurrencyUnit> mapAll(String targetNamespace, CurrencyUnit... units) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

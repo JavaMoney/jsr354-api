@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+ * applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+ * OF ANY KIND, either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ * Contributors: Anatole Tresch - initial implementation. Werner Keil -
+ * extension and adjustment.
+ */
 package net.java.javamoney.ri.ext.provider.icu4j;
 
 import java.util.Arrays;
@@ -8,11 +20,15 @@ import javax.money.Displayable;
 import javax.money.ext.Region;
 import javax.money.ext.RegionType;
 
-import net.java.javamoney.ri.ext.provider.iso.IsoCountryMappingProvider;
-
 import com.ibm.icu.util.TimeZone;
-import com.ibm.icu.util.UResourceBundle;
 
+/**
+ * Implementation for {@link Region} based on ICU4J's
+ * {@link com.ibm.icu.util.Region}.
+ * 
+ * @author Anatole Tresch
+ * 
+ */
 public class IcuRegion implements Region, Displayable {
 
 	private com.ibm.icu.util.Region icuRegion;
@@ -43,7 +59,7 @@ public class IcuRegion implements Region, Displayable {
 	public int getNumericRegionCode() {
 		return icuRegion.getNumericCode();
 	}
-	
+
 	@Override
 	public Collection<String> getTimezoneIds() {
 		String[] timezones = TimeZone.getAvailableIDs(getRegionCode());
@@ -53,7 +69,7 @@ public class IcuRegion implements Region, Displayable {
 	@Override
 	public String getDisplayName(Locale locale) {
 		String name = this.countryLocale.getDisplayCountry(locale);
-		if(name==null){
+		if (name == null) {
 			name = this.getRegionCode();
 		}
 		return name;
@@ -71,7 +87,7 @@ public class IcuRegion implements Region, Displayable {
 	@Override
 	public String toString() {
 		String name = getDisplayName(Locale.getDefault());
-		if(name==null){
+		if (name == null) {
 			name = "IcuRegion";
 		}
 		return name + " [code: " + icuRegion.toString() + ", type: "
@@ -124,5 +140,4 @@ public class IcuRegion implements Region, Displayable {
 		return this.countryLocale;
 	}
 
-	
 }

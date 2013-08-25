@@ -22,11 +22,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.UnknownCurrencyException;
-import javax.money.ext.CurrencyValidity;
 import javax.money.ext.spi.CurrencyUnitProviderSpi;
 import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
 
@@ -44,7 +42,6 @@ public class SEMonetaryCurrenciesSingletonSpi implements
 	private String defaultNamespace = "ISO-4217";
 	private SECurrencyUnitProviderService currencyUnitProvider = new SECurrencyUnitProviderService();
 	private SECurrencyUnitMapperService currencyUnitMapper = new SECurrencyUnitMapperService();
-	private SECurrencyUnitValidityService currencyUnitValidityService = new SECurrencyUnitValidityService();
 
 	public SEMonetaryCurrenciesSingletonSpi() {
 		String ns = System.getProperty(DEFAULT_NAMESPACE_PROP);
@@ -182,27 +179,6 @@ public class SEMonetaryCurrenciesSingletonSpi implements
 		return currencyUnitMapper.map(targetNamespace, timestamp, currencyUnit);
 	}
 
-	public Set<String> getValidityProviders() {
-		return currencyUnitValidityService.getCurrencyValidityProviders();
-	}
-
-	/**
-	 * Access an instance of the CurrencyValidity for the required validity
-	 * source.
-	 * 
-	 * @param provider
-	 *            the validity provider.
-	 * @return
-	 */
-	public CurrencyValidity getCurrencyValidity(String provider) {
-		CurrencyValidity val = currencyUnitValidityService
-				.getCurrencyValidity(provider);
-		if (val == null) {
-			throw new IllegalArgumentException(
-					"No such currency validity provider: " + provider);
-		}
-		return val;
-	}
 
 	/**
 	 * This method maps the given {@link CurrencyUnit} instances to another

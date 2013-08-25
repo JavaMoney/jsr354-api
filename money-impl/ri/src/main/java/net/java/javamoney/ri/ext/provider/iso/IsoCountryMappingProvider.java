@@ -26,6 +26,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * Mapping provider that is able to map ISO textual and ISO nuemeric codes and
+ * vice versa.
+ * 
+ * @author Anatole Tresch
+ */
 public final class IsoCountryMappingProvider {
 
 	private static final Logger LOGGER = LoggerFactory

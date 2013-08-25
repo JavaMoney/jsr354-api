@@ -98,18 +98,6 @@ public final class Regions {
 	}
 
 	/**
-	 * Access the {@link RegionValidity} service.
-	 * 
-	 * @return the {@link RegionValidity} for accessing historic regional data
-	 *         provided by the registered validity providers.
-	 * @throws IllegalArgumentException
-	 *             If the given provider is not available.
-	 */
-	public static RegionValidity getRegionValidity() {
-		return REGION_SPI.getRegionValidity();
-	}
-
-	/**
 	 * Access the defined region trees.
 	 * 
 	 * @see #getRegionTree(String)
@@ -203,11 +191,6 @@ public final class Regions {
 		@Override
 		public Set<RegionType> getRegionTypes() {
 			return Collections.emptySet();
-		}
-
-		@Override
-		public RegionValidity getRegionValidity() {
-			throw new IllegalArgumentException("DefaultProvider:.");
 		}
 
 		@Override

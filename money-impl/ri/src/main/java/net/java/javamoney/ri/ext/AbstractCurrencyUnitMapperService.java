@@ -20,69 +20,74 @@ import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.ext.spi.CurrencyUnitMapperSpi;
-
+import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
 
 /**
- * This class models the singleton defined by JSR 354 that provides accessors
- * for {@link CurrencyUnit}.
+ * This class models the an internal service class, that provides the base
+ * method used by the {@link MonetaryCurrenciesSingletonSpi} implementation. It
+ * is extended for different runtime scenarios, hereby allowing the spi
+ * implementation loaded using different mechanisms.
  * 
  * @author Anatole Tresch
  * @author Werner Keil
  */
 public abstract class AbstractCurrencyUnitMapperService {
-    /** Loaded currency mappers. */
-    private Set<CurrencyUnitMapperSpi> mappers = new HashSet<CurrencyUnitMapperSpi>();
+	/** Loaded currency mappers. */
+	private Set<CurrencyUnitMapperSpi> mappers = new HashSet<CurrencyUnitMapperSpi>();
 
-    /**
-     * COnstructor, also loading the registered spi's.
-     */
-    public AbstractCurrencyUnitMapperService() {
-	reload();
-    }
-
-    /**
-     * This method reloads the providers available from the
-     * {@link ServiceLoader}. This adds providers that were not yet visible
-     * before.
-     */
-    @SuppressWarnings("unchecked")
-    public void reload() {
-	for (CurrencyUnitMapperSpi currencyMappingSPI : getCurrencyUnitMapperSpis()) {
-	    mappers.add(currencyMappingSPI);
+	/**
+	 * COnstructor, also loading the registered spi's.
+	 */
+	public AbstractCurrencyUnitMapperService() {
+		reload();
 	}
-    }
 
-    public CurrencyUnit map(String targetNamespace, CurrencyUnit unit) {
-	for (CurrencyUnitMapperSpi prov : mappers) {
-	    CurrencyUnit mappedUnit = prov.map(targetNamespace, unit, null);
-	    if (mappedUnit != null) {
-		return mappedUnit;
-	    }
+	/**
+	 * This method reloads the providers available from the
+	 * {@link ServiceLoader}. This adds providers that were not yet visible
+	 * before.
+	 */
+	@SuppressWarnings("unchecked")
+	public void reload() {
+		for (CurrencyUnitMapperSpi currencyMappingSPI : getCurrencyUnitMapperSpis()) {
+			mappers.add(currencyMappingSPI);
+		}
 	}
-	return null;
-    }
 
-    public List<CurrencyUnit> mapAll(String targetNamespace, CurrencyUnit... units) {
-	List<CurrencyUnit> result = new ArrayList<CurrencyUnit>();
-	for (CurrencyUnit unit : units) {
-	    result.add(map(targetNamespace, unit));
+	public CurrencyUnit map(String targetNamespace, CurrencyUnit unit) {
+		for (CurrencyUnitMapperSpi prov : mappers) {
+			CurrencyUnit mappedUnit = prov.map(targetNamespace, unit, null);
+			if (mappedUnit != null) {
+				return mappedUnit;
+			}
+		}
+		return null;
 	}
-	return result;
-    }
 
-    public CurrencyUnit map(String targetNamespace, Long timestamp, CurrencyUnit currencyUnit) {
-	if (timestamp == null) {
-	    return map(targetNamespace, currencyUnit);
+	public List<CurrencyUnit> mapAll(String targetNamespace,
+			CurrencyUnit... units) {
+		List<CurrencyUnit> result = new ArrayList<CurrencyUnit>();
+		for (CurrencyUnit unit : units) {
+			result.add(map(targetNamespace, unit));
+		}
+		return result;
 	}
-	for (CurrencyUnitMapperSpi prov : mappers) {
-	    CurrencyUnit mappedUnit = prov.map(targetNamespace, currencyUnit, timestamp);
-	    if (mappedUnit != null) {
-		return mappedUnit;
-	    }
-	}
-	return null;
-    }
 
-    protected abstract Iterable<CurrencyUnitMapperSpi> getCurrencyUnitMapperSpis();
+	public CurrencyUnit map(String targetNamespace, Long timestamp,
+			CurrencyUnit currencyUnit) {
+		if (timestamp == null) {
+			return map(targetNamespace, currencyUnit);
+		}
+		for (CurrencyUnitMapperSpi prov : mappers) {
+			CurrencyUnit mappedUnit = prov.map(targetNamespace, currencyUnit,
+					timestamp);
+			if (mappedUnit != null) {
+				return mappedUnit;
+			}
+		}
+		return null;
+	}
+
+	protected abstract Iterable<CurrencyUnitMapperSpi> getCurrencyUnitMapperSpis();
 
 }

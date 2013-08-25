@@ -21,20 +21,23 @@ import java.util.Set;
 
 import javax.money.ext.Region;
 import javax.money.ext.RegionType;
-import javax.money.ext.RegionValidity;
 import javax.money.ext.spi.RegionProviderSpi;
+import javax.money.ext.spi.RegionsSingletonSpi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class models the singleton defined by JSR 354 that provides accessors
- * for {@link RegionImpl}.
+ * This class models the an internal service class, that provides the base
+ * method used by the {@link RegionsSingletonSpi} implementation. It is extended
+ * for different runtime scenarios, hereby allowing the spi implementation
+ * loaded using different mechanisms.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public abstract class AbstractRegionProviderService {
-
+	/** The logger used. */
 	private static final Logger LOG = LoggerFactory
 			.getLogger(AbstractRegionProviderService.class);
 
@@ -81,32 +84,17 @@ public abstract class AbstractRegionProviderService {
 		return result;
 	}
 
-	public Set<String> getRegionValidityProviders() {
-		throw new UnsupportedOperationException("Not supported yet."); // To
-		// change
-		// body
-		// of
-		// generated
-		// methods,
-		// choose
-		// Tools
-		// |
-		// Templates.
-	}
-
-	public RegionValidity getRegionValidity(String provider) {
-		throw new UnsupportedOperationException("Not supported yet."); // To
-		// change
-		// body
-		// of
-		// generated
-		// methods,
-		// choose
-		// Tools
-		// |
-		// Templates.
-	}
-
+	/**
+	 * Access a {@link Region} by {@link RegionType} and its numeric id.
+	 * 
+	 * @param type
+	 *            The region's type
+	 * @param numericId
+	 *            the region's numeric id
+	 * @return the region found, never {@code null}
+	 * @throws IllegalArgumentException
+	 *             , if no such region could be found.
+	 */
 	public Region getRegion(RegionType type, int numericId) {
 		for (RegionProviderSpi prov : getRegionProviderSpis()) {
 			Region reg = prov.getRegion(type, numericId);
@@ -118,6 +106,17 @@ public abstract class AbstractRegionProviderService {
 				+ numericId);
 	}
 
+	/**
+	 * Access a {@link Region} by {@link RegionType} and its textual id.
+	 * 
+	 * @param type
+	 *            The region's type
+	 * @param code
+	 *            the region's textual id
+	 * @return the region found, never {@code null}
+	 * @throws IllegalArgumentException
+	 *             , if no such region could be found.
+	 */
 	public Region getRegion(RegionType type, String code) {
 		for (RegionProviderSpi prov : getRegionProviderSpis()) {
 			Region reg = prov.getRegion(type, code);
@@ -129,6 +128,13 @@ public abstract class AbstractRegionProviderService {
 				+ code);
 	}
 
+	/**
+	 * Get all {@link RegionType} instances that are known.
+	 * 
+	 * @see RegionProviderSpi#getRegionTypes()
+	 * @return the {@link RegionType} instances defined by the registered
+	 *         {@link RegionProviderSpi} instances.
+	 */
 	public Set<RegionType> getRegionTypes() {
 		Set<RegionType> result = new HashSet<RegionType>();
 		for (RegionProviderSpi prov : getRegionProviderSpis()) {
@@ -143,6 +149,13 @@ public abstract class AbstractRegionProviderService {
 		return result;
 	}
 
+	/**
+	 * Get all {@link Region} instances of a given {@link RegionType}.
+	 * 
+	 * @param type
+	 *            the region's type
+	 * @return all {@link Region} instances with the given type.
+	 */
 	public Collection<Region> getRegions(RegionType type) {
 		Set<Region> result = new HashSet<Region>();
 		for (RegionProviderSpi prov : getRegionProviderSpis()) {
@@ -157,6 +170,13 @@ public abstract class AbstractRegionProviderService {
 		return result;
 	}
 
+	/**
+	 * Get the region by its locale.
+	 * 
+	 * @param locale
+	 *            The locale
+	 * @return the region found, or {@code null}
+	 */
 	public Region getRegion(Locale locale) {
 		for (RegionProviderSpi prov : getRegionProviderSpis()) {
 			Region region = prov.getRegion(locale);
@@ -167,8 +187,11 @@ public abstract class AbstractRegionProviderService {
 		return null;
 	}
 
-	protected abstract Iterable<RegionProviderSpi> getRegionProviderSpis();
-
+	/**
+	 * Access all registered {@link RegionProviderSpi} instances.
+	 * 
+	 * @return all registered {@link RegionProviderSpi} instances.
+	 */
 	public Map<Class, RegionProviderSpi> getRegisteredRegionProviderSpis() {
 		Map<Class, RegionProviderSpi> regionProviders = new HashMap<Class, RegionProviderSpi>();
 		for (RegionProviderSpi prov : getRegionProviderSpis()) {
@@ -177,4 +200,12 @@ public abstract class AbstractRegionProviderService {
 		return regionProviders;
 	}
 
+	/**
+	 * Method to return all {@link RegionProviderSpi} instances. This allows to
+	 * use different loading mechanisms, depending on the target runtime
+	 * environment.
+	 * 
+	 * @return the {@link RegionProviderSpi} instances loaded.
+	 */
+	protected abstract Iterable<RegionProviderSpi> getRegionProviderSpis();
 }

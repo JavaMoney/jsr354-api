@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * Contributors: Anatole Tresch - initial implementation
+ */
 package net.java.javamoney.ri.loader;
 
 import java.io.IOException;
@@ -12,6 +29,14 @@ import net.java.javamoney.ri.loader.LoadableResource.Loader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class provides a mechanism to register resources, that may be updated
+ * regularly. The implementation, based on the {@link UpdatePolicy}
+ * loads/updates the resources from arbitrary locations and stores it to the
+ * interal file cache.
+ * 
+ * @author Anatole Tresch
+ */
 public final class ResourceLoader {
 
 	private static final Logger LOG = LoggerFactory
@@ -40,7 +65,7 @@ public final class ResourceLoader {
 		} catch (Exception e) {
 			LOG.error("Error loading ResourceCache instances.", e);
 		}
-		if(this.resourceCache==null){
+		if (this.resourceCache == null) {
 			this.resourceCache = new DefaultResourceCache();
 		}
 		return null;

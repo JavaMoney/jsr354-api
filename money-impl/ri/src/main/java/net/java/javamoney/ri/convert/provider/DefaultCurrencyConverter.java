@@ -13,9 +13,11 @@ import net.java.javamoney.ri.convert.FixedCurrencyConversion;
 import net.java.javamoney.ri.convert.LazyBoundCurrencyConversion;
 
 /**
+ * Implements a {@link CurrencyConverter} backed up by a corresponding
+ * {@link ConversionProvider} instance.
+ * 
  * @author Anatole Tresch
  * @author Werner Keil
- *
  */
 public class DefaultCurrencyConverter implements CurrencyConverter {
 
@@ -34,14 +36,14 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 	}
 
 	@Override
-	public <T extends MonetaryAmount> T  convert(T amount, CurrencyUnit target) {
+	public <T extends MonetaryAmount> T convert(T amount, CurrencyUnit target) {
 		ExchangeRate rate = this.rateProvider.getExchangeRate(
 				amount.getCurrency(), target);
 		if (rate == null) {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
 					null, "No rate available.");
 		}
-		return (T)new FixedCurrencyConversion(rate).apply(amount);
+		return (T) new FixedCurrencyConversion(rate).apply(amount);
 	}
 
 	@Override
@@ -53,7 +55,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 			throw new CurrencyConversionException(amount.getCurrency(), target,
 					null, "No rate available.");
 		}
-		return (T)new FixedCurrencyConversion(rate).apply(amount);
+		return (T) new FixedCurrencyConversion(rate).apply(amount);
 	}
 
 	@Override
@@ -86,7 +88,8 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 	@Override
 	public CurrencyConversion getConversion(CurrencyUnit term,
 			long targetTimestamp) {
-		return new LazyBoundCurrencyConversion(term, this.rateProvider, targetTimestamp);
+		return new LazyBoundCurrencyConversion(term, this.rateProvider,
+				targetTimestamp);
 	}
 
 }

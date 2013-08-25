@@ -21,10 +21,13 @@ import javax.money.ext.MonetaryCurrencies;
 import javax.money.ext.Region;
 import javax.money.ext.RegionType;
 import javax.money.ext.Regions;
+import javax.money.ext.RelatedValidityQuery;
+import javax.money.ext.Validities;
 import javax.money.format.ItemFormat;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormats;
+import javax.money.function.InstancesPredicate;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -187,10 +190,18 @@ public class SmokeTests {
 		System.out.println("ISO=" + Regions.getRegionTree("ISO").getAsText());
 		System.out.println("ISO3=" + Regions.getRegionTree("ISO3").getAsText());
 	}
-	
+
 	@Test
 	public void testCurrencyRegionValidities() throws InterruptedException {
-		System.out.println("Validity providers: " + MonetaryCurrencies.getValidityProviders());
-		System.out.println("Currencies for Germany: " + MonetaryCurrencies.getCurrencyValidity("CLDR").getValidityInfo(Regions.getRegion(Locale.GERMANY)));
+		System.out.println("Validity providers: "
+				+ Validities.getValiditySources(CurrencyUnit.class));
+		System.out.println("Related Validity providers: "
+				+ Validities.getRelatedValiditySources(CurrencyUnit.class, Region.class));
+		System.out.println("Currencies for Germany: "
+				+ Validities.getRelatedValidityInfo(new RelatedValidityQuery(
+						CurrencyUnit.class, Region.class)
+						.withRelatedToPredicate(InstancesPredicate.of(Regions
+								.getRegion(Locale.GERMANY))
+						)));
 	}
 }

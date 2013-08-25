@@ -33,11 +33,14 @@ import javax.money.MoneyCurrency;
 import javax.money.UnknownCurrencyException;
 import javax.money.ext.RegionType;
 import javax.money.ext.spi.CurrencyUnitProviderSpi;
+import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
 
 
 /**
- * This class models the singleton defined by JSR 354 that provides accessors
- * for {@link CurrencyUnit}.
+ * This class models the an internal service class, that provides the base
+ * method used by the {@link MonetaryCurrenciesSingletonSpi} implementation. It
+ * is extended for different runtime scenarios, hereby allowing the spi
+ * implementation loaded using different mechanisms.
  * 
  * @author Anatole Tresch
  * @author Werner Keil

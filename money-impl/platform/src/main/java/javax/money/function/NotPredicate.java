@@ -15,9 +15,9 @@
  */
 package javax.money.function;
 
+import java.util.Collection;
 import java.util.Set;
 
-import javax.money.MonetaryAmount;
 import javax.money.MonetaryFunction;
 
 /**
@@ -26,8 +26,9 @@ import javax.money.MonetaryFunction;
  * 
  * @author Anatole Tresch
  */
-public class NotPredicate extends
-		AbstractValuePredicate<MonetaryFunction<MonetaryAmount, Boolean>> {
+public class NotPredicate<T> extends
+		AbstractMultiPredicate<T> {
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -36,9 +37,9 @@ public class NotPredicate extends
 	 * .MonetaryAmount, java.util.Set)
 	 */
 	@Override
-	protected boolean isPredicateTrue(MonetaryAmount value,
-			Set<MonetaryFunction<MonetaryAmount, Boolean>> acceptedValues) {
-		for (MonetaryFunction<MonetaryAmount, Boolean> subPredicate : acceptedValues) {
+	protected boolean isPredicateTrue(T value,
+			Set<MonetaryFunction<T, Boolean>> acceptedValues) {
+		for (MonetaryFunction<T, Boolean> subPredicate : acceptedValues) {
 			if (subPredicate.apply(value)) {
 				return false;
 			}
@@ -56,4 +57,20 @@ public class NotPredicate extends
 		return "NotPredicate";
 	}
 
+	@Override
+	public NotPredicate<T> clearPredicates() {
+		return (NotPredicate<T>) super.clearPredicates();
+	}
+
+	@Override
+	public NotPredicate<T> withPredicates(
+			Collection<MonetaryFunction<T, Boolean>> predicates) {
+		return (NotPredicate<T>) super.withPredicates(predicates);
+	}
+
+	@Override
+	public NotPredicate<T> withPredicates(
+			MonetaryFunction<T, Boolean>... predicates) {
+		return (NotPredicate<T>) super.withPredicates(predicates);
+	}
 }

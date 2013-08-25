@@ -53,7 +53,7 @@ public class CurrencyConversionExceptionTest {
 		CurrencyUnit term = TestCurrency.of("EUR");
 		Exception cause = new Exception("cause");
 		CurrencyConversionException ex = new CurrencyConversionException(base, term, 100L, "test", cause);
-		assertEquals("CurrencyConversionException [source=CHF, target=EUR, timestamp=100]: test", ex.toString());
+		assertEquals("CurrencyConversionException [base=CHF, term=EUR, timestamp=100]: test", ex.toString());
 	}
 
 }

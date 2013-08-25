@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+ * applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+ * OF ANY KIND, either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ * Contributors: Anatole Tresch - initial implementation. Werner Keil -
+ * extension and adjustment.
+ */
 package net.java.javamoney.ri.ext.provider.icu4j;
 
 import java.util.Collection;
@@ -13,6 +25,11 @@ import javax.money.ext.Region;
 import javax.money.ext.RegionType;
 import javax.money.ext.spi.RegionProviderSpi;
 
+/**
+ * RegionProvider implementation based on the data returned by ICU4J.
+ * 
+ * @author Anatole Tresch
+ */
 @Singleton
 public class ICURegionProvider implements RegionProviderSpi {
 
@@ -40,7 +57,7 @@ public class ICURegionProvider implements RegionProviderSpi {
 				regionTypes.add(type);
 				Region region = new IcuRegion(icuRegion, type);
 				regions.put(region.getRegionCode(), region);
-				if(region.getRegionType().equals(RegionType.WORLD)){
+				if (region.getRegionType().equals(RegionType.WORLD)) {
 					world = region;
 				}
 			}
@@ -48,7 +65,6 @@ public class ICURegionProvider implements RegionProviderSpi {
 		Set<com.ibm.icu.util.Region> icuRegions = com.ibm.icu.util.Region
 				.getAvailable(com.ibm.icu.util.Region.RegionType.WORLD);
 	}
-
 
 	@Override
 	public Collection<RegionType> getRegionTypes() {
@@ -61,7 +77,7 @@ public class ICURegionProvider implements RegionProviderSpi {
 				.getInstance(code);
 		if (icuRegion != null) {
 			Region region = this.regions.get(code);
-			if(region.getRegionType().equals(type)){
+			if (region.getRegionType().equals(type)) {
 				return region;
 			}
 		}

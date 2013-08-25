@@ -8,16 +8,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ServiceLoader;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.money.CurrencyUnit;
 import javax.money.UnknownCurrencyException;
-import javax.money.ext.CurrencyValidity;
-import javax.money.ext.MonetaryCurrencies;
+import javax.money.ext.spi.CurrencyUnitProviderSpi;
 import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
 
 public class SEMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesSingletonSpi {
@@ -156,19 +152,8 @@ public class SEMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesSingl
         return currencyUnitMapper.map(targetNamespace, timestamp, currencyUnit);
     }
 
-    public Set<String> getValidityProviders() {
+    public Set<String> getCurrencyValidityProviders() {
         return Collections.emptySet();
-    }
-
-    /**
-     * Access an instance of the CurrencyValidity for the required validity
-     * source.
-     *
-     * @param provider the validity provider.
-     * @return
-     */
-    public CurrencyValidity getCurrencyValidity(String provider) {
-        throw new UnsupportedOperationException();
     }
 
     /**

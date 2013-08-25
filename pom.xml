@@ -193,7 +193,7 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 	</licenses>
 
 	<prerequisites>
-		<maven>3.1.0</maven>
+		<maven>3.0.4</maven>
 	</prerequisites>
 
 	<scm>
@@ -516,7 +516,7 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 							<configuration>
 								<rules>
 									<requireMavenVersion>
-										<version>3.1.0</version>
+										<version>3.0.4</version>
 									</requireMavenVersion>
 									<requireJavaVersion>
 										<version>1.7.0</version>

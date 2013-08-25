@@ -33,7 +33,7 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 	/**
 	 * THe reference type to which this validity is related.
 	 */
-	private final R referenceItem;
+	private final R relatedItem;
 
 	/**
 	 * Creates an instance of ValidityInfo.
@@ -57,7 +57,7 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 		if (referenceItem == null) {
 			throw new IllegalArgumentException("Reference Item required.");
 		}
-		this.referenceItem = referenceItem;
+		this.relatedItem = referenceItem;
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 		if (referenceItem == null) {
 			throw new IllegalArgumentException("Reference Item required.");
 		}
-		this.referenceItem = referenceItem;
+		this.relatedItem = referenceItem;
 	}
 
 	/**
@@ -89,8 +89,8 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 	 * 
 	 * @return the ference instance, never null.
 	 */
-	public R getReferenceItem() {
-		return referenceItem;
+	public R getRelatedtem() {
+		return relatedItem;
 	}
 
 	/*
@@ -103,7 +103,7 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result
-				+ ((referenceItem == null) ? 0 : referenceItem.hashCode());
+				+ ((relatedItem == null) ? 0 : relatedItem.hashCode());
 		return result;
 	}
 
@@ -129,11 +129,11 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 		if (!super.equals(other)) {
 			return false;
 		}
-		if (referenceItem == null) {
-			if (other.referenceItem != null) {
+		if (relatedItem == null) {
+			if (other.relatedItem != null) {
 				return false;
 			}
-		} else if (!referenceItem.equals(other.referenceItem)) {
+		} else if (!relatedItem.equals(other.relatedItem)) {
 			return false;
 		}
 		return true;
@@ -162,17 +162,17 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 		}
 		RelatedValidityInfo otherRef = (RelatedValidityInfo) other;
 
-		if (compare == 0 && referenceItem instanceof Comparable) {
-			if (referenceItem == null) {
-				if (otherRef.referenceItem != null) {
+		if (compare == 0 && relatedItem instanceof Comparable) {
+			if (relatedItem == null) {
+				if (otherRef.relatedItem != null) {
 					compare = 1;
 				}
 			} else {
-				if (otherRef.referenceItem == null) {
+				if (otherRef.relatedItem == null) {
 					compare = -1;
 				} else {
-					compare = ((Comparable) referenceItem)
-							.compareTo(otherRef.referenceItem);
+					compare = ((Comparable) relatedItem)
+							.compareTo(otherRef.relatedItem);
 				}
 			}
 		}
@@ -189,7 +189,7 @@ public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 		return "RelatedValidityInfo [item="
 				+ getItem()
 				+ ", ref="
-				+ referenceItem
+				+ relatedItem
 				+ ", from="
 				+ formatTime(getFrom())
 				+ ", to="

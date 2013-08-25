@@ -33,7 +33,7 @@ public class ValidityInfo<T> implements Serializable,
 	private static final long serialVersionUID = 1258686258819748870L;
 	
 	/** The item for which this ValidityInfo is for. */
-	private final T itemClass;
+	private final T item;
 	/**
 	 * The starting UTC timestamp for the validity period, or null.
 	 */
@@ -88,7 +88,7 @@ public class ValidityInfo<T> implements Serializable,
 		if (validitySource == null) {
 			throw new IllegalArgumentException("Validity Source required.");
 		}
-		this.itemClass = item;
+		this.item = item;
 		this.validityType = validityType;
 		this.validitySource = validitySource;
 		if (from != null) {
@@ -129,7 +129,7 @@ public class ValidityInfo<T> implements Serializable,
 		if (validitySource == null) {
 			throw new IllegalArgumentException("Validity Source required.");
 		}
-		this.itemClass = item;
+		this.item = item;
 		this.validityType = validityType;
 		this.validitySource = validitySource;
 		this.from = from;
@@ -217,7 +217,7 @@ public class ValidityInfo<T> implements Serializable,
 	 * @return the item, never null.
 	 */
 	public T getItem() {
-		return itemClass;
+		return item;
 	}
 
 	/**
@@ -340,7 +340,7 @@ public class ValidityInfo<T> implements Serializable,
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((from == null) ? 0 : from.hashCode());
-		result = prime * result + ((itemClass == null) ? 0 : itemClass.hashCode());
+		result = prime * result + ((item == null) ? 0 : item.hashCode());
 		result = prime * result + ((to == null) ? 0 : to.hashCode());
 		result = prime * result
 				+ ((validitySource == null) ? 0 : validitySource.hashCode());
@@ -372,11 +372,11 @@ public class ValidityInfo<T> implements Serializable,
 		} else if (!from.equals(other.from)) {
 			return false;
 		}
-		if (itemClass == null) {
-			if (other.itemClass != null) {
+		if (item == null) {
+			if (other.item != null) {
 				return false;
 			}
-		} else if (!itemClass.equals(other.itemClass)) {
+		} else if (!item.equals(other.item)) {
 			return false;
 		}
 		if (to == null) {
@@ -411,16 +411,16 @@ public class ValidityInfo<T> implements Serializable,
 			return -1;
 		}
 		int compare = 0;
-		if (itemClass instanceof Comparable) {
-			if (itemClass == null) {
-				if (other.itemClass != null) {
+		if (item instanceof Comparable) {
+			if (item == null) {
+				if (other.item != null) {
 					compare = 1;
 				}
 			} else {
-				if (other.itemClass == null) {
+				if (other.item == null) {
 					compare = -1;
 				} else {
-					compare = ((Comparable) itemClass).compareTo(other.itemClass);
+					compare = ((Comparable) item).compareTo(other.item);
 				}
 			}
 		}

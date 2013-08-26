@@ -48,13 +48,22 @@ public interface RelatedValidityProviderSpi {
 	 * 
 	 * @see {@link RelatedValidityQuery#getValidityType()}
 	 * @see {@link RelatedValidityQuery#withValidityType(ValidityType)}
+<<<<<<< HEAD
 	 * @param itemType
 	 *            the item type, not {@code null}.
 	 * @param relatedType
 	 *            the type of the related item, not {@code null}.
+=======
+	 * @param relatedType
+	 *            the type of the related item, never {@code null}.
+>>>>>>> branch 'master' of https://github.com/JavaMoney/javamoney.git
 	 * @return the set of supported {@link ValidityType}s, never {@code null}.
 	 */
+<<<<<<< HEAD
 	public Set<ValidityType> getValidityTypes(Class itemType, Class relatedType);
+=======
+	public Set<ValidityType> getValidityTypes(Class relatedType);
+>>>>>>> branch 'master' of https://github.com/JavaMoney/javamoney.git
 
 	/**
 	 * Return the item types that this provider instance is supporting, this is

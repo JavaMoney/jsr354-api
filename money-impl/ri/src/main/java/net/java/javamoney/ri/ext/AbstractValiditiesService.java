@@ -161,7 +161,11 @@ public abstract class AbstractValiditiesService {
 		Set<ValidityType> result = new HashSet<ValidityType>();
 		for (RelatedValidityProviderSpi validityProviderSpi : this.relatedValidityProvidersPerType
 				.get(type)) {
+<<<<<<< HEAD
 			result.addAll(validityProviderSpi.getValidityTypes(type, relatedType));
+=======
+			result.addAll(validityProviderSpi.getValidityTypes(relatedType));
+>>>>>>> branch 'master' of https://github.com/JavaMoney/javamoney.git
 		}
 		return result;
 	}

@@ -56,6 +56,7 @@ public interface RelatedValidityProviderSpi {
 	 */
 	public Set<ValidityType> getValidityTypes(Class itemType, Class relatedType);
 
+
 	/**
 	 * Return the item types that this provider instance is supporting, this is
 	 * used for determining, which providers must be called for a given

@@ -194,9 +194,9 @@ public class SmokeTests {
 	@Test
 	public void testCurrencyRegionValidities() throws InterruptedException {
 		System.out.println("Validity providers: "
-				+ Validities.getValiditySources(CurrencyUnit.class));
+				+ Validities.getValidityProviderIds(CurrencyUnit.class));
 		System.out.println("Related Validity providers: "
-				+ Validities.getRelatedValiditySources(CurrencyUnit.class, Region.class));
+				+ Validities.getRelatedValidityProviderIds(CurrencyUnit.class, Region.class));
 		System.out.println("Currencies for Germany: "
 				+ Validities.getRelatedValidityInfo(new RelatedValidityQuery(
 						CurrencyUnit.class, Region.class)

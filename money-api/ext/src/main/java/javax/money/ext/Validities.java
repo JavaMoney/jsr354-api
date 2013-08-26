@@ -88,7 +88,7 @@ public final class Validities {
 	 *            The instance defining the relation
 	 * @return the according {@link RelatedValidityInfo} provider ids.
 	 */
-	public static <T, R> Set<String> getRelatedValiditySources(Class<T> type,
+	public static <T, R> Set<String> getRelatedValidityProviderIds(Class<T> type,
 			Class<R> relatedToType) {
 		return VALIDITIES_SPI
 				.getRelatedValidityProviderIds(type, relatedToType);
@@ -140,7 +140,7 @@ public final class Validities {
 	 *            The item type
 	 * @return the according {@link ValidityInfo} provider ids.
 	 */
-	public static <T> Set<String> getValiditySources(Class<T> type) {
+	public static <T> Set<String> getValidityProviderIds(Class<T> type) {
 		return VALIDITIES_SPI.getValidityProviderIds(type);
 	}
 

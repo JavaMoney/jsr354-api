@@ -157,11 +157,11 @@ public abstract class AbstractValiditiesService {
 		return result;
 	}
 
-	public <T> Set<ValidityType> getRelatedValidityTypes(Class<T> type) {
+	public <T,R> Set<ValidityType> getRelatedValidityTypes(Class<T> type, Class<R> relatedType) {
 		Set<ValidityType> result = new HashSet<ValidityType>();
 		for (RelatedValidityProviderSpi validityProviderSpi : this.relatedValidityProvidersPerType
 				.get(type)) {
-			result.addAll(validityProviderSpi.getValidityTypes());
+			result.addAll(validityProviderSpi.getValidityTypes(relatedType));
 		}
 		return result;
 	}

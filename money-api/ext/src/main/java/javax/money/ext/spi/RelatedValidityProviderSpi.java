@@ -48,9 +48,11 @@ public interface RelatedValidityProviderSpi {
 	 * 
 	 * @see {@link RelatedValidityQuery#getValidityType()}
 	 * @see {@link RelatedValidityQuery#withValidityType(ValidityType)}
+	 * @param relatedType
+	 *            the type of the related item, never {@code null}.
 	 * @return the set of supported {@link ValidityType}s, never {@code null}.
 	 */
-	public Set<ValidityType> getValidityTypes();
+	public Set<ValidityType> getValidityTypes(Class relatedType);
 
 	/**
 	 * Return the item types that this provider instance is supporting, this is

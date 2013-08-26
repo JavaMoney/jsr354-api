@@ -88,7 +88,8 @@ public final class Validities {
 	 *            The instance defining the relation
 	 * @return the according {@link RelatedValidityInfo} provider ids.
 	 */
-	public static <T, R> Set<String> getRelatedValidityProviderIds(Class<T> type,
+	public static <T, R> Set<String> getRelatedValidityProviderIds(
+			Class<T> type,
 			Class<R> relatedToType) {
 		return VALIDITIES_SPI
 				.getRelatedValidityProviderIds(type, relatedToType);
@@ -142,6 +143,33 @@ public final class Validities {
 	 */
 	public static <T> Set<String> getValidityProviderIds(Class<T> type) {
 		return VALIDITIES_SPI.getValidityProviderIds(type);
+	}
+
+	/**
+	 * Access the supported {@link ValidityType} instances for a given item
+	 * type.
+	 * 
+	 * @param type
+	 *            The item type
+	 * @return the current {@link ValidityType} supported.
+	 */
+	public static <T> Set<ValidityType> getValidityTypes(Class<T> type) {
+		return VALIDITIES_SPI.getValidityTypes(type);
+	}
+
+	/**
+	 * Access the supported {@link ValidityType} instances for a given item type
+	 * and related type, used for {@link RelatedValidityQuery}..
+	 * 
+	 * @param type
+	 *            The item type
+	 * @param relationType
+	 *            the relation type
+	 * @return the current {@link ValidityType} supported.
+	 */
+	public static <T, R> Set<ValidityType> getValidityTypes(Class<T> type,
+			Class<R> relationType) {
+		return VALIDITIES_SPI.getRelatedValidityTypes(type, relationType);
 	}
 
 	/**
@@ -248,7 +276,7 @@ public final class Validities {
 		public <T> Set<Class> getRelatedValidityRelationTypes(Class<T> type) {
 			return Collections.emptySet();
 		}
-		
+
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -256,10 +284,11 @@ public final class Validities {
 		 * getRelatedValidityTypes(java.lang.Class)
 		 */
 		@Override
-		public <T> Set<ValidityType> getRelatedValidityTypes(Class<T> type) {
+		public <T, R> Set<ValidityType> getRelatedValidityTypes(Class<T> type,
+				Class<R> relatedType) {
 			return Collections.emptySet();
 		}
-		
+
 		/*
 		 * (non-Javadoc)
 		 * 

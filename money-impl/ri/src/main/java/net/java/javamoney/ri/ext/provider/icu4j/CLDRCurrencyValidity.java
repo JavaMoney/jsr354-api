@@ -82,8 +82,11 @@ public class CLDRCurrencyValidity implements RelatedValidityProviderSpi {
 	 * @see javax.money.ext.spi.RelatedValidityProviderSpi#getValidityTypes()
 	 */
 	@Override
-	public Set<ValidityType> getValidityTypes() {
-		return FLAVORS;
+	public Set<ValidityType> getValidityTypes(Class relatedType) {
+		if (relatedType.equals(Region.class)) {
+			return FLAVORS;
+		}
+		return Collections.emptySet();
 	}
 
 	/*

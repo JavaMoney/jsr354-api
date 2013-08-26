@@ -19,9 +19,7 @@
  */
 package net.java.javamoney.ri.ext;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import javax.money.ext.RelatedValidityInfo;
@@ -29,9 +27,7 @@ import javax.money.ext.RelatedValidityQuery;
 import javax.money.ext.ValidityInfo;
 import javax.money.ext.ValidityQuery;
 import javax.money.ext.ValidityType;
-import javax.money.ext.spi.RelatedValidityProviderSpi;
 import javax.money.ext.spi.ValiditiesSingletonSpi;
-import javax.money.ext.spi.ValidityProviderSpi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +51,8 @@ public class SEValiditiesSingletonSpi implements ValiditiesSingletonSpi {
 	@Override
 	public <T, R> Set<String> getRelatedValidityProviderIds(Class<T> type,
 			Class<R> relatedToType) {
-		return validityProviderService.getRelatedValiditySources(type, relatedToType);
+		return validityProviderService.getRelatedValiditySources(type,
+				relatedToType);
 	}
 
 	@Override
@@ -91,14 +88,15 @@ public class SEValiditiesSingletonSpi implements ValiditiesSingletonSpi {
 	}
 
 	@Override
-	public <T> Set<ValidityType> getRelatedValidityTypes(Class<T> type) {
-		return validityProviderService.getRelatedValidityTypes(type);
+	public <T, R> Set<ValidityType> getRelatedValidityTypes(Class<T> type,
+			Class<R> relatedType) {
+		return validityProviderService.getRelatedValidityTypes(type,
+				relatedType);
 	}
 
 	@Override
 	public <T> Set<ValidityType> getValidityTypes(Class<T> type) {
 		return validityProviderService.getValidityTypes(type);
 	}
-
 
 }

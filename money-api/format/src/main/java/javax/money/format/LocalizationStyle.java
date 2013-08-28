@@ -20,21 +20,20 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * This class extends the default localization mechanisms as defined by s
+ * This class extends the default localization mechanisms as defined by
  * {@link Locale}, since for more complex usage scenarios different locale
  * settings for date, time and number may be applied within one
  * parsing/formatting usage scenario.
  * <p>
- * Further more when parsing of amount, it is often desirable to easily switch
- * of, the checks for the required decimals of the given target currency (called
- * lenient fraction parsing). In even more advanced us cases, also additional
- * information may be necessary to be passed to a formatter/parser instance,
- * that may be not reflected in explicitly modeled interface. Therefore a
- * generic mechanisms is required that allows to cover also these use cases.
+ * Further more when parsing amounts, it is often desirable to control the
+ * checks for the required decimals of the given target currency (aka lenient
+ * fraction parsing). In even more advanced use cases, also additional
+ * configuration attributes may be necessary to be passed to a formatter/parser
+ * instance.
  * <p>
- * For convenience the a simple instance if {@link Locale} can easily be
- * converted into a {@link LocalizationStyle} using the method
- * {@link #of(Locale)}.
+ * Finally instances of {@link LocalizationStyle} can be registered to the
+ * internal style cache, which allows to share the according styles, by
+ * accessing them using {@link #of(Class)} of {@link #of(Class, String)}.
  * 
  * @author Anatole Tresch
  */
@@ -45,7 +44,7 @@ public final class LocalizationStyle implements Serializable {
 	 */
 	private static final long serialVersionUID = 8612440355369457473L;
 	/**
-	 * The internal key used for a formatting/parsing style.
+	 * The default style id used.
 	 */
 	public static final String DEFAULT_ID = "default";
 	/**
@@ -57,14 +56,14 @@ public final class LocalizationStyle implements Serializable {
 	 */
 	private Class<?> targetType;
 	/**
-	 * The style's generic properties.
+	 * The style's generic attributes.
 	 */
 	private Map<String, Object> attributes = new HashMap<String, Object>();
 
 	/**
-	 * The shared cahe of LocalizationStyle instances.
+	 * The shared map of LocalizationStyle instances.
 	 */
-	private static final Map<String, LocalizationStyle> STYLE_CACHE = new ConcurrentHashMap<String, LocalizationStyle>();
+	private static final Map<String, LocalizationStyle> STYLE_MAP = new ConcurrentHashMap<String, LocalizationStyle>();
 
 	/**
 	 * Access a cached <i>default</i> style for a type. This equals to
@@ -80,7 +79,7 @@ public final class LocalizationStyle implements Serializable {
 
 	 */
 	public static final LocalizationStyle of(Class<?> targetType, String styleId) {
-		return STYLE_CACHE.get(getKey(targetType, styleId));
+		return STYLE_MAP.get(getKey(targetType, styleId));
 	}
 
 	/**
@@ -99,7 +98,7 @@ public final class LocalizationStyle implements Serializable {
 	}
 
 	/**
-	 * Collects all styles currently registerd within the style cache for the
+	 * Collects all styles currently registered within the style cache for the
 	 * given type.
 	 * 
 	 * @param targetType
@@ -109,7 +108,7 @@ public final class LocalizationStyle implements Serializable {
 	public static Collection<String> getSupportedStyleIds(Class<?> targetType) {
 		Set<String> result = new HashSet<String>();
 		String className = targetType.getName();
-		for (String key : STYLE_CACHE.keySet()) {
+		for (String key : STYLE_MAP.keySet()) {
 			int index = key.indexOf('_');
 			if (className.equals(key.substring(0, index))) {
 				result.add(key.substring(index + 1));
@@ -135,8 +134,7 @@ public final class LocalizationStyle implements Serializable {
 	}
 
 	/**
-	 * Creates a new instance of a style. This method will use the Locale
-	 * returned from {@link Locale#getDefault()} as the style's default locale.
+	 * Creates a new instance of a style.
 	 * 
 	 * @param id
 	 *            The style's identifier (not null).
@@ -167,33 +165,33 @@ public final class LocalizationStyle implements Serializable {
 	}
 
 	/**
-	 * Get the current defined properties fo this style.
+	 * Get the current defined attributes for this style.
 	 * 
-	 * @return the properties defined
+	 * @return the attributes defined
 	 */
 	public final Map<String, Object> getAttributes() {
 		return new HashMap<String, Object>(attributes);
 	}
 
 	/**
-	 * Read a property from this style.
+	 * Read an attribute from this style.
 	 * 
 	 * @param key
-	 *            The property's key
+	 *            The attribute key
 	 * @return the current property value, or null.
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getAttribute(String key, Class<T> type) {
 		return (T) attributes.get(key);
 	}
-	
+
 	/**
-	 * Read a typed property from this style.
+	 * Read a typed attribute from this style.
 	 * 
 	 * @param key
-	 *            The property's type, resolving to a key representing the
+	 *            The attribute's type, resolving to a key representing the
 	 *            fully qualified class name of the given type.
-	 * @return the current property value, or null.
+	 * @return the current attribute value, or {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getAttribute(Class<T> type) {
@@ -270,7 +268,7 @@ public final class LocalizationStyle implements Serializable {
 	public static final class Builder {
 
 		/**
-		 * The formats type.
+		 * The formated type.
 		 */
 		private Class<?> targetType;
 
@@ -280,7 +278,7 @@ public final class LocalizationStyle implements Serializable {
 		private String id;
 
 		/**
-		 * The style's generic properties.
+		 * The style's attributes.
 		 */
 		private Map<String, Object> attributes = new HashMap<String, Object>();
 
@@ -355,7 +353,7 @@ public final class LocalizationStyle implements Serializable {
 			LocalizationStyle style = new LocalizationStyle(this.targetType,
 					this.id, this.attributes);
 			if (register) {
-				STYLE_CACHE.put(getKey(this.targetType, this.id), style);
+				STYLE_MAP.put(getKey(this.targetType, this.id), style);
 			}
 			return style;
 		}
@@ -378,19 +376,16 @@ public final class LocalizationStyle implements Serializable {
 		}
 
 		/**
-		 * Constructor.
-		 * 
-		 * @param style
-		 *            the style's identifier, not null.
+		 * Constructor for a <i>default</i> style.
 		 */
 		public Builder() {
 		}
 
 		/**
 		 * Method allows to check, if a given style is a default style, which is
-		 * equivalent to a style id equal to {@link #DEFAULT_ID}.
+		 * equivalent to a style {@code id} equal to {@link #DEFAULT_ID}.
 		 * 
-		 * @return true, if the instance is a default style.
+		 * @return {@code true}, if the instance is a <i>default</i> style.
 		 */
 		public boolean isDefaultStyle() {
 			return DEFAULT_ID.equals(getId());
@@ -400,7 +395,8 @@ public final class LocalizationStyle implements Serializable {
 		 * Sets the style's id.
 		 * 
 		 * @param id
-		 * @return
+		 *            the style's id, not {@code null}.
+		 * @return this instance, for chaining.
 		 */
 		public Builder setId(String id) {
 			if (id == null) {
@@ -415,7 +411,7 @@ public final class LocalizationStyle implements Serializable {
 		}
 
 		/**
-		 * Get the style's identifier, not null.
+		 * Get the style's identifier, not {@code null}.
 		 * 
 		 * @return the style's id.
 		 */
@@ -424,9 +420,9 @@ public final class LocalizationStyle implements Serializable {
 		}
 
 		/**
-		 * Get the current defined properties fo this style.
+		 * Get the current defined attributes for this instance.
 		 * 
-		 * @return the properties defined
+		 * @return the attributes defined.
 		 */
 		public final Map<String, Object> getAttributes() {
 			return new HashMap<>(attributes);
@@ -438,9 +434,9 @@ public final class LocalizationStyle implements Serializable {
 		 * will throw an {@link IllegalArgumentException}.
 		 * 
 		 * @param key
-		 *            The target key
+		 *            The target key, not {@code null}.
 		 * @param value
-		 *            The target value
+		 *            The target value, not {@code null}.
 		 * @return The Builder instance for chaining.
 		 */
 		public Builder setAttribute(String key, Object value) {
@@ -453,9 +449,10 @@ public final class LocalizationStyle implements Serializable {
 		 * name given as the key.
 		 * 
 		 * @param key
-		 *            The instance's class, or subclass to be registered.
+		 *            The instance's class, or subclass to be registered, not
+		 *            {@code null}.
 		 * @param value
-		 *            The target value
+		 *            The target value, not {@code null}.
 		 * @return The Builder instance for chaining.
 		 */
 		public <T> Builder setAttribute(Class<T> key, T value) {
@@ -483,7 +480,7 @@ public final class LocalizationStyle implements Serializable {
 		 * 
 		 * @param key
 		 *            The property's key
-		 * @return the current property value, or null.
+		 * @return the current property value, or {@code null}.
 		 */
 		@SuppressWarnings("unchecked")
 		public <T> T getAttribute(String key, Class<T> type) {
@@ -496,7 +493,7 @@ public final class LocalizationStyle implements Serializable {
 		 * @param key
 		 *            The property's type, resolving to a key representing the
 		 *            fully qualified class name of the given type.
-		 * @return the current property value, or null.
+		 * @return the current property value, or {@code null}.
 		 */
 		@SuppressWarnings("unchecked")
 		public <T> T getAttribute(Class<T> type) {
@@ -504,20 +501,26 @@ public final class LocalizationStyle implements Serializable {
 		}
 
 		/**
-		 * Removes the given property. This method is meant for removing custom
-		 * properties. Setting a predefined property, e.g. {@link #DATE_LOCALE}
-		 * will throw an {@link IllegalArgumentException}.
+		 * Removes the given property.
 		 * 
 		 * @param key
-		 *            The key to be removed
+		 *            The key to be removed, not {@code null}
 		 * @return The Builder instance for chaining.
-		 * @throws IllegalArgumentException
-		 *             if the key passed equals to a key used for a predefined
-		 *             property.
 		 */
 		public Builder removeAttribute(String key) {
 			attributes.remove(key);
 			return this;
+		}
+
+		/**
+		 * Removes the given property.
+		 * 
+		 * @param key
+		 *            The key to be removed, not {@code null}
+		 * @return The Builder instance for chaining.
+		 */
+		public <T> Builder removeAttribute(Class<T> key) {
+			return removeAttribute(key.getName());
 		}
 
 	}

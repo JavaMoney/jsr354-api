@@ -124,21 +124,6 @@ public final class Regions {
 	}
 
 	/**
-	 * Access a {@link RegionTreeNode} using the region's hierarchy starting from
-	 * the given root {@link Region}.
-	 * 
-	 * @param path
-	 *            the path to be accessed, not {@code null}.
-	 * @return the {@link RegionTreeNode} starting at the position defined by
-	 *         {@code path}, never {@code null}.
-	 * @throws IllegalArgumentException
-	 *             if the path can not be resolved.
-	 */
-	public static RegionTreeNode getRegionNode(String path) {
-		throw new UnsupportedOperationException("Not yet implemented.");
-	}
-
-	/**
 	 * Method that loads the {@link MonetaryConversionSpi} on class loading.
 	 * 
 	 * @return the instance ot be registered into the shared variable.

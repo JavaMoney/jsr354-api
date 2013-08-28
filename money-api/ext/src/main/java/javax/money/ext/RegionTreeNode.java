@@ -17,7 +17,7 @@ import java.util.Collection;
  * Regions can be used to segregate or access artifacts (e.g. currencies) either
  * based on geographical, or commercial aspects (e.g. legal units).<br/>
  * According root instances (trees) can be accessed by calling
- * {@link Regions#getRegionNode(String)}. By default, ISO countries accessible
+ * {@link Regions#getRegionTree(String)}. By default, ISO countries accessible
  * with 2-digit or 3-digit codes must be provided by default.
  * 
  * @see <a href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">UN M.49:

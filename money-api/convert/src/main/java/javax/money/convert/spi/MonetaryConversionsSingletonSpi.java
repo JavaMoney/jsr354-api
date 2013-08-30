@@ -11,42 +11,45 @@
 package javax.money.convert.spi;
 
 import java.util.Collection;
+
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRateType;
 
 /**
  * This is the spi to be implemented that is registered into the
- * {@code MonetaryConversion} singleton accessor using {@code ServiceLoader}.
+ * {@code MonetaryConversions} singleton accessor using {@code ServiceLoader}.
  * This interface allows to implement the component loading differently, e.g.
- * using the {@code ServiceLoader} or by using aan IoC container.
- *
+ * using the {@code ServiceLoader} or by using an CDI container.
+ * 
  * @author Anatole Tresch
  */
 public interface MonetaryConversionsSingletonSpi {
 
-    /**
-     * Access an instance of {@link ConversionProvider}.
-     *
-     * @param type The rate type.
-     * @return the provider, if it is a registered rate type, never null.
-     * @see #isSupportedExchangeRateType(ExchangeRateType)
-     */
-    ConversionProvider getConversionProvider(ExchangeRateType type);
+	/**
+	 * Access an instance of {@link ConversionProvider}.
+	 * 
+	 * @param type
+	 *            The rate type.
+	 * @return the provider, if it is a registered rate type, never null.
+	 * @see #isSupportedExchangeRateType(ExchangeRateType)
+	 */
+	ConversionProvider getConversionProvider(ExchangeRateType type);
 
-    /**
-     * Get all currently registered rate types.
-     *
-     * @return all currently registered rate types
-     */
-    Collection<ExchangeRateType> getSupportedExchangeRateTypes();
+	/**
+	 * Get all currently registered rate types.
+	 * 
+	 * @return all currently registered rate types
+	 */
+	Collection<ExchangeRateType> getSupportedExchangeRateTypes();
 
-    /**
-     * Allows to quickly check, if a rate type is supported.
-     *
-     * @param type the rate type
-     * @return true, if the rate is supported, meaning an according
-     * {@link ConversionProvider} can be loaded.
-     * @see #getConversionProvider(ExchangeRateType)
-     */
-    boolean isSupportedExchangeRateType(ExchangeRateType type);
+	/**
+	 * Allows to quickly check, if a rate type is supported.
+	 * 
+	 * @param type
+	 *            the {@link ExchangeRateType}
+	 * @return {@code true}, if the rate is supported, meaning an according
+	 *         {@link ConversionProvider} can be loaded.
+	 * @see #getConversionProvider(ExchangeRateType)
+	 */
+	boolean isSupportedExchangeRateType(ExchangeRateType type);
 }

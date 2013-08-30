@@ -1,17 +1,20 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
- *
- * Specification:  JSR-354  Money and Currency API ("Specification")
- *
- * Copyright (c) 2012-2013, Credit Suisse
- * All rights reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
+ * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
+ * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
+ * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
+ * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
+ * BUTTON AT THE BOTTOM OF THIS PAGE.
+ * 
+ * Specification: JSR-354 Money and Currency API ("Specification")
+ * 
+ * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money.format;
 
-
 /**
- * Default implementation of {@link ItemFactory} that looks up resulting
- * item under the class or class name key.
+ * Default implementation of {@link ItemFactory} that looks up resulting item
+ * under the {@link Class} or {@link Class#getName()} key.
  * 
  * @author Anatole Tresch
  * 
@@ -26,7 +29,7 @@ public final class DefaultItemFactory<T> implements ItemFactory<T> {
 	 * Constructor.
 	 * 
 	 * @param itemClass
-	 *            The item class, not null.
+	 *            The item class, not {@code null}.
 	 */
 	public DefaultItemFactory(Class<T> itemClass) {
 		this.itemClass = itemClass;
@@ -55,13 +58,12 @@ public final class DefaultItemFactory<T> implements ItemFactory<T> {
 	}
 
 	/**
-	 * CHecks if the required item is availalbe within the
-	 * {@link ParseContext}, using the class or fully qualified class name
-	 * as a key.
+	 * CHecks if the required item is available within the {@link ParseContext},
+	 * using the class or fully qualified class name as a key.
 	 * 
 	 * @param context
 	 *            the {@link ParseContext}.
-	 * @return true, if the item parsed was found or can be created.
+	 * @return {@code true}, if the item parsed was found or can be created.
 	 * @see #apply(ParseContext)
 	 */
 	@Override

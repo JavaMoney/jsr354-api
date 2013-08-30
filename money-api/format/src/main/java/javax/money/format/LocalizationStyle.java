@@ -20,10 +20,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * This class extends the default localization mechanisms as defined by
- * {@link Locale}, since for more complex usage scenarios different locale
- * settings for date, time and number may be applied within one
- * parsing/formatting usage scenario.
+ * This class enhances the localization mechanisms as defined by {@link Locale}.
+ * It allows to configure formatting/parsing with arbitrary parameters thus also
+ * supporting very complex formatting scenarios.
  * <p>
  * Further more when parsing amounts, it is often desirable to control the
  * checks for the required decimals of the given target currency (aka lenient

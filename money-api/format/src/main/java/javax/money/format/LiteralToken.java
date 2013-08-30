@@ -46,6 +46,13 @@ public final class LiteralToken<R> implements FormatToken<R> {
 		this.token = token;
 	}
 
+	/**
+	 * Sets the token's id.
+	 * 
+	 * @param tokenId
+	 *            the tokemId
+	 * @return this, for fluent API chaining.
+	 */
 	public LiteralToken withTokenId(String tokenId) {
 		this.tokenId = tokenId;
 		return this;

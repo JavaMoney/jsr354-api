@@ -1,10 +1,14 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
- *
- * Specification:  JSR-354  Money and Currency API ("Specification")
- *
- * Copyright (c) 2012-2013, Credit Suisse
- * All rights reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
+ * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
+ * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
+ * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
+ * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
+ * BUTTON AT THE BOTTOM OF THIS PAGE.
+ * 
+ * Specification: JSR-354 Money and Currency API ("Specification")
+ * 
+ * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money.format;
 
@@ -16,8 +20,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * This class implements a format based on an ordered list of
- * {@link FormatToken} instances.
+ * This class implements a format builder that allows creating
+ * {@link ItemFormat} instances programmatically using a fluent API. The
+ * formatting internally is modeled by an ordered list of {@link FormatToken}
+ * instances.
  * 
  * @author Anatole Tresch
  * 
@@ -41,7 +47,6 @@ public class ItemFormatBuilder<T> {
 
 	}
 
-	
 	/**
 	 * Creates a new Builder.
 	 * 
@@ -64,7 +69,6 @@ public class ItemFormatBuilder<T> {
 		return this.targetType;
 	}
 
-	
 	/**
 	 * Access the target class, which this formatter can handle with.
 	 * 
@@ -73,7 +77,7 @@ public class ItemFormatBuilder<T> {
 	public Class<T> getTargetType() {
 		return this.targetType;
 	}
-	
+
 	/**
 	 * The configuring style.
 	 * 
@@ -118,7 +122,7 @@ public class ItemFormatBuilder<T> {
 		this.tokens.add(new LiteralToken<T>(token));
 		return this;
 	}
-	
+
 	/**
 	 * The toal number of tokens.
 	 * 
@@ -165,10 +169,9 @@ public class ItemFormatBuilder<T> {
 	 * @see #build()
 	 */
 	public boolean isBuildable() {
-		return this.style!=null && this.targetType!=null && !this.tokens.isEmpty();
+		return this.style != null && this.targetType != null
+				&& !this.tokens.isEmpty();
 	}
-
-	
 
 	/**
 	 * Access all the token used for building up this format.
@@ -196,10 +199,12 @@ public class ItemFormatBuilder<T> {
 	 * @return the {@link ItemFormat} instance, never null.
 	 */
 	public ItemFormat<T> build() {
-		if(this.itemFactory==null){
-			return new TokenizedItemFormat<T>(targetType, style, new DefaultItemFactory<T>(targetType), tokens);
+		if (this.itemFactory == null) {
+			return new TokenizedItemFormat<T>(targetType, style,
+					new DefaultItemFactory<T>(targetType), tokens);
 		}
-		return new TokenizedItemFormat<T>(targetType, style, itemFactory, tokens);
+		return new TokenizedItemFormat<T>(targetType, style, itemFactory,
+				tokens);
 	}
 
 	/*
@@ -241,10 +246,12 @@ public class ItemFormatBuilder<T> {
 		 * @param itemFactory
 		 *            the itemFactory to be used, not null.
 		 */
-		public TokenizedItemFormat(Class<T> targetType, LocalizationStyle style, ItemFactory<T> itemFactory, FormatToken<T>... tokens) {
+		public TokenizedItemFormat(Class<T> targetType,
+				LocalizationStyle style, ItemFactory<T> itemFactory,
+				FormatToken<T>... tokens) {
 			this(targetType, style, itemFactory, Arrays.asList(tokens));
 		}
-		
+
 		/**
 		 * Creates a new instance.
 		 * 
@@ -253,18 +260,24 @@ public class ItemFormatBuilder<T> {
 		 * @param itemFactory
 		 *            the itemFactory to be used, not null.
 		 */
-		public TokenizedItemFormat(Class<T> targetType, LocalizationStyle style, ItemFactory<T> itemFactory, List<FormatToken<T>> tokens) {
+		public TokenizedItemFormat(Class<T> targetType,
+				LocalizationStyle style, ItemFactory<T> itemFactory,
+				List<FormatToken<T>> tokens) {
 			if (targetType == null) {
-				throw new IllegalArgumentException("Target Class must not be null.");
+				throw new IllegalArgumentException(
+						"Target Class must not be null.");
 			}
 			if (style == null) {
-				throw new IllegalArgumentException("LocalizationStyle must not be null.");
+				throw new IllegalArgumentException(
+						"LocalizationStyle must not be null.");
 			}
 			if (itemFactory == null) {
-				throw new IllegalArgumentException("ItemFactory must not be null.");
+				throw new IllegalArgumentException(
+						"ItemFactory must not be null.");
 			}
 			if (tokens == null || tokens.isEmpty()) {
-				throw new IllegalArgumentException("tokens must not be null or empty.");
+				throw new IllegalArgumentException(
+						"tokens must not be null or empty.");
 			}
 			this.targetType = targetType;
 			this.style = style;
@@ -302,7 +315,8 @@ public class ItemFormatBuilder<T> {
 		 * @throws IOException
 		 *             forwarded exception thrown by the {@link Appendable}.
 		 */
-		public void print(Appendable appendable, T item, Locale locale) throws IOException {
+		public void print(Appendable appendable, T item, Locale locale)
+				throws IOException {
 			for (FormatToken<T> token : tokens) {
 				token.print(appendable, item, locale, style);
 			}
@@ -320,9 +334,9 @@ public class ItemFormatBuilder<T> {
 		public String format(T item, Locale locale) {
 			StringBuilder builder = new StringBuilder();
 			try {
-                            print(builder, item, locale);
+				print(builder, item, locale);
 			} catch (IOException e) {
-                            throw new ItemFormatException("Error foratting of " + item, e);
+				throw new ItemFormatException("Error foratting of " + item, e);
 			}
 			return builder.toString();
 		}
@@ -360,7 +374,8 @@ public class ItemFormatBuilder<T> {
 		@Override
 		public String toString() {
 			return "BuildableItemFormat [targetType=" + targetType + ", style="
-					+ style + ", itemFactory=" + itemFactory+ ", tokens=" + tokens + "]";
+					+ style + ", itemFactory=" + itemFactory + ", tokens="
+					+ tokens + "]";
 		}
 
 	}

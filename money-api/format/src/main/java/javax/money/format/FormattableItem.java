@@ -19,8 +19,6 @@ import java.util.Locale;
  * This interface is implemented by types that require to be represented as
  * {@link String} objects, e.g. for displaying.
  * 
- * @TODO check if this class can be moved to {@code java.util}.
- * 
  * @author Anatole Tresch
  */
 public interface FormattableItem {

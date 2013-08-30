@@ -16,9 +16,10 @@ import java.io.IOException;
 import java.util.Locale;
 
 /**
- * Formats instances of T to a {@link String} or an {@link Appendable}.
- * Instances of this can be added to a {@link ItemFormatBuilder} to assemble a
- * complex input/output format.
+ * Formats instances of {@code T} to a {@link String} or an {@link Appendable}.
+ * Instances of {@link FormatToken} can be added to a {@link ItemFormatBuilder}
+ * to assemble a complex input/output {@link ItemFormat} using a programmatic
+ * fluent API.
  * 
  * @author Anatole Tresch
  */

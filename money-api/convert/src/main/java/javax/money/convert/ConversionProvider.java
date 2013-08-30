@@ -1,10 +1,14 @@
 /**
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
- *
- * Specification:  JSR-354  Money and Currency API ("Specification")
- *
- * Copyright (c) 2012-2013, Credit Suisse
- * All rights reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
+ * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
+ * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
+ * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
+ * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
+ * BUTTON AT THE BOTTOM OF THIS PAGE.
+ * 
+ * Specification: JSR-354 Money and Currency API ("Specification")
+ * 
+ * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money.convert;
 
@@ -13,44 +17,49 @@ import javax.money.MonetaryOperator;
 
 /**
  * This interface defines access to the exchange conversion logic of JavaMoney.
- * It is provided by the Money singleton. It is provided by the Money singleton.
+ * It is provided by the {@link MonetaryConversions} singleton.
  * 
  * @author Anatole Tresch
  */
 public interface ConversionProvider {
 
 	/**
-	 * Access the {@link ExchangeRateType} for this {@link ConversionProvider}
-	 * .
+	 * Access the {@link ExchangeRateType} for this {@link ConversionProvider}.
+	 * Each instance of {@link ConversionProvider} services conversion data for
+	 * exact one {@link ExchangeRateType}.
 	 * 
-	 * @return the {@link ExchangeRateType}, never null.
+	 * @return the {@link ExchangeRateType}, never {@code null}.
 	 */
 	public ExchangeRateType getExchangeRateType();
 
 	/**
-	 * Checks if an exchange of a currency is defined.
+	 * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
+	 * defined.
 	 * 
 	 * @param type
-	 *            the exchange rate type required that this provider instance is
-	 *            providing data for.
+	 *            the {@link ExchangeRateType} required that this provider
+	 *            instance is providing data for.
 	 * @param base
-	 *            the base currency
+	 *            the base {@link CurrencyUnit}
 	 * @param term
-	 *            the term currency
-	 * @return true, if such an exchange is currently defined.
+	 *            the term {@link CurrencyUnit}
+	 * @return true, if such an {@link ExchangeRate} is currently defined.
 	 */
 	public boolean isAvailable(CurrencyUnit base, CurrencyUnit term);
 
 	/**
-	 * Checks if an exchange of a currency is defined.
+	 * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
+	 * defined.
 	 * 
 	 * @param base
-	 *            the base currency
+	 *            the base {@link CurrencyUnit}
 	 * @param term
-	 *            the term currency
+	 *            the term {@link CurrencyUnit}
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried.
-	 * @return true, if such an exchange is currently defined.
+	 *            the target timestamp for which the {@link ExchangeRate} is
+	 *            queried.
+	 * @return {@code true}, if such an {@link ExchangeRate} is currently
+	 *         defined.
 	 */
 	public boolean isAvailable(CurrencyUnit base, CurrencyUnit term,
 			long timestamp);
@@ -60,33 +69,35 @@ public interface ConversionProvider {
 	 * rates).
 	 * 
 	 * @param base
-	 *            The base currency
+	 *            The base {@link CurrencyUnit}
 	 * @param term
-	 *            The term currency
+	 *            The term {@link CurrencyUnit}
 	 * @param timestamp
-	 *            the target timestamp for which the exchange rate is queried.
+	 *            the target timestamp for which the {@link ExchangeRate} is
+	 *            queried.
 	 * @return the matching {@link ExchangeRate}, or {@code null}.
 	 */
 	public ExchangeRate getExchangeRate(CurrencyUnit base,
 			CurrencyUnit term, long timestamp);
 
 	/**
-	 * Access a exchange rate using the given currencies. The rate may be,
-	 * depending on the data provider, be real-time or deferred.
+	 * Access a {@link ExchangeRate} using the given currencies. The
+	 * {@link ExchangeRate} may be, depending on the data provider, eal-time or
+	 * deferred.
 	 * 
 	 * @param base
-	 *            base currency.
+	 *            base {@link CurrencyUnit}.
 	 * @param term
-	 *            term currency.
+	 *            term {@link CurrencyUnit}.
 	 * @return the matching {@link ExchangeRate}, or {@code null}.
 	 */
 	public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term);
 
 	/**
-	 * The method reverses the exchange rate to a rate mapping from target to
-	 * source. Hereby the factor must <b>not</b> be recalculated as
-	 * {@code 1/oldFactor}, since typically reverse rates are not symmetric in
-	 * most cases.
+	 * The method reverses the {@link ExchangeRate} to a rate mapping from term
+	 * to base {@link CurrencyUnit}. Hereby the factor must <b>not</b> be
+	 * recalculated as {@code 1/oldFactor}, since typically reverse rates are
+	 * not symmetric in most cases.
 	 * 
 	 * @return the matching reversed {@link ExchangeRate}, or {@code null}.
 	 */
@@ -97,11 +108,10 @@ public interface ConversionProvider {
 	 * {@link MonetaryOperator} to an amount.
 	 * 
 	 * @return a new instance of a corresponding {@link CurrencyConverter},
-	 *         never null.
+	 *         never {@code null}.
 	 * @throws CurrencyConversionException
 	 *             If the required target {@link CurrencyUnit} is not supported.
 	 */
 	public CurrencyConverter getConverter();
-
 
 }

@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -90,22 +89,22 @@ public final class MonetaryCurrencies {
 	}
 
 	/**
-	 * This method allows to evaluate, if the given currency name space is
+	 * This method allows to evaluate, if the given currency namespace is
 	 * defined. "ISO-4217" should be defined in all environments (default).
 	 * 
 	 * @param namespace
-	 *            the required name space
-	 * @return true, if the name space exists.
+	 *            the required namespace
+	 * @return true, if the namespace exists.
 	 */
 	public static boolean isNamespaceAvailable(String namespace) {
 		return CURRENCIES_SPI.isNamespaceAvailable(namespace);
 	}
 
 	/**
-	 * This method allows to access all name spaces currently defined.
+	 * This method allows to access all namespaces currently defined.
 	 * "ISO-4217" should be defined in all environments (default).
 	 * 
-	 * @return the array of currently defined name space.
+	 * @return the array of currently defined namespace.
 	 */
 	public static Collection<String> getNamespaces() {
 		return CURRENCIES_SPI.getNamespaces();
@@ -113,7 +112,7 @@ public final class MonetaryCurrencies {
 
 	/*-- Access of current currencies --*/
 	/**
-	 * Checks if a currency is defined using its name space and code. This is a
+	 * Checks if a currency is defined using its namespace and code. This is a
 	 * convenience method for {@link #getCurrency(String, String)}, where as
 	 * namespace the default namespace is assumed.
 	 * 
@@ -128,10 +127,10 @@ public final class MonetaryCurrencies {
 	}
 
 	/**
-	 * Checks if a currency is defined using its name space and code.
+	 * Checks if a currency is defined using its namespace and code.
 	 * 
 	 * @param namespace
-	 *            The name space, e.g. 'ISO-4217'.
+	 *            The namespace, e.g. 'ISO-4217'.
 	 * @param code
 	 *            The code that, together with the namespace identifies the
 	 *            currency.
@@ -142,12 +141,12 @@ public final class MonetaryCurrencies {
 	}
 
 	/**
-	 * Access a currency using its name space and code. This is a convenience
+	 * Access a currency using its namespace and code. This is a convenience
 	 * method for {@link #getCurrency(String, String, Date)}, where {@code null}
 	 * is passed for the target date (meaning current date).
 	 * 
 	 * @param namespace
-	 *            The name space, e.g. 'ISO-4217'.
+	 *            The namespace, e.g. 'ISO-4217'.
 	 * @param code
 	 *            The code that, together with the namespace identifies the
 	 *            currency.
@@ -201,9 +200,9 @@ public final class MonetaryCurrencies {
 	 *            the target namespace, never {@code null}.
 	 * @return The mapped {@link CurrencyUnit}, or null.
 	 */
-	public static CurrencyUnit map(String targetNamespace,
-			CurrencyUnit currencyUnit) {
-		return CURRENCIES_SPI.map(targetNamespace, currencyUnit);
+	public static CurrencyUnit map(CurrencyUnit currencyUnit,
+			String targetNamespace) {
+		return CURRENCIES_SPI.map(currencyUnit, targetNamespace);
 	}
 
 	/**
@@ -218,26 +217,26 @@ public final class MonetaryCurrencies {
 	 *            the target timestamp
 	 * @return The mapped {@link CurrencyUnit}, or null.
 	 */
-	public static CurrencyUnit map(String targetNamespace, long timestamp,
-			CurrencyUnit currencyUnit) {
-		return CURRENCIES_SPI.map(targetNamespace, timestamp, currencyUnit);
+	public static CurrencyUnit map(CurrencyUnit currencyUnit,
+			String targetNamespace, long timestamp) {
+		return CURRENCIES_SPI.map(currencyUnit, targetNamespace, timestamp);
 	}
 
-//	public static Set<String> getCurrencyValidityProviders() {
-//		return CURRENCIES_SPI.getCurrencyValidityProviders();
-//	}
-//
-//	/**
-//	 * Access an instance of the CurrencyValidity for the required validity
-//	 * source.
-//	 * 
-//	 * @param provider
-//	 *            the validity provider.
-//	 * @return
-//	 */
-//	public static CurrencyValidity getCurrencyValidity(String provider) {
-//		return CURRENCIES_SPI.getCurrencyValidity(provider);
-//	}
+	// public static Set<String> getCurrencyValidityProviders() {
+	// return CURRENCIES_SPI.getCurrencyValidityProviders();
+	// }
+	//
+	// /**
+	// * Access an instance of the CurrencyValidity for the required validity
+	// * source.
+	// *
+	// * @param provider
+	// * the validity provider.
+	// * @return
+	// */
+	// public static CurrencyValidity getCurrencyValidity(String provider) {
+	// return CURRENCIES_SPI.getCurrencyValidity(provider);
+	// }
 
 	/**
 	 * This method maps the given {@link CurrencyUnit} instances to another
@@ -262,12 +261,15 @@ public final class MonetaryCurrencies {
 	}
 
 	/**
+	 * Default implementation of {@link MonetaryCurrenciesSingletonSpi}, active
+	 * if no instance of {@link MonetaryCurrenciesSingletonSpi} was registered
+	 * using the {@link ServiceLoader}.
 	 * 
-	 * @author Anatole
+	 * @author Anatole Tresch
 	 */
 	private static final class DefaultMonetaryCurrenciesSpi implements
 			MonetaryCurrenciesSingletonSpi {
-
+		/** Error message for unsupported operations. */
 		private static final String ERROR_MESSAGE = "No "
 				+ MonetaryCurrenciesSingletonSpi.class.getName()
 				+ " registered.";
@@ -282,35 +284,38 @@ public final class MonetaryCurrencies {
 		 * 
 		 * @return the default namespace used.
 		 */
+		@Override
 		public String getDefaultNamespace() {
 			throw new UnsupportedOperationException(ERROR_MESSAGE);
 		}
 
 		/**
-		 * This method allows to evaluate, if the given currency name space is
-		 * defined. "ISO-4217" should be defined in all environments (default).
+		 * This method allows to evaluate, if the given currency namespace is
+		 * defined. {@code "ISO-4217"} should be defined in all environments (default).
 		 * 
 		 * @param namespace
-		 *            the required name space
-		 * @return true, if the name space exists.
+		 *            the required namespace
+		 * @return true, if the namespace exists.
 		 */
+		@Override
 		public boolean isNamespaceAvailable(String namespace) {
 			return false;
 		}
 
 		/**
-		 * This method allows to access all name spaces currently defined.
+		 * This method allows to access all namespaces currently defined.
 		 * "ISO-4217" should be defined in all environments (default).
 		 * 
-		 * @return the array of currently defined name space.
+		 * @return the array of currently defined namespace.
 		 */
+		@Override
 		public Collection<String> getNamespaces() {
 			return Collections.emptySet();
 		}
 
 		/*-- Access of current currencies --*/
 		/**
-		 * Checks if a currency is defined using its name space and code. This
+		 * Checks if a currency is defined using its namespace and code. This
 		 * is a convenience method for {@link #getCurrency(String, String)},
 		 * where as namespace the default namespace is assumed.
 		 * 
@@ -320,32 +325,34 @@ public final class MonetaryCurrencies {
 		 *            currency.
 		 * @return true, if the currency is defined.
 		 */
+		@Override
 		public boolean isAvailable(String code) {
 			return false;
 		}
 
 		/**
-		 * Checks if a currency is defined using its name space and code.
+		 * Checks if a currency is defined using its namespace and code.
 		 * 
 		 * @param namespace
-		 *            The name space, e.g. 'ISO-4217'.
+		 *            The namespace, e.g. 'ISO-4217'.
 		 * @param code
 		 *            The code that, together with the namespace identifies the
 		 *            currency.
 		 * @return true, if the currency is defined.
 		 */
+		@Override
 		public boolean isAvailable(String namespace, String code) {
 			return false;
 		}
 
 		/**
-		 * Access a currency using its name space and code. This is a
+		 * Access a currency using its namespace and code. This is a
 		 * convenience method for {@link #getCurrency(String, String, Date)},
 		 * where {@code null} is passed for the target date (meaning current
 		 * date).
 		 * 
 		 * @param namespace
-		 *            The name space, e.g. 'ISO-4217'.
+		 *            The namespace, e.g. 'ISO-4217'.
 		 * @param code
 		 *            The code that, together with the namespace identifies the
 		 *            currency.
@@ -353,6 +360,7 @@ public final class MonetaryCurrencies {
 		 * @throws UnknownCurrencyException
 		 *             if the required currency is not defined.
 		 */
+		@Override
 		public CurrencyUnit get(String namespace, String code) {
 			throw new UnknownCurrencyException(namespace, code);
 		}
@@ -370,6 +378,7 @@ public final class MonetaryCurrencies {
 		 * @throws UnknownCurrencyException
 		 *             if the required currency is not defined.
 		 */
+		@Override
 		public CurrencyUnit get(String code) {
 			throw new UnknownCurrencyException(getDefaultNamespace(), code);
 		}
@@ -384,8 +393,10 @@ public final class MonetaryCurrencies {
 		 *            the target namespace, never {@code null}.
 		 * @return The mapped {@link CurrencyUnit}, or null.
 		 */
-		public CurrencyUnit map(String targetNamespace,
-				CurrencyUnit currencyUnit) {
+		@Override
+		public CurrencyUnit map(CurrencyUnit currencyUnit,
+				String targetNamespace
+				) {
 			return null;
 		}
 
@@ -399,26 +410,12 @@ public final class MonetaryCurrencies {
 		 *            the target namespace, never {@code null}.
 		 * @return The mapped {@link CurrencyUnit}, or null.
 		 */
-		public CurrencyUnit map(String targetNamespace, long timestamp,
-				CurrencyUnit currencyUnit) {
+		@Override
+		public CurrencyUnit map(CurrencyUnit currencyUnit,
+				String targetNamespace, long timestamp
+				) {
 			return null;
 		}
-
-//		public Set<String> getCurrencyValidityProviders() {
-//			return Collections.emptySet();
-//		}
-//
-//		/**
-//		 * Access an instance of the CurrencyValidity for the required validity
-//		 * source.
-//		 * 
-//		 * @param provider
-//		 *            the validity provider.
-//		 * @return
-//		 */
-//		public CurrencyValidity getCurrencyValidity(String provider) {
-//			throw new UnsupportedOperationException(ERROR_MESSAGE);
-//		}
 
 		/**
 		 * This method maps the given {@link CurrencyUnit} instances to another
@@ -432,37 +429,15 @@ public final class MonetaryCurrencies {
 		 *         length). If a unit could not be mapped, a
 		 *         IllegalArgumentException is thrown.
 		 */
+		@Override
 		public List<CurrencyUnit> mapAll(String targetNamespace,
 				CurrencyUnit... units) {
-			// List<CurrencyUnit> resultList = new ArrayList<CurrencyUnit>();
-			// for (CurrencyUnit currencyUnit : units) {
-			// CurrencyUnit result = currencyUnitMapper.map(targetNamespace,
-			// currencyUnit, null);
-			// if (result == null) {
-			// throw new IllegalArgumentException("Cannot map curreny " +
-			// currencyUnit + " to namespace "
-			// + targetNamespace);
-			// }
-			// resultList.add(result);
-			// }
-			// return resultList;
 			throw new IllegalArgumentException(ERROR_MESSAGE);
 		}
 
+		@Override
 		public List<CurrencyUnit> mapAll(String targetNamespace,
 				long timestamp, CurrencyUnit... units) {
-			// List<CurrencyUnit> resultList = new ArrayList<CurrencyUnit>();
-			// for (CurrencyUnit currencyUnit : units) {
-			// CurrencyUnit result = currencyUnitMapper.map(targetNamespace,
-			// currencyUnit, timestamp);
-			// if (result == null) {
-			// throw new IllegalArgumentException("Cannot map curreny " +
-			// currencyUnit + " to namespace "
-			// + targetNamespace);
-			// }
-			// resultList.add(result);
-			// }
-			// return resultList;
 			throw new IllegalArgumentException(ERROR_MESSAGE);
 		}
 

@@ -58,7 +58,7 @@ public interface ItemFormatFactorySpi<T> {
 
     /**
      * Access a configured default {@link LocalizationStyle} instance. If the
-     * qieried styleId is part of the supported styles returned by this spi
+     * required styleId is part of the supported styles returned by this spi
      * implementation, then this method should return the according
      * {@link LocalizationStyle} instance.
      * 

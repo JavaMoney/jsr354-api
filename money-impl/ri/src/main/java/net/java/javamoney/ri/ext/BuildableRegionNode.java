@@ -24,9 +24,10 @@ import javax.money.ext.RegionFilter;
 import javax.money.ext.RegionTreeNode;
 
 /**
- * Regions can be used to segregate or access artifacts (e.g. currencies) either
- * based on geographical, or commercial aspects (e.g. legal units). This
- * implementation provides a class with an according Builder for creation.
+ * {@link Region}s can be used to segregate or access artifacts (e.g.
+ * CurrencyUnits) either based on geographical, or commercial aspects (e.g.
+ * legal units). This implementation provides a class with an according
+ * {@link Builder} for creation.
  * 
  * @see <a href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">UN M.49:
  *      UN Statistics Division Country or area & region codes</a>
@@ -95,7 +96,6 @@ public class BuildableRegionNode extends AbstractRegionNode implements
 		}
 	}
 
-	
 	/**
 	 * Regions can be used to segregate or access artifacts (e.g. currencies)
 	 * either based on geographical, or commercial aspects (e.g. legal units).
@@ -178,11 +178,6 @@ public class BuildableRegionNode extends AbstractRegionNode implements
 			return result;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see javax.money.ext.Region#getChildRegions()
-		 */
 		public Set<RegionTreeNode> getChildRegions() {
 			return childRegions;
 		}

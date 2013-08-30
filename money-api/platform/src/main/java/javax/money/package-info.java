@@ -8,4 +8,8 @@
  * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
  * reserved.
  */
+/**
+ * Money and Currencies core API.
+ */
 package javax.money;
+

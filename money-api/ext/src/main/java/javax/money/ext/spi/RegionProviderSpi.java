@@ -18,8 +18,9 @@ import javax.money.ext.Region;
 import javax.money.ext.RegionType;
 
 /**
- * Implementation of this interface define the regions supported in the system.
- * Each provider may hereby serve several region types.<br/>
+ * Implementation of this interface add additional {@link Region}s to the
+ * regions API. Each {@link RegionProviderSpi} may hereby serve several
+ * {@link RegionType}s.<br/>
  * It is the responsibility of the registered {@link RegionsSingletonSpi} to
  * load the and manage the instances of {@link RegionProviderSpi}. Depending on
  * the runtime environment, implementations may be loaded using the
@@ -30,42 +31,44 @@ import javax.money.ext.RegionType;
 public interface RegionProviderSpi {
 
 	/**
-	 * Returns all {@link RegionType}s defined by this {@link RegionProviderSpi}
-	 * instance.
+	 * Returns all {@link RegionType}s provided by this
+	 * {@link RegionProviderSpi} instance, hereby it is possible that several
+	 * providers may provide {@link Region}s for the same {@link RegionType}, as
+	 * long as they are unique related to its code and numderic id (if defined).
 	 * 
-	 * @return the {@link RegionType}s to be defined.
+	 * @return the {@link RegionType}s for which this provider provides regions.
 	 */
 	public Collection<RegionType> getRegionTypes();
 
 	/**
-	 * Access all regions provided for {@link RegionType} by this region
-	 * provider.
+	 * Access all regions provided for the given {@link RegionType}.
 	 * 
 	 * @param type
 	 *            The required region type.
-	 * @return the regions to be added, not null.
+	 * @return the regions to be provided, not {@code null}.
 	 */
 	public Collection<Region> getRegions(RegionType type);
 
 	/**
-	 * Access a region.
+	 * Access a {@link Region}.
 	 * 
-	 * @param identifier
-	 *            The region's id.
 	 * @param type
 	 *            The required region type.
-	 * @return The corresponding region, or null.
+	 * @param identifier
+	 *            The region's id.
+	 * @return The corresponding region, or {@code null}.
+	 * 
 	 */
 	public Region getRegion(RegionType type, String identifier);
 
 	/**
-	 * Access a region.
+	 * Access a {@link Region}.
 	 * 
 	 * @param numericId
 	 *            The region's numeric id.
 	 * @param type
 	 *            The required region type.
-	 * @return The corresponding region, or null.
+	 * @return The corresponding region, or {@code null}.
 	 */
 	public Region getRegion(RegionType type, int numericId);
 
@@ -73,8 +76,8 @@ public interface RegionProviderSpi {
 	 * Access a region using a {@link Locale}.
 	 * 
 	 * @param locale
-	 *            The required locale.
-	 * @return the corresponding region, or null.
+	 *            The correspoding country {@link Locale}.
+	 * @return the corresponding region, or {@code null}.
 	 */
 	public Region getRegion(Locale locale);
 

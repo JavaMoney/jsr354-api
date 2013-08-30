@@ -29,6 +29,8 @@ import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormats;
 import javax.money.function.InstancesPredicate;
 
+import net.java.javamoney.ri.ext.RegionPrinter;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -186,9 +188,12 @@ public class SmokeTests {
 		System.out.println("Germany="
 				+ ((Displayable) region).getDisplayName(Locale.GERMAN));
 		System.out.println("Trees=" + Regions.getRegionTreeIds());
-		System.out.println("CLDR=" + Regions.getRegionTree("CLDR").getAsText());
-		System.out.println("ISO=" + Regions.getRegionTree("ISO").getAsText());
-		System.out.println("ISO3=" + Regions.getRegionTree("ISO3").getAsText());
+		System.out.println("CLDR="
+				+ RegionPrinter.getAsText(Regions.getRegionTree("CLDR")));
+		System.out.println("ISO="
+				+ RegionPrinter.getAsText(Regions.getRegionTree("ISO")));
+		System.out.println("ISO3="
+				+ RegionPrinter.getAsText(Regions.getRegionTree("ISO3")));
 	}
 
 	@Test
@@ -196,7 +201,8 @@ public class SmokeTests {
 		System.out.println("Validity providers: "
 				+ Validities.getValidityProviderIds(CurrencyUnit.class));
 		System.out.println("Related Validity providers: "
-				+ Validities.getRelatedValidityProviderIds(CurrencyUnit.class, Region.class));
+				+ Validities.getRelatedValidityProviderIds(CurrencyUnit.class,
+						Region.class));
 		System.out.println("Currencies for Germany: "
 				+ Validities.getRelatedValidityInfo(new RelatedValidityQuery(
 						CurrencyUnit.class, Region.class)

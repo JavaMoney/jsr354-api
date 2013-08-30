@@ -19,81 +19,84 @@ import javax.money.UnknownCurrencyException;
 
 /**
  * This interface must be implemented and registered using the
- * {@code ServiceLoader}. It backs up the {@code MonetaryCurrencies} singleton
- * and is responsible for loading and managing of
- * {@link CurrencyUnitProviderSpi} and {@link CurrencyUnitMapperSpi} instances
- * and delegating according calls to the appropriate providers.
+ * {@code ServiceLoader}. It implements the functionality provided by the
+ * {@code MonetaryCurrencies} singleton and is responsible for loading and
+ * managing of {@link CurrencyUnitProviderSpi} and {@link CurrencyUnitMapperSpi}
+ * instances and delegating according calls to the appropriate providers.
  * 
  * @author Anatole Tresch
  */
 public interface MonetaryCurrenciesSingletonSpi {
 
 	/**
-	 * Access the default namespace that this {@link CurrencyUnitProviderSpi}
+	 * Access the default namespace that this {@link MonetaryCurrenciesSingletonSpi}
 	 * instance is using. The default namespace can be changed by adding a file
-	 * META-INF/java-money.properties with the following entry
+	 * {@code META-INF/java-money.properties} with the following entry
 	 * {@code defaultCurrencyNamespace=myNamespace}. When not set explicitly
-	 * {@code ISO-4217} is assummed.
+	 * {@code "ISO-4217"} is assumed.
 	 * 
 	 * @return the default namespace used.
 	 */
 	public String getDefaultNamespace();
 
 	/**
-	 * This method allows to evaluate, if the given currency name space is
-	 * defined. "ISO-4217" should be defined in all environments (default).
+	 * This method allows to evaluate, if the given currency namespace is
+	 * defined. {@code "ISO-4217"} should be defined in all environments
+	 * (default).
 	 * 
 	 * @param namespace
-	 *            the required name space
-	 * @return true, if the name space exists.
+	 *            the required namespace
+	 * @return {@code true}, if the namespace exists.
 	 */
 	public boolean isNamespaceAvailable(String namespace);
 
 	/**
-	 * This method allows to access all name spaces currently defined.
-	 * "ISO-4217" should be defined in all environments (default).
+	 * This method allows to access all namespaces currently defined.
+	 * {@code "ISO-4217"} should be defined in all environments (default).
 	 * 
-	 * @return the array of currently defined name space.
+	 * @return the array of currently defined namespace.
 	 */
 	public Collection<String> getNamespaces();
 
 	/*-- Access of current currencies --*/
 	/**
-	 * Checks if a currency is defined using its name space and code. This is a
-	 * convenience method for {@link #getCurrency(String, String)}, where as
-	 * namespace the default namespace is assumed.
+	 * Checks if a {@link CurrencyUnit} is defined using its namespace and
+	 * code. This is a convenience method for
+	 * {@link #getCurrency(String, String)}, where as the default namespace is
+	 * assumed.
 	 * 
 	 * @see #getDefaultNamespace()
 	 * @param code
 	 *            The code that, together with the namespace identifies the
 	 *            currency.
-	 * @return true, if the currency is defined.
+	 * @return {@code true}, if the currency is defined.
 	 */
 	public boolean isAvailable(String code);
 
 	/**
-	 * Checks if a currency is defined using its name space and code.
+	 * Checks if a {@link CurrencyUnit} is defined using its namespace and
+	 * code.
 	 * 
 	 * @param namespace
-	 *            The name space, e.g. 'ISO-4217'.
+	 *            The namespace, e.g. {@code "ISO-4217"}.
 	 * @param code
 	 *            The code that, together with the namespace identifies the
-	 *            currency.
+	 *            {@link CurrencyUnit}.
 	 * @return true, if the currency is defined.
 	 */
 	public boolean isAvailable(String namespace, String code);
 
 	/**
-	 * Access a currency using its name space and code. This is a convenience
+	 * Access a currency using its namespace and code. This is a convenience
 	 * method for {@link #getCurrency(String, String, Date)}, where {@code null}
 	 * is passed for the target date (meaning current date).
 	 * 
 	 * @param namespace
-	 *            The name space, e.g. 'ISO-4217'.
+	 *            The namespace, e.g. {@code "ISO-4217"}.
 	 * @param code
 	 *            The code that, together with the namespace identifies the
 	 *            currency.
-	 * @return The currency found, never null.
+	 * @return The {@link CurrencyUnit} found, never {@code null}.
 	 * @throws UnknownCurrencyException
 	 *             if the required currency is not defined.
 	 */
@@ -108,7 +111,7 @@ public interface MonetaryCurrenciesSingletonSpi {
 	 * @param code
 	 *            The code that, together with the namespace identifies the
 	 *            currency.
-	 * @return The currency found, never null.
+	 * @return The currency found, never {@code null}.
 	 * @throws UnknownCurrencyException
 	 *             if the required currency is not defined.
 	 */
@@ -118,26 +121,28 @@ public interface MonetaryCurrenciesSingletonSpi {
 	 * This method maps the given {@link CurrencyUnit} to another
 	 * {@link CurrencyUnit} with the given target namespace.
 	 * 
-	 * @param unit
-	 *            The source unit, never {@code null}.
+	 * @param currencyUnit
+	 *            The source {@link CurrencyUnit}, never {@code null}.
 	 * @param targetNamespace
 	 *            the target namespace, never {@code null}.
-	 * @return The mapped {@link CurrencyUnit}, or null.
+	 * @return The mapped {@link CurrencyUnit}, or {@code null}.
 	 */
-	public CurrencyUnit map(String targetNamespace, CurrencyUnit currencyUnit);
+	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace);
 
 	/**
 	 * This method maps the given {@link CurrencyUnit} to another
 	 * {@link CurrencyUnit} with the given target namespace.
 	 * 
-	 * @param unit
+	 * @param currencyUnit
 	 *            The source unit, never {@code null}.
 	 * @param targetNamespace
 	 *            the target namespace, never {@code null}.
-	 * @return The mapped {@link CurrencyUnit}, or null.
+	 * @param timestamp
+	 *            The target UTC timestamp.
+	 * @return The mapped {@link CurrencyUnit}, or {@code null}.
 	 */
-	public CurrencyUnit map(String targetNamespace, long timestamp,
-			CurrencyUnit currencyUnit);
+	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace,
+			long timestamp);
 
 	/**
 	 * This method maps the given {@link CurrencyUnit} instances to another
@@ -178,8 +183,8 @@ public interface MonetaryCurrenciesSingletonSpi {
 	 * @see #getNamespaces()
 	 * @see #getDefaultNamespace()
 	 * @param namespace
-	 *            The target namespace, not null.
-	 * @return The currencies found, never null.
+	 *            The target namespace, not {@code null}.
+	 * @return The currencies found, never {@code null}.
 	 * @throws UnknownCurrencyException
 	 *             if the required namespace is not defined.
 	 */

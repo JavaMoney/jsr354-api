@@ -80,6 +80,18 @@ public class ValidityQuery<T> {
 	}
 
 	/**
+	 * Sets the target item.
+	 * 
+	 * @param item
+	 *            the target item
+	 * @return the instance, for chaining.
+	 */
+	public ValidityQuery<T> withItem(T item) {
+		this.item = item;
+		return this;
+	}
+
+	/**
 	 * Sets the target timezone ID.
 	 * 
 	 * @param timezoneÎD
@@ -276,7 +288,8 @@ public class ValidityQuery<T> {
 	 */
 	@Override
 	public String toString() {
-		return "ValidityQuery [itemType="+itemType+", item=" + item + ", from=" + from + ", to=" + to
+		return "ValidityQuery [itemType=" + itemType + ", item=" + item
+				+ ", from=" + from + ", to=" + to
 				+ ", targetTimezoneId=" + targetTimezoneId
 				+ ", validitySource=" + validitySource + ", validityType="
 				+ validityType + "]";

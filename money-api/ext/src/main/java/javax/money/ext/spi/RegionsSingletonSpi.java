@@ -17,11 +17,12 @@ import java.util.Set;
 import javax.money.ext.Region;
 import javax.money.ext.RegionTreeNode;
 import javax.money.ext.RegionType;
+import javax.money.ext.Regions;
 
 /**
- * This is the region spi interface to be registered using {@code ServiceLoader}
- * and that is used by the {@link MonetaryRegions} singleton as its internal
- * implementation. It is responsible for loading and managing of
+ * This is the {@link Regions} spi interface to be registered using
+ * {@code ServiceLoader} and that is used by the {@link Regions} singleton as
+ * its internal implementation. It is responsible for loading and managing of
  * {@link RegionProviderSpi} and {@link RegionTreeProviderSpi} instances and
  * delegating according calls to the appropriate providers.
  * 
@@ -59,11 +60,11 @@ public interface RegionsSingletonSpi {
 	public Region getRegion(RegionType type, String code);
 
 	/**
-	 * Access a region using a {@link Locale}.
+	 * Access a region using the corresponding JDK country {@link Locale}.
 	 * 
 	 * @param locale
-	 *            The required locale.
-	 * @return the corresponding region, or null.
+	 *            The country {@link Locale}.
+	 * @return the corresponding {@link Region}, or {@code null}.
 	 */
 	public Region getRegion(Locale locale);
 
@@ -71,13 +72,13 @@ public interface RegionsSingletonSpi {
 	 * Access all regions provided for a given {@link RegionType}.
 	 * 
 	 * @param type
-	 *            The required region type.
-	 * @return the known regions of that type, not null.
+	 *            The required {@link RegionType}.
+	 * @return the known regions of that type, not {@code null}.
 	 */
 	public Collection<Region> getRegions(RegionType type);
 
 	/**
-	 * Access all region types defined by this provider.
+	 * Access all {@link RegionType}s defined by this provider.
 	 * 
 	 * @return the {@link RegionType} instances provided by/used by this
 	 *         provider.
@@ -94,12 +95,12 @@ public interface RegionsSingletonSpi {
 	public Set<String> getRegionTreeIds();
 
 	/**
-	 * Get the given region tree, for a list call {@link #getRegionTreeIds()}
-	 * beforehand.
+	 * Get the given region tree, for a list of possible items call
+	 * {@link #getRegionTreeIds()} beforehand.
 	 * 
 	 * @see #getRegionTreeIds()
 	 * @param id
-	 *            The tree name
+	 *            The tree identifier
 	 * @return the region tree.
 	 */
 	public RegionTreeNode getRegionTree(String id);

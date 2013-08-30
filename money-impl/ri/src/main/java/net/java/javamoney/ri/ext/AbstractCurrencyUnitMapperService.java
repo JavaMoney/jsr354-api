@@ -56,7 +56,7 @@ public abstract class AbstractCurrencyUnitMapperService {
 
 	public CurrencyUnit map(String targetNamespace, CurrencyUnit unit) {
 		for (CurrencyUnitMapperSpi prov : mappers) {
-			CurrencyUnit mappedUnit = prov.map(targetNamespace, unit, null);
+			CurrencyUnit mappedUnit = prov.map(unit, targetNamespace, null);
 			if (mappedUnit != null) {
 				return mappedUnit;
 			}
@@ -73,13 +73,12 @@ public abstract class AbstractCurrencyUnitMapperService {
 		return result;
 	}
 
-	public CurrencyUnit map(String targetNamespace, Long timestamp,
-			CurrencyUnit currencyUnit) {
+	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace, Long timestamp) {
 		if (timestamp == null) {
 			return map(targetNamespace, currencyUnit);
 		}
 		for (CurrencyUnitMapperSpi prov : mappers) {
-			CurrencyUnit mappedUnit = prov.map(targetNamespace, currencyUnit,
+			CurrencyUnit mappedUnit = prov.map(currencyUnit, targetNamespace,
 					timestamp);
 			if (mappedUnit != null) {
 				return mappedUnit;

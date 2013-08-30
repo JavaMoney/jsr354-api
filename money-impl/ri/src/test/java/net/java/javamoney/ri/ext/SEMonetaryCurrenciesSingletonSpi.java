@@ -160,8 +160,8 @@ public class SEMonetaryCurrenciesSingletonSpi implements
 	 *            the target namespace, never {@code null}.
 	 * @return The mapped {@link CurrencyUnit}, or null.
 	 */
-	public CurrencyUnit map(String targetNamespace, CurrencyUnit currencyUnit) {
-		return currencyUnitMapper.map(targetNamespace, null, currencyUnit);
+	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace) {
+		return currencyUnitMapper.map(currencyUnit, targetNamespace, null);
 	}
 
 	/**
@@ -174,11 +174,10 @@ public class SEMonetaryCurrenciesSingletonSpi implements
 	 *            the target namespace, never {@code null}.
 	 * @return The mapped {@link CurrencyUnit}, or null.
 	 */
-	public CurrencyUnit map(String targetNamespace, long timestamp,
-			CurrencyUnit currencyUnit) {
-		return currencyUnitMapper.map(targetNamespace, timestamp, currencyUnit);
+	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace,
+			long timestamp) {
+		return currencyUnitMapper.map(currencyUnit, targetNamespace, timestamp);
 	}
-
 
 	/**
 	 * This method maps the given {@link CurrencyUnit} instances to another
@@ -196,8 +195,8 @@ public class SEMonetaryCurrenciesSingletonSpi implements
 			CurrencyUnit... units) {
 		List<CurrencyUnit> resultList = new ArrayList<CurrencyUnit>();
 		for (CurrencyUnit currencyUnit : units) {
-			CurrencyUnit result = currencyUnitMapper.map(targetNamespace, null,
-					currencyUnit);
+			CurrencyUnit result = currencyUnitMapper.map(currencyUnit,
+					targetNamespace, null);
 			if (result == null) {
 				throw new IllegalArgumentException("Cannot map curreny "
 						+ currencyUnit + " to namespace "
@@ -212,8 +211,9 @@ public class SEMonetaryCurrenciesSingletonSpi implements
 			CurrencyUnit... units) {
 		List<CurrencyUnit> resultList = new ArrayList<CurrencyUnit>();
 		for (CurrencyUnit currencyUnit : units) {
-			CurrencyUnit result = currencyUnitMapper.map(targetNamespace,
-					timestamp, currencyUnit);
+			CurrencyUnit result = currencyUnitMapper.map(currencyUnit,
+					targetNamespace,
+					timestamp);
 			if (result == null) {
 				throw new IllegalArgumentException("Cannot map curreny "
 						+ currencyUnit + " to namespace "

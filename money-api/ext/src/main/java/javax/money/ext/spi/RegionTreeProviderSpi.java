@@ -19,10 +19,11 @@ import javax.money.ext.RegionTreeNode;
 /**
  * Implementation of this interface provide a region tree, identified by
  * {@link #getTreeId()}. A provider hereby can only provide one region tree and
- * {@link #getTreeId()} must be unique within the same context.<br/>
+ * {@link #getTreeId()} must be unique within the all region trees in a runtime
+ * context.<br/>
  * It is the responsibility of the registered {@link RegionsSingletonSpi} to
  * load the and manage the instances of {@link RegionTreeProviderSpi}. Depending
- * on the runtime environment, implementatations may be loaded using the
+ * on the runtime environment, implementations may be loaded using the
  * {@link ServiceLoader}. But also alternate mechanisms are possible, e.g. CDI.
  * 
  * @author Anatole Tresch

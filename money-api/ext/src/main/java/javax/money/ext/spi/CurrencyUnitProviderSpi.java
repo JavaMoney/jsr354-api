@@ -17,7 +17,7 @@ import javax.money.CurrencyUnit;
 
 /**
  * This class models the component defined by JSR 354 that provides accessory
- * for {@link CurrencyUnit}. It is provided by the Monetary singleton.<br/>
+ * for {@link CurrencyUnit}.<br/>
  * It is the responsibility of the registered
  * {@link MonetaryCurrenciesSingletonSpi} to load the and manage the instances
  * of {@link CurrencyUnitProviderSpi}. Depending on the runtime environment,
@@ -29,35 +29,41 @@ import javax.money.CurrencyUnit;
 public interface CurrencyUnitProviderSpi {
 
 	/**
-	 * Access the namespace this provider defines.
+	 * Access the namespace this provider defines. An instance of
+	 * {@link CurrencyUnitProviderSpi} alwyas provides {@link CurrencyUnit} for
+	 * exact one namespace. Nevertheless multiple implementations of
+	 * {@link CurrencyUnitProviderSpi} may serve currencies for the same
+	 * namespace, if they do not conflict related to their currency code or
+	 * numericCode (if defined).
 	 * 
-	 * @return the namespace of this provider, never null.
+	 * @return the namespace of this provider, never {@code null}.
 	 */
 	public String getNamespace();
 
 	/**
-	 * Access all regions for a given namespace.
+	 * Access all {@link CurrencyUnit} instances.
 	 * 
-	 * @return the regions that belong to the given namespace.
+	 * @return the {@link CurrencyUnit} instances known to this provider
+	 *         instance.
 	 */
 	public Collection<CurrencyUnit> getAll();
 
 	/**
-	 * Access a {@link CurrencyUnit} by namespace and code.
+	 * Access a {@link CurrencyUnit} by code.
 	 * 
 	 * @param code
-	 *            the code, not null.
+	 *            the {@link CurrencyUnit} found, or {@code null}.
 	 * @return the {@link CurrencyUnit} found.
 	 */
 	public CurrencyUnit get(String code);
 
 	/**
-	 * Checks if a currency is defined using its name space and code.
+	 * Checks if a currency is defined using its code.
 	 * 
 	 * @param code
-	 *            The code that, together with the namespace identifies the
-	 *            currency.
-	 * @return true, if the currency is defined.
+	 *            The code that, together with the namespace of this provider
+	 *            identifies the currency.
+	 * @return {@code true}, if the currency is defined.
 	 */
 	public boolean isAvailable(String code);
 }

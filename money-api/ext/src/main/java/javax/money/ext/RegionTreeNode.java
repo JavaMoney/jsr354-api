@@ -90,42 +90,31 @@ public interface RegionTreeNode {
 	 */
 	public RegionTreeNode getRegionTree(String path);
 
-	/**
-	 * Access a direct child of the {@link Region}.
-	 * 
-	 * @param path
-	 *            the path, e.g. a/b/c, never {@code null}.
-	 * @return The {@link RegionTreeNode} found.
-	 * @throws IllegalArgumentException
-	 *             , if the path is not matching!
-	 */
-	public RegionTreeNode getSubRegion(String path);
-
-	/**
-	 * Get a String representation of the region tree.
-	 * 
-	 * @return the according tree as text.
-	 */
-	public String getAsText();
-
-	/**
-	 * Get a String representation of the region tree.
-	 * 
-	 * @param intend
-	 *            THe intend to use for formatting
-	 * @return the according tree as text.
-	 */
-	public String getAsText(String intend);
-
-	/**
-	 * Print the tree to the given {@link Appendable}, using the given intend.
-	 * 
-	 * @param b
-	 *            The {@link Appendable} to use.
-	 * @param intend
-	 *            THe intend to use for formatting
-	 * @throws IOException
-	 */
-	public void printTree(Appendable b, String intend) throws IOException;
+//	/**
+//	 * Get a String representation of the region tree.
+//	 * 
+//	 * @return the according tree as text.
+//	 */
+//	public String getAsText();
+//
+//	/**
+//	 * Get a String representation of the region tree.
+//	 * 
+//	 * @param intend
+//	 *            THe intend to use for formatting
+//	 * @return the according tree as text.
+//	 */
+//	public String getAsText(String intend);
+//
+//	/**
+//	 * Print the tree to the given {@link Appendable}, using the given intend.
+//	 * 
+//	 * @param b
+//	 *            The {@link Appendable} to use.
+//	 * @param intend
+//	 *            THe intend to use for formatting
+//	 * @throws IOException
+//	 */
+//	public void printTree(Appendable b, String intend) throws IOException;
 
 }

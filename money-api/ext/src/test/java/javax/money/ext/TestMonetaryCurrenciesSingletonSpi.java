@@ -25,66 +25,97 @@ import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
  * @author Anatole Tresch
  * 
  */
-public class TestMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesSingletonSpi {
+public class TestMonetaryCurrenciesSingletonSpi implements
+		MonetaryCurrenciesSingletonSpi {
 
-    @Override
-    public String getDefaultNamespace() {
-	return TestCurrency.ISO_NAMESPACE;
-    }
-
-    @Override
-    public boolean isAvailable(String namespace, String currencyCode) {
-	return TestCurrency.of(namespace, currencyCode) != null;
-    }
-
-    @Override
-    public CurrencyUnit get(String namespace, String currencyCode) {
-	CurrencyUnit unit = TestCurrency.of(namespace, currencyCode);
-	if (unit != null) {
-	    return unit;
+	@Override
+	public String getDefaultNamespace() {
+		return TestCurrency.ISO_NAMESPACE;
 	}
-	throw new UnknownCurrencyException(namespace, currencyCode);
-    }
 
-    @Override
-    public boolean isNamespaceAvailable(String namespace) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	@Override
+	public boolean isAvailable(String namespace, String currencyCode) {
+		return TestCurrency.of(namespace, currencyCode) != null;
+	}
 
-    @Override
-    public Collection<String> getNamespaces() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	@Override
+	public CurrencyUnit get(String namespace, String currencyCode) {
+		CurrencyUnit unit = TestCurrency.of(namespace, currencyCode);
+		if (unit != null) {
+			return unit;
+		}
+		throw new UnknownCurrencyException(namespace, currencyCode);
+	}
 
-    @Override
-    public boolean isAvailable(String code) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	@Override
+	public boolean isNamespaceAvailable(String namespace) {
+		throw new UnsupportedOperationException("Not supported yet."); // To
+																		// change
+																		// body
+																		// of
+																		// generated
+																		// methods,
+																		// choose
+																		// Tools
+																		// |
+																		// Templates.
+	}
 
-    @Override
-    public CurrencyUnit get(String code) {
-       return get(getDefaultNamespace(), code);
-    }
+	@Override
+	public Collection<String> getNamespaces() {
+		throw new UnsupportedOperationException("Not supported yet."); // To
+																		// change
+																		// body
+																		// of
+																		// generated
+																		// methods,
+																		// choose
+																		// Tools
+																		// |
+																		// Templates.
+	}
 
-    @Override
-    public CurrencyUnit map(String targetNamespace, CurrencyUnit currencyUnit) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	@Override
+	public boolean isAvailable(String code) {
+		throw new UnsupportedOperationException("Not supported yet."); // To
+																		// change
+																		// body
+																		// of
+																		// generated
+																		// methods,
+																		// choose
+																		// Tools
+																		// |
+																		// Templates.
+	}
 
-    @Override
-    public CurrencyUnit map(String targetNamespace, long timestamp, CurrencyUnit currencyUnit) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	@Override
+	public CurrencyUnit get(String code) {
+		return get(getDefaultNamespace(), code);
+	}
 
-    @Override
-    public List<CurrencyUnit> mapAll(String targetNamespace, CurrencyUnit... units) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	@Override
+	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public List<CurrencyUnit> mapAll(String targetNamespace, long timestamp, CurrencyUnit... units) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	@Override
+	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace,
+			long timestamp) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public List<CurrencyUnit> mapAll(String targetNamespace,
+			CurrencyUnit... units) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public List<CurrencyUnit> mapAll(String targetNamespace, long timestamp,
+			CurrencyUnit... units) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
 	@Override
 	public Collection<CurrencyUnit> getAll(String namespace) {

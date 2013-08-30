@@ -12,7 +12,6 @@
  */
 package net.java.javamoney.ri.ext;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -150,54 +149,14 @@ public abstract class AbstractRegionNode implements RegionTreeNode,
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.ext.RegionTreeNode#getRegionTree(java.lang.String)
-	 */
-	@Override
-	public RegionTreeNode getRegionTree(String path) {
-		String[] paths = path.split("/");
-		RegionTreeNode current = this;
-		for (String pathElem : paths) {
-			current = current.getSubRegion(pathElem.trim());
-			if (current == null) {
-				throw new IllegalArgumentException("path not found: " + path);
-			}
-		}
-		return current;
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public int compareTo(RegionTreeNode o) {
 		return ((Comparable<Region>) this.region).compareTo(o.getRegion());
 	}
 
-	public String getAsText() {
-		return getAsText("");
-	}
-
-	public String getAsText(String intend) {
-		StringBuilder b = new StringBuilder();
-		try {
-			printTree(b, intend);
-		} catch (IOException e) {
-			e.printStackTrace(); // TODO
-			b.append("Error: " + e);
-		}
-		return b.toString();
-	}
-
-	public void printTree(Appendable b, String intend) throws IOException {
-		b.append(intend + toString()).append("\n");
-		intend = intend + "  ";
-		for (RegionTreeNode region : getChildren()) {
-			region.printTree(b, intend);
-		}
-	}
-
 	@Override
-	public RegionTreeNode getSubRegion(String path) {
+	public RegionTreeNode getRegionTree(String path) {
 		String[] paths = path.split("/");
 		RegionTreeNode current = this;
 		for (String curPath : paths) {

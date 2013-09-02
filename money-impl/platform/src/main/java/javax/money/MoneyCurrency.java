@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Adapter that implements the new {@link CurrencyUnit} interface using the
  * JDK's {@link Currency}.
  * 
- * @version 0.5
+ * @version 0.5.1
  * @author Anatole Tresch
  * @author Werner Keil
  */
@@ -36,7 +36,8 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
      * {@link Currency}.
      */
     public static final String ISO_NAMESPACE = "ISO-4217";
-
+//TODO see https://en.wikipedia.org/wiki/ISO_4217#Without_currency_code
+    
     /**
      * serialVersionUID.
      */
@@ -499,44 +500,44 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
      */
     private final static class JDKCurrencyAdapter extends MoneyCurrency implements Displayable {
 
-	/**
-	 * serialVersionUID.
-	 */
-	private static final long serialVersionUID = -2523936311372374236L;
-
-	/**
-	 * ISO 4217 currency code for this currency.
-	 * 
-	 * @serial
-	 */
-	private final Currency currency;
-
-	/**
-	 * Private constructor.
-	 * 
-	 * @param currency
-	 */
-	private JDKCurrencyAdapter(Currency currency) {
-	    super(currency);
-	    this.currency = currency;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.Displayable#getDisplayName(java.util.Locale)
-	 */
-	public String getDisplayName(Locale locale) {
-	    return currency.getDisplayName(locale);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-	    return ISO_NAMESPACE + ':' + getCurrencyCode();
-	}
+		/**
+		 * serialVersionUID.
+		 */
+		private static final long serialVersionUID = -2523936311372374236L;
+	
+		/**
+		 * ISO 4217 currency code for this currency.
+		 * 
+		 * @serial
+		 */
+		private final Currency currency;
+	
+		/**
+		 * Private constructor.
+		 * 
+		 * @param currency
+		 */
+		private JDKCurrencyAdapter(Currency currency) {
+		    super(currency);
+		    this.currency = currency;
+		}
+	
+		/*
+		 * (non-Javadoc)
+		 * @see javax.money.Displayable#getDisplayName(java.util.Locale)
+		 */
+		public String getDisplayName(Locale locale) {
+		    return currency.getDisplayName(locale);
+		}
+	
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+		    return ISO_NAMESPACE + ':' + getCurrencyCode();
+		}
 
     }
 

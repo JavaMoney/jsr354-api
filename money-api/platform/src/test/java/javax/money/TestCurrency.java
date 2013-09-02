@@ -106,7 +106,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
     }
 
     /**
-     * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
+     * Get the namespace of this {@link CurrencyUnit}, returns 'ISO-4217'.
      */
     public String getNamespace() {
 	return namespace;

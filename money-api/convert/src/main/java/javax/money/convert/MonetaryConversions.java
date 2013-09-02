@@ -62,7 +62,7 @@ public final class MonetaryConversions {
             }
         } catch (Throwable e) {
             Logger.getLogger(MonetaryConversions.class.getName()).log(
-                    Level.INFO,
+                    Level.WARNING,
                     "No MonetaryConversionSpi registered, using  default.", e);
         }
         return new DefaultMonetaryConversionsSpi();

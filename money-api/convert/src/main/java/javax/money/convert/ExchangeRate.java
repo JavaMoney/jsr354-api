@@ -900,7 +900,13 @@ public class ExchangeRate implements Serializable, Comparable<ExchangeRate> {
 		 * @return The builder instance.
 		 */
 		public Builder setFactor(Number factor) {
-			this.factor = BigDecimal.valueOf(factor.doubleValue());
+			if (factor != null) {
+				if (factor instanceof BigDecimal) {
+					this.factor = (BigDecimal)factor;
+				} else {
+					this.factor = BigDecimal.valueOf(factor.doubleValue());
+				}
+			}
 			return this;
 		}
 

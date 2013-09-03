@@ -50,7 +50,7 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IsoCurrencyOnlineProvider.class);
 
-    private final static String PROP_FILE = "/currencyprovider.properties";
+    private static final String PROP_FILE = "/currencyprovider.properties";
     
     private final SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 
@@ -128,17 +128,17 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 	    return currencyName;
 	}
 
-	public String getSymbol(Locale locale) {
-	    return currencyCode;
-	}
-
-	public String getSymbol() {
-	    return currencyCode;
-	}
-
-	public String getDisplayName() {
-	    return currencyName;
-	}
+//	public String getSymbol(Locale locale) {
+//	    return currencyCode;
+//	}
+//
+//	public String getSymbol() {
+//	    return currencyCode;
+//	}
+//
+//	public String getDisplayName() {
+//	    return currencyName;
+//	}
 
 	@Override
 	public boolean isLegalTender() {

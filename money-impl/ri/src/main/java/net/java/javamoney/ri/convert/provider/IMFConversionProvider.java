@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
@@ -51,22 +52,24 @@ import org.slf4j.LoggerFactory;
  * converting from/to the IMF <i>SDR</i> currency unit.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 @Singleton
 public class IMFConversionProvider implements ConversionProvider {
-
+    private static final String PROP_FILE = "/currencyprovider.properties";
+    private final Properties prop = new Properties();
+    private final String providerUrl;
+    private static final String IMF_STR = "IMF";
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(IMFConversionProvider.class);
 
 	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
-			.of("IMF");
+			.of(IMF_STR);
 
 	private static final MoneyCurrency SDR = new MoneyCurrency.Builder(
 			MoneyCurrency.ISO_NAMESPACE, "SDR").setLegalTender(false)
 			.setVirtual(false).setDefaultFractionDigits(3).setNumericCode(-1)
 			.build(true);
-
-	private static final String PROVIDER_URL = "http://www.imf.org/external/np/fin/data/rms_five.aspx?tsvflag=Y";
 
 	private Map<CurrencyUnit, List<ExchangeRate>> currencyToSdr = new HashMap<CurrencyUnit, List<ExchangeRate>>();
 
@@ -80,6 +83,7 @@ public class IMFConversionProvider implements ConversionProvider {
 					MoneyCurrency.of(currency));
 		}
 		// Additional IMF differing codes:
+		// TODO i18n?
 		currenciesByName.put("U.K. Pound Sterling", MoneyCurrency.of("GBP"));
 		currenciesByName.put("U.S. Dollar", MoneyCurrency.of("USD"));
 		currenciesByName.put("Bahrain Dinar", MoneyCurrency.of("BHD"));
@@ -103,13 +107,22 @@ public class IMFConversionProvider implements ConversionProvider {
 			this);
 
 	public IMFConversionProvider() {
+		try (InputStream in = getClass().getResourceAsStream(PROP_FILE)) {
+			prop.load(in);
+			//providerUrl = prop.getProperty("");
+		} catch (IOException e) {
+			LOGGER.warn("Warning", e);
+			//providerUrl = "http://www.imf.org/external/np/fin/data/rms_five.aspx?tsvflag=Y";
+		} finally {
+			providerUrl = prop !=null ? prop.getProperty(getClass().getSimpleName() + ".url") : "";
+		}
 		loadRates();
 	}
 
 	public void loadRates() {
 		InputStream is = null;
 		try {
-			URL url = new URL(PROVIDER_URL);
+			URL url = new URL(providerUrl);
 			is = url.openStream();
 			loadRatesTSV(is);
 		} catch (Exception e) {
@@ -134,7 +147,7 @@ public class IMFConversionProvider implements ConversionProvider {
 		BufferedReader pr = new BufferedReader(new InputStreamReader(
 				inputStream));
 		String line = pr.readLine();
-		int lineType = 0;
+//		int lineType = 0;
 		boolean currencyToSdr = true;
 		// SDRs per Currency unit (2)
 		//
@@ -188,7 +201,7 @@ public class IMFConversionProvider implements ConversionProvider {
 						newCurrencyToSdr.put(currency, rates);
 					}
 					ExchangeRate rate = new ExchangeRate(RATE_TYPE, currency,
-							SDR, values[i], PROVIDER_URL, fromTS, toTS);
+							SDR, values[i], providerUrl, fromTS, toTS);
 					rates.add(rate);
 				} else { // SDR -> Currency
 					List<ExchangeRate> rates = this.sdrToCurrency.get(currency);
@@ -197,7 +210,7 @@ public class IMFConversionProvider implements ConversionProvider {
 						newSdrToCurrency.put(currency, rates);
 					}
 					ExchangeRate rate = new ExchangeRate(RATE_TYPE, SDR,
-							currency, values[i], PROVIDER_URL, fromTS, toTS);
+							currency, values[i], providerUrl, fromTS, toTS);
 					rates.add(rate);
 				}
 			}
@@ -252,7 +265,7 @@ public class IMFConversionProvider implements ConversionProvider {
 			return null;
 		}
 		ExchangeRate.Builder builder = new ExchangeRate.Builder();
-		builder.setProvider(PROVIDER_URL);
+		builder.setProvider(providerUrl);
 		builder.setExchangeRateType(RATE_TYPE);
 		builder.setBase(base);
 		builder.setTerm(term);
@@ -283,7 +296,7 @@ public class IMFConversionProvider implements ConversionProvider {
 
 	@Override
 	public ExchangeRateType getExchangeRateType() {
-		return ExchangeRateType.of("IMF");
+		return RATE_TYPE;
 	}
 
 	@Override

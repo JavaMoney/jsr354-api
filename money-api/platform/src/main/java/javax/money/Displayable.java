@@ -13,13 +13,13 @@ import java.util.Locale;
 /**
  * This interface is implemented by types that are displayable for particular locales.
  * 
- * @TODO check if this class can be moved to {@code java.util} or at least "format" module.
- * 
  * @author Anatole Tresch
  * @author Werner Keil
+ * @version 0.9
  */
 public interface Displayable {
-
+// TODO check if this class can be moved to {@code java.util} or at least "format" module.
+	
 	/**
 	 * Gets the name that is suitable for displaying this item for
      * the specified locale. 
@@ -30,5 +30,4 @@ public interface Displayable {
      * @exception NullPointerException if <code>locale</code> is null
 	 */
 	public String getDisplayName(Locale locale);
-
 }

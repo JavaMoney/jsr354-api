@@ -28,6 +28,7 @@ import javax.money.ext.RegionTreeNode;
 import javax.money.ext.RegionType;
 import javax.money.ext.spi.RegionsSingletonSpi;
 
+import net.java.javamoney.ri.ext.AbstractExtendedRegionDataService;
 import net.java.javamoney.ri.ext.AbstractRegionProviderService;
 import net.java.javamoney.ri.ext.AbstractRegionTreeProviderService;
 
@@ -55,6 +56,10 @@ public class CDIRegionsSingletonSpi implements RegionsSingletonSpi {
 	 */
 	private AbstractRegionTreeProviderService regionTreeProviderService = new CDIRegionTreeProviderService();
 
+	/**
+	 * The service providing extended region data.
+	 */
+	private AbstractExtendedRegionDataService regionDataService = new CDIExtendedRegionDataService();
 
 	@Override
 	public Region getRegion(RegionType type, int numericId) {
@@ -89,5 +94,15 @@ public class CDIRegionsSingletonSpi implements RegionsSingletonSpi {
 	@Override
 	public Set<String> getRegionTreeIds() {
 		return regionTreeProviderService.getRegionTreeIds();
+	}
+
+	@Override
+	public Collection<Class> getExtendedRegionDataTypes(Region region) {
+		return regionDataService.getExtendedRegionDataTypes(region);
+	}
+
+	@Override
+	public <T> T getExtendedRegionData(Region region, Class<T> type) {
+		return regionDataService.getExtendedRegionData(region, type);
 	}
 }

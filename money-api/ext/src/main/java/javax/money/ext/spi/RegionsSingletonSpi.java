@@ -78,6 +78,31 @@ public interface RegionsSingletonSpi {
 	public Collection<Region> getRegions(RegionType type);
 
 	/**
+	 * Get the extended data types, that can be accessed from this
+	 * {@link Region} by calling {@link #getRegionData(Class)}.
+	 * 
+	 * @param region
+	 *            the region for which addition data is requested.
+	 * @return the collection of supported region data, may be {@code empty} but
+	 *         never {@code null}.
+	 */
+	public Collection<Class> getExtendedRegionDataTypes(Region region);
+
+	/**
+	 * Access the additional region data, using its type.
+	 * 
+	 * @param region
+	 *            the region for which addition data is requested.
+	 * @param type
+	 *            The region data type, not {@code null}.
+	 * @return the corresponding data item.
+	 * @throws IllegalArgumentException
+	 *             if the type passed is not supported. See
+	 *             {@link #getRegionDataTypes()}.
+	 */
+	public <T> T getExtendedRegionData(Region region, Class<T> type);
+
+	/**
 	 * Access all {@link RegionType}s defined by this provider.
 	 * 
 	 * @return the {@link RegionType} instances provided by/used by this

@@ -52,6 +52,11 @@ public class SERegionsSingletonSpi implements RegionsSingletonSpi {
 	 */
 	private AbstractRegionTreeProviderService regionForestProviderService = new SERegionTreeProviderService();
 
+	/**
+	 * Loaded region providers.
+	 */
+	private AbstractExtendedRegionDataService regionDataService = new SEExtendedRegionDataService();
+
 	@Override
 	public Region getRegion(RegionType type, int numericId) {
 		return regionProviderService.getRegion(type, numericId);
@@ -85,6 +90,16 @@ public class SERegionsSingletonSpi implements RegionsSingletonSpi {
 	@Override
 	public Set<String> getRegionTreeIds() {
 		return regionForestProviderService.getRegionTreeIds();
+	}
+
+	@Override
+	public Collection<Class> getExtendedRegionDataTypes(Region region) {
+		return regionDataService.getExtendedRegionDataTypes(region);
+	}
+
+	@Override
+	public <T> T getExtendedRegionData(Region region, Class<T> type) {
+		return regionDataService.getExtendedRegionData(region, type);
 	}
 
 }

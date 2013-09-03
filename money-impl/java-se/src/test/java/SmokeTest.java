@@ -19,6 +19,7 @@
  */
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.math.RoundingMode;
 import java.util.Locale;
@@ -34,10 +35,15 @@ import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
 import javax.money.convert.MonetaryConversions;
 import javax.money.ext.MonetaryCurrencies;
+import javax.money.ext.Region;
+import javax.money.ext.RegionType;
+import javax.money.ext.Regions;
 import javax.money.format.ItemFormat;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormats;
+
+import net.java.javamoney.ri.ext.provider.icu4j.IcuRegion;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -155,5 +161,16 @@ public class SmokeTest {
 		CurrencyUnit currency = MonetaryCurrencies.get(
 				MoneyCurrency.ISO_NAMESPACE, "INR");
 		assertNotNull(currency);
+	}
+	
+	@Test
+	public void testExtendedRegionData() throws InterruptedException {
+		Region region = Regions.getRegion(RegionType.TERRITORY, "DE");
+		assertNotNull("Extended data available for Germany is missing",
+				Regions.getExtendedRegionDataTypes(region));
+		assertTrue("Extended data available for Germany not containing IcuRegion.class",
+				Regions.getExtendedRegionDataTypes(region).contains(IcuRegion.class));
+		assertNotNull("Extended ICU data for Germany null.",
+				Regions.getExtendedRegionData(region, IcuRegion.class));
 	}
 }

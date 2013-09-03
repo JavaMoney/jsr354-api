@@ -1,5 +1,6 @@
 package net.java.javamoney.ri;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -30,6 +31,7 @@ import javax.money.format.MonetaryFormats;
 import javax.money.function.InstancesPredicate;
 
 import net.java.javamoney.ri.ext.RegionPrinter;
+import net.java.javamoney.ri.ext.provider.icu4j.IcuRegion;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -196,6 +198,17 @@ public class SmokeTests {
 				+ RegionPrinter.getAsText(Regions.getRegionTree("ISO3")));
 	}
 
+	@Test
+	public void testExtendedRegionData() throws InterruptedException {
+		Region region = Regions.getRegion(RegionType.TERRITORY, "DE");
+		assertNotNull("Extended data available for Germany is missing",
+				Regions.getExtendedRegionDataTypes(region));
+		assertTrue("Extended data available for Germany not containing IcuRegion.class",
+				Regions.getExtendedRegionDataTypes(region).contains(IcuRegion.class));
+		assertNotNull("Extended ICU data for Germany null.",
+				Regions.getExtendedRegionData(region, IcuRegion.class));
+	}
+	
 	@Test
 	public void testCurrencyRegionValidities() throws InterruptedException {
 		System.out.println("Validity providers: "

@@ -14,6 +14,7 @@ package net.java.javamoney.ri.ext.provider.icu4j;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 import javax.money.Displayable;
@@ -34,6 +35,8 @@ public class IcuRegion implements Region, Displayable {
 	private com.ibm.icu.util.Region icuRegion;
 	private RegionType regionType;
 	private Locale countryLocale;
+	private static final List<Class> REGION_DATATYPES = Arrays
+			.asList(new Class[] { IcuRegion.class });
 
 	public IcuRegion(com.ibm.icu.util.Region icuRegion, RegionType regionType) {
 		if (icuRegion == null) {
@@ -135,9 +138,15 @@ public class IcuRegion implements Region, Displayable {
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.ext.Region#getLocale()
+	 */
 	@Override
 	public Locale getLocale() {
 		return this.countryLocale;
 	}
+
 
 }

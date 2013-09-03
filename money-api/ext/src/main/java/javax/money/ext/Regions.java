@@ -96,6 +96,31 @@ public final class Regions {
 	public static Collection<Region> getRegions(RegionType type) {
 		return REGION_SPI.getRegions(type);
 	}
+	
+	/**
+	 * Get the extended data types, that can be accessed from this
+	 * {@link Region} by calling {@link #getRegionData(Class)}.
+	 * 
+	 * @return the collection of supported region data, may be {@code empty} but
+	 *         never {@code null}.
+	 */
+	public static <T> Collection<Class> getExtendedRegionDataTypes(Region region){
+		return REGION_SPI.getExtendedRegionDataTypes(region);
+	}
+
+	/**
+	 * Access the additional region data, using its type.
+	 * 
+	 * @param type
+	 *            The region data type, not {@code null}.
+	 * @return the corresponding data item.
+	 * @throws IllegalArgumentException
+	 *             if the type passed is not supported. See
+	 *             {@link #getRegionDataTypes()}.
+	 */
+	public static <T> T getExtendedRegionData(Region region, Class<T> type){
+		return REGION_SPI.getExtendedRegionData(region, type);
+	}
 
 	/**
 	 * Access the defined region trees.
@@ -197,6 +222,17 @@ public final class Regions {
 		@Override
 		public Collection<Region> getRegions(RegionType type) {
 			return Collections.emptySet();
+		}
+
+		@Override
+		public Collection<Class> getExtendedRegionDataTypes(Region region) {
+			return Collections.emptySet();
+		}
+
+		@Override
+		public <T> T getExtendedRegionData(Region region, Class<T> type) {
+			throw new IllegalArgumentException("Unsupported data type for " + this
+					+ ", use one of " + getExtendedRegionDataTypes(region));
 		}
 	}
 }

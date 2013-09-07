@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -79,10 +80,11 @@ public final class DataLoader {
 	}
 
 	/**
-	 * Platform RI: The update policy defines how and when the {@link DataLoader} tries to
-	 * update the local cache with newest version of the registered data
-	 * resources, accessing the configured remote {@link URL}s. By default no
-	 * remote connections are done ( {@link UpdatePolicy#NEVER} ).
+	 * Platform RI: The update policy defines how and when the
+	 * {@link DataLoader} tries to update the local cache with newest version of
+	 * the registered data resources, accessing the configured remote
+	 * {@link URL}s. By default no remote connections are done (
+	 * {@link UpdatePolicy#NEVER} ).
 	 * 
 	 * @author Anatole Tresch
 	 */
@@ -233,6 +235,18 @@ public final class DataLoader {
 	}
 
 	/**
+	 * Explicitly asynchronously triggers the remote loading of the registered
+	 * data, regardless of its current {@link UpdatePolicy} configured.
+	 * 
+	 * @param dataId
+	 *            The unique identifier of the resource, not {@code null}.
+	 * @return the Future of the load task started.
+	 */
+	public Future<?> loadDataAsynch(String dataId) {
+		return loaderSpi.loadDataAsynch(dataId);
+	}
+
+	/**
 	 * Explicitly triggers the reset (loading of the registered data from the
 	 * classpath backup resource).
 	 * 
@@ -246,8 +260,8 @@ public final class DataLoader {
 	}
 
 	/**
-	 * Platform RI: Callback that can be registered to be informed, when a data item was
-	 * loaded/updated or reset.
+	 * Platform RI: Callback that can be registered to be informed, when a data
+	 * item was loaded/updated or reset.
 	 * 
 	 * @see DataLoader#resetData(String)
 	 * @see DataLoader#loadData(String)
@@ -388,7 +402,17 @@ public final class DataLoader {
 		 * @throws IOException
 		 *             if a problem occurred.
 		 */
-		public void loadData(String dataId) throws IOException;
+		public void loadData(String resourceId) throws IOException;
+
+		/**
+		 * Explicitly asynchronously triggers the remote loading of the
+		 * registered data, regardless of its current {@link UpdatePolicy}
+		 * configured.
+		 * 
+		 * @param resourceId
+		 * @return the Future of the load task started.
+		 */
+		public Future<?> loadDataAsynch(String resourceId);
 
 		/**
 		 * Explicitly triggers the reset (loading of the registered data from
@@ -400,6 +424,7 @@ public final class DataLoader {
 		 *             if a problem occurred.
 		 */
 		public void resetData(String dataId) throws IOException;
+
 	}
 
 }

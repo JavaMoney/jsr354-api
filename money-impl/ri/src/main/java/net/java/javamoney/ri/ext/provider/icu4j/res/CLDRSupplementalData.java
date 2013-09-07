@@ -27,6 +27,9 @@ import javax.money.ext.Region;
 import javax.money.ext.RegionType;
 import javax.money.ext.Regions;
 
+import net.java.javamoney.ri.loader.AbstractXmlResource;
+
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -49,6 +52,7 @@ public final class CLDRSupplementalData extends AbstractXmlResource {
 				new URL(
 						"http://unicode.org/repos/cldr/trunk/common/supplemental/supplementalData.xml"),
 				"/java-money/defaults/cldr/supplementalData.xml");
+		load();
 	}
 
 	public static CLDRSupplementalData getInstance() {
@@ -65,11 +69,11 @@ public final class CLDRSupplementalData extends AbstractXmlResource {
 	}
 
 	@Override
-	protected void documentReloaded() {
+	protected void loadDocument(Document document) {
 		// load currencies
 		Map<String, Currency4Region> data = new HashMap<String, Currency4Region>();
 		try {
-			NodeList nl = getDocument().getDocumentElement()
+			NodeList nl = document.getDocumentElement()
 					.getElementsByTagName("region");
 			for (int i = 0; i < nl.getLength(); i++) {
 				Node childNode = nl.item(i);

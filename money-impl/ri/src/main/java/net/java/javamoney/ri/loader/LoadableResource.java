@@ -171,13 +171,17 @@ public class LoadableResource {
 		}
 		if (itemToLoad != null) {
 			InputStream is = null;
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			try {
 				URLConnection conn = itemToLoad.openConnection();
-				byte[] data = new byte[conn.getContentLength()];
+				byte[] data = new byte[4096];
 				is = conn.getInputStream();
-				is.read(data);
-				this.data = data;
-				// TODO update local cache...
+				int read = is.read(data);
+				while(read>0){
+					bos.write(data, 0, read);
+					read = is.read(data);
+				}
+				this.data = bos.toByteArray();
 			} finally {
 				if (is != null) {
 					try {
@@ -186,6 +190,9 @@ public class LoadableResource {
 						LOG.error("Error closing resource input for "
 								+ resourceId, e);
 					}
+				}
+				if(bos!=null){
+					bos.close();
 				}
 			}
 		}

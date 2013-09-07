@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -33,7 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.inject.Singleton;
 import javax.money.CurrencyUnit;
@@ -42,6 +42,8 @@ import javax.money.convert.ConversionProvider;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
+
+import net.java.javamoney.ri.loader.AbstractResource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,11 +57,10 @@ import org.slf4j.LoggerFactory;
  * @author Werner Keil
  */
 @Singleton
-public class IMFConversionProvider implements ConversionProvider {
-    private static final String PROP_FILE = "/currencyprovider.properties";
-    private final Properties prop = new Properties();
-    private final String providerUrl;
-    private static final String IMF_STR = "IMF";
+public class IMFConversionProvider extends AbstractResource
+		implements ConversionProvider {
+
+	private static final String IMF_STR = "IMF";
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(IMFConversionProvider.class);
 
@@ -106,35 +107,20 @@ public class IMFConversionProvider implements ConversionProvider {
 	private CurrencyConverter currencyConverter = new DefaultCurrencyConverter(
 			this);
 
-	public IMFConversionProvider() {
-		try (InputStream in = getClass().getResourceAsStream(PROP_FILE)) {
-			prop.load(in);
-			//providerUrl = prop.getProperty("");
-		} catch (IOException e) {
-			LOGGER.warn("Warning", e);
-			//providerUrl = "http://www.imf.org/external/np/fin/data/rms_five.aspx?tsvflag=Y";
-		} finally {
-			providerUrl = prop !=null ? prop.getProperty(getClass().getSimpleName() + ".url") : "";
-		}
-		loadRates();
+	public IMFConversionProvider() throws MalformedURLException {
+		super(
+				"IMFConversionData",
+				new URL(
+						"http://www.imf.org/external/np/fin/data/rms_five.aspx?tsvflag=Y"),
+				"/java-money/defaults/IMF/rms_five.xls");
+		load();
 	}
 
-	public void loadRates() {
-		InputStream is = null;
+	protected void loadData(InputStream is) {
 		try {
-			URL url = new URL(providerUrl);
-			is = url.openStream();
 			loadRatesTSV(is);
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					LOGGER.warn("Error closing input stream.", e);
-				}
-			}
 		}
 	}
 
@@ -147,7 +133,7 @@ public class IMFConversionProvider implements ConversionProvider {
 		BufferedReader pr = new BufferedReader(new InputStreamReader(
 				inputStream));
 		String line = pr.readLine();
-//		int lineType = 0;
+		// int lineType = 0;
 		boolean currencyToSdr = true;
 		// SDRs per Currency unit (2)
 		//
@@ -201,7 +187,7 @@ public class IMFConversionProvider implements ConversionProvider {
 						newCurrencyToSdr.put(currency, rates);
 					}
 					ExchangeRate rate = new ExchangeRate(RATE_TYPE, currency,
-							SDR, values[i], providerUrl, fromTS, toTS);
+							SDR, values[i], "http://www.imf.org/", fromTS, toTS);
 					rates.add(rate);
 				} else { // SDR -> Currency
 					List<ExchangeRate> rates = this.sdrToCurrency.get(currency);
@@ -210,7 +196,8 @@ public class IMFConversionProvider implements ConversionProvider {
 						newSdrToCurrency.put(currency, rates);
 					}
 					ExchangeRate rate = new ExchangeRate(RATE_TYPE, SDR,
-							currency, values[i], providerUrl, fromTS, toTS);
+							currency, values[i], "http://www.imf.org/", fromTS,
+							toTS);
 					rates.add(rate);
 				}
 			}
@@ -265,7 +252,7 @@ public class IMFConversionProvider implements ConversionProvider {
 			return null;
 		}
 		ExchangeRate.Builder builder = new ExchangeRate.Builder();
-		builder.setProvider(providerUrl);
+		builder.setProvider("http://www.imf.org/");
 		builder.setExchangeRateType(RATE_TYPE);
 		builder.setBase(base);
 		builder.setTerm(term);

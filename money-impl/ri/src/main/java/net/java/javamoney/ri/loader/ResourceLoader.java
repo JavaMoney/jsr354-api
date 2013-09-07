@@ -32,6 +32,9 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.money.util.DataLoader.DataLoaderSingletonSpi;
 import javax.money.util.DataLoader.LoadListener;
@@ -62,6 +65,8 @@ public class ResourceLoader implements DataLoaderSingletonSpi {
 	private final static ResourceLoader INSTANCE = new ResourceLoader();
 
 	private volatile Timer timer;
+
+	private ExecutorService loaderService = Executors.newCachedThreadPool();
 
 	private ResourceLoader() {
 	}
@@ -174,6 +179,20 @@ public class ResourceLoader implements DataLoaderSingletonSpi {
 
 	@Override
 	public void loadData(String resourceId) {
+		loadDataSynch(resourceId);
+	}
+
+	@Override
+	public Future<?> loadDataAsynch(final String resourceId) {
+		return loaderService.submit(new Runnable() {
+			@Override
+			public void run() {
+				loadDataSynch(resourceId);
+			}
+		});
+	}
+
+	private void loadDataSynch(String resourceId) {
 		LoadableResource res = this.resources.get(resourceId);
 		if (res != null) {
 			try {

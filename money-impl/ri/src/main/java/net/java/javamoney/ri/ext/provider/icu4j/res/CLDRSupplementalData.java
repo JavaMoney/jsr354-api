@@ -48,8 +48,7 @@ public final class CLDRSupplementalData extends AbstractXmlResource {
 				"CLDR-SupplementalData",
 				new URL(
 						"http://unicode.org/repos/cldr/trunk/common/supplemental/supplementalData.xml"),
-				CLDRSupplementalData.class
-						.getResource("/java-money/defaults/cldr/supplementalData.xml"));
+				"/java-money/defaults/cldr/supplementalData.xml");
 	}
 
 	public static CLDRSupplementalData getInstance() {
@@ -120,8 +119,8 @@ public final class CLDRSupplementalData extends AbstractXmlResource {
 		public String getRegionCode() {
 			return regionCode;
 		}
-		
-		public Region getRegion(){
+
+		public Region getRegion() {
 			return Regions.getRegion(RegionType.TERRITORY, regionCode);
 		}
 

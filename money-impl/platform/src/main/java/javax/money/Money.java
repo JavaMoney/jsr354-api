@@ -24,7 +24,7 @@ import java.math.MathContext;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Default immutable implementation of {@link MonetaryAmount}.
+ * Platform RI: Default immutable implementation of {@link MonetaryAmount}.
  * 
  * @version 0.5
  * @author Anatole Tresch
@@ -812,7 +812,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount> {
     }
 
     /**
-     * This is an inner checker class for aspects of {@link MonetaryAmount}. It
+     * Platform RI: This is an inner checker class for aspects of {@link MonetaryAmount}. It
      * may be used by multiple implementations (inside the same package) to
      * avoid code duplication.
      * 

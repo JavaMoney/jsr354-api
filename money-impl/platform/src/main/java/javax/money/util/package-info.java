@@ -15,6 +15,6 @@
  */
 
 /**
- * Platform RI: Defines core/platform defined functional aspects.
+ * Platform RI: Defines common services.
  */
-package javax.money.function;
+package javax.money.util;

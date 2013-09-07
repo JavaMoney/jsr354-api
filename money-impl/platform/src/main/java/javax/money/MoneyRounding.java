@@ -21,7 +21,7 @@ import java.math.RoundingMode;
 import java.util.Currency;
 
 /**
- * Implementation class that models rounding based on standard JDK math, a scale
+ * Platform RI: Implementation class that models rounding based on standard JDK math, a scale
  * and {@link RoundingMode}..
  * 
  * @author Anatole Tresch
@@ -124,7 +124,7 @@ public final class MoneyRounding implements MonetaryOperator {
 	}
 
 	/**
-	 * Default Rounding that rounds a {@link MonetaryAmount} based on tis
+	 * Platform RI: Default Rounding that rounds a {@link MonetaryAmount} based on tis
 	 * {@link Currency}.
 	 * 
 	 * @author Anatole Tresch

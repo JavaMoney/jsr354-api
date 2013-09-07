@@ -23,7 +23,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.money.util.DataLoader.UpdatePolicy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +42,8 @@ public class LoadableResource {
 			.getLogger(LoadableResource.class);
 
 	private String resourceId;
-	private Loader resourceLoader;
-	private URL defaultResource;
+	private URL remoteResource;
+	private String defaultResource;
 	private URL cachedResource;
 	private AtomicInteger loadCount = new AtomicInteger();
 	private AtomicInteger accessCount = new AtomicInteger();
@@ -48,36 +51,30 @@ public class LoadableResource {
 	private long lastLoaded;
 	private final Object LOCK = new Object();
 	private UpdatePolicy updatePolicy = UpdatePolicy.NEVER;
+	private Properties updateConfig;
 
-	public LoadableResource(String resourceId, URL defaultItem, Loader loader) {
-		this(resourceId, defaultItem, loader, null);
-	}
-
-	public LoadableResource(String resourceId, URL defaultItem, Loader loader,
-			UpdatePolicy updatePolicy) {
+	public LoadableResource(String resourceId, URL location,
+			String classpathDefault) {
 		if (resourceId == null) {
 			throw new IllegalArgumentException("resourceId required");
 		}
-		if (defaultItem == null) {
-			throw new IllegalArgumentException("defaultItem required");
+		if (classpathDefault == null) {
+			throw new IllegalArgumentException("classpathDefault required");
+		}
+		if (getClass().getResource(classpathDefault) == null) {
+			throw new IllegalArgumentException(classpathDefault
+					+ " not found in classpath.");
 		}
 		this.resourceId = resourceId;
-		this.resourceLoader = loader;
-		this.defaultResource = defaultItem;
-		if (updatePolicy != null) {
-			this.updatePolicy = updatePolicy;
-		}
-	}
-
-	public static interface Loader {
-		public InputStream load(String resourceId) throws IOException;
+		this.remoteResource = location;
+		this.defaultResource = classpathDefault;
 	}
 
 	public InputStream load() throws IOException {
 		synchronized (LOCK) {
-			int count = accessCount.incrementAndGet();
-			if (count == 1) {
-				loadData();
+			accessCount.incrementAndGet();
+			if (this.data == null) {
+				loadData(null);
 			}
 		}
 		return new WrappedInputStream(new ByteArrayInputStream(this.data));
@@ -94,8 +91,21 @@ public class LoadableResource {
 	 * @param updatePolicy
 	 *            the updatePolicy to set
 	 */
-	public final void setUpdatePolicy(UpdatePolicy updatePolicy) {
+	public final void setUpdatePolicy(UpdatePolicy updatePolicy,
+			Properties properties) {
+		if (updatePolicy == null) {
+			throw new IllegalArgumentException("UpdatePolicy required");
+		}
 		this.updatePolicy = updatePolicy;
+		this.updateConfig = properties;
+		ResourceLoader.getInstance().removeScheduledLoad(this);
+		switch (updatePolicy) {
+		case SCHEDULED:
+			ResourceLoader.getInstance().addScheduledLoad(this);
+			break;
+		default:
+			break;
+		}
 	}
 
 	/**
@@ -108,14 +118,14 @@ public class LoadableResource {
 	/**
 	 * @return the resourceLoader
 	 */
-	public final Loader getResourceLoader() {
-		return resourceLoader;
+	public final URL getRemoteResource() {
+		return remoteResource;
 	}
 
 	/**
 	 * @return the defaultResource
 	 */
-	public final URL getDefaultResource() {
+	public final String getDefaultResource() {
 		return defaultResource;
 	}
 
@@ -144,7 +154,7 @@ public class LoadableResource {
 	 * @return the data
 	 */
 	public final byte[] getData() {
-		return data;
+		return data.clone();
 	}
 
 	/**
@@ -154,8 +164,11 @@ public class LoadableResource {
 		return lastLoaded;
 	}
 
-	private void loadData() throws IOException {
-		URL itemToLoad = getLoadableURL();
+	private void loadData(URL url) throws IOException {
+		URL itemToLoad = url;
+		if (itemToLoad == null) {
+			itemToLoad = getLoadableURL();
+		}
 		if (itemToLoad != null) {
 			InputStream is = null;
 			try {
@@ -164,6 +177,7 @@ public class LoadableResource {
 				is = conn.getInputStream();
 				is.read(data);
 				this.data = data;
+				// TODO update local cache...
 			} finally {
 				if (is != null) {
 					try {
@@ -179,7 +193,7 @@ public class LoadableResource {
 			InputStream is = null;
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			try {
-				is = this.resourceLoader.load(resourceId);
+				is = this.remoteResource.openStream();
 				byte[] data = new byte[4096]; // 4k
 				int read = 0;
 
@@ -219,26 +233,33 @@ public class LoadableResource {
 			if (cachedResource != null) {
 				return cachedResource;
 			}
-			return defaultResource;
-		case ON_INITIAL_LOAD:
-			if (loadCount.get() == 0 && resourceLoader != null) {
+			return getClassLoader().getResource(defaultResource);
+		case ONSTARTUP:
+			if (loadCount.get() == 0 && remoteResource != null) {
 				return null; // trigger initial load
 			}
 			if (cachedResource != null) {
 				return cachedResource;
 			}
-			return defaultResource;
-		case ON_LOAD:
+			return getClassLoader().getResource(defaultResource);
 		case SCHEDULED:
 		default:
-			if (loadCount.get() == 0 && resourceLoader != null) {
+			if (loadCount.get() == 0 && remoteResource != null) {
 				return null; // trigger initial load
 			}
 			if (cachedResource != null) {
 				return cachedResource;
 			}
-			return defaultResource;
+			return getClassLoader().getResource(defaultResource);
 		}
+	}
+
+	private ClassLoader getClassLoader() {
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		if (cl == null) {
+			cl = getClass().getClassLoader();
+		}
+		return cl;
 	}
 
 	public void unload() {
@@ -273,6 +294,36 @@ public class LoadableResource {
 			}
 		}
 
+	}
+
+	public void reset() throws IOException {
+		InputStream is = null;
+		try {
+			URLConnection conn = getClass().getResource(this.defaultResource)
+					.openConnection();
+			byte[] data = new byte[conn.getContentLength()];
+			is = conn.getInputStream();
+			is.read(data);
+			this.data = data;
+			loadCount.set(0);
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (Exception e) {
+					LOG.error("Error closing resource input for "
+							+ resourceId, e);
+				}
+			}
+		}
+	}
+
+	public Properties getUpdatePolicyConfig() {
+		return this.updateConfig;
+	}
+
+	public void updateRemote() throws IOException {
+		loadData(this.remoteResource);
 	}
 
 }

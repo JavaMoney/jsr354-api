@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Adapter that implements the new {@link CurrencyUnit} interface using the
+ * Platform RI: Adapter that implements the new {@link CurrencyUnit} interface using the
  * JDK's {@link Currency}.
  * 
  * @version 0.5.1
@@ -226,7 +226,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
     }
 
     /**
-     * Builder class that supports building complex instances of
+     * Platform RI: Builder class that supports building complex instances of
      * {@link MoneyCurrency}.
      * 
      * @author Anatole Tresch
@@ -490,7 +490,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable, Comparable<Cur
     }
 
     /**
-     * Adapter that implements the new {@link CurrencyUnit} interface using the
+     * Platform RI: Adapter that implements the new {@link CurrencyUnit} interface using the
      * JDK's {@link Currency}.
      * <p>
      * This adapter will be removed in the final platform implementation.

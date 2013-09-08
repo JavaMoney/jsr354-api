@@ -15,6 +15,6 @@
  */
 
 /**
- * Defines the core/platform API and contains essential implementing classes.
+ * Platform RI: Defines the core/platform API and contains essential implementing classes.
  */
 package javax.money;

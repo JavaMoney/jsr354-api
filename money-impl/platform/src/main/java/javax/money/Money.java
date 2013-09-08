@@ -24,7 +24,7 @@ import java.math.MathContext;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Platform RI: Default immutable implementation of {@link MonetaryAmount}.
+ * Default immutable implementation of {@link MonetaryAmount}.
  * 
  * @version 0.5
  * @author Anatole Tresch

@@ -109,7 +109,7 @@ public class EZBCurrentConversionProvider extends AbstractResource
 			ParserConfigurationException {
 		SAXParser parser = saxParserFactory.newSAXParser();
 		parser.parse(is, new RateReadingHandler());
-		LOGGER.info("Loaded current " + getResourceId() + " exchange rates.");
+		LOGGER.info("Loaded current " + getId() + " exchange rates.");
 	}
 
 	/*

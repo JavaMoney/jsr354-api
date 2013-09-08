@@ -109,7 +109,7 @@ public class EZBHistoricConversionProvider extends AbstractResource
 			LOGGER.debug("Error", e);
 		}
 		int newSize = this.historicRates.size();
-		LOGGER.info("Loaded " + getResourceId() + " exchange rates for days:"
+		LOGGER.info("Loaded " + getId() + " exchange rates for days:"
 				+ (newSize - oldSize));
 	}
 

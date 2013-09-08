@@ -94,7 +94,7 @@ public final class Percent implements MonetaryOperator, Displayable {
 	 */
 	@Override
 	public String toString() {
-		return percentValue + " %";
+		return getPercentInstance().format(percentValue);
 	}
 	
 	private static final BigDecimal getBigDecimal(Number number, MathContext mathContext) {

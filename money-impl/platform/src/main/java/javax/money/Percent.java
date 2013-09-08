@@ -25,11 +25,13 @@ import javax.money.MonetaryOperator;
 import javax.money.MonetaryAmount;
 
 /**
- * Platform RI: This class allows to extract the percentage of a {@link MonetaryAmount}
+ * This class allows to extract the percentage of a {@link MonetaryAmount}
  * instance.
  * 
  * @version 0.5
  * @author Werner Keil
+ * 
+ * @see <a href="http://en.wikipedia.org/wiki/Percent">Wikipedia: Percentage</a>
  */
 public final class Percent implements MonetaryOperator, Displayable {
 	

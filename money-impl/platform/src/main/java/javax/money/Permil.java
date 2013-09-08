@@ -17,15 +17,20 @@ package javax.money;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
- * Platform RI: This class allows to extract the permil of a
+ * This class allows to extract the permil of a
  * {@link MonetaryAmount} instance.
  * 
  * @version 0.5
  * @author Anatole Tresch
+ * @author Werner Keil
+ * 
+ * @see <a href="http://en.wikipedia.org/wiki/Per_mil">Wikipedia: Per mil</a>
  */
-public final class Permil implements MonetaryOperator {
+public final class Permil implements MonetaryOperator, Displayable {
 
 	private static final MathContext DEFAULT_MATH_CONTEXT = initDefaultMathContext();
 	private static final BigDecimal ONE_THOUSAND = new BigDecimal(1000,
@@ -89,7 +94,9 @@ public final class Permil implements MonetaryOperator {
 	 */
 	@Override
 	public String toString() {
-		return permilValue + " ‱";
+		return NumberFormat.getInstance().format(
+				permilValue.multiply(ONE_THOUSAND, DEFAULT_MATH_CONTEXT)) +
+				"\u2030";
 	}
 
 	private static final BigDecimal getBigDecimal(Number number,
@@ -111,6 +118,12 @@ public final class Permil implements MonetaryOperator {
 	 */
 	private static final BigDecimal calcPermil(BigDecimal decimal) {
 		return decimal.divide(ONE_THOUSAND, DEFAULT_MATH_CONTEXT); // we now
-																	// have .03
+																	// have .003
+	}
+
+	@Override
+	public String getDisplayName(Locale locale) {
+		// TODO i18n?
+		return toString();
 	}
 }

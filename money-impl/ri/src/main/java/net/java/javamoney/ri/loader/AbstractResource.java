@@ -7,8 +7,8 @@
  * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
  * OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
- * Contributors: Anatole Tresch - initial implementation. Werner Keil -
- * extension and adjustment.
+ * Contributors: Anatole Tresch - initial implementation. 
+ * Werner Keil - extension and adjustment.
  */
 package net.java.javamoney.ri.loader;
 
@@ -20,11 +20,18 @@ import javax.money.util.DataLoader.LoadListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Abstraction of a resource.
+ * 
+ * @version 0.9
+ * @author Anatole Tresch
+ * @author Werner Keil
+ */
 public abstract class AbstractResource {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private String resourceId;
+	private final String resourceId;
 
 	/**
 	 * This flags allow to determine along with LoadableResource#getLastLoaded()
@@ -46,10 +53,19 @@ public abstract class AbstractResource {
 				});
 	}
 
-	public String getResourceId() {
+	/**
+	 * Get the identifier of this resource.
+	 * 
+	 * @return The identifier.
+	 */
+	public String getId() {
 		return resourceId;
 	}
 
+	/**
+	 * The time stamp when this resource was last loaded
+	 * @return the loading time stamp
+	 */
 	public long getLastLoaded() {
 		return lastLoaded;
 	}

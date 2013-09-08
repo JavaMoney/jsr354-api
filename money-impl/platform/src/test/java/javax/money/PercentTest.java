@@ -34,37 +34,37 @@ public class PercentTest {
 
     @Test
     public void testOf() {
-	Percent perc = Percent.of(BigDecimal.ONE);
-	assertNotNull(perc);
+    	final Percent perc = Percent.of(BigDecimal.ONE);
+    	assertNotNull(perc);
     }
 
     @Test
     public void testApply() {
-	Money m = Money.of("CHF", BigDecimal.valueOf(2.35d));
-	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.235d)), Percent.of(BigDecimal.TEN).apply(m));
+    	final Money m = Money.of("CHF", BigDecimal.valueOf(2.35d));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.235d)), Percent.of(BigDecimal.TEN).apply(m));
     }
 
     @Test
     public void testApply10() {
-	Money m = Money.of("CHF", 3);
-	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.3d)), Percent.of(BigDecimal.TEN).apply(m));
+    	final Money m = Money.of("CHF", 3);
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.3d)), Percent.of(BigDecimal.TEN).apply(m));
     }
 
     @Test
     public void testApply20() {
-	Money m = Money.of("CHF", 120);
-	assertEquals(Money.of("CHF", BigDecimal.valueOf(24d)), Percent.of(BigDecimal.valueOf(20)).apply(m));
+    	final Money m = Money.of("CHF", 120);
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(24d)), Percent.of(BigDecimal.valueOf(20)).apply(m));
     }
 
     @Test
     public void testApply30() {
-	Money m = Money.of("CHF", 120);
-	assertEquals(Money.of("CHF", BigDecimal.valueOf(36d)), Percent.of(BigDecimal.valueOf(30)).apply(m));
+    	final Money m = Money.of("CHF", 120);
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(36d)), Percent.of(BigDecimal.valueOf(30)).apply(m));
     }
 
     @Test
     public void testToString() {
-	String compareTo = NumberFormat.getPercentInstance().format(0.15);
-	assertEquals(compareTo, Percent.of(BigDecimal.valueOf(15)).toString());
+    	final String compareTo = NumberFormat.getPercentInstance().format(0.15);
+    	assertEquals(compareTo, Percent.of(BigDecimal.valueOf(15)).toString());
     }
 }

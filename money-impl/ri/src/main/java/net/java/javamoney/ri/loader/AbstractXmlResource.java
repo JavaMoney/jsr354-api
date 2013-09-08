@@ -63,14 +63,14 @@ public abstract class AbstractXmlResource extends AbstractResource {
 			document.normalize();
 			loadDocument(document);
 		} catch (Exception e) {
-			logger.error("Failed to parse resource " + getResourceId(), e);
+			logger.error("Failed to parse resource " + getId(), e);
 		} finally {
 			if (is != null) {
 				try {
 					is.close();
 				} catch (Exception e) {
 					logger.error("Error closing input stream from "
-							+ getResourceId(), e);
+							+ getId(), e);
 				}
 			}
 		}
@@ -84,7 +84,7 @@ public abstract class AbstractXmlResource extends AbstractResource {
 		}
 		if (document == null) {
 			throw new IllegalStateException("Resource could not be loaded: "
-					+ getResourceId());
+					+ getId());
 		}
 		return document;
 	}

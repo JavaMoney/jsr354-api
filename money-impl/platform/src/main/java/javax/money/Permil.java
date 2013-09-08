@@ -17,6 +17,7 @@ package javax.money;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.text.NumberFormat;
 
 /**
  * Platform RI: This class allows to extract the permil of a
@@ -42,6 +43,12 @@ public final class Permil implements MonetaryOperator {
 		permilValue = calcPermil(decimal);
 	}
 
+	/**
+	 * Get {@link MathContext} for {@link Permil} instances.
+	 * 
+	 * @return the {@link MathContext} to be used, by default
+	 *         {@link MathContext#DECIMAL64}.
+	 */
 	private static MathContext initDefaultMathContext() {
 		// TODO Initialize default, e.g. by system properties, or better:
 		// classpath properties!
@@ -89,9 +96,20 @@ public final class Permil implements MonetaryOperator {
 	 */
 	@Override
 	public String toString() {
-		return permilValue + " ‱";
+		return NumberFormat.getInstance().format(
+				permilValue.multiply(BigDecimal.valueOf(1000)))
+				+ " ‱";
 	}
 
+	/**
+	 * Converts to {@link BigDecimal}, if necessary, or casts, if possible.
+	 * 
+	 * @param number
+	 *            The {@link Number}
+	 * @param mathContext
+	 *            the {@link MathContext}
+	 * @return the {@code number} as {@link BigDecimal}
+	 */
 	private static final BigDecimal getBigDecimal(Number number,
 			MathContext mathContext) {
 		if (number instanceof BigDecimal) {

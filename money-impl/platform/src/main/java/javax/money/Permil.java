@@ -102,7 +102,7 @@ public final class Permil implements MonetaryOperator, Displayable {
 	public String toString() {
 		return NumberFormat.getInstance().format(
 				permilValue.multiply(ONE_THOUSAND, DEFAULT_MATH_CONTEXT)) +
-				"\u2030";
+				" \u2030";
 	}
 
 	/**

@@ -21,10 +21,11 @@ import java.math.RoundingMode;
 import java.util.Currency;
 
 /**
- * Platform RI: Implementation class that models rounding based on standard JDK math, a scale
+ * Implementation class modeling rounding based on standard JDK math, a scale
  * and {@link RoundingMode}..
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  * @see RoundingMode
  */
 public final class MoneyRounding implements MonetaryOperator {
@@ -36,7 +37,7 @@ public final class MoneyRounding implements MonetaryOperator {
 	private final int scale;
 
 	/**
-	 * Creates an rounder instance.
+	 * Creates an rounding instance.
 	 * 
 	 * @param mathContext
 	 *            The {@link MathContext} to be used, not {@code null}.

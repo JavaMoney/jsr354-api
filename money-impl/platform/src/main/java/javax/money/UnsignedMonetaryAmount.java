@@ -16,14 +16,15 @@
 package javax.money;
 
 /**
- * Platform RI: This class decorates an arbitrary {@link MonetaryAmount} instance and ensure
+ * This class decorates an arbitrary {@link MonetaryAmount} instance and ensure
  * no negative values can be created using this instance.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	/** The underlying amount. */
-	private MonetaryAmount amount;
+	private final MonetaryAmount amount;
 
 	/**
 	 * Creates a new wrapper instance.

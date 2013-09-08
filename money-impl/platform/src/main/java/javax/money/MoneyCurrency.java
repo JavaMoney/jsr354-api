@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Platform RI: Adapter that implements the new {@link CurrencyUnit} interface using the
+ * Adapter that implements the new {@link CurrencyUnit} interface using the
  * JDK's {@link Currency}.
  * 
  * @version 0.5.1

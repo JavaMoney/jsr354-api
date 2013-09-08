@@ -47,6 +47,12 @@ public final class Permil implements MonetaryOperator, Displayable {
 		permilValue = calcPermil(decimal);
 	}
 
+	/**
+	 * Get {@link MathContext} for {@link Permil} instances.
+	 * 
+	 * @return the {@link MathContext} to be used, by default
+	 *         {@link MathContext#DECIMAL64}.
+	 */
 	private static MathContext initDefaultMathContext() {
 		// TODO Initialize default, e.g. by system properties, or better:
 		// classpath properties!
@@ -99,6 +105,15 @@ public final class Permil implements MonetaryOperator, Displayable {
 				"\u2030";
 	}
 
+	/**
+	 * Converts to {@link BigDecimal}, if necessary, or casts, if possible.
+	 * 
+	 * @param number
+	 *            The {@link Number}
+	 * @param mathContext
+	 *            the {@link MathContext}
+	 * @return the {@code number} as {@link BigDecimal}
+	 */
 	private static final BigDecimal getBigDecimal(Number number,
 			MathContext mathContext) {
 		if (number instanceof BigDecimal) {

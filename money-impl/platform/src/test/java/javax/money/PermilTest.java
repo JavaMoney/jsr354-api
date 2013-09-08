@@ -64,6 +64,6 @@ public class PermilTest {
 
 	@Test
 	public void testToString() {
-		assertEquals("15 ‱", Permil.of(BigDecimal.valueOf(15)).toString());
+		assertEquals("15\u2030", Permil.of(BigDecimal.valueOf(15)).toString());
 	}
 }

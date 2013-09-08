@@ -19,6 +19,7 @@ import static java.text.NumberFormat.getPercentInstance;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.Locale;
 
 import javax.money.MonetaryOperator;
 import javax.money.MonetaryAmount;
@@ -30,7 +31,7 @@ import javax.money.MonetaryAmount;
  * @version 0.5
  * @author Werner Keil
  */
-public final class Percent implements MonetaryOperator {
+public final class Percent implements MonetaryOperator, Displayable {
 	
 	private static final MathContext DEFAULT_MATH_CONTEXT = initDefaultMathContext();
 	private static final BigDecimal ONE_HUNDRED = new BigDecimal(100, DEFAULT_MATH_CONTEXT);
@@ -93,7 +94,7 @@ public final class Percent implements MonetaryOperator {
 	 */
 	@Override
 	public String toString() {
-		return getPercentInstance().format(percentValue);
+		return percentValue + " %";
 	}
 	
 	private static final BigDecimal getBigDecimal(Number number, MathContext mathContext) {
@@ -114,5 +115,10 @@ public final class Percent implements MonetaryOperator {
 	 */
 	private static final BigDecimal calcPercent(BigDecimal decimal) {
 		return decimal.divide(ONE_HUNDRED, DEFAULT_MATH_CONTEXT); // we now have .03
+	}
+
+	@Override
+	public String getDisplayName(Locale locale) {
+		return getPercentInstance(locale).format(percentValue);
 	}
 }

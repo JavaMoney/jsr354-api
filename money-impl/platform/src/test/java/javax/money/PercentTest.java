@@ -21,9 +21,9 @@ import static org.junit.Assert.assertNotNull;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
-
 import javax.money.Money;
 import javax.money.Percent;
+
 
 import org.junit.Test;
 
@@ -33,7 +33,7 @@ import org.junit.Test;
  */
 public class PercentTest {
 
-    @Test
+	@Test
     public void testOf() {
     	final Percent perc = Percent.of(BigDecimal.ONE);
     	assertNotNull(perc);
@@ -70,8 +70,8 @@ public class PercentTest {
     }
     
     @Test
-    public void testDisplayName() {
-    	final String compareTo = "14 %";
-    	assertEquals(compareTo, Percent.of(BigDecimal.valueOf(14.5)).getDisplayName(Locale.FRENCH));
+    public void testGetDisplayValue() {
+    	String compareTo = NumberFormat.getPercentInstance(Locale.TRADITIONAL_CHINESE).format(0.15);
+    	assertEquals(compareTo, Percent.of(BigDecimal.valueOf(15)).getDisplayName(Locale.TRADITIONAL_CHINESE));
     }
 }

@@ -28,9 +28,9 @@ import javax.money.MonetaryAmount;
 import javax.money.MoneyCurrency;
 
 /**
- * Default immutable implementation of {@link MonetaryAmount}.
+ * <type>long</type> based implementation of {@link MonetaryAmount}.
  * 
- * @version 0.4
+ * @version 0.5
  * @author Anatole Tresch
  * @author Werner Keil
  */

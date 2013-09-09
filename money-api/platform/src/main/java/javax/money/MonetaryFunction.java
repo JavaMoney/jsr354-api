@@ -10,7 +10,7 @@ package javax.money;
 
 /**
  * This interface defines a {@link MonetaryFunction}. It is considered to be
- * adapted/compatible with {@code java.util.function.Function} as introduced in
+ * adapted/compatible with {@code java.util.function.Function} as introduced by
  * Java 8.
  * 
  * @author Anatole Tresch

@@ -1,15 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<!--
-
-CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON 
-THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. 
-PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING 
-THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. 
-IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT 
-THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") 
-Copyright (c) 2012-2013, Credit Suisse All rights reserved. 
-
--->
+<!-- CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON 
+	THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. 
+	PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING 
+	THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. 
+	IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT 
+	THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") 
+	Copyright (c) 2012-2013, Credit Suisse All rights reserved. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -19,7 +15,7 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 	<artifactId>jsr354</artifactId>
 	<packaging>pom</packaging>
 
-	<version>0.5-SNAPSHOT</version>
+	<version>0.5</version>
 
 	<name>JSR 354 (Money and Currency API)</name>
 	<url>http://java.net/projects/javamoney</url>
@@ -71,13 +67,13 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 			<name>Sascha Freitag</name>
 			<organization>Credit Suisse</organization>
 			<roles>
-				<role>Expert Group Member</role>
+				<role>Expert Group Member (until EDR)</role>
 			</roles>
 		</developer>
 		<developer>
 			<id>tom-huesler</id>
 			<name>Thomas Hüsler</name>
-			<organization>Credit Suisse</organization>
+			<organization>Espalier Technologies</organization>
 			<timezone>GMT+1</timezone>
 			<roles>
 				<role>Expert Group Member</role>
@@ -87,7 +83,7 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 			<id>vgrazi</id>
 			<name>Victor Grazi</name>
 			<roles>
-				<role>Expert Group Member (Emeritus)</role>
+				<role>Expert Group Member</role>
 			</roles>
 		</developer>
 		<developer>
@@ -147,6 +143,34 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 				<role>Expert Group Member</role>
 			</roles>
 		</developer>
+		<developer>
+			<id>-</id>
+			<name>Greg Bakos</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>-</id>
+			<name>Tony Jewell</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>-</id>
+			<name>Arumugam Swaminathan</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>-</id>
+			<name>Sanjay Nagpal</name>
+			<roles>
+				<role>Expert Group Member</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<ciManagement>
@@ -202,14 +226,9 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 		<developerConnection>scm:git:https://github.com/JavaMoney/javamoney.git</developerConnection>
 		<url>https://github.com/JavaMoney/javamoney</url>
 	</scm>
-	<!-- 
-	<scm> 
-		<connection>scm:git:git@github.com:JavaMoney/javamoney.git</connection> 
-		<tag>master</tag>
-		<developerConnection>scm:git:git@github.com:JavaMoney/javamoney.git</developerConnection> 
-		<url>scm:git:git@github.com:JavaMoney/javamoney.git</url> 
-	</scm> 
-	-->
+	<!-- <scm> <connection>scm:git:git@github.com:JavaMoney/javamoney.git</connection> 
+		<tag>master</tag> <developerConnection>scm:git:git@github.com:JavaMoney/javamoney.git</developerConnection> 
+		<url>scm:git:git@github.com:JavaMoney/javamoney.git</url> </scm> -->
 
 	<distributionManagement>
 		<site>
@@ -250,15 +269,10 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 				</pluginManagement>
 				<plugins>
 					<plugin>
-						<!-- 
-						Usage: 
-							mvn clean deploy -Dgpg.passphrase=yourpassphrase ; 
-						Or sign already deployed artifact: 
-							mvn gpg:sign-and-deploy-file -DpomFile=target/myapp-1.0.pom 
-							    -Dfile=target/myapp-1.0.jar 
-							    -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ 
-							    -DrepositoryId=sonatype-nexus-staging 
-						-->
+						<!-- Usage: mvn clean deploy -Dgpg.passphrase=yourpassphrase ; Or sign 
+							already deployed artifact: mvn gpg:sign-and-deploy-file -DpomFile=target/myapp-1.0.pom 
+							-Dfile=target/myapp-1.0.jar -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ 
+							-DrepositoryId=sonatype-nexus-staging -->
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
 						<executions>
@@ -289,13 +303,8 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 						<!-- ======================================================= -->
 						<!-- License -->
 						<!-- ======================================================= -->
-						<!-- 
-						<plugin> 
-							<groupId>org.codehaus.mojo</groupId>
-							<artifactId>license-maven-plugin</artifactId> 
-							<version>1.4</version>
-						</plugin>
-						-->
+						<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>license-maven-plugin</artifactId> 
+							<version>1.4</version> </plugin> -->
 						<plugin>
 							<groupId>com.google.code.maven-license-plugin</groupId>
 							<artifactId>maven-license-plugin</artifactId>
@@ -310,7 +319,8 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 								</excludes>
 							</configuration>
 						</plugin>
-						<!-- TODO enable this only for major upgrades (ensure to copy LICENSE.txt to LICENSE.bak first) -->
+						<!-- TODO enable this only for major upgrades (ensure to copy LICENSE.txt 
+							to LICENSE.bak first) -->
 					</plugins>
 				</pluginManagement>
 				<plugins>
@@ -424,7 +434,7 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 						<source>${maven.compile.sourceLevel}</source>
 						<target>${maven.compile.targetLevel}</target>
 						<compilerArgument>-g</compilerArgument>
-						<encoding>${project.build.sourceEncoding}</encoding> 
+						<encoding>${project.build.sourceEncoding}</encoding>
 						<charset>${project.build.sourceEncoding}</charset>
 						<showDeprecations>true</showDeprecations>
 					</configuration>
@@ -492,76 +502,63 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>2.1</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
-				<plugin>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.4.1</version>
-					<configuration>
-						<!-- Workaround for MGPG-9 and MRELEASE-424, MRELEASE-263 -->
-						<mavenExecutorId>forked-path</mavenExecutorId>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>1.3.1</version>
-					<executions>
-						<execution>
-							<id>enforce-versions</id>
-							<goals>
-								<goal>enforce</goal>
-							</goals>
-							<configuration>
-								<rules>
-									<requireMavenVersion>
-										<version>3.0.4</version>
-									</requireMavenVersion>
-									<requireJavaVersion>
-										<version>1.7.0</version>
-									</requireJavaVersion>
-									<!-- 
-									<bannedDependencies>
-										<excludes>
-											<exclude>commons-logging:*</exclude>
-										</excludes>
-									</bannedDependencies>
-									-->
-									<requirePluginVersions>
-										<banLatest>true</banLatest>
-										<banRelease>true</banRelease>								
-										<banSnapshots>true</banSnapshots>
-										<!-- <unCheckedPluginList>org.codehaus.mojo:sonar-maven-plugin</unCheckedPluginList> -->
-									</requirePluginVersions>
-								</rules>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<!--
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-toolchains-plugin</artifactId>
-					<version>1.0</version>
-					<executions>
-						<execution>
-							<phase>validate</phase>
-							<goals>
-								<goal>toolchain</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<toolchains>
-							<jdk>
-								<version>7.0</version>
-								<vendor>oracle</vendor>
-							</jdk>
-						</toolchains>
-				 	 </configuration>
-				</plugin>
-				-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<configuration></configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<!-- Workaround for MGPG-9 and MRELEASE-424, MRELEASE-263 -->
+					<mavenExecutorId>forked-path</mavenExecutorId>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.3.1</version>
+				<executions>
+					<execution>
+						<id>enforce-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>3.0.4</version>
+								</requireMavenVersion>
+								<requireJavaVersion>
+									<version>1.7.0</version>
+								</requireJavaVersion>
+								<!-- <bannedDependencies> <excludes> <exclude>commons-logging:*</exclude> 
+									</excludes> </bannedDependencies> -->
+								<requirePluginVersions>
+									<banLatest>true</banLatest>
+									<banRelease>true</banRelease>
+									<banSnapshots>true</banSnapshots>
+									<!-- <unCheckedPluginList>org.codehaus.mojo:sonar-maven-plugin</unCheckedPluginList> -->
+								</requirePluginVersions>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-toolchains-plugin</artifactId> 
+				<version>1.0</version> <executions> <execution> <phase>validate</phase> <goals> 
+				<goal>toolchain</goal> </goals> </execution> </executions> <configuration> 
+				<toolchains> <jdk> <version>7.0</version> <vendor>oracle</vendor> </jdk> 
+				</toolchains> </configuration> </plugin> -->
 		</plugins>
 	</build>
 
@@ -580,13 +577,10 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 						</reports>
 						<configuration>
 							<detectLinks>true</detectLinks>
-							<!-- 
-							<links>
-								<link>http://static.springsource.org/spring/docs/${spring.version}/javadoc-api</link> 
+							<!-- <links> <link>http://static.springsource.org/spring/docs/${spring.version}/javadoc-api</link> 
 								<link>http://static.springsource.org/spring-security/site/docs/3.0.x/apidocs</link> 
 								<link>http://commons.apache.org/lang/api-2.5</link> <link>http://docs.oracle.com/javaee/5/api</link> 
-							</links>
-							-->
+								</links> -->
 							<!-- excludePackageNames>blabla</excludePackageNames -->
 							<keywords>true</keywords>
 							<linksource>true</linksource>
@@ -675,19 +669,11 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 					</tagListOptions>
 				</configuration>
 			</plugin>
-			<!-- 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<xrefLocation>${project.reporting.outputDirectory}/../../xref</xrefLocation>
-					<enableRulesSummary>false</enableRulesSummary>
-					<configLocation>https://raw.github.com/JavaMoney/javamoney/master/checkstyle.xml</configLocation>
-					<headerLocation>https://raw.github.com/JavaMoney/javamoney/master/checkstyle-license.txt</headerLocation>
-				</configuration>
-			</plugin>
-			-->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-checkstyle-plugin</artifactId> 
+				<version>2.4</version> <configuration> <xrefLocation>${project.reporting.outputDirectory}/../../xref</xrefLocation> 
+				<enableRulesSummary>false</enableRulesSummary> <configLocation>https://raw.github.com/JavaMoney/javamoney/master/checkstyle.xml</configLocation> 
+				<headerLocation>https://raw.github.com/JavaMoney/javamoney/master/checkstyle-license.txt</headerLocation> 
+				</configuration> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
@@ -700,7 +686,6 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 					<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
@@ -727,7 +712,7 @@ Copyright (c) 2012-2013, Credit Suisse All rights reserved.
 					<datafile>${basedir}/target/coverage-reports/jacoco-unit.exec</datafile>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>

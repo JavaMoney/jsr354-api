@@ -13,42 +13,46 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package javax.money;
+package javax.money.function;
+
+import static java.text.NumberFormat.getPercentInstance;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.text.NumberFormat;
 import java.util.Locale;
 
+import javax.money.Displayable;
+import javax.money.MonetaryAmount;
+import javax.money.MonetaryOperator;
+
 /**
- * This class allows to extract the permil of a
- * {@link MonetaryAmount} instance.
+ * This class allows to extract the percentage of a {@link MonetaryAmount}
+ * instance.
  * 
  * @version 0.5
- * @author Anatole Tresch
  * @author Werner Keil
  * 
- * @see <a href="http://en.wikipedia.org/wiki/Per_mil">Wikipedia: Per mil</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Percent">Wikipedia: Percentage</a>
  */
-public final class Permil implements MonetaryOperator, Displayable {
+public final class Percent implements MonetaryOperator, Displayable {
 
 	private static final MathContext DEFAULT_MATH_CONTEXT = initDefaultMathContext();
-	private static final BigDecimal ONE_THOUSAND = new BigDecimal(1000,
+	private static final BigDecimal ONE_HUNDRED = new BigDecimal(100,
 			DEFAULT_MATH_CONTEXT);
 
-	private final BigDecimal permilValue;
+	private final BigDecimal percentValue;
 
 	/**
-	 * Access the shared instance of {@link Permil} for use.
+	 * Access the shared instance of {@link Percent} for use.
 	 * 
 	 * @return the shared instance, never {@code null}.
 	 */
-	private Permil(final BigDecimal decimal) {
-		permilValue = calcPermil(decimal);
+	private Percent(final BigDecimal decimal) {
+		percentValue = calcPercent(decimal);
 	}
 
 	/**
-	 * Get {@link MathContext} for {@link Permil} instances.
+	 * Get {@link MathContext} for {@link Percent} instances.
 	 * 
 	 * @return the {@link MathContext} to be used, by default
 	 *         {@link MathContext#DECIMAL64}.
@@ -59,38 +63,38 @@ public final class Permil implements MonetaryOperator, Displayable {
 		return MathContext.DECIMAL64;
 	}
 
-/**
-	 * Factory method creating a new instance with the given {@code BigDecimal) permil value;
-	 * @param decimal the decimal value of the permil operator being created.
-	 * @return a new  {@code Permil} operator
+	/**
+	 * Factory method creating a new instance with the given {@code BigDecimal) percent value;
+	 * @param decimal the decimal value of the percent operator being created.
+	 * @return a new  {@code Percent} operator
 	 */
-	public static Permil of(BigDecimal decimal) {
-		return new Permil(decimal); // TODO caching, e.g. array for 1-100 might
-									// work.
+	public static Percent of(BigDecimal decimal) {
+		return new Percent(decimal); // TODO caching, e.g. array for 1-100 might
+										// work.
 	}
 
-/**
-	 * Factory method creating a new instance with the given {@code Number) permil value;
-	 * @param decimal the decimal value of the permil operator being created.
-	 * @return a new  {@code Permil} operator
+	/**
+	 * Factory method creating a new instance with the given {@code Number) percent value;
+	 * @param decimal the decimal value of the percent operator being created.
+	 * @return a new  {@code Percent} operator
 	 */
-	public static Permil of(Number number) {
+	public static Percent of(Number number) {
 		return of(getBigDecimal(number, DEFAULT_MATH_CONTEXT));
 	}
 
 	/**
-	 * Gets the permil of the amount.
+	 * Gets the percentage of the amount.
 	 * <p>
-	 * This returns the monetary amount in permil. For example, for 10% 'EUR
+	 * This returns the monetary amount in percent. For example, for 10% 'EUR
 	 * 2.35' will return 0.235.
 	 * <p>
 	 * This is returned as a {@code MonetaryAmount}.
 	 * 
-	 * @return the permil result of the amount, never {@code null}
+	 * @return the percent result of the amount, never {@code null}
 	 */
 	@Override
 	public MonetaryAmount apply(MonetaryAmount amount) {
-		return amount.multiply(permilValue);
+		return amount.multiply(percentValue);
 	}
 
 	/*
@@ -100,9 +104,17 @@ public final class Permil implements MonetaryOperator, Displayable {
 	 */
 	@Override
 	public String toString() {
-		return NumberFormat.getInstance().format(
-				permilValue.multiply(ONE_THOUSAND, DEFAULT_MATH_CONTEXT)) +
-				" \u2030";
+		return getPercentInstance().format(percentValue);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.Displayable#getDisplayName(java.util.Locale)
+	 */
+	@Override
+	public String getDisplayName(Locale locale) {
+		return getPercentInstance(locale).format(percentValue);
 	}
 
 	/**
@@ -124,21 +136,16 @@ public final class Permil implements MonetaryOperator, Displayable {
 	}
 
 	/**
-	 * Calculate a BigDecimal value for a Permil e.g. "3" (3 permil) will
-	 * generate .003
+	 * Calculate a BigDecimal value for a Percent e.g. "3" (3 percent) will
+	 * generate .03
 	 * 
 	 * @return java.math.BigDecimal
 	 * @param decimal
 	 *            java.math.BigDecimal
 	 */
-	private static final BigDecimal calcPermil(BigDecimal decimal) {
-		return decimal.divide(ONE_THOUSAND, DEFAULT_MATH_CONTEXT); // we now
-																	// have .003
+	private static final BigDecimal calcPercent(BigDecimal decimal) {
+		return decimal.divide(ONE_HUNDRED, DEFAULT_MATH_CONTEXT); // we now have
+																	// .03
 	}
 
-	@Override
-	public String getDisplayName(Locale locale) {
-		// TODO i18n?
-		return toString();
-	}
 }

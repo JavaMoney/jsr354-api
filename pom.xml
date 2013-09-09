@@ -15,7 +15,7 @@
 	<artifactId>jsr354</artifactId>
 	<packaging>pom</packaging>
 
-	<version>0.5</version>
+	<version>0.6-SNAPSHOT</version>
 
 	<name>JSR 354 (Money and Currency API)</name>
 	<url>http://java.net/projects/javamoney</url>

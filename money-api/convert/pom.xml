@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>money-api</artifactId>
 		<groupId>javax.money</groupId>
-		<version>0.5</version>
+		<version>0.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>money-api-convert</artifactId>
 	<name>JSR 354 (Money and Currency) - Conversion API</name>

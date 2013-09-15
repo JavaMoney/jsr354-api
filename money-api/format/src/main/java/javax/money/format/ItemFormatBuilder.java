@@ -65,37 +65,37 @@ public class ItemFormatBuilder<T> {
 	 * 
 	 * @return the target class, never null.
 	 */
-	public Class<T> getTargetClass() {
-		return this.targetType;
-	}
-
-	/**
-	 * Access the target class, which this formatter can handle with.
-	 * 
-	 * @return the target class, never null.
-	 */
 	public Class<T> getTargetType() {
 		return this.targetType;
 	}
 
 	/**
-	 * The configuring style.
-	 * 
-	 * @return the style applied.
-	 */
-	public LocalizationStyle getLocalizationStyle() {
-		return style;
-	}
-
-	/**
-	 * COnfigure the format with the given {@link LocalizationStyle}.
+	 * Configure the format with the given {@link LocalizationStyle}.
 	 * 
 	 * @param style
 	 *            the style to be applied.
 	 * @return the builder instance, for chaining.
 	 */
-	public ItemFormatBuilder<T> setLocalizationStyle(LocalizationStyle style) {
+	public ItemFormatBuilder<T> withStyle(LocalizationStyle style) {
+		if(style==null){
+			throw new IllegalArgumentException("style required.");
+		}
 		this.style = style;
+		return this;
+	}
+	
+	/**
+	 * Configure the format with the given target type.
+	 * 
+	 * @param targetType
+	 *            the target type to be applied.
+	 * @return the builder instance, for chaining.
+	 */
+	public ItemFormatBuilder<T> withTargetType(Class<T> targetType) {
+		if(targetType==null){
+			throw new IllegalArgumentException("targetType required.");
+		}
+		this.targetType = targetType;
 		return this;
 	}
 
@@ -106,7 +106,7 @@ public class ItemFormatBuilder<T> {
 	 *            the token to add.
 	 * @return the builder, for chaining.
 	 */
-	public ItemFormatBuilder<T> addToken(FormatToken<T> token) {
+	public ItemFormatBuilder<T> append(FormatToken<T> token) {
 		this.tokens.add(token);
 		return this;
 	}
@@ -118,7 +118,7 @@ public class ItemFormatBuilder<T> {
 	 *            the token to add.
 	 * @return the builder, for chaining.
 	 */
-	public ItemFormatBuilder<T> addLiteral(String token) {
+	public ItemFormatBuilder<T> append(String token) {
 		this.tokens.add(new LiteralToken<T>(token));
 		return this;
 	}
@@ -140,7 +140,7 @@ public class ItemFormatBuilder<T> {
 	 *            the {@link ItemFactory}.
 	 * @return the builder, for chaining.
 	 */
-	public ItemFormatBuilder<T> setItemFactory(ItemFactory<T> itemFactory) {
+	public ItemFormatBuilder<T> withItemFactory(ItemFactory<T> itemFactory) {
 		this.itemFactory = itemFactory;
 		return this;
 	}

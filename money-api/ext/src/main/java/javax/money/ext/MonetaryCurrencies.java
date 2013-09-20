@@ -27,6 +27,9 @@ import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
 /**
  * This is the service component for accessing Java Money Currencies, evaluating
  * currency namespaces, access historic currencies and map between currencies.
+ * <p>
+ * This class is thread-safe. However it delegates all calls to the registered
+ * {@link MonetaryCurrenciesSingletonSpi} SPI (using the {@link ServiceLoader}.
  * 
  * @author Anatole Tresch
  * @author Werner Keil
@@ -101,8 +104,8 @@ public final class MonetaryCurrencies {
 	}
 
 	/**
-	 * This method allows to access all namespaces currently defined.
-	 * "ISO-4217" should be defined in all environments (default).
+	 * This method allows to access all namespaces currently defined. "ISO-4217"
+	 * should be defined in all environments (default).
 	 * 
 	 * @return the array of currently defined namespace.
 	 */
@@ -291,7 +294,8 @@ public final class MonetaryCurrencies {
 
 		/**
 		 * This method allows to evaluate, if the given currency namespace is
-		 * defined. {@code "ISO-4217"} should be defined in all environments (default).
+		 * defined. {@code "ISO-4217"} should be defined in all environments
+		 * (default).
 		 * 
 		 * @param namespace
 		 *            the required namespace
@@ -315,9 +319,9 @@ public final class MonetaryCurrencies {
 
 		/*-- Access of current currencies --*/
 		/**
-		 * Checks if a currency is defined using its namespace and code. This
-		 * is a convenience method for {@link #getCurrency(String, String)},
-		 * where as namespace the default namespace is assumed.
+		 * Checks if a currency is defined using its namespace and code. This is
+		 * a convenience method for {@link #getCurrency(String, String)}, where
+		 * as namespace the default namespace is assumed.
 		 * 
 		 * @see #getDefaultNamespace()
 		 * @param code
@@ -346,10 +350,9 @@ public final class MonetaryCurrencies {
 		}
 
 		/**
-		 * Access a currency using its namespace and code. This is a
-		 * convenience method for {@link #getCurrency(String, String, Date)},
-		 * where {@code null} is passed for the target date (meaning current
-		 * date).
+		 * Access a currency using its namespace and code. This is a convenience
+		 * method for {@link #getCurrency(String, String, Date)}, where
+		 * {@code null} is passed for the target date (meaning current date).
 		 * 
 		 * @param namespace
 		 *            The namespace, e.g. 'ISO-4217'.

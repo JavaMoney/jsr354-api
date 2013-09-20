@@ -17,6 +17,7 @@ package javax.money.function.predicates;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.Predicate;
 
 /**
  * This abstract class models a predicate used for filtering of

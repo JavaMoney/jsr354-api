@@ -27,6 +27,9 @@ import javax.money.ext.spi.ValidityProviderSpi;
 /**
  * This is the service component for accessing {@link ValidityInfo} and
  * {@link RelatedValidityInfo} instances aka historic items.
+ * <p>
+ * This class is thread-safe, hereby delegating calls to the
+ * {@link ValiditiesSingletonSpi} registered using the {@link ServiceLoader}.
  * 
  * @author Anatole Tresch
  * @author Werner Keil

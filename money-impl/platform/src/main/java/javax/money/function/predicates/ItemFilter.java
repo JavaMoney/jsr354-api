@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryFunction;
+import javax.money.Predicate;
 
 /**
  * This class allows instances of {@link MonetaryAmount} to be filtered by

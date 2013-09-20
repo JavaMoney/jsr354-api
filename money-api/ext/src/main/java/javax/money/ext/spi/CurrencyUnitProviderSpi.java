@@ -23,6 +23,9 @@ import javax.money.CurrencyUnit;
  * of {@link CurrencyUnitProviderSpi}. Depending on the runtime environment,
  * implementations may be loaded using the {@link ServiceLoader}. But also
  * alternate mechanisms are possible, e.g. CDI.
+ * <p>
+ * Implementation of this interface must be thread-safe, but can be contextual
+ * in a EE context.
  * 
  * @author Anatole Tresch
  */

@@ -1,5 +1,7 @@
 package javax.money.function.predicates;
 
+import javax.money.Predicate;
+
 
 /**
  * This predicate implements the logic {@code or and xor} operations, where

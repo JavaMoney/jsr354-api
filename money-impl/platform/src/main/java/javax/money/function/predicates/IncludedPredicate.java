@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.money.MonetaryAmount;
+import javax.money.Predicate;
 
 /**
  * This abstract class models a predicate used for filtering of

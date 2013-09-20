@@ -23,6 +23,9 @@ import javax.money.ext.spi.RegionsSingletonSpi;
 
 /**
  * This singleton defines access to the region logic of JavaMoney.
+ * <p>
+ * This class is thread-safe, delegating calls to the
+ * {@link RegionsSingletonSpi} SPI, loaded using the {@link ServiceLoader}.
  * 
  * @author Anatole Tresch
  */
@@ -96,7 +99,7 @@ public final class Regions {
 	public static Collection<Region> getRegions(RegionType type) {
 		return REGION_SPI.getRegions(type);
 	}
-	
+
 	/**
 	 * Get the extended data types, that can be accessed from this
 	 * {@link Region} by calling {@link #getRegionData(Class)}.
@@ -104,7 +107,7 @@ public final class Regions {
 	 * @return the collection of supported region data, may be {@code empty} but
 	 *         never {@code null}.
 	 */
-	public static <T> Collection<Class> getExtendedRegionDataTypes(Region region){
+	public static <T> Collection<Class> getExtendedRegionDataTypes(Region region) {
 		return REGION_SPI.getExtendedRegionDataTypes(region);
 	}
 
@@ -118,7 +121,7 @@ public final class Regions {
 	 *             if the type passed is not supported. See
 	 *             {@link #getRegionDataTypes()}.
 	 */
-	public static <T> T getExtendedRegionData(Region region, Class<T> type){
+	public static <T> T getExtendedRegionData(Region region, Class<T> type) {
 		return REGION_SPI.getExtendedRegionData(region, type);
 	}
 
@@ -231,7 +234,8 @@ public final class Regions {
 
 		@Override
 		public <T> T getExtendedRegionData(Region region, Class<T> type) {
-			throw new IllegalArgumentException("Unsupported data type for " + this
+			throw new IllegalArgumentException("Unsupported data type for "
+					+ this
 					+ ", use one of " + getExtendedRegionDataTypes(region));
 		}
 	}

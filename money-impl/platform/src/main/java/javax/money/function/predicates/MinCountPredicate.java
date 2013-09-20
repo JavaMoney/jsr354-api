@@ -16,6 +16,7 @@
 package javax.money.function.predicates;
 
 import javax.money.MonetaryAmount;
+import javax.money.Predicate;
 
 /**
  * This predicate allows filtering of {@link MonetaryAmount} instances using a

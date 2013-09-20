@@ -25,6 +25,9 @@ import javax.money.ext.ValidityType;
  * and manage the instances of {@link RelatedValidityProviderSpi}. Depending on
  * the runtime environment, implementations may be loaded using the
  * {@link ServiceLoader}. But also alternate mechanisms are possible, e.g. CDI.
+ * <p>
+ * Implementation of this interface must be thread-safe, but can be contextual
+ * in a EE context.
  * 
  * @author Anatole Tresch
  */
@@ -55,7 +58,6 @@ public interface RelatedValidityProviderSpi {
 	 * @return the set of supported {@link ValidityType}s, never {@code null}.
 	 */
 	public Set<ValidityType> getValidityTypes(Class itemType, Class relatedType);
-
 
 	/**
 	 * Return the item types that this provider instance is supporting, this is

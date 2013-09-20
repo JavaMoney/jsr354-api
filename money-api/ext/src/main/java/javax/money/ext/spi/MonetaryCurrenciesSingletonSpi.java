@@ -23,14 +23,18 @@ import javax.money.UnknownCurrencyException;
  * {@code MonetaryCurrencies} singleton and is responsible for loading and
  * managing of {@link CurrencyUnitProviderSpi} and {@link CurrencyUnitMapperSpi}
  * instances and delegating according calls to the appropriate providers.
+ * <p>
+ * Implementation of this interface must be thread-safe, but can be contextual
+ * in a EE context.
  * 
  * @author Anatole Tresch
  */
 public interface MonetaryCurrenciesSingletonSpi {
 
 	/**
-	 * Access the default namespace that this {@link MonetaryCurrenciesSingletonSpi}
-	 * instance is using. The default namespace can be changed by adding a file
+	 * Access the default namespace that this
+	 * {@link MonetaryCurrenciesSingletonSpi} instance is using. The default
+	 * namespace can be changed by adding a file
 	 * {@code META-INF/java-money.properties} with the following entry
 	 * {@code defaultCurrencyNamespace=myNamespace}. When not set explicitly
 	 * {@code "ISO-4217"} is assumed.
@@ -60,10 +64,9 @@ public interface MonetaryCurrenciesSingletonSpi {
 
 	/*-- Access of current currencies --*/
 	/**
-	 * Checks if a {@link CurrencyUnit} is defined using its namespace and
-	 * code. This is a convenience method for
-	 * {@link #getCurrency(String, String)}, where as the default namespace is
-	 * assumed.
+	 * Checks if a {@link CurrencyUnit} is defined using its namespace and code.
+	 * This is a convenience method for {@link #getCurrency(String, String)},
+	 * where as the default namespace is assumed.
 	 * 
 	 * @see #getDefaultNamespace()
 	 * @param code
@@ -74,8 +77,7 @@ public interface MonetaryCurrenciesSingletonSpi {
 	public boolean isAvailable(String code);
 
 	/**
-	 * Checks if a {@link CurrencyUnit} is defined using its namespace and
-	 * code.
+	 * Checks if a {@link CurrencyUnit} is defined using its namespace and code.
 	 * 
 	 * @param namespace
 	 *            The namespace, e.g. {@code "ISO-4217"}.

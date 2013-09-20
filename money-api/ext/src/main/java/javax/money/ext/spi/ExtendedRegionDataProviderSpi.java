@@ -17,6 +17,9 @@ import javax.money.ext.Region;
 /**
  * Implementation of this interface provide arbitrary additional data for a
  * region.
+ * <p>
+ * Implementation of this interface must be thread-safe, but can be contextual
+ * in a EE context.
  * 
  * @author Anatole Tresch
  */

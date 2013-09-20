@@ -31,7 +31,7 @@ import javax.money.MonetaryAmount;
  * @param <T>
  *            the input values to
  */
-public class IncludedPredicate<T> implements
+class IncludedPredicate<T> implements
 		Predicate<T> {
 
 	private Set<T> acceptedValues = new HashSet<T>();

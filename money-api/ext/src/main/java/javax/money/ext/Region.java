@@ -10,6 +10,7 @@
  */
 package javax.money.ext;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -22,6 +23,13 @@ import javax.money.CurrencyUnit;
  * Hereby a {@link Region}, similarly to {@link CurrencyUnit} does only provide
  * a representation type, whereas the validity and existence of regions must be
  * quiried from {@link RegionValidity} provider.
+ * <p>
+ * Instances of this class are required to be thread-safe, immutable and
+ * {@link Serializable} and {@link Comparable}. Comparison hereby should rely on
+ * <ul>
+ * <li>The {@link RegionType}
+ * <li>The region code
+ * </ul>
  * 
  * @see <a href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">UN M.49:
  *      UN Statistics Division Country or area & region codes</a>

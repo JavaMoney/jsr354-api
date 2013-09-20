@@ -25,6 +25,9 @@ import javax.money.ext.Regions;
  * its internal implementation. It is responsible for loading and managing of
  * {@link RegionProviderSpi} and {@link RegionTreeProviderSpi} instances and
  * delegating according calls to the appropriate providers.
+ * <p>
+ * Implementation of this interface must be thread-safe, but can be contextual
+ * in a EE context.
  * 
  * @author Anatole Tresch
  */

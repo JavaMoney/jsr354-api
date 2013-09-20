@@ -18,6 +18,9 @@ import java.util.TimeZone;
 /**
  * This base class models a validity of an item T related to a timeline. Hereby
  * a validity may be undefined, when it starts or when it ends.
+ * <p>
+ * This class is immutable, thread-safe and {@link Serializable}. Also it
+ * implements {@link Comparable}.
  * 
  * @author Anatole Tresch
  * 
@@ -31,7 +34,7 @@ public class ValidityInfo<T> implements Serializable,
 	 * Serial version UID.
 	 */
 	private static final long serialVersionUID = 1258686258819748870L;
-	
+
 	/** The item for which this ValidityInfo is for. */
 	private final T item;
 	/**

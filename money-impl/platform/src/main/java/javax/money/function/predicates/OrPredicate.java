@@ -3,6 +3,8 @@ package javax.money.function.predicates;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.money.Predicate;
+
 
 /**
  * This predicate implements the logic {@code or} operations, where

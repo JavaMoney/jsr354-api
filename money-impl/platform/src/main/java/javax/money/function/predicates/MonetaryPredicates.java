@@ -20,6 +20,7 @@ import java.util.Collection;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.Predicate;
 
 /**
  * This class provides access to several predicate based functionalities that

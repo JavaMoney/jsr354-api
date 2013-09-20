@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.money.ext.Region;
-import javax.money.ext.RegionFilter;
 import javax.money.ext.RegionTreeNode;
 
 /**

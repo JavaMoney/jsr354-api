@@ -21,6 +21,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * type. Hereby the temporal existence of an item is the default, as modelled by
  * {@link ValidityType#EXISTENCE}. For querying any type of validities,
  * {@link ValidityType#ANY} should be used.
+ * <p>
+ * This class is immutable, thread-safe, {@link Serializable} and
+ * {@link Comparable}.
  * 
  * @author Anatole Tresch
  */

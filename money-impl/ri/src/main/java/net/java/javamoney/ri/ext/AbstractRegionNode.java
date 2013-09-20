@@ -17,8 +17,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.money.Predicate;
 import javax.money.ext.Region;
-import javax.money.ext.RegionFilter;
 import javax.money.ext.RegionTreeNode;
 
 /**
@@ -122,10 +122,10 @@ public abstract class AbstractRegionNode implements RegionTreeNode,
 	 * javax.money.ext.RegionTreeNode#selectParent(javax.money.ext.RegionFilter)
 	 */
 	@Override
-	public RegionTreeNode selectParent(RegionFilter filter) {
+	public RegionTreeNode selectParent(Predicate<Region> filter) {
 		RegionTreeNode regionNode = parent;
 		while (regionNode != null) {
-			if (filter.accept(regionNode)) {
+			if (filter.apply(regionNode.getRegion())) {
 				return regionNode;
 			}
 			regionNode = regionNode.getParent();
@@ -139,10 +139,10 @@ public abstract class AbstractRegionNode implements RegionTreeNode,
 	 * @see javax.money.ext.RegionTreeNode#select(javax.money.ext.RegionFilter)
 	 */
 	@Override
-	public Collection<RegionTreeNode> select(RegionFilter filter) {
+	public Collection<RegionTreeNode> select(Predicate<Region> filter) {
 		List<RegionTreeNode> result = new ArrayList<RegionTreeNode>();
 		for (RegionTreeNode regionNode : childNodes) {
-			if (filter.accept(regionNode)) {
+			if (filter.apply(regionNode.getRegion())) {
 				result.add(regionNode);
 			}
 		}

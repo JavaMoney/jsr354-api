@@ -10,8 +10,10 @@
  */
 package javax.money.ext;
 
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collection;
+
+import javax.money.Predicate;
 
 /**
  * Regions can be used to segregate or access artifacts (e.g. currencies) either
@@ -19,6 +21,10 @@ import java.util.Collection;
  * According root instances (trees) can be accessed by calling
  * {@link Regions#getRegionTree(String)}. By default, ISO countries accessible
  * with 2-digit or 3-digit codes must be provided by default.
+ * <p>
+ * Instances if this class are required to be thread safe, however it is not
+ * required they are {@link Serializable}. Additionally instances should be
+ * comparable based on on the comparable {@link Region} included.
  * 
  * @see <a href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">UN M.49:
  *      UN Statistics Division Country or area & region codes</a>
@@ -64,20 +70,20 @@ public interface RegionTreeNode {
 	 * up the region tree and select the first parent encountered that has the
 	 * given region type.
 	 * 
-	 * @param type
-	 *            the required type, not null.
+	 * @param predicate
+	 *            the selecting filter, not {@code null}.
 	 * @return the region found, or null.
 	 */
-	public RegionTreeNode selectParent(RegionFilter filter);
+	public RegionTreeNode selectParent(Predicate<Region> predicate);
 
 	/**
 	 * Select a collection of regions selected by the given filter.
 	 * 
-	 * @param filter
+	 * @param predicate
 	 *            the region selector, null will return all regions.
 	 * @return the regions selected.
 	 */
-	public Collection<RegionTreeNode> select(RegionFilter filter);
+	public Collection<RegionTreeNode> select(Predicate<Region> predicate);
 
 	/**
 	 * Access a {@link Region} using the region path, which allows access of a
@@ -89,6 +95,5 @@ public interface RegionTreeNode {
 	 * @return the {@link Region} found, or {@code null}.
 	 */
 	public RegionTreeNode getRegionTree(String path);
-
 
 }

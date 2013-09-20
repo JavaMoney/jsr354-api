@@ -12,12 +12,16 @@
  */
 package javax.money.ext;
 
+import java.io.Serializable;
+
 import javax.money.MonetaryFunction;
 import javax.money.ext.spi.ValidityProviderSpi;
 
 /**
  * For accessing {@link ValidityInfo} instances from the {@link Validities}
  * singleton, instances of this class must be created an configured.
+ * <p>
+ * This class is immutable, thread-safe and {@link Serializable}.
  * 
  * @author Anatole Tresch
  * 

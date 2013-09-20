@@ -10,7 +10,8 @@
  */
 package net.java.javamoney.ri.ext;
 
-import javax.money.ext.RegionFilter;
+import javax.money.Predicate;
+import javax.money.ext.Region;
 import javax.money.ext.RegionTreeNode;
 
 /**
@@ -43,5 +44,5 @@ public interface LinkedRegionNode extends RegionTreeNode {
 	 * @see #getLinkedPath()
 	 * @return the filter used, or {@code null}.
 	 */
-	public RegionFilter getLinkedFilter();
+	public Predicate<Region> getLinkedFilter();
 }

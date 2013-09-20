@@ -10,20 +10,24 @@
  */
 package javax.money.ext;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
  * This class models a validity of an item S related to a reference T.
+ * <p>
+ * This class is required to be immutable, thread-safe and {@link Serializable}.
  * 
  * @author Anatole Tresch
  * 
  * @param <T>
- *            the item type, e.g. CurrencyUnit
+ *            the item type, e.g. CurrencyUnit. T must be {@link Serializable}.
  * @param <R>
- *            the validity reference type, e.g. Region.
+ *            the validity reference type, e.g. Region. R must be
+ *            {@link Serializable}.
  */
-public class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
+public final class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 
 	/**
 	 * Serial version UID.

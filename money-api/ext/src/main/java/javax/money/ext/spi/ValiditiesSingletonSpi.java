@@ -31,6 +31,9 @@ import javax.money.ext.ValidityType;
  * application running.<br/>
  * Instances of this class are responsible for loading and managing of
  * {@link ValidityProviderSpi} and {@link RelatedValidityProviderSpi}.
+ * <p>
+ * Implementation of this interface must be thread-safe, but can be contextual
+ * in a EE context.
  * 
  * @author Anatole Tresch
  */
@@ -102,7 +105,8 @@ public interface ValiditiesSingletonSpi {
 	 *            the item type.
 	 * @return the supported {@link ValidityType} instances, never {@code null}
 	 */
-	public <T, R> Set<ValidityType> getRelatedValidityTypes(Class<T> type, Class<R> relatedType);
+	public <T, R> Set<ValidityType> getRelatedValidityTypes(Class<T> type,
+			Class<R> relatedType);
 
 	/**
 	 * Access the supported {@link ValidityType} instances for the given item

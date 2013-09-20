@@ -21,6 +21,7 @@ import java.util.Collection;
 
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryFunction;
+import javax.money.Predicate;
 
 /**
  * This class allows instances of a type T to be visited with

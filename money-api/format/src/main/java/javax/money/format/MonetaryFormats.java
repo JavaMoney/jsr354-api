@@ -21,7 +21,14 @@ import java.util.logging.Logger;
 import javax.money.format.spi.MonetaryFormatsSingletonSpi;
 
 /**
- * This interface provides access to the formatting logic of JavaMoney.
+ * This interface provides access to the formatting logic of JavaMoney. *
+ * <p>
+ * {@link ItemFormat} instances are not required to be thread-safe. Basically
+ * when accessing an {@link ItemFormat} from the {@link MonetaryFormats}
+ * singleton a new instance should be created on each access.<br/>
+ * This class itself is thread-safe, delegating its calls to the
+ * {@link MonetaryFormatsSingletonSpi} registered using the
+ * {@link ServiceLoader}.
  * 
  * @author Anatole Tresch
  */

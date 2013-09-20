@@ -18,6 +18,8 @@ import java.util.Locale;
 /**
  * This interface is implemented by types that require to be represented as
  * {@link String} objects, e.g. for displaying.
+ * <p>
+ * Classes implementing this interface should be thread-safe.
  * 
  * @author Anatole Tresch
  */

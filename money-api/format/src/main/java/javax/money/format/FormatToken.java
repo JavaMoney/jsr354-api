@@ -20,6 +20,9 @@ import java.util.Locale;
  * Instances of {@link FormatToken} can be added to a {@link ItemFormatBuilder}
  * to assemble a complex input/output {@link ItemFormat} using a programmatic
  * fluent API.
+ * <p>
+ * Classes implementing this interface are not required to be thread-safe, since
+ * formatters are not required to be thread-safe.
  * 
  * @author Anatole Tresch
  */

@@ -15,6 +15,8 @@ package javax.money.format;
 /**
  * Default implementation of {@link ItemFactory} that looks up resulting item
  * under the {@link Class} or {@link Class#getName()} key.
+ * <p>
+ * This class is thread-safe.
  * 
  * @author Anatole Tresch
  * 

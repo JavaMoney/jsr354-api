@@ -24,6 +24,9 @@ import java.util.Locale;
  * {@link ItemFormat} instances programmatically using a fluent API. The
  * formatting internally is modeled by an ordered list of {@link FormatToken}
  * instances.
+ * <p>
+ * This class is not thread-safe and therefore should not be shared among
+ * different threads.
  * 
  * @author Anatole Tresch
  * 
@@ -77,13 +80,13 @@ public class ItemFormatBuilder<T> {
 	 * @return the builder instance, for chaining.
 	 */
 	public ItemFormatBuilder<T> withStyle(LocalizationStyle style) {
-		if(style==null){
+		if (style == null) {
 			throw new IllegalArgumentException("style required.");
 		}
 		this.style = style;
 		return this;
 	}
-	
+
 	/**
 	 * Configure the format with the given target type.
 	 * 
@@ -92,7 +95,7 @@ public class ItemFormatBuilder<T> {
 	 * @return the builder instance, for chaining.
 	 */
 	public ItemFormatBuilder<T> withTargetType(Class<T> targetType) {
-		if(targetType==null){
+		if (targetType == null) {
 			throw new IllegalArgumentException("targetType required.");
 		}
 		this.targetType = targetType;

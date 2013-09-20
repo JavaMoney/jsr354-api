@@ -33,6 +33,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * Finally instances of {@link LocalizationStyle} can be registered to the
  * internal style cache, which allows to share the according styles, by
  * accessing them using {@link #of(Class)} of {@link #of(Class, String)}.
+ * <p>
+ * This class is thread safe, immutable and {@link Serializable}. The containing
+ * {@link Builder} class however is NOT thread-safe.
  * 
  * @author Anatole Tresch
  */
@@ -261,6 +264,10 @@ public final class LocalizationStyle implements Serializable {
 
 	/**
 	 * Builder to create new instances of {@link LocalizationStyle}.
+	 * <p>
+	 * This class is not thread-safe and should not be used in multiple threads.
+	 * However {@link LocalizationStyle} instances created can securely shared
+	 * among threads.
 	 * 
 	 * @author Anatole Tresch
 	 */
@@ -423,7 +430,7 @@ public final class LocalizationStyle implements Serializable {
 			this.targetType = targetType;
 			return this;
 		}
-		
+
 		/**
 		 * Sets the given styleId.
 		 * 

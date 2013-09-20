@@ -26,6 +26,9 @@ import javax.money.format.MonetaryFormats;
  * loading and managing of the {@link ItemFormatFactorySpi} instances. Hereby
  * the {@link ItemFormatFactorySpi} instances can be loaded from the
  * {@link ServiceLoader} or by other mechanisms, e.g. CDI.
+ * <p>
+ * Instances of this class must be thread-safe. In a EE context they can be
+ * implemented in a contextual way.
  * 
  * @author Anatole Tresch
  */

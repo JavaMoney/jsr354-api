@@ -33,6 +33,9 @@ import javax.money.format.LocalizationStyle;
  * instance on each access and to delegate caching aspects to the clients.
  * Similarly it is not required that the instances returned by the SPI must be
  * thread safe.
+ * <p>
+ * Instances of this class are required to be thread-safe. They can be
+ * implemented as contextual bean in a EE context.
  * 
  * @author Anatole Tresch
  */

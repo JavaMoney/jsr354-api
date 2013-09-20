@@ -33,11 +33,11 @@ import javax.money.MonetaryAmount;
  */
 class MaxCountPredicate<T> implements Predicate<T> {
 	/** The minimal number of items that must match, or null. */
-	private Integer max;
+	private int max;
 	/** The current number of items that matched the predicate. */
 	private int currentNum;
 
-	private List<Predicate<? super T>> predicates = new ArrayList<Predicate<? super T>>();
+	private Predicate<? super T> predicate;
 
 	/**
 	 * Set the minimal number of items that are required to match the predicate
@@ -48,15 +48,10 @@ class MaxCountPredicate<T> implements Predicate<T> {
 	 *            The minimal number, or {@code null} to remove the condition.
 	 * @return this, for chaining.
 	 */
-	@SafeVarargs
-	MaxCountPredicate(Integer max,
-			Iterable<? extends Predicate<? super T>>... predicates) {
-		for (Iterable<? extends Predicate<? super T>> iterable : predicates) {
-			for (Predicate<? super T> predicate : iterable) {
-				this.predicates.add(predicate);
-			}
-		}
+	MaxCountPredicate(int max,
+			Predicate<? super T> predicate) {
 		this.max = max;
+		this.predicate = predicate;
 	}
 
 	/**
@@ -67,7 +62,7 @@ class MaxCountPredicate<T> implements Predicate<T> {
 	 *         number configured.
 	 */
 	protected boolean checkMaxFailed() {
-		if (max != null && currentNum > max.intValue()) {
+		if (currentNum > max) {
 			return true;
 		}
 		return false;
@@ -85,12 +80,10 @@ class MaxCountPredicate<T> implements Predicate<T> {
 
 	@Override
 	public Boolean apply(T value) {
-		for (Predicate<? super T> subPredicate : predicates) {
-			if (subPredicate.apply(value)) {
-				currentNum++;
-				if (checkMaxFailed()) {
-					return false;
-				}
+		if (predicate != null && predicate.apply(value)) {
+			currentNum++;
+			if (checkMaxFailed()) {
+				return false;
 			}
 		}
 		return checkMaxFailed();

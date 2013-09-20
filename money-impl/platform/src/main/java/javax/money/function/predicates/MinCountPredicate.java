@@ -37,7 +37,7 @@ class MinCountPredicate<T> implements Predicate<T> {
 	/** The current number of items that matched the predicate. */
 	private int currentNum;
 
-	private List<Predicate<? super T>> predicates = new ArrayList<Predicate<? super T>>();
+	private Predicate<? super T> predicate;
 
 	/**
 	 * Set the minimal number of items that are required to match the predicate
@@ -48,15 +48,8 @@ class MinCountPredicate<T> implements Predicate<T> {
 	 *            The minimal number, or {@code null} to remove the condition.
 	 * @return this, for chaining.
 	 */
-	@SafeVarargs
-	MinCountPredicate(Integer min,
-			Iterable<? extends Predicate<? super T>>... predicates) {
-		for (Iterable<? extends Predicate<? super T>> iterable : predicates) {
-			for (Predicate<? super T> predicate : iterable) {
-				this.predicates.add(predicate);
-			}
-		}
-		this.min = min;
+	MinCountPredicate(int min, Predicate<? super T> predicate) {
+		this.predicate = predicate;
 	}
 
 	/**
@@ -85,12 +78,10 @@ class MinCountPredicate<T> implements Predicate<T> {
 
 	@Override
 	public Boolean apply(T value) {
-		for (Predicate<? super T> subPredicate : predicates) {
-			if (subPredicate.apply(value)) {
-				currentNum++;
-				if (checkMinFailed()) {
-					return false;
-				}
+		if (predicate != null && predicate.apply(value)) {
+			currentNum++;
+			if (checkMinFailed()) {
+				return false;
 			}
 		}
 		return checkMinFailed();

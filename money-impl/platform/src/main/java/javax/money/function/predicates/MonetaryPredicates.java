@@ -217,30 +217,9 @@ public final class MonetaryPredicates {
 	 * @return the evaluating predicate based on the values passed, never
 	 *         {@code null}.
 	 */
-	@SafeVarargs
 	public static <T> Predicate<T> min(int min,
-			Iterable<Predicate<? super T>>... predicates) {
-		return new MinCountPredicate<>(min, predicates);
-	}
-
-	/**
-	 * This method creates a predicate that is exactly {@code true}, if at least
-	 * the given number of instances passed to the predicate are matching the
-	 * predicate.
-	 * 
-	 * @param min
-	 *            the minimum of items required.
-	 * @param predicates
-	 *            The predicates to be used for selecting, not {@code null}.
-	 *            Every predicate must return {@true} that a given instance
-	 *            passed is accepted.
-	 * @return the evaluating predicate based on the values passed, never
-	 *         {@code null}.
-	 */
-	@SafeVarargs
-	public static <T> Predicate<T> min(int min,
-			Predicate<? super T>... predicates) {
-		return new MinCountPredicate<>(min, Arrays.asList(predicates));
+			Predicate<? super T> predicate) {
+		return new MinCountPredicate<>(min, predicate);
 	}
 
 	/**
@@ -255,28 +234,9 @@ public final class MonetaryPredicates {
 	 * @return the evaluating predicate based on the values passed, never
 	 *         {@code null}.
 	 */
-	@SafeVarargs
 	public static <T> Predicate<T> max(int max,
-			Iterable<? extends Predicate<? super T>>... predicates) {
-		return new MaxCountPredicate<>(max, predicates);
-	}
-
-	/**
-	 * This method creates a predicate that is exactly {@code true}, if not more
-	 * than the given number of instances passed to the predicate are matching
-	 * the predicate.
-	 * 
-	 * @param max
-	 *            the maximum of items required.
-	 * @param predicate
-	 *            The predicate to be used for selecting, not {@code null}.
-	 * @return the evaluating predicate based on the values passed, never
-	 *         {@code null}.
-	 */
-	@SafeVarargs
-	public static <T> Predicate<T> max(int max,
-			Predicate<? super T>... predicates) {
-		return new MaxCountPredicate<>(max, Arrays.asList(predicates));
+			Predicate<? super T> predicate) {
+		return new MaxCountPredicate<>(max, predicate);
 	}
 
 	/**

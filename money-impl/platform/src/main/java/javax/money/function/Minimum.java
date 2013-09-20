@@ -26,58 +26,14 @@ import javax.money.MonetaryFunction;
  * 
  * @author Anatole Tresch
  */
-public final class Minimum implements
+final class Minimum implements
 		MonetaryFunction<Iterable<? extends MonetaryAmount>, MonetaryAmount> {
-
-	/**
-	 * The shared instance of this class.
-	 */
-	private static final Minimum INSTANCE = new Minimum();
 
 	/**
 	 * Private constructor, there is only one instance of this class, accessible
 	 * calling {@link #of()}.
 	 */
-	private Minimum() {
-	}
-
-	/**
-	 * Access the shared instance of {@link Minimum} for use.
-	 * 
-	 * @return the shared instance, never {@code null}.
-	 */
-	public static final Minimum of() {
-		return INSTANCE;
-	}
-
-	/**
-	 * Evaluates the minimum of the given amounts.
-	 * 
-	 * @param amounts
-	 *            The amounts, at least one instance, not null, all of the same
-	 *            currency.
-	 * @return the minimum.
-	 */
-	public static MonetaryAmount from(Iterable<? extends MonetaryAmount> amounts) {
-		if (amounts == null) {
-			throw new IllegalArgumentException("amounts required.");
-		}
-		return Minimum.of().apply(amounts);
-	}
-
-	/**
-	 * Evaluates the minimum of the given amounts.
-	 * 
-	 * @param amounts
-	 *            The amounts, at least one instance, not null, all of the same
-	 *            currency.
-	 * @return the minimum.
-	 */
-	public static MonetaryAmount from(MonetaryAmount... amounts) {
-		if (amounts == null) {
-			throw new IllegalArgumentException("amounts required.");
-		}
-		return Minimum.of().apply(Arrays.asList(amounts));
+	Minimum() {
 	}
 
 	/**

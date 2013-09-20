@@ -21,6 +21,8 @@ import static org.junit.Assert.assertNotNull;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
+
+import javax.money.Displayable;
 import javax.money.Money;
 import javax.money.function.Percent;
 
@@ -34,44 +36,43 @@ import org.junit.Test;
 public class PercentTest {
 
 	@Test
-    public void testOf() {
-    	final Percent perc = Percent.of(BigDecimal.ONE);
-    	assertNotNull(perc);
+    public void testNew() {
+    	final Percent perc = new Percent(BigDecimal.ONE);
     }
 
     @Test
     public void testApply() {
     	final Money m = Money.of("CHF", BigDecimal.valueOf(2.35d));
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.235d)), Percent.of(BigDecimal.TEN).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.235d)), MoneyFunctions.percent(BigDecimal.TEN).apply(m));
     }
 
     @Test
     public void testApply10() {
     	final Money m = Money.of("CHF", 3);
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.3d)), Percent.of(BigDecimal.TEN).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.3d)), MoneyFunctions.percent(BigDecimal.TEN).apply(m));
     }
 
     @Test
     public void testApply20() {
     	final Money m = Money.of("CHF", 120);
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(24d)), Percent.of(BigDecimal.valueOf(20)).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(24d)), MoneyFunctions.percent(BigDecimal.valueOf(20)).apply(m));
     }
 
     @Test
     public void testApply30() {
     	final Money m = Money.of("CHF", 120);
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(36d)), Percent.of(BigDecimal.valueOf(30)).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(36d)), MoneyFunctions.percent(BigDecimal.valueOf(30)).apply(m));
     }
 
     @Test
     public void testToString() {
     	final String compareTo = NumberFormat.getPercentInstance().format(0.15);
-    	assertEquals(compareTo, Percent.of(BigDecimal.valueOf(15)).toString());
+    	assertEquals(compareTo, MoneyFunctions.percent(BigDecimal.valueOf(15)).toString());
     }
     
     @Test
     public void testGetDisplayValue() {
     	String compareTo = NumberFormat.getPercentInstance(Locale.TRADITIONAL_CHINESE).format(0.15);
-    	assertEquals(compareTo, Percent.of(BigDecimal.valueOf(15)).getDisplayName(Locale.TRADITIONAL_CHINESE));
+    	assertEquals(compareTo, ((Displayable)MoneyFunctions.percent(BigDecimal.valueOf(15))).getDisplayName(Locale.TRADITIONAL_CHINESE));
     }
 }

@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Basically the types possible are determined by the concrete use cases and
  * implementations. Typical use cases is that exchange rates for different
  * credit card systems or debit/credit may differ. This class allows to
- * distinguish these rates.
+ * distinguish these rates and also provides access to the rate types used.
  * 
  * @author Anatole Tresch
  */

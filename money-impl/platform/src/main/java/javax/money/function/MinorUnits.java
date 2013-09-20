@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryFunction;
-import javax.money.MonetaryOperator;
 
 /**
  * This class allows to extract the minor part of a {@link MonetaryAmount}
@@ -27,37 +26,35 @@ import javax.money.MonetaryOperator;
  * 
  * @author Anatole Tresch
  */
-final class MinorPart implements MonetaryOperator {
+final class MinorUnits implements MonetaryFunction<MonetaryAmount, Long> {
 
 	/**
 	 * Private constructor, there is only one instance of this class, accessible
 	 * calling {@link #of()}.
 	 */
-	MinorPart() {
+	MinorUnits() {
 	}
 
 	/**
-	 * Gets the amount in major units as a {@code MonetaryAmount} with scale 0.
+	 * Gets the amount in minor units as a {@code long}.
 	 * <p>
-	 * This returns the monetary amount in terms of the major units of the
+	 * This returns the monetary amount in terms of the minor units of the
 	 * currency, truncating the amount if necessary. For example, 'EUR 2.35'
-	 * will return 'EUR 2', and 'BHD -1.345' will return 'BHD -1'.
+	 * will return 235, and 'BHD -1.345' will return -1345.
 	 * <p>
-	 * This is returned as a {@code MonetaryAmount} rather than a
-	 * {@code BigInteger} . This is to allow further calculations to be
-	 * performed on the result. Should you need a {@code BigInteger}, simply
-	 * call {@code asType(BigInteger.class)}.
+	 * This method matches the API of {@link java.math.BigDecimal}.
 	 * 
-	 * @return the major units part of the amount, never {@code null}
+	 * @return the minor units part of the amount
+	 * @throws ArithmeticException
+	 *             if the amount is too large for a {@code long}
 	 */
 	@Override
-	public MonetaryAmount apply(MonetaryAmount amount) {
+	public Long apply(MonetaryAmount amount) {
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount required.");
 		}
 		BigDecimal number = amount.asType(BigDecimal.class);
-		return amount.from(number.movePointRight(number.precision())
-				.longValueExact());
+		return number.movePointRight(number.precision()).longValueExact();
 	}
 
 }

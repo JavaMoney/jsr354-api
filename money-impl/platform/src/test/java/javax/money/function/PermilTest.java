@@ -33,40 +33,39 @@ public class PermilTest {
 
 	@Test
 	public void testOf() {
-		Permil perc = Permil.of(BigDecimal.ONE);
-		assertNotNull(perc);
+		Permil perc = new Permil(BigDecimal.ONE);
 	}
 
 	@Test
 	public void testApply() {
 		Money m = Money.of("CHF", BigDecimal.valueOf(2.35d));
 		assertEquals(Money.of("CHF", BigDecimal.valueOf(0.0235d)),
-				Permil.of(BigDecimal.TEN).apply(m));
+				MoneyFunctions.permil(BigDecimal.TEN).apply(m));
 	}
 
 	@Test
 	public void testApply10() {
 		Money m = Money.of("CHF", 3);
 		assertEquals(Money.of("CHF", BigDecimal.valueOf(0.03d)),
-				Permil.of(BigDecimal.TEN).apply(m));
+				MoneyFunctions.permil(BigDecimal.TEN).apply(m));
 	}
 
 	@Test
 	public void testApply20() {
 		Money m = Money.of("CHF", 12);
 		assertEquals(Money.of("CHF", BigDecimal.valueOf(0.24d)),
-				Permil.of(BigDecimal.valueOf(20)).apply(m));
+				MoneyFunctions.permil(BigDecimal.valueOf(20)).apply(m));
 	}
 
 	@Test
 	public void testApply30() {
 		Money m = Money.of("CHF", 12);
 		assertEquals(Money.of("CHF", BigDecimal.valueOf(0.36d)),
-				Permil.of(BigDecimal.valueOf(30)).apply(m));
+				MoneyFunctions.permil(BigDecimal.valueOf(30)).apply(m));
 	}
 
 	@Test
 	public void testToString() {
-		assertEquals("15 \u2030", Permil.of(BigDecimal.valueOf(15)).toString());
+		assertEquals("15 \u2030", MoneyFunctions.permil(BigDecimal.valueOf(15)).toString());
 	}
 }

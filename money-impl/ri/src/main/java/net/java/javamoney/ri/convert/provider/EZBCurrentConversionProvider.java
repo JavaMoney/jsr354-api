@@ -134,10 +134,10 @@ public class EZBCurrentConversionProvider extends AbstractResource
 			return null;
 		}
 		ExchangeRate.Builder builder = new ExchangeRate.Builder();
-		builder.setProvider("European Central Bank");
-		builder.setExchangeRateType(RATE_TYPE);
-		builder.setBase(base);
-		builder.setTerm(term);
+		builder.withProvider("European Central Bank");
+		builder.withExchangeRateType(RATE_TYPE);
+		builder.withBase(base);
+		builder.withTerm(term);
 		ExchangeRate sourceRate = null;
 		ExchangeRate targetRate = null;
 		if (timestamp == null) {
@@ -148,7 +148,7 @@ public class EZBCurrentConversionProvider extends AbstractResource
 			targetRate = currentRates.get(term.getCurrencyCode());
 			if (BASE_CURRENCY_CODE.equals(base.getCurrencyCode())
 					&& BASE_CURRENCY_CODE.equals(term.getCurrencyCode())) {
-				builder.setFactor(BigDecimal.ONE);
+				builder.withFactor(BigDecimal.ONE);
 				return builder.build();
 			} else if (BASE_CURRENCY_CODE.equals(term.getCurrencyCode())) {
 				if (sourceRate == null) {
@@ -166,9 +166,9 @@ public class EZBCurrentConversionProvider extends AbstractResource
 						term,
 						timestamp);
 				if (rate1 != null || rate2 != null) {
-					builder.setFactor(rate1.getFactor().multiply(
+					builder.withFactor(rate1.getFactor().multiply(
 							rate2.getFactor()));
-					builder.setExchangeRateChain(rate1, rate2);
+					builder.withExchangeRateChain(rate1, rate2);
 					return builder.build();
 				}
 				// sourceRate = reverse(sourceRate);
@@ -185,11 +185,10 @@ public class EZBCurrentConversionProvider extends AbstractResource
 		if (rate == null) {
 			throw new IllegalArgumentException("Rate null is not reversable.");
 		}
-		return new ExchangeRate(rate.getExchangeRateType(), rate.getTerm(),
-				rate.getBase(), BigDecimal.ONE.divide(rate.getFactor(),
-						MathContext.DECIMAL64), rate.getProvider(),
-				rate.getValidFromTimeInMillis(), rate.getValidToTimeInMillis());
-	}
+		return new ExchangeRate.Builder().withExchangeRate(rate)
+				.withBase(rate.getTerm()).withTerm(rate.getBase())
+				.withFactor(BigDecimal.ONE.divide(rate.getFactor(),
+						MathContext.DECIMAL64)).build();	}
 
 	/**
 	 * SAX Event Handler that reads the quotes.
@@ -276,12 +275,12 @@ public class EZBCurrentConversionProvider extends AbstractResource
 	 */
 	void addRate(CurrencyUnit term, Long timestamp, BigDecimal rate) {
 		ExchangeRate.Builder builder = new ExchangeRate.Builder();
-		builder.setBase(BASE_CURRENCY);
-		builder.setTerm(term);
-		builder.setValidFrom(timestamp);
-		builder.setProvider("European Central Bank");
-		builder.setFactor(rate);
-		builder.setExchangeRateType(RATE_TYPE);
+		builder.withBase(BASE_CURRENCY);
+		builder.withTerm(term);
+		builder.withValidFromMillis(timestamp);
+		builder.withProvider("European Central Bank");
+		builder.withFactor(rate);
+		builder.withExchangeRateType(RATE_TYPE);
 		ExchangeRate exchangeRate = builder.build();
 		this.currentRates.put(term.getCurrencyCode(), exchangeRate);
 	}
@@ -305,7 +304,7 @@ public class EZBCurrentConversionProvider extends AbstractResource
 	@Override
 	public ExchangeRate getReversed(ExchangeRate rate) {
 		return getExchangeRate(rate.getTerm(), rate.getBase(),
-				rate.getValidFromTimeInMillis());
+				rate.getValidFromMillis());
 	}
 
 	@Override

@@ -128,25 +128,6 @@ public class IsoCurrencyOnlineProvider implements CurrencyUnitProviderSpi {
 	    return currencyName;
 	}
 
-//	public String getSymbol(Locale locale) {
-//	    return currencyCode;
-//	}
-//
-//	public String getSymbol() {
-//	    return currencyCode;
-//	}
-//
-//	public String getDisplayName() {
-//	    return currencyName;
-//	}
-
-	@Override
-	public boolean isLegalTender() {
-	    if (getCurrencyCode().startsWith("X")) {
-		return false;
-	    }
-	    return true;
-	}
 
 	@Override
 	public int getCashRounding() {

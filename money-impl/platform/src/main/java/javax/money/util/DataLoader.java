@@ -35,6 +35,10 @@ import javax.money.ext.spi.RegionsSingletonSpi;
  * version are loaded from the classpath. A {@link UpdatePolicy} can be set and
  * configured to enable automatic updating, e.g. of {@link ExchangeRate}s. By
  * default the {@link UpdatePolicy#NEVER}.
+ * <p>
+ * This class is used throughout the RI for managing/updating/reloading of data
+ * sources, e.g. data streams for exchange rates, additional currency data,
+ * historical currency data and so on.
  * 
  * @author Anatole Tresch
  */

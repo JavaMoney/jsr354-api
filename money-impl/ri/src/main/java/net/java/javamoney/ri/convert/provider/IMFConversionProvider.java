@@ -67,9 +67,9 @@ public class IMFConversionProvider extends AbstractResource
 	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
 			.of(IMF_STR);
 
-	private static final MoneyCurrency SDR = new MoneyCurrency.Builder(
-			MoneyCurrency.ISO_NAMESPACE, "SDR").setLegalTender(false)
-			.setVirtual(false).setDefaultFractionDigits(3).setNumericCode(-1)
+	private static final MoneyCurrency SDR = new MoneyCurrency.Builder()
+			.withNamespace(MoneyCurrency.ISO_NAMESPACE).withCurrencyCode("SDR")
+			.withDefaultFractionDigits(3).withNumericCode(-1)
 			.build(true);
 
 	private Map<CurrencyUnit, List<ExchangeRate>> currencyToSdr = new HashMap<CurrencyUnit, List<ExchangeRate>>();
@@ -186,8 +186,13 @@ public class IMFConversionProvider extends AbstractResource
 						rates = new ArrayList<ExchangeRate>(5);
 						newCurrencyToSdr.put(currency, rates);
 					}
-					ExchangeRate rate = new ExchangeRate(RATE_TYPE, currency,
-							SDR, values[i], "http://www.imf.org/", fromTS, toTS);
+					ExchangeRate rate = new ExchangeRate.Builder()
+							.withExchangeRateType(RATE_TYPE)
+							.withBase(currency).withTerm(
+									SDR).withFactor(values[i])
+							.withProvider("http://www.imf.org/")
+							.withValidFromMillis(fromTS)
+							.withValidToMillis(toTS).build();
 					rates.add(rate);
 				} else { // SDR -> Currency
 					List<ExchangeRate> rates = this.sdrToCurrency.get(currency);
@@ -195,9 +200,13 @@ public class IMFConversionProvider extends AbstractResource
 						rates = new ArrayList<ExchangeRate>(5);
 						newSdrToCurrency.put(currency, rates);
 					}
-					ExchangeRate rate = new ExchangeRate(RATE_TYPE, SDR,
-							currency, values[i], "http://www.imf.org/", fromTS,
-							toTS);
+					ExchangeRate rate = new ExchangeRate.Builder()
+							.withExchangeRateType(RATE_TYPE)
+							.withBase(SDR).withTerm(
+									currency).withFactor(values[i])
+							.withProvider("http://www.imf.org/")
+							.withValidFromMillis(fromTS)
+							.withValidToMillis(toTS).build();
 					rates.add(rate);
 				}
 			}
@@ -252,16 +261,16 @@ public class IMFConversionProvider extends AbstractResource
 			return null;
 		}
 		ExchangeRate.Builder builder = new ExchangeRate.Builder();
-		builder.setProvider("http://www.imf.org/");
-		builder.setExchangeRateType(RATE_TYPE);
-		builder.setBase(base);
-		builder.setTerm(term);
-		builder.setFactor(rate1.getFactor().multiply(rate2.getFactor()));
-		builder.setExchangeRateChain(rate1, rate2);
-		builder.setValidFrom(Math.max(rate1.getValidFromTimeInMillis(),
-				rate2.getValidFromTimeInMillis()));
-		builder.setValidTo(Math.min(rate1.getValidToTimeInMillis(),
-				rate2.getValidToTimeInMillis()));
+		builder.withProvider("http://www.imf.org/");
+		builder.withExchangeRateType(RATE_TYPE);
+		builder.withBase(base);
+		builder.withTerm(term);
+		builder.withFactor(rate1.getFactor().multiply(rate2.getFactor()));
+		builder.withExchangeRateChain(rate1, rate2);
+		builder.withValidFromMillis(Math.max(rate1.getValidFromMillis(),
+				rate2.getValidFromMillis()));
+		builder.withValidToMillis(Math.min(rate1.getValidToMillis(),
+				rate2.getValidToMillis()));
 		return builder.build();
 	}
 
@@ -305,7 +314,7 @@ public class IMFConversionProvider extends AbstractResource
 	@Override
 	public ExchangeRate getReversed(ExchangeRate rate) {
 		return getExchangeRate(rate.getTerm(), rate.getBase(),
-				rate.getValidFromTimeInMillis());
+				rate.getValidFromMillis());
 	}
 
 	@Override

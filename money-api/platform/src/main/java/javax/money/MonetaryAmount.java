@@ -12,15 +12,54 @@
  */
 package javax.money;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 /**
  * Interface defining a monetary amount. The effective internal representation
- * of an amount may vary depending on the implementation used. Nevertheless
- * basically an amount provides a functionality similar to {@link BigDecimal}.
+ * of an amount may vary depending on the implementation used. JSR 354
+ * explicitly supports different types of MonetaryAmount to be implemented and
+ * used. Reason behind is that the requirements to an implementation heavily
+ * vary for different usage scenarios. E.g. product calculations may require
+ * high precision and scale, whereas low latency order and trading systems
+ * require high calculation performance for algorithmic operations.
+ * <p>
+ * This JSR additionally defines a couple of interoperability rules that each
+ * implementation must follow:
+ * <ul>
+ * <li>Rounding is never done automatically, exception internal rounding implied
+ * by the numeric implementation type.</li>
+ * <li>Each implementation must at least provide two constructors, one taking
+ * {@code (BigDecimal, CurrencyUnit)}, one taking
+ * {@code (BigDecimal, CurrencyUnit)}.</li>
+ * <li>External rounding must be applied, when accessing the numeric part of an
+ * amount, if implied by the required target type. E.g. externalizing to a
+ * double may truncate precision. If the target type supports the current
+ * scale/precision, it is required that no external rounding is performed.</li>
+ * <li>It is required that each implementation supports externalization to
+ * {@link BigDecimal}.</li>
+ * <li>Since implementations are required to be immutable, an operation must
+ * never change any internal state of an instance. Given an instance, all
+ * operations are required to be fully reproducible.</li>
+ * <li>Finally the result of calling {@link #with(MonetaryOperator)} must be of
+ * the same type as type on which {@code with} was called. The {@code with}
+ * method also defines additional interoperability requirements.</li>
+ * </ul>
+ * Nevertheless basically an amount provides a functionality similar to
+ * {@link BigDecimal}. Also it is required that implementations of this
+ * interface are
+ * <ul>
+ * <li>immutable</li>
+ * <li>thread-safe</li>
+ * <li>final</li>
+ * <li>serializable, hereby writing a {@link BigDecimal}, a {@link MathContext}
+ * and a serialized {@link CurrencyUnit} in exact that order.</li>
+ * </ul>
  * <p>
  * Since {@link Number} is not an interface, this type is not extending
  * {@link Number}.
  * 
- * @version 0.4.3
+ * @see #with(MonetaryOperator)
  * @author Anatole Tresch
  * @author Werner Keil
  */
@@ -293,7 +332,18 @@ public interface MonetaryAmount {
 
 	/**
 	 * Applies the given {@link MonetaryOperator} to this {@link MonetaryAmount}
-	 * .
+	 * . Hereby the following constaints are implied:
+	 * <ul>
+	 * <li>The instance type returned must be the same as
+	 * {@code this.getClass()}.</li>
+	 * <li>No significant truncation of the result should happen, meaning the
+	 * numeric precision/scale of the result should not be less than the numeric
+	 * precision/scale of this instance. This ensures that no implicit rounding
+	 * is happening that would by out of control of the programmer. But we
+	 * aware: applying a {@link MonetaryOperator}, which creates a result that
+	 * the current instance is not able, to represent, still leads to
+	 * truncation.</li>
+	 * </ul>
 	 * 
 	 * @param operator
 	 *            the operator, not null.
@@ -330,27 +380,30 @@ public interface MonetaryAmount {
 	 */
 	public int getPrecision();
 
-	/**
-	 * Returns the value of the specified number as an <code>int</code>. This
-	 * may involve rounding or truncation.
-	 * 
-	 * @return the numeric value represented by this object after conversion to
-	 *         type <code>int</code>.
-	 */
-	public int intValue();
-
-	/**
-	 * Converts this {@code MonetaryAmount} to an {@code int}, checking for lost
-	 * information. If this {@code MonetaryAmount} has a nonzero fractional part
-	 * or is out of the possible range for an {@code int} result then an
-	 * {@code ArithmeticException} is thrown.
-	 * 
-	 * @return this {@code MonetaryAmount} converted to an {@code int}.
-	 * @throws ArithmeticException
-	 *             if {@code this} has a nonzero fractional part, or will not
-	 *             fit in an {@code int}.
-	 */
-	public int intValueExact();
+	// /**
+	// * Returns the value of the specified number as an <code>int</code>. This
+	// * may involve rounding or truncation.
+	// *
+	// * @return the numeric value represented by this object after conversion
+	// to
+	// * type <code>int</code>.
+	// */
+	// public int intValue();
+	//
+	// /**
+	// * Converts this {@code MonetaryAmount} to an {@code int}, checking for
+	// lost
+	// * information. If this {@code MonetaryAmount} has a nonzero fractional
+	// part
+	// * or is out of the possible range for an {@code int} result then an
+	// * {@code ArithmeticException} is thrown.
+	// *
+	// * @return this {@code MonetaryAmount} converted to an {@code int}.
+	// * @throws ArithmeticException
+	// * if {@code this} has a nonzero fractional part, or will not
+	// * fit in an {@code int}.
+	// */
+	// public int intValueExact();
 
 	/**
 	 * Returns the value of the specified number as a <code>long</code>. This
@@ -374,14 +427,15 @@ public interface MonetaryAmount {
 	 */
 	public long longValueExact();
 
-	/**
-	 * Returns the value of the specified number as a <code>float</code>. This
-	 * may involve rounding.
-	 * 
-	 * @return the numeric value represented by this object after conversion to
-	 *         type <code>float</code>.
-	 */
-	public float floatValue();
+	// /**
+	// * Returns the value of the specified number as a <code>float</code>. This
+	// * may involve rounding.
+	// *
+	// * @return the numeric value represented by this object after conversion
+	// to
+	// * type <code>float</code>.
+	// */
+	// public float floatValue();
 
 	/**
 	 * Returns the value of the specified number as a <code>double</code>. This
@@ -392,36 +446,39 @@ public interface MonetaryAmount {
 	 */
 	public double doubleValue();
 
-	/**
-	 * Returns the value of the specified number as a <code>byte</code>. This
-	 * may involve rounding or truncation.
-	 * 
-	 * @return the numeric value represented by this object after conversion to
-	 *         type <code>byte</code>.
-	 */
-	public byte byteValue();
-
-	/**
-	 * Returns the value of the specified number as a <code>short</code>. This
-	 * may involve rounding or truncation.
-	 * 
-	 * @return the numeric value represented by this object after conversion to
-	 *         type <code>short</code>.
-	 */
-	public short shortValue();
-
-	/**
-	 * Converts this {@code MonetaryAmount} to a {@code short}, checking for
-	 * lost information. If this {@code MonetaryAmount} has a nonzero fractional
-	 * part or is out of the possible range for a {@code short} result then an
-	 * {@code ArithmeticException} is thrown.
-	 * 
-	 * @return this {@code MonetaryAmount} converted to a {@code short}.
-	 * @throws ArithmeticException
-	 *             if {@code this} has a nonzero fractional part, or will not
-	 *             fit in a {@code short} .
-	 */
-	public short shortValueExact();
+	// /**
+	// * Returns the value of the specified number as a <code>byte</code>. This
+	// * may involve rounding or truncation.
+	// *
+	// * @return the numeric value represented by this object after conversion
+	// to
+	// * type <code>byte</code>.
+	// */
+	// public byte byteValue();
+	//
+	// /**
+	// * Returns the value of the specified number as a <code>short</code>. This
+	// * may involve rounding or truncation.
+	// *
+	// * @return the numeric value represented by this object after conversion
+	// to
+	// * type <code>short</code>.
+	// */
+	// public short shortValue();
+	//
+	// /**
+	// * Converts this {@code MonetaryAmount} to a {@code short}, checking for
+	// * lost information. If this {@code MonetaryAmount} has a nonzero
+	// fractional
+	// * part or is out of the possible range for a {@code short} result then an
+	// * {@code ArithmeticException} is thrown.
+	// *
+	// * @return this {@code MonetaryAmount} converted to a {@code short}.
+	// * @throws ArithmeticException
+	// * if {@code this} has a nonzero fractional part, or will not
+	// * fit in a {@code short} .
+	// */
+	// public short shortValueExact();
 
 	/**
 	 * Returns the signum function of this {@code MonetaryAmount}.
@@ -505,10 +562,32 @@ public interface MonetaryAmount {
 	 * numeric wrapper types should be supported within SE environments, whereas
 	 * on other environments, it may be different.
 	 * <p>
-	 * This returns the monetary value as a {@code T}. No scaling will be
-	 * affected.
+	 * Hereby an implementation must support the following types:
+	 * <ul>
+	 * <li>{@code java.math.BigDecimal}</li>
+	 * <li>{@code java.math.BigInteger}</li>
+	 * <li>{@code java.lang.Byte}</li>
+	 * <li>{@code java.lang.Short}</li>
+	 * <li>{@code java.lang.Integer}</li>
+	 * <li>{@code java.lang.Long}</li>
+	 * <li>{@code java.lang.Float}</li>
+	 * <li>{@code java.lang.Double}</li>
+	 * <li>{@code java.lang.Number}, hereby returning an instance of
+	 * {@code java.math.BigDecimal}.</li>
+	 * </ul>
+	 * {@code java.lang.String} is not supported, since this should be done
+	 * using formatting.
+	 * <p>
+	 * This method must never truncate parts of the internal numeric value, so
+	 * that it fits into the target type. Instead an
+	 * {@link IllegalArgumentException} must be thrown.
+	 * <p>
+	 * Note since a {@link MonetaryAmount} is immutable, any values returned by
+	 * this method must not expose mutability, i.e. they must be immutable or
+	 * copies of the internal state.
 	 * 
-	 * @return the amount represented as T, never {@code null}
+	 * @return the amount represented as T, never {@code null}. Hereby T must
+	 *         have the same scale/precision as the internal numeric value.
 	 * @throws IllegalArgumentException
 	 *             if the representation type is not supported, or the target
 	 *             type can not provide the precision required.
@@ -516,11 +595,13 @@ public interface MonetaryAmount {
 	public <T> T asType(Class<T> type);
 
 	/**
-	 * Access the class that models the representation of the numeric part of
-	 * the amount. The internal value can be accessed by calling
-	 * {@link #asType(Class)} passing the result of this method.
+	 * Access the implementation class of the numeric part of the amount. The
+	 * internal implementation type can be accessed by calling
+	 * {@link #asType(Class)} passing the result type as returned by this
+	 * method.
 	 * 
-	 * @return The class that represents the numeric representation, never null.
+	 * @return The class that represents the numeric representation, never
+	 *         {@code null}.
 	 * @see #asType(Class)
 	 */
 	public Class<?> getNumberType();

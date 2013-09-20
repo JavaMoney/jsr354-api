@@ -110,7 +110,7 @@ public class MoneyTest {
 		MonetaryAmount m = Money.of(curr, 100, MathContext.DECIMAL32);
 		assertNotNull(m);
 		assertEquals(curr, m.getCurrency());
-		assertEquals(100, m.intValue());
+		assertEquals(100L, m.longValue());
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class MoneyTest {
 		MonetaryAmount m = Money.of("CHF", 100);
 		assertNotNull(m);
 		assertEquals(curr, m.getCurrency());
-		assertEquals(100, m.intValue());
+		assertEquals(100L, m.longValue());
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class MoneyTest {
 		MonetaryAmount m = Money.of("CHF", 100, MathContext.DECIMAL32);
 		assertNotNull(m);
 		assertEquals(curr, m.getCurrency());
-		assertEquals(100, m.intValue());
+		assertEquals(100L, m.longValue());
 	}
 
 	/**

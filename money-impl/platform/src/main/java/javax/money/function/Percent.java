@@ -34,7 +34,7 @@ import javax.money.MonetaryOperator;
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Percent">Wikipedia: Percentage</a>
  */
-public final class Percent implements MonetaryOperator, Displayable {
+final class Percent implements MonetaryOperator, Displayable {
 
 	private static final MathContext DEFAULT_MATH_CONTEXT = initDefaultMathContext();
 	private static final BigDecimal ONE_HUNDRED = new BigDecimal(100,
@@ -47,7 +47,7 @@ public final class Percent implements MonetaryOperator, Displayable {
 	 * 
 	 * @return the shared instance, never {@code null}.
 	 */
-	private Percent(final BigDecimal decimal) {
+	Percent(final BigDecimal decimal) {
 		percentValue = calcPercent(decimal);
 	}
 
@@ -61,25 +61,6 @@ public final class Percent implements MonetaryOperator, Displayable {
 		// TODO Initialize default, e.g. by system properties, or better:
 		// classpath properties!
 		return MathContext.DECIMAL64;
-	}
-
-	/**
-	 * Factory method creating a new instance with the given {@code BigDecimal) percent value;
-	 * @param decimal the decimal value of the percent operator being created.
-	 * @return a new  {@code Percent} operator
-	 */
-	public static Percent of(BigDecimal decimal) {
-		return new Percent(decimal); // TODO caching, e.g. array for 1-100 might
-										// work.
-	}
-
-	/**
-	 * Factory method creating a new instance with the given {@code Number) percent value;
-	 * @param decimal the decimal value of the percent operator being created.
-	 * @return a new  {@code Percent} operator
-	 */
-	public static Percent of(Number number) {
-		return of(getBigDecimal(number, DEFAULT_MATH_CONTEXT));
 	}
 
 	/**

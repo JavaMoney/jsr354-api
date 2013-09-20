@@ -1,27 +1,25 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- * Contributors:
- *    Anatole Tresch - initial implementation
- *    Wernner Keil - extensions and adaptions.
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * Contributors: Anatole Tresch - initial implementation Wernner Keil -
+ * extensions and adaptions.
  */
 package net.java.javamoney.ri.core;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.money.CurrencyUnit;
@@ -46,147 +44,72 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#Builder(java.lang.String)}.
-	 */
-	@Test
-	public void testBuilderString() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder("test");
-		assertEquals("test", builder.getCurrencyCode());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#Builder(java.lang.String)}.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testBuilderString_BadCase() {
-		new MoneyCurrency.Builder(null);
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#Builder(java.lang.String, java.lang.String)}
-	 * .
-	 */
-	@Test
-	public void testBuilderStringString() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder("ns", "test");
-		assertEquals("test", builder.getCurrencyCode());
-		assertEquals("ns", builder.getNamespace());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setNamespace(java.lang.String)}
+	 * {@link javax.money.CurrencyUnitImpl.Builder#withNamespace(java.lang.String)}
 	 * .
 	 */
 	@Test
 	public void testGetSetNamespace() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setNamespace("ns1");
-		assertEquals("ns1", builder.getNamespace());
+		MoneyCurrency.Builder builder1 = new MoneyCurrency.Builder()
+				.withNamespace("ns1");
+		assertNotNull(builder1);
+		MoneyCurrency.Builder builder2 = builder1
+				.withNamespace("ns1");
+		assertTrue(builder1 == builder2);
 	}
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setCurrencyCode(java.lang.String)}
+	 * {@link javax.money.CurrencyUnitImpl.Builder#withCurrencyCode(java.lang.String)}
 	 * and {@link javax.money.CurrencyUnitImpl.Builder#getCurrencyCode()} .
 	 */
 	@Test
 	public void testGetSetCurrencyCode() {
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setCurrencyCode("code1");
-		assertEquals("code1", builder.getCurrencyCode());
+				.withCurrencyCode("code1");
 	}
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setDefaultFractionDigits(int)}
+	 * {@link javax.money.CurrencyUnitImpl.Builder#withDefaultFractionDigits(int)}
 	 * and
 	 * {@link javax.money.CurrencyUnitImpl.Builder#getDefaultFractionDigits()}.
 	 */
 	@Test
 	public void testGetSetDefaultFractionDigits() {
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setDefaultFractionDigits(10);
-		assertEquals(10, builder.getDefaultFractionDigits());
-		builder.setDefaultFractionDigits(-1);
-		assertEquals(-1, builder.getDefaultFractionDigits());
+				.withDefaultFractionDigits(10);
+		builder.withDefaultFractionDigits(-1);
 	}
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setDefaultFractionDigits(int)}
+	 * {@link javax.money.CurrencyUnitImpl.Builder#withDefaultFractionDigits(int)}
 	 * .
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetSetDefaultFractionDigits_InvalidInput() {
-		new MoneyCurrency.Builder().setDefaultFractionDigits(-10);
+		new MoneyCurrency.Builder().withDefaultFractionDigits(-10);
 	}
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setNumericCode(int)} and
+	 * {@link javax.money.CurrencyUnitImpl.Builder#withNumericCode(int)} and
 	 * {@link javax.money.CurrencyUnitImpl.Builder#getNumericCode()}.
 	 */
 	@Test
 	public void testGetSetNumericCode() {
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setNumericCode(10);
-		assertEquals(10, builder.getNumericCode());
-		builder.setNumericCode(-1);
-		assertEquals(-1, builder.getNumericCode());
+				.withNumericCode(10);
+		builder.withNumericCode(-1);
 	}
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setNumericCode(int)}.
+	 * {@link javax.money.CurrencyUnitImpl.Builder#withNumericCode(int)}.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetSetNumericCode_InvalidInput() {
-		new MoneyCurrency.Builder().setNumericCode(-10);
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setLegalTender(boolean)} and
-	 * {@link javax.money.CurrencyUnitImpl.Builder#hasLegalTender()}.
-	 */
-	@Test
-	public void testGetSetLegalTender() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setLegalTender(true);
-		assertTrue(builder.isLegalTender());
-		builder.setLegalTender(false);
-		assertFalse(builder.isLegalTender());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#setVirtual(boolean)} and
-	 * {@link javax.money.CurrencyUnitImpl.Builder#isVirtual()}.
-	 */
-	@Test
-	public void testGetSetVirtual() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setVirtual(true);
-		assertTrue(builder.isVirtual());
-		builder.setVirtual(false);
-		assertFalse(builder.isVirtual());
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#isBuildable()}.
-	 */
-	@Test
-	public void testIsBuildable() {
-		MoneyCurrency.Builder builder = new MoneyCurrency.Builder();
-		assertFalse(builder.isBuildable());
-		builder.setNamespace("ns");
-		assertFalse(builder.isBuildable());
-		builder.setCurrencyCode("cd");
-		assertTrue(builder.isBuildable());
+		new MoneyCurrency.Builder().withNumericCode(-10);
 	}
 
 	/**
@@ -195,16 +118,14 @@ public class MoneyCurrency_BuilderTest {
 	@Test
 	public void testBuild() {
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setNamespace("ns").setCurrencyCode("cd").setLegalTender(true)
-				.setVirtual(false).setDefaultFractionDigits(101)
-				.setNumericCode(7);
+				.withNamespace("ns").withCurrencyCode("cd")
+				.withDefaultFractionDigits(101)
+				.withNumericCode(7);
 		CurrencyUnit cu = builder.build();
 		assertEquals("ns", cu.getNamespace());
 		assertEquals("cd", cu.getCurrencyCode());
 		assertEquals(101, cu.getDefaultFractionDigits());
 		assertEquals(7, cu.getNumericCode());
-		assertTrue(cu.isLegalTender());
-		assertFalse(cu.isVirtual());
 	}
 
 	/**
@@ -214,16 +135,13 @@ public class MoneyCurrency_BuilderTest {
 	@Test
 	public void testBuildBoolean() {
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder()
-				.setNamespace("testBuildBoolean").setCurrencyCode("cd")
-				.setLegalTender(true).setVirtual(false)
-				.setDefaultFractionDigits(101).setNumericCode(7);
+				.withNamespace("testBuildBoolean").withCurrencyCode("cd")
+				.withDefaultFractionDigits(101).withNumericCode(7);
 		CurrencyUnit cu = builder.build(false);
 		assertEquals("testBuildBoolean", cu.getNamespace());
 		assertEquals("cd", cu.getCurrencyCode());
 		assertEquals(101, cu.getDefaultFractionDigits());
 		assertEquals(7, cu.getNumericCode());
-		assertTrue(cu.isLegalTender());
-		assertFalse(cu.isVirtual());
 		CurrencyUnit cu2 = MoneyCurrency.of("testBuildBoolean", "cd");
 		assertTrue(cu2 != cu);
 		cu = builder.build(true);

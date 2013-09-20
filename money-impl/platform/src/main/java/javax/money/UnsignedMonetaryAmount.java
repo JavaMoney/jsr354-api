@@ -1,23 +1,31 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package javax.money;
 
 /**
  * This class decorates an arbitrary {@link MonetaryAmount} instance and ensure
  * no negative values can be created using this instance.
+ * <p>
+ * As required by the {@link MonetaryAmount} interface, this class is
+ * <ul>
+ * <li>immutable</li>
+ * <li>final</li>
+ * <li>thread-safe/li>
+ * <li>serializable</li>
+ * </ul>
  * 
  * @author Anatole Tresch
  * @author Werner Keil
@@ -52,7 +60,6 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @return
 	 */
 	public UnsignedMonetaryAmount of(MonetaryAmount amount) {
-		// TODO caching?
 		return new UnsignedMonetaryAmount(amount);
 	}
 
@@ -86,7 +93,6 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 		return of(this.amount.add(augend));
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -107,7 +113,6 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 		MonetaryAmount[] res = this.amount.divideAndRemainder(divisor);
 		return new UnsignedMonetaryAmount[] { of(res[0]), of(res[1]) };
 	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -158,7 +163,6 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	public UnsignedMonetaryAmount subtract(MonetaryAmount subtrahend) {
 		return of(this.amount.subtract(subtrahend));
 	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -301,25 +305,25 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 		return this.amount.getPrecision();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#intValue()
-	 */
-	@Override
-	public int intValue() {
-		return this.amount.intValue();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#intValueExact()
-	 */
-	@Override
-	public int intValueExact() {
-		return this.amount.intValueExact();
-	}
+	// /*
+	// * (non-Javadoc)
+	// *
+	// * @see javax.money.MonetaryAmount#intValue()
+	// */
+	// @Override
+	// public int intValue() {
+	// return this.amount.intValue();
+	// }
+	//
+	// /*
+	// * (non-Javadoc)
+	// *
+	// * @see javax.money.MonetaryAmount#intValueExact()
+	// */
+	// @Override
+	// public int intValueExact() {
+	// return this.amount.intValueExact();
+	// }
 
 	/*
 	 * (non-Javadoc)
@@ -344,51 +348,11 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#floatValue()
-	 */
-	@Override
-	public float floatValue() {
-		return this.amount.floatValue();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see javax.money.MonetaryAmount#doubleValue()
 	 */
 	@Override
 	public double doubleValue() {
 		return this.amount.doubleValue();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#byteValue()
-	 */
-	@Override
-	public byte byteValue() {
-		return this.amount.byteValue();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#shortValue()
-	 */
-	@Override
-	public short shortValue() {
-		return this.amount.shortValue();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#shortValueExact()
-	 */
-	@Override
-	public short shortValueExact() {
-		return this.amount.shortValueExact();
 	}
 
 	/*

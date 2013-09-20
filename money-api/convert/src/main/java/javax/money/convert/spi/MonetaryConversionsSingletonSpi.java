@@ -11,15 +11,30 @@
 package javax.money.convert.spi;
 
 import java.util.Collection;
+import java.util.ServiceLoader;
 
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRateType;
+import javax.money.convert.MonetaryConversions;
 
 /**
- * This is the spi to be implemented that is registered into the
- * {@code MonetaryConversions} singleton accessor using {@code ServiceLoader}.
- * This interface allows to implement the component loading differently, e.g.
- * using the {@code ServiceLoader} or by using an CDI container.
+ * This is the SPI to be implemented, and that is registered into the
+ * {@code MonetaryConversions} singleton accessor. It should be registered as a
+ * service using the JDK {@code ServiceLoader}. Hereby only one instance can be
+ * registered at a time.<br/>
+ * This interface is designed to support also contextual behaviour, e.g. in Java
+ * EE containers each application may provide its own {@link ConversionProvider}
+ * instances, e.g. by registering them as CDI beans. An EE container can
+ * register an according {@link MonetaryConversionsSingletonSpi} that manages
+ * the different application contexts transparently. In a SE environment this
+ * class is expected to behave like an ordinary singleton, loading its SPIs from
+ * the {@link ServiceLoader}.
+ * <p>
+ * Instances of this class must be thread safe.
+ * <p>
+ * Only one instance can be registered using the {@link ServiceLoader}. When
+ * registering multiple instances the {@link MonetaryConversions} accessor will
+ * not work.
  * 
  * @author Anatole Tresch
  */

@@ -1,8 +1,8 @@
 package net.java.javamoney.ri;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.math.RoundingMode;
 import java.util.Locale;
@@ -13,7 +13,6 @@ import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
 import javax.money.Money;
 import javax.money.MoneyCurrency;
-import javax.money.MoneyRounding;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
@@ -28,7 +27,8 @@ import javax.money.format.ItemFormat;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormats;
-import javax.money.function.InstancesPredicate;
+import javax.money.function.MonetaryPredicates;
+import javax.money.function.MoneyRoundings;
 
 import net.java.javamoney.ri.ext.RegionPrinter;
 import net.java.javamoney.ri.ext.provider.icu4j.IcuRegion;
@@ -123,7 +123,8 @@ public class SmokeTests {
 
 	@Test
 	public void testCurrencyConverter() {
-		MonetaryOperator rounding = MoneyRounding.of(2, RoundingMode.HALF_UP);
+		MonetaryOperator rounding = MoneyRoundings.getRounding(2,
+				RoundingMode.HALF_UP);
 
 		MonetaryAmount srcCHF = Money.of("CHF", 100.15);
 		MonetaryAmount srcUSD = Money.of("USD", 100.15);
@@ -203,12 +204,14 @@ public class SmokeTests {
 		Region region = Regions.getRegion(RegionType.TERRITORY, "DE");
 		assertNotNull("Extended data available for Germany is missing",
 				Regions.getExtendedRegionDataTypes(region));
-		assertTrue("Extended data available for Germany not containing IcuRegion.class",
-				Regions.getExtendedRegionDataTypes(region).contains(IcuRegion.class));
+		assertTrue(
+				"Extended data available for Germany not containing IcuRegion.class",
+				Regions.getExtendedRegionDataTypes(region).contains(
+						IcuRegion.class));
 		assertNotNull("Extended ICU data for Germany null.",
 				Regions.getExtendedRegionData(region, IcuRegion.class));
 	}
-	
+
 	@Test
 	public void testCurrencyRegionValidities() throws InterruptedException {
 		System.out.println("Validity providers: "
@@ -219,8 +222,9 @@ public class SmokeTests {
 		System.out.println("Currencies for Germany: "
 				+ Validities.getRelatedValidityInfo(new RelatedValidityQuery(
 						CurrencyUnit.class, Region.class)
-						.withRelatedToPredicate(InstancesPredicate.of(Regions
-								.getRegion(Locale.GERMANY))
+						.withRelatedToPredicate(MonetaryPredicates
+								.include(Regions
+										.getRegion(Locale.GERMANY))
 						)));
 	}
 }

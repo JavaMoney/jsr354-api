@@ -29,7 +29,6 @@ import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
 import javax.money.Money;
 import javax.money.MoneyCurrency;
-import javax.money.MoneyRounding;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
@@ -42,6 +41,7 @@ import javax.money.format.ItemFormat;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormats;
+import javax.money.function.MoneyRoundings;
 
 import net.java.javamoney.ri.ext.provider.icu4j.IcuRegion;
 
@@ -103,7 +103,7 @@ public class SmokeTest {
 
 	@Test
 	public void testCurrencyConverter() {
-		MonetaryOperator rounding = MoneyRounding.of(2, RoundingMode.HALF_UP);
+		MonetaryOperator rounding = MoneyRoundings.getRounding(2, RoundingMode.HALF_UP);
 
 		MonetaryAmount srcCHF = Money.of(MoneyCurrency.of("CHF"), 100.15);
 		MonetaryAmount srcEUR = Money.of(MoneyCurrency.of("EUR"), 100.15);

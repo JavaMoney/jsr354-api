@@ -1,24 +1,22 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package javax.money;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Currency;
@@ -51,13 +49,6 @@ public class MoneyCurrencyTest {
 	}
 
 	@Test
-	public void testIsVirtual() {
-		CurrencyUnit cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "CHF");
-		assertNotNull(cur);
-		assertFalse(cur.isVirtual());
-	}
-
-	@Test
 	public void testGetNamespace() {
 		CurrencyUnit cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "CHF");
 		assertNotNull(cur);
@@ -85,16 +76,6 @@ public class MoneyCurrencyTest {
 		assertNotNull(cur);
 		assertEquals(Currency.getInstance("CHF").getDefaultFractionDigits(),
 				cur.getDefaultFractionDigits());
-	}
-
-	@Test
-	public void testIsLegalTender() {
-		CurrencyUnit cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "CHF");
-		assertNotNull(cur);
-		assertTrue(cur.isLegalTender());
-		cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "XXX");
-		assertNotNull(cur);
-		assertFalse(cur.isLegalTender());
 	}
 
 	@Test

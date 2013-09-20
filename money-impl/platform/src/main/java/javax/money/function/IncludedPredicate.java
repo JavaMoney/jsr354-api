@@ -15,13 +15,11 @@
  */
 package javax.money.function;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryFunction;
 
 /**
  * This abstract class models a predicate used for filtering of
@@ -33,35 +31,29 @@ import javax.money.MonetaryFunction;
  * @param <T>
  *            the input values to
  */
-public abstract class AbstractMultiPredicate<T> implements
-		MonetaryFunction<T, Boolean> {
+public class IncludedPredicate<T> implements
+		Predicate<T> {
 
-	private Set<MonetaryFunction<T, Boolean>> predicates = new HashSet<MonetaryFunction<T, Boolean>>();
+	private Set<T> acceptedValues = new HashSet<T>();
 
-	public AbstractMultiPredicate<T> withPredicates(
-			MonetaryFunction<T, Boolean>... predicates) {
-		withPredicates(Arrays.asList(predicates));
-		return this;
+	public IncludedPredicate(Iterable<? extends T>... values) {
+		for (Iterable<? extends T> iterable : values) {
+			for (T t : iterable) {
+				acceptedValues.add(t);
+			}
+		}
 	}
 
-	public AbstractMultiPredicate<T> withPredicates(
-			Collection<MonetaryFunction<T, Boolean>> predicates) {
-		this.predicates.addAll(predicates);
-		return this;
-	}
-
-	public AbstractMultiPredicate<T> clearPredicates() {
-		this.predicates.clear();
+	public IncludedPredicate<T> withoutValues(
+			Collection<T> values) {
+		this.acceptedValues.removeAll(values);
 		return this;
 	}
 
 	@Override
 	public Boolean apply(T value) {
-		return isPredicateTrue(value, this.predicates);
+		return acceptedValues.contains(value);
 	}
-
-	protected abstract boolean isPredicateTrue(T value,
-			Set<MonetaryFunction<T, Boolean>> predicates);
 
 	/*
 	 * (non-Javadoc)
@@ -70,7 +62,8 @@ public abstract class AbstractMultiPredicate<T> implements
 	 */
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [predicates=" + predicates + "]";
+		return getClass().getSimpleName() + " [acceptedValues="
+				+ acceptedValues + "]";
 	}
 
 }

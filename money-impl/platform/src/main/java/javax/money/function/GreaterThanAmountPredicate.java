@@ -16,7 +16,6 @@
 package javax.money.function;
 
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryFunction;
 
 /**
  * Predicate that select {@link MonetaryAmount} based on their minimum or
@@ -24,19 +23,12 @@ import javax.money.MonetaryFunction;
  * 
  * @author Anatole Tresch
  */
-public class MinMaxPredicate implements
-		MonetaryFunction<MonetaryAmount, Boolean> {
-	
+public final class GreaterThanAmountPredicate implements Predicate<MonetaryAmount> {
+
 	/** The minimum amount required, or null. */
-	private MonetaryAmount minAmount;
-	
-	/** Flag, if the minimum amount is included into the range to check. */
-	private boolean minInclusive;
-	
-	/** The maximum amount required, or null. */
 	private MonetaryAmount maxAmount;
-	
-	/** Flag, if the maximum amount is included into the range to check. */
+
+	/** Flag, if the minimum amount is included into the range to check. */
 	private boolean maxInclusive;
 
 	/**
@@ -47,8 +39,8 @@ public class MinMaxPredicate implements
 	 *            the minimum value, or {@code null} to remove the condition.
 	 * @return this, for chaining.
 	 */
-	public MinMaxPredicate withMinValue(MonetaryAmount amount) {
-		return withMinValue(amount, true);
+	public GreaterThanAmountPredicate(MonetaryAmount amount) {
+		this(amount, true);
 	}
 
 	/**
@@ -60,75 +52,39 @@ public class MinMaxPredicate implements
 	 *            Flag, if the {@code min} value is also included.
 	 * @return this, for chaining.
 	 */
-	public MinMaxPredicate withMinValue(MonetaryAmount amount,
-			boolean includeValue) {
-		this.minInclusive = includeValue;
-		this.minAmount = amount;
-		return this;
-	}
-
-	/**
-	 * Set the maximum value required, hereby the maximum value itself is also
-	 * included.
-	 * 
-	 * @param amount
-	 *            the maximum value, or {@code null} to remove the condition.
-	 * @return this, for chaining.
-	 */
-	public MinMaxPredicate withMaxValue(MonetaryAmount amount) {
-		return withMaxValue(amount, true);
-	}
-
-	/**
-	 * Set the maximum value required.
-	 * 
-	 * @param amount
-	 *            the maximum value, or {@code null} to remove the condition.
-	 * @param includeValue
-	 *            Flag, if the {@code max} value is also included.
-	 * @return this, for chaining.
-	 */
-	public MinMaxPredicate withMaxValue(MonetaryAmount amount,
+	public GreaterThanAmountPredicate(MonetaryAmount amount,
 			boolean includeValue) {
 		this.maxInclusive = includeValue;
 		this.maxAmount = amount;
-		return this;
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see javax.money.MonetaryFunction#apply(java.lang.Object)
 	 */
 	@Override
 	public Boolean apply(MonetaryAmount value) {
-		if(minAmount!=null){
-			if(minInclusive && value.isLessThanOrEqualTo(minAmount)){
+		if (maxAmount != null) {
+			if (maxInclusive && value.isGreaterThanOrEqualTo(maxAmount)) {
 				return Boolean.FALSE;
 			}
-			else if(value.isLessThan(minAmount)){
-				return Boolean.FALSE;
-			}
-		}
-		if(maxAmount!=null){
-			if(maxInclusive && value.isGreaterThanOrEqualTo(maxAmount)){
-				return Boolean.FALSE;
-			}
-			else if(value.isGreaterThan(maxAmount)){
+			else if (value.isGreaterThan(maxAmount)) {
 				return Boolean.FALSE;
 			}
 		}
 		return Boolean.TRUE;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "MinMaxPredicate [minAmount=" + minAmount + ", minInclusive="
-				+ minInclusive + ", maxAmount=" + maxAmount + ", maxInclusive="
+		return "MaxPredicate [maxAmount=" + maxAmount + ", maxInclusive="
 				+ maxInclusive + "]";
 	}
 
-	
 }

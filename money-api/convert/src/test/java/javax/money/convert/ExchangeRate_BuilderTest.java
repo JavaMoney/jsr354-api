@@ -1,9 +1,6 @@
 package javax.money.convert;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
@@ -14,58 +11,47 @@ import javax.money.CurrencyUnit;
 import javax.money.TestCurrency;
 import javax.money.convert.ExchangeRate.Builder;
 
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 
 public class ExchangeRate_BuilderTest extends Builder {
 
 	@Test
-	public void testGetSetExchangeRateType() {
+	public void testWithExchangeRateType() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
-		assertNull(b.getExchangeRateType());
-		ExchangeRate.Builder b2 = b.setExchangeRateType(ExchangeRateType
+		ExchangeRate.Builder b2 = b.withExchangeRateType(ExchangeRateType
 				.of("test"));
 		assertTrue(b == b2);
-		assertEquals(ExchangeRateType.of("test"), b.getExchangeRateType());
-		b2 = b.setExchangeRateType("test2");
+		b2 = b.withExchangeRateType("test2");
 		assertTrue(b == b2);
-		assertEquals(ExchangeRateType.of("test2"), b.getExchangeRateType());
 	}
 
 	@Test
 	public void testGetSetBase() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
-		assertNull(b.getBase());
-		ExchangeRate.Builder b2 = b.setBase(TestCurrency.of("CHF"));
+		ExchangeRate.Builder b2 = b.withBase(TestCurrency.of("CHF"));
 		assertTrue(b == b2);
-		assertEquals(TestCurrency.of("CHF"), b.getBase());
 	}
 
 	@Test
 	public void testGetSetTerm() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
-		assertNull(b.getBase());
-		ExchangeRate.Builder b2 = b.setTerm(TestCurrency.of("CHF"));
+		ExchangeRate.Builder b2 = b.withTerm(TestCurrency.of("CHF"));
 		assertTrue(b == b2);
-		assertEquals(TestCurrency.of("CHF"), b.getTerm());
 	}
 
 	@Test
 	public void testGetSetValidFrom() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
-		assertNull(b.getBase());
-		ExchangeRate.Builder b2 = b.setValidFrom(100L);
+		ExchangeRate.Builder b2 = b.withValidFromMillis(100L);
 		assertTrue(b == b2);
-		assertEquals(Long.valueOf(100), b.getValidFromTimeInMillis());
 	}
 
 	@Test
 	public void testGetSetValidUntil() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
-		assertNull(b.getBase());
-		ExchangeRate.Builder b2 = b.setValidTo(100L);
+		ExchangeRate.Builder b2 = b.withValidToMillis(100L);
 		assertTrue(b == b2);
-		assertEquals(Long.valueOf(100), b.getValidToTimeInMillis());
 	}
 
 	@Test
@@ -73,58 +59,61 @@ public class ExchangeRate_BuilderTest extends Builder {
 		CurrencyUnit base = TestCurrency.of("CHF");
 		CurrencyUnit baseTerm = TestCurrency.of("EUR");
 		CurrencyUnit term = TestCurrency.of("USD");
-		ExchangeRate rate1 = new ExchangeRate(ExchangeRateType.of("test"),base,baseTerm,0.8,"myProvider");
-		ExchangeRate rate2 = new ExchangeRate(ExchangeRateType.of("test"),baseTerm,term,1.4,"myProvider");
-		ExchangeRate.Builder b = new ExchangeRate.Builder();
-		assertNotNull(b.getExchangeRateChain());
-		assertTrue(b.getExchangeRateChain().isEmpty());
-		ExchangeRate.Builder b2 = b.setExchangeRateChain(rate1, rate2);
-		assertTrue(b == b2);
-		assertEquals(Arrays.asList(new ExchangeRate[]{rate1, rate2}),b.getExchangeRateChain());
+		ExchangeRate rate1 = new ExchangeRate.Builder()
+				.withExchangeRateType("test").withBase(base)
+				.withTerm(baseTerm).withFactor(0.8).withProvider("myProvider")
+				.build();
+		ExchangeRate rate2 = new ExchangeRate.Builder()
+				.withExchangeRateType("test").withBase(baseTerm)
+				.withTerm(term).withFactor(1.4).withProvider("myProvider")
+				.build();
+		ExchangeRate.Builder b = new ExchangeRate.Builder().withBase(base)
+				.withTerm(term)
+				.withExchangeRateChain(rate1, rate2);
+		ExchangeRate rate = b.withFactor(9).withExchangeRateType("test")
+				.build();
+		assertEquals(rate.getFactor(), BigDecimal.valueOf(9.0d));
+		assertEquals(rate.getExchangeRateChain(),
+				Arrays.asList(new ExchangeRate[] { rate1, rate2 }));
 	}
 
 	@Test
 	public void testGetSetBaseLeadingFactor() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
-		assertNull(b.getFactor());
-		ExchangeRate.Builder b2 = b.setFactor(Long.MAX_VALUE);
+		ExchangeRate.Builder b2 = b.withFactor(Long.MAX_VALUE);
 		assertTrue(b == b2);
-		assertEquals(BigDecimal.valueOf(Long.MAX_VALUE), b.getFactor());
-		b.setFactor(100L);
-		assertEquals(BigDecimal.valueOf(100L), b.getFactor());
+		b.withFactor(100L);
+		CurrencyUnit base = TestCurrency.of("CHF");
+		CurrencyUnit term = TestCurrency.of("USD");
+		ExchangeRate rate = b.withBase(base).withExchangeRateType("test")
+				.withTerm(term).build();
+		assertEquals(BigDecimal.valueOf(100.0), rate.getFactor());
 	}
 
 	@Test
 	@Ignore
 	public void testGetSetTermLeadingFactorBigDecimal() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
-		assertNull(b.getFactor());
-		ExchangeRate.Builder b2 = b.setFactor(1.2);
+		ExchangeRate.Builder b2 = b.withFactor(1.2);
 		assertTrue(b == b2);
-		assertEquals(BigDecimal.ONE.divide(BigDecimal.valueOf(1),RoundingMode.HALF_EVEN), b.getFactor());
+		CurrencyUnit base = TestCurrency.of("CHF");
+		CurrencyUnit term = TestCurrency.of("USD");
+		ExchangeRate rate = b.withBase(base).withExchangeRateType("test")
+				.withTerm(term).build();
+		assertEquals(BigDecimal.ONE.divide(BigDecimal.valueOf(1),
+				RoundingMode.HALF_EVEN), rate.getFactor());
 	}
 
 	@Test
 	public void testGetSetProvider() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder();
-		assertNull(b.getProvider());
-		ExchangeRate.Builder b2 = b.setProvider("testProvider");
+		ExchangeRate.Builder b2 = b.withProvider("testProvider");
 		assertTrue(b == b2);
-		assertEquals("testProvider", b.getProvider());
-	}
-
-	@Test
-	public void testIsBuildeable() {
-		ExchangeRate.Builder b = new ExchangeRate.Builder();
-		assertFalse(b.isBuildeable());
-		b.setExchangeRateType(ExchangeRateType.of("test"));
-		assertFalse(b.isBuildeable());
-		b.setBase(TestCurrency.of("CHF"));
-		assertFalse(b.isBuildeable());
-		b.setTerm(TestCurrency.of("CHF"));
-		assertFalse(b.isBuildeable());
-		b.setFactor(2.0);
-		assertTrue(b.isBuildeable());
+		CurrencyUnit base = TestCurrency.of("CHF");
+		CurrencyUnit term = TestCurrency.of("USD");
+		ExchangeRate rate = b.withBase(base).withExchangeRateType("test")
+				.withTerm(term).withFactor(1).build();
+		assertEquals("testProvider", rate.getProvider());
 	}
 
 	@Test
@@ -132,26 +121,37 @@ public class ExchangeRate_BuilderTest extends Builder {
 		CurrencyUnit base = TestCurrency.of("CHF");
 		CurrencyUnit baseTerm = TestCurrency.of("EUR");
 		CurrencyUnit term = TestCurrency.of("USD");
-		ExchangeRate rate1 = new ExchangeRate(ExchangeRateType.of("test"),base,baseTerm,0.8,"myProvider");
-		ExchangeRate rate2 = new ExchangeRate(ExchangeRateType.of("test"),baseTerm,term,1.4,"myProvider");
-		
-		ExchangeRate.Builder b = new ExchangeRate.Builder();
-		b.setExchangeRateType(ExchangeRateType.of("bla"));
-		b.setBase(base);
-		b.setTerm(term);
-		b.setFactor(2.2);
-		b.setProvider("myProvider");
-		ExchangeRate rate = b.build();
-		assertEquals(new ExchangeRate(ExchangeRateType.of("bla"),base,term,2.2,"myProvider"), rate);
-		
-		b = new ExchangeRate.Builder();
-		b.setExchangeRateType(ExchangeRateType.of("test"));
-		b.setBase(TestCurrency.of("CHF"));
-		b.setTerm(TestCurrency.of("USD"));
-		b.setExchangeRateChain(rate1, rate2);
-		b.setFactor(2.0);
-		rate = b.build();
-		assertEquals(new ExchangeRate(b.getExchangeRateType(), b.getBase(), b.getTerm(), b.getFactor(), null, rate1, rate2), rate);
-	}
+		ExchangeRate rate1 = new ExchangeRate.Builder()
+				.withExchangeRateType("test").withBase(base).withTerm(baseTerm)
+				.withFactor(0.8).withProvider("myProvider").build();
+		ExchangeRate rate2 = new ExchangeRate.Builder()
+				.withExchangeRateType("test").withBase(baseTerm).withTerm(term)
+				.withFactor(1.4).withProvider("myProvider").build();
 
+		ExchangeRate.Builder b = new ExchangeRate.Builder();
+		b.withExchangeRateType(ExchangeRateType.of("bla"));
+		b.withBase(base);
+		b.withTerm(term);
+		b.withFactor(2.2);
+		b.withProvider("myProvider");
+		ExchangeRate rate = b.build();
+		assertEquals(rate.getExchangeRateType(), ExchangeRateType.of("bla"));
+		assertEquals(base, rate.getBase());
+		assertEquals(term, rate.getTerm());
+		assertEquals(BigDecimal.valueOf(2.2d), rate.getFactor());
+		assertEquals("myProvider", rate.getProvider());
+
+		b = new ExchangeRate.Builder();
+		b.withExchangeRateType(ExchangeRateType.of("test"));
+		b.withBase(TestCurrency.of("CHF"));
+		b.withTerm(TestCurrency.of("USD"));
+		b.withExchangeRateChain(rate1, rate2);
+		b.withFactor(2.0);
+		rate = b.build();
+		assertEquals(rate.getExchangeRateType(), ExchangeRateType.of("test"));
+		assertEquals(TestCurrency.of("CHF"), rate.getBase());
+		assertEquals(TestCurrency.of("USD"), rate.getTerm());
+		assertEquals(BigDecimal.valueOf(2.0), rate.getFactor());
+		assertEquals(null, rate.getProvider());
+	}
 }

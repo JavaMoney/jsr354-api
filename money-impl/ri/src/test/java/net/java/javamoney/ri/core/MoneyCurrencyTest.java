@@ -90,18 +90,6 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#isVirtual()}.
-	 */
-	@Test
-	public void testIsVirtual() {
-		CurrencyUnit cur = MoneyCurrency.of("USD");
-		assertFalse(cur.isVirtual());
-		cur = MoneyCurrency.of("XAU");
-		assertFalse(cur.isVirtual());
-	}
-
-	/**
-	 * Test method for
 	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#getNamespace()}.
 	 */
 	@Test
@@ -149,18 +137,6 @@ public class MoneyCurrencyTest {
 
 	/**
 	 * Test method for
-	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#isLegalTender()}.
-	 */
-	@Test
-	public void testIsLegalTender() {
-		CurrencyUnit cur = MoneyCurrency.of("USD");
-		assertTrue(cur.isLegalTender());
-		cur = MoneyCurrency.of("XAU");
-		assertFalse(cur.isLegalTender());
-	}
-
-	/**
-	 * Test method for
 	 * {@link net.java.javamoney.ri.CurrencyUnitImpl#compareTo(javax.money.CurrencyUnit)}
 	 * .
 	 */
@@ -176,8 +152,8 @@ public class MoneyCurrencyTest {
 		assertEquals(0, ((Comparable<CurrencyUnit>) cur1).compareTo(cur1));
 		assertEquals(0, ((Comparable<CurrencyUnit>) cur2).compareTo(cur2));
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder();
-		builder.setNamespace("Test");
-		builder.setCurrencyCode("TEST");
+		builder.withNamespace("Test");
+		builder.withCurrencyCode("TEST");
 		CurrencyUnit cur3 = builder.build();
 		assertTrue(cur3 instanceof Comparable);
 		assertTrue(0 < ((Comparable<CurrencyUnit>) cur3).compareTo(cur2));
@@ -200,8 +176,8 @@ public class MoneyCurrencyTest {
 		assertTrue("Does contain ISO namespace!",
 				toString.contains(MoneyCurrency.ISO_NAMESPACE));
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder();
-		builder.setNamespace("Test");
-		builder.setCurrencyCode("TEST");
+		builder.withNamespace("Test");
+		builder.withCurrencyCode("TEST");
 		CurrencyUnit cur3 = builder.build();
 		toString = cur3.toString();
 		assertTrue("Does not contain currency code.", toString.contains("Test"));

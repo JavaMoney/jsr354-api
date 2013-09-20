@@ -1,21 +1,20 @@
 /*
- *  Copyright (c) 2012, 2013, Werner Keil, Credit Suisse (Anatole Tresch).
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Copyright (c) 2012, 2013, Werner Keil, Credit Suisse (Anatole Tresch).
  * 
- * Contributors:
- *    Anatole Tresch - initial version.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * 
+ * Contributors: Anatole Tresch - initial version.
  */
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -28,7 +27,6 @@ import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
 import javax.money.Money;
 import javax.money.MoneyCurrency;
-import javax.money.MoneyRounding;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateType;
@@ -38,6 +36,7 @@ import javax.money.format.ItemFormat;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormats;
+import javax.money.function.MoneyRoundings;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -97,7 +96,8 @@ public class SmokeTest {
 
 	@Test
 	public void testCurrencyConverter() {
-		MonetaryOperator rounding = MoneyRounding.of(2, RoundingMode.HALF_UP);
+		MonetaryOperator rounding = MoneyRoundings.getRounding(2,
+				RoundingMode.HALF_UP);
 
 		MonetaryAmount srcCHF = Money.of(MoneyCurrency.of("CHF"), 100.15);
 		MonetaryAmount srcUSD = Money.of(MoneyCurrency.of("USD"), 100.15);
@@ -129,7 +129,7 @@ public class SmokeTest {
 		try {
 			ItemFormat<CurrencyUnit> parser = MonetaryFormats.getItemFormat(
 					CurrencyUnit.class,
-					LocalizationStyle.of(CurrencyUnit.class,"ID"));
+					LocalizationStyle.of(CurrencyUnit.class, "ID"));
 			CurrencyUnit cur = parser.parse("CHF", Locale.ENGLISH);
 			assertNotNull(cur);
 			assertEquals("CHF", cur.getCurrencyCode());
@@ -146,7 +146,8 @@ public class SmokeTest {
 		ItemFormat<MonetaryAmount> formatter = MonetaryFormats.getItemFormat(
 				MonetaryAmount.class,
 				LocalizationStyle.of(MonetaryAmount.class, "CODE"));
-		System.out.println("Formatted amount: " + formatter.format(amount, Locale.GERMANY));
+		System.out.println("Formatted amount: "
+				+ formatter.format(amount, Locale.GERMANY));
 		assertEquals(1.0d, amount.doubleValue(), 0);
 	}
 

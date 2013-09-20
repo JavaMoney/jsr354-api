@@ -16,13 +16,11 @@
 package javax.money.function;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.money.MonetaryAmount;
 import javax.money.Money;
 
 import org.junit.Test;
@@ -30,9 +28,8 @@ import org.junit.Test;
 public class MaximumTest {
 
 	@Test
-	public void testOf() {
-		Maximum max = Maximum.of();
-		assertNotNull(max);
+	public void testNew() {
+		Maximum max = new Maximum();
 	}
 
 	@Test
@@ -40,65 +37,45 @@ public class MaximumTest {
 		Money m = Money.of("CHF", 1);
 		List<Money> set = new ArrayList<Money>();
 		set.add(m);
-		assertEquals(Money.of("CHF", 1), Maximum.from(set));
+		assertEquals(Money.of("CHF", 1), MoneyFunctions.maximum().apply(set));
 		set.add(m);
 		 m = Money.of("CHF", -1);
 		set.add(m);
-		assertEquals(Money.of("CHF", 1), Maximum.from(set));
+		assertEquals(Money.of("CHF", 1), MoneyFunctions.maximum().apply(set));
 		m = Money.of("CHF", 3);
 		set.add(m);
-		assertEquals(Money.of("CHF", 3), Maximum.from(set));
+		assertEquals(Money.of("CHF", 3), MoneyFunctions.maximum().apply(set));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testFromIterableOfMonetaryAmount_BadCase1() {
-		Maximum.from((Iterable) null);
+		MoneyFunctions.maximum().apply((Iterable) null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testFromIterableOfMonetaryAmount_BadCase2() {
-		Maximum.from(new HashSet());
+		MoneyFunctions.maximum().apply(new HashSet());
 	}
 
-	@Test
-	public void testFromMonetaryAmountArray() {
-		Money m = Money.of("CHF", 1);
-		Money m2 = Money.of("CHF", -1);
-		Money m3 = Money.of("CHF", 3);
-		assertEquals(Money.of("CHF", 1), Maximum.from(m));
-		assertEquals(Money.of("CHF", 1), Maximum.from(m, m2, m));
-		assertEquals(Money.of("CHF", 3),
-				Maximum.from(m, m2, m3));
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testFromMonetaryAmountArray_BadCase1() {
-		Maximum.from();
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testFromMonetaryAmountArray_BadCase2() {
-		Maximum.from((MonetaryAmount[]) null);
-	}
 
 	@Test
 	public void testApply() {
 		Money m = Money.of("CHF", 1);
 		List<Money> set = new ArrayList<Money>();
 		set.add(m);
-		assertEquals(Money.of("CHF", 1), Maximum.of().apply(set));
+		assertEquals(Money.of("CHF", 1), MoneyFunctions.maximum().apply(set));
 		set.add(m);
 		 m = Money.of("CHF", -1);
 		set.add(m);
-		assertEquals(Money.of("CHF", 1), Maximum.of().apply(set));
+		assertEquals(Money.of("CHF", 1), MoneyFunctions.maximum().apply(set));
 		m = Money.of("CHF", 3);
 		set.add(m);
-		assertEquals(Money.of("CHF", 3), Maximum.of().apply(set));
+		assertEquals(Money.of("CHF", 3), MoneyFunctions.maximum().apply(set));
 	}
 
 	@Test
 	public void testToString() {
 		assertEquals("Maximum [Iterable<MonetaryAmount> -> MonetaryAmount]",
-				Maximum.of().toString());
+				new Maximum().toString());
 	}
 }

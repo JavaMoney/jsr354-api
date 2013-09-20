@@ -30,9 +30,8 @@ import org.junit.Test;
 public class AverageTest {
 
 	@Test
-	public void testOf() {
-		Average avg = Average.of();
-		assertNotNull(avg);
+	public void testNew() {
+		Average avg = new Average();
 	}
 
 	@Test
@@ -40,42 +39,23 @@ public class AverageTest {
 		Money m = Money.of("CHF", 1);
 		List<Money> set = new ArrayList<Money>();
 		set.add(m);
-		assertEquals(Money.of("CHF", 1), Average.from(set));
+		assertEquals(Money.of("CHF", 1), MoneyFunctions.average().apply(set));
 		set.add(m);
 		set.add(m);
-		assertEquals(Money.of("CHF", 1), Maximum.from(set));
+		assertEquals(Money.of("CHF", 1), MoneyFunctions.maximum().apply(set));
 		m = Money.of("CHF", 3);
 		set.add(m);
-		assertEquals(Money.of("CHF", 1.5), Average.from(set));
+		assertEquals(Money.of("CHF", 1.5), MoneyFunctions.average().apply(set));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testFromIterableOfMonetaryAmount_BadCase1() {
-		Average.from((Iterable) null);
+		MoneyFunctions.average().apply((Iterable) null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testFromIterableOfMonetaryAmount_BadCase2() {
-		Average.from(new HashSet());
-	}
-
-	@Test
-	public void testFromMonetaryAmountArray() {
-		Money m = Money.of("CHF", 1);
-		assertEquals(Money.of("CHF", 1), Average.from(m));
-		assertEquals(Money.of("CHF", 1), Average.from(m, m, m));
-		assertEquals(Money.of("CHF", 1.5),
-				Average.from(m, m, m, Money.of("CHF", 3)));
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testFromMonetaryAmountArray_BadCase1() {
-		Average.from();
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testFromMonetaryAmountArray_BadCase2() {
-		Average.from((MonetaryAmount[]) null);
+		MoneyFunctions.average().apply(new HashSet());
 	}
 
 	@Test
@@ -83,17 +63,17 @@ public class AverageTest {
 		Money m = Money.of("CHF", 1);
 		List<Money> set = new ArrayList<Money>();
 		set.add(m);
-		assertEquals(Money.of("CHF", 1), Average.of().apply(set));
+		assertEquals(Money.of("CHF", 1), MoneyFunctions.average().apply(set));
 		set.add(m);
 		set.add(m);
 		m = Money.of("CHF", 3);
 		set.add(m);
-		assertEquals(Money.of("CHF", 1.5), Average.of().apply(set));
+		assertEquals(Money.of("CHF", 1.5), MoneyFunctions.average().apply(set));
 	}
 
 	@Test
 	public void testToString() {
 		assertEquals("Average [Iterable<MonetaryAmount> -> MonetaryAmount]",
-				Average.of().toString());
+				new Average().toString());
 	}
 }

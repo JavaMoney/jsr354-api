@@ -25,8 +25,7 @@ import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
 
 /**
- * This class allows to extract the permil of a
- * {@link MonetaryAmount} instance.
+ * This class allows to extract the permil of a {@link MonetaryAmount} instance.
  * 
  * @version 0.5
  * @author Anatole Tresch
@@ -34,22 +33,14 @@ import javax.money.MonetaryOperator;
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Per_mil">Wikipedia: Per mil</a>
  */
-public final class Permil implements MonetaryOperator, Displayable {
+final class Permil implements MonetaryOperator, Displayable {
 
 	private static final MathContext DEFAULT_MATH_CONTEXT = initDefaultMathContext();
+	
 	private static final BigDecimal ONE_THOUSAND = new BigDecimal(1000,
-			DEFAULT_MATH_CONTEXT);
+			MathContext.DECIMAL64);
 
 	private final BigDecimal permilValue;
-
-	/**
-	 * Access the shared instance of {@link Permil} for use.
-	 * 
-	 * @return the shared instance, never {@code null}.
-	 */
-	private Permil(final BigDecimal decimal) {
-		permilValue = calcPermil(decimal);
-	}
 
 	/**
 	 * Get {@link MathContext} for {@link Permil} instances.
@@ -62,24 +53,14 @@ public final class Permil implements MonetaryOperator, Displayable {
 		// classpath properties!
 		return MathContext.DECIMAL64;
 	}
-
-/**
-	 * Factory method creating a new instance with the given {@code BigDecimal) permil value;
-	 * @param decimal the decimal value of the permil operator being created.
-	 * @return a new  {@code Permil} operator
+	
+	/**
+	 * Access the shared instance of {@link Permil} for use.
+	 * 
+	 * @return the shared instance, never {@code null}.
 	 */
-	public static Permil of(BigDecimal decimal) {
-		return new Permil(decimal); // TODO caching, e.g. array for 1-100 might
-									// work.
-	}
-
-/**
-	 * Factory method creating a new instance with the given {@code Number) permil value;
-	 * @param decimal the decimal value of the permil operator being created.
-	 * @return a new  {@code Permil} operator
-	 */
-	public static Permil of(Number number) {
-		return of(getBigDecimal(number, DEFAULT_MATH_CONTEXT));
+	Permil(final BigDecimal decimal) {
+		permilValue = calcPermil(decimal);
 	}
 
 	/**
@@ -107,24 +88,6 @@ public final class Permil implements MonetaryOperator, Displayable {
 		return NumberFormat.getInstance().format(
 				permilValue.multiply(ONE_THOUSAND, DEFAULT_MATH_CONTEXT)) +
 				" \u2030";
-	}
-
-	/**
-	 * Converts to {@link BigDecimal}, if necessary, or casts, if possible.
-	 * 
-	 * @param number
-	 *            The {@link Number}
-	 * @param mathContext
-	 *            the {@link MathContext}
-	 * @return the {@code number} as {@link BigDecimal}
-	 */
-	private static final BigDecimal getBigDecimal(Number number,
-			MathContext mathContext) {
-		if (number instanceof BigDecimal) {
-			return (BigDecimal) number;
-		} else {
-			return new BigDecimal(number.doubleValue(), mathContext);
-		}
 	}
 
 	/**

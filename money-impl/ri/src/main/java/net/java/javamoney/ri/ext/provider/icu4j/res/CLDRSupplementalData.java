@@ -90,14 +90,23 @@ public final class CLDRSupplementalData extends AbstractXmlResource {
 	}
 
 	public Currency4Region getCurrencyData(String countryCode) {
+		if (this.currencyRegionData == null) {
+			return null;
+		}
 		return this.currencyRegionData.get(countryCode);
 	}
 
 	public Collection<Currency4Region> getAllCurrencyData() {
+		if (this.currencyRegionData == null) {
+			return Collections.emptySet();
+		}
 		return this.currencyRegionData.values();
 	}
 
 	public boolean isCurrencyDataAvailable(String countryCode) {
+		if (this.currencyRegionData == null) {
+			return false;
+		}
 		return this.currencyRegionData.containsKey(countryCode);
 	}
 

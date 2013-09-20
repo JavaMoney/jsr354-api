@@ -17,7 +17,13 @@ import javax.money.MonetaryOperator;
 
 /**
  * This interface defines access to the exchange conversion logic of JavaMoney.
- * It is provided by the {@link MonetaryConversions} singleton.
+ * It is provided by the {@link MonetaryConversions} singleton. Hereby a
+ * instance of this class must only provide conversion data for exact one
+ * {@link ExchangeRateType}, defined by {@link #getExchangeRateType()}.
+ * <p>
+ * Implementations of this interface are required to be thread save.
+ * <p>
+ * Implementations of this class must neither be immutable nor serializable.
  * 
  * @author Anatole Tresch
  */
@@ -25,7 +31,7 @@ public interface ConversionProvider {
 
 	/**
 	 * Access the {@link ExchangeRateType} for this {@link ConversionProvider}.
-	 * Each instance of {@link ConversionProvider} services conversion data for
+	 * Each instance of {@link ConversionProvider} provides conversion data for
 	 * exact one {@link ExchangeRateType}.
 	 * 
 	 * @return the {@link ExchangeRateType}, never {@code null}.
@@ -34,30 +40,40 @@ public interface ConversionProvider {
 
 	/**
 	 * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
-	 * defined.
+	 * available from this provider. This method should check, if a given rate
+	 * is <i>currently</i> defined. It should be the same as
+	 * {@code isAvailable(base, term, System.currentTimeMillis())}.
 	 * 
-	 * @param type
-	 *            the {@link ExchangeRateType} required that this provider
-	 *            instance is providing data for.
 	 * @param base
 	 *            the base {@link CurrencyUnit}
 	 * @param term
 	 *            the term {@link CurrencyUnit}
-	 * @return true, if such an {@link ExchangeRate} is currently defined.
+	 * @return {@code true}, if such an {@link ExchangeRate} is currently
+	 *         defined.
 	 */
 	public boolean isAvailable(CurrencyUnit base, CurrencyUnit term);
 
 	/**
 	 * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
 	 * defined.
+	 * <p>
+	 * Note that the UTC timestamp models the instance, when the queried rate
+	 * must have been valid. The rate's validity may be
+	 * <ul>
+	 * <li>Completely undefined (
+	 * {@code validFromMillis == null && validToMillis == null}</li>
+	 * <li>May have {@code validFromMillis <= timestamp}.</li>
+	 * <li>May have {@code validToMillis >= timestamp}.</li>
+	 * <li>Or both of the two above.</li>
+	 * </ul>
 	 * 
 	 * @param base
 	 *            the base {@link CurrencyUnit}
 	 * @param term
 	 *            the term {@link CurrencyUnit}
 	 * @param timestamp
-	 *            the target timestamp for which the {@link ExchangeRate} is
-	 *            queried.
+	 *            the UTC timestamp when the {@link ExchangeRate} queried was
+	 *            valid.
 	 * @return {@code true}, if such an {@link ExchangeRate} is currently
 	 *         defined.
 	 */
@@ -67,6 +83,16 @@ public interface ConversionProvider {
 	/**
 	 * Get an {@link ConversionRate} for a given timestamp (including historic
 	 * rates).
+	 * <p>
+	 * Note that the UTC timestamp models the instance, when the queried rate
+	 * must have been valid. The rate's validity may be
+	 * <ul>
+	 * <li>Completely undefined (
+	 * {@code validFromMillis == null && validToMillis == null}</li>
+	 * <li>May have {@code validFromMillis <= timestamp}.</li>
+	 * <li>May have {@code validToMillis >= timestamp}.</li>
+	 * <li>Or both of the two above.</li>
+	 * </ul>
 	 * 
 	 * @param base
 	 *            The base {@link CurrencyUnit}
@@ -83,7 +109,9 @@ public interface ConversionProvider {
 	/**
 	 * Access a {@link ExchangeRate} using the given currencies. The
 	 * {@link ExchangeRate} may be, depending on the data provider, eal-time or
-	 * deferred.
+	 * deferred. This method should return the rate that is <i>currently</i>
+	 * valid. It should be the same as
+	 * {@code getExchangeRate(base, term, System.currentTimeMillis())}.
 	 * 
 	 * @param base
 	 *            base {@link CurrencyUnit}.

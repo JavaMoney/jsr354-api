@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package javax.money.function;
+package javax.money.function.predicates;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,11 +72,11 @@ final class ItemVisitor<T> implements
 	 *            The amounts.
 	 * @return this instance for building.
 	 */
-	public ItemVisitor<T> add(T... amounts) {
-		if (amounts == null) {
+	public ItemVisitor<T> add(T... items) {
+		if (items == null) {
 			throw new IllegalArgumentException("amounts required.");
 		}
-		for (T monetaryAmount : amounts) {
+		for (T monetaryAmount : items) {
 			this.input.add(monetaryAmount);
 		}
 		return this;

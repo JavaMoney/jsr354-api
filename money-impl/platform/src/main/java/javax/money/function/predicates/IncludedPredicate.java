@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package javax.money.function;
+package javax.money.function.predicates;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -36,6 +36,7 @@ public class IncludedPredicate<T> implements
 
 	private Set<T> acceptedValues = new HashSet<T>();
 
+	@SafeVarargs
 	public IncludedPredicate(Iterable<? extends T>... values) {
 		for (Iterable<? extends T> iterable : values) {
 			for (T t : iterable) {

@@ -39,6 +39,8 @@ import javax.money.ext.spi.RegionsSingletonSpi;
  * This class is used throughout the RI for managing/updating/reloading of data
  * sources, e.g. data streams for exchange rates, additional currency data,
  * historical currency data and so on.
+ * <p>
+ * Note: this class is implementation specific and not part of the official JSR's API.
  * 
  * @author Anatole Tresch
  */

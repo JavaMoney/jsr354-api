@@ -1,4 +1,4 @@
-package javax.money.function;
+package javax.money.function.predicates;
 
 import javax.money.MonetaryFunction;
 

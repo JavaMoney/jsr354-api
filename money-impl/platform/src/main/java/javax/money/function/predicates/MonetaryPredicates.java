@@ -13,12 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package javax.money.function;
+package javax.money.function.predicates;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
@@ -49,9 +47,10 @@ public final class MonetaryPredicates {
 	 * @return a {@link Predicate} evaluating to true, if every predicate return
 	 *         true, or no predicates are passed, never {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> and(
 			Iterable<? extends Predicate<? super T>>... predicates) {
-		return new AndPredicate(predicates);
+		return new AndPredicate<>(predicates);
 	}
 
 	/**
@@ -64,9 +63,10 @@ public final class MonetaryPredicates {
 	 *         predicate return {@code true}, or no predicates are passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> and(
 			Predicate<? super T>... predicates) {
-		return new AndPredicate(Arrays.asList(predicates));
+		return new AndPredicate<>(Arrays.asList(predicates));
 	}
 
 	/**
@@ -79,9 +79,10 @@ public final class MonetaryPredicates {
 	 *         predicate return {@code true}, or no predicates are passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> or(
 			Iterable<? extends Predicate<? super T>>... predicates) {
-		return new OrPredicate(predicates);
+		return new OrPredicate<>(predicates);
 	}
 
 	/**
@@ -94,9 +95,10 @@ public final class MonetaryPredicates {
 	 *         predicate return {@code true}, or no predicates are passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> or(
 			Predicate<? super T>... predicates) {
-		return new OrPredicate(Arrays.asList(predicates));
+		return new OrPredicate<>(Arrays.asList(predicates));
 	}
 
 	/**
@@ -109,9 +111,10 @@ public final class MonetaryPredicates {
 	 *         predicate return {@code true}, or no predicates are passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> xor(
 			Iterable<? extends Predicate<? super T>>... predicates) {
-		return new OrPredicate(predicates);
+		return new OrPredicate<>(predicates);
 	}
 
 	/**
@@ -124,9 +127,10 @@ public final class MonetaryPredicates {
 	 *         predicate return {@code true}, or no predicates are passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> xor(
 			Predicate<? super T>... predicates) {
-		return new OrPredicate(Arrays.asList(predicates));
+		return new OrPredicate<>(Arrays.asList(predicates));
 	}
 
 	/**
@@ -140,7 +144,7 @@ public final class MonetaryPredicates {
 	 *             , if predicate is {@code null}.
 	 */
 	public static <T> Predicate<T> not(Predicate<? super T> predicate) {
-		return new NotPredicate(predicate);
+		return new NotPredicate<>(predicate);
 	}
 
 	/**
@@ -152,8 +156,9 @@ public final class MonetaryPredicates {
 	 * @return the selecting predicate baed on the values passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> include(Iterable<? extends T>... values) {
-		return new IncludedPredicate(values);
+		return new IncludedPredicate<>(values);
 	}
 
 	/**
@@ -165,8 +170,9 @@ public final class MonetaryPredicates {
 	 * @return the selecting predicate baed on the values passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> include(T... values) {
-		return new IncludedPredicate(Arrays.asList(values));
+		return new IncludedPredicate<>(Arrays.asList(values));
 	}
 
 	/**
@@ -179,8 +185,9 @@ public final class MonetaryPredicates {
 	 * @return the selecting predicate baed on the values passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> exclude(Iterable<? extends T>... values) {
-		return new NotPredicate(new IncludedPredicate(values));
+		return new NotPredicate<>(new IncludedPredicate<>(values));
 	}
 
 	/**
@@ -193,8 +200,9 @@ public final class MonetaryPredicates {
 	 * @return the selecting predicate baed on the values passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> exclude(T... values) {
-		return new NotPredicate(new IncludedPredicate(Arrays.asList(values)));
+		return new NotPredicate<>(new IncludedPredicate<>(Arrays.asList(values)));
 	}
 
 	/**
@@ -209,6 +217,7 @@ public final class MonetaryPredicates {
 	 * @return the evaluating predicate based on the values passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> min(int min,
 			Iterable<Predicate<? super T>>... predicates) {
 		return new MinCountPredicate<>(min, predicates);
@@ -228,6 +237,7 @@ public final class MonetaryPredicates {
 	 * @return the evaluating predicate based on the values passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> min(int min,
 			Predicate<? super T>... predicates) {
 		return new MinCountPredicate<>(min, Arrays.asList(predicates));
@@ -245,6 +255,7 @@ public final class MonetaryPredicates {
 	 * @return the evaluating predicate based on the values passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> max(int max,
 			Iterable<? extends Predicate<? super T>>... predicates) {
 		return new MaxCountPredicate<>(max, predicates);
@@ -262,6 +273,7 @@ public final class MonetaryPredicates {
 	 * @return the evaluating predicate based on the values passed, never
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <T> Predicate<T> max(int max,
 			Predicate<? super T>... predicates) {
 		return new MaxCountPredicate<>(max, Arrays.asList(predicates));
@@ -277,9 +289,10 @@ public final class MonetaryPredicates {
 	 *            The items to be filtered.
 	 * @return The items that match the predicate.
 	 */
+	@SafeVarargs
 	public static <T> Collection<T> select(Predicate<T> predicate,
 			Iterable<T>... items) {
-		return new ItemFilter(items).apply(predicate);
+		return new ItemFilter<>(items).apply(predicate);
 	}
 
 	/**
@@ -292,9 +305,10 @@ public final class MonetaryPredicates {
 	 *            The items to be filtered.
 	 * @return The items that match the predicate.
 	 */
+	@SafeVarargs
 	public static <T> Collection<T> select(Predicate<T> predicate,
 			T... items) {
-		return new ItemFilter(items).apply(predicate);
+		return new ItemFilter<>(items).apply(predicate);
 	}
 
 	/**
@@ -307,9 +321,10 @@ public final class MonetaryPredicates {
 	 *            The items to be filtered.
 	 * @return The items that match the predicate.
 	 */
+	@SafeVarargs
 	public static <T> int count(Predicate<T> predicate,
 			Iterable<T>... items) {
-		return new ItemVisitor(items).apply(predicate);
+		return new ItemVisitor<>(items).apply(predicate);
 	}
 
 	/**
@@ -322,9 +337,10 @@ public final class MonetaryPredicates {
 	 *            The items to be filtered.
 	 * @return The items that match the predicate.
 	 */
+	@SafeVarargs
 	public static <T> int count(Predicate<T> predicate,
 			T... items) {
-		return new ItemVisitor(items).apply(predicate);
+		return new ItemVisitor<>(items).apply(predicate);
 	}
 
 	/**
@@ -337,6 +353,7 @@ public final class MonetaryPredicates {
 	 *            The items to be filtered.
 	 * @return The according {@link Predicate} for {@link MonetaryAmount}.
 	 */
+	@SafeVarargs
 	public static Predicate<? extends MonetaryAmount> createAmountPredicate(
 			Iterable<? extends Predicate<CurrencyUnit>>... currencyPredicates) {
 		return new AmountCurrencyUnitPredicate<>(currencyPredicates);
@@ -352,170 +369,9 @@ public final class MonetaryPredicates {
 	 *            The items to be filtered.
 	 * @return The according {@link Predicate} for {@link MonetaryAmount}.
 	 */
+	@SafeVarargs
 	public static Predicate<? extends MonetaryAmount> createAmountPredicate(
 			Predicate<CurrencyUnit>... currencyPredicates) {
 		return new AmountCurrencyUnitPredicate<>(currencyPredicates);
-	}
-
-	/**
-	 * This predicate implements the logic {@code or and xor} operations, where
-	 * {@code OrPredicate(p1,p2) == p1 || p2} or
-	 * {@code OrPredicate(p1,p2) == (p1 || p2) && !(p1 && p2)}.
-	 * 
-	 * @author Anatole Tresch
-	 */
-	private static final class XOrPredicate<T> implements Predicate<T> {
-		/** The child predicates. */
-		private List<Predicate<? super T>> predicates = new ArrayList<Predicate<? super T>>();
-
-		/**
-		 * Creates an XOR predicate.
-		 * 
-		 * @param predicates
-		 *            The child predicates.
-		 */
-		XOrPredicate(Iterable<? extends Predicate<? super T>>... predicates) {
-			if (predicates != null) {
-				for (Iterable<? extends Predicate<? super T>> iterable : predicates) {
-					for (Predicate<? super T> predicate : iterable) {
-						this.predicates.add(predicate);
-					}
-				}
-			}
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see javax.money.MonetaryFunction#apply(java.lang.Object)
-		 */
-		@Override
-		public Boolean apply(T value) {
-			boolean state = false;
-			for (Predicate<? super T> predicate : predicates) {
-				if (predicate.apply(value)) {
-					if (!state) {
-						state = true;
-					}
-					else {
-						return Boolean.FALSE;
-					}
-				}
-			}
-			return state;
-		}
-
-	}
-
-	/**
-	 * This predicate implements the logic {@code and} operations, where
-	 * {@code AndPredicate(p1,p2) == p1 && p2}.
-	 * 
-	 * @author Anatole Tresch
-	 */
-	private static final class AndPredicate<T> implements Predicate<T> {
-		/** The child predicates. */
-		private List<Predicate<? super T>> predicates = new ArrayList<Predicate<? super T>>();
-
-		AndPredicate(Iterable<? extends Predicate<? super T>>... predicates) {
-			for (Iterable<? extends Predicate<? super T>> iterable : predicates) {
-				for (Predicate<? super T> predicate : iterable) {
-					this.predicates.add(predicate);
-				}
-			}
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see javax.money.MonetaryFunction#apply(java.lang.Object)
-		 */
-		@Override
-		public Boolean apply(T value) {
-			for (Predicate<? super T> predicate : predicates) {
-				if (!predicate.apply(value)) {
-					return Boolean.FALSE;
-				}
-			}
-			return Boolean.TRUE;
-		}
-
-	}
-
-	/**
-	 * This predicate implements the logic {@code or} operations, where
-	 * {@code OrPredicate(p1,p2) == p1 || p2} .
-	 * 
-	 * @author Anatole Tresch
-	 */
-	private static final class OrPredicate<T> implements Predicate<T> {
-		/** The child predicates. */
-		private List<Predicate<? super T>> predicates = new ArrayList<Predicate<? super T>>();
-
-		/**
-		 * Creates an OR predicate.
-		 * 
-		 * @param predicates
-		 *            The child predicates.
-		 */
-		OrPredicate(Iterable<? extends Predicate<? super T>>... predicates) {
-			for (Iterable<? extends Predicate<? super T>> iterable : predicates) {
-				for (Predicate<? super T> predicate : iterable) {
-					this.predicates.add(predicate);
-				}
-			}
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see javax.money.MonetaryFunction#apply(java.lang.Object)
-		 */
-		@Override
-		public Boolean apply(T value) {
-			for (Predicate<? super T> predicate : predicates) {
-				if (predicate.apply(value)) {
-					return Boolean.TRUE;
-				}
-			}
-			return Boolean.FALSE;
-		}
-
-	}
-
-	/**
-	 * This predicate implements the logic {@code or and xor} operations, where
-	 * {@code OrPredicate(p1,p2) == p1 || p2} or
-	 * {@code OrPredicate(p1,p2) == (p1 || p2) && !(p1 && p2)}.
-	 * 
-	 * @author Anatole Tresch
-	 */
-	private static final class NotPredicate<T> implements Predicate<T> {
-		/** The child predicates. */
-		private Predicate<? super T> predicate;
-
-		/**
-		 * Creates an NOT predicate.
-		 * 
-		 * @param predicate
-		 *            The predicate to be inversed.
-		 */
-		NotPredicate(Predicate<? super T> predicate) {
-			if (predicate == null) {
-				throw new IllegalArgumentException("predicate required.");
-			}
-			this.predicate = predicate;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see javax.money.MonetaryFunction#apply(java.lang.Object)
-		 */
-		@Override
-		public Boolean apply(T value) {
-			return !predicate.apply(value);
-		}
-
 	}
 }

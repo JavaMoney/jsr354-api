@@ -27,8 +27,8 @@ import javax.money.format.ItemFormat;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormats;
-import javax.money.function.MonetaryPredicates;
 import javax.money.function.MoneyRoundings;
+import javax.money.function.predicates.MonetaryPredicates;
 
 import net.java.javamoney.ri.ext.RegionPrinter;
 import net.java.javamoney.ri.ext.provider.icu4j.IcuRegion;

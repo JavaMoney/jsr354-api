@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package javax.money.function;
+package javax.money.function.predicates;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +48,7 @@ class MaxCountPredicate<T> implements Predicate<T> {
 	 *            The minimal number, or {@code null} to remove the condition.
 	 * @return this, for chaining.
 	 */
+	@SafeVarargs
 	MaxCountPredicate(Integer max,
 			Iterable<? extends Predicate<? super T>>... predicates) {
 		for (Iterable<? extends Predicate<? super T>> iterable : predicates) {

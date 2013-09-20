@@ -24,6 +24,10 @@ import javax.money.convert.spi.MonetaryConversionsSingletonSpi;
  * This interface serves a an API for the clients, but also must be implemented
  * and registered as SPI to the mechanisms required by the
  * {@link MonetaryConversionsSingletonSpi} implementation.
+ * <p>
+ * Instances of this class are required to be thread-safe, but it is not a
+ * requirement that they are serializable. In a EE context they can be
+ * implemented using contextual beans.
  * 
  * @author Anatole Tresch
  * @author Werner Keil

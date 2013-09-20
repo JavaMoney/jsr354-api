@@ -36,6 +36,10 @@ import javax.money.convert.spi.MonetaryConversionsSingletonSpi;
  * the different application contexts transparently. In a SE environment this
  * class is expected to behave like an ordinary singleton, loading its SPIs from
  * the {@link ServiceLoader}.
+ * <p>
+ * This class is thread-safe. Hereby it is important to know that it delegates
+ * to the registered {@link MonetaryConversionsSingletonSpi} SPI, which also is
+ * required to be thread-safe.
  * 
  * @author Anatole Tresch
  * @author Werner Keil

@@ -30,7 +30,8 @@ import javax.money.convert.MonetaryConversions;
  * class is expected to behave like an ordinary singleton, loading its SPIs from
  * the {@link ServiceLoader}.
  * <p>
- * Instances of this class must be thread safe.
+ * Instances of this class must be thread safe. It is not a requirement that
+ * they are serializable.
  * <p>
  * Only one instance can be registered using the {@link ServiceLoader}. When
  * registering multiple instances the {@link MonetaryConversions} accessor will

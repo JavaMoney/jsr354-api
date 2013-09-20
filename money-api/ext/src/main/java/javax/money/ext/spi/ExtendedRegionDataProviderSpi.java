@@ -38,15 +38,17 @@ public interface ExtendedRegionDataProviderSpi {
 
 	/**
 	 * Access the additional region data, using its type.
+	 * <p>
+	 * Note different to the API this method does never throw an
+	 * {@link IllegalArgumentException} when the required type is not supported,
+	 * but simply should return {@code null}.
 	 * 
 	 * @param region
 	 *            the region for which addition data is requested.
 	 * @param type
 	 *            The region data type, not {@code null}.
-	 * @return the corresponding data item.
-	 * @throws IllegalArgumentException
-	 *             if the type passed is not supported. See
-	 *             {@link #getRegionDataTypes()}.
+	 * @return the corresponding data item, or {@code null} if the type passed
+	 *         is not supported.
 	 */
 	public <T> T getExtendedRegionData(Region region, Class<T> type);
 

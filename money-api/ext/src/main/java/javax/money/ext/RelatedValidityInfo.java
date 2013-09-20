@@ -13,6 +13,7 @@ package javax.money.ext;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * This class models a validity of an item S related to a reference T.
@@ -56,8 +57,9 @@ public final class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 	 */
 	public RelatedValidityInfo(T item, R referenceItem,
 			ValidityType validityType, String validitySource,
-			Calendar from, Calendar to, String targetTimezoneId) {
-		super(item, validityType, validitySource, from, to, targetTimezoneId);
+			Calendar from, Calendar to, String targetTimezoneId, Object userData) {
+		super(item, validityType, validitySource, from, to, targetTimezoneId,
+				userData);
 		if (referenceItem == null) {
 			throw new IllegalArgumentException("Reference Item required.");
 		}
@@ -80,8 +82,9 @@ public final class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 	 */
 	public RelatedValidityInfo(T item, R referenceItem,
 			ValidityType validityType, String validitySource,
-			Long from, Long to, String targetTimezoneId) {
-		super(item, validityType, validitySource, from, to, targetTimezoneId);
+			Long from, Long to, String targetTimezoneId, Object userData) {
+		super(item, validityType, validitySource, from, to, targetTimezoneId,
+				userData);
 		if (referenceItem == null) {
 			throw new IllegalArgumentException("Reference Item required.");
 		}
@@ -195,9 +198,9 @@ public final class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 				+ ", ref="
 				+ relatedItem
 				+ ", from="
-				+ formatTime(getFrom())
+				+ formatTime(getFromTimeInMillis())
 				+ ", to="
-				+ formatTime(getTo())
+				+ formatTime(getToTimeInMillis())
 				+ ", userData="
 				+ (getUserData() == null ? "-" : getUserData().getClass()
 						.getName()) + "]";
@@ -210,15 +213,18 @@ public final class RelatedValidityInfo<T, R> extends ValidityInfo<T> {
 	 *            the time
 	 * @return the formatted time, or {@code '-'}, when time is {@code null}.
 	 */
-	private String formatTime(GregorianCalendar time) {
+	private String formatTime(Long time) {
 		if (time == null) {
 			return "-";
 		}
 		StringBuilder b = new StringBuilder();
-		b.append(time.get(Calendar.YEAR)).append("-")
-				.append(time.get(Calendar.MONTH)).append("-")
-				.append(time.get(Calendar.DAY_OF_MONTH));
-		b.append(" ").append(time.getTimeZone().getID());
+		GregorianCalendar cal = new GregorianCalendar(
+				TimeZone.getTimeZone("GMT"));
+		cal.setTimeInMillis(time);
+		b.append(cal.get(Calendar.YEAR)).append("-")
+				.append(cal.get(Calendar.MONTH)).append("-")
+				.append(cal.get(Calendar.DAY_OF_MONTH));
+		b.append(" ").append(cal.getTimeZone().getID());
 		return b.toString();
 	}
 

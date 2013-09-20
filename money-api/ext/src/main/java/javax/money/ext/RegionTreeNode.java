@@ -36,22 +36,22 @@ public interface RegionTreeNode {
 	/**
 	 * Get the corresponding region.
 	 * 
-	 * @return the region, never null.
+	 * @return the region, never {@code null}.
 	 */
 	public Region getRegion();
 
 	/**
 	 * Get the direct parent region of this region.
 	 * 
-	 * @return the parent region, or null, if this region has no parent (is a
-	 *         root region).
+	 * @return the parent region, or {@code null}, if this region has no parent
+	 *         (is a root region).
 	 */
 	public RegionTreeNode getParent();
 
 	/**
 	 * Access all direct child regions.
 	 * 
-	 * @return all direct child regions, never null.
+	 * @return all direct child regions, never {@code null}.
 	 */
 	public Collection<RegionTreeNode> getChildren();
 
@@ -60,8 +60,8 @@ public interface RegionTreeNode {
 	 * 
 	 * @param region
 	 *            the region being looked up, null hereby is never contained.
-	 * @return true if the given region is a direct or indirect child of this
-	 *         region instance.
+	 * @return {@code true} if the given region is a direct or indirect child of
+	 *         this region instance.
 	 */
 	public boolean contains(Region region);
 
@@ -71,8 +71,9 @@ public interface RegionTreeNode {
 	 * given region type.
 	 * 
 	 * @param predicate
-	 *            the selecting filter, not {@code null}.
-	 * @return the region found, or null.
+	 *            the selecting filter, {@code null} will return the direct
+	 *            parent, if any.
+	 * @return the region found, or {@code null}.
 	 */
 	public RegionTreeNode selectParent(Predicate<Region> predicate);
 
@@ -80,7 +81,7 @@ public interface RegionTreeNode {
 	 * Select a collection of regions selected by the given filter.
 	 * 
 	 * @param predicate
-	 *            the region selector, null will return all regions.
+	 *            the region selector, {@code null} will return all regions.
 	 * @return the regions selected.
 	 */
 	public Collection<RegionTreeNode> select(Predicate<Region> predicate);

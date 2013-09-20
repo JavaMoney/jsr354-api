@@ -46,7 +46,8 @@ public final class Regions {
 	/**
 	 * Access the currently available {@link RegionType} instances.
 	 * 
-	 * @return the currently available {@link RegionType} instances, never null.
+	 * @return the currently available {@link RegionType} instances, never
+	 *         {@code null}.
 	 */
 	public static Set<RegionType> getRegionTypes() {
 		return REGION_SPI.getRegionTypes();
@@ -59,7 +60,9 @@ public final class Regions {
 	 *            the region type, not null.
 	 * @param code
 	 *            the region code, not null.
-	 * @return the region found, or null.
+	 * @return the region found.
+	 * @throws IllegalArgumentException
+	 *             if the required {@link Region} is not available.
 	 */
 	public static Region getRegion(RegionType type, String code) {
 		return REGION_SPI.getRegion(type, code);
@@ -72,7 +75,10 @@ public final class Regions {
 	 *            the region type, not null.
 	 * @param code
 	 *            the numeric region code, not null.
-	 * @return the region found, or null.
+	 * @return the region found.
+	 * @throws IllegalArgumentException
+	 *             if the required {@link Region} is not available, or
+	 *             ambiguous.
 	 */
 	public static Region getRegion(RegionType type, int code) {
 		return REGION_SPI.getRegion(type, code);
@@ -83,7 +89,7 @@ public final class Regions {
 	 * 
 	 * @param locale
 	 *            The required locale.
-	 * @return the corresponding region, or null.
+	 * @return the corresponding region, or {@code null}.
 	 */
 	public static Region getRegion(Locale locale) {
 		return REGION_SPI.getRegion(locale);
@@ -93,8 +99,8 @@ public final class Regions {
 	 * Access all regions of a given region type.
 	 * 
 	 * @param type
-	 *            the region type, not null.
-	 * @return the region found, or null.
+	 *            the region type, not {@code null}.
+	 * @return the regions found, never {@code null}.
 	 */
 	public static Collection<Region> getRegions(RegionType type) {
 		return REGION_SPI.getRegions(type);
@@ -104,8 +110,8 @@ public final class Regions {
 	 * Get the extended data types, that can be accessed from this
 	 * {@link Region} by calling {@link #getRegionData(Class)}.
 	 * 
-	 * @return the collection of supported region data, may be {@code empty} but
-	 *         never {@code null}.
+	 * @return the collection of supported region data, may be {@code empty},
+	 *         but never {@code null}.
 	 */
 	public static <T> Collection<Class> getExtendedRegionDataTypes(Region region) {
 		return REGION_SPI.getExtendedRegionDataTypes(region);
@@ -130,7 +136,7 @@ public final class Regions {
 	 * 
 	 * @see #getRegionTree(String)
 	 * @return the set of defined region trees, accessible calling
-	 *         {@link #getRegionTree(String)}.
+	 *         {@link #getRegionTree(String)}, never {@code null}.
 	 */
 	public static Set<String> getRegionTreeIds() {
 		return REGION_SPI.getRegionTreeIds();

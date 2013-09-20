@@ -11,8 +11,6 @@
 package javax.money.ext;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.TestCurrency;
@@ -102,18 +100,6 @@ public class TestMonetaryCurrenciesSingletonSpi implements
 	@Override
 	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace,
 			long timestamp) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
-	public List<CurrencyUnit> mapAll(String targetNamespace,
-			CurrencyUnit... units) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
-	public List<CurrencyUnit> mapAll(String targetNamespace, long timestamp,
-			CurrencyUnit... units) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

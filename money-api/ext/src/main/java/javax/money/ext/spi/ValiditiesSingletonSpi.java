@@ -40,8 +40,9 @@ import javax.money.ext.ValidityType;
 public interface ValiditiesSingletonSpi {
 
 	/**
-	 * Access the ids of the providers, which deliver related validity data for
-	 * the given {@code type} and its relation to {@code relatedType}.
+	 * Access the identifiers of the {@link RelatedValidityProviderSpi}
+	 * instances, which deliver related validity data for the given {@code type}
+	 * and its relation to {@code relatedType}.
 	 * 
 	 * @param type
 	 *            The item type class.
@@ -59,8 +60,8 @@ public interface ValiditiesSingletonSpi {
 	 * 
 	 * @param type
 	 *            The item type
-	 * @return the according {@link ValidityInfo} provider ids registered for
-	 *         the given {@code type}, never {@code null}.
+	 * @return the according {@link ValidityProviderSpi} provider ids registered
+	 *         for the given {@code type}, never {@code null}.
 	 */
 	public <T> Set<String> getValidityProviderIds(Class<T> type);
 
@@ -72,7 +73,7 @@ public interface ValiditiesSingletonSpi {
 	 * @see RelatedValidityQuery#getRelatedToType()
 	 * @param type
 	 *            The item type
-	 * @return the according relatedTo types.
+	 * @return the according relatedTo types, never {@code null}.
 	 */
 	public <T> Set<Class> getRelatedValidityRelationTypes(Class<T> type);
 
@@ -82,7 +83,7 @@ public interface ValiditiesSingletonSpi {
 	 * 
 	 * @see RelatedValidityProviderSpi#getItemTypes()
 	 * @see RelatedValidityQuery#getItemType()
-	 * @return the according relatedTo types.
+	 * @return the according relatedTo types, never {@code null}.
 	 */
 	public Set<Class> getRelatedValidityItemTypes();
 
@@ -92,7 +93,7 @@ public interface ValiditiesSingletonSpi {
 	 * 
 	 * @see ValidityProviderSpi#getItemTypes()
 	 * @see ValidityQuery#getItemType()
-	 * @return the according relatedTo types.
+	 * @return the according relatedTo types, never {@code null}.
 	 */
 	public Set<Class> getValidityItemTypes();
 

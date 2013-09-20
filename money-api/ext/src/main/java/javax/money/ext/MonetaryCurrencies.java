@@ -85,7 +85,10 @@ public final class MonetaryCurrencies {
 	 * {@code defaultCurrencyNamespace=myNamespace}. When not set explicitly
 	 * {@code ISO-4217} is assummed.
 	 * 
-	 * @return the default namespace used.
+	 * @return the default namespace used, never {@code null}.
+	 * @throws UnsupportedOperationException
+	 *             , if not {@link MonetaryCurrenciesSingletonSpi} is registered
+	 *             (should never be the case).
 	 */
 	public static String getDefaultNamespace() {
 		return CURRENCIES_SPI.getDefaultNamespace();
@@ -97,7 +100,7 @@ public final class MonetaryCurrencies {
 	 * 
 	 * @param namespace
 	 *            the required namespace
-	 * @return true, if the namespace exists.
+	 * @return {@code true}, if the namespace exists.
 	 */
 	public static boolean isNamespaceAvailable(String namespace) {
 		return CURRENCIES_SPI.isNamespaceAvailable(namespace);
@@ -107,7 +110,7 @@ public final class MonetaryCurrencies {
 	 * This method allows to access all namespaces currently defined. "ISO-4217"
 	 * should be defined in all environments (default).
 	 * 
-	 * @return the array of currently defined namespace.
+	 * @return the array of currently defined namespaces.
 	 */
 	public static Collection<String> getNamespaces() {
 		return CURRENCIES_SPI.getNamespaces();
@@ -123,7 +126,7 @@ public final class MonetaryCurrencies {
 	 * @param code
 	 *            The code that, together with the namespace identifies the
 	 *            currency.
-	 * @return true, if the currency is defined.
+	 * @return {@code true}, if the currency is defined.
 	 */
 	public static boolean isAvailable(String code) {
 		return CURRENCIES_SPI.isAvailable(code);
@@ -137,7 +140,7 @@ public final class MonetaryCurrencies {
 	 * @param code
 	 *            The code that, together with the namespace identifies the
 	 *            currency.
-	 * @return true, if the currency is defined.
+	 * @return {@code true}, if the currency is defined.
 	 */
 	public static boolean isAvailable(String namespace, String code) {
 		return CURRENCIES_SPI.isAvailable(namespace, code);
@@ -155,7 +158,7 @@ public final class MonetaryCurrencies {
 	 *            currency.
 	 * @return The currency found, never null.
 	 * @throws UnknownCurrencyException
-	 *             if the required currency is not defined.
+	 *             if the required {@link CurrencyUnit} is not defined.
 	 */
 	public static CurrencyUnit get(String namespace, String code) {
 		return CURRENCIES_SPI.get(namespace, code);
@@ -170,9 +173,9 @@ public final class MonetaryCurrencies {
 	 * @param code
 	 *            The code that, together with the namespace identifies the
 	 *            currency.
-	 * @return The currency found, never null.
+	 * @return The {@link CurrencyUnit} found, never {@code null}.
 	 * @throws UnknownCurrencyException
-	 *             if the required currency is not defined.
+	 *             if the required {@link CurrencyUnit} is not defined.
 	 */
 	public static CurrencyUnit get(String code) {
 		return CURRENCIES_SPI.get(code);
@@ -184,7 +187,7 @@ public final class MonetaryCurrencies {
 	 * @see #getNamespaces()
 	 * @see #getDefaultNamespace()
 	 * @param namespace
-	 *            The target namespace, not null.
+	 *            The target namespace, not {@code null}.
 	 * @return The currencies found, never null.
 	 * @throws UnknownCurrencyException
 	 *             if the required namespace is not defined.
@@ -201,7 +204,7 @@ public final class MonetaryCurrencies {
 	 *            The source unit, never {@code null}.
 	 * @param targetNamespace
 	 *            the target namespace, never {@code null}.
-	 * @return The mapped {@link CurrencyUnit}, or null.
+	 * @return The mapped {@link CurrencyUnit}, or {@code null}.
 	 */
 	public static CurrencyUnit map(CurrencyUnit currencyUnit,
 			String targetNamespace) {
@@ -218,50 +221,13 @@ public final class MonetaryCurrencies {
 	 *            the target namespace, never {@code null}.
 	 * @param timestamp
 	 *            the target timestamp
-	 * @return The mapped {@link CurrencyUnit}, or null.
+	 * @return The mapped {@link CurrencyUnit}, or {@code null}.
 	 */
 	public static CurrencyUnit map(CurrencyUnit currencyUnit,
 			String targetNamespace, long timestamp) {
 		return CURRENCIES_SPI.map(currencyUnit, targetNamespace, timestamp);
 	}
 
-	// public static Set<String> getCurrencyValidityProviders() {
-	// return CURRENCIES_SPI.getCurrencyValidityProviders();
-	// }
-	//
-	// /**
-	// * Access an instance of the CurrencyValidity for the required validity
-	// * source.
-	// *
-	// * @param provider
-	// * the validity provider.
-	// * @return
-	// */
-	// public static CurrencyValidity getCurrencyValidity(String provider) {
-	// return CURRENCIES_SPI.getCurrencyValidity(provider);
-	// }
-
-	/**
-	 * This method maps the given {@link CurrencyUnit} instances to another
-	 * {@link CurrencyUnit} instances with the given target namespace.
-	 * 
-	 * @param units
-	 *            The source units, never {@code null}.
-	 * @param targetNamespace
-	 *            the target namespace, never {@code null}.
-	 * @return The mapped {@link CurrencyUnit} instances (same array length). If
-	 *         a unit could not be mapped, the according array element will be
-	 *         {@code null}.
-	 */
-	public static List<CurrencyUnit> mapAll(String targetNamespace,
-			CurrencyUnit... units) {
-		return CURRENCIES_SPI.mapAll(targetNamespace, units);
-	}
-
-	public static List<CurrencyUnit> mapAll(String targetNamespace,
-			long timestamp, CurrencyUnit... units) {
-		return CURRENCIES_SPI.mapAll(targetNamespace, timestamp, units);
-	}
 
 	/**
 	 * Default implementation of {@link MonetaryCurrenciesSingletonSpi}, active
@@ -299,7 +265,7 @@ public final class MonetaryCurrencies {
 		 * 
 		 * @param namespace
 		 *            the required namespace
-		 * @return true, if the namespace exists.
+		 * @return {@code true}, if the namespace exists.
 		 */
 		@Override
 		public boolean isNamespaceAvailable(String namespace) {
@@ -310,7 +276,7 @@ public final class MonetaryCurrencies {
 		 * This method allows to access all namespaces currently defined.
 		 * "ISO-4217" should be defined in all environments (default).
 		 * 
-		 * @return the array of currently defined namespace.
+		 * @return the collection of currently defined namespace, never {@code null}.
 		 */
 		@Override
 		public Collection<String> getNamespaces() {
@@ -327,7 +293,7 @@ public final class MonetaryCurrencies {
 		 * @param code
 		 *            The code that, together with the namespace identifies the
 		 *            currency.
-		 * @return true, if the currency is defined.
+		 * @return {@code true}, if the currency is defined.
 		 */
 		@Override
 		public boolean isAvailable(String code) {
@@ -342,7 +308,7 @@ public final class MonetaryCurrencies {
 		 * @param code
 		 *            The code that, together with the namespace identifies the
 		 *            currency.
-		 * @return true, if the currency is defined.
+		 * @return {@code true}, if the currency is defined.
 		 */
 		@Override
 		public boolean isAvailable(String namespace, String code) {
@@ -359,7 +325,7 @@ public final class MonetaryCurrencies {
 		 * @param code
 		 *            The code that, together with the namespace identifies the
 		 *            currency.
-		 * @return The currency found, never null.
+		 * @return The currency found, never {@code null}.
 		 * @throws UnknownCurrencyException
 		 *             if the required currency is not defined.
 		 */
@@ -377,7 +343,7 @@ public final class MonetaryCurrencies {
 		 * @param code
 		 *            The code that, together with the namespace identifies the
 		 *            currency.
-		 * @return The currency found, never null.
+		 * @return The currency found, never {@code null}.
 		 * @throws UnknownCurrencyException
 		 *             if the required currency is not defined.
 		 */
@@ -394,7 +360,7 @@ public final class MonetaryCurrencies {
 		 *            The source unit, never {@code null}.
 		 * @param targetNamespace
 		 *            the target namespace, never {@code null}.
-		 * @return The mapped {@link CurrencyUnit}, or null.
+		 * @return The mapped {@link CurrencyUnit}, or {@code null}.
 		 */
 		@Override
 		public CurrencyUnit map(CurrencyUnit currencyUnit,
@@ -411,37 +377,13 @@ public final class MonetaryCurrencies {
 		 *            The source unit, never {@code null}.
 		 * @param targetNamespace
 		 *            the target namespace, never {@code null}.
-		 * @return The mapped {@link CurrencyUnit}, or null.
+		 * @return The mapped {@link CurrencyUnit}, or {@code null}.
 		 */
 		@Override
 		public CurrencyUnit map(CurrencyUnit currencyUnit,
 				String targetNamespace, long timestamp
 				) {
 			return null;
-		}
-
-		/**
-		 * This method maps the given {@link CurrencyUnit} instances to another
-		 * {@link CurrencyUnit} instances with the given target namespace.
-		 * 
-		 * @param units
-		 *            The source units, never {@code null}.
-		 * @param targetNamespace
-		 *            the target namespace, never {@code null}.
-		 * @return The mapped {@link CurrencyUnit} instances (same array
-		 *         length). If a unit could not be mapped, a
-		 *         IllegalArgumentException is thrown.
-		 */
-		@Override
-		public List<CurrencyUnit> mapAll(String targetNamespace,
-				CurrencyUnit... units) {
-			throw new IllegalArgumentException(ERROR_MESSAGE);
-		}
-
-		@Override
-		public List<CurrencyUnit> mapAll(String targetNamespace,
-				long timestamp, CurrencyUnit... units) {
-			throw new IllegalArgumentException(ERROR_MESSAGE);
 		}
 
 		/*

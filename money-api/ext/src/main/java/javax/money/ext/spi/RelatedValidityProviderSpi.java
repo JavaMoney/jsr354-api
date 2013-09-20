@@ -38,7 +38,7 @@ public interface RelatedValidityProviderSpi {
 	 * 
 	 * @see {@link RelatedValidityQuery#getValiditySource()}
 	 * @see {@link RelatedValidityQuery#withValiditySource(String)}
-	 * @return the validity provider id, not {@code null}, not empty. The
+	 * @return the validity provider id, never {@code null}, not empty. The
 	 *         identifier must be unique, since it may also be used to
 	 *         explicitly select validity information from a certain provider.
 	 */

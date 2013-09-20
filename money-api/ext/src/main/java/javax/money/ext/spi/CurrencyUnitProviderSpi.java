@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.ServiceLoader;
 
 import javax.money.CurrencyUnit;
+import javax.money.UnknownCurrencyException;
 
 /**
  * This class models the component defined by JSR 354 that provides accessory
@@ -47,16 +48,22 @@ public interface CurrencyUnitProviderSpi {
 	 * Access all {@link CurrencyUnit} instances.
 	 * 
 	 * @return the {@link CurrencyUnit} instances known to this provider
-	 *         instance.
+	 *         instance, never {@code null}. If the provider can not provide a
+	 *         full list of all currencies an empoty {@link Collection} should
+	 *         be returned.
 	 */
 	public Collection<CurrencyUnit> getAll();
 
 	/**
 	 * Access a {@link CurrencyUnit} by code.
+	 * <p>
+	 * Note that the SPI is defined to return {@code null} instead of throwing a
+	 * {@link UnknownCurrencyException}, since several SPI implementation may
+	 * serve a namespace at the same time.
 	 * 
 	 * @param code
 	 *            the {@link CurrencyUnit} found, or {@code null}.
-	 * @return the {@link CurrencyUnit} found.
+	 * @return the {@link CurrencyUnit} found, or {@code null}.
 	 */
 	public CurrencyUnit get(String code);
 

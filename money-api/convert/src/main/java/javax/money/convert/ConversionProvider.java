@@ -1,4 +1,4 @@
-/**
+/*
  * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
  * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
  * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
@@ -101,7 +101,9 @@ public interface ConversionProvider {
 	 * @param timestamp
 	 *            the target timestamp for which the {@link ExchangeRate} is
 	 *            queried.
-	 * @return the matching {@link ExchangeRate}, or {@code null}.
+	 * @return the matching {@link ExchangeRate}.
+	 * @throws CurrencyConversionException
+	 *             If no such rate is available.
 	 */
 	public ExchangeRate getExchangeRate(CurrencyUnit base,
 			CurrencyUnit term, long timestamp);
@@ -117,7 +119,9 @@ public interface ConversionProvider {
 	 *            base {@link CurrencyUnit}.
 	 * @param term
 	 *            term {@link CurrencyUnit}.
-	 * @return the matching {@link ExchangeRate}, or {@code null}.
+	 * @return the matching {@link ExchangeRate}.
+	 * @throws CurrencyConversionException
+	 *             If no such rate is available.
 	 */
 	public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term);
 
@@ -127,7 +131,8 @@ public interface ConversionProvider {
 	 * recalculated as {@code 1/oldFactor}, since typically reverse rates are
 	 * not symmetric in most cases.
 	 * 
-	 * @return the matching reversed {@link ExchangeRate}, or {@code null}.
+	 * @return the matching reversed {@link ExchangeRate}, or {@code null}, if
+	 *         the rate cannot be reversed.
 	 */
 	public ExchangeRate getReversed(ExchangeRate rate);
 
@@ -137,8 +142,6 @@ public interface ConversionProvider {
 	 * 
 	 * @return a new instance of a corresponding {@link CurrencyConverter},
 	 *         never {@code null}.
-	 * @throws CurrencyConversionException
-	 *             If the required target {@link CurrencyUnit} is not supported.
 	 */
 	public CurrencyConverter getConverter();
 

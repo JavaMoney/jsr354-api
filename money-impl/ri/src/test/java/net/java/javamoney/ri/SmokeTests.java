@@ -219,12 +219,16 @@ public class SmokeTests {
 		System.out.println("Related Validity providers: "
 				+ Validities.getRelatedValidityProviderIds(CurrencyUnit.class,
 						Region.class));
-		System.out.println("Currencies for Germany: "
-				+ Validities.getRelatedValidityInfo(new RelatedValidityQuery(
-						CurrencyUnit.class, Region.class)
-						.withRelatedToPredicate(MonetaryPredicates
-								.include(Regions
-										.getRegion(Locale.GERMANY))
-						)));
+		System.out
+				.println("Currencies for Germany: "
+						+ Validities
+								.getRelatedValidityInfo(new RelatedValidityQuery.Builder()
+										.withItemType(CurrencyUnit.class)
+										.withRelatedToType(Region.class)
+										.withRelatedToPredicate(
+												MonetaryPredicates
+														.include(Regions
+																.getRegion(Locale.GERMANY))
+										).build()));
 	}
 }

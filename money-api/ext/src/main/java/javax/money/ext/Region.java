@@ -41,7 +41,7 @@ public interface Region {
 	/**
 	 * Get the region's type.
 	 * 
-	 * @return the region's type, never null.
+	 * @return the region's type, never {@code null}.
 	 */
 	public RegionType getRegionType();
 
@@ -56,7 +56,7 @@ public interface Region {
 	/**
 	 * Get the region's numeric code. If not defined -1 is returned.
 	 * 
-	 * @return the numeric region ode, or -1.
+	 * @return the numeric region code, or {@code -1}.
 	 */
 	public int getNumericRegionCode();
 

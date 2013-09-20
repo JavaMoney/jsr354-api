@@ -280,6 +280,9 @@ public class IMFConversionProvider extends AbstractResource
 		}
 		ExchangeRate found = null;
 		for (ExchangeRate rate : list) {
+			if (timestamp == null) {
+				timestamp = System.currentTimeMillis();
+			}
 			if (rate.isValid(timestamp)) {
 				return rate;
 			}

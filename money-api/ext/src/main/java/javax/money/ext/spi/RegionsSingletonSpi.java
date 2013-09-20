@@ -43,9 +43,11 @@ public interface RegionsSingletonSpi {
 	 *            The {@link RegionType}
 	 * @param numericId
 	 *            The numeric id.
-	 * @return The matching {@link Region}, or {@code null}.
+	 * @return The matching {@link Region}..
 	 * @throws IllegalArgumentException
-	 *             if the {@link Region} instances matching are ambiguous.
+	 *             if the {@link Region} instances matching are ambiguous, or no
+	 *             such {@link Region} could be provided by any of the
+	 *             registered {@link RegionProviderSpi} instances.
 	 */
 	public Region getRegion(RegionType type, int numericId);
 
@@ -58,7 +60,9 @@ public interface RegionsSingletonSpi {
 	 *            The numeric id.
 	 * @return The matching {@link Region}, or {@code null}.
 	 * @throws IllegalArgumentException
-	 *             if the {@link Region} instances matching are ambiguous.
+	 *             if the {@link Region} instances matching are ambiguous, or no
+	 *             such {@link Region} could be provided by any of the
+	 *             registered {@link RegionProviderSpi} instances.
 	 */
 	public Region getRegion(RegionType type, String code);
 
@@ -67,7 +71,8 @@ public interface RegionsSingletonSpi {
 	 * 
 	 * @param locale
 	 *            The country {@link Locale}.
-	 * @return the corresponding {@link Region}, or {@code null}.
+	 * @return the corresponding {@link Region}, if resolved by any of the
+	 *         registered {@link RegionProviderSpi} instances, or {@code null}.
 	 */
 	public Region getRegion(Locale locale);
 
@@ -76,7 +81,8 @@ public interface RegionsSingletonSpi {
 	 * 
 	 * @param type
 	 *            The required {@link RegionType}.
-	 * @return the known regions of that type, not {@code null}.
+	 * @return the known regions of that type as returned by the registered
+	 *         {@link RegionProviderSpi} instances, never {@code null}.
 	 */
 	public Collection<Region> getRegions(RegionType type);
 
@@ -85,9 +91,11 @@ public interface RegionsSingletonSpi {
 	 * {@link Region} by calling {@link #getRegionData(Class)}.
 	 * 
 	 * @param region
-	 *            the region for which addition data is requested.
-	 * @return the collection of supported region data, may be {@code empty} but
-	 *         never {@code null}.
+	 *            the region for which addition data is requested, not
+	 *            {@code null}.
+	 * @return the collection of supported region data as returned by the
+	 *         registered {@link ExtendedRegionDataProviderSpi} instances, may
+	 *         be {@code empty} but never {@code null}.
 	 */
 	public Collection<Class> getExtendedRegionDataTypes(Region region);
 
@@ -100,25 +108,28 @@ public interface RegionsSingletonSpi {
 	 *            The region data type, not {@code null}.
 	 * @return the corresponding data item.
 	 * @throws IllegalArgumentException
-	 *             if the type passed is not supported. See
-	 *             {@link #getRegionDataTypes()}.
+	 *             if the type passed is not supported (none of the
+	 *             {@link ExtendedRegionDataProviderSpi} instances registered
+	 *             could provide it). See {@link #getRegionDataTypes()}.
 	 */
 	public <T> T getExtendedRegionData(Region region, Class<T> type);
 
 	/**
-	 * Access all {@link RegionType}s defined by this provider.
+	 * Access all {@link RegionType}s defined by the registered
+	 * {@link RegionProviderSpi} instances.
 	 * 
 	 * @return the {@link RegionType} instances provided by/used by this
-	 *         provider.
+	 *         provider, never {@code null}.
 	 */
 	public Set<RegionType> getRegionTypes();
 
 	/**
-	 * Access the defined region trees.
+	 * Access the defined region trees, defined by the registered
+	 * {@link RegionTreeProviderSpi} instances.
 	 * 
 	 * @see #getRegionTree(String)
 	 * @return the set of defined region trees, accessible calling
-	 *         {@link #getRegionTree(String)}.
+	 *         {@link #getRegionTree(String)}, never {@code null}.
 	 */
 	public Set<String> getRegionTreeIds();
 
@@ -129,7 +140,10 @@ public interface RegionsSingletonSpi {
 	 * @see #getRegionTreeIds()
 	 * @param id
 	 *            The tree identifier
-	 * @return the region tree.
+	 * @return the region tree, never {@code null}.
+	 * @throws IllegalArgumentException
+	 *             If no such tree was provided by any of the registered
+	 *             {@link RegionTreeProviderSpi} instances.
 	 */
 	public RegionTreeNode getRegionTree(String id);
 }

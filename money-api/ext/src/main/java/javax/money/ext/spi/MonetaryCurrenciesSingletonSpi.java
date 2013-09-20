@@ -147,39 +147,6 @@ public interface MonetaryCurrenciesSingletonSpi {
 			long timestamp);
 
 	/**
-	 * This method maps the given {@link CurrencyUnit} instances to another
-	 * {@link CurrencyUnit} instances with the given target namespace.
-	 * 
-	 * @param units
-	 *            The source units, never {@code null}.
-	 * @param targetNamespace
-	 *            the target namespace, never {@code null}.
-	 * @return The mapped {@link CurrencyUnit} instances (same array length). If
-	 *         a unit could not be mapped, the according array element will be
-	 *         {@code null}.
-	 */
-	public List<CurrencyUnit> mapAll(String targetNamespace,
-			CurrencyUnit... units);
-
-	/**
-	 * This method maps the given {@link CurrencyUnit} instances to another
-	 * {@link CurrencyUnit} instances with the given target namespace.
-	 * 
-	 * @param targetNamespace
-	 *            the target namespace, never {@code null}.
-	 * @param timestamp
-	 *            The target UTC timestamp.
-	 * @param units
-	 *            The source units, never {@code null}.
-	 * 
-	 * @return The mapped {@link CurrencyUnit} instances (same array length). If
-	 *         a unit could not be mapped, the according array element will be
-	 *         {@code null}.
-	 */
-	public List<CurrencyUnit> mapAll(String targetNamespace, long timestamp,
-			CurrencyUnit... units);
-
-	/**
 	 * Access all currencies for a given namespace.
 	 * 
 	 * @see #getNamespaces()

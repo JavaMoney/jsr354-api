@@ -1,4 +1,4 @@
-/**
+/*
  * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
  * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
  * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
@@ -83,7 +83,7 @@ public interface CurrencyConverter {
 	 *            The base currency
 	 * @param term
 	 *            The terminating currency
-	 * @return The according {@link CurrencyConversion}, never null.
+	 * @return The according {@link CurrencyConversion}, never {@code null}.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
@@ -104,7 +104,7 @@ public interface CurrencyConverter {
 	 *            The terminating currency
 	 * @param targetTimestamp
 	 *            for which the conversion is targeted.
-	 * @return The according {@link CurrencyConversion}, never null.
+	 * @return The according {@link CurrencyConversion}, never {@code null}.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
@@ -125,7 +125,7 @@ public interface CurrencyConverter {
 	 * @see ConversionProvider
 	 * @param term
 	 *            The terminating currency
-	 * @return The according {@link CurrencyConversion}, never null.
+	 * @return The according {@link CurrencyConversion}, never {@code null}.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */
@@ -146,7 +146,7 @@ public interface CurrencyConverter {
 	 *            The terminating currency
 	 * @param targetTimestamp
 	 *            for which the conversion is targeted.
-	 * @return The according {@link CurrencyConversion}, never null.
+	 * @return The according {@link CurrencyConversion}, never {@code null}.
 	 * @throws CurrencyConversionException
 	 *             if conversion failed, or the required data is not available.
 	 */

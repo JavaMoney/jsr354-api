@@ -26,8 +26,9 @@ import javax.money.ext.RegionTreeNode;
  * on the runtime environment, implementations may be loaded using the
  * {@link ServiceLoader}. But also alternate mechanisms are possible, e.g. CDI.
  * <p>
- * Implementation of this interface must be thread-safe, but can be contextual
- * in a EE context.
+ * Implementation of this interface must be thread-safe, but should not be
+ * contextual in a EE context (this should be done by the
+ * {@link RegionsSingletonSpi}).
  * 
  * @author Anatole Tresch
  */
@@ -36,7 +37,8 @@ public interface RegionTreeProviderSpi {
 	/**
 	 * Get the id of the tree provided by this provider.
 	 * 
-	 * @return
+	 * @return the id of the tree, provided by this tree provider, never
+	 *         {@code null} and not empty.
 	 */
 	public String getTreeId();
 

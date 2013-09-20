@@ -39,7 +39,8 @@ public interface RegionProviderSpi {
 	 * providers may provide {@link Region}s for the same {@link RegionType}, as
 	 * long as they are unique related to its code and numderic id (if defined).
 	 * 
-	 * @return the {@link RegionType}s for which this provider provides regions.
+	 * @return the {@link RegionType}s for which this provider provides regions,
+	 *         never {@code null}.
 	 */
 	public Collection<RegionType> getRegionTypes();
 
@@ -48,7 +49,7 @@ public interface RegionProviderSpi {
 	 * 
 	 * @param type
 	 *            The required region type.
-	 * @return the regions to be provided, not {@code null}.
+	 * @return the regions to be provided, never {@code null}.
 	 */
 	public Collection<Region> getRegions(RegionType type);
 

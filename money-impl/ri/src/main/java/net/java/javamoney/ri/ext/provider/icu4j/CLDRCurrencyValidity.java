@@ -83,7 +83,8 @@ public class CLDRCurrencyValidity implements RelatedValidityProviderSpi {
 	 */
 	@Override
 	public Set<ValidityType> getValidityTypes(Class itemType, Class relatedType) {
-		if (itemType.equals(CurrencyUnit.class) && relatedType.equals(Region.class)) {
+		if (itemType.equals(CurrencyUnit.class)
+				&& relatedType.equals(Region.class)) {
 			return FLAVORS;
 		}
 		return Collections.emptySet();
@@ -203,8 +204,7 @@ public class CLDRCurrencyValidity implements RelatedValidityProviderSpi {
 							(T) MonetaryCurrencies.get(data.getCurrencyCode()),
 							(R) currencyData.getRegion(),
 							query.getValidityType(),
-							"CLDR", fromCal, toCal, tzName);
-					vi.setUserData(data);
+							"CLDR", fromCal, toCal, tzName, data);
 					result.add(vi);
 				}
 			}

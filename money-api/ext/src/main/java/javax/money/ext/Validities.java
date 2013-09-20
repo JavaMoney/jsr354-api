@@ -1,4 +1,4 @@
-/**
+/*
  * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
  * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
  * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
@@ -89,7 +89,8 @@ public final class Validities {
 	 *            The item type
 	 * @param relatedToType
 	 *            The instance defining the relation
-	 * @return the according {@link RelatedValidityInfo} provider ids.
+	 * @return the according {@link RelatedValidityInfo} provider ids, never
+	 *         {@code null}.
 	 */
 	public static <T, R> Set<String> getRelatedValidityProviderIds(
 			Class<T> type,
@@ -106,7 +107,7 @@ public final class Validities {
 	 * @see RelatedValidityQuery#getRelatedToType()
 	 * @param type
 	 *            The item type
-	 * @return the according relatedTo types.
+	 * @return the according relatedTo types, never {@code null}.
 	 */
 	public static <T> Set<Class> getRelatedValidityRelationTypes(Class<T> type) {
 		return VALIDITIES_SPI.getRelatedValidityRelationTypes(type);
@@ -118,7 +119,7 @@ public final class Validities {
 	 * 
 	 * @see RelatedValidityProviderSpi#getItemTypes()
 	 * @see RelatedValidityQuery#getItemType()
-	 * @return the according relatedTo types.
+	 * @return the according relatedTo types, never {@code null}.
 	 */
 	public static <T> Set<Class> getRelatedValidityItemTypes() {
 		return VALIDITIES_SPI.getRelatedValidityItemTypes();
@@ -130,7 +131,7 @@ public final class Validities {
 	 * 
 	 * @see ValidityProviderSpi#getItemTypes()
 	 * @see ValidityQuery#getItemType()
-	 * @return the according relatedTo types.
+	 * @return the according relatedTo types, never {@code null}.
 	 */
 	public static <T> Set<Class> getValidityItemTypes() {
 		return VALIDITIES_SPI.getValidityItemTypes();
@@ -142,7 +143,8 @@ public final class Validities {
 	 * 
 	 * @param type
 	 *            The item type
-	 * @return the according {@link ValidityInfo} provider ids.
+	 * @return the according {@link ValidityInfo} provider ids, never
+	 *         {@code null}.
 	 */
 	public static <T> Set<String> getValidityProviderIds(Class<T> type) {
 		return VALIDITIES_SPI.getValidityProviderIds(type);
@@ -154,7 +156,7 @@ public final class Validities {
 	 * 
 	 * @param type
 	 *            The item type
-	 * @return the current {@link ValidityType} supported.
+	 * @return the current {@link ValidityType} supported, never {@code null}.
 	 */
 	public static <T> Set<ValidityType> getValidityTypes(Class<T> type) {
 		return VALIDITIES_SPI.getValidityTypes(type);
@@ -168,7 +170,7 @@ public final class Validities {
 	 *            The item type
 	 * @param relationType
 	 *            the relation type
-	 * @return the current {@link ValidityType} supported.
+	 * @return the current {@link ValidityType} supported, never {@code null}.
 	 */
 	public static <T, R> Set<ValidityType> getValidityTypes(Class<T> type,
 			Class<R> relationType) {

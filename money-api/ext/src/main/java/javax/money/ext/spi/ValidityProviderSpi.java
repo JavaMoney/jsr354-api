@@ -26,8 +26,9 @@ import javax.money.ext.ValidityType;
  * implementations may be loaded using the {@link ServiceLoader}. But also
  * alternate mechanisms are possible, e.g. CDI.
  * <p>
- * Implementation of this interface must be thread-safe, but can be contextual
- * in a EE context.
+ * Implementation of this interface must be thread-safe, and should not be
+ * contextual in a EE context. Contextual behaviour should be implemented by the
+ * {@link ValiditiesSingletonSpi}.
  * 
  * @author Anatole Tresch
  */
@@ -38,7 +39,7 @@ public interface ValidityProviderSpi {
 	 * 
 	 * @see {@link ValidityQuery#getValiditySource()}
 	 * @see {@link ValidityQuery#withValiditySource(String)}
-	 * @return the validity provider id, not {@code null}, not empty. The
+	 * @return the validity provider id, never {@code null}, not empty. The
 	 *         identifier must be unique, since it may also be used to
 	 *         explicitly select validity information from a certain provider.
 	 */

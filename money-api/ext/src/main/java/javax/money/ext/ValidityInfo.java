@@ -12,8 +12,6 @@ package javax.money.ext;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 /**
  * This base class models a validity of an item T related to a timeline. Hereby
@@ -81,7 +79,7 @@ public class ValidityInfo<T> implements Serializable,
 	 */
 	public ValidityInfo(T item, ValidityType validityType,
 			String validitySource, Calendar from,
-			Calendar to, String targetTimezoneId) {
+			Calendar to, String targetTimezoneId, Object userData) {
 		if (item == null) {
 			throw new IllegalArgumentException("Currency required.");
 		}
@@ -104,8 +102,8 @@ public class ValidityInfo<T> implements Serializable,
 		} else {
 			this.to = null;
 		}
-
 		this.targetTimezoneId = targetTimezoneId;
+		this.userData = this.userData = userData;
 	}
 
 	/**
@@ -122,7 +120,7 @@ public class ValidityInfo<T> implements Serializable,
 	 */
 	public ValidityInfo(T item, ValidityType validityType,
 			String validitySource, Long from, Long to,
-			String targetTimezoneId) {
+			String targetTimezoneId, Object userData) {
 		if (item == null) {
 			throw new IllegalArgumentException("Currency required.");
 		}
@@ -138,6 +136,7 @@ public class ValidityInfo<T> implements Serializable,
 		this.from = from;
 		this.to = to;
 		this.targetTimezoneId = targetTimezoneId;
+		this.userData = userData;
 	}
 
 	/**
@@ -158,15 +157,6 @@ public class ValidityInfo<T> implements Serializable,
 	@SuppressWarnings("unchecked")
 	public Object getUserData() {
 		return (T) userData;
-	}
-
-	/**
-	 * Sets the user data of this instance.
-	 * 
-	 * @param data
-	 */
-	public void setUserData(Object data) {
-		this.userData = data;
 	}
 
 	/**
@@ -259,78 +249,6 @@ public class ValidityInfo<T> implements Serializable,
 	 */
 	public String getTargetTimezoneId() {
 		return targetTimezoneId;
-	}
-
-	/**
-	 * Access the starting GregorianCalendar from which the item T is valid,
-	 * related to R.
-	 * 
-	 * @return the starting GregorianCalendar, or null.
-	 */
-	public GregorianCalendar getFrom() {
-		return getFrom(GregorianCalendar.class);
-	}
-
-	/**
-	 * Access the starting Calendar from which the item T is valid, related to
-	 * R.
-	 * 
-	 * @param type
-	 *            The calendar type required. The type must have a public
-	 *            parameterless constructor and must be initializable by calling
-	 *            Calendar#setTimeInMillis(Long).
-	 * @return the starting Calendar instance, or null.
-	 */
-	public <C extends Calendar> C getFrom(Class<C> type) {
-		if (from != null) {
-			C cal;
-			try {
-				cal = (C) type.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
-				throw new IllegalArgumentException(
-						"Calendar type is not instantiatable.", e);
-			}
-			cal.setTimeInMillis(from);
-			cal.setTimeZone(TimeZone.getTimeZone(targetTimezoneId));
-			return cal;
-		}
-		return null;
-	}
-
-	/**
-	 * Access the ending GregorianCalendar until which the item T is valid,
-	 * related to R.
-	 * 
-	 * @return the ending GregorianCalendar, or null.
-	 */
-	public GregorianCalendar getTo() {
-		return getTo(GregorianCalendar.class);
-	}
-
-	/**
-	 * Access the starting Calendar until which the item T is valid, related to
-	 * R.
-	 * 
-	 * @param type
-	 *            The calendar type required. The type must have a public
-	 *            parameterless constructor and must be initializable by calling
-	 *            Calendar#setTimeInMillis(Long).
-	 * @return the ending Calendar instance, or null.
-	 */
-	public <C extends Calendar> C getTo(Class<C> type) {
-		if (to != null) {
-			C cal;
-			try {
-				cal = (C) type.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
-				throw new IllegalArgumentException(
-						"Calendar type is not instantiatable.", e);
-			}
-			cal.setTimeInMillis(to);
-			cal.setTimeZone(TimeZone.getTimeZone(targetTimezoneId));
-			return cal;
-		}
-		return null;
 	}
 
 	/*

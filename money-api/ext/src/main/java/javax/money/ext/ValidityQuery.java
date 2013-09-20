@@ -1,4 +1,4 @@
-/**
+/*
  * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
  * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
  * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
@@ -22,7 +22,11 @@ import javax.money.ext.spi.ValidityProviderSpi;
  * For accessing {@link ValidityInfo} instances from the {@link Validities}
  * singleton, instances of this class must be created an configured.
  * <p>
- * This class is immutable, thread-safe and {@link Serializable}.
+ * This class and its subclasses should be immutable, thread-safe and
+ * {@link Serializable}.
+ * <p>
+ * nOTE: The class and its builder are available for subclassing, since more
+ * advanced queries may be created with them.
  * 
  * @author Anatole Tresch
  * 
@@ -59,129 +63,39 @@ public class ValidityQuery<T> {
 	private String targetTimezoneId;
 
 	/**
-	 * Creates a new validity query.
+	 * Constructor.
 	 * 
-	 * @param itemClass
-	 *            the type for which validities are queried.
+	 * @param validityType
+	 *            the validity type, not {@code null}.
+	 * @param itemType
+	 *            the item type, not {@code null}.
+	 * @param item
+	 *            the item constraint.
+	 * @param validitySource
+	 *            the validity source id.
+	 * @param from
+	 *            the starting UTC timestamp.
+	 * @param to
+	 *            the ending UTC timestamp.
+	 * @param targetTimezoneId
+	 *            the target timezone ID.
 	 */
-	public ValidityQuery(Class<T> itemType) {
+	protected ValidityQuery(ValidityType validityType, Class<T> itemType,
+			T item, String validitySource, Long from, Long to,
+			String targetTimezoneId) {
 		if (itemType == null) {
 			throw new IllegalArgumentException("ItemClass required");
 		}
+		if (validityType == null) {
+			throw new IllegalArgumentException("ValidityType required.");
+		}
+		this.validityType = validityType;
 		this.itemType = itemType;
-	}
-
-	/**
-	 * Get the target timezone ID for which the query should return results.
-	 * This may be used to reconstruct a local date, along with the
-	 * {@link #from} UTC timestamp.
-	 * 
-	 * @return the target timezone ID, or {@code null}.
-	 */
-	public String getTargetTimezoneID() {
-		return this.targetTimezoneId;
-	}
-
-	/**
-	 * Sets the target item.
-	 * 
-	 * @param item
-	 *            the target item
-	 * @return the instance, for chaining.
-	 */
-	public ValidityQuery<T> withItem(T item) {
+		this.validitySource = validitySource;
+		this.from = from;
+		this.targetTimezoneId = targetTimezoneId;
 		this.item = item;
-		return this;
-	}
-
-	/**
-	 * Sets the target timezone ID.
-	 * 
-	 * @param timezoneÎD
-	 *            the target timezone ID
-	 * @return the instance, for chaining.
-	 */
-	public ValidityQuery<T> withTargetTimezoneID(String timezoneÎD) {
-		this.targetTimezoneId = timezoneÎD;
-		return this;
-	}
-
-	/**
-	 * Sets the target timezone.
-	 * 
-	 * @param timezone
-	 *            the target timezone
-	 * @return the instance, for chaining.
-	 */
-	public ValidityQuery<T> withTargetTimezone(TimeZone timezone) {
-		this.targetTimezoneId = timezone.getID();
-		return this;
-	}
-
-	/**
-	 * Sets the {@link #from} timestamp.
-	 * 
-	 * @param timestamp
-	 *            The from timestamp.
-	 * @return the instance, for chaining.
-	 */
-	public ValidityQuery<T> withFrom(long timestamp) {
-		this.from = timestamp;
-		return this;
-	}
-
-	/**
-	 * Sets the {@link #from} timestamp and {@link #targetTimezoneId} from the
-	 * given {@link Calendar}.
-	 * 
-	 * @param calendar
-	 *            The from calendar.
-	 * @return the instance, for chaining.
-	 */
-	public ValidityQuery<T> withFrom(Calendar calendar) {
-		this.from = calendar.getTimeInMillis();
-		this.targetTimezoneId = calendar.getTimeZone().getID();
-		return this;
-	}
-
-	/**
-	 * Sets the {@link #to} timestamp.
-	 * 
-	 * @param timestamp
-	 *            The to timestamp.
-	 * @return the instance, for chaining.
-	 */
-	public ValidityQuery<T> withTo(long timestamp) {
-		this.to = timestamp;
-		return this;
-	}
-
-	/**
-	 * Sets the {@link #to} timestamp and {@link #targetTimezoneId} from the
-	 * given {@link Calendar}.
-	 * 
-	 * @param calendar
-	 *            The to calendar.
-	 * @return the instance, for chaining.
-	 */
-	public ValidityQuery<T> withTo(Calendar calendar) {
-		this.to = calendar.getTimeInMillis();
-		this.targetTimezoneId = calendar.getTimeZone().getID();
-		return this;
-	}
-
-	/**
-	 * Sets the validity provider to be queried. If not set all registered and
-	 * matching providers may return a result. The first non null result is
-	 * considered the final result in such a scenario.
-	 * 
-	 * @param source
-	 *            the source identifier
-	 * @return the instance, for chaining.
-	 */
-	public ValidityQuery<T> withValiditySource(String source) {
-		this.validitySource = source;
-		return this;
+		this.to = to;
 	}
 
 	/**
@@ -192,21 +106,6 @@ public class ValidityQuery<T> {
 	 */
 	public ValidityType getValidityType() {
 		return this.validityType;
-	}
-
-	/**
-	 * Sets the {@link ValidityType} required. It is also possible to pass
-	 * {@link ValidityType#ANY} to query all validities known for an item.
-	 * 
-	 * @param validityType
-	 * @return
-	 */
-	public ValidityQuery<T> withValidityType(ValidityType validityType) {
-		if (validityType == null) {
-			throw new IllegalArgumentException("ValidityType required.");
-		}
-		this.validityType = validityType;
-		return this;
 	}
 
 	/**
@@ -298,4 +197,201 @@ public class ValidityQuery<T> {
 				+ validityType + "]";
 	}
 
+	/**
+	 * For accessing {@link ValidityInfo} instances from the {@link Validities}
+	 * singleton, instances of this class must be created an configured.
+	 * <p>
+	 * This class is immutable, thread-safe and {@link Serializable}.
+	 * 
+	 * @author Anatole Tresch
+	 * 
+	 * @param <T>
+	 *            the item type, on which validities are defined.
+	 */
+	public static class Builder<T> {
+		/** The base item. */
+		protected T item;
+		/** The base item. */
+		protected Class<T> itemType;
+		/**
+		 * The starting UTC timestamp for the validity period, or null.
+		 */
+		protected Long from;
+		/**
+		 * The ending UTC timestamp for the validity period, or null.
+		 */
+		protected Long to;
+		/**
+		 * The source that provides this validity data.
+		 */
+		protected String validitySource;
+
+		/**
+		 * The type of Validity, by default {@link ValidityType#EXISTENCE}.
+		 */
+		protected ValidityType validityType = ValidityType.EXISTENCE;
+
+		/**
+		 * The target timezone id of this validity instance, allowing to restore
+		 * the correct local date.
+		 */
+		protected String targetTimezoneId;
+
+		/**
+		 * Creates a new validity query.
+		 * 
+		 * @param validityType
+		 *            The validity type.
+		 * @param itemClass
+		 *            the type for which validities are queried.
+		 */
+		public Builder(ValidityType validityType, Class<T> itemType) {
+			if (validityType == null) {
+				throw new IllegalArgumentException("validityType required");
+			}
+			this.validityType = validityType;
+		}
+
+		/**
+		 * Creates a new validity query.
+		 * 
+		 * @param itemClass
+		 *            the type for which validities are queried.
+		 */
+		public Builder() {
+		}
+
+		/**
+		 * Builds a new {@link ValidityQuery}.
+		 * 
+		 * @return the new query, never {@code null}.
+		 * @throws IllegalArgumentException
+		 *             if the query could not be built.
+		 */
+		public ValidityQuery<T> build() {
+			return new ValidityQuery<T>(validityType, itemType, item,
+					validitySource, from, to, targetTimezoneId);
+		}
+
+		/**
+		 * Sets the target item.
+		 * 
+		 * @param item
+		 *            the target item
+		 * @return the instance, for chaining.
+		 */
+		public Builder<T> withItem(T item) {
+			this.item = item;
+			return this;
+		}
+
+		/**
+		 * Sets the target item type.
+		 * 
+		 * @param item
+		 *            the target item type, not {@code null}.
+		 * @return the instance, for chaining.
+		 */
+		public Builder<T> withItemType(Class<T> itemType) {
+			if (itemType == null) {
+				throw new IllegalArgumentException("ItemClass required");
+			}
+			this.itemType = itemType;
+			return this;
+		}
+
+		/**
+		 * Sets the target timezone ID.
+		 * 
+		 * @param timezoneÎD
+		 *            the target timezone ID
+		 * @return the instance, for chaining.
+		 */
+		public Builder<T> withTargetTimezoneID(String timezoneÎD) {
+			this.targetTimezoneId = timezoneÎD;
+			return this;
+		}
+
+		/**
+		 * Sets the target timezone.
+		 * 
+		 * @param timezone
+		 *            the target timezone
+		 * @return the instance, for chaining.
+		 */
+		public Builder<T> withTargetTimezone(TimeZone timezone) {
+			this.targetTimezoneId = timezone.getID();
+			return this;
+		}
+
+		/**
+		 * Sets the {@link #from} timestamp.
+		 * 
+		 * @param timestamp
+		 *            The from timestamp.
+		 * @return the instance, for chaining.
+		 */
+		public Builder<T> withFrom(long timestamp) {
+			this.from = timestamp;
+			return this;
+		}
+
+		/**
+		 * Sets the {@link #to} timestamp.
+		 * 
+		 * @param timestamp
+		 *            The to timestamp.
+		 * @return the instance, for chaining.
+		 */
+		public Builder<T> withTo(long timestamp) {
+			this.to = timestamp;
+			return this;
+		}
+
+		/**
+		 * Sets the validity provider to be queried. If not set all registered
+		 * and matching providers may return a result. The first non null result
+		 * is considered the final result in such a scenario.
+		 * 
+		 * @param source
+		 *            the source identifier
+		 * @return the instance, for chaining.
+		 */
+		public Builder<T> withValiditySource(String source) {
+			this.validitySource = source;
+			return this;
+		}
+
+		/**
+		 * Sets the {@link ValidityType} required. It is also possible to pass
+		 * {@link ValidityType#ANY} to query all validities known for an item.
+		 * 
+		 * @param validityType
+		 * @return
+		 */
+		public Builder<T> withValidityType(
+				ValidityType validityType) {
+			if (validityType == null) {
+				throw new IllegalArgumentException("ValidityType required.");
+			}
+			this.validityType = validityType;
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return "ValidityQuery.Builder [itemType=" + itemType + ", item="
+					+ item
+					+ ", from=" + from + ", to=" + to
+					+ ", targetTimezoneId=" + targetTimezoneId
+					+ ", validitySource=" + validitySource + ", validityType="
+					+ validityType + "]";
+		}
+
+	}
 }

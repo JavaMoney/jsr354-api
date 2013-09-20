@@ -15,9 +15,6 @@
  */
 package javax.money.function.predicates;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.money.MonetaryAmount;
 
 /**

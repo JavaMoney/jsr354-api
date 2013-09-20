@@ -15,9 +15,6 @@
  */
 package javax.money.function.predicates;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 
@@ -43,32 +40,19 @@ import javax.money.MonetaryAmount;
 class AmountCurrencyUnitPredicate<T extends MonetaryAmount> implements
 		Predicate<T> {
 
-	private List<Predicate<CurrencyUnit>> currencyPredicates = new ArrayList<Predicate<CurrencyUnit>>();
+	private Predicate<CurrencyUnit> currencyPredicate;
 
 	public AmountCurrencyUnitPredicate(
-			Iterable<? extends Predicate<CurrencyUnit>>... values) {
-		for (Iterable<? extends Predicate<CurrencyUnit>> iterable : values) {
-			for (Predicate<CurrencyUnit> t : iterable) {
-				currencyPredicates.add(t);
-			}
+			Predicate<CurrencyUnit> currencyPredicate) {
+		if (currencyPredicate == null) {
+			throw new IllegalArgumentException("currencyPredicate required.");
 		}
-	}
-
-	public AmountCurrencyUnitPredicate(
-			Predicate<CurrencyUnit>... values) {
-		for (Predicate<CurrencyUnit> predicate : values) {
-			currencyPredicates.add(predicate);
-		}
+		this.currencyPredicate = currencyPredicate;
 	}
 
 	@Override
 	public Boolean apply(MonetaryAmount value) {
-		for (Predicate<CurrencyUnit> predicate : currencyPredicates) {
-			if (!predicate.apply(value.getCurrency())) {
-				return Boolean.FALSE;
-			}
-		}
-		return Boolean.TRUE;
+		return currencyPredicate.apply(value.getCurrency());
 	}
 
 	/*
@@ -78,8 +62,8 @@ class AmountCurrencyUnitPredicate<T extends MonetaryAmount> implements
 	 */
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [currencyPredicates="
-				+ currencyPredicates + "]";
+		return "AmountCurrencyUnitPredicate [currencyPredicate="
+				+ currencyPredicate + "]";
 	}
 
 }

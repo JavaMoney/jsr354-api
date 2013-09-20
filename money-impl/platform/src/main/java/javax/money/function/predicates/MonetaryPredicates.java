@@ -307,31 +307,15 @@ public final class MonetaryPredicates {
 	 * This method allows to create a predicate for {@link MonetaryAmount}s, by
 	 * predicating its {@link CurrencyUnit}.
 	 * 
-	 * @param currencyPredicates
-	 *            The {@link CurrencyUnit} {@link Predicate} instances.
-	 * @param items
-	 *            The items to be filtered.
+	 * @param currencyPredicate
+	 *            The {@link CurrencyUnit} {@link Predicate} instance, not {@code null}.
 	 * @return The according {@link Predicate} for {@link MonetaryAmount}.
 	 */
-	@SafeVarargs
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Predicate<? extends MonetaryAmount> createAmountPredicate(
-			Iterable<? extends Predicate<CurrencyUnit>>... currencyPredicates) {
-		return new AmountCurrencyUnitPredicate<>(currencyPredicates);
+			Predicate<? extends CurrencyUnit> currencyPredicate) {
+		return new AmountCurrencyUnitPredicate(currencyPredicate);
 	}
 
-	/**
-	 * This method allows to create a predicate for {@link MonetaryAmount}s, by
-	 * predicating its {@link CurrencyUnit}.
-	 * 
-	 * @param currencyPredicates
-	 *            The {@link CurrencyUnit} {@link Predicate} instances.
-	 * @param items
-	 *            The items to be filtered.
-	 * @return The according {@link Predicate} for {@link MonetaryAmount}.
-	 */
-	@SafeVarargs
-	public static Predicate<? extends MonetaryAmount> createAmountPredicate(
-			Predicate<CurrencyUnit>... currencyPredicates) {
-		return new AmountCurrencyUnitPredicate<>(currencyPredicates);
-	}
+
 }

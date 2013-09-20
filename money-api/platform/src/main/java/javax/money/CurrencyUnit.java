@@ -28,12 +28,11 @@ package javax.money;
  * <li>serializable. It is required that different implementations are serial
  * compatible, writing the following data ordered as shown below:
  * <ul>
- * <li>the namespace (String)</li><
+ * <li>the namespace (String)</li>
  * <li>the currency code (String)</li>
  * <li>the numeric code (int)</li>
  * <li>the default fraction units (int)</li>
  * <li>the cash rounding (int)</li>
- * <li></li>
  * </ul>
  * Of course, if {@code java.util.Currency} would implement this type,
  * serialization must be backward compatible with previous JDK releases, it is

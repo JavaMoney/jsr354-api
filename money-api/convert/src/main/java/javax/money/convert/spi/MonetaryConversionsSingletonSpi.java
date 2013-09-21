@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.ServiceLoader;
 
 import javax.money.convert.ConversionProvider;
-import javax.money.convert.ExchangeRateType;
 import javax.money.convert.MonetaryConversions;
 
 /**
@@ -49,23 +48,23 @@ public interface MonetaryConversionsSingletonSpi {
 	 * @return the provider, if it is a registered rate type, never null.
 	 * @see #isSupportedExchangeRateType(ExchangeRateType)
 	 */
-	ConversionProvider getConversionProvider(ExchangeRateType type);
+	ConversionProvider getConversionProvider(String type);
 
 	/**
 	 * Get all currently registered rate types.
 	 * 
 	 * @return all currently registered rate types
 	 */
-	Collection<ExchangeRateType> getSupportedExchangeRateTypes();
+	Collection<String> getSupportedExchangeRateTypes();
 
 	/**
 	 * Allows to quickly check, if a rate type is supported.
 	 * 
 	 * @param type
-	 *            the {@link ExchangeRateType}
+	 *            the exchange rate type
 	 * @return {@code true}, if the rate is supported, meaning an according
 	 *         {@link ConversionProvider} can be loaded.
 	 * @see #getConversionProvider(ExchangeRateType)
 	 */
-	boolean isSupportedExchangeRateType(ExchangeRateType type);
+	boolean isSupportedExchangeRateType(String type);
 }

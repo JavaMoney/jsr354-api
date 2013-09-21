@@ -27,7 +27,6 @@ import javax.money.CurrencyUnit;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
 
 /**
  * This class implements a {@link ConversionProvider} that delegates calls to a
@@ -37,8 +36,8 @@ import javax.money.convert.ExchangeRateType;
  */
 public class CompoundConversionProvider implements
 		ConversionProvider {
-	/** The {@link ExchangeRateType} this instance is providing. */
-	private final ExchangeRateType exchangeRateType;
+	/** The exchange rate type this instance is providing. */
+	private final String exchangeRateType;
 	/** THe contained providers. */
 	private final List<ConversionProvider> providers = new ArrayList<ConversionProvider>();
 	/**
@@ -51,11 +50,11 @@ public class CompoundConversionProvider implements
 	 * Constructor.
 	 * 
 	 * @param exchangeRateType
-	 *            The {@link ExchangeRateType} this instance is providing.
+	 *            The exchange rate type this instance is providing.
 	 *            Providers added must return the same on
 	 *            {@link ConversionProvider#getExchangeRateType()}.
 	 */
-	public CompoundConversionProvider(ExchangeRateType exchangeRateType) {
+	public CompoundConversionProvider(String exchangeRateType) {
 		if (exchangeRateType == null) {
 			throw new IllegalArgumentException("exchangeRateType required");
 		}
@@ -100,7 +99,7 @@ public class CompoundConversionProvider implements
 	 * @see javax.money.convert.ConversionProvider#getExchangeRateType()
 	 */
 	@Override
-	public ExchangeRateType getExchangeRateType() {
+	public String getExchangeRateType() {
 		return exchangeRateType;
 	}
 

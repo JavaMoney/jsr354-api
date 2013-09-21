@@ -1,21 +1,20 @@
 /*
- *  Copyright (c) 2012, 2013, Werner Keil, Credit Suisse (Anatole Tresch).
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Copyright (c) 2012, 2013, Werner Keil, Credit Suisse (Anatole Tresch).
  * 
- * Contributors:
- *    Anatole Tresch - initial version.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * 
+ * Contributors: Anatole Tresch - initial version.
  */
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -31,7 +30,6 @@ import javax.money.Money;
 import javax.money.MoneyCurrency;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
 import javax.money.convert.MonetaryConversions;
 import javax.money.ext.MonetaryCurrencies;
 import javax.money.ext.Region;
@@ -53,8 +51,7 @@ public class SmokeTest {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(SmokeTest.class);
 
-	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
-			.of("EZB");
+	private static final String RATE_TYPE = "EZB";
 
 	@Test
 	public void testCreateAmounts() {
@@ -103,7 +100,8 @@ public class SmokeTest {
 
 	@Test
 	public void testCurrencyConverter() {
-		MonetaryOperator rounding = MoneyRoundings.getRounding(2, RoundingMode.HALF_UP);
+		MonetaryOperator rounding = MoneyRoundings.getRounding(2,
+				RoundingMode.HALF_UP);
 
 		MonetaryAmount srcCHF = Money.of(MoneyCurrency.of("CHF"), 100.15);
 		MonetaryAmount srcEUR = Money.of(MoneyCurrency.of("EUR"), 100.15);
@@ -151,7 +149,8 @@ public class SmokeTest {
 		ItemFormat<MonetaryAmount> formatter = MonetaryFormats.getItemFormat(
 				MonetaryAmount.class,
 				LocalizationStyle.of(MonetaryAmount.class, "CODE"));
-		System.out.println("Formatted amount: " + formatter.format(amount, Locale.GERMANY));
+		System.out.println("Formatted amount: "
+				+ formatter.format(amount, Locale.GERMANY));
 		assertEquals(1.0d, amount.doubleValue(), 0);
 	}
 
@@ -162,14 +161,16 @@ public class SmokeTest {
 				MoneyCurrency.ISO_NAMESPACE, "INR");
 		assertNotNull(currency);
 	}
-	
+
 	@Test
 	public void testExtendedRegionData() throws InterruptedException {
 		Region region = Regions.getRegion(RegionType.TERRITORY, "DE");
 		assertNotNull("Extended data available for Germany is missing",
 				Regions.getExtendedRegionDataTypes(region));
-		assertTrue("Extended data available for Germany not containing IcuRegion.class",
-				Regions.getExtendedRegionDataTypes(region).contains(IcuRegion.class));
+		assertTrue(
+				"Extended data available for Germany not containing IcuRegion.class",
+				Regions.getExtendedRegionDataTypes(region).contains(
+						IcuRegion.class));
 		assertNotNull("Extended ICU data for Germany null.",
 				Regions.getExtendedRegionData(region, IcuRegion.class));
 	}

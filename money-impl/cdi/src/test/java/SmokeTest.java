@@ -29,7 +29,6 @@ import javax.money.Money;
 import javax.money.MoneyCurrency;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
 import javax.money.convert.MonetaryConversions;
 import javax.money.ext.MonetaryCurrencies;
 import javax.money.format.ItemFormat;
@@ -46,8 +45,7 @@ public class SmokeTest {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SmokeTest.class);
 
-	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
-			.of("EZB");
+	private static final String RATE_TYPE = "EZB";
 
 	@Test
 	public void testCreateAmounts() {

@@ -1,6 +1,6 @@
 package javax.money.convert;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -16,27 +16,26 @@ public class MonetaryConversionTest {
 	@Test
 	public void testGetConversionProvider() {
 		ConversionProvider prov = MonetaryConversions
-				.getConversionProvider(ExchangeRateType.of("test"));
+				.getConversionProvider("test");
 		assertTrue(prov != null);
 		assertEquals(DummyConversionProvider.class, prov.getClass());
 	}
 
 	@Test
 	public void testGetSupportedExchangeRateTypes() {
-		ExchangeRateType.of("test");
-		Collection<ExchangeRateType> types = MonetaryConversions
-			.getSupportedExchangeRateTypes();
+		Collection<String> types = MonetaryConversions
+				.getSupportedExchangeRateTypes();
 		assertNotNull(types);
 		assertTrue(types.size() >= 1);
-		assertTrue(types.contains(ExchangeRateType.of("test")));
+		assertTrue(types.contains("test"));
 	}
 
 	@Test
 	public void testIsSupportedExchangeRateType() {
 		assertTrue(MonetaryConversions
-				.isSupportedExchangeRateType(ExchangeRateType.of("test")));
+				.isSupportedExchangeRateType("test"));
 		assertFalse(MonetaryConversions
-				.isSupportedExchangeRateType(ExchangeRateType.of("test2")));
+				.isSupportedExchangeRateType("test2"));
 	}
 
 }

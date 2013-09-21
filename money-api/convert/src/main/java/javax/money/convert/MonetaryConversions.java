@@ -23,8 +23,8 @@ import javax.money.convert.spi.MonetaryConversionsSingletonSpi;
 
 /**
  * This singleton defines access to the exchange and currency conversion logic
- * of JavaMoney. It allows to evaluate the currently available
- * {@link ExchangeRateType} instances and provides access to the corresponding
+ * of JavaMoney. It allows to evaluate the currently available exchange rate
+ * type instances and provides access to the corresponding
  * {@link ConversionProvider} instances.
  * <p>
  * This class is thread safe.
@@ -90,44 +90,42 @@ public final class MonetaryConversions {
 	}
 
 	/**
-	 * Access an instance of {@link ConversionProvider} for the given
-	 * {@link ExchangeRateType}. Use {@link #getSupportedExchangeRateTypes()} to
-	 * check, which {@link ConversionProvider}s are available.
+	 * Access an instance of {@link ConversionProvider} for the given exchange
+	 * rate type. Use {@link #getSupportedExchangeRateTypes()} to check, which
+	 * {@link ConversionProvider}s are available.
 	 * 
 	 * @param type
 	 *            the exchange rate type that identifies the provider instance
 	 *            to be accessed, not {@code null}.
 	 * 
-	 * @return the {@link ExchangeRateType} if this instance.
+	 * @return the exchange rate type if this instance.
 	 * @throws IllegalArgumentException
 	 *             if no such {@link ConversionProvider} is available.
 	 */
-	public static ConversionProvider getConversionProvider(ExchangeRateType type) {
+	public static ConversionProvider getConversionProvider(String type) {
 		return MONETARY_CONVERSION_SPI.getConversionProvider(type);
 	}
 
 	/**
-	 * Return all supported {@link ExchangeRateType} instances for which
+	 * Return all supported exchange rate type instances for which
 	 * {@link ConversionProvider} instances can be obtained.
 	 * 
-	 * @return all supported {@link ExchangeRateType} instances, never
-	 *         {@code null}.
+	 * @return all supported exchange rate type instances, never {@code null}.
 	 */
-	public static Collection<ExchangeRateType> getSupportedExchangeRateTypes() {
+	public static Collection<String> getSupportedExchangeRateTypes() {
 		return MONETARY_CONVERSION_SPI.getSupportedExchangeRateTypes();
 	}
 
 	/**
 	 * Checks if a {@link ConversionProvider} can be accessed for the given
-	 * {@link ExchangeRateType}.
+	 * exchange rate type.
 	 * 
 	 * @param type
-	 *            the required {@link ExchangeRateType}, not {@code null}.
-	 * @return true, if a {@link ConversionProvider} for this
-	 *         {@link ExchangeRateType} can be obtained from this
-	 *         {@link MonetaryConversions} instance.
+	 *            the required exchange rate type, not {@code null}.
+	 * @return true, if a {@link ConversionProvider} for this exchange rate type
+	 *         can be obtained from this {@link MonetaryConversions} instance.
 	 */
-	public static boolean isSupportedExchangeRateType(ExchangeRateType type) {
+	public static boolean isSupportedExchangeRateType(String type) {
 		return MONETARY_CONVERSION_SPI.isSupportedExchangeRateType(type);
 	}
 
@@ -147,7 +145,7 @@ public final class MonetaryConversions {
 		 * now.
 		 */
 		@Override
-		public ConversionProvider getConversionProvider(ExchangeRateType type) {
+		public ConversionProvider getConversionProvider(String type) {
 			// TODO Check by TCK!
 			// if (type == null) {
 			// throw new
@@ -162,7 +160,7 @@ public final class MonetaryConversions {
 		 * Returns always an empty collection.
 		 */
 		@Override
-		public Collection<ExchangeRateType> getSupportedExchangeRateTypes() {
+		public Collection<String> getSupportedExchangeRateTypes() {
 			// TODO Check by TCK!
 			// Collection<ExchangeRateType> rates = MONETARY_CONVERSION_SPI
 			// .getSupportedExchangeRateTypes();
@@ -178,7 +176,7 @@ public final class MonetaryConversions {
 		 * Returns always false.
 		 */
 		@Override
-		public boolean isSupportedExchangeRateType(ExchangeRateType type) {
+		public boolean isSupportedExchangeRateType(String type) {
 			return false;
 		}
 	}

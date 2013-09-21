@@ -15,7 +15,6 @@ import javax.money.Money;
 import javax.money.MoneyCurrency;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
 import javax.money.convert.MonetaryConversions;
 import javax.money.ext.MonetaryCurrencies;
 import javax.money.ext.Region;
@@ -41,10 +40,8 @@ public class SmokeTests {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SmokeTests.class);
 
-	private static final ExchangeRateType EZB_RATE_TYPE = ExchangeRateType
-			.of("EZB");
-	private static final ExchangeRateType IMF_RATE_TYPE = ExchangeRateType
-			.of("IMF");
+	private static final String EZB_RATE_TYPE = "EZB";
+	private static final String IMF_RATE_TYPE = "IMF";
 
 	@Test
 	public void testCreateAmounts() {

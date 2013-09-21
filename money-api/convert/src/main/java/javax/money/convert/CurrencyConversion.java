@@ -49,11 +49,11 @@ public interface CurrencyConversion extends MonetaryOperator {
 	public Long getTargetTimestamp();
 
 	/**
-	 * Get the {@link ExchangeRateType} of this conversion instance.
+	 * Get the exchange rate type of this conversion instance.
 	 * 
-	 * @return the {@link ExchangeRateType} of this conversion instance, never
+	 * @return the exchange rate type of this conversion instance, never
 	 *         {@code null}.
 	 */
-	public ExchangeRateType getRateType();
+	public String getRateType();
 
 }

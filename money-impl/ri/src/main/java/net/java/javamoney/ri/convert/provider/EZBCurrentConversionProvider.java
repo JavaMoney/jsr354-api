@@ -36,7 +36,6 @@ import javax.money.MoneyCurrency;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -75,9 +74,8 @@ public class EZBCurrentConversionProvider extends AbstractResource
 	private Map<String, ExchangeRate> currentRates = new ConcurrentHashMap<String, ExchangeRate>();
 	/** Parser factory. */
 	private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-	/** The {@link ExchangeRateType} of this provider. */
-	public static final ExchangeRateType RATE_TYPE = ExchangeRateType
-			.of("EZB");
+	/** The exchange rate type of this provider. */
+	public static final String RATE_TYPE = "EZB";
 
 	private CurrencyConverter currencyConverter = new DefaultCurrencyConverter(
 			this);
@@ -119,7 +117,7 @@ public class EZBCurrentConversionProvider extends AbstractResource
 	 * ()
 	 */
 	@Override
-	public ExchangeRateType getExchangeRateType() {
+	public String getExchangeRateType() {
 		return RATE_TYPE;
 	}
 

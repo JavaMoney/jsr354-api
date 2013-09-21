@@ -12,7 +12,6 @@ import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.convert.CurrencyConversionException;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ExchangeRateType;
 
 /**
  * This interface defines access to the exchange conversion logic of JavaMoney.
@@ -42,7 +41,7 @@ public class FixedCurrencyConversion extends AbstractCurrencyConversion {
 	}
 
 	@Override
-	public ExchangeRateType getRateType() {
+	public String getRateType() {
 		return this.rate.getExchangeRateType();
 	}
 

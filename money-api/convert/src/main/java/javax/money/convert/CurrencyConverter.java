@@ -33,9 +33,9 @@ public interface CurrencyConverter {
 	 * Get the exchange rate type that this provider instance is providing data
 	 * for.
 	 * 
-	 * @return the {@link ExchangeRateType} if this instance.
+	 * @return the exchange rate type if this instance.
 	 */
-	public ExchangeRateType getExchangeRateType();
+	public String getExchangeRateType();
 
 	/**
 	 * Method that converts the source amount to an {@link MonetaryAmount} in

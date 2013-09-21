@@ -19,7 +19,7 @@ import javax.money.MonetaryOperator;
  * This interface defines access to the exchange conversion logic of JavaMoney.
  * It is provided by the {@link MonetaryConversions} singleton. Hereby a
  * instance of this class must only provide conversion data for exact one
- * {@link ExchangeRateType}, defined by {@link #getExchangeRateType()}.
+ * exchange rate type, defined by {@link #getExchangeRateType()}.
  * <p>
  * Implementations of this interface are required to be thread save.
  * <p>
@@ -30,13 +30,13 @@ import javax.money.MonetaryOperator;
 public interface ConversionProvider {
 
 	/**
-	 * Access the {@link ExchangeRateType} for this {@link ConversionProvider}.
+	 * Access the exchange rate type for this {@link ConversionProvider}.
 	 * Each instance of {@link ConversionProvider} provides conversion data for
-	 * exact one {@link ExchangeRateType}.
+	 * exact one exchange rate type.
 	 * 
-	 * @return the {@link ExchangeRateType}, never {@code null}.
+	 * @return the exchange rate type, never {@code null}.
 	 */
-	public ExchangeRateType getExchangeRateType();
+	public String getExchangeRateType();
 
 	/**
 	 * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is

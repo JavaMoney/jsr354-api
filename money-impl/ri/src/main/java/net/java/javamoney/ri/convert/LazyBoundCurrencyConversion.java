@@ -1,19 +1,22 @@
 /**
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
- *
- * Specification:  JSR-354  Money and Currency API ("Specification")
- *
- * Copyright (c) 2012-2013, Credit Suisse
- * All rights reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
+ * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
+ * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
+ * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
+ * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
+ * BUTTON AT THE BOTTOM OF THIS PAGE.
+ * 
+ * Specification: JSR-354 Money and Currency API ("Specification")
+ * 
+ * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package net.java.javamoney.ri.convert;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.convert.ConversionProvider;
 import javax.money.convert.CurrencyConversion;
 import javax.money.convert.ExchangeRate;
-import javax.money.convert.ConversionProvider;
-import javax.money.convert.ExchangeRateType;
 
 /**
  * This class defines a {@link CurrencyConversion} that is converting to a
@@ -41,7 +44,7 @@ public class LazyBoundCurrencyConversion extends AbstractCurrencyConversion
 		}
 		this.termCurrency = termCurrency;
 	}
-	
+
 	public LazyBoundCurrencyConversion(CurrencyUnit termCurrency,
 			ConversionProvider rateProvider, long targetTimestamp) {
 		this(termCurrency, rateProvider);
@@ -67,12 +70,11 @@ public class LazyBoundCurrencyConversion extends AbstractCurrencyConversion
 	}
 
 	/**
-	 * Get the {@link ExchangeRateType} of this conversion instance.
+	 * Get the exchange rate type of this conversion instance.
 	 * 
-	 * @return the {@link ExchangeRateType} of this conversion instance, never
-	 *         null.
+	 * @return the exchange rate type of this conversion instance, never null.
 	 */
-	public ExchangeRateType getRateType() {
+	public String getRateType() {
 		return this.rateProvider.getExchangeRateType();
 	}
 
@@ -80,7 +82,7 @@ public class LazyBoundCurrencyConversion extends AbstractCurrencyConversion
 	 * Get the exchange rate type that this provider instance is providing data
 	 * for.
 	 * 
-	 * @return the {@link ExchangeRateType} if this instance.
+	 * @return the exchange rate type if this instance.
 	 */
 	protected ExchangeRate getExchangeRate(MonetaryAmount amount) {
 		return this.rateProvider.getExchangeRate(amount.getCurrency(),

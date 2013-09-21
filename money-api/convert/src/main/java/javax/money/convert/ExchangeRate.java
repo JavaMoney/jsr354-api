@@ -91,9 +91,9 @@ public final class ExchangeRate implements Serializable,
 	 */
 	private final BigDecimal factor;
 	/**
-	 * The {@link ExchangeRateType}.
+	 * The xxchangeRateType
 	 */
-	private final ExchangeRateType exchangeRateType;
+	private final String exchangeRateType;
 	/**
 	 * The timestamp from when this instance is valid, or {@code null}.
 	 */
@@ -130,7 +130,7 @@ public final class ExchangeRate implements Serializable,
 	}
 
 	/**
-	 * Creates a new instance with a custom chain of {@link ExchangeRateType},
+	 * Creates a new instance with a custom chain of exchange rate type,
 	 * e.g. or creating <i>derived</i> rates.
 	 * 
 	 * @param conversionType
@@ -150,7 +150,7 @@ public final class ExchangeRate implements Serializable,
 	 *            the UTC timestamp until when this rate is valid from, or
 	 *            {@code null}
 	 */
-	private ExchangeRate(ExchangeRateType conversionType, CurrencyUnit base,
+	private ExchangeRate(String conversionType, CurrencyUnit base,
 			CurrencyUnit term, Number factor, String provider, Long validFrom,
 			Long validTo, ExchangeRate... chain) {
 		if (base == null) {
@@ -202,7 +202,7 @@ public final class ExchangeRate implements Serializable,
 	 * 
 	 * @return the type of this rate, never null.
 	 */
-	public final ExchangeRateType getExchangeRateType() {
+	public final String getExchangeRateType() {
 		return this.exchangeRateType;
 	}
 
@@ -336,8 +336,8 @@ public final class ExchangeRate implements Serializable,
 		if (o == null) {
 			return -1;
 		}
-		int compare = ((Comparable<ExchangeRateType>) this
-				.getExchangeRateType()).compareTo(o.getExchangeRateType());
+		int compare =  this
+				.getExchangeRateType().compareTo(o.getExchangeRateType());
 		if (compare == 0) {
 			if (provider != null) {
 				compare = this.provider.compareTo(o.getProvider());
@@ -371,7 +371,7 @@ public final class ExchangeRate implements Serializable,
 	 */
 	@Override
 	public String toString() {
-		return "ExchangeRate [type=" + exchangeRateType.getId() + ", base="
+		return "ExchangeRate [type=" + exchangeRateType + ", base="
 				+ base + ", term=" + term + ", factor=" + factor
 				+ ", validFrom=" + validFrom + ", validTo=" + validTo
 				+ ", provider=" + provider + "]";
@@ -489,7 +489,7 @@ public final class ExchangeRate implements Serializable,
 		/**
 		 * The rate type.
 		 */
-		private ExchangeRateType exchangeRateType;
+		private String exchangeRateType;
 		/**
 		 * The base currency.
 		 */
@@ -520,26 +520,14 @@ public final class ExchangeRate implements Serializable,
 		private ExchangeRate[] rateChain;
 
 		/**
-		 * Sets the {@link ExchangeRateType}
-		 * 
-		 * @param exchangeRateType
-		 *            to be applied
-		 * @return the builder instance
-		 */
-		public Builder withExchangeRateType(ExchangeRateType exchangeRateType) {
-			this.exchangeRateType = exchangeRateType;
-			return this;
-		}
-
-		/**
-		 * Sets the {@link ExchangeRateType}
+		 * Sets the exchange rate type
 		 * 
 		 * @param exchangeRateType
 		 *            to be applied
 		 * @return the builder instance
 		 */
 		public Builder withExchangeRateType(String exchangeRateType) {
-			this.exchangeRateType = ExchangeRateType.of(exchangeRateType);
+			this.exchangeRateType = exchangeRateType;
 			return this;
 		}
 

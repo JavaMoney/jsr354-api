@@ -149,7 +149,7 @@ public class CDIMonetaryCurrenciesSingletonSpi implements
 	 *            the target namespace, never {@code null}.
 	 * @return The mapped {@link CurrencyUnit}, or null.
 	 */
-	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace) {
+	public CurrencyUnit map(CurrencyUnit currencyUnit, CurrencyNamespace targetNamespace) {
 		return currencyUnitMapper.map(currencyUnit, targetNamespace, null);
 	}
 
@@ -163,57 +163,13 @@ public class CDIMonetaryCurrenciesSingletonSpi implements
 	 *            the target namespace, never {@code null}.
 	 * @return The mapped {@link CurrencyUnit}, or null.
 	 */
-	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace,
+	public CurrencyUnit map(CurrencyUnit currencyUnit, CurrencyNamespace targetNamespace,
 			long timestamp) {
 		return currencyUnitMapper.map(currencyUnit, targetNamespace, timestamp);
 	}
 
 	public Set<String> getCurrencyValidityProviders() {
 		return Collections.emptySet();
-	}
-
-	/**
-	 * This method maps the given {@link CurrencyUnit} instances to another
-	 * {@link CurrencyUnit} instances with the given target namespace.
-	 * 
-	 * @param units
-	 *            The source units, never {@code null}.
-	 * @param targetNamespace
-	 *            the target namespace, never {@code null}.
-	 * @return The mapped {@link CurrencyUnit} instances (same array length). If
-	 *         a unit could not be mapped, the according array element will be
-	 *         {@code null}.
-	 */
-	public List<CurrencyUnit> mapAll(String targetNamespace,
-			CurrencyUnit... units) {
-		List<CurrencyUnit> resultList = new ArrayList<CurrencyUnit>();
-		for (CurrencyUnit currencyUnit : units) {
-			CurrencyUnit result = currencyUnitMapper.map(currencyUnit,
-					targetNamespace, null);
-			if (result == null) {
-				throw new IllegalArgumentException("Cannot map curreny "
-						+ currencyUnit + " to namespace "
-						+ targetNamespace);
-			}
-			resultList.add(result);
-		}
-		return resultList;
-	}
-
-	public List<CurrencyUnit> mapAll(String targetNamespace, long timestamp,
-			CurrencyUnit... units) {
-		List<CurrencyUnit> resultList = new ArrayList<CurrencyUnit>();
-		for (CurrencyUnit currencyUnit : units) {
-			CurrencyUnit result = currencyUnitMapper.map(currencyUnit,
-					targetNamespace, timestamp);
-			if (result == null) {
-				throw new IllegalArgumentException("Cannot map curreny "
-						+ currencyUnit + " to namespace "
-						+ targetNamespace);
-			}
-			resultList.add(result);
-		}
-		return resultList;
 	}
 
 	@Override

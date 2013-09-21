@@ -126,10 +126,11 @@ public interface MonetaryCurrenciesSingletonSpi {
 	 * @param currencyUnit
 	 *            The source {@link CurrencyUnit}, never {@code null}.
 	 * @param targetNamespace
-	 *            the target namespace, never {@code null}.
+	 *            the target {@link CurrencyNamespace}, never {@code null}.
 	 * @return The mapped {@link CurrencyUnit}, or {@code null}.
 	 */
-	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace);
+	public CurrencyUnit map(CurrencyUnit currencyUnit,
+			CurrencyNamespace targetNamespace);
 
 	/**
 	 * This method maps the given {@link CurrencyUnit} to another
@@ -138,12 +139,13 @@ public interface MonetaryCurrenciesSingletonSpi {
 	 * @param currencyUnit
 	 *            The source unit, never {@code null}.
 	 * @param targetNamespace
-	 *            the target namespace, never {@code null}.
+	 *            the target {@link CurrencyNamespace}, never {@code null}.
 	 * @param timestamp
 	 *            The target UTC timestamp.
 	 * @return The mapped {@link CurrencyUnit}, or {@code null}.
 	 */
-	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace,
+	public CurrencyUnit map(CurrencyUnit currencyUnit,
+			CurrencyNamespace targetNamespace,
 			long timestamp);
 
 	/**

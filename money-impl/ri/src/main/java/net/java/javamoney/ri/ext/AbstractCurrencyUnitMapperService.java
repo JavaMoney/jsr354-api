@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.Set;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.ext.spi.CurrencyUnitMapperSpi;
 import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
@@ -54,7 +55,7 @@ public abstract class AbstractCurrencyUnitMapperService {
 		}
 	}
 
-	public CurrencyUnit map(String targetNamespace, CurrencyUnit unit) {
+	public CurrencyUnit map(CurrencyNamespace targetNamespace, CurrencyUnit unit) {
 		for (CurrencyUnitMapperSpi prov : mappers) {
 			CurrencyUnit mappedUnit = prov.map(unit, targetNamespace, null);
 			if (mappedUnit != null) {
@@ -64,16 +65,8 @@ public abstract class AbstractCurrencyUnitMapperService {
 		return null;
 	}
 
-	public List<CurrencyUnit> mapAll(String targetNamespace,
-			CurrencyUnit... units) {
-		List<CurrencyUnit> result = new ArrayList<CurrencyUnit>();
-		for (CurrencyUnit unit : units) {
-			result.add(map(targetNamespace, unit));
-		}
-		return result;
-	}
 
-	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace, Long timestamp) {
+	public CurrencyUnit map(CurrencyUnit currencyUnit, CurrencyNamespace targetNamespace, Long timestamp) {
 		if (timestamp == null) {
 			return map(targetNamespace, currencyUnit);
 		}

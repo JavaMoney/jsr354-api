@@ -228,7 +228,7 @@ public final class MonetaryCurrencies {
 	 * @return The mapped {@link CurrencyUnit}, or {@code null}.
 	 */
 	public static CurrencyUnit map(CurrencyUnit currencyUnit,
-			String targetNamespace) {
+			CurrencyNamespace targetNamespace) {
 		return CURRENCIES_SPI.map(currencyUnit, targetNamespace);
 	}
 
@@ -245,7 +245,7 @@ public final class MonetaryCurrencies {
 	 * @return The mapped {@link CurrencyUnit}, or {@code null}.
 	 */
 	public static CurrencyUnit map(CurrencyUnit currencyUnit,
-			String targetNamespace, long timestamp) {
+			CurrencyNamespace targetNamespace, long timestamp) {
 		return CURRENCIES_SPI.map(currencyUnit, targetNamespace, timestamp);
 	}
 
@@ -386,7 +386,7 @@ public final class MonetaryCurrencies {
 		 */
 		@Override
 		public CurrencyUnit map(CurrencyUnit currencyUnit,
-				String targetNamespace
+				CurrencyNamespace targetNamespace
 				) {
 			return null;
 		}
@@ -403,7 +403,7 @@ public final class MonetaryCurrencies {
 		 */
 		@Override
 		public CurrencyUnit map(CurrencyUnit currencyUnit,
-				String targetNamespace, long timestamp
+				CurrencyNamespace targetNamespace, long timestamp
 				) {
 			return null;
 		}

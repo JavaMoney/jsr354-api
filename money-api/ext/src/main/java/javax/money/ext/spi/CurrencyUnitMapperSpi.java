@@ -12,6 +12,7 @@ package javax.money.ext.spi;
 
 import java.util.ServiceLoader;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 
 /**
@@ -38,11 +39,11 @@ public interface CurrencyUnitMapperSpi {
 	 * @param currencyUnit
 	 *            The source unit, never {@code null}.
 	 * @param targetNamespace
-	 *            the target namespace, never {@code null}.
+	 *            the target {@link CurrencyNamespace}, never {@code null}.
 	 * @param timestamp
 	 *            the target timestamp, may be {@code null}.
 	 * @return The mapped {@link CurrencyUnit}, or {@code null}.
 	 */
-	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace,
+	public CurrencyUnit map(CurrencyUnit currencyUnit, CurrencyNamespace targetNamespace,
 			Long timestamp);
 }

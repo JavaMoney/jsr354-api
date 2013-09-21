@@ -94,12 +94,12 @@ public class TestMonetaryCurrenciesSingletonSpi implements
 	}
 
 	@Override
-	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace) {
+	public CurrencyUnit map(CurrencyUnit currencyUnit, CurrencyNamespace targetNamespace) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public CurrencyUnit map(CurrencyUnit currencyUnit, String targetNamespace,
+	public CurrencyUnit map(CurrencyUnit currencyUnit, CurrencyNamespace targetNamespace,
 			long timestamp) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

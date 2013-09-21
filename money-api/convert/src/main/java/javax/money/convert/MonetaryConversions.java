@@ -90,42 +90,42 @@ public final class MonetaryConversions {
 	}
 
 	/**
-	 * Access an instance of {@link ConversionProvider} for the given exchange
-	 * rate type. Use {@link #getSupportedExchangeRateTypes()} to check, which
-	 * {@link ConversionProvider}s are available.
+	 * Access an instance of {@link ConversionProvider} for the given
+	 * {@link ExchangeRateType}. Use {@link #getSupportedExchangeRateTypes()} to
+	 * check, which {@link ConversionProvider}s are available.
 	 * 
 	 * @param type
-	 *            the exchange rate type that identifies the provider instance
-	 *            to be accessed, not {@code null}.
+	 *            the {@link ExchangeRateType} that identifies the provider
+	 *            instance to be accessed, not {@code null}.
 	 * 
 	 * @return the exchange rate type if this instance.
 	 * @throws IllegalArgumentException
 	 *             if no such {@link ConversionProvider} is available.
 	 */
-	public static ConversionProvider getConversionProvider(String type) {
+	public static ConversionProvider getConversionProvider(ExchangeRateType type) {
 		return MONETARY_CONVERSION_SPI.getConversionProvider(type);
 	}
 
 	/**
-	 * Return all supported exchange rate type instances for which
+	 * Return all supported {@link ExchangeRateType} instances for which
 	 * {@link ConversionProvider} instances can be obtained.
 	 * 
 	 * @return all supported exchange rate type instances, never {@code null}.
 	 */
-	public static Collection<String> getSupportedExchangeRateTypes() {
+	public static Collection<ExchangeRateType> getSupportedExchangeRateTypes() {
 		return MONETARY_CONVERSION_SPI.getSupportedExchangeRateTypes();
 	}
 
 	/**
 	 * Checks if a {@link ConversionProvider} can be accessed for the given
-	 * exchange rate type.
+	 * {@link ExchangeRateType}.
 	 * 
 	 * @param type
-	 *            the required exchange rate type, not {@code null}.
+	 *            the required {@link ExchangeRateType}, not {@code null}.
 	 * @return true, if a {@link ConversionProvider} for this exchange rate type
 	 *         can be obtained from this {@link MonetaryConversions} instance.
 	 */
-	public static boolean isSupportedExchangeRateType(String type) {
+	public static boolean isSupportedExchangeRateType(ExchangeRateType type) {
 		return MONETARY_CONVERSION_SPI.isSupportedExchangeRateType(type);
 	}
 
@@ -145,7 +145,7 @@ public final class MonetaryConversions {
 		 * now.
 		 */
 		@Override
-		public ConversionProvider getConversionProvider(String type) {
+		public ConversionProvider getConversionProvider(ExchangeRateType type) {
 			// TODO Check by TCK!
 			// if (type == null) {
 			// throw new
@@ -160,7 +160,7 @@ public final class MonetaryConversions {
 		 * Returns always an empty collection.
 		 */
 		@Override
-		public Collection<String> getSupportedExchangeRateTypes() {
+		public Collection<ExchangeRateType> getSupportedExchangeRateTypes() {
 			// TODO Check by TCK!
 			// Collection<ExchangeRateType> rates = MONETARY_CONVERSION_SPI
 			// .getSupportedExchangeRateTypes();
@@ -176,7 +176,7 @@ public final class MonetaryConversions {
 		 * Returns always false.
 		 */
 		@Override
-		public boolean isSupportedExchangeRateType(String type) {
+		public boolean isSupportedExchangeRateType(ExchangeRateType type) {
 			return false;
 		}
 	}

@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MoneyCurrency;
@@ -86,7 +87,7 @@ public class IsoAmountFormatter implements ItemFormat<MonetaryAmount> {
 		CurrencyUnit currencyUnit = item.getCurrency();
 		StringBuilder result = new StringBuilder();
 
-		if (MoneyCurrency.ISO_NAMESPACE.equals(currencyUnit.getNamespace())) {
+		if (CurrencyNamespace.ISO_NAMESPACE.equals(currencyUnit.getNamespace())) {
 			String currencyString = "";
 			ItemFormat<CurrencyUnit> cf = MonetaryFormats.getItemFormat(
 					CurrencyUnit.class, currencyStyle);

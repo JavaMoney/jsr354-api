@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Singleton;
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 import javax.money.ext.spi.CurrencyUnitProviderSpi;
@@ -47,8 +48,8 @@ public class IsoCurrencyJDKProvider implements CurrencyUnitProviderSpi {
 	}
     }
 
-    public String getNamespace() {
-    	return MoneyCurrency.ISO_NAMESPACE;
+    public CurrencyNamespace getNamespace() {
+    	return CurrencyNamespace.ISO_NAMESPACE;
     }
 
     public CurrencyUnit get(String code) {

@@ -30,13 +30,13 @@ import javax.money.MonetaryOperator;
 public interface ConversionProvider {
 
 	/**
-	 * Access the exchange rate type for this {@link ConversionProvider}.
+	 * Access the {@link ExchangeRateType} for this {@link ConversionProvider}.
 	 * Each instance of {@link ConversionProvider} provides conversion data for
 	 * exact one exchange rate type.
 	 * 
 	 * @return the exchange rate type, never {@code null}.
 	 */
-	public String getExchangeRateType();
+	public ExchangeRateType getExchangeRateType();
 
 	/**
 	 * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is

@@ -30,12 +30,12 @@ import javax.money.MonetaryAmount;
 public interface CurrencyConverter {
 
 	/**
-	 * Get the exchange rate type that this provider instance is providing data
-	 * for.
+	 * Get the {@link ExchangeRateType} that this provider instance is providing
+	 * data for.
 	 * 
 	 * @return the exchange rate type if this instance.
 	 */
-	public String getExchangeRateType();
+	public ExchangeRateType getExchangeRateType();
 
 	/**
 	 * Method that converts the source amount to an {@link MonetaryAmount} in

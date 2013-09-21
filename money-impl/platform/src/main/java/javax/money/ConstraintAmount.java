@@ -17,7 +17,7 @@ package javax.money;
 
 /**
  * This class decorates an arbitrary {@link MonetaryAmount} instance and ensure
- * no negative values can be created using this instance.
+ * the given {@link Predicate} is always {@code true}.
  * <p>
  * As required by the {@link MonetaryAmount} interface, this class is
  * <ul>
@@ -27,10 +27,14 @@ package javax.money;
  * <li>serializable</li>
  * </ul>
  * 
+ * As a consequence all this attributes must also be true for the
+ * {@link Predicate} used.
+ * 
  * @author Anatole Tresch
- * @author Werner Keil
  */
-public final class UnsignedMonetaryAmount implements MonetaryAmount {
+final class ConstraintAmount implements MonetaryAmount {
+	/** The amount's predicate. */
+	private Predicate<MonetaryAmount> predicate;
 	/** The underlying amount. */
 	private final MonetaryAmount amount;
 
@@ -42,25 +46,32 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @throws IllegalArgumentException
 	 *             if the amount passed is negative.
 	 */
-	private UnsignedMonetaryAmount(MonetaryAmount amount) {
+	ConstraintAmount(MonetaryAmount amount,
+			Predicate<MonetaryAmount> predicate) {
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount required.");
 		}
-		if (amount.isNegative()) {
-			throw new IllegalArgumentException("Amount must be >= 0.");
+		if (predicate == null) {
+			throw new IllegalArgumentException("predicate required.");
+		}
+		if (!predicate.apply(amount)) {
+			throw new IllegalArgumentException("Constraint failed: "
+					+ predicate + " with " + amount);
 		}
 		this.amount = amount;
+		this.predicate = predicate;
 	}
 
 	/**
-	 * Access an {@link UnsignedMonetaryAmount} based on the given
+	 * Access an {@link ConstraintAmount} based on the given
 	 * {@link MonetaryAmount}.
 	 * 
 	 * @param amount
 	 * @return
 	 */
-	public UnsignedMonetaryAmount of(MonetaryAmount amount) {
-		return new UnsignedMonetaryAmount(amount);
+	private ConstraintAmount of(MonetaryAmount amount,
+			Predicate<MonetaryAmount> predicate) {
+		return new ConstraintAmount(amount, predicate);
 	}
 
 	/*
@@ -79,8 +90,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#abs()
 	 */
 	@Override
-	public UnsignedMonetaryAmount abs() {
-		return of(this.amount.abs());
+	public ConstraintAmount abs() {
+		return of(this.amount.abs(), predicate);
 	}
 
 	/*
@@ -89,8 +100,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#add(javax.money.MonetaryAmount)
 	 */
 	@Override
-	public UnsignedMonetaryAmount add(MonetaryAmount augend) {
-		return of(this.amount.add(augend));
+	public ConstraintAmount add(MonetaryAmount augend) {
+		return of(this.amount.add(augend), predicate);
 	}
 
 	/*
@@ -99,8 +110,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#divide(java.lang.Number)
 	 */
 	@Override
-	public UnsignedMonetaryAmount divide(Number divisor) {
-		return of(this.amount.divide(divisor));
+	public ConstraintAmount divide(Number divisor) {
+		return of(this.amount.divide(divisor), predicate);
 	}
 
 	/*
@@ -109,9 +120,10 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#divideAndRemainder(java.lang.Number)
 	 */
 	@Override
-	public UnsignedMonetaryAmount[] divideAndRemainder(Number divisor) {
+	public ConstraintAmount[] divideAndRemainder(Number divisor) {
 		MonetaryAmount[] res = this.amount.divideAndRemainder(divisor);
-		return new UnsignedMonetaryAmount[] { of(res[0]), of(res[1]) };
+		return new ConstraintAmount[] { of(res[0], predicate),
+				of(res[1], predicate) };
 	}
 
 	/*
@@ -120,8 +132,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#divideToIntegralValue(java.lang.Number)
 	 */
 	@Override
-	public UnsignedMonetaryAmount divideToIntegralValue(Number divisor) {
-		return of(this.amount.divideToIntegralValue(divisor));
+	public ConstraintAmount divideToIntegralValue(Number divisor) {
+		return of(this.amount.divideToIntegralValue(divisor), predicate);
 	}
 
 	/*
@@ -130,8 +142,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#multiply(java.lang.Number)
 	 */
 	@Override
-	public UnsignedMonetaryAmount multiply(Number multiplicand) {
-		return of(this.amount.multiply(multiplicand));
+	public ConstraintAmount multiply(Number multiplicand) {
+		return of(this.amount.multiply(multiplicand), predicate);
 	}
 
 	/*
@@ -140,8 +152,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#negate()
 	 */
 	@Override
-	public UnsignedMonetaryAmount negate() {
-		return of(this.amount.negate());
+	public ConstraintAmount negate() {
+		return of(this.amount.negate(), predicate);
 	}
 
 	/*
@@ -150,8 +162,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#plus()
 	 */
 	@Override
-	public UnsignedMonetaryAmount plus() {
-		return of(this.amount.plus());
+	public ConstraintAmount plus() {
+		return of(this.amount.plus(), predicate);
 	}
 
 	/*
@@ -160,8 +172,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#subtract(javax.money.MonetaryAmount)
 	 */
 	@Override
-	public UnsignedMonetaryAmount subtract(MonetaryAmount subtrahend) {
-		return of(this.amount.subtract(subtrahend));
+	public ConstraintAmount subtract(MonetaryAmount subtrahend) {
+		return of(this.amount.subtract(subtrahend), predicate);
 	}
 
 	/*
@@ -170,8 +182,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#pow(int)
 	 */
 	@Override
-	public UnsignedMonetaryAmount pow(int n) {
-		return of(this.amount.pow(n));
+	public ConstraintAmount pow(int n) {
+		return of(this.amount.pow(n), predicate);
 	}
 
 	/*
@@ -180,8 +192,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#ulp()
 	 */
 	@Override
-	public UnsignedMonetaryAmount ulp() {
-		return of(this.amount.ulp());
+	public ConstraintAmount ulp() {
+		return of(this.amount.ulp(), predicate);
 	}
 
 	/*
@@ -190,8 +202,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#remainder(java.lang.Number)
 	 */
 	@Override
-	public UnsignedMonetaryAmount remainder(Number divisor) {
-		return of(this.amount.remainder(divisor));
+	public ConstraintAmount remainder(Number divisor) {
+		return of(this.amount.remainder(divisor), predicate);
 	}
 
 	/*
@@ -200,8 +212,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#scaleByPowerOfTen(int)
 	 */
 	@Override
-	public UnsignedMonetaryAmount scaleByPowerOfTen(int n) {
-		return of(this.amount.scaleByPowerOfTen(n));
+	public ConstraintAmount scaleByPowerOfTen(int n) {
+		return of(this.amount.scaleByPowerOfTen(n), predicate);
 	}
 
 	/*
@@ -260,8 +272,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#from(java.lang.Number)
 	 */
 	@Override
-	public UnsignedMonetaryAmount from(Number amount) {
-		return of(this.amount.from(amount));
+	public ConstraintAmount from(Number amount) {
+		return of(this.amount.from(amount), predicate);
 	}
 
 	/*
@@ -271,8 +283,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * java.lang.Number)
 	 */
 	@Override
-	public UnsignedMonetaryAmount from(CurrencyUnit currency, Number amount) {
-		return of(this.amount.from(currency, amount));
+	public ConstraintAmount from(CurrencyUnit currency, Number amount) {
+		return of(this.amount.from(currency, amount), predicate);
 	}
 
 	/*
@@ -281,8 +293,8 @@ public final class UnsignedMonetaryAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#with(javax.money.MonetaryOperator)
 	 */
 	@Override
-	public UnsignedMonetaryAmount with(MonetaryOperator adjuster) {
-		return of(this.amount.with(adjuster));
+	public ConstraintAmount with(MonetaryOperator adjuster) {
+		return of(this.amount.with(adjuster), predicate);
 	}
 
 	/*

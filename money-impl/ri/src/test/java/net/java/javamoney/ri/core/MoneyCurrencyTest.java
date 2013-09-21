@@ -1,32 +1,30 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- * Contributors:
- *    Anatole Tresch - initial implementation
- *    Wernner Keil - extensions and adaptions.
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * Contributors: Anatole Tresch - initial implementation Wernner Keil -
+ * extensions and adaptions.
  */
 package net.java.javamoney.ri.core;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Currency;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 
@@ -78,7 +76,7 @@ public class MoneyCurrencyTest {
 	public void testGetInstanceStringString() {
 		MoneyCurrency cur = MoneyCurrency.of("USD");
 		MoneyCurrency cur2 = MoneyCurrency
-				.of(MoneyCurrency.ISO_NAMESPACE, "USD");
+				.of(CurrencyNamespace.ISO_NAMESPACE, "USD");
 		assertNotNull(cur2);
 		assertTrue(cur == cur2);
 		Currency jdkCurrency = Currency.getInstance("USD");
@@ -95,7 +93,7 @@ public class MoneyCurrencyTest {
 	@Test
 	public void testGetNamespace() {
 		CurrencyUnit cur = MoneyCurrency.of("USD");
-		assertEquals(MoneyCurrency.ISO_NAMESPACE, cur.getNamespace());
+		assertEquals(CurrencyNamespace.ISO_NAMESPACE, cur.getNamespace());
 	}
 
 	/**
@@ -174,7 +172,7 @@ public class MoneyCurrencyTest {
 		assertNotNull(toString);
 		assertTrue("Does not contain currency code.", toString.contains("USD"));
 		assertTrue("Does contain ISO namespace!",
-				toString.contains(MoneyCurrency.ISO_NAMESPACE));
+				toString.contains(CurrencyNamespace.ISO_NAMESPACE.getId()));
 		MoneyCurrency.Builder builder = new MoneyCurrency.Builder();
 		builder.withNamespace("Test");
 		builder.withCurrencyCode("TEST");

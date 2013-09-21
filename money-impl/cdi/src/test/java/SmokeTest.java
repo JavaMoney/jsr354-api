@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import java.math.RoundingMode;
 import java.util.Locale;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
@@ -29,6 +30,7 @@ import javax.money.Money;
 import javax.money.MoneyCurrency;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 import javax.money.convert.MonetaryConversions;
 import javax.money.ext.MonetaryCurrencies;
 import javax.money.format.ItemFormat;
@@ -45,7 +47,8 @@ public class SmokeTest {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SmokeTest.class);
 
-	private static final String RATE_TYPE = "EZB";
+	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
+			.of("EZB");
 
 	@Test
 	public void testCreateAmounts() {
@@ -55,7 +58,7 @@ public class SmokeTest {
 		MonetaryAmount amount2 = Money.of(currency, 1.0d);
 		MonetaryAmount amount3 = amount1.add(amount2);
 		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
-		assertEquals("ISO-4217", currency.getNamespace());
+		assertEquals("ISO-4217", currency.getNamespace().getId());
 		assertEquals(1.0d, amount1.doubleValue(), 0);
 		assertEquals(1.0d, amount2.doubleValue(), 0);
 		assertEquals(2.0d, amount3.doubleValue(), 0);
@@ -153,7 +156,7 @@ public class SmokeTest {
 	public void testCurrencyAccess() {
 		// Creating one
 		CurrencyUnit currency = MonetaryCurrencies.get(
-				MoneyCurrency.ISO_NAMESPACE, "INR");
+				CurrencyNamespace.ISO_NAMESPACE, "INR");
 		assertNotNull(currency);
 	}
 }

@@ -1,20 +1,19 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- * Contributors:
- *    Anatole Tresch - initial implementation
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * Contributors: Anatole Tresch - initial implementation
  */
 package net.java.javamoney.ri.format.tokens;
 
@@ -62,12 +61,13 @@ public class CurrencyToken extends
 		return this.displayType;
 	}
 
-	protected String getToken(CurrencyUnit unit, Locale locale, javax.money.format.LocalizationStyle style) {
+	protected String getToken(CurrencyUnit unit, Locale locale,
+			javax.money.format.LocalizationStyle style) {
 		switch (displayType) {
 		case CODE:
 			return unit.getCurrencyCode();
 		case NAMESPACE:
-			return unit.getNamespace();
+			return unit.getNamespace().getId();
 		case NUMERIC_CODE:
 			return String.valueOf(unit.getNumericCode());
 		case NAME:
@@ -84,12 +84,13 @@ public class CurrencyToken extends
 			return cf2.format(unit, locale);
 		case FULLCODE:
 		default:
-			return unit.getNamespace() + ':' + unit.getCurrencyCode();
+			return unit.getNamespace().getId() + ':' + unit.getCurrencyCode();
 		}
 	}
 
 	@Override
-	public void parse(ParseContext context, Locale locale, LocalizationStyle style)
+	public void parse(ParseContext context, Locale locale,
+			LocalizationStyle style)
 			throws ItemParseException {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}

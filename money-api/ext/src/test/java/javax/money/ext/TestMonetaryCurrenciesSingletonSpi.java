@@ -12,6 +12,7 @@ package javax.money.ext;
 
 import java.util.Collection;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.TestCurrency;
 import javax.money.UnknownCurrencyException;
@@ -27,22 +28,22 @@ public class TestMonetaryCurrenciesSingletonSpi implements
 		MonetaryCurrenciesSingletonSpi {
 
 	@Override
-	public String getDefaultNamespace() {
-		return TestCurrency.ISO_NAMESPACE;
+	public CurrencyNamespace getDefaultNamespace() {
+		return CurrencyNamespace.ISO_NAMESPACE;
 	}
 
 	@Override
 	public boolean isAvailable(String namespace, String currencyCode) {
-		return TestCurrency.of(namespace, currencyCode) != null;
+		return TestCurrency.of(CurrencyNamespace.of(namespace), currencyCode) != null;
 	}
 
 	@Override
-	public CurrencyUnit get(String namespace, String currencyCode) {
+	public CurrencyUnit get(CurrencyNamespace namespace, String currencyCode) {
 		CurrencyUnit unit = TestCurrency.of(namespace, currencyCode);
 		if (unit != null) {
 			return unit;
 		}
-		throw new UnknownCurrencyException(namespace, currencyCode);
+		throw new UnknownCurrencyException(namespace.getId(), currencyCode);
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class TestMonetaryCurrenciesSingletonSpi implements
 	}
 
 	@Override
-	public Collection<String> getNamespaces() {
+	public Collection<CurrencyNamespace> getNamespaces() {
 		throw new UnsupportedOperationException("Not supported yet."); // To
 																		// change
 																		// body
@@ -104,7 +105,7 @@ public class TestMonetaryCurrenciesSingletonSpi implements
 	}
 
 	@Override
-	public Collection<CurrencyUnit> getAll(String namespace) {
+	public Collection<CurrencyUnit> getAll(CurrencyNamespace namespace) {
 		return TestCurrency.allFromNamespace(namespace);
 	}
 

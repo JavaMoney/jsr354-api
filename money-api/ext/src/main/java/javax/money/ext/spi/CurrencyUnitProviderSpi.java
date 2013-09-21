@@ -13,6 +13,7 @@ package javax.money.ext.spi;
 import java.util.Collection;
 import java.util.ServiceLoader;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.UnknownCurrencyException;
 
@@ -42,7 +43,7 @@ public interface CurrencyUnitProviderSpi {
 	 * 
 	 * @return the namespace of this provider, never {@code null}.
 	 */
-	public String getNamespace();
+	public CurrencyNamespace getNamespace();
 
 	/**
 	 * Access all {@link CurrencyUnit} instances.

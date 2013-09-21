@@ -17,6 +17,7 @@ import javax.money.MonetaryAmount;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.CurrencyConversion;
 import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 
 /**
  * This class defines a {@link CurrencyConversion} that is converting to a
@@ -70,11 +71,11 @@ public class LazyBoundCurrencyConversion extends AbstractCurrencyConversion
 	}
 
 	/**
-	 * Get the exchange rate type of this conversion instance.
+	 * Get the {@link ExchangeRateType} of this conversion instance.
 	 * 
 	 * @return the exchange rate type of this conversion instance, never null.
 	 */
-	public String getRateType() {
+	public ExchangeRateType getRateType() {
 		return this.rateProvider.getExchangeRateType();
 	}
 

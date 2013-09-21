@@ -917,7 +917,9 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 			this.mathContext = DEFAULT_MATH_CONTEXT;
 		}
 		if (this.currency == null) {
-			this.currency = MoneyCurrency.of("N/A", "N/A");
+			this.currency = MoneyCurrency.of(
+					CurrencyNamespace.ISO_NAMESPACE,
+					"XXX"); // no currency
 		}
 	}
 

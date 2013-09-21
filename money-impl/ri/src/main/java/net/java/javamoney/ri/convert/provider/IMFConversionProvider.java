@@ -36,11 +36,13 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Singleton;
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 
 import net.java.javamoney.ri.loader.AbstractResource;
 
@@ -59,13 +61,15 @@ import org.slf4j.LoggerFactory;
 public class IMFConversionProvider extends AbstractResource
 		implements ConversionProvider {
 
+	private static final String IMF_STR = "IMF";
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(IMFConversionProvider.class);
 
-	private static final String RATE_TYPE = "IMF";
+	private static final ExchangeRateType RATE_TYPE = ExchangeRateType
+			.of(IMF_STR);
 
 	private static final MoneyCurrency SDR = new MoneyCurrency.Builder()
-			.withNamespace(MoneyCurrency.ISO_NAMESPACE).withCurrencyCode("SDR")
+			.withNamespace(CurrencyNamespace.ISO_NAMESPACE).withCurrencyCode("SDR")
 			.withDefaultFractionDigits(3).withNumericCode(-1)
 			.build(true);
 
@@ -291,7 +295,7 @@ public class IMFConversionProvider extends AbstractResource
 	}
 
 	@Override
-	public String getExchangeRateType() {
+	public ExchangeRateType getExchangeRateType() {
 		return RATE_TYPE;
 	}
 

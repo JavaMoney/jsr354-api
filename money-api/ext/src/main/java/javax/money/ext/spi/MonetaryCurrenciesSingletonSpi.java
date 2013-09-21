@@ -12,8 +12,8 @@ package javax.money.ext.spi;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.UnknownCurrencyException;
 
@@ -41,7 +41,7 @@ public interface MonetaryCurrenciesSingletonSpi {
 	 * 
 	 * @return the default namespace used.
 	 */
-	public String getDefaultNamespace();
+	public CurrencyNamespace getDefaultNamespace();
 
 	/**
 	 * This method allows to evaluate, if the given currency namespace is
@@ -60,7 +60,7 @@ public interface MonetaryCurrenciesSingletonSpi {
 	 * 
 	 * @return the array of currently defined namespace.
 	 */
-	public Collection<String> getNamespaces();
+	public Collection<CurrencyNamespace> getNamespaces();
 
 	/*-- Access of current currencies --*/
 	/**
@@ -89,9 +89,9 @@ public interface MonetaryCurrenciesSingletonSpi {
 	public boolean isAvailable(String namespace, String code);
 
 	/**
-	 * Access a currency using its namespace and code. This is a convenience
-	 * method for {@link #getCurrency(String, String, Date)}, where {@code null}
-	 * is passed for the target date (meaning current date).
+	 * Access a currency using its {@link CurrencyNamespace} and code. This is a
+	 * convenience method for {@link #getCurrency(String, String, Date)}, where
+	 * {@code null} is passed for the target date (meaning current date).
 	 * 
 	 * @param namespace
 	 *            The namespace, e.g. {@code "ISO-4217"}.
@@ -102,7 +102,7 @@ public interface MonetaryCurrenciesSingletonSpi {
 	 * @throws UnknownCurrencyException
 	 *             if the required currency is not defined.
 	 */
-	public CurrencyUnit get(String namespace, String code);
+	public CurrencyUnit get(CurrencyNamespace namespace, String code);
 
 	/**
 	 * Access a currency using its code. This is a convenience method for
@@ -157,6 +157,6 @@ public interface MonetaryCurrenciesSingletonSpi {
 	 * @throws UnknownCurrencyException
 	 *             if the required namespace is not defined.
 	 */
-	public Collection<CurrencyUnit> getAll(String namespace);
+	public Collection<CurrencyUnit> getAll(CurrencyNamespace namespace);
 
 }

@@ -14,11 +14,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.UnknownCurrencyException;
 import javax.money.ext.spi.CurrencyUnitProviderSpi;
@@ -90,7 +90,7 @@ public final class MonetaryCurrencies {
 	 *             , if not {@link MonetaryCurrenciesSingletonSpi} is registered
 	 *             (should never be the case).
 	 */
-	public static String getDefaultNamespace() {
+	public static CurrencyNamespace getDefaultNamespace() {
 		return CURRENCIES_SPI.getDefaultNamespace();
 	}
 
@@ -112,7 +112,7 @@ public final class MonetaryCurrencies {
 	 * 
 	 * @return the array of currently defined namespaces.
 	 */
-	public static Collection<String> getNamespaces() {
+	public static Collection<CurrencyNamespace> getNamespaces() {
 		return CURRENCIES_SPI.getNamespaces();
 	}
 
@@ -160,8 +160,29 @@ public final class MonetaryCurrencies {
 	 * @throws UnknownCurrencyException
 	 *             if the required {@link CurrencyUnit} is not defined.
 	 */
-	public static CurrencyUnit get(String namespace, String code) {
+	public static CurrencyUnit get(CurrencyNamespace namespace, String code) {
 		return CURRENCIES_SPI.get(namespace, code);
+	}
+
+	/**
+	 * Access a currency using its {@link CurrencyNamespace} and code. This is a
+	 * convenience method for {@link #getCurrency(String, String, Date)}, where
+	 * {@code null} is passed for the target date (meaning current date).
+	 * 
+	 * @param namespace
+	 *            The namespace, e.g. 'ISO-4217', must be resolvable by
+	 *            CurrencyNamespace#of(String).
+	 * @param code
+	 *            The code that, together with the namespace identifies the
+	 *            currency.
+	 * @return The currency found, never null.
+	 * @throws UnknownCurrencyException
+	 *             if the required {@link CurrencyUnit} is not defined.
+	 * @throws IllegalArgumentException
+	 *             if the required {@link CurrencyNamespace} is not available.
+	 */
+	public static CurrencyUnit get(String namespace, String code) {
+		return CURRENCIES_SPI.get(CurrencyNamespace.of(namespace), code);
 	}
 
 	/**
@@ -192,7 +213,7 @@ public final class MonetaryCurrencies {
 	 * @throws UnknownCurrencyException
 	 *             if the required namespace is not defined.
 	 */
-	public static Collection<CurrencyUnit> getAll(String namespace) {
+	public static Collection<CurrencyUnit> getAll(CurrencyNamespace namespace) {
 		return CURRENCIES_SPI.getAll(namespace);
 	}
 
@@ -228,7 +249,6 @@ public final class MonetaryCurrencies {
 		return CURRENCIES_SPI.map(currencyUnit, targetNamespace, timestamp);
 	}
 
-
 	/**
 	 * Default implementation of {@link MonetaryCurrenciesSingletonSpi}, active
 	 * if no instance of {@link MonetaryCurrenciesSingletonSpi} was registered
@@ -254,7 +274,7 @@ public final class MonetaryCurrencies {
 		 * @return the default namespace used.
 		 */
 		@Override
-		public String getDefaultNamespace() {
+		public CurrencyNamespace getDefaultNamespace() {
 			throw new UnsupportedOperationException(ERROR_MESSAGE);
 		}
 
@@ -276,10 +296,11 @@ public final class MonetaryCurrencies {
 		 * This method allows to access all namespaces currently defined.
 		 * "ISO-4217" should be defined in all environments (default).
 		 * 
-		 * @return the collection of currently defined namespace, never {@code null}.
+		 * @return the collection of currently defined namespace, never
+		 *         {@code null}.
 		 */
 		@Override
-		public Collection<String> getNamespaces() {
+		public Collection<CurrencyNamespace> getNamespaces() {
 			return Collections.emptySet();
 		}
 
@@ -330,8 +351,8 @@ public final class MonetaryCurrencies {
 		 *             if the required currency is not defined.
 		 */
 		@Override
-		public CurrencyUnit get(String namespace, String code) {
-			throw new UnknownCurrencyException(namespace, code);
+		public CurrencyUnit get(CurrencyNamespace namespace, String code) {
+			throw new UnknownCurrencyException(namespace.getId(), code);
 		}
 
 		/**
@@ -349,7 +370,8 @@ public final class MonetaryCurrencies {
 		 */
 		@Override
 		public CurrencyUnit get(String code) {
-			throw new UnknownCurrencyException(getDefaultNamespace(), code);
+			throw new UnknownCurrencyException(getDefaultNamespace().getId(),
+					code);
 		}
 
 		/**
@@ -394,7 +416,7 @@ public final class MonetaryCurrencies {
 		 * .String)
 		 */
 		@Override
-		public Collection<CurrencyUnit> getAll(String namespace) {
+		public Collection<CurrencyUnit> getAll(CurrencyNamespace namespace) {
 			return Collections.emptySet();
 		}
 

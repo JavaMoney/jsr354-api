@@ -24,6 +24,7 @@ import javax.money.convert.CurrencyConversion;
 import javax.money.convert.CurrencyConversionException;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 
 import net.java.javamoney.ri.convert.FixedCurrencyConversion;
 import net.java.javamoney.ri.convert.LazyBoundCurrencyConversion;
@@ -47,7 +48,7 @@ public class DefaultCurrencyConverter implements CurrencyConverter {
 	}
 
 	@Override
-	public String getExchangeRateType() {
+	public ExchangeRateType getExchangeRateType() {
 		return this.rateProvider.getExchangeRateType();
 	}
 

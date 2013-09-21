@@ -122,7 +122,7 @@ public class MoneyCurrency_BuilderTest {
 				.withDefaultFractionDigits(101)
 				.withNumericCode(7);
 		CurrencyUnit cu = builder.build();
-		assertEquals("ns", cu.getNamespace());
+		assertEquals("ns", cu.getNamespace().getId());
 		assertEquals("cd", cu.getCurrencyCode());
 		assertEquals(101, cu.getDefaultFractionDigits());
 		assertEquals(7, cu.getNumericCode());
@@ -138,7 +138,7 @@ public class MoneyCurrency_BuilderTest {
 				.withNamespace("testBuildBoolean").withCurrencyCode("cd")
 				.withDefaultFractionDigits(101).withNumericCode(7);
 		CurrencyUnit cu = builder.build(false);
-		assertEquals("testBuildBoolean", cu.getNamespace());
+		assertEquals("testBuildBoolean", cu.getNamespace().getId());
 		assertEquals("cd", cu.getCurrencyCode());
 		assertEquals(101, cu.getDefaultFractionDigits());
 		assertEquals(7, cu.getNumericCode());

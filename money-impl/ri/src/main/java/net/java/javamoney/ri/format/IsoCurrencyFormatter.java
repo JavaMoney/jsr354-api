@@ -1,20 +1,19 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- * Contributors:
- *    Anatole Tresch - initial implementation
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * Contributors: Anatole Tresch - initial implementation
  */
 package net.java.javamoney.ri.format;
 
@@ -23,6 +22,7 @@ import java.util.Arrays;
 import java.util.Currency;
 import java.util.Locale;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 import javax.money.format.ItemFormat;
@@ -32,130 +32,134 @@ import javax.money.format.LocalizationStyle;
 
 public class IsoCurrencyFormatter implements ItemFormat<CurrencyUnit> {
 
-    public enum RenderedField {
+	public enum RenderedField {
 
-        ID, CODE, SYMBOL, DISPLAYNAME, NUMERICCODE, OMIT
-    }
+		ID, CODE, SYMBOL, DISPLAYNAME, NUMERICCODE, OMIT
+	}
 
-    public enum ParsedField {
+	public enum ParsedField {
 
-        ID, CODE
-    }
-    private ParsedField[] parsedFields = new ParsedField[]{ParsedField.CODE};
-    private RenderedField renderedField = RenderedField.CODE;
-    private LocalizationStyle style;
+		ID, CODE
+	}
 
-    @Override
-    public Class<CurrencyUnit> getTargetClass() {
-        return CurrencyUnit.class;
-    }
+	private ParsedField[] parsedFields = new ParsedField[] { ParsedField.CODE };
+	private RenderedField renderedField = RenderedField.CODE;
+	private LocalizationStyle style;
 
-    public IsoCurrencyFormatter(LocalizationStyle style) {
-        String field = null;
-        if (style != null) {
-            field = style.getId();
-        }
-        if (field == null) {
-            field = RenderedField.CODE.toString();
-        }
-        try {
-            renderedField = RenderedField.valueOf(field.toUpperCase());
-        } catch (Exception e) {
-            throw new ItemFormatException("style's id must be one of "
-                    + Arrays.toString(RenderedField.values()));
-        }
-        String value = null;
-        if (style != null) {
-            value = (String) style
-                    .getAttribute("parsedFields", String.class);
-        }
-        if (value != null) {
-            try {
-                String[] fields = value.split(",");
-                parsedFields = new ParsedField[fields.length];
-                for (int i = 0; i < fields.length; i++) {
-                    parsedFields[i] = ParsedField.valueOf(fields[i]
-                            .toUpperCase(Locale.ENGLISH));
-                }
-            } catch (Exception e) {
-                throw new IllegalArgumentException(
-                        "parsedFields must be a comma separated list of "
-                        + Arrays.toString(ParsedField.values()));
-            }
-        }
-        this.style = style;
-    }
+	@Override
+	public Class<CurrencyUnit> getTargetClass() {
+		return CurrencyUnit.class;
+	}
 
-    @Override
-    public LocalizationStyle getStyle() {
-        return style;
-    }
+	public IsoCurrencyFormatter(LocalizationStyle style) {
+		String field = null;
+		if (style != null) {
+			field = style.getId();
+		}
+		if (field == null) {
+			field = RenderedField.CODE.toString();
+		}
+		try {
+			renderedField = RenderedField.valueOf(field.toUpperCase());
+		} catch (Exception e) {
+			throw new ItemFormatException("style's id must be one of "
+					+ Arrays.toString(RenderedField.values()));
+		}
+		String value = null;
+		if (style != null) {
+			value = (String) style
+					.getAttribute("parsedFields", String.class);
+		}
+		if (value != null) {
+			try {
+				String[] fields = value.split(",");
+				parsedFields = new ParsedField[fields.length];
+				for (int i = 0; i < fields.length; i++) {
+					parsedFields[i] = ParsedField.valueOf(fields[i]
+							.toUpperCase(Locale.ENGLISH));
+				}
+			} catch (Exception e) {
+				throw new IllegalArgumentException(
+						"parsedFields must be a comma separated list of "
+								+ Arrays.toString(ParsedField.values()));
+			}
+		}
+		this.style = style;
+	}
 
-    @SuppressWarnings("incomplete-switch")
-    @Override
-    public String format(CurrencyUnit item, Locale locale) {
-        // try to check for non localizaed formats
-        switch (renderedField) {
-            case ID:
-                return item.getNamespace() + ':' + item.getCurrencyCode();
-            case CODE:
-                return item.getCurrencyCode();
-            case NUMERICCODE:
-                return String.valueOf(item.getNumericCode());
-        }
-        // check for iso currencies
-        if (MoneyCurrency.ISO_NAMESPACE.equals(item.getNamespace())) {
-            Currency isoCurrency = Currency.getInstance(item.getCurrencyCode());
-            switch (renderedField) {
-                case SYMBOL:
-                    return isoCurrency.getSymbol(locale);
-                case DISPLAYNAME:
-                    return isoCurrency.getDisplayName(locale);
-            }
-        }
-        // Overall fallback, return code...
-        return item.getCurrencyCode();
-    }
+	@Override
+	public LocalizationStyle getStyle() {
+		return style;
+	}
 
-    @Override
-    public void print(Appendable appendable, CurrencyUnit item, Locale locale)
-            throws IOException {
-        appendable.append(format(item, locale));
-    }
+	@SuppressWarnings("incomplete-switch")
+	@Override
+	public String format(CurrencyUnit item, Locale locale) {
+		// try to check for non localizaed formats
+		switch (renderedField) {
+		case ID:
+			return item.getNamespace().getId() + ':' + item.getCurrencyCode();
+		case CODE:
+			return item.getCurrencyCode();
+		case NUMERICCODE:
+			return String.valueOf(item.getNumericCode());
+		}
+		// check for iso currencies
+		if (CurrencyNamespace.ISO_NAMESPACE.equals(item.getNamespace())) {
+			Currency isoCurrency = Currency.getInstance(item.getCurrencyCode());
+			switch (renderedField) {
+			case SYMBOL:
+				return isoCurrency.getSymbol(locale);
+			case DISPLAYNAME:
+				return isoCurrency.getDisplayName(locale);
+			}
+		}
+		// Overall fallback, return code...
+		return item.getCurrencyCode();
+	}
 
-    @Override
-    public CurrencyUnit parse(CharSequence text, Locale locale) throws ItemParseException {
-        // try to check for non localizaed formats
-        String namespace = null;
-        if(style!=null){
-            namespace = this.style.getAttribute("namespace", String.class);
-        }
-        if (namespace == null) {
-            namespace = MoneyCurrency.ISO_NAMESPACE;
-        }
-        String currencyCode = null;
-        String textString = text.toString();
-        for (ParsedField f : parsedFields) {
-            switch (f) {
-                case ID:
-                    int index = textString.indexOf(':');
-                    if (index <= 0) {
-                        throw new ItemParseException(
-                                "Currency ID format required namespace:code, bu was: "
-                                + text);
-                    }
-                    namespace = textString.substring(0, index);
-                    currencyCode = textString.substring(index + 1);
-                    return MoneyCurrency.of(namespace, currencyCode);
-                case CODE:
-                    if (namespace == null) {
-                        throw new ItemParseException(
-                                "Currency CODE format requires namespace attribute, but was:: "
-                                + text);
-                    }
-                    return MoneyCurrency.of(namespace, text.toString());
-            }
-        }
-        throw new ItemParseException("Currency not parseable: " + text);
-    }
+	@Override
+	public void print(Appendable appendable, CurrencyUnit item, Locale locale)
+			throws IOException {
+		appendable.append(format(item, locale));
+	}
+
+	@Override
+	public CurrencyUnit parse(CharSequence text, Locale locale)
+			throws ItemParseException {
+		// try to check for non localizaed formats
+		CurrencyNamespace namespace = null;
+		if (style != null) {
+			namespace = this.style.getAttribute("namespace",
+					CurrencyNamespace.class);
+		}
+		if (namespace == null) {
+			namespace = CurrencyNamespace.ISO_NAMESPACE;
+		}
+		String currencyCode = null;
+		String textString = text.toString();
+		for (ParsedField f : parsedFields) {
+			switch (f) {
+			case ID:
+				int index = textString.indexOf(':');
+				if (index <= 0) {
+					throw new ItemParseException(
+							"Currency ID format required namespace:code, bu was: "
+									+ text);
+				}
+				namespace = CurrencyNamespace
+						.of(textString.substring(0, index));
+				currencyCode = textString.substring(index + 1);
+				return MoneyCurrency.of(namespace, currencyCode);
+			case CODE:
+				if (namespace == null) {
+					throw new ItemParseException(
+							"Currency CODE format requires namespace attribute, but was:: "
+									+ text);
+				}
+				return MoneyCurrency.of(namespace, text.toString());
+			}
+		}
+		throw new ItemParseException("Currency not parseable: " + text);
+	}
 }

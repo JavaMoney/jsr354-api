@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.UnknownCurrencyException;
 import javax.money.ext.spi.CurrencyUnitProviderSpi;
@@ -27,14 +28,14 @@ public class CDIMonetaryCurrenciesSingletonSpi implements
 	/**
 	 * The default namespace used.
 	 */
-	private String defaultNamespace = "ISO-4217";
+	private CurrencyNamespace defaultNamespace = CurrencyNamespace.ISO_NAMESPACE;
 	private CDICurrencyUnitProviderService currencyUnitProvider = new CDICurrencyUnitProviderService();
 	private CDICurrencyUnitMapperService currencyUnitMapper = new CDICurrencyUnitMapperService();
 
 	public CDIMonetaryCurrenciesSingletonSpi() {
 		String ns = System.getProperty(DEFAULT_NAMESPACE_PROP);
 		if (ns != null) {
-			defaultNamespace = ns;
+			defaultNamespace = CurrencyNamespace.of(ns);
 		}
 	}
 
@@ -47,7 +48,7 @@ public class CDIMonetaryCurrenciesSingletonSpi implements
 	 * 
 	 * @return the default namespace used.
 	 */
-	public String getDefaultNamespace() {
+	public CurrencyNamespace getDefaultNamespace() {
 		return defaultNamespace;
 	}
 
@@ -69,7 +70,7 @@ public class CDIMonetaryCurrenciesSingletonSpi implements
 	 * 
 	 * @return the array of currently defined name space.
 	 */
-	public Collection<String> getNamespaces() {
+	public Collection<CurrencyNamespace> getNamespaces() {
 		return currencyUnitProvider.getNamespaces();
 	}
 
@@ -86,7 +87,7 @@ public class CDIMonetaryCurrenciesSingletonSpi implements
 	 * @return true, if the currency is defined.
 	 */
 	public boolean isAvailable(String code) {
-		return currencyUnitProvider.isAvailable(getDefaultNamespace(), code);
+		return currencyUnitProvider.isAvailable(getDefaultNamespace().getId(), code);
 	}
 
 	/**
@@ -117,7 +118,7 @@ public class CDIMonetaryCurrenciesSingletonSpi implements
 	 * @throws UnknownCurrencyException
 	 *             if the required currency is not defined.
 	 */
-	public CurrencyUnit get(String namespace, String code) {
+	public CurrencyUnit get(CurrencyNamespace namespace, String code) {
 		return currencyUnitProvider.get(namespace, code);
 	}
 
@@ -216,7 +217,7 @@ public class CDIMonetaryCurrenciesSingletonSpi implements
 	}
 
 	@Override
-	public Collection<CurrencyUnit> getAll(String namespace) {
+	public Collection<CurrencyUnit> getAll(CurrencyNamespace namespace) {
 		return currencyUnitProvider.getAll(namespace);
 	}
 }

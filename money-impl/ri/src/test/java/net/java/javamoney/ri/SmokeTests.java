@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.math.RoundingMode;
 import java.util.Locale;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.Displayable;
 import javax.money.MonetaryAmount;
@@ -15,6 +16,7 @@ import javax.money.Money;
 import javax.money.MoneyCurrency;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 import javax.money.convert.MonetaryConversions;
 import javax.money.ext.MonetaryCurrencies;
 import javax.money.ext.Region;
@@ -40,19 +42,21 @@ public class SmokeTests {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SmokeTests.class);
 
-	private static final String EZB_RATE_TYPE = "EZB";
-	private static final String IMF_RATE_TYPE = "IMF";
+	private static final ExchangeRateType EZB_RATE_TYPE = ExchangeRateType
+			.of("EZB");
+	private static final ExchangeRateType IMF_RATE_TYPE = ExchangeRateType
+			.of("IMF");
 
 	@Test
 	public void testCreateAmounts() {
 		// Creating one
 		CurrencyUnit currency = MonetaryCurrencies.get(
-				MoneyCurrency.ISO_NAMESPACE, "CHF");
+				CurrencyNamespace.ISO_NAMESPACE, "CHF");
 		MonetaryAmount amount1 = Money.of(currency, 1.0d);
 		MonetaryAmount amount2 = Money.of(currency, 1.0d);
 		MonetaryAmount amount3 = amount1.add(amount2);
 		logger.debug(amount1 + " + " + amount2 + " = " + amount3);
-		assertEquals("ISO-4217", currency.getNamespace());
+		assertEquals("ISO-4217", currency.getNamespace().getId());
 		assertEquals(1.0d, amount1.doubleValue(), 0);
 		assertEquals(1.0d, amount2.doubleValue(), 0);
 		assertEquals(2.0d, amount3.doubleValue(), 0);
@@ -62,10 +66,10 @@ public class SmokeTests {
 	public void testCurrencyAccess() {
 		// Creating one
 		CurrencyUnit currency = MonetaryCurrencies.get(
-				MoneyCurrency.ISO_NAMESPACE, "INR");
+				CurrencyNamespace.ISO_NAMESPACE, "INR");
 		assertNotNull(currency);
 		assertEquals("INR", currency.getCurrencyCode());
-		assertEquals(MoneyCurrency.ISO_NAMESPACE, currency.getNamespace());
+		assertEquals(CurrencyNamespace.ISO_NAMESPACE, currency.getNamespace());
 	}
 
 	@Test
@@ -160,7 +164,8 @@ public class SmokeTests {
 	@Test
 	public void testGettingFormatters() throws ItemParseException {
 		// Using formatters
-		CurrencyUnit currency = MonetaryCurrencies.get("ISO-4217", "CHF");
+		CurrencyUnit currency = MonetaryCurrencies.get(
+				CurrencyNamespace.ISO_NAMESPACE, "CHF");
 		MonetaryAmount amount = Money.of(currency, 1.0d);
 		ItemFormat<MonetaryAmount> formatter = MonetaryFormats.getItemFormat(
 				MonetaryAmount.class,

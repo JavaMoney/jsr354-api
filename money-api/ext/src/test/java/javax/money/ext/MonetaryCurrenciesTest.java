@@ -10,6 +10,7 @@ package javax.money.ext;
 
 import static org.junit.Assert.*;
 
+import javax.money.CurrencyNamespace;
 import javax.money.TestCurrency;
 import org.junit.Test;
 
@@ -27,11 +28,11 @@ public class MonetaryCurrenciesTest {
 
 	@Test
 	public void testGetStringString() {
-		MonetaryCurrencies.get(TestCurrency.ISO_NAMESPACE, "CHF");
+		MonetaryCurrencies.get(CurrencyNamespace.ISO_NAMESPACE, "CHF");
 	}
 
 	@Test
 	public void testGetAllIso() {
-		assertNotNull(MonetaryCurrencies.getAll(TestCurrency.ISO_NAMESPACE));
+		assertNotNull(MonetaryCurrencies.getAll(CurrencyNamespace.ISO_NAMESPACE));
 	}
 }

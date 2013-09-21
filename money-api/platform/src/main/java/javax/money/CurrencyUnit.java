@@ -36,7 +36,7 @@ package javax.money;
  * </ul>
  * Of course, if {@code java.util.Currency} would implement this type,
  * serialization must be backward compatible with previous JDK releases, it is
- * not possible to accomodate this requirement in this case.
+ * not possible to accommodate this requirement in this case.
  * 
  * @version 0.4
  * @author Werner Keil
@@ -48,10 +48,11 @@ package javax.money;
 public interface CurrencyUnit {
 
 	/**
-	 * Returns the namespace a given the currency instance. If the CurrencyUnit
-	 * is an instance of <type>java.util.Currency</type> this method returns
-	 * 'ISO-4217', whereas for other currency schemes, e.g. virtual currencies
-	 * or internal legacy currencies different values are possible.
+	 * Returns the {@link CurrencyNamespace} a given the currency instance. If
+	 * the CurrencyUnit is an instance of <type>java.util.Currency</type> this
+	 * method returns 'ISO-4217', whereas for other currency schemes, e.g.
+	 * virtual currencies or internal legacy currencies different values are
+	 * possible.
 	 * <p>
 	 * Since a CurrencyUnit instance must be identifiable by its namespace and
 	 * currency code, within a namespace each currency code must be unique.
@@ -59,7 +60,7 @@ public interface CurrencyUnit {
 	 * @see #getCurrencyCode()
 	 * @return the name space of the currency, never {@code null} and not empty.
 	 */
-	public String getNamespace();
+	public CurrencyNamespace getNamespace();
 
 	/**
 	 * Gets the currency code, the effective code depends on the currency and
@@ -73,9 +74,12 @@ public interface CurrencyUnit {
 	 * This method matches basically the API of <type>java.util.Currency</type>.
 	 * 
 	 * @see #getNamespace()
-	 * @return the currency code. Instances of <type>java.util.Currency</type>
-	 *         return the three letter ISO-4217 or equivalent currency code,
-	 *         never null.
+	 * @return the currency code, never {@code null}. For the ISO-4217
+	 *         namespace, this this will be the three letter ISO-4217 code.
+	 *         However, alternate namespaces can have different codes. Also
+	 *         there is no constraint about the formatting of alternate codes,
+	 *         despite they have to be unique within its corresponding
+	 *         namespace.
 	 */
 	public String getCurrencyCode();
 

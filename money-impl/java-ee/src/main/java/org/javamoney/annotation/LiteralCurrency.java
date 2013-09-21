@@ -25,6 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import javax.inject.Qualifier;
+import javax.money.CurrencyNamespace;
 import javax.money.MoneyCurrency;
 
 
@@ -33,5 +34,5 @@ import javax.money.MoneyCurrency;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LiteralCurrency {
-	String namespace() default MoneyCurrency.ISO_NAMESPACE;
+	String namespace() default CurrencyNamespace.ISO_NAMESPACE_ID;
 }

@@ -31,11 +31,13 @@ import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Singleton;
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
 import javax.money.MoneyCurrency;
 import javax.money.convert.ConversionProvider;
 import javax.money.convert.CurrencyConverter;
 import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateType;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -74,8 +76,9 @@ public class EZBCurrentConversionProvider extends AbstractResource
 	private Map<String, ExchangeRate> currentRates = new ConcurrentHashMap<String, ExchangeRate>();
 	/** Parser factory. */
 	private SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-	/** The exchange rate type of this provider. */
-	public static final String RATE_TYPE = "EZB";
+	/** The {@link ExchangeRateType} of this provider. */
+	public static final ExchangeRateType RATE_TYPE = ExchangeRateType
+			.of("EZB");
 
 	private CurrencyConverter currencyConverter = new DefaultCurrencyConverter(
 			this);
@@ -117,15 +120,15 @@ public class EZBCurrentConversionProvider extends AbstractResource
 	 * ()
 	 */
 	@Override
-	public String getExchangeRateType() {
+	public ExchangeRateType getExchangeRateType() {
 		return RATE_TYPE;
 	}
 
 	protected ExchangeRate getExchangeRateInternal(CurrencyUnit base,
 			CurrencyUnit term,
 			Long timestamp) {
-		if (!MoneyCurrency.ISO_NAMESPACE.equals(base.getNamespace())
-				|| !MoneyCurrency.ISO_NAMESPACE.equals(term.getNamespace())) {
+		if (!CurrencyNamespace.ISO_NAMESPACE.equals(base.getNamespace())
+				|| !CurrencyNamespace.ISO_NAMESPACE.equals(term.getNamespace())) {
 			return null;
 		}
 		if (timestamp != null) {
@@ -186,7 +189,8 @@ public class EZBCurrentConversionProvider extends AbstractResource
 		return new ExchangeRate.Builder().withExchangeRate(rate)
 				.withBase(rate.getTerm()).withTerm(rate.getBase())
 				.withFactor(BigDecimal.ONE.divide(rate.getFactor(),
-						MathContext.DECIMAL64)).build();	}
+						MathContext.DECIMAL64)).build();
+	}
 
 	/**
 	 * SAX Event Handler that reads the quotes.

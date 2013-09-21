@@ -24,6 +24,7 @@ import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.money.convert.ConversionProvider;
+import javax.money.convert.ExchangeRateType;
 import javax.money.convert.spi.MonetaryConversionsSingletonSpi;
 
 import net.java.javamoney.ri.convert.provider.CompoundConversionProvider;
@@ -31,7 +32,7 @@ import net.java.javamoney.ri.convert.provider.CompoundConversionProvider;
 public class SEMonetaryConversionsSingletonSpi implements
 		MonetaryConversionsSingletonSpi {
 
-	private Map<String, CompoundConversionProvider> conversionProviders = new ConcurrentHashMap<String, CompoundConversionProvider>();
+	private Map<ExchangeRateType, CompoundConversionProvider> conversionProviders = new ConcurrentHashMap<ExchangeRateType, CompoundConversionProvider>();
 
 	public SEMonetaryConversionsSingletonSpi() {
 		reload();
@@ -53,7 +54,7 @@ public class SEMonetaryConversionsSingletonSpi implements
 	}
 
 	@Override
-	public ConversionProvider getConversionProvider(String type) {
+	public ConversionProvider getConversionProvider(ExchangeRateType type) {
 		ConversionProvider prov = this.conversionProviders.get(type);
 		if (prov == null) {
 			throw new IllegalArgumentException("Unsupported ExchangeRateType: "
@@ -63,12 +64,12 @@ public class SEMonetaryConversionsSingletonSpi implements
 	}
 
 	@Override
-	public Collection<String> getSupportedExchangeRateTypes() {
+	public Collection<ExchangeRateType> getSupportedExchangeRateTypes() {
 		return Collections.unmodifiableCollection(conversionProviders.keySet());
 	}
 
 	@Override
-	public boolean isSupportedExchangeRateType(String type) {
+	public boolean isSupportedExchangeRateType(ExchangeRateType type) {
 		return conversionProviders.containsKey(type);
 	}
 

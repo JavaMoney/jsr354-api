@@ -42,29 +42,33 @@ public class MoneyCurrencyTest {
 
 	@Test
 	public void testOfStringString() {
-		CurrencyUnit cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "CHF");
+		CurrencyUnit cur = MoneyCurrency.of(CurrencyNamespace.ISO_NAMESPACE,
+				"CHF");
 		assertNotNull(cur);
 		assertEquals("CHF", cur.getCurrencyCode());
-		assertEquals(MoneyCurrency.ISO_NAMESPACE, cur.getNamespace());
+		assertEquals(CurrencyNamespace.ISO_NAMESPACE, cur.getNamespace());
 	}
 
 	@Test
 	public void testGetNamespace() {
-		CurrencyUnit cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "CHF");
+		CurrencyUnit cur = MoneyCurrency.of(CurrencyNamespace.ISO_NAMESPACE,
+				"CHF");
 		assertNotNull(cur);
-		assertEquals(MoneyCurrency.ISO_NAMESPACE, cur.getNamespace());
+		assertEquals(CurrencyNamespace.ISO_NAMESPACE, cur.getNamespace());
 	}
 
 	@Test
 	public void testGetCurrencyCode() {
-		CurrencyUnit cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "CHF");
+		CurrencyUnit cur = MoneyCurrency.of(CurrencyNamespace.ISO_NAMESPACE,
+				"CHF");
 		assertNotNull(cur);
 		assertEquals("CHF", cur.getCurrencyCode());
 	}
 
 	@Test
 	public void testGetNumericCode() {
-		CurrencyUnit cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "CHF");
+		CurrencyUnit cur = MoneyCurrency.of(CurrencyNamespace.ISO_NAMESPACE,
+				"CHF");
 		assertNotNull(cur);
 		assertEquals(Currency.getInstance("CHF").getNumericCode(),
 				cur.getNumericCode());
@@ -72,7 +76,8 @@ public class MoneyCurrencyTest {
 
 	@Test
 	public void testGetDefaultFractionDigits() {
-		CurrencyUnit cur = MoneyCurrency.of(MoneyCurrency.ISO_NAMESPACE, "CHF");
+		CurrencyUnit cur = MoneyCurrency.of(CurrencyNamespace.ISO_NAMESPACE,
+				"CHF");
 		assertNotNull(cur);
 		assertEquals(Currency.getInstance("CHF").getDefaultFractionDigits(),
 				cur.getDefaultFractionDigits());

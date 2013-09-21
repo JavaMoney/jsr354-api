@@ -41,8 +41,8 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 	 */
 	private static final long serialVersionUID = -2523936311372374236L;
 
-	/** namespace for this currency. */
-	private final String namespace;
+	/** {@link CurrencyNamespace} for this currency. */
+	private final CurrencyNamespace namespace;
 	/** currency code for this currency. */
 	private final String currencyCode;
 	/** numeric code, or -1. */
@@ -60,7 +60,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 	 * 
 	 * @param currency
 	 */
-	private TestCurrency(String namespace, String code, int numCode,
+	private TestCurrency(CurrencyNamespace namespace, String code, int numCode,
 			int fractionDigits) {
 		this.namespace = namespace;
 		this.currencyCode = code;
@@ -82,10 +82,10 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 		return of(Currency.getInstance(currencyCode));
 	}
 
-	public static CurrencyUnit of(String namespace, String currencyCode) {
-		String key = namespace + ':' + currencyCode;
+	public static CurrencyUnit of(CurrencyNamespace namespace, String currencyCode) {
+		String key = namespace.getId() + ':' + currencyCode;
 		CurrencyUnit cu = CACHED.get(key);
-		if (cu == null && namespace.equals(ISO_NAMESPACE)) {
+		if (cu == null && namespace.equals(CurrencyNamespace.ISO_NAMESPACE)) {
 			return of(currencyCode);
 		}
 		return cu;
@@ -94,7 +94,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 	/**
 	 * Get the namespace of this {@link CurrencyUnit}, returns 'ISO-4217'.
 	 */
-	public String getNamespace() {
+	public CurrencyNamespace getNamespace() {
 		return namespace;
 	}
 
@@ -142,7 +142,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 		if (ISO_NAMESPACE.equals(namespace)) {
 			return currencyCode;
 		}
-		return namespace + ':' + currencyCode;
+		return namespace.getId() + ':' + currencyCode;
 	}
 
 	public static final class Builder {
@@ -289,13 +289,15 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 				String key = namespace + ':' + currencyCode;
 				CurrencyUnit current = CACHED.get(key);
 				if (current == null) {
-					current = new TestCurrency(namespace, currencyCode,
+					current = new TestCurrency(CurrencyNamespace.of(namespace),
+							currencyCode,
 							numericCode, defaultFractionDigits);
 					CACHED.put(key, current);
 				}
 				return current;
 			}
-			return new TestCurrency(namespace, currencyCode, numericCode,
+			return new TestCurrency(CurrencyNamespace.of(namespace),
+					currencyCode, numericCode,
 					defaultFractionDigits);
 		}
 	}
@@ -341,8 +343,8 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 		 * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
 		 */
 
-		public String getNamespace() {
-			return ISO_NAMESPACE;
+		public CurrencyNamespace getNamespace() {
+			return CurrencyNamespace.ISO_NAMESPACE;
 		}
 
 		// public Long getValidFrom() {
@@ -401,7 +403,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 	// it be used and if so,
 	// consider changing it to a pattern similar as getAvailableCurrencies()
 	// (including the type Set, unless Collection provides value)
-	public static Collection<CurrencyUnit> allFromNamespace(String namespace2) {
+	public static Collection<CurrencyUnit> allFromNamespace(CurrencyNamespace namespace2) {
 		return Collections.emptySet();
 	}
 

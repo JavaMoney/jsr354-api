@@ -6,35 +6,34 @@ import java.util.Collection;
 import javax.money.CurrencyUnit;
 import javax.money.convert.spi.MonetaryConversionsSingletonSpi;
 
-public class TestMonetaryConversionSpi implements
-		MonetaryConversionsSingletonSpi {
+public class TestMonetaryConversionSpi implements MonetaryConversionsSingletonSpi {
 
 	private ConversionProvider dummyProvider = new DummyConversionProvider();
-
+	
 	@Override
-	public ConversionProvider getConversionProvider(String type) {
-		if ("test".equals(type)) {
+	public ConversionProvider getConversionProvider(ExchangeRateType type) {
+		if(ExchangeRateType.of("test").equals(type)){
 			return dummyProvider;
 		}
 		return null;
 	}
 
 	@Override
-	public Collection<String> getSupportedExchangeRateTypes() {
-		return Arrays.asList(new String[] { "test" });
+	public Collection<ExchangeRateType> getSupportedExchangeRateTypes() {
+		return Arrays.asList(new ExchangeRateType[] { ExchangeRateType
+				.of("test") });
 	}
 
 	@Override
-	public boolean isSupportedExchangeRateType(String type) {
-		return "test".equals(type);
+	public boolean isSupportedExchangeRateType(ExchangeRateType type) {
+		return ExchangeRateType.of("test").equals(type);
 	}
 
-	public static final class DummyConversionProvider implements
-			ConversionProvider {
+	public static final class DummyConversionProvider implements ConversionProvider{
 
 		@Override
-		public String getExchangeRateType() {
-			return "test";
+		public ExchangeRateType getExchangeRateType() {
+			return ExchangeRateType.of("test");
 		}
 
 		@Override
@@ -69,7 +68,7 @@ public class TestMonetaryConversionSpi implements
 		public CurrencyConverter getConverter() {
 			throw new UnsupportedOperationException();
 		}
-
+		
 	}
-
+	
 }

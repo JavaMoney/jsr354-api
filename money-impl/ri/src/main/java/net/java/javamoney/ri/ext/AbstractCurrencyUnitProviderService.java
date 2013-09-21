@@ -1,21 +1,20 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- * Contributors:
- *    Anatole Tresch - initial implementation
- *    Werner Keil - extensions and adaptions.
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * Contributors: Anatole Tresch - initial implementation Werner Keil -
+ * extensions and adaptions.
  */
 package net.java.javamoney.ri.ext;
 
@@ -28,13 +27,12 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.money.CurrencyNamespace;
 import javax.money.CurrencyUnit;
-import javax.money.MoneyCurrency;
 import javax.money.UnknownCurrencyException;
 import javax.money.ext.RegionType;
 import javax.money.ext.spi.CurrencyUnitProviderSpi;
 import javax.money.ext.spi.MonetaryCurrenciesSingletonSpi;
-
 
 /**
  * This class models the an internal service class, that provides the base
@@ -52,9 +50,9 @@ public abstract class AbstractCurrencyUnitProviderService {
 	 */
 	private static final String DEFAULT_NAMESPACE_PROP = "javax.money.defaultCurrencyNamespace";
 	/** Loaded currency providers. */
-	private final Map<String, List<CurrencyUnitProviderSpi>> currencyProviders = new ConcurrentHashMap<String, List<CurrencyUnitProviderSpi>>();
+	private final Map<CurrencyNamespace, List<CurrencyUnitProviderSpi>> currencyProviders = new ConcurrentHashMap<CurrencyNamespace, List<CurrencyUnitProviderSpi>>();
 	/** The default namespace used. */
-	private String defaultNamespace = MoneyCurrency.ISO_NAMESPACE;
+	private CurrencyNamespace defaultNamespace = CurrencyNamespace.ISO_NAMESPACE;
 
 	/**
 	 * Constructor, also loading the registered spi's.
@@ -62,7 +60,7 @@ public abstract class AbstractCurrencyUnitProviderService {
 	public AbstractCurrencyUnitProviderService() {
 		String ns = System.getProperty(DEFAULT_NAMESPACE_PROP);
 		if (ns != null) {
-			this.defaultNamespace = ns;
+			this.defaultNamespace = CurrencyNamespace.of(ns);
 		}
 		reload();
 	}
@@ -91,7 +89,7 @@ public abstract class AbstractCurrencyUnitProviderService {
 	 * @see javax.money.CurrencyUnitProvider#get(java.lang.String,
 	 * java.lang.String, long)
 	 */
-	public CurrencyUnit get(String namespace, String code) {
+	public CurrencyUnit get(CurrencyNamespace namespace, String code) {
 		List<CurrencyUnitProviderSpi> provList = currencyProviders
 				.get(namespace);
 		if (provList == null) {
@@ -103,7 +101,7 @@ public abstract class AbstractCurrencyUnitProviderService {
 				return currency;
 			}
 		}
-		throw new UnknownCurrencyException(namespace, code);
+		throw new UnknownCurrencyException(namespace.getId(), code);
 	}
 
 	/**
@@ -113,7 +111,7 @@ public abstract class AbstractCurrencyUnitProviderService {
 	 *            The region type, not null.
 	 * @return the regions found, never null.
 	 */
-	public Collection<CurrencyUnit> getAll(String namespace) {
+	public Collection<CurrencyUnit> getAll(CurrencyNamespace namespace) {
 		Set<CurrencyUnit> result = new HashSet<CurrencyUnit>();
 		List<CurrencyUnitProviderSpi> provList = currencyProviders
 				.get(namespace);
@@ -166,10 +164,10 @@ public abstract class AbstractCurrencyUnitProviderService {
 		return this.currencyProviders.containsKey(namespace);
 	}
 
-	public Collection<String> getNamespaces() {
+	public Collection<CurrencyNamespace> getNamespaces() {
 		return this.currencyProviders.keySet();
 	}
 
-    protected abstract Iterable<CurrencyUnitProviderSpi> getCurrencyUnitProviderSpis();
+	protected abstract Iterable<CurrencyUnitProviderSpi> getCurrencyUnitProviderSpis();
 
 }

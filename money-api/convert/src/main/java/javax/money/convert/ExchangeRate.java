@@ -22,8 +22,8 @@ import javax.money.CurrencyUnit;
 /**
  * This class models an exchange rate between two currencies. Hereby
  * <ul>
- * <li>an exchange rate always models one rate from a base to a term
- * {@link CurrencyUnit}.</li>
+ * <li>an exchange rate always models one rate from a base (source) to a term
+ * (target) {@link CurrencyUnit}.</li>
  * <li>an exchange rate is always bound to a rate type, which typically matches
  * the data source of the conversion data, e.g. different credit card providers
  * may use different rates for the same conversion.</li>
@@ -62,7 +62,17 @@ import javax.money.CurrencyUnit;
  * </ul>
  * <p>
  * Finally ExchangeRate is modeled as an immutable and thread safe type. Also
- * exchange rates are {@link Serializable}.
+ * exchange rates are {@link Serializable}, hereby serializing in the following
+ * form and order:
+ * <ul>
+ * <li>The {@link ExchangeRateType}
+ * <li>The base {@link CurrencyUnit}
+ * <li>The target {@link CurrencyUnit}
+ * <li>The factor (BigDecimal)
+ * <li>The provider (String)
+ * <li>The validFrom timestamp (Long)
+ * <li>The validTo timestamp (Long)
+ * </ul>
  * 
  * @see <a
  *      href="https://en.wikipedia.org/wiki/Exchange_rate#Quotations">Wikipedia:
@@ -91,9 +101,9 @@ public final class ExchangeRate implements Serializable,
 	 */
 	private final BigDecimal factor;
 	/**
-	 * The xxchangeRateType
+	 * The {@link ExchangeRateType}
 	 */
-	private final String exchangeRateType;
+	private final ExchangeRateType exchangeRateType;
 	/**
 	 * The timestamp from when this instance is valid, or {@code null}.
 	 */
@@ -130,8 +140,8 @@ public final class ExchangeRate implements Serializable,
 	}
 
 	/**
-	 * Creates a new instance with a custom chain of exchange rate type,
-	 * e.g. or creating <i>derived</i> rates.
+	 * Creates a new instance with a custom chain of exchange rate type, e.g. or
+	 * creating <i>derived</i> rates.
 	 * 
 	 * @param conversionType
 	 *            The conversion type, never {@code null}.
@@ -150,7 +160,7 @@ public final class ExchangeRate implements Serializable,
 	 *            the UTC timestamp until when this rate is valid from, or
 	 *            {@code null}
 	 */
-	private ExchangeRate(String conversionType, CurrencyUnit base,
+	private ExchangeRate(ExchangeRateType exchangeRateType, CurrencyUnit base,
 			CurrencyUnit term, Number factor, String provider, Long validFrom,
 			Long validTo, ExchangeRate... chain) {
 		if (base == null) {
@@ -162,14 +172,14 @@ public final class ExchangeRate implements Serializable,
 		if (factor == null) {
 			throw new IllegalArgumentException("factor may not be null.");
 		}
-		if (conversionType == null) {
+		if (exchangeRateType == null) {
 			throw new IllegalArgumentException(
 					"exchangeRateType may not be null.");
 		}
 		this.base = base;
 		this.term = term;
 		this.factor = getBigDecimal(factor);
-		this.exchangeRateType = conversionType;
+		this.exchangeRateType = exchangeRateType;
 		this.provider = provider;
 		setExchangeRateChain(chain);
 		this.validFrom = validFrom;
@@ -198,11 +208,11 @@ public final class ExchangeRate implements Serializable,
 	}
 
 	/**
-	 * Access the type of {@link ExchangeRate}.
+	 * Access the {@link ExchangeRateType} of {@link ExchangeRate}.
 	 * 
 	 * @return the type of this rate, never null.
 	 */
-	public final String getExchangeRateType() {
+	public final ExchangeRateType getExchangeRateType() {
 		return this.exchangeRateType;
 	}
 
@@ -236,6 +246,10 @@ public final class ExchangeRate implements Serializable,
 	/**
 	 * Returns the UTC timestamp defining from what date/time this rate is
 	 * valid.
+	 * <p>
+	 * This is modelled as {@link Long} instaed of {@code long}, since it is
+	 * possible, that an {@link ExchangeRate} does not have starting validity
+	 * range. This also can be queried by calling {@link #isLowerBound()}.
 	 * 
 	 * @return The UTC timestamp of the rate, defining valid from, or
 	 *         {@code null}, if no starting validity constraint is set.
@@ -247,7 +261,11 @@ public final class ExchangeRate implements Serializable,
 	/**
 	 * Get the data validity timestamp of this rate in milliseconds. This can be
 	 * useful, when a rate in a system only should be used within some specified
-	 * time.
+	 * time. *
+	 * <p>
+	 * This is modelled as {@link Long} instaed of {@code long}, since it is
+	 * possible, that an {@link ExchangeRate} does not have ending validity
+	 * range. This also can be queried by calling {@link #isUpperBound()}.
 	 * 
 	 * @return the duration of validity in milliseconds, or {@code null} if no
 	 *         ending validity constraint is set.
@@ -275,18 +293,21 @@ public final class ExchangeRate implements Serializable,
 	}
 
 	/**
-	 * Method to easily check if the {@code from} is not {@code null}.
+	 * Method to easily check if the {@link #getValidFromMillis()} is not
+	 * {@code null}.
 	 * 
-	 * @return {@code true} if {@code from} is not {@code null}.
+	 * @return {@code true} if {@link #getValidFromMillis()} is not {@code null}
+	 *         .
 	 */
 	public boolean isLowerBound() {
 		return validFrom != null;
 	}
 
 	/**
-	 * Method to easily check if the {@code from} is not {@code null}.
+	 * Method to easily check if the {@link #getValidToMillis()} is not
+	 * {@code null}.
 	 * 
-	 * @return {@code true} if {@code from} is not {@code null}.
+	 * @return {@code true} if {@link #getValidToMillis()} is not {@code null}.
 	 */
 	public boolean isUpperBound() {
 		return validTo != null;
@@ -319,6 +340,9 @@ public final class ExchangeRate implements Serializable,
 	 * Derived exchange rates are defined by an ordered list of subconversions
 	 * with intermediate steps, whereas a direct conversion is possible in one
 	 * steps.
+	 * <p>
+	 * This method always returns {@code true}, if the chain contains more than
+	 * one rate. Direct rates, have also a chain, but with exact one rate.
 	 * 
 	 * @return true, if the exchange rate is derived.
 	 */
@@ -336,7 +360,7 @@ public final class ExchangeRate implements Serializable,
 		if (o == null) {
 			return -1;
 		}
-		int compare =  this
+		int compare = this
 				.getExchangeRateType().compareTo(o.getExchangeRateType());
 		if (compare == 0) {
 			if (provider != null) {
@@ -371,7 +395,7 @@ public final class ExchangeRate implements Serializable,
 	 */
 	@Override
 	public String toString() {
-		return "ExchangeRate [type=" + exchangeRateType + ", base="
+		return "ExchangeRate [type=" + exchangeRateType.getId() + ", base="
 				+ base + ", term=" + term + ", factor=" + factor
 				+ ", validFrom=" + validFrom + ", validTo=" + validTo
 				+ ", provider=" + provider + "]";
@@ -489,13 +513,13 @@ public final class ExchangeRate implements Serializable,
 		/**
 		 * The rate type.
 		 */
-		private String exchangeRateType;
+		private ExchangeRateType exchangeRateType;
 		/**
-		 * The base currency.
+		 * The base (source) currency.
 		 */
 		private CurrencyUnit base;
 		/**
-		 * The term currency.
+		 * The term (target) currency.
 		 */
 		private CurrencyUnit term;
 		/**
@@ -526,7 +550,7 @@ public final class ExchangeRate implements Serializable,
 		 *            to be applied
 		 * @return the builder instance
 		 */
-		public Builder withExchangeRateType(String exchangeRateType) {
+		public Builder withExchangeRateType(ExchangeRateType exchangeRateType) {
 			this.exchangeRateType = exchangeRateType;
 			return this;
 		}
@@ -535,7 +559,7 @@ public final class ExchangeRate implements Serializable,
 		 * Sets the base {@link CurrencyUnit}
 		 * 
 		 * @param base
-		 *            to base {@link CurrencyUnit} to be applied
+		 *            to base (source) {@link CurrencyUnit} to be applied
 		 * @return the builder instance
 		 */
 		public Builder withBase(CurrencyUnit base) {
@@ -544,7 +568,7 @@ public final class ExchangeRate implements Serializable,
 		}
 
 		/**
-		 * Sets the terminating {@link CurrencyUnit}
+		 * Sets the terminating (target) {@link CurrencyUnit}
 		 * 
 		 * @param term
 		 *            to terminating {@link CurrencyUnit} to be applied

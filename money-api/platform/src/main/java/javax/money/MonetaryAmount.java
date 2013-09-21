@@ -261,28 +261,32 @@ public interface MonetaryAmount {
 	public boolean isZero();
 
 	/**
-	 * Checks if the amount is greater than zero.
+	 * Checks if the amount is greater than zero. This is a convenience method
+	 * for {@code  x.signum() > 0}.
 	 * 
 	 * @return true if the amount is greater than zero
 	 */
 	public boolean isPositive();
 
 	/**
-	 * Checks if the amount is zero or greater.
+	 * Checks if the amount is zero or greater. This is a convenience method for
+	 * {@code  x.signum() >= 0}.
 	 * 
 	 * @return true if the amount is zero or greater
 	 */
 	public boolean isPositiveOrZero();
 
 	/**
-	 * Checks if the amount is less than zero.
+	 * Checks if the amount is less than zero. This is a convenience method for
+	 * {@code  x.signum() < 0}.
 	 * 
 	 * @return true if the amount is less than zero
 	 */
 	public boolean isNegative();
 
 	/**
-	 * Checks if the amount is zero or less.
+	 * Checks if the amount is zero or less. This is a convenience method for
+	 * {@code  x.signum() <= 0}.
 	 * 
 	 * @return true if the amount is zero or less
 	 */
@@ -530,12 +534,16 @@ public interface MonetaryAmount {
 	public boolean isGreaterThanOrEqualTo(MonetaryAmount amount);
 
 	/**
-	 * Checks if this amount is the same compared to the amount passed. This is
-	 * a convenience method to reflect {@link #same(Number)} also for amounts,
-	 * but basically should behave similarly as {@link #equals(Object)}.
+	 * Checks if this amount is the same compared to the amount passed. Two
+	 * amounts ore considered equal here, when
+	 * <ul>
+	 * <li>when both currencies are equal
+	 * <li>their numeric values are equal, when converted to the corresponding
+	 * {@link Number} types, using {@link #asNumber()};
+	 * </ul>
 	 * 
-	 * @param number
-	 *            The number to compare to.
+	 * @param amount
+	 *            The amount to compare to.
 	 * @return {@code true}, if this amount's value is the same compared to the
 	 *         number passed.
 	 */
@@ -559,10 +567,10 @@ public interface MonetaryAmount {
 	 * Gets the monetary amount using the passed target type. This method allows
 	 * to support different return types, depending of the concrete
 	 * implementation. E.g. {@link BigDecimal}, {@link java.lang.Number} and the
-	 * numeric wrapper types should be supported within SE environments, whereas
+	 * numeric wrapper types must be supported within SE environments, whereas
 	 * on other environments, it may be different.
 	 * <p>
-	 * Hereby an implementation must support the following types:
+	 * Summarizing an implementation must support the following types:
 	 * <ul>
 	 * <li>{@code java.math.BigDecimal}</li>
 	 * <li>{@code java.math.BigInteger}</li>
@@ -572,8 +580,8 @@ public interface MonetaryAmount {
 	 * <li>{@code java.lang.Long}</li>
 	 * <li>{@code java.lang.Float}</li>
 	 * <li>{@code java.lang.Double}</li>
-	 * <li>{@code java.lang.Number}, hereby returning an instance of
-	 * {@code java.math.BigDecimal}.</li>
+	 * <li>{@code java.lang.Number}, hereby returning the best Number
+	 * representation that is matching to the internal representation.</li>
 	 * </ul>
 	 * {@code java.lang.String} is not supported, since this should be done
 	 * using formatting.

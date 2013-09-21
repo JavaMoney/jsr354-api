@@ -33,19 +33,12 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		Comparable<CurrencyUnit> {
 
 	/**
-	 * The predefined name space for ISO 4217 currencies, similar to
-	 * {@link Currency}.
-	 */
-	public static final String ISO_NAMESPACE = "ISO-4217";
-	// TODO see https://en.wikipedia.org/wiki/ISO_4217#Without_currency_code
-
-	/**
 	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = -2523936311372374236L;
 
-	/** namespace for this currency. */
-	private String namespace;
+	/** {@link CurrencyNamespace} for this currency. */
+	private CurrencyNamespace namespace;
 	/** currency code for this currency. */
 	private String currencyCode;
 	/** numeric code, or -1. */
@@ -62,7 +55,8 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * 
 	 * @param currency
 	 */
-	private MoneyCurrency(String namespace, String code, int numCode,
+	private MoneyCurrency(CurrencyNamespace namespace, String code,
+			int numCode,
 			int fractionDigits) {
 		this.namespace = namespace;
 		this.currencyCode = code;
@@ -79,7 +73,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		if (currency == null) {
 			throw new IllegalArgumentException("Currency required.");
 		}
-		this.namespace = ISO_NAMESPACE;
+		this.namespace = CurrencyNamespace.ISO_NAMESPACE;
 		this.currencyCode = currency.getCurrencyCode();
 		this.numericCode = currency.getNumericCode();
 		this.defaultFractionDigits = currency.getDefaultFractionDigits();
@@ -93,7 +87,8 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * @return the new instance, never null.
 	 */
 	public static MoneyCurrency of(Currency currency) {
-		String key = ISO_NAMESPACE + ':' + currency.getCurrencyCode();
+		String key = CurrencyNamespace.ISO_NAMESPACE.getId() + ':'
+				+ currency.getCurrencyCode();
 		MoneyCurrency cachedItem = CACHED.get(key);
 		if (cachedItem == null) {
 			cachedItem = new JDKCurrencyAdapter(currency);
@@ -126,19 +121,39 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 *            the ISO currency code, not null.
 	 * @return the corresponding {@link MonetaryCurrency} instance.
 	 */
-	public static MoneyCurrency of(String namespace, String currencyCode) {
-		String key = namespace + ':' + currencyCode;
+	public static MoneyCurrency of(CurrencyNamespace namespace,
+			String currencyCode) {
+		String key = namespace.getId() + ':' + currencyCode;
 		MoneyCurrency cu = CACHED.get(key);
-		if (cu == null && namespace.equals(ISO_NAMESPACE)) {
+		if (cu == null
+				&& namespace.getId().equals(CurrencyNamespace.ISO_NAMESPACE)) {
 			return of(currencyCode);
 		}
 		return cu;
 	}
 
 	/**
+	 * Access a new instance based on the ISO currency code. The code must
+	 * return a {@link Currency} when passed to
+	 * {@link Currency#getInstance(String)}.
+	 * 
+	 * @param namespace
+	 *            the target namespace id, must be resolvable by
+	 *            {@link CurrencyNamespace#of(String)}.
+	 * @param currencyCode
+	 *            the ISO currency code, not null.
+	 * @return the corresponding {@link MonetaryCurrency} instance.
+	 * @throws IllegalArgumentException
+	 *             if the {@link CurrencyNamespace} is not defined.
+	 */
+	public static CurrencyUnit of(String namespaceId, String currencyCode) {
+		return of(CurrencyNamespace.of(namespaceId), currencyCode);
+	}
+
+	/**
 	 * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
 	 */
-	public String getNamespace() {
+	public CurrencyNamespace getNamespace() {
 		return namespace;
 	}
 
@@ -199,10 +214,10 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 */
 	@Override
 	public String toString() {
-		if (ISO_NAMESPACE.equals(namespace)) {
+		if (CurrencyNamespace.ISO_NAMESPACE.equals(namespace.getId())) {
 			return currencyCode;
 		}
-		return namespace + ':' + currencyCode;
+		return namespace.getId() + ':' + currencyCode;
 	}
 
 	/**
@@ -213,7 +228,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 */
 	public static final class Builder {
 		/** namespace for this currency. */
-		private String namespace;
+		private CurrencyNamespace namespace;
 		/** currency code for this currency. */
 		private String currencyCode;
 		/** numeric code, or -1. */
@@ -236,11 +251,28 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		 *            the namespace, not null
 		 * @return the builder, for chaining
 		 */
-		public Builder withNamespace(String namespace) {
+		public Builder withNamespace(CurrencyNamespace namespace) {
 			if (namespace == null) {
 				throw new IllegalArgumentException("namespace may not be null.");
 			}
 			this.namespace = namespace;
+			return this;
+		}
+
+		/**
+		 * Set the namespace, using the namespace id.
+		 * 
+		 * @see CurrencyNamespace#of(String)
+		 * 
+		 * @param namespace
+		 *            the namespace, not null
+		 * @return the builder, for chaining
+		 */
+		public Builder withNamespace(String namespace) {
+			if (namespace == null) {
+				throw new IllegalArgumentException("namespace may not be null.");
+			}
+			this.namespace = CurrencyNamespace.of(namespace);
 			return this;
 		}
 
@@ -330,8 +362,11 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		 * @return a new instance of {@link MoneyCurrency}.
 		 */
 		public MoneyCurrency build(boolean cache) {
+			if (namespace == null) {
+				throw new IllegalArgumentException("namespace null.");
+			}
 			if (cache) {
-				String key = namespace + ':' + currencyCode;
+				String key = namespace.getId() + ':' + currencyCode;
 				MoneyCurrency current = CACHED.get(key);
 				if (current == null) {
 					current = new MoneyCurrency(namespace, currencyCode,
@@ -395,7 +430,8 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		 */
 		@Override
 		public String toString() {
-			return ISO_NAMESPACE + ':' + getCurrencyCode();
+			return CurrencyNamespace.ISO_NAMESPACE.getId() + ':'
+					+ getCurrencyCode();
 		}
 
 	}

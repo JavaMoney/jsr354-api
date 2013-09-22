@@ -15,6 +15,8 @@ package javax.money.format;
 import java.io.IOException;
 import java.util.Locale;
 
+import javax.money.format.spi.ItemFormatFactorySpi;
+
 /**
  * Formats instances of {@code T} to a {@link String} or an {@link Appendable}.
  * <p>
@@ -22,12 +24,13 @@ import java.util.Locale;
  * accessing an {@link ItemFormat} from the {@link MonetaryFormats} singleton a
  * new instance should be created on each access.<br/>
  * As a consequence classes implementing this interface are not required to be
- * thread.safe, but they should be immutable.
+ * thread.safe, but they must be immutable.
  */
 public interface ItemFormat<T> {
 
 	/**
-	 * Return the target type this {@link ItemFormat} is expecting.
+	 * Return the target type this {@link ItemFormat} is expecting and capable
+	 * to format.
 	 * 
 	 * @return the target type, never {@code null}.
 	 */
@@ -43,11 +46,28 @@ public interface ItemFormat<T> {
 
 	/**
 	 * Formats a value of {@code T} to a {@code String}. The {@link Locale}
-	 * passed defines the overal target {@link Locale}, whereas the
-	 * {@link LocalizationStyle} configures, how the item should be formatted.
-	 * Styles allows to define detailed and customized formatting input
-	 * parameters. This allows to implement also complex formatting requirements
-	 * using this interface.
+	 * passed defines the overall target {@link Locale}, whereas the
+	 * {@link LocalizationStyle} attached with the instances configures, how the
+	 * {@link ItemFormat} should generally behave. The {@link LocalizationStyle}
+	 * allows to configure the formatting and parsing in arbitrary details. The
+	 * attributes that are supported are determined by the according
+	 * {@link ItemFormat} implementation:
+	 * <ul>
+	 * <li>When the {@link ItemFormat} was created using the
+	 * {@link ItemFormatBuilder}, all the {@link FormatToken}, that model the
+	 * overall format, and the {@link ItemFactory}, that is responsible for
+	 * extracting the final parsing result, returned from a parsing call, are
+	 * all possible recipients for attributes of the configuring
+	 * {@link LocalizationStyle}.
+	 * <li>When the {@link ItemFormat} was provided by an instance of
+	 * {@link ItemFormatFactorySpi} the {@link ItemFormat} returned determines
+	 * the capabilities that can be configured.
+	 * </ul>
+	 * 
+	 * So, regardless if an {@link ItemFormat} is created using the fluent style
+	 * {@link ItemFormatBuilder} pattern, or provided as preconfigured
+	 * implementation, {@link LocalizationStyle}s allow to configure them both
+	 * effectively.
 	 * 
 	 * @param item
 	 *            the item to print, not {@code null}

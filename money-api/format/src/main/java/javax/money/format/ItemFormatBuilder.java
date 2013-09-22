@@ -20,10 +20,16 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * This class implements a format builder that allows creating
- * {@link ItemFormat} instances programmatically using a fluent API. The
- * formatting internally is modeled by an ordered list of {@link FormatToken}
- * instances.
+ * This class implements a builder that allows creating of {@link ItemFormat}
+ * instances programmatically using a fluent API. The formatting hereby is
+ * modeled by a concatenation of {@link FormatToken} instances. The same
+ * {@link FormatToken} instances also are responsible for implementing the
+ * opposite, parsing, of an item from an input character sequence. Each
+ * {@link FormatToken} gets access to the current parsing location, and the
+ * original and current character input sequence, modeled by the
+ * {@link ParseContext}. Finall if parsing of a part failed, a
+ * {@link FormatToken} throws an {@link ItemParseException} describing the
+ * problem.
  * <p>
  * This class is not thread-safe and therefore should not be shared among
  * different threads.

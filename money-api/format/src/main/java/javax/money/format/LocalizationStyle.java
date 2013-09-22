@@ -19,10 +19,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.money.format.spi.ItemFormatFactorySpi;
+
 /**
  * This class enhances the localization mechanisms as defined by {@link Locale}.
- * It allows to configure formatting/parsing with arbitrary parameters thus also
- * supporting very complex formatting scenarios.
+ * It is used to configure formatting/parsing ( {@link ItemFormat} instances )
+ * with arbitrary parameters, thus also supporting very complex formatting
+ * scenarios. The configuration parameters possible are either determined
+ * <ul>
+ * <li>by the several {@link FormatToken} added in sequence, and the
+ * {@link ItemFactory}, when using an {@link ItemFormat} instance created with
+ * the {@link ItemFormatBuilder}.
+ * <li>by the preoconfigured and provided {@link ItemFormat} instance, provided
+ * by an implementation of the {@link ItemFormatFactorySpi}.
  * <p>
  * Further more when parsing amounts, it is often desirable to control the
  * checks for the required decimals of the given target currency (aka lenient

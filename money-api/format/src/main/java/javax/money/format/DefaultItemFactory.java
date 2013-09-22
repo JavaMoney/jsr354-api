@@ -14,9 +14,14 @@ package javax.money.format;
 
 /**
  * Default implementation of {@link ItemFactory} that looks up resulting item
- * under the {@link Class} or {@link Class#getName()} key.
+ * under the {@link Class} or {@link Class#getName()} key. This is used as
+ * described in {@link ItemFactory} as a last step after all {@link FormatToken}
+ * instances in {@link ItemFormat}, created by the {@link ItemFormatBuilder},
+ * has parsed the input. This instance of {@link ItemFactory} is trying to
+ * lookup an instance of type {@link ItemFormat#getTargetClass()} from the
+ * current {@link ParseContext}.
  * <p>
- * This class is thread-safe.
+ * This class is thread-safe and immutable.
  * 
  * @author Anatole Tresch
  * 
@@ -38,7 +43,8 @@ public final class DefaultItemFactory<T> implements ItemFactory<T> {
 	}
 
 	/**
-	 * Accesses the final item from the {@link ParseContext}.
+	 * Accesses the final item from the {@link ParseContext} as defined by
+	 * {@link ItemFormat#getTargetClass()}.
 	 * 
 	 * @param context
 	 *            the {@link ParseContext}.
@@ -46,6 +52,8 @@ public final class DefaultItemFactory<T> implements ItemFactory<T> {
 	 * @throws IllegalStateException
 	 *             , if the item could not be found.
 	 * @see #isComplete(ParseContext)
+	 * @throws IllegalStateException
+	 *             if no such result could be evaluated.
 	 */
 	@Override
 	public T apply(ParseContext<T> context) {

@@ -32,6 +32,15 @@ import javax.money.format.spi.ItemFormatFactorySpi;
  * the {@link ItemFormatBuilder}.
  * <li>by the preoconfigured and provided {@link ItemFormat} instance, provided
  * by an implementation of the {@link ItemFormatFactorySpi}.
+<<<<<<< HEAD
+=======
+ * <p>
+ * Further more when parsing amounts, it is often desirable to control the
+ * checks for the required decimals of the given target currency (aka lenient
+ * fraction parsing). In even more advanced use cases, also additional
+ * configuration attributes may be necessary to be passed to a formatter/parser
+ * instance.
+>>>>>>> branch 'master' of https://github.com/JavaMoney/javamoney.git
  * <p>
  * Finally instances of {@link LocalizationStyle} can be registered to the
  * internal style cache, which allows to share the according styles, by

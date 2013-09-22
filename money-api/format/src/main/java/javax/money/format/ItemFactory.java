@@ -18,22 +18,26 @@ import javax.money.MonetaryFunction;
 
 /**
  * This class models the component that interprets/assembles the result
- * collected by several {@link FormatToken} and build the final item {@code T}
- * to be returned as the parse result.<br/>
+ * collected by several {@link FormatToken} to build the final item {@code T} to
+ * be returned as the parse result, and as defined by
+ * {@link ItemFormat#getTargetClass()}.<br/>
  * As an example parsing a monetary amount includes parsing of a {@link Number}
  * as well as a {@link CurrencyUnit}. An instance of {@link ItemFactory} finally
- * than creates an instance of {@link MonetaryAmount} to be returned by the
+ * than creates an instance of {@link MonetaryAmount}, e.g.
+ * {@code javax.money.Money} to be returned by the
  * {@code ItemFormat<MonetaryAmount>}, assembled from the {@link Number} and the
  * {@link CurrencyUnit} parsed earlier.
  * 
  * @author Anatole Tresch
  * 
  * @param <T>
+ *            the target type
  */
 public interface ItemFactory<T> extends MonetaryFunction<ParseContext<T>, T> {
 	/**
-	 * Returns {@code true}, if the required item is available from the parsed
-	 * results.
+	 * Returns {@code true}, if the required final target item is available from
+	 * the parsed results, this method is used by the {@link ItemFormat} to
+	 * evaluate if further parsing of an input stream can be stopped.
 	 * 
 	 * @param context
 	 *            The current {@link ParseContext}.

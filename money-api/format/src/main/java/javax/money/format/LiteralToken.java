@@ -13,20 +13,21 @@
 package javax.money.format;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
  * {@link FormatToken} which adds an arbitrary literal constant value to the
  * output.
  * <p>
- * This class is thread safe.
+ * This class is thread safe, immutable and serializable.
  * 
  * @author Anatole Tresch
  * 
  * @param <T>
  *            The item type.
  */
-public final class LiteralToken<R> implements FormatToken<R> {
+public final class LiteralToken<R> implements FormatToken<R>, Serializable {
 
 	/**
 	 * The literal part.
@@ -46,18 +47,6 @@ public final class LiteralToken<R> implements FormatToken<R> {
 			throw new IllegalArgumentException("Token is required.");
 		}
 		this.token = token;
-	}
-
-	/**
-	 * Sets the token's id.
-	 * 
-	 * @param tokenId
-	 *            the tokemId
-	 * @return this, for fluent API chaining.
-	 */
-	public LiteralToken withTokenId(String tokenId) {
-		this.tokenId = tokenId;
-		return this;
 	}
 
 	/*

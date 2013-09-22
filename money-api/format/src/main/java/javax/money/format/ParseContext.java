@@ -18,9 +18,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Context used when parsing items using a {@link ItemFormatBuilder}. It allows
- * to insepect the next tokens, the whole input String, or current parsing
- * position etc.
+ * Context passed along to each {@link FormatToken} in-line, when parsing an
+ * input stream using a {@link ItemFormatBuilder}. It allows to inspect the
+ * next tokens, the whole input String, or just the current input substring,
+ * based on the current parsing position etc.
  * <p>
  * This class is mutable and intended for use by a single thread. A new instance
  * is created for each parse.

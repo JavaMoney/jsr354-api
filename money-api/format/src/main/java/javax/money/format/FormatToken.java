@@ -19,10 +19,15 @@ import java.util.Locale;
  * Formats instances of {@code T} to a {@link String} or an {@link Appendable}.
  * Instances of {@link FormatToken} can be added to a {@link ItemFormatBuilder}
  * to assemble a complex input/output {@link ItemFormat} using a programmatic
- * fluent API.
+ * fluent API. Hereby each {@link FormatToken} instance represent a part of the
+ * overall formatted String. Similarly when parsing an input by calling
+ * {@link ItemFormat#parse(CharSequence, Locale)} each {@link FormatToken} can
+ * read and forward the current {@link ParseContext}, or through an error, if
+ * the input does not provide a parseable input for the given
+ * {@link FormatToken}.
  * <p>
- * Classes implementing this interface are not required to be thread-safe, since
- * formatters are not required to be thread-safe.
+ * Classes implementing this interface are required to be thread-safe and
+ * immutable.
  * 
  * @author Anatole Tresch
  */

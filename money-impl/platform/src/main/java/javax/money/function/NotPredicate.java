@@ -13,31 +13,33 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package javax.money.function.predicates;
-
-import java.util.ArrayList;
-import java.util.List;
+package javax.money.function;
 
 import javax.money.Predicate;
 
 
 /**
- * This predicate implements the logic {@code and} operations, where
- * {@code AndPredicate(p1,p2) == p1 && p2}.
+ * This predicate implements the logic {@code or and xor} operations, where
+ * {@code OrPredicate(p1,p2) == p1 || p2} or
+ * {@code OrPredicate(p1,p2) == (p1 || p2) && !(p1 && p2)}.
  * 
  * @author Anatole Tresch
  */
-final class AndPredicate<T> implements Predicate<T> {
+final class NotPredicate<T> implements Predicate<T> {
 	/** The child predicates. */
-	private List<Predicate<? super T>> predicates = new ArrayList<Predicate<? super T>>();
+	private Predicate<? super T> predicate;
 
-	@SafeVarargs
-	AndPredicate(Iterable<? extends Predicate<? super T>>... predicates) {
-		for (Iterable<? extends Predicate<? super T>> iterable : predicates) {
-			for (Predicate<? super T> predicate : iterable) {
-				this.predicates.add(predicate);
-			}
+	/**
+	 * Creates an NOT predicate.
+	 * 
+	 * @param predicate
+	 *            The predicate to be inversed.
+	 */
+	NotPredicate(Predicate<? super T> predicate) {
+		if (predicate == null) {
+			throw new IllegalArgumentException("predicate required.");
 		}
+		this.predicate = predicate;
 	}
 
 	/*
@@ -47,12 +49,7 @@ final class AndPredicate<T> implements Predicate<T> {
 	 */
 	@Override
 	public Boolean apply(T value) {
-		for (Predicate<? super T> predicate : predicates) {
-			if (!predicate.apply(value)) {
-				return Boolean.FALSE;
-			}
-		}
-		return Boolean.TRUE;
+		return !predicate.apply(value);
 	}
 
 }

@@ -19,8 +19,9 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryFunction;
-import javax.money.MonetaryOperator;
+import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryQuery;
 
 /**
  * This singleton class provides access to the predefined monetary functions.
@@ -46,19 +47,7 @@ public final class MonetaryFunctions {
 	private static final MajorPart MAJORPART = new MajorPart();
 	/** Shared major units instance. */
 	private static final MajorUnits MAJORUNITS = new MajorUnits();
-	/**
-	 * The shared instance of this class.
-	 */
-	private static final Total TOTAL = new Total();
-	/** Shared average instance. */
-	private static final Average AVERAGE = new Average();
 
-	/**
-	 * The shared instance of this class.
-	 */
-	private static final Maximum MAXIMUM = new Maximum();
-	/** Shared minimum instance. */
-	private static final Minimum MINIMUM = new Minimum();
 
 	/**
 	 * Private singleton constructor.
@@ -80,12 +69,12 @@ public final class MonetaryFunctions {
 	}
 
 	/**
-	 * Return a {@link MonetaryOperator} realizing the recorpocal value of
+	 * Return a {@link MonetaryAdjuster} realizing the recorpocal value of
 	 * {@code f(R) = 1/R}.
 	 * 
 	 * @return the reciprocal operator, never {@code null}
 	 */
-	public static MonetaryOperator reciprocal() {
+	public static MonetaryAdjuster reciprocal() {
 		return RECIPROCAL;
 	}
 
@@ -94,7 +83,7 @@ public final class MonetaryFunctions {
 	 * @param decimal the decimal value of the permil operator being created.
 	 * @return a new  {@code Permil} operator
 	 */
-	public static MonetaryOperator permil(BigDecimal decimal) {
+	public static MonetaryAdjuster permil(BigDecimal decimal) {
 		return new Permil(decimal);
 	}
 
@@ -103,7 +92,7 @@ public final class MonetaryFunctions {
 	 * @param decimal the decimal value of the permil operator being created.
 	 * @return a new  {@code Permil} operator
 	 */
-	public static MonetaryOperator permil(Number number) {
+	public static MonetaryAdjuster permil(Number number) {
 		return permil(number, DEFAULT_MATH_CONTEXT);
 	}
 
@@ -112,7 +101,7 @@ public final class MonetaryFunctions {
 	 * @param decimal the decimal value of the permil operator being created.
 	 * @return a new  {@code Permil} operator
 	 */
-	public static MonetaryOperator permil(Number number, MathContext mathContext) {
+	public static MonetaryAdjuster permil(Number number, MathContext mathContext) {
 		return new Permil(getBigDecimal(number, mathContext));
 	}
 
@@ -139,7 +128,7 @@ public final class MonetaryFunctions {
 	 * @param decimal the decimal value of the percent operator being created.
 	 * @return a new  {@code Percent} operator
 	 */
-	public static MonetaryOperator percent(BigDecimal decimal) {
+	public static MonetaryAdjuster percent(BigDecimal decimal) {
 		return new Percent(decimal); // TODO caching, e.g. array for 1-100 might
 										// work.
 	}
@@ -150,7 +139,7 @@ public final class MonetaryFunctions {
 	 * 
 	 * @return a new  {@code Percent} operator
 	 */
-	public static MonetaryOperator percent(Number number) {
+	public static MonetaryAdjuster percent(Number number) {
 		return percent(getBigDecimal(number, DEFAULT_MATH_CONTEXT));
 	}
 
@@ -159,7 +148,7 @@ public final class MonetaryFunctions {
 	 * 
 	 * @return the shared instance, never {@code null}.
 	 */
-	public static MonetaryOperator minorPart() {
+	public static MonetaryAdjuster minorPart() {
 		return MINORPART;
 	}
 
@@ -168,7 +157,7 @@ public final class MonetaryFunctions {
 	 * 
 	 * @return the shared instance, never {@code null}.
 	 */
-	public static MonetaryOperator majorPart() {
+	public static MonetaryAdjuster majorPart() {
 		return MAJORPART;
 	}
 
@@ -177,7 +166,7 @@ public final class MonetaryFunctions {
 	 * 
 	 * @return the shared instance, never {@code null}.
 	 */
-	public static MonetaryFunction<MonetaryAmount, Long> minorUnits() {
+	public static MonetaryQuery<Long> minorUnits() {
 		return MINORUNITS;
 	}
 
@@ -186,44 +175,9 @@ public final class MonetaryFunctions {
 	 * 
 	 * @return the shared instance, never {@code null}.
 	 */
-	public static MonetaryFunction<MonetaryAmount, Long> majorUnits() {
+	public static MonetaryQuery<Long> majorUnits() {
 		return MAJORUNITS;
 	}
 
-	/**
-	 * Access the shared instance of {@link Total} for use.
-	 * 
-	 * @return the shared instance, never {@code null}.
-	 */
-	public static MonetaryFunction<Iterable<? extends MonetaryAmount>, MonetaryAmount> total() {
-		return TOTAL;
-	}
-
-	/**
-	 * Access the shared instance of {@link Total} for use.
-	 * 
-	 * @return the shared instance, never {@code null}.
-	 */
-	public static MonetaryFunction<Iterable<? extends MonetaryAmount>, MonetaryAmount> average() {
-		return AVERAGE;
-	}
-
-	/**
-	 * Access the shared instance of {@link Total} for use.
-	 * 
-	 * @return the shared instance, never {@code null}.
-	 */
-	public static MonetaryFunction<Iterable<? extends MonetaryAmount>, MonetaryAmount> minimum() {
-		return MINIMUM;
-	}
-
-	/**
-	 * Access the shared instance of {@link Total} for use.
-	 * 
-	 * @return the shared instance, never {@code null}.
-	 */
-	public static MonetaryFunction<Iterable<? extends MonetaryAmount>, MonetaryAmount> maximum() {
-		return MAXIMUM;
-	}
 
 }

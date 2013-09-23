@@ -21,9 +21,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.javamoney.ext.Displayable;
+
 /**
- * Adapter that implements the new {@link CurrencyUnit} interface using the
- * JDK's {@link Currency}.
+ * Platform RI: Adapter that implements the new {@link CurrencyUnit} interface
+ * using the JDK's {@link Currency}.
  * 
  * @version 0.5.1
  * @author Anatole Tresch
@@ -37,8 +39,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 */
 	private static final long serialVersionUID = -2523936311372374236L;
 
-	/** {@link CurrencyNamespace} for this currency. */
-	private CurrencyNamespace namespace;
 	/** currency code for this currency. */
 	private String currencyCode;
 	/** numeric code, or -1. */
@@ -50,15 +50,16 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 
 	private static final Map<String, MoneyCurrency> CACHED = new ConcurrentHashMap<String, MoneyCurrency>();
 
+	public static final String ISO_NAMESPACE = "IDO 4217";
+
 	/**
 	 * Private constructor.
 	 * 
 	 * @param currency
 	 */
-	private MoneyCurrency(CurrencyNamespace namespace, String code,
+	private MoneyCurrency(String code,
 			int numCode,
 			int fractionDigits) {
-		this.namespace = namespace;
 		this.currencyCode = code;
 		this.numericCode = numCode;
 		this.defaultFractionDigits = fractionDigits;
@@ -73,7 +74,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		if (currency == null) {
 			throw new IllegalArgumentException("Currency required.");
 		}
-		this.namespace = CurrencyNamespace.ISO_NAMESPACE;
 		this.currencyCode = currency.getCurrencyCode();
 		this.numericCode = currency.getNumericCode();
 		this.defaultFractionDigits = currency.getDefaultFractionDigits();
@@ -87,8 +87,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * @return the new instance, never null.
 	 */
 	public static MoneyCurrency of(Currency currency) {
-		String key = CurrencyNamespace.ISO_NAMESPACE.getId() + ':'
-				+ currency.getCurrencyCode();
+		String key = currency.getCurrencyCode();
 		MoneyCurrency cachedItem = CACHED.get(key);
 		if (cachedItem == null) {
 			cachedItem = new JDKCurrencyAdapter(currency);
@@ -102,59 +101,29 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * return a {@link Currency} when passed to
 	 * {@link Currency#getInstance(String)}.
 	 * 
-	 * @param currencyCode
-	 *            the ISO currency code, not null.
-	 * @return the corresponding {@link MonetaryCurrency} instance.
-	 */
-	public static MoneyCurrency of(String currencyCode) {
-		return of(Currency.getInstance(currencyCode));
-	}
-
-	/**
-	 * Access a new instance based on the ISO currency code. The code must
-	 * return a {@link Currency} when passed to
-	 * {@link Currency#getInstance(String)}.
-	 * 
 	 * @param namespace
 	 *            the target namespace.
 	 * @param currencyCode
 	 *            the ISO currency code, not null.
 	 * @return the corresponding {@link MonetaryCurrency} instance.
+	 * @throws IllegalArgumentException
+	 *             if no such currency exists.
 	 */
-	public static MoneyCurrency of(CurrencyNamespace namespace,
-			String currencyCode) {
-		String key = namespace.getId() + ':' + currencyCode;
-		MoneyCurrency cu = CACHED.get(key);
-		if (cu == null
-				&& namespace.getId().equals(CurrencyNamespace.ISO_NAMESPACE)) {
-			return of(currencyCode);
+	public static MoneyCurrency of(String currencyCode) {
+		MoneyCurrency cu = CACHED.get(currencyCode);
+		if (cu == null) {
+			if (MoneyCurrency.isJavaCurrency(currencyCode)) {
+				Currency cur = Currency.getInstance(currencyCode);
+				if (cur != null) {
+					return of(cur);
+				}
+			}
+		}
+		if (cu == null) {
+			throw new IllegalArgumentException("No such currency: "
+					+ currencyCode);
 		}
 		return cu;
-	}
-
-	/**
-	 * Access a new instance based on the ISO currency code. The code must
-	 * return a {@link Currency} when passed to
-	 * {@link Currency#getInstance(String)}.
-	 * 
-	 * @param namespace
-	 *            the target namespace id, must be resolvable by
-	 *            {@link CurrencyNamespace#of(String)}.
-	 * @param currencyCode
-	 *            the ISO currency code, not null.
-	 * @return the corresponding {@link MonetaryCurrency} instance.
-	 * @throws IllegalArgumentException
-	 *             if the {@link CurrencyNamespace} is not defined.
-	 */
-	public static CurrencyUnit of(String namespaceId, String currencyCode) {
-		return of(CurrencyNamespace.of(namespaceId), currencyCode);
-	}
-
-	/**
-	 * Get the namepsace of this {@link CurrencyUnit}, returns 'ISO-4217'.
-	 */
-	public CurrencyNamespace getNamespace() {
-		return namespace;
 	}
 
 	/*
@@ -166,30 +135,51 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		return currencyCode;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Gets a numeric currency code. within the ISO-4217 name space, this equals
+	 * to the ISO numeric code. In other currency name spaces this number may be
+	 * different, or even undefined (-1).
+	 * <p>
+	 * The numeric code is an optional alternative to the standard currency
+	 * code. If defined, the numeric code is required to be unique within its
+	 * namespace.
+	 * <p>
+	 * This method matches the API of <type>java.util.Currency</type>.
 	 * 
-	 * @see javax.money.CurrencyUnit#getNumericCode()
+	 * @see #getNamespace()
+	 * @return the numeric currency code
 	 */
 	public int getNumericCode() {
 		return numericCode;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Gets the number of fractional digits typically used by this currency.
+	 * <p>
+	 * Different currencies have different numbers of fractional digits by
+	 * default. * For example, 'GBP' has 2 fractional digits, but 'JPY' has
+	 * zero. * virtual currencies or those with no applicable fractional are
+	 * indicated by -1. *
+	 * <p>
+	 * This method matches the API of <type>java.util.Currency</type>.
 	 * 
-	 * @see javax.money.CurrencyUnit#getDefaultFractionDigits()
+	 * @return the fractional digits, from 0 to 9 (normally 0, 2 or 3), or -1
+	 *         for pseudo-currencies.
+	 * 
 	 */
 	public int getDefaultFractionDigits() {
 		return defaultFractionDigits;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Get the rounding steps in minor units for when using a cash amount of
+	 * this currency. E.g. Swiss Francs in cash are always rounded in 5 minor
+	 * unit steps. This results in {@code 1.00, 1.05, 1.10} etc. The cash
+	 * rounding consequently extends the default fraction units for certain
+	 * currencies.
 	 * 
-	 * @see javax.money.CurrencyUnit#getCashRounding()
+	 * @return the cash rounding, or -1, if not defined.
 	 */
-	@Override
 	public int getCashRounding() {
 		return cacheRounding;
 	}
@@ -200,24 +190,17 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(CurrencyUnit currency) {
-		int compare = getNamespace().compareTo(currency.getNamespace());
-		if (compare == 0) {
-			compare = getCurrencyCode().compareTo(currency.getCurrencyCode());
-		}
-		return compare;
+		return getCurrencyCode().compareTo(currency.getCurrencyCode());
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Returns {@link #getCurrencyCode()}
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		if (CurrencyNamespace.ISO_NAMESPACE.equals(namespace.getId())) {
-			return currencyCode;
-		}
-		return namespace.getId() + ':' + currencyCode;
+		return currencyCode;
 	}
 
 	/**
@@ -227,8 +210,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 * @author Anatole Tresch
 	 */
 	public static final class Builder {
-		/** namespace for this currency. */
-		private CurrencyNamespace namespace;
 		/** currency code for this currency. */
 		private String currencyCode;
 		/** numeric code, or -1. */
@@ -242,38 +223,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		 * Creates a new {@link Builder}.
 		 */
 		public Builder() {
-		}
-
-		/**
-		 * Set the namespace.
-		 * 
-		 * @param namespace
-		 *            the namespace, not null
-		 * @return the builder, for chaining
-		 */
-		public Builder withNamespace(CurrencyNamespace namespace) {
-			if (namespace == null) {
-				throw new IllegalArgumentException("namespace may not be null.");
-			}
-			this.namespace = namespace;
-			return this;
-		}
-
-		/**
-		 * Set the namespace, using the namespace id.
-		 * 
-		 * @see CurrencyNamespace#of(String)
-		 * 
-		 * @param namespace
-		 *            the namespace, not null
-		 * @return the builder, for chaining
-		 */
-		public Builder withNamespace(String namespace) {
-			if (namespace == null) {
-				throw new IllegalArgumentException("namespace may not be null.");
-			}
-			this.namespace = CurrencyNamespace.of(namespace);
-			return this;
 		}
 
 		/**
@@ -362,20 +311,16 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		 * @return a new instance of {@link MoneyCurrency}.
 		 */
 		public MoneyCurrency build(boolean cache) {
-			if (namespace == null) {
-				throw new IllegalArgumentException("namespace null.");
-			}
 			if (cache) {
-				String key = namespace.getId() + ':' + currencyCode;
-				MoneyCurrency current = CACHED.get(key);
+				MoneyCurrency current = CACHED.get(currencyCode);
 				if (current == null) {
-					current = new MoneyCurrency(namespace, currencyCode,
+					current = new MoneyCurrency(currencyCode,
 							numericCode, defaultFractionDigits);
-					CACHED.put(key, current);
+					CACHED.put(currencyCode, current);
 				}
 				return current;
 			}
-			return new MoneyCurrency(namespace, currencyCode, numericCode,
+			return new MoneyCurrency(currencyCode, numericCode,
 					defaultFractionDigits);
 		}
 	}
@@ -430,10 +375,33 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		 */
 		@Override
 		public String toString() {
-			return CurrencyNamespace.ISO_NAMESPACE.getId() + ':'
-					+ getCurrencyCode();
+			return getCurrencyCode();
 		}
 
+	}
+
+	public static MoneyCurrency from(CurrencyUnit currency) {
+		if (MoneyCurrency.class == currency.getClass()) {
+			return (MoneyCurrency) currency;
+		}
+		return MoneyCurrency.of(currency.getCurrencyCode());
+	}
+
+	public static boolean isJavaCurrency(String code) {
+		try {
+			return Currency.getInstance(code) != null;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public static boolean isAvailable(String code) {
+		try {
+			of(code);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

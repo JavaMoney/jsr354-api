@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.math.RoundingMode;
 
-import javax.money.MonetaryOperator;
+import javax.money.MonetaryAdjuster;
 import javax.money.MoneyCurrency;
 
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class MoneyRoundingsTest {
 	 */
 	@Test
 	public void testGetRoundingCurrencyUnitRoundingMode() {
-		MonetaryOperator rounding = MonetaryRoundings.getRounding(MoneyCurrency
+		MonetaryAdjuster rounding = MonetaryRoundings.getRounding(MoneyCurrency
 				.of("CHF").getDefaultFractionDigits(),
 				RoundingMode.FLOOR);
 		assertNotNull(rounding);
@@ -49,7 +49,7 @@ public class MoneyRoundingsTest {
 	 */
 	@Test
 	public void testGetRoundingCurrencyUnit() {
-		MonetaryOperator rounding = MonetaryRoundings.getRounding(MoneyCurrency.of("CHF"));
+		MonetaryAdjuster rounding = MonetaryRoundings.getRounding(MoneyCurrency.of("CHF"));
 		assertNotNull(rounding);
 	}
 
@@ -60,7 +60,7 @@ public class MoneyRoundingsTest {
 	 */
 	@Test
 	public void testGetRoundingIntRoundingMode() {
-		MonetaryOperator rounding = MonetaryRoundings.getRounding(3, RoundingMode.FLOOR);
+		MonetaryAdjuster rounding = MonetaryRoundings.getRounding(3, RoundingMode.FLOOR);
 		assertNotNull(rounding);
 	}
 

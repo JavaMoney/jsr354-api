@@ -22,11 +22,11 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import javax.money.Displayable;
 import javax.money.Money;
 import javax.money.function.Percent;
 
 
+import org.javamoney.ext.Displayable;
 import org.junit.Test;
 
 /**
@@ -43,25 +43,25 @@ public class PercentTest {
     @Test
     public void testApply() {
     	final Money m = Money.of("CHF", BigDecimal.valueOf(2.35d));
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.235d)), MonetaryFunctions.percent(BigDecimal.TEN).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.235d)), MonetaryFunctions.percent(BigDecimal.TEN).adjustInto(m));
     }
 
     @Test
     public void testApply10() {
     	final Money m = Money.of("CHF", 3);
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.3d)), MonetaryFunctions.percent(BigDecimal.TEN).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.3d)), MonetaryFunctions.percent(BigDecimal.TEN).adjustInto(m));
     }
 
     @Test
     public void testApply20() {
     	final Money m = Money.of("CHF", 120);
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(24d)), MonetaryFunctions.percent(BigDecimal.valueOf(20)).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(24d)), MonetaryFunctions.percent(BigDecimal.valueOf(20)).adjustInto(m));
     }
 
     @Test
     public void testApply30() {
     	final Money m = Money.of("CHF", 120);
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(36d)), MonetaryFunctions.percent(BigDecimal.valueOf(30)).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(36d)), MonetaryFunctions.percent(BigDecimal.valueOf(30)).adjustInto(m));
     }
 
     @Test

@@ -17,9 +17,9 @@ package javax.money.function;
 
 import java.math.BigDecimal;
 
+import javax.money.MonetaryAdjuster;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryFunction;
-import javax.money.MonetaryOperator;
+import javax.money.Money;
 
 /**
  * This class allows to extract the minor part of a {@link MonetaryAmount}
@@ -27,7 +27,7 @@ import javax.money.MonetaryOperator;
  * 
  * @author Anatole Tresch
  */
-final class MinorPart implements MonetaryOperator {
+final class MinorPart<T extends MonetaryAmount> implements MonetaryAdjuster {
 
 	/**
 	 * Private constructor, there is only one instance of this class, accessible
@@ -51,13 +51,14 @@ final class MinorPart implements MonetaryOperator {
 	 * @return the major units part of the amount, never {@code null}
 	 */
 	@Override
-	public MonetaryAmount apply(MonetaryAmount amount) {
+	public <T extends MonetaryAmount> T adjustInto(T amount) {
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount required.");
 		}
-		BigDecimal number = amount.asType(BigDecimal.class);
-		return amount.with(number.movePointRight(number.precision())
-				.longValueExact());
+		BigDecimal number = Money.from(amount).asType(BigDecimal.class);
+		return (T) Money.of(amount.getCurrency(),
+				number.movePointRight(number.precision())
+						.longValueExact());
 	}
 
 }

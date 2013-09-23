@@ -27,39 +27,22 @@ public class MoneyCurrencyTest {
 
 	@Test
 	public void testOfCurrency() {
-		CurrencyUnit cur = MoneyCurrency.of(Currency.getInstance("CHF"));
+		MoneyCurrency cur = MoneyCurrency.of(Currency.getInstance("CHF"));
 		assertNotNull(cur);
 		assertEquals("CHF", cur.getCurrencyCode());
 	}
 
 	@Test
 	public void testOfString() {
-		CurrencyUnit cur = MoneyCurrency.of("CHF");
+		MoneyCurrency cur = MoneyCurrency.of("CHF");
 		assertNotNull(cur);
 		assertEquals("CHF", cur.getCurrencyCode());
 
-	}
-
-	@Test
-	public void testOfStringString() {
-		CurrencyUnit cur = MoneyCurrency.of(CurrencyNamespace.ISO_NAMESPACE,
-				"CHF");
-		assertNotNull(cur);
-		assertEquals("CHF", cur.getCurrencyCode());
-		assertEquals(CurrencyNamespace.ISO_NAMESPACE, cur.getNamespace());
-	}
-
-	@Test
-	public void testGetNamespace() {
-		CurrencyUnit cur = MoneyCurrency.of(CurrencyNamespace.ISO_NAMESPACE,
-				"CHF");
-		assertNotNull(cur);
-		assertEquals(CurrencyNamespace.ISO_NAMESPACE, cur.getNamespace());
 	}
 
 	@Test
 	public void testGetCurrencyCode() {
-		CurrencyUnit cur = MoneyCurrency.of(CurrencyNamespace.ISO_NAMESPACE,
+		MoneyCurrency cur = MoneyCurrency.of(
 				"CHF");
 		assertNotNull(cur);
 		assertEquals("CHF", cur.getCurrencyCode());
@@ -67,7 +50,7 @@ public class MoneyCurrencyTest {
 
 	@Test
 	public void testGetNumericCode() {
-		CurrencyUnit cur = MoneyCurrency.of(CurrencyNamespace.ISO_NAMESPACE,
+		MoneyCurrency cur = MoneyCurrency.of(
 				"CHF");
 		assertNotNull(cur);
 		assertEquals(Currency.getInstance("CHF").getNumericCode(),
@@ -76,7 +59,7 @@ public class MoneyCurrencyTest {
 
 	@Test
 	public void testGetDefaultFractionDigits() {
-		CurrencyUnit cur = MoneyCurrency.of(CurrencyNamespace.ISO_NAMESPACE,
+		MoneyCurrency cur = MoneyCurrency.of(
 				"CHF");
 		assertNotNull(cur);
 		assertEquals(Currency.getInstance("CHF").getDefaultFractionDigits(),
@@ -85,8 +68,8 @@ public class MoneyCurrencyTest {
 
 	@Test
 	public void testCompareTo() {
-		CurrencyUnit cu = MoneyCurrency.of("CHF");
-		CurrencyUnit cu2 = MoneyCurrency.of("EUR");
+		MoneyCurrency cu = MoneyCurrency.of("CHF");
+		MoneyCurrency cu2 = MoneyCurrency.of("EUR");
 		assertTrue(((Comparable) cu).compareTo(cu2) < 0);
 		assertTrue(((Comparable) cu2).compareTo(cu) > 0);
 		assertTrue(((Comparable) cu).compareTo(cu) == 0);
@@ -94,7 +77,7 @@ public class MoneyCurrencyTest {
 
 	@Test
 	public void testToString() {
-		assertEquals("ISO-4217:CHF", MoneyCurrency.of("CHF").toString());
+		assertEquals("CHF", MoneyCurrency.of("CHF").toString());
 	}
 
 }

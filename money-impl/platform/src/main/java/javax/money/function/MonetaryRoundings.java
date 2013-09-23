@@ -22,15 +22,15 @@ import java.util.ServiceLoader;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryFunction;
-import javax.money.MonetaryOperator;
+import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryAdjuster;
 import javax.money.spi.RoundingProviderSpi;
 
 import org.slf4j.LoggerFactory;
 
 /**
  * This class models the accessor for rounding instances, modeled by
- * {@link MonetaryOperator}.
+ * {@link MonetaryAdjuster}.
  * <p>
  * This class is thread-safe.
  * 
@@ -42,7 +42,7 @@ public final class MonetaryRoundings {
 	 * An adaptive rounding instance that transparently looks up the correct
 	 * rounding.
 	 */
-	private static final MonetaryOperator DEFAULT_ROUNDING = new DefaultCurrencyRounding();
+	private static final MonetaryAdjuster DEFAULT_ROUNDING = new DefaultCurrencyRounding();
 	/**
 	 * The internal fallback provider, if no registered
 	 * {@link RoundingProviderSpi} could return a rounding.
@@ -69,14 +69,14 @@ public final class MonetaryRoundings {
 	}
 
 	/**
-	 * Creates a rounding that can be added as {@link MonetaryFunction} to
+	 * Creates a rounding that can be added as {@link MonetaryAdjuster} to
 	 * chained calculations. The instance will lookup the concrete
-	 * {@link MonetaryOperator} instance from the {@link MonetaryRoundings} based
+	 * {@link MonetaryAdjuster} instance from the {@link MonetaryRoundings} based
 	 * on the input {@link MonetaryAmount}'s {@link CurrencyUnit}.
 	 * 
 	 * @return the (shared) default rounding instance.
 	 */
-	public static MonetaryOperator getRounding() {
+	public static MonetaryAdjuster getRounding() {
 		return DEFAULT_ROUNDING;
 	}
 
@@ -86,24 +86,24 @@ public final class MonetaryRoundings {
 	 * @param mathContext
 	 *            The {@link MathContext} to be used, not {@code null}.
 	 */
-	public static MonetaryOperator getRounding(int scale,
+	public static MonetaryAdjuster getRounding(int scale,
 			RoundingMode roundingMode) {
 		return new DefaultRounding(scale, roundingMode);
 	}
 
 	/**
-	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
+	 * Creates an {@link MonetaryAdjuster} for rounding {@link MonetaryAmount}
 	 * instances given a currency.
 	 * 
 	 * @param currency
 	 *            The currency, which determines the required precision. As
 	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link MonetaryOperator} implementing the
+	 * @return a new instance {@link MonetaryAdjuster} implementing the
 	 *         rounding, never {@code null}.
 	 */
-	public static MonetaryOperator getRounding(CurrencyUnit currency) {
-		MonetaryOperator op = null;
+	public static MonetaryAdjuster getRounding(CurrencyUnit currency) {
+		MonetaryAdjuster op = null;
 		for (RoundingProviderSpi prov : providerSpis) {
 			try {
 				op = prov.getRounding(currency);
@@ -120,18 +120,18 @@ public final class MonetaryRoundings {
 	}
 
 	/**
-	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
+	 * Creates an {@link MonetaryAdjuster} for rounding {@link MonetaryAmount}
 	 * instances given a currency.
 	 * 
 	 * @param currency
 	 *            The currency, which determines the required precision. As
 	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link MonetaryOperator} implementing the
+	 * @return a new instance {@link MonetaryAdjuster} implementing the
 	 *         rounding, never {@code null}.
 	 */
-	public static MonetaryOperator getCashRounding(CurrencyUnit currency) {
-		MonetaryOperator op = null;
+	public static MonetaryAdjuster getCashRounding(CurrencyUnit currency) {
+		MonetaryAdjuster op = null;
 		for (RoundingProviderSpi prov : providerSpis) {
 			try {
 				op = prov.getCashRounding(currency);
@@ -151,7 +151,7 @@ public final class MonetaryRoundings {
 	}
 
 	/**
-	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
+	 * Creates an {@link MonetaryAdjuster} for rounding {@link MonetaryAmount}
 	 * instances given a currency, hereby the rounding must be valid for the
 	 * given timestamp.
 	 * 
@@ -161,12 +161,12 @@ public final class MonetaryRoundings {
 	 *            is used.
 	 * @param timestamp
 	 *            the UTC timestamp.
-	 * @return a new instance {@link MonetaryOperator} implementing the
+	 * @return a new instance {@link MonetaryAdjuster} implementing the
 	 *         rounding, or {@code null}.
 	 */
-	public static MonetaryOperator getRounding(CurrencyUnit currency,
+	public static MonetaryAdjuster getRounding(CurrencyUnit currency,
 			long timestamp) {
-		MonetaryOperator op = null;
+		MonetaryAdjuster op = null;
 		for (RoundingProviderSpi prov : providerSpis) {
 			try {
 				op = prov.getRounding(currency, timestamp);
@@ -186,7 +186,7 @@ public final class MonetaryRoundings {
 	}
 
 	/**
-	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
+	 * Creates an {@link MonetaryAdjuster} for rounding {@link MonetaryAmount}
 	 * instances given a currency, hereby the rounding must be valid for the
 	 * given timestamp.
 	 * 
@@ -196,12 +196,12 @@ public final class MonetaryRoundings {
 	 *            is sued.
 	 * @param timestamp
 	 *            the UTC timestamp.
-	 * @return a new instance {@link MonetaryOperator} implementing the
+	 * @return a new instance {@link MonetaryAdjuster} implementing the
 	 *         rounding, or {@code null}.
 	 */
-	public static MonetaryOperator getCashRounding(CurrencyUnit currency,
+	public static MonetaryAdjuster getCashRounding(CurrencyUnit currency,
 			long timestamp) {
-		MonetaryOperator op = null;
+		MonetaryAdjuster op = null;
 		for (RoundingProviderSpi prov : providerSpis) {
 			try {
 				op = prov.getCashRounding(currency, timestamp);
@@ -227,13 +227,13 @@ public final class MonetaryRoundings {
 	 * @author Anatole Tresch
 	 */
 	private static final class DefaultCurrencyRounding implements
-			MonetaryOperator {
+			MonetaryAdjuster {
 
 		@Override
-		public MonetaryAmount apply(MonetaryAmount amount) {
-			MonetaryOperator r = MonetaryRoundings.getRounding(amount
+		public <T extends MonetaryAmount> T adjustInto(T amount) {
+			MonetaryAdjuster r = MonetaryRoundings.getRounding(amount
 					.getCurrency());
-			return r.apply(amount);
+			return r.adjustInto(amount);
 		}
 
 	}
@@ -242,23 +242,23 @@ public final class MonetaryRoundings {
 			RoundingProviderSpi {
 
 		@Override
-		public MonetaryOperator getRounding(CurrencyUnit currency) {
+		public MonetaryAdjuster getRounding(CurrencyUnit currency) {
 			return new DefaultRounding(currency);
 		}
 
 		@Override
-		public MonetaryOperator getRounding(CurrencyUnit currency,
+		public MonetaryAdjuster getRounding(CurrencyUnit currency,
 				long timestamp) {
 			return null;
 		}
 
 		@Override
-		public MonetaryOperator getCashRounding(CurrencyUnit currency) {
+		public MonetaryAdjuster getCashRounding(CurrencyUnit currency) {
 			return new DefaultCashRounding(currency);
 		}
 
 		@Override
-		public MonetaryOperator getCashRounding(CurrencyUnit currency,
+		public MonetaryAdjuster getCashRounding(CurrencyUnit currency,
 				long timestamp) {
 			return null;
 		}

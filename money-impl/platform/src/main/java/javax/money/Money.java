@@ -29,8 +29,8 @@ import java.math.MathContext;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Default immutable implementation of {@link MonetaryAmount} based on
- * {@link BigDecimal} for the numeric representation.
+ * Platform RI: Default immutable implementation of {@link MonetaryAmount} based
+ * on {@link BigDecimal} for the numeric representation.
  * <p>
  * As required by {@link MonetaryAmount} this class is final, thread-safe,
  * immutable and serializable.
@@ -61,7 +61,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 * @param number
 	 *            the amount, not null.
 	 */
-	public Money(CurrencyUnit currency, Number number) {
+	private Money(CurrencyUnit currency, Number number) {
 		this(currency, number, getDefaultMathContext());
 	}
 
@@ -79,7 +79,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 * @param number
 	 *            the amount, not null.
 	 */
-	public Money(CurrencyUnit currency, Number number, MathContext mathContext) {
+	private Money(CurrencyUnit currency, Number number, MathContext mathContext) {
 		if (currency == null) {
 			throw new IllegalArgumentException("Currency is required.");
 		}
@@ -263,14 +263,10 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 		checkAmountParameter(this.currency, o);
 		int compare = -1;
 		if (this.currency.equals(o.getCurrency())) {
-			compare = this.number.compareTo(o.asType(BigDecimal.class));
+			compare = this.number.compareTo(Money.from(o).number);
 		} else {
-			compare = this.currency.getNamespace().compareTo(
-					o.getCurrency().getNamespace());
-			if (compare == 0) {
-				compare = this.currency.getCurrencyCode().compareTo(
-						o.getCurrency().getCurrencyCode());
-			}
+			compare = this.currency.getCurrencyCode().compareTo(
+					o.getCurrency().getCurrencyCode());
 		}
 		return compare;
 	}
@@ -331,7 +327,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	public Money add(MonetaryAmount amount) {
 		checkAmountParameter(this.currency, amount);
 		return new Money(this.currency, this.number.add(
-				amount.asType(BigDecimal.class), this.mathContext),
+				Money.from(amount).number, this.mathContext),
 				this.mathContext);
 	}
 
@@ -382,7 +378,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	public Money divide(MonetaryAmount divisor) {
 		checkAmountParameter(this.currency, divisor);
-		BigDecimal dec = this.number.divide(divisor.asType(BigDecimal.class),
+		BigDecimal dec = this.number.divide(Money.from(divisor).number,
 				this.mathContext);
 		return new Money(this.currency, dec, this.mathContext);
 	}
@@ -407,7 +403,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	public Money[] divideAndRemainder(MonetaryAmount divisor) {
 		checkAmountParameter(this.currency, divisor);
 		BigDecimal[] dec = this.number.divideAndRemainder(
-				divisor.asType(BigDecimal.class), this.mathContext);
+				Money.from(divisor).number, this.mathContext);
 		return new Money[] {
 				new Money(this.currency, dec[0], this.mathContext),
 				new Money(this.currency, dec[1], this.mathContext) };
@@ -437,7 +433,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	public Money divideToIntegralValue(MonetaryAmount divisor) {
 		checkAmountParameter(this.currency, divisor);
 		BigDecimal dec = this.number.divideToIntegralValue(
-				divisor.asType(BigDecimal.class), this.mathContext);
+				Money.from(divisor).number, this.mathContext);
 		return new Money(this.currency, dec, this.mathContext);
 	}
 
@@ -460,7 +456,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	public Money multiply(MonetaryAmount multiplicand) {
 		checkAmountParameter(this.currency, multiplicand);
 		BigDecimal dec = this.number.multiply(
-				multiplicand.asType(BigDecimal.class), this.mathContext);
+				Money.from(multiplicand).number, this.mathContext);
 		return new Money(this.currency, dec, this.mathContext);
 	}
 
@@ -503,7 +499,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	public Money subtract(MonetaryAmount subtrahend) {
 		checkAmountParameter(this.currency, subtrahend);
 		return new Money(this.currency, this.number.subtract(
-				subtrahend.asType(BigDecimal.class), this.mathContext),
+				Money.from(subtrahend).number, this.mathContext),
 				this.mathContext);
 	}
 
@@ -546,7 +542,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	public Money remainder(MonetaryAmount divisor) {
 		checkAmountParameter(this.currency, divisor);
 		return new Money(this.currency, this.number.remainder(
-				divisor.asType(BigDecimal.class), this.mathContext),
+				Money.from(divisor).number, this.mathContext),
 				this.mathContext);
 	}
 
@@ -772,7 +768,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	public boolean isLessThan(MonetaryAmount amount) {
 		checkAmountParameter(this.currency, amount);
-		return number.compareTo(amount.asType(BigDecimal.class)) < 0;
+		return number.compareTo(Money.from(amount).number) < 0;
 	}
 
 	/*
@@ -783,7 +779,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	public boolean isLessThanOrEqualTo(MonetaryAmount amount) {
 		checkAmountParameter(this.currency, amount);
-		return number.compareTo(amount.asType(BigDecimal.class)) <= 0;
+		return number.compareTo(Money.from(amount).number) <= 0;
 	}
 
 	/*
@@ -793,7 +789,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	public boolean isGreaterThan(MonetaryAmount amount) {
 		checkAmountParameter(this.currency, amount);
-		return number.compareTo(amount.asType(BigDecimal.class)) > 0;
+		return number.compareTo(Money.from(amount).number) > 0;
 	}
 
 	/*
@@ -805,7 +801,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	public boolean isGreaterThanOrEqualTo(MonetaryAmount amount) {
 		checkAmountParameter(this.currency, amount);
-		return number.compareTo(amount.asType(BigDecimal.class)) >= 0;
+		return number.compareTo(Money.from(amount).number) >= 0;
 	}
 
 	/*
@@ -815,7 +811,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	public boolean isEqualTo(MonetaryAmount amount) {
 		checkAmountParameter(this.currency, amount);
-		return number.compareTo(amount.asType(BigDecimal.class)) == 0;
+		return number.compareTo(Money.from(amount).number) == 0;
 	}
 
 	/*
@@ -825,7 +821,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	public boolean isNotEqualTo(MonetaryAmount amount) {
 		checkAmountParameter(this.currency, amount);
-		return number.compareTo(amount.asType(BigDecimal.class)) != 0;
+		return number.compareTo(Money.from(amount).number) != 0;
 	}
 
 	/*
@@ -843,8 +839,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 * @see javax.money.MonetaryAmount#adjust(javax.money.AmountAdjuster)
 	 */
 	@Override
-	public Money with(MonetaryOperator operation) {
-		return (Money) operation.apply(this);
+	public <T> T query(MonetaryQuery<T> query) {
+		return query.queryFrom(this);
 	}
 
 	/*
@@ -890,9 +886,18 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 * @see javax.money.MonetaryAmount#asType(java.lang.Class,
 	 * javax.money.Rounding)
 	 */
-	public <T> T asType(Class<T> type, MonetaryOperator adjuster) {
-		MonetaryAmount amount = adjuster.apply(this);
-		return amount.asType(type);
+	public <T> T asType(Class<T> type, MonetaryAdjuster adjuster) {
+		MonetaryAmount amount = adjuster.adjustInto(this);
+		return Money.from(amount).asType(type);
+	}
+	
+	/**
+	 * Gets the number representation of the numeric value of this item.
+	 * 
+	 * @return The {@link Number} represention matching best.
+	 */
+	public Number asNumber() {
+		return this.number;
 	}
 
 	private void writeObject(ObjectOutputStream oos) throws IOException {
@@ -918,7 +923,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 		}
 		if (this.currency == null) {
 			this.currency = MoneyCurrency.of(
-					CurrencyNamespace.ISO_NAMESPACE,
 					"XXX"); // no currency
 		}
 	}
@@ -931,6 +935,56 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	@Override
 	public String toString() {
 		return currency.getCurrencyCode() + ' ' + number;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.MonetaryAmount#getAmountWhole()
+	 */
+	@Override
+	public long getAmountWhole() {
+		return this.number.longValue();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.MonetaryAmount#getAmountFractionNumerator()
+	 */
+	@Override
+	public long getAmountFractionNumerator() {
+		return this.number.movePointRight(number.precision())
+				.longValueExact();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.money.MonetaryAmount#getAmountFractionDenominator()
+	 */
+	@Override
+	public long getAmountFractionDenominator() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Money with(MonetaryAdjuster adjuster) {
+		MonetaryAmount amt = adjuster.adjustInto(this);
+		return Money.from(amt);
+	}
+
+	public static Money from(MonetaryAmount amt) {
+		if (amt.getClass() == Money.class) {
+			return (Money) amt;
+		}
+		BigDecimal whole = BigDecimal.valueOf(amt.getAmountWhole());
+		BigDecimal fraction = BigDecimal.valueOf(amt
+				.getAmountFractionNumerator());
+		BigDecimal number = whole.add(fraction);
+		fraction = fraction.scaleByPowerOfTen(-fraction.precision());
+		return Money.of(amt.getCurrency(), number, getDefaultMathContext());
 	}
 
 	/**
@@ -976,13 +1030,11 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 				throw new IllegalArgumentException("Amount must not be null.");
 			}
 			final CurrencyUnit amountCurrency = amount.getCurrency();
-			if (!(currency.getNamespace().equals(amountCurrency.getNamespace()))
-					|| (currency.getNamespace().equals(
-							amountCurrency.getNamespace()) && !(currency
-							.getCurrencyCode()
-							.equals(amountCurrency.getCurrencyCode())))) {
+			if (!(currency.getCurrencyCode().equals(amountCurrency
+					.getCurrencyCode()))) {
 				throw new CurrencyMismatchException(currency, amountCurrency);
 			}
 		}
 	}
+
 }

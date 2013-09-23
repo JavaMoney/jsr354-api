@@ -1,17 +1,17 @@
 /*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package javax.money;
 
@@ -51,28 +51,6 @@ public class MoneyTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.Money#Money(javax.money.CurrencyUnit, java.lang.Number)}
-	 * .
-	 */
-	@Test
-	public void testMoneyCurrencyUnitNumber() {
-		CurrencyUnit curr = MoneyCurrency.of("CHF");
-		new Money(curr, 100);
-	}
-
-	/**
-	 * Test method for
-	 * {@link javax.money.Money#Money(javax.money.CurrencyUnit, java.lang.Number, java.math.MathContext)}
-	 * .
-	 */
-	@Test
-	public void testMoneyCurrencyUnitNumberMathContext() {
-		CurrencyUnit curr = MoneyCurrency.of("CHF");
-		new Money(curr, 100, MathContext.DECIMAL32);
-	}
-
-	/**
-	 * Test method for
 	 * {@link javax.money.Money#of(javax.money.CurrencyUnit, java.math.BigDecimal)}
 	 * .
 	 */
@@ -82,7 +60,7 @@ public class MoneyTest {
 		MonetaryAmount m = Money.of(curr, BigDecimal.ONE);
 		assertNotNull(m);
 		assertEquals(curr, m.getCurrency());
-		assertEquals(BigDecimal.ONE, m.asType(BigDecimal.class));
+		assertEquals(BigDecimal.ONE, Money.from(m).asType(BigDecimal.class));
 	}
 
 	/**
@@ -95,8 +73,9 @@ public class MoneyTest {
 		MonetaryAmount m = Money.of(curr, 1);
 		assertNotNull(m);
 		assertEquals(curr, m.getCurrency());
-		assertEquals(BigDecimal.ONE.intValue(), m.asType(BigDecimal.class)
-				.intValue());
+		assertEquals(BigDecimal.ONE.intValue(),
+				Money.from(m).asType(BigDecimal.class)
+						.intValue());
 	}
 
 	/**
@@ -107,7 +86,7 @@ public class MoneyTest {
 	@Test
 	public void testOfCurrencyUnitNumberMathContext() {
 		CurrencyUnit curr = MoneyCurrency.of("CHF");
-		MonetaryAmount m = Money.of(curr, 100, MathContext.DECIMAL32);
+		Money m = Money.of(curr, 100, MathContext.DECIMAL32);
 		assertNotNull(m);
 		assertEquals(curr, m.getCurrency());
 		assertEquals(100L, m.longValue());
@@ -120,7 +99,7 @@ public class MoneyTest {
 	@Test
 	public void testOfStringNumber() {
 		CurrencyUnit curr = MoneyCurrency.of("CHF");
-		MonetaryAmount m = Money.of("CHF", 100);
+		Money m = Money.of("CHF", 100);
 		assertNotNull(m);
 		assertEquals(curr, m.getCurrency());
 		assertEquals(100L, m.longValue());
@@ -134,31 +113,33 @@ public class MoneyTest {
 	@Test
 	public void testOfStringNumberMathContext() {
 		CurrencyUnit curr = MoneyCurrency.of("CHF");
-		MonetaryAmount m = Money.of("CHF", 100, MathContext.DECIMAL32);
+		Money m = Money.of("CHF", 100, MathContext.DECIMAL32);
 		assertNotNull(m);
 		assertEquals(curr, m.getCurrency());
 		assertEquals(100L, m.longValue());
 	}
 
 	/**
-	 * Test method for {@link javax.money.Money#ofZero(javax.money.CurrencyUnit)}.
+	 * Test method for
+	 * {@link javax.money.Money#ofZero(javax.money.CurrencyUnit)}.
 	 */
 	@Test
 	public void testZeroCurrencyUnit() {
 		CurrencyUnit curr = MoneyCurrency.of("CHF");
-		MonetaryAmount m = Money.ofZero(curr);
+		Money m = Money.ofZero(curr);
 		assertNotNull(m);
 		assertEquals(curr, m.getCurrency());
 		assertTrue(0.0d == m.doubleValue());
 	}
 
 	/**
-	 * Test method for {@link javax.money.Money#ofZero(javax.money.CurrencyUnit)}.
+	 * Test method for
+	 * {@link javax.money.Money#ofZero(javax.money.CurrencyUnit)}.
 	 */
 	@Test
 	public void testZeroString() {
 		CurrencyUnit curr = MoneyCurrency.of("CHF");
-		MonetaryAmount m = Money.ofZero("CHF");
+		Money m = Money.ofZero("CHF");
 		assertNotNull(m);
 		assertEquals(curr, m.getCurrency());
 		assertTrue(0.0d == m.doubleValue());
@@ -236,9 +217,8 @@ public class MoneyTest {
 		BigDecimal dec = new BigDecimal("135135.151757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount abs = m.abs();
-		assertEquals(dec.abs(), abs.asType(BigDecimal.class));
+		assertEquals(dec.abs(), Money.from(abs).asType(BigDecimal.class));
 	}
-
 
 	/**
 	 * Test method for {@link javax.money.Money#add(javax.money.MonetaryAmount)}
@@ -250,7 +230,8 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.add(Money.of("CHF", dec2));
-		assertEquals(dec.add(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
+		assertEquals(dec.add(dec2, MathContext.DECIMAL64),
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -262,7 +243,8 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.add(dec2);
-		assertEquals(dec.add(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
+		assertEquals(dec.add(dec2, MathContext.DECIMAL64),
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -275,7 +257,7 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("2");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.divide(Money.of("CHF", dec2));
-		assertEquals(dec.divide(dec2), res.asType(BigDecimal.class));
+		assertEquals(dec.divide(dec2), Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -283,11 +265,12 @@ public class MoneyTest {
 	 */
 	@Test
 	public void testDivideNumber() {
-		BigDecimal dec = new BigDecimal("135135.151757",MathContext.DECIMAL64);
-		BigDecimal dec2 = new BigDecimal("5",MathContext.DECIMAL64);
+		BigDecimal dec = new BigDecimal("135135.151757", MathContext.DECIMAL64);
+		BigDecimal dec2 = new BigDecimal("5", MathContext.DECIMAL64);
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.divide(dec2);
-		assertEquals(dec.divide(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
+		assertEquals(dec.divide(dec2, MathContext.DECIMAL64),
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -301,8 +284,8 @@ public class MoneyTest {
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount[] res = m.divideAndRemainder(Money.of("CHF", dec2));
 		BigDecimal[] res2 = dec.divideAndRemainder(dec2);
-		assertEquals(res2[0], res[0].asType(BigDecimal.class));
-		assertEquals(res2[1], res[1].asType(BigDecimal.class));
+		assertEquals(res2[0], Money.from(res[0]).asType(BigDecimal.class));
+		assertEquals(res2[1], Money.from(res[1]).asType(BigDecimal.class));
 		assertEquals("CHF", res[0].getCurrency().getCurrencyCode());
 		assertEquals("CHF", res[1].getCurrency().getCurrencyCode());
 	}
@@ -318,8 +301,8 @@ public class MoneyTest {
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount[] res = m.divideAndRemainder(dec2);
 		BigDecimal[] res2 = dec.divideAndRemainder(dec2);
-		assertEquals(res2[0], res[0].asType(BigDecimal.class));
-		assertEquals(res2[1], res[1].asType(BigDecimal.class));
+		assertEquals(res2[0], Money.from(res[0]).asType(BigDecimal.class));
+		assertEquals(res2[1], Money.from(res[1]).asType(BigDecimal.class));
 		assertEquals("CHF", res[0].getCurrency().getCurrencyCode());
 		assertEquals("CHF", res[1].getCurrency().getCurrencyCode());
 	}
@@ -336,7 +319,7 @@ public class MoneyTest {
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.divideToIntegralValue(Money.of("CHF", dec2));
 		assertEquals(dec.divideToIntegralValue(dec2),
-				res.asType(BigDecimal.class));
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -350,7 +333,7 @@ public class MoneyTest {
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.divideToIntegralValue(dec2);
 		assertEquals(dec.divideToIntegralValue(dec2),
-				res.asType(BigDecimal.class));
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -363,7 +346,8 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.multiply(Money.of("CHF", dec2));
-		assertEquals(dec.multiply(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
+		assertEquals(dec.multiply(dec2, MathContext.DECIMAL64),
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -375,7 +359,8 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.multiply(dec2);
-		assertEquals(dec.multiply(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
+		assertEquals(dec.multiply(dec2, MathContext.DECIMAL64),
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -386,7 +371,7 @@ public class MoneyTest {
 		BigDecimal dec = new BigDecimal("135135.151757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.negate();
-		assertEquals(dec.negate(), res.asType(BigDecimal.class));
+		assertEquals(dec.negate(), Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -397,7 +382,7 @@ public class MoneyTest {
 		BigDecimal dec = new BigDecimal("-135135.151757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.plus();
-		assertEquals(dec.plus(), res.asType(BigDecimal.class));
+		assertEquals(dec.plus(), Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -410,7 +395,8 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.subtract(Money.of("CHF", dec2));
-		assertEquals(dec.subtract(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
+		assertEquals(dec.subtract(dec2, MathContext.DECIMAL64),
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -422,7 +408,8 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.subtract(dec2);
-		assertEquals(dec.subtract(dec2, MathContext.DECIMAL64), res.asType(BigDecimal.class));
+		assertEquals(dec.subtract(dec2, MathContext.DECIMAL64),
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -433,7 +420,8 @@ public class MoneyTest {
 		BigDecimal dec = new BigDecimal("1335.157");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.pow(7);
-		assertEquals(dec.pow(7, MathContext.DECIMAL64), res.asType(BigDecimal.class));
+		assertEquals(dec.pow(7, MathContext.DECIMAL64),
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -444,7 +432,7 @@ public class MoneyTest {
 		BigDecimal dec = new BigDecimal("135135.151757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.ulp();
-		assertEquals(dec.ulp(), res.asType(BigDecimal.class));
+		assertEquals(dec.ulp(), Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -457,7 +445,8 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.remainder(Money.of("CHF", dec2));
-		assertEquals(dec.remainder(dec2), res.asType(BigDecimal.class));
+		assertEquals(dec.remainder(dec2),
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -469,7 +458,8 @@ public class MoneyTest {
 		BigDecimal dec2 = new BigDecimal("1335.1518798797757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.remainder(dec2);
-		assertEquals(dec.remainder(dec2), res.asType(BigDecimal.class));
+		assertEquals(dec.remainder(dec2),
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -480,7 +470,8 @@ public class MoneyTest {
 		BigDecimal dec = new BigDecimal("135135.151757");
 		Money m = Money.of("CHF", dec);
 		MonetaryAmount res = m.scaleByPowerOfTen(4);
-		assertEquals(dec.scaleByPowerOfTen(4), res.asType(BigDecimal.class));
+		assertEquals(dec.scaleByPowerOfTen(4),
+				Money.from(res).asType(BigDecimal.class));
 	}
 
 	/**
@@ -552,7 +543,8 @@ public class MoneyTest {
 	@Test
 	public void testWithAmount() {
 		MonetaryAmount amt = Money.of("CHF", 10);
-		assertTrue(BigDecimal.ONE.doubleValue() == amt.with(1)
+		assertTrue(BigDecimal.ONE.doubleValue() == Money
+				.of(amt.getCurrency(), 1)
 				.asType(BigDecimal.class).doubleValue());
 	}
 
@@ -730,7 +722,6 @@ public class MoneyTest {
 		assertFalse(m1.isLessThan((Money) null));
 	}
 
-
 	/**
 	 * Test method for
 	 * {@link javax.money.Money#isLessThanOrEqualTo(javax.money.MonetaryAmount)}
@@ -755,7 +746,6 @@ public class MoneyTest {
 		Money m1 = Money.of("CHF", 5);
 		assertFalse(m1.isLessThanOrEqualTo((Money) null));
 	}
-
 
 	/**
 	 * Test method for
@@ -828,7 +818,6 @@ public class MoneyTest {
 		assertFalse(m1.isGreaterThanOrEqualTo((Money) null));
 	}
 
-
 	/**
 	 * Test method for
 	 * {@link javax.money.Money#isEqualTo(javax.money.MonetaryAmount)}.
@@ -844,7 +833,6 @@ public class MoneyTest {
 				Money.of("CHF", 1.1)));
 	}
 
-
 	/**
 	 * Test method for
 	 * {@link javax.money.Money#isNotEqualTo(javax.money.MonetaryAmount)}.
@@ -859,7 +847,6 @@ public class MoneyTest {
 		assertTrue(Money.of("CHF", BigDecimal.ONE).isNotEqualTo(
 				Money.of("CHF", 1.1)));
 	}
-
 
 	/**
 	 * Test method for {@link javax.money.Money#getNumberType()}.
@@ -891,10 +878,13 @@ public class MoneyTest {
 	 */
 	@Test
 	public void testAsTypeClassOfTRounding() {
-		MonetaryOperator rounding = new MonetaryOperator() {
+		MonetaryAdjuster rounding = new MonetaryAdjuster() {
 			@Override
-			public MonetaryAmount apply(MonetaryAmount amount) {
-				return Money.of(amount.getCurrency(), amount.doubleValue() * 2);
+			public MonetaryAmount adjustInto(MonetaryAmount amount) {
+				return Money.of(
+						amount.getCurrency(),
+						Money.from(amount).asType(BigDecimal.class).multiply(
+								BigDecimal.valueOf(2)));
 			}
 		};
 		assertEquals(Long.valueOf(2L),

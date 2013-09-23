@@ -26,7 +26,6 @@ import java.lang.annotation.Target;
 
 import javax.inject.Qualifier;
 import javax.money.CurrencyNamespace;
-import javax.money.MoneyCurrency;
 
 
 @Qualifier

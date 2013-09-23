@@ -31,7 +31,10 @@ import javax.money.spi.CurrencyNamespaceProviderSpi;
  * class allows to distinguish these rates and also provides access to the rate
  * types used.
  * 
+ * @version 0.3
+ * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public final class CurrencyNamespace implements Serializable,
 		Comparable<CurrencyNamespace> {
@@ -183,7 +186,8 @@ public final class CurrencyNamespace implements Serializable,
 	 */
 	@Override
 	public String toString() {
-		return "CurrencyNamespace [id=" + id + "]";
+		//return "CurrencyNamespace [id=" + id + "]";
+		return id;
 	}
 
 	/*

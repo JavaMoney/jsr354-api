@@ -29,7 +29,7 @@ import java.math.MathContext;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Default immutable implementation of {@link MonetaryAmount} based on
+ * Platform RI: Default immutable implementation of {@link MonetaryAmount} based on
  * {@link BigDecimal} for the numeric representation.
  * <p>
  * As required by {@link MonetaryAmount} this class is final, thread-safe,

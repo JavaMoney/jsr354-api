@@ -10,6 +10,8 @@
  */
 package javax.money;
 
+import java.util.Locale;
+
 /**
  * A unit of currency.
  * <p>
@@ -25,18 +27,7 @@ package javax.money;
  * <ul>
  * <li>thread-safe
  * <li>immutable
- * <li>serializable. It is required that different implementations are serial
- * compatible, writing the following data ordered as shown below:
- * <ul>
- * <li>the namespace (String)</li>
- * <li>the currency code (String)</li>
- * <li>the numeric code (int)</li>
- * <li>the default fraction units (int)</li>
- * <li>the cash rounding (int)</li>
- * </ul>
- * Of course, if {@code java.util.Currency} would implement this type,
- * serialization must be backward compatible with previous JDK releases, it is
- * not possible to accommodate this requirement in this case.
+ * <li>serializable. 
  * 
  * @version 0.4
  * @author Werner Keil
@@ -116,7 +107,11 @@ public interface CurrencyUnit {
 	public int getDefaultFractionDigits();
 
 	/**
-	 * Get the rounding for when using a cash amount of this currency.
+	 * Get the rounding steps in minor units for when using a cash amount of
+	 * this currency. E.g. Swiss Francs in cash are always rounded in 5 minor
+	 * unit steps. This results in {@code 1.00, 1.05, 1.10} etc. The cash
+	 * rounding consequently extends the default fraction units for certain
+	 * currencies.
 	 * 
 	 * @return the cash rounding, or -1, if not defined.
 	 */

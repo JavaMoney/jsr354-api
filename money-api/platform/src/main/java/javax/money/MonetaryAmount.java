@@ -13,7 +13,6 @@
 package javax.money;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 /**
  * Interface defining a monetary amount. The effective internal representation
@@ -52,8 +51,8 @@ import java.math.MathContext;
  * <li>immutable</li>
  * <li>thread-safe</li>
  * <li>final</li>
- * <li>serializable, hereby writing a {@link BigDecimal}, a {@link MathContext}
- * and a serialized {@link CurrencyUnit} in exact that order.</li>
+ * <li>serializable, hereby writing the numeric representation, e.g.
+ * {@link BigDecimal} and a serialized {@link CurrencyUnit}.</li>
  * </ul>
  * <p>
  * Since {@link Number} is not an interface, this type is not extending

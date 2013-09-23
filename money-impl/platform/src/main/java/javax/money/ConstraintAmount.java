@@ -16,7 +16,7 @@
 package javax.money;
 
 /**
- * This class decorates an arbitrary {@link MonetaryAmount} instance and ensure
+ * Platform RI: This class decorates an arbitrary {@link MonetaryAmount} instance and ensure
  * the given {@link Predicate} is always {@code true}.
  * <p>
  * As required by the {@link MonetaryAmount} interface, this class is

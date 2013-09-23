@@ -16,7 +16,7 @@
 package javax.money;
 
 /**
- * This class decorates an arbitrary {@link MonetaryAmount} instance and ensure
+ * Platform RI: This class decorates an arbitrary {@link MonetaryAmount} instance and ensure
  * no negative values can be created using this instance. Though there are many
  * constraints possible for
  * <p>

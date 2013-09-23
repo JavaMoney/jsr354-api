@@ -312,7 +312,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 	 * @author Werner Keil
 	 */
 	private final static class JDKCurrencyAdapter implements CurrencyUnit,
-			Displayable, Serializable,
+			Serializable,
 			Comparable<CurrencyUnit> {
 
 		/**

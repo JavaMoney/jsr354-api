@@ -310,7 +310,7 @@ public interface MonetaryAmount {
 	 * @throws ArithmeticException
 	 *             if the scale of the amount is too large
 	 */
-	public MonetaryAmount from(Number amount);
+	public MonetaryAmount with(Number amount);
 
 	/**
 	 * Returns a copy of this monetary value with the specified amount.
@@ -332,7 +332,7 @@ public interface MonetaryAmount {
 	 * @throws ArithmeticException
 	 *             if the scale of the amount is too large
 	 */
-	public MonetaryAmount from(CurrencyUnit currency, Number amount);
+	public MonetaryAmount with(CurrencyUnit currency, Number amount);
 
 	/**
 	 * Applies the given {@link MonetaryOperator} to this {@link MonetaryAmount}

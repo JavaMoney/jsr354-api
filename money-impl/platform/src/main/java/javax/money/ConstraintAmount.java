@@ -272,8 +272,8 @@ final class ConstraintAmount implements MonetaryAmount {
 	 * @see javax.money.MonetaryAmount#from(java.lang.Number)
 	 */
 	@Override
-	public ConstraintAmount from(Number amount) {
-		return of(this.amount.from(amount), predicate);
+	public ConstraintAmount with(Number amount) {
+		return of(this.amount.with(amount), predicate);
 	}
 
 	/*
@@ -283,8 +283,8 @@ final class ConstraintAmount implements MonetaryAmount {
 	 * java.lang.Number)
 	 */
 	@Override
-	public ConstraintAmount from(CurrencyUnit currency, Number amount) {
-		return of(this.amount.from(currency, amount), predicate);
+	public ConstraintAmount with(CurrencyUnit currency, Number amount) {
+		return of(this.amount.with(currency, amount), predicate);
 	}
 
 	/*

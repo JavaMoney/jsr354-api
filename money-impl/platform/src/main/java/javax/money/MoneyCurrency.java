@@ -316,7 +316,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		 *            the default fraction digits
 		 * @return the builder, for chaining
 		 */
-		public Builder withCacheRounding(int cacheRounding) {
+		public Builder withCashRounding(int cacheRounding) {
 			if (cacheRounding < -1) {
 				throw new IllegalArgumentException(
 						"Invalid value for cacheRounding: " + cacheRounding);

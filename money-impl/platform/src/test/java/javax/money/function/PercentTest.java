@@ -43,36 +43,36 @@ public class PercentTest {
     @Test
     public void testApply() {
     	final Money m = Money.of("CHF", BigDecimal.valueOf(2.35d));
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.235d)), MoneyFunctions.percent(BigDecimal.TEN).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.235d)), MonetaryFunctions.percent(BigDecimal.TEN).apply(m));
     }
 
     @Test
     public void testApply10() {
     	final Money m = Money.of("CHF", 3);
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.3d)), MoneyFunctions.percent(BigDecimal.TEN).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(0.3d)), MonetaryFunctions.percent(BigDecimal.TEN).apply(m));
     }
 
     @Test
     public void testApply20() {
     	final Money m = Money.of("CHF", 120);
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(24d)), MoneyFunctions.percent(BigDecimal.valueOf(20)).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(24d)), MonetaryFunctions.percent(BigDecimal.valueOf(20)).apply(m));
     }
 
     @Test
     public void testApply30() {
     	final Money m = Money.of("CHF", 120);
-    	assertEquals(Money.of("CHF", BigDecimal.valueOf(36d)), MoneyFunctions.percent(BigDecimal.valueOf(30)).apply(m));
+    	assertEquals(Money.of("CHF", BigDecimal.valueOf(36d)), MonetaryFunctions.percent(BigDecimal.valueOf(30)).apply(m));
     }
 
     @Test
     public void testToString() {
     	final String compareTo = NumberFormat.getPercentInstance().format(0.15);
-    	assertEquals(compareTo, MoneyFunctions.percent(BigDecimal.valueOf(15)).toString());
+    	assertEquals(compareTo, MonetaryFunctions.percent(BigDecimal.valueOf(15)).toString());
     }
     
     @Test
     public void testGetDisplayValue() {
     	String compareTo = NumberFormat.getPercentInstance(Locale.TRADITIONAL_CHINESE).format(0.15);
-    	assertEquals(compareTo, ((Displayable)MoneyFunctions.percent(BigDecimal.valueOf(15))).getDisplayName(Locale.TRADITIONAL_CHINESE));
+    	assertEquals(compareTo, ((Displayable)MonetaryFunctions.percent(BigDecimal.valueOf(15))).getDisplayName(Locale.TRADITIONAL_CHINESE));
     }
 }

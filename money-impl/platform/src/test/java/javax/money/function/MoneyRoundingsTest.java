@@ -32,12 +32,12 @@ public class MoneyRoundingsTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.function.MoneyRoundings#of(javax.money.CurrencyUnit, java.math.RoundingMode)}
+	 * {@link javax.money.function.MonetaryRoundings#of(javax.money.CurrencyUnit, java.math.RoundingMode)}
 	 * .
 	 */
 	@Test
 	public void testGetRoundingCurrencyUnitRoundingMode() {
-		MonetaryOperator rounding = MoneyRoundings.getRounding(MoneyCurrency
+		MonetaryOperator rounding = MonetaryRoundings.getRounding(MoneyCurrency
 				.of("CHF").getDefaultFractionDigits(),
 				RoundingMode.FLOOR);
 		assertNotNull(rounding);
@@ -45,22 +45,22 @@ public class MoneyRoundingsTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.function.MoneyRoundings#of(javax.money.CurrencyUnit)}.
+	 * {@link javax.money.function.MonetaryRoundings#of(javax.money.CurrencyUnit)}.
 	 */
 	@Test
 	public void testGetRoundingCurrencyUnit() {
-		MonetaryOperator rounding = MoneyRoundings.getRounding(MoneyCurrency.of("CHF"));
+		MonetaryOperator rounding = MonetaryRoundings.getRounding(MoneyCurrency.of("CHF"));
 		assertNotNull(rounding);
 	}
 
 	/**
 	 * Test method for
-	 * {@link javax.money.function.MoneyRoundings#of(int, java.math.RoundingMode)}
+	 * {@link javax.money.function.MonetaryRoundings#of(int, java.math.RoundingMode)}
 	 * .
 	 */
 	@Test
 	public void testGetRoundingIntRoundingMode() {
-		MonetaryOperator rounding = MoneyRoundings.getRounding(3, RoundingMode.FLOOR);
+		MonetaryOperator rounding = MonetaryRoundings.getRounding(3, RoundingMode.FLOOR);
 		assertNotNull(rounding);
 	}
 

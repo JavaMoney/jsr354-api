@@ -52,7 +52,7 @@ final class Reciprocal implements MonetaryOperator {
 		if (amount == null) {
 			throw new IllegalArgumentException("Amount required.");
 		}
-		return amount.from(BigDecimal.ONE.divide(
+		return amount.with(BigDecimal.ONE.divide(
 				amount.asType(BigDecimal.class), MathContext.DECIMAL128));
 	}
 

@@ -56,7 +56,7 @@ final class MinorPart implements MonetaryOperator {
 			throw new IllegalArgumentException("Amount required.");
 		}
 		BigDecimal number = amount.asType(BigDecimal.class);
-		return amount.from(number.movePointRight(number.precision())
+		return amount.with(number.movePointRight(number.precision())
 				.longValueExact());
 	}
 

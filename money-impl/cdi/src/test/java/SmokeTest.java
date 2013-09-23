@@ -37,7 +37,7 @@ import javax.money.format.ItemFormat;
 import javax.money.format.ItemParseException;
 import javax.money.format.LocalizationStyle;
 import javax.money.format.MonetaryFormats;
-import javax.money.function.MoneyRoundings;
+import javax.money.function.MonetaryRoundings;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -97,7 +97,7 @@ public class SmokeTest {
 
 	@Test
 	public void testCurrencyConverter() {
-		MonetaryOperator rounding = MoneyRoundings.getRounding(2,
+		MonetaryOperator rounding = MonetaryRoundings.getRounding(2,
 				RoundingMode.HALF_UP);
 
 		MonetaryAmount srcCHF = Money.of(MoneyCurrency.of("CHF"), 100.15);

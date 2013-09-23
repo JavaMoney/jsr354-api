@@ -621,7 +621,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 * 
 	 * @see javax.money.MonetaryAmount#with(java.lang.Number)
 	 */
-	public Money from(Number amount) {
+	public Money with(Number amount) {
 		checkNumber(amount);
 		return new Money(this.currency, getBigDecimal(amount), this.mathContext);
 	}
@@ -631,7 +631,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 * 
 	 * @see javax.money.MonetaryAmount#with(CurrencyUnit, java.lang.Number)
 	 */
-	public Money from(CurrencyUnit currency, Number amount) {
+	public Money with(CurrencyUnit currency, Number amount) {
 		checkNumber(amount);
 		return new Money(currency, getBigDecimal(amount), this.mathContext);
 	}

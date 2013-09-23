@@ -56,7 +56,7 @@ public abstract class AbstractCurrencyConversion implements CurrencyConversion {
 			throw new CurrencyConversionException(amount.getCurrency(),
 					rate == null ? null : rate.getTerm(), null);
 		}
-		return amount.from(rate.getTerm(), amount.multiply(rate.getFactor())
+		return amount.with(rate.getTerm(), amount.multiply(rate.getFactor())
 				.asType(BigDecimal.class));
 	}
 

@@ -57,7 +57,7 @@ final class MajorPart implements MonetaryOperator {
 			throw new NullPointerException("Amount required.");
 		}
 		BigDecimal number = amount.asType(BigDecimal.class);
-		return amount.from(number.setScale(0,
+		return amount.with(number.setScale(0,
 				RoundingMode.DOWN));
 	}
 

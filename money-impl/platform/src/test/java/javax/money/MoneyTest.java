@@ -552,7 +552,7 @@ public class MoneyTest {
 	@Test
 	public void testWithAmount() {
 		MonetaryAmount amt = Money.of("CHF", 10);
-		assertTrue(BigDecimal.ONE.doubleValue() == amt.from(1)
+		assertTrue(BigDecimal.ONE.doubleValue() == amt.with(1)
 				.asType(BigDecimal.class).doubleValue());
 	}
 

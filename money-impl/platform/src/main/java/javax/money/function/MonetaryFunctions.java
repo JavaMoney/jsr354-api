@@ -30,7 +30,7 @@ import javax.money.MonetaryOperator;
  * 
  * @author Anatole Tresch
  */
-public final class MoneyFunctions {
+public final class MonetaryFunctions {
 	/** defaulkt Math context used. */
 	private static final MathContext DEFAULT_MATH_CONTEXT = initDefaultMathContext();
 	/** Shared reciprocal instance. */
@@ -63,7 +63,7 @@ public final class MoneyFunctions {
 	/**
 	 * Private singleton constructor.
 	 */
-	private MoneyFunctions() {
+	private MonetaryFunctions() {
 		// Singleton constructor
 	}
 
@@ -159,7 +159,7 @@ public final class MoneyFunctions {
 	 * 
 	 * @return the shared instance, never {@code null}.
 	 */
-	public MonetaryOperator minorPart() {
+	public static MonetaryOperator minorPart() {
 		return MINORPART;
 	}
 
@@ -168,7 +168,7 @@ public final class MoneyFunctions {
 	 * 
 	 * @return the shared instance, never {@code null}.
 	 */
-	public MonetaryOperator majorPart() {
+	public static MonetaryOperator majorPart() {
 		return MAJORPART;
 	}
 
@@ -177,7 +177,7 @@ public final class MoneyFunctions {
 	 * 
 	 * @return the shared instance, never {@code null}.
 	 */
-	public MonetaryFunction<MonetaryAmount, Long> minorUnits() {
+	public static MonetaryFunction<MonetaryAmount, Long> minorUnits() {
 		return MINORUNITS;
 	}
 
@@ -186,7 +186,7 @@ public final class MoneyFunctions {
 	 * 
 	 * @return the shared instance, never {@code null}.
 	 */
-	public MonetaryFunction<MonetaryAmount, Long> majorUnits() {
+	public static MonetaryFunction<MonetaryAmount, Long> majorUnits() {
 		return MAJORUNITS;
 	}
 

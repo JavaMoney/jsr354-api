@@ -96,7 +96,7 @@ final class DefaultRounding implements MonetaryOperator {
 	 */
 	@Override
 	public MonetaryAmount apply(MonetaryAmount value) {
-		return value.from(value.asType(BigDecimal.class).setScale(this.scale,
+		return value.with(value.asType(BigDecimal.class).setScale(this.scale,
 				this.roundingMode));
 	}
 

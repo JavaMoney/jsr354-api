@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public final class MoneyRoundings {
+public final class MonetaryRoundings {
 	/**
 	 * An adaptive rounding instance that transparently looks up the correct
 	 * rounding.
@@ -54,7 +54,7 @@ public final class MoneyRoundings {
 	/**
 	 * Private singleton constructor.
 	 */
-	private MoneyRoundings() {
+	private MonetaryRoundings() {
 		// Singleton
 	}
 
@@ -62,7 +62,7 @@ public final class MoneyRoundings {
 		try {
 			return ServiceLoader.load(RoundingProviderSpi.class);
 		} catch (Exception e) {
-			LoggerFactory.getLogger(MoneyRoundings.class).error(
+			LoggerFactory.getLogger(MonetaryRoundings.class).error(
 					"Error loading RoundingProviderSpi instances.", e);
 			return null;
 		}
@@ -71,12 +71,12 @@ public final class MoneyRoundings {
 	/**
 	 * Creates a rounding that can be added as {@link MonetaryFunction} to
 	 * chained calculations. The instance will lookup the concrete
-	 * {@link MonetaryOperator} instance from the {@link MoneyRoundings} based
+	 * {@link MonetaryOperator} instance from the {@link MonetaryRoundings} based
 	 * on the input {@link MonetaryAmount}'s {@link CurrencyUnit}.
 	 * 
 	 * @return the (shared) default rounding instance.
 	 */
-	public MonetaryOperator getRounding() {
+	public static MonetaryOperator getRounding() {
 		return DEFAULT_ROUNDING;
 	}
 
@@ -108,7 +108,7 @@ public final class MoneyRoundings {
 			try {
 				op = prov.getRounding(currency);
 			} catch (Exception e) {
-				LoggerFactory.getLogger(MoneyRoundings.class).error(
+				LoggerFactory.getLogger(MonetaryRoundings.class).error(
 						"Error loading RoundingProviderSpi from ptovider: "
 								+ prov, e);
 			}
@@ -139,7 +139,7 @@ public final class MoneyRoundings {
 					break;
 				}
 			} catch (Exception e) {
-				LoggerFactory.getLogger(MoneyRoundings.class).error(
+				LoggerFactory.getLogger(MonetaryRoundings.class).error(
 						"Error loading RoundingProviderSpi from ptovider: "
 								+ prov, e);
 			}
@@ -174,7 +174,7 @@ public final class MoneyRoundings {
 					break;
 				}
 			} catch (Exception e) {
-				LoggerFactory.getLogger(MoneyRoundings.class).error(
+				LoggerFactory.getLogger(MonetaryRoundings.class).error(
 						"Error loading RoundingProviderSpi from ptovider: "
 								+ prov, e);
 			}
@@ -209,7 +209,7 @@ public final class MoneyRoundings {
 					break;
 				}
 			} catch (Exception e) {
-				LoggerFactory.getLogger(MoneyRoundings.class).error(
+				LoggerFactory.getLogger(MonetaryRoundings.class).error(
 						"Error loading RoundingProviderSpi from ptovider: "
 								+ prov, e);
 			}
@@ -231,7 +231,7 @@ public final class MoneyRoundings {
 
 		@Override
 		public MonetaryAmount apply(MonetaryAmount amount) {
-			MonetaryOperator r = MoneyRoundings.getRounding(amount
+			MonetaryOperator r = MonetaryRoundings.getRounding(amount
 					.getCurrency());
 			return r.apply(amount);
 		}

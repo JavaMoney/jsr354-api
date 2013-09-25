@@ -58,5 +58,51 @@ public interface CurrencyUnit {
 	 *         namespace.
 	 */
 	public String getCurrencyCode();
+<<<<<<< HEAD
+=======
+
+	/**
+	 * Gets a numeric currency code. within the ISO-4217 name space, this equals
+	 * to the ISO numeric code. In other currency name spaces this number may be
+	 * different, or even undefined (-1).
+	 * <p>
+	 * The numeric code is an optional alternative to the standard currency
+	 * code. If defined, the numeric code is required to be unique within its
+	 * namespace.
+	 * <p>
+	 * This method matches the API of <type>java.util.Currency</type>.
+	 * 
+	 * @see #getNamespace()
+	 * @return the numeric currency code
+	 */
+	public int getNumericCode();
+
+	/**
+	 * Gets the number of fractional digits typically used by this currency.
+	 * <p>
+	 * Different currencies have different numbers of fractional digits by
+	 * default. * For example, 'GBP' has 2 fractional digits, but 'JPY' has
+	 * zero. * virtual currencies or those with no applicable fractional are
+	 * indicated by -1. *
+	 * <p>
+	 * This method matches the API of <type>java.util.Currency</type>.
+	 * 
+	 * @return the fractional digits, from 0 to 9 (normally 0, 2 or 3), or -1
+	 *         for pseudo-currencies.
+	 * 
+	 */
+	public int getDefaultFractionDigits();
+
+	/**
+	 * Get the rounding steps in minor units for when using a cash amount of
+	 * this currency. E.g. Swiss Francs in cash are always rounded in 5 minor
+	 * unit steps. This results in {@code 1.00, 1.05, 1.10} etc. The cash
+	 * rounding consequently extends the default fraction units for certain
+	 * currencies.
+	 * 
+	 * @return the cash rounding, or -1, if not defined.
+	 */
+	public int getCashRounding();
+>>>>>>> refs/remotes/origin/master
 
 }

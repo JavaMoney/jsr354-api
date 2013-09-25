@@ -24,8 +24,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.javamoney.ext.Displayable;
 
 /**
+<<<<<<< HEAD
  * Platform RI: Adapter that implements the new {@link CurrencyUnit} interface
  * using the JDK's {@link Currency}.
+=======
+ * Platform RI: Adapter that implements the new {@link CurrencyUnit} interface using the
+ * JDK's {@link Currency}.
+>>>>>>> refs/remotes/origin/master
  * 
  * @version 0.5.1
  * @author Anatole Tresch

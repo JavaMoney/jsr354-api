@@ -19,7 +19,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryFunction;
+import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryQuery;
+import javax.money.Money;
 
 /**
  * This class allows to extract the major part of a {@link MonetaryAmount}
@@ -27,7 +29,7 @@ import javax.money.MonetaryFunction;
  * 
  * @author Anatole Tresch
  */
-final class MajorUnits implements MonetaryFunction<MonetaryAmount,Long> {
+final class MajorUnits implements MonetaryQuery<Long> {
 	
 	/**
 	 * Access the shared instance of {@link MajorUnits} for use.
@@ -51,11 +53,11 @@ final class MajorUnits implements MonetaryFunction<MonetaryAmount,Long> {
 	 *             if the amount is too large for a {@code long}
 	 */
 	@Override
-	public Long apply(MonetaryAmount amount) {
+	public Long queryFrom(MonetaryAmount amount) {
 		if(amount==null){
 			throw new IllegalArgumentException("Amount required.");
 		}
-		BigDecimal number = amount.asType(BigDecimal.class);
+		BigDecimal number = Money.from(amount).asType(BigDecimal.class);
 		return number.setScale(0, RoundingMode.DOWN).longValueExact();
 	}
 }

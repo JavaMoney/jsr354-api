@@ -20,9 +20,9 @@ import java.math.MathContext;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import javax.money.Displayable;
+import javax.money.MonetaryAdjuster;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryOperator;
+import javax.money.Money;
 
 /**
  * This class allows to extract the permil of a {@link MonetaryAmount} instance.
@@ -33,10 +33,10 @@ import javax.money.MonetaryOperator;
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Per_mil">Wikipedia: Per mil</a>
  */
-final class Permil implements MonetaryOperator, Displayable {
+final class Permil<T extends MonetaryAmount> implements MonetaryAdjuster {
 
 	private static final MathContext DEFAULT_MATH_CONTEXT = initDefaultMathContext();
-	
+
 	private static final BigDecimal ONE_THOUSAND = new BigDecimal(1000,
 			MathContext.DECIMAL64);
 
@@ -53,7 +53,7 @@ final class Permil implements MonetaryOperator, Displayable {
 		// classpath properties!
 		return MathContext.DECIMAL64;
 	}
-	
+
 	/**
 	 * Access the shared instance of {@link Permil} for use.
 	 * 
@@ -74,8 +74,9 @@ final class Permil implements MonetaryOperator, Displayable {
 	 * @return the permil result of the amount, never {@code null}
 	 */
 	@Override
-	public MonetaryAmount apply(MonetaryAmount amount) {
-		return amount.multiply(permilValue);
+	public MonetaryAmount adjustInto(MonetaryAmount amount) {
+		return Money.from(amount).multiply(
+				permilValue);
 	}
 
 	/*
@@ -103,9 +104,9 @@ final class Permil implements MonetaryOperator, Displayable {
 																	// have .003
 	}
 
-	@Override
-	public String getDisplayName(Locale locale) {
-		// TODO i18n?
-		return toString();
-	}
+//	@Override
+//	public String getDisplayName(Locale locale) {
+//		// TODO i18n?
+//		return toString();
+//	}
 }

@@ -40,28 +40,28 @@ public class PermilTest {
 	public void testApply() {
 		Money m = Money.of("CHF", BigDecimal.valueOf(2.35d));
 		assertEquals(Money.of("CHF", BigDecimal.valueOf(0.0235d)),
-				MonetaryFunctions.permil(BigDecimal.TEN).apply(m));
+				MonetaryFunctions.permil(BigDecimal.TEN).adjustInto(m));
 	}
 
 	@Test
 	public void testApply10() {
 		Money m = Money.of("CHF", 3);
 		assertEquals(Money.of("CHF", BigDecimal.valueOf(0.03d)),
-				MonetaryFunctions.permil(BigDecimal.TEN).apply(m));
+				MonetaryFunctions.permil(BigDecimal.TEN).adjustInto(m));
 	}
 
 	@Test
 	public void testApply20() {
 		Money m = Money.of("CHF", 12);
 		assertEquals(Money.of("CHF", BigDecimal.valueOf(0.24d)),
-				MonetaryFunctions.permil(BigDecimal.valueOf(20)).apply(m));
+				MonetaryFunctions.permil(BigDecimal.valueOf(20)).adjustInto(m));
 	}
 
 	@Test
 	public void testApply30() {
 		Money m = Money.of("CHF", 12);
 		assertEquals(Money.of("CHF", BigDecimal.valueOf(0.36d)),
-				MonetaryFunctions.permil(BigDecimal.valueOf(30)).apply(m));
+				MonetaryFunctions.permil(BigDecimal.valueOf(30)).adjustInto(m));
 	}
 
 	@Test

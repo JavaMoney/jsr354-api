@@ -1,4 +1,0 @@
-net.java.javamoney.ri.convert.provider.EZBHistoricConversionProvider
-net.java.javamoney.ri.convert.provider.EZBHistoric90ConversionProvider
-net.java.javamoney.ri.convert.provider.EZBCurrentConversionProvider
-net.java.javamoney.ri.convert.provider.IMFConversionProvider

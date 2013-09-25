@@ -1,0 +1,2 @@
+org.javamoney.ext.provider.icu4j.ICURegionProvider
+org.javamoney.ext.provider.icu4j.ISORegionProvider

@@ -19,11 +19,12 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryAdjuster;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryOperator;
+import javax.money.MoneyCurrency;
 
 /**
- * Implementation class providing cash rounding {@link MonetaryOperator}
+ * Implementation class providing cash rounding {@link MonetaryAdjuster}
  * instances for {@link CurrencyUnit} instances. modeling rounding based on
  * {@link CurrencyUnit#getCashRounding()}.
  * <p>
@@ -31,7 +32,8 @@ import javax.money.MonetaryOperator;
  * 
  * @author Anatole Tresch
  */
-final class DefaultCashRounding implements MonetaryOperator {
+final class DefaultCashRounding implements
+		MonetaryAdjuster {
 
 	/** The {@link RoundingMode} used. */
 	private final RoundingMode roundingMode;
@@ -63,27 +65,29 @@ final class DefaultCashRounding implements MonetaryOperator {
 	 *            The currency, which determines the required precision. As
 	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link MonetaryOperator} implementing the
+	 * @return a new instance {@link MonetaryAdjuster} implementing the
 	 *         rounding.
 	 */
 	DefaultCashRounding(CurrencyUnit currency,
 			RoundingMode roundingMode) {
-		this(currency.getDefaultFractionDigits(), roundingMode);
+		this(MoneyCurrency.of(currency.getCurrencyCode())
+				.getDefaultFractionDigits(), roundingMode);
 	}
 
 	/**
-	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
+	 * Creates an {@link MonetaryAdjuster} for rounding {@link MonetaryAmount}
 	 * instances given a currency.
 	 * 
 	 * @param currency
 	 *            The currency, which determines the required precision. As
 	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link MonetaryOperator} implementing the
+	 * @return a new instance {@link MonetaryAdjuster} implementing the
 	 *         rounding.
 	 */
 	DefaultCashRounding(CurrencyUnit currency) {
-		this(currency.getDefaultFractionDigits(), RoundingMode.HALF_UP);
+		this(MoneyCurrency.of(currency.getCurrencyCode())
+				.getDefaultFractionDigits(), RoundingMode.HALF_UP);
 	}
 
 	/*
@@ -92,7 +96,7 @@ final class DefaultCashRounding implements MonetaryOperator {
 	 * @see javax.money.MonetaryFunction#apply(java.lang.Object)
 	 */
 	@Override
-	public MonetaryAmount apply(MonetaryAmount value) {
+	public <T extends MonetaryAmount> T adjustInto(T value) {
 		throw new UnsupportedOperationException(
 				"Cash Rounding not yet implemented.");
 		// return value.from(value.asType(BigDecimal.class).setScale(this.scale,

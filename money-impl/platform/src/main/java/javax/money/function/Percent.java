@@ -21,9 +21,11 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.Locale;
 
-import javax.money.Displayable;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryOperator;
+import javax.money.MonetaryAdjuster;
+import javax.money.Money;
+
+import org.javamoney.ext.Displayable;
 
 /**
  * This class allows to extract the percentage of a {@link MonetaryAmount}
@@ -34,7 +36,7 @@ import javax.money.MonetaryOperator;
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Percent">Wikipedia: Percentage</a>
  */
-final class Percent implements MonetaryOperator, Displayable {
+final class Percent<T extends MonetaryAmount> implements MonetaryAdjuster, Displayable {
 
 	private static final MathContext DEFAULT_MATH_CONTEXT = initDefaultMathContext();
 	private static final BigDecimal ONE_HUNDRED = new BigDecimal(100,
@@ -74,8 +76,9 @@ final class Percent implements MonetaryOperator, Displayable {
 	 * @return the percent result of the amount, never {@code null}
 	 */
 	@Override
-	public MonetaryAmount apply(MonetaryAmount amount) {
-		return amount.multiply(percentValue);
+	public MonetaryAmount adjustInto(MonetaryAmount amount) {
+		return Money.from(amount).multiply(
+				percentValue);
 	}
 
 	/*

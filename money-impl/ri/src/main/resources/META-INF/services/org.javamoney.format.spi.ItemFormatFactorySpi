@@ -1,0 +1,2 @@
+org.javamoney.format.IsoAmountFormatterFactory
+org.javamoney.format.IsoCurrencyFormatterFactory

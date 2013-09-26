@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>jsr354</artifactId>
+		<groupId>javax.money</groupId>
+		<version>0.7-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<artifactId>money-ri</artifactId>
+	<name>JSR 354 (Money and Currency) - Reference Implementation</name>
+	<description>Reference Implementation of JSR 354</description>
+
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<artifactId>money-api</artifactId>
+				<groupId>javax.money</groupId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.1</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<artifactId>money-api</artifactId>
+			<groupId>javax.money</groupId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>

@@ -8,20 +8,12 @@
 	<section id="3" title="3 - Requirements">
 		<section id="3.1" title="Modularization Requirements">
 			<section id="3.1.1" title="API">
-				<assertion id="EnsureCore">
-					<text>Ensure presence of required core artifacts
+				<assertion id="EnsureAmount">
+					<text>Ensure at least one amount implementation is available.
 					</text>
 				</assertion>
-				<assertion id="EnsureConversion">
-					<text>Ensure presence of required conversion artifacts
-					</text>
-				</assertion>
-				<assertion id="EnsureConversion">
-					<text>Ensure presence of required formatting artifacts
-					</text>
-				</assertion>
-				<assertion id="EnsureExtension">
-					<text>Ensure presence of required extension artifacts
+				<assertion id="EnsureCurrencyUnit">
+					<text>Ensure at least one currency implementation is available.
 					</text>
 				</assertion>
 			</section>
@@ -47,35 +39,17 @@
 		<section id="3.3" title="Core Requirements">
 			<group>
 				<text>CurrencyUnit Requirements</text>
-				<assertion id="JDKImplementsCU">
-					<text>JDKs Currency should implement CurrencyUnit.
-					</text>
-				</assertion>
-				<assertion id="CUCodesAreUnique">
-					<text>Access all codes for ISO namespaces, they must be unique.
-					</text>
-				</assertion>
-				<assertion id="CUNumericCodesAreUnique">
-					<text>Access all numeric codes for ISO namespaces, they must be
-						unique, if defined.
-					</text>
-				</assertion>
-				<assertion id="CUDefaultNS">
-					<text>The default namespace must be "ISO-4217".
-					</text>
-				</assertion>
-				<assertion id="CUCreateWithoutNS">
-					<text>Creation of new CurrencyUnits without passing the namespace,
-						must result in ISO
-						currencies.
-					</text>
-				</assertion>
-				<assertion id="CUAttributes">
-					<text>Check additional attributes virtual, legalTender.
+				<assertion id="CUImplementsCU">
+					<text>Currency implementations should implement CurrencyUnit and
+						all required methods.
 					</text>
 				</assertion>
 				<assertion id="CUSerializable">
 					<text>Check if CurrencyUnit is serializable.
+					</text>
+				</assertion>
+				<assertion id="CUImmutable">
+					<text>Check if CurrencyUnit is immutable value type.
 					</text>
 				</assertion>
 				<assertion id="CUEqualsHashCode">
@@ -86,15 +60,26 @@
 					<text>Check if CurrencyUnit is comparable.
 					</text>
 				</assertion>
-				<assertion id="CUImmutable">
-					<text>Check if CurrencyUnit is immutable value type.
+				<assertion id="CUISOCodesAvailable">
+					<text>Access all ISO codes from the JDK are available out of the
+						box..
 					</text>
 				</assertion>
 				<assertion id="CUThreadsafe">
 					<text>Check if CurrencyUnit is thread-safe.
 					</text>
 				</assertion>
+				<assertion id="CUCodesAreUnique">
+					<text>Access all codes: they must be unique.
+					</text>
+				</assertion>
+				<assertion id="CUNumericCodesAreUnique">
+					<text>Access all numeric codes, they must be
+						unique, if defined.
+					</text>
+				</assertion>
 			</group>
+			
 			<group>
 				<text>MonetaryAmount Requirements</text>
 				<assertion id="MABDImpl">

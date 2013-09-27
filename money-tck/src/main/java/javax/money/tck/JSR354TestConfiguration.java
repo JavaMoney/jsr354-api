@@ -21,9 +21,9 @@ package javax.money.tck;
 import java.lang.reflect.AccessibleObject;
 import java.util.Collection;
 
-import javax.money.CurrencyUnit;
-
 public interface JSR354TestConfiguration {
+
+	Collection<Class> getExceptionClasses();
 
 	Collection<Class> getAmountClasses();
 

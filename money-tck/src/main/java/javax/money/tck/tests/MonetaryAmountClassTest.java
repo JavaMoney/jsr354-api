@@ -1,13 +1,28 @@
 package javax.money.tck.tests;
 
+import static org.junit.Assert.assertTrue;
+
 import javax.money.MonetaryAdjuster;
 import javax.money.MonetaryAmount;
 import javax.money.tck.TCKTestSetup;
 import javax.money.tck.util.ClassTester;
 
+import org.jboss.test.audit.annotations.SpecAssertion;
 import org.junit.Test;
 
-public class MonetaryAmountTest {
+public class MonetaryAmountClassTest {
+
+	@SpecAssertion(
+		section = "3.1.1",
+		id = "EnsureAmount",
+		note = "Asserts at least one MonetaryAmount implementation class is registered for testing.")
+	@Test
+	public void testSetup() {
+		assertTrue("TCK Configuration not available.",
+				TCKTestSetup.getTestConfiguration() != null);
+		assertTrue(TCKTestSetup.getTestConfiguration().getAmountClasses()
+				.size() > 0);
+	}
 
 	@Test
 	public void testAmountClasses() {
@@ -62,25 +77,25 @@ public class MonetaryAmountTest {
 				"longValueExact");
 		ClassTester.testHasPublicMethod(type, Number.class,
 				"asNumber");
-//		ClassTester.testHasPublicMethod(type, Number.class,
-//				"asType");
-//		ClassTester.testHasPublicMethod(type, Number.class,
-//				"asType", Class.class);
-//		ClassTester.testHasPublicMethod(type, Object.class,
-//				"asType", Class.class, MonetaryAdjuster.class);
+		// ClassTester.testHasPublicMethod(type, Number.class,
+		// "asType");
+		// ClassTester.testHasPublicMethod(type, Number.class,
+		// "asType", Class.class);
+		// ClassTester.testHasPublicMethod(type, Object.class,
+		// "asType", Class.class, MonetaryAdjuster.class);
 
 		ClassTester.testHasPublicMethod(type, type,
 				"abs");
-//		ClassTester.testHasPublicStaticMethod(type, type,
-//				"from", MonetaryAmount.class);
+		// ClassTester.testHasPublicStaticMethod(type, type,
+		// "from", MonetaryAmount.class);
 		ClassTester.testHasPublicMethod(type, type,
 				"divide", MonetaryAmount.class);
 		ClassTester.testHasPublicMethod(type, type,
 				"divide", Number.class);
-//		ClassTester.testHasPublicMethod(type, MonetaryAmount[].class,
-//				"divideAndRemainder", MonetaryAmount.class);
-//		ClassTester.testHasPublicMethod(type, type,
-//				"divideAndRemainder", Number.class);
+		// ClassTester.testHasPublicMethod(type, MonetaryAmount[].class,
+		// "divideAndRemainder", MonetaryAmount.class);
+		// ClassTester.testHasPublicMethod(type, type,
+		// "divideAndRemainder", Number.class);
 		ClassTester.testHasPublicMethod(type, type,
 				"divideToIntegralValue", MonetaryAmount.class);
 		ClassTester.testHasPublicMethod(type, type,
@@ -105,7 +120,7 @@ public class MonetaryAmountTest {
 				"isNegative");
 		ClassTester.testHasPublicMethod(type, boolean.class,
 				"isNegativeOrZero");
-		
+
 		ClassTester.testHasPublicMethod(type, boolean.class,
 				"isNotEqualTo", MonetaryAmount.class);
 		ClassTester.testHasPublicMethod(type, boolean.class,
@@ -142,9 +157,10 @@ public class MonetaryAmountTest {
 				"with", Number.class);
 		ClassTester.testHasPublicMethod(type, type,
 				"with", MonetaryAdjuster.class);
-		
-		MonetaryAmount amt = (MonetaryAmount) TCKTestSetup.getTestConfiguration().create(type,
-				"CHF", Double.valueOf(1.50d));
+
+		MonetaryAmount amt = (MonetaryAmount) TCKTestSetup
+				.getTestConfiguration().create(type,
+						"CHF", Double.valueOf(1.50d));
 		ClassTester.testSerializable(amt);
 	}
 

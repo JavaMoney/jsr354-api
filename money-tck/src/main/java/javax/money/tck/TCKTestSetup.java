@@ -4,10 +4,11 @@ import java.lang.reflect.AccessibleObject;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.money.CurrencyMismatchException;
 import javax.money.IntegralMoney;
-import javax.money.MonetaryAmount;
 import javax.money.Money;
 import javax.money.MoneyCurrency;
+import javax.money.UnknownCurrencyException;
 
 public final class TCKTestSetup {
 
@@ -22,6 +23,13 @@ public final class TCKTestSetup {
 	}
 
 	private static final class JSRTestSetup implements JSR354TestConfiguration {
+
+		@Override
+		public Collection<Class> getExceptionClasses() {
+			return Arrays
+					.asList(new Class[] { CurrencyMismatchException.class,
+							UnknownCurrencyException.class });
+		}
 
 		@Override
 		public Collection<Class> getAmountClasses() {
@@ -62,7 +70,8 @@ public final class TCKTestSetup {
 				return (T) Money.of((String) params[0], (Number) params[1]);
 			}
 			if (IntegralMoney.class.equals(type)) {
-				return (T) IntegralMoney.of((String) params[0], (Number) params[1]);
+				return (T) IntegralMoney.of((String) params[0],
+						(Number) params[1]);
 			}
 			return null;
 		}

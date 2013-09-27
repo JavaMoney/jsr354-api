@@ -10,7 +10,6 @@
 	<name>JSR 354 (Money and Currency) - TCK</name>
 	<description>Technical Compatibility Kit (TCK) of JSR 354</description>
 	<groupId>org.javamoney</groupId>
-	<version>0.7-SNAPSHOT</version>
 
 	<properties>
 		<javamoney.version>${project.version}</javamoney.version>
@@ -19,6 +18,12 @@
 		<jboss.test.audit.version>1.1.0.Final</jboss.test.audit.version>
 		<java.source.version>1.7</java.source.version>
 		<java.target.version>1.7</java.target.version>
+
+		<!-- This properties must be set for another implementation to be tested. -->
+		<impl.groupId>javax.money</impl.groupId>
+		<impl.artifactId>money-ri</impl.artifactId>
+		<impl.version>0.7-SNAPSHOT</impl.version>
+		<impl.packageType>jar</impl.packageType>
 	</properties>
 
 	<licenses>
@@ -32,14 +37,17 @@
 		<dependencies>
 			<dependency>
 				<groupId>javax.money</groupId>
-				<artifactId>money-api-provider</artifactId>
+				<artifactId>money-api</artifactId>
 				<version>${javamoney.version}</version>
 			</dependency>
+
 			<dependency>
-				<groupId>javax.money</groupId>
-				<artifactId>money-api-ext</artifactId>
-				<version>${javamoney.version}</version>
+				<groupId>${impl.groupId}</groupId>
+				<artifactId>${impl.artifactId}</artifactId>
+				<version>${impl.version}</version>
+				<type>${impl.packageType}</type>
 			</dependency>
+
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
@@ -65,22 +73,26 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		<!-- dependency> <groupId>javax.money</groupId> <artifactId>money-api-ext</artifactId> 
-			</dependency> <dependency> <groupId>javax.inject</groupId> <artifactId>javax.inject</artifactId> 
-			</dependency -->
+		<dependency>
+			<groupId>javax.money</groupId>
+			<artifactId>money-api</artifactId>
+			<version>${javamoney.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>${impl.groupId}</groupId>
+			<artifactId>${impl.artifactId}</artifactId>
+			<version>${impl.version}</version>
+			<type>${impl.packageType}</type>
+		</dependency>
+
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
+
 
 		<dependency>
 			<groupId>org.jboss.test-audit</groupId>
@@ -105,8 +117,10 @@
 					<processors>
 						<processor>org.jboss.test.audit.report.CoverageProcessor</processor>
 					</processors>
-					<compilerArguments>-AauditXml=tck.xml -AoutputDir=${basedir}/target/coverage-report -source ${java.source.version}
-                        -target ${java.target.version}
+					<compilerArguments>-AauditXml=tck.xml
+						-AoutputDir=${basedir}/target/coverage-report -source
+						${java.source.version}
+						-target ${java.target.version}
 					</compilerArguments>
 					<!-- -source ${java.source.version} -target ${java.target.version} -->
 				</configuration>

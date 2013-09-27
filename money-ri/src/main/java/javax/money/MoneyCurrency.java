@@ -17,20 +17,18 @@ package javax.money;
 
 import java.io.Serializable;
 import java.util.Currency;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 /**
- * Platform RI: Adapter that implements the new {@link CurrencyUnit} interface using the
- * JDK's {@link Currency}.
+ * Platform RI: Adapter that implements the new {@link CurrencyUnit} interface
+ * using the JDK's {@link Currency}.
  * 
  * @version 0.5.1
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public class MoneyCurrency implements CurrencyUnit, Serializable,
+public final class MoneyCurrency implements CurrencyUnit, Serializable,
 		Comparable<CurrencyUnit> {
 
 	/**
@@ -89,7 +87,7 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 		String key = currency.getCurrencyCode();
 		MoneyCurrency cachedItem = CACHED.get(key);
 		if (cachedItem == null) {
-			cachedItem = new JDKCurrencyAdapter(currency);
+			cachedItem = new MoneyCurrency(currency);
 			CACHED.put(key, cachedItem);
 		}
 		return cachedItem;
@@ -190,6 +188,42 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 	 */
 	public int compareTo(CurrencyUnit currency) {
 		return getCurrencyCode().compareTo(currency.getCurrencyCode());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((currencyCode == null) ? 0 : currencyCode.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MoneyCurrency other = (MoneyCurrency) obj;
+		if (currencyCode == null) {
+			if (other.currencyCode != null)
+				return false;
+		} else if (!currencyCode.equals(other.currencyCode))
+			return false;
+		return true;
 	}
 
 	/**
@@ -322,60 +356,6 @@ public class MoneyCurrency implements CurrencyUnit, Serializable,
 			return new MoneyCurrency(currencyCode, numericCode,
 					defaultFractionDigits);
 		}
-	}
-
-	/**
-	 * Platform RI: Adapter that implements the new {@link CurrencyUnit}
-	 * interface using the JDK's {@link Currency}.
-	 * <p>
-	 * This adapter will be removed in the final platform implementation.
-	 * 
-	 * @author Anatole Tresch
-	 * @author Werner Keil
-	 */
-	private final static class JDKCurrencyAdapter extends MoneyCurrency {
-
-		/**
-		 * serialVersionUID.
-		 */
-		private static final long serialVersionUID = -2523936311372374236L;
-
-		/**
-		 * ISO 4217 currency code for this currency.
-		 * 
-		 * @serial
-		 */
-		private final Currency currency;
-
-		/**
-		 * Private constructor.
-		 * 
-		 * @param currency
-		 */
-		private JDKCurrencyAdapter(Currency currency) {
-			super(currency);
-			this.currency = currency;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see javax.money.Displayable#getDisplayName(java.util.Locale)
-		 */
-		public String getDisplayName(Locale locale) {
-			return currency.getDisplayName(locale);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Object#toString()
-		 */
-		@Override
-		public String toString() {
-			return getCurrencyCode();
-		}
-
 	}
 
 	public static MoneyCurrency from(CurrencyUnit currency) {

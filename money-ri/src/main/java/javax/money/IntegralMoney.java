@@ -18,14 +18,10 @@
  */
 package javax.money;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicLong;
-
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryAdjuster;
-import javax.money.MonetaryAmount;
-import javax.money.MonetaryQuery;
 
 /**
  * <type>long</type> based implementation of {@link MonetaryAmount}.
@@ -35,7 +31,9 @@ import javax.money.MonetaryQuery;
  * @author Werner Keil
  */
 public final class IntegralMoney implements MonetaryAmount,
-		Comparable<IntegralMoney> {
+		Comparable<IntegralMoney>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	/** The numeric part of this amount. */
 	private final long number;
@@ -237,16 +235,6 @@ public final class IntegralMoney implements MonetaryAmount,
 				+ IntegralMoney.from(amount).number);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#add(java.lang.Number)
-	 */
-	public IntegralMoney add(Number number) {
-		checkNumber(number);
-		return new IntegralMoney(getCurrency(), this.number
-				+ getScaledNumber(number));
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -375,17 +363,6 @@ public final class IntegralMoney implements MonetaryAmount,
 		checkAmountParameter(subtrahend);
 		return new IntegralMoney(getCurrency(), this.number
 				- IntegralMoney.from(subtrahend).number);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#subtract(java.lang.Number)
-	 */
-	public IntegralMoney subtract(Number subtrahend) {
-		checkNumber(subtrahend);
-		return new IntegralMoney(getCurrency(), this.number
-				- getScaledNumber(subtrahend));
 	}
 
 	/*

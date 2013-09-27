@@ -298,7 +298,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 *            The new {@link MathContext}, not null.
 	 * @return a new {@link Money} instance, with the new {@link MathContext}.
 	 */
-	public Money setMathContext(MathContext mathContext) {
+	public Money withMathContext(MathContext mathContext) {
 		if (mathContext == null) {
 			throw new IllegalArgumentException("MathContext required.");
 		}
@@ -331,16 +331,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 				this.mathContext);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#add(Number)
-	 */
-	public Money add(Number amount) {
-		checkNumber(amount);
-		return new Money(this.currency, this.number.add(getBigDecimal(amount),
-				this.mathContext), this.mathContext);
-	}
+
 
 	private BigDecimal getBigDecimal(Number num) {
 		if (num instanceof BigDecimal) {
@@ -503,17 +494,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 				this.mathContext);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#subtract(Number)
-	 */
-	public Money subtract(Number subtrahend) {
-		checkNumber(subtrahend);
-		return new Money(this.currency, this.number.subtract(
-				getBigDecimal(subtrahend), this.mathContext),
-				this.mathContext);
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -650,23 +630,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 		return this.number.precision();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#intValue()
-	 */
-	public int intValue() {
-		return this.number.intValue();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#intValueExact()
-	 */
-	public int intValueExact() {
-		return this.number.intValueExact();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -686,14 +649,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 		return this.number.longValueExact();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#floatValue()
-	 */
-	public float floatValue() {
-		return this.number.floatValue();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -704,32 +659,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 		return this.number.doubleValue();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#byteValue()
-	 */
-	public byte byteValue() {
-		return this.number.byteValue();
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#shortValue()
-	 */
-	public short shortValue() {
-		return this.number.shortValue();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#shortValueExact()
-	 */
-	public short shortValueExact() {
-		return number.shortValueExact();
-	}
 
 	/*
 	 * (non-Javadoc)

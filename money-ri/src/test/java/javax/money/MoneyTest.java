@@ -1,21 +1,5 @@
-/*
- *  Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- * Contributors:
- *    Anatole Tresch - initial implementation
- *    Wernner Keil - extensions and adaptions.
+/**
+ * 
  */
 package javax.money;
 
@@ -24,18 +8,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 
-import javax.money.CurrencyUnit;
-import javax.money.IntegralMoney;
-import javax.money.MonetaryAmount;
-import javax.money.Money;
-import javax.money.MoneyCurrency;
-
+import javax.money.function.MonetaryRoundings;
 
 import org.junit.Test;
 
+/**
+ * @author Anatole
+ * 
+ */
 public class MoneyTest {
 
 	private static final BigDecimal TEN = new BigDecimal(10.0d);
@@ -43,18 +27,26 @@ public class MoneyTest {
 	protected static final CurrencyUnit DOLLAR = MoneyCurrency
 			.of("USD");
 
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#of(javax.money.CurrencyUnit, java.math.BigDecimal)}
+	 * .
+	 */
 	@Test
-	public void testGetInstanceCurrencyBigDecimal() {
+	public void testOfCurrencyUnitBigDecimal() {
 		Money m = Money.of(MoneyCurrency.of("EUR"), TEN);
 		assertEquals(TEN, m.asType(BigDecimal.class));
 	}
 
 	@Test
-	public void testGetInstanceCurrencyDouble() {
+	public void testOfCurrencyUnitDouble() {
 		Money m = Money.of(MoneyCurrency.of("EUR"), 10.0d);
 		assertTrue(TEN.doubleValue() == m.doubleValue());
 	}
 
+	/**
+	 * Test method for {@link javax.money.Money#getCurrency()}.
+	 */
 	@Test
 	public void testGetCurrency() {
 		MonetaryAmount money = Money.of(EURO, BigDecimal.TEN);
@@ -62,14 +54,6 @@ public class MoneyTest {
 		assertEquals("EUR", money.getCurrency().getCurrencyCode());
 	}
 
-	@Test
-	public void testAddNumber() {
-		Money money1 = Money.of(EURO, BigDecimal.TEN);
-		Money money2 = Money.of(EURO, BigDecimal.ONE);
-		Money moneyResult = money1.add(money2);
-		assertNotNull(moneyResult);
-		assertEquals(11d, moneyResult.doubleValue(), 0d);
-	}
 
 	@Test
 	public void testSubtractMonetaryAmount() {
@@ -98,31 +82,583 @@ public class MoneyTest {
 				"0.50000000000000000001"));
 		assertThat(result.asType(BigDecimal.class), equalTo(BigDecimal.ONE));
 	}
-	
+
 	@Test
-	public void comparePerformance(){
+	public void comparePerformance() {
 		Money money1 = Money.of(EURO, BigDecimal.ONE);
 		long start = System.currentTimeMillis();
-		for(int i=0; i<100000;i++){
-			money1 = money1.add(Money.of(EURO, 1234567));
+		final int NUM = 1000000;
+		for (int i = 0; i < NUM; i++) {
+			money1 = money1.add(Money.of(EURO, 1234567.3444));
 			money1 = money1.subtract(Money.of(EURO, 232323));
-			money1 = money1.multiply(3);
-			money1 = money1.divide(3);
+			money1 = money1.multiply(3.4);
+			money1 = money1.divide(5.456);
+//			money1 = money1.with(MonetaryRoundings.getRounding());
 		}
 		long end = System.currentTimeMillis();
 		long duration = end - start;
-		System.out.println("Duration for 100000 multiplications (Money/BD): " + duration + " ms ("+(duration/100) + " ns per loop) -> " + money1);
-		
+		System.out.println("Duration for 1000000 multiplications (Money/BD): "
+				+ duration + " ms (" + ((duration * 1000) / NUM) + " ns per loop) -> "
+				+ money1);
+
 		IntegralMoney money2 = IntegralMoney.of(EURO, BigDecimal.ONE);
 		start = System.currentTimeMillis();
-		for(int i=0; i<100000;i++){
-			money2 = money2.add(Money.of(EURO, 1234567));
-			money2 = money2.subtract(Money.of(EURO, 232323));
-			money2 = money2.multiply(3);
-			money2 = money2.divide(3);
+		for (int i = 0; i < NUM; i++) {
+			money2 = money2.add(IntegralMoney.of(EURO, 1234567.3434));
+			money2 = money2.subtract(IntegralMoney.of(EURO, 232323));
+			money2 = money2.multiply(3.4);
+			money1 = money1.divide(5.456);
+//			money1 = money1.with(MonetaryRoundings.getRounding());
 		}
 		end = System.currentTimeMillis();
 		duration = end - start;
-		System.out.println("Duration for 100000 multiplications (Money/BD): " + duration + " ms ("+(duration/100) + " ns per loop) -> " + money2);
+		System.out.println("Duration for "+NUM+" multiplications (Money/BD): "
+				+ duration + " ms (" + ((duration * 1000) / NUM) + " ns per loop) -> "
+				+ money2);
 	}
+
+	/**
+	 * Test method for {@link javax.money.Money#hashCode()}.
+	 */
+	@Test
+	public void testHashCode() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#getDefaultMathContext()}.
+	 */
+	@Test
+	public void testGetDefaultMathContext() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#of(javax.money.CurrencyUnit, java.math.BigDecimal, java.math.MathContext)}
+	 * .
+	 */
+	@Test
+	public void testOfCurrencyUnitBigDecimalMathContext() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#of(javax.money.CurrencyUnit, java.lang.Number)}.
+	 */
+	@Test
+	public void testOfCurrencyUnitNumber() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#of(javax.money.CurrencyUnit, java.lang.Number, java.math.MathContext)}
+	 * .
+	 */
+	@Test
+	public void testOfCurrencyUnitNumberMathContext() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#of(java.lang.String, java.lang.Number)}.
+	 */
+	@Test
+	public void testOfStringNumber() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#of(java.lang.String, java.lang.Number, java.math.MathContext)}
+	 * .
+	 */
+	@Test
+	public void testOfStringNumberMathContext() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#ofZero(javax.money.CurrencyUnit)}.
+	 */
+	@Test
+	public void testOfZeroCurrencyUnit() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#ofZero(java.lang.String)}.
+	 */
+	@Test
+	public void testOfZeroString() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#equals(java.lang.Object)}.
+	 */
+	@Test
+	public void testEqualsObject() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#compareTo(javax.money.MonetaryAmount)}.
+	 */
+	@Test
+	public void testCompareTo() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#getMathContext()}.
+	 */
+	@Test
+	public void testGetMathContext() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#withMathContext(java.math.MathContext)}.
+	 */
+	@Test
+	public void testWithMathContext() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#abs()}.
+	 */
+	@Test
+	public void testAbs() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#add(javax.money.MonetaryAmount)}
+	 * .
+	 */
+	@Test
+	public void testAdd() {
+		Money money1 = Money.of(EURO, BigDecimal.TEN);
+		Money money2 = Money.of(EURO, BigDecimal.ONE);
+		Money moneyResult = money1.add(money2);
+		assertNotNull(moneyResult);
+		assertEquals(11d, moneyResult.doubleValue(), 0d);
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#divide(javax.money.MonetaryAmount)}.
+	 */
+	@Test
+	public void testDivideMonetaryAmount() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#divide(java.lang.Number)}.
+	 */
+	@Test
+	public void testDivideNumber() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#divideAndRemainder(javax.money.MonetaryAmount)}.
+	 */
+	@Test
+	public void testDivideAndRemainderMonetaryAmount() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#divideAndRemainder(java.lang.Number)}.
+	 */
+	@Test
+	public void testDivideAndRemainderNumber() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#divideToIntegralValue(javax.money.MonetaryAmount)}
+	 * .
+	 */
+	@Test
+	public void testDivideToIntegralValueMonetaryAmount() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#divideToIntegralValue(java.lang.Number)}.
+	 */
+	@Test
+	public void testDivideToIntegralValueNumber() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#multiply(javax.money.MonetaryAmount)}.
+	 */
+	@Test
+	public void testMultiplyMonetaryAmount() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#multiply(java.lang.Number)}.
+	 */
+	@Test
+	public void testMultiplyNumber() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#negate()}.
+	 */
+	@Test
+	public void testNegate() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#plus()}.
+	 */
+	@Test
+	public void testPlus() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#subtract(javax.money.MonetaryAmount)}.
+	 */
+	@Test
+	public void testSubtract() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#pow(int)}.
+	 */
+	@Test
+	public void testPow() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#ulp()}.
+	 */
+	@Test
+	public void testUlp() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#remainder(javax.money.MonetaryAmount)}.
+	 */
+	@Test
+	public void testRemainderMonetaryAmount() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#remainder(java.lang.Number)}.
+	 */
+	@Test
+	public void testRemainderNumber() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#scaleByPowerOfTen(int)}.
+	 */
+	@Test
+	public void testScaleByPowerOfTen() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#isZero()}.
+	 */
+	@Test
+	public void testIsZero() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#isPositive()}.
+	 */
+	@Test
+	public void testIsPositive() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#isPositiveOrZero()}.
+	 */
+	@Test
+	public void testIsPositiveOrZero() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#isNegative()}.
+	 */
+	@Test
+	public void testIsNegative() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#isNegativeOrZero()}.
+	 */
+	@Test
+	public void testIsNegativeOrZero() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#with(java.lang.Number)}.
+	 */
+	@Test
+	public void testWithNumber() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#with(javax.money.CurrencyUnit, java.lang.Number)}
+	 * .
+	 */
+	@Test
+	public void testWithCurrencyUnitNumber() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#getScale()}.
+	 */
+	@Test
+	public void testGetScale() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#getPrecision()}.
+	 */
+	@Test
+	public void testGetPrecision() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#longValue()}.
+	 */
+	@Test
+	public void testLongValue() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#longValueExact()}.
+	 */
+	@Test
+	public void testLongValueExact() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#doubleValue()}.
+	 */
+	@Test
+	public void testDoubleValue() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#signum()}.
+	 */
+	@Test
+	public void testSignum() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#toEngineeringString()}.
+	 */
+	@Test
+	public void testToEngineeringString() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#toPlainString()}.
+	 */
+	@Test
+	public void testToPlainString() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#isLessThan(javax.money.MonetaryAmount)}.
+	 */
+	@Test
+	public void testIsLessThan() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#isLessThanOrEqualTo(javax.money.MonetaryAmount)}
+	 * .
+	 */
+	@Test
+	public void testIsLessThanOrEqualTo() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#isGreaterThan(javax.money.MonetaryAmount)}.
+	 */
+	@Test
+	public void testIsGreaterThan() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#isGreaterThanOrEqualTo(javax.money.MonetaryAmount)}
+	 * .
+	 */
+	@Test
+	public void testIsGreaterThanOrEqualTo() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#isEqualTo(javax.money.MonetaryAmount)}.
+	 */
+	@Test
+	public void testIsEqualTo() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#isNotEqualTo(javax.money.MonetaryAmount)}.
+	 */
+	@Test
+	public void testIsNotEqualTo() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#getNumberType()}.
+	 */
+	@Test
+	public void testGetNumberType() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#query(javax.money.MonetaryQuery)}.
+	 */
+	@Test
+	public void testQuery() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#asType(java.lang.Class)}.
+	 */
+	@Test
+	public void testAsTypeClassOfT() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#asType(java.lang.Class, javax.money.MonetaryAdjuster)}
+	 * .
+	 */
+	@Test
+	public void testAsTypeClassOfTMonetaryAdjuster() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#asNumber()}.
+	 */
+	@Test
+	public void testAsNumber() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#toString()}.
+	 */
+	@Test
+	public void testToString() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#getAmountWhole()}.
+	 */
+	@Test
+	public void testGetAmountWhole() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#getAmountFractionNumerator()}.
+	 */
+	@Test
+	public void testGetAmountFractionNumerator() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link javax.money.Money#getAmountFractionDenominator()}.
+	 */
+	@Test
+	public void testGetAmountFractionDenominator() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#with(javax.money.MonetaryAdjuster)}.
+	 */
+	@Test
+	public void testWithMonetaryAdjuster() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link javax.money.Money#from(javax.money.MonetaryAmount)}.
+	 */
+	@Test
+	public void testFrom() {
+		fail("Not yet implemented");
+	}
+
 }

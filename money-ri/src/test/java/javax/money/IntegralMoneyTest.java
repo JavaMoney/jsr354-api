@@ -19,20 +19,12 @@
  */
 package javax.money;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
-import javax.money.CurrencyUnit;
-import javax.money.IntegralMoney;
-import javax.money.MonetaryAmount;
-import javax.money.MoneyCurrency;
-
 
 import org.junit.Test;
 
@@ -94,5 +86,14 @@ public class IntegralMoneyTest {
 		IntegralMoney money1 = IntegralMoney.of(EURO, 1000);
 		IntegralMoney result = money1.divideToIntegralValue(5);
 		assertEquals(200L, result.longValue());
+	}
+	
+	@Test
+	public void testFrom() {
+		IntegralMoney m = IntegralMoney.of("CHF",  10.56);
+		IntegralMoney m2 = IntegralMoney.from(m);
+		assertTrue(m==m2);
+		IntegralMoney m3 = IntegralMoney.from(Money.of("CHF", 10.56));
+		assertEquals(m.asNumber(), m3.asNumber());
 	}
 }

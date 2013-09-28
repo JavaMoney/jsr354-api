@@ -800,12 +800,12 @@ public final class IntegralMoney implements MonetaryAmount,
 		if (IntegralMoney.class == amount.getClass()) {
 			return (IntegralMoney) amount;
 		}
-		BigDecimal bd = new BigDecimal(amount.getAmountWhole());
-		BigDecimal fraction = new BigDecimal(
-				amount.getAmountFractionNumerator());
-		fraction = fraction.movePointLeft(fraction
-				.scale());
-		return new IntegralMoney(amount.getCurrency(), bd.add(fraction));
+		long whole = amount.getAmountWhole();
+		long fraction = amount.getAmountFractionNumerator();
+		long fractionDenom = amount.getAmountFractionDenominator();
+		long fractionNum = fraction / amount.getAmountFractionDenominator();
+		
+		return new IntegralMoney(amount.getCurrency(), whole + fraction);
 	}
 
 	private BigDecimal getBigDecimal() {

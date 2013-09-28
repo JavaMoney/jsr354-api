@@ -18,13 +18,9 @@
  */
 package javax.money;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import javax.money.CurrencyUnit;
-import javax.money.MoneyCurrency;
 
 import org.junit.Test;
 
@@ -36,7 +32,7 @@ import org.junit.Test;
 public class MoneyCurrency_BuilderTest {
 
 	/**
-	 * Test method for {@link javax.money.CurrencyUnitImpl.Builder#Builder()}.
+	 * Test method for {@link javax.money.format.CurrencyUnitImpl.Builder#Builder()}.
 	 */
 	@Test
 	public void testBuilder() {
@@ -46,8 +42,8 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#withCurrencyCode(java.lang.String)}
-	 * and {@link javax.money.CurrencyUnitImpl.Builder#getCurrencyCode()} .
+	 * {@link javax.money.format.CurrencyUnitImpl.Builder#withCurrencyCode(java.lang.String)}
+	 * and {@link javax.money.format.CurrencyUnitImpl.Builder#getCurrencyCode()} .
 	 */
 	@Test
 	public void testGetSetCurrencyCode() {
@@ -57,9 +53,9 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#withDefaultFractionDigits(int)}
+	 * {@link javax.money.format.CurrencyUnitImpl.Builder#withDefaultFractionDigits(int)}
 	 * and
-	 * {@link javax.money.CurrencyUnitImpl.Builder#getDefaultFractionDigits()}.
+	 * {@link javax.money.format.CurrencyUnitImpl.Builder#getDefaultFractionDigits()}.
 	 */
 	@Test
 	public void testGetSetDefaultFractionDigits() {
@@ -70,7 +66,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#withDefaultFractionDigits(int)}
+	 * {@link javax.money.format.CurrencyUnitImpl.Builder#withDefaultFractionDigits(int)}
 	 * .
 	 */
 	@Test(expected = IllegalArgumentException.class)
@@ -80,8 +76,8 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#withNumericCode(int)} and
-	 * {@link javax.money.CurrencyUnitImpl.Builder#getNumericCode()}.
+	 * {@link javax.money.format.CurrencyUnitImpl.Builder#withNumericCode(int)} and
+	 * {@link javax.money.format.CurrencyUnitImpl.Builder#getNumericCode()}.
 	 */
 	@Test
 	public void testGetSetNumericCode() {
@@ -92,7 +88,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#withNumericCode(int)}.
+	 * {@link javax.money.format.CurrencyUnitImpl.Builder#withNumericCode(int)}.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetSetNumericCode_InvalidInput() {
@@ -100,7 +96,7 @@ public class MoneyCurrency_BuilderTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.CurrencyUnitImpl.Builder#build()}.
+	 * Test method for {@link javax.money.format.CurrencyUnitImpl.Builder#build()}.
 	 */
 	@Test
 	public void testBuild() {
@@ -116,7 +112,7 @@ public class MoneyCurrency_BuilderTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.CurrencyUnitImpl.Builder#build(boolean)}.
+	 * {@link javax.money.format.CurrencyUnitImpl.Builder#build(boolean)}.
 	 */
 	@Test
 	public void testBuildBoolean() {

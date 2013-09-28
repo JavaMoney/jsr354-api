@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -810,16 +811,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 				+ type);
 	}
 
-	/*
-	 * }(non-Javadoc)
-	 * 
-	 * @see javax.money.MonetaryAmount#asType(java.lang.Class,
-	 * javax.money.Rounding)
-	 */
-	public <T> T asType(Class<T> type, MonetaryAdjuster adjuster) {
-		MonetaryAmount amount = adjuster.adjustInto(this);
-		return Money.from(amount).asType(type);
-	}
 	
 	/**
 	 * Gets the number representation of the numeric value of this item.
@@ -874,7 +865,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	@Override
 	public long getAmountWhole() {
-		return this.number.longValue();
+		return this.number.setScale(0,
+				RoundingMode.DOWN).longValueExact();
 	}
 
 	/*
@@ -884,8 +876,8 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	@Override
 	public long getAmountFractionNumerator() {
-		return this.number.movePointRight(number.precision())
-				.longValueExact();
+		BigDecimal bd = this.number.remainder(BigDecimal.ONE);
+		return bd.movePointRight(getScale()).longValueExact();
 	}
 
 	/*
@@ -895,8 +887,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	@Override
 	public long getAmountFractionDenominator() {
-		// TODO Auto-generated method stub
-		return 0;
+		return BigDecimal.valueOf(10).pow(getScale()-1).longValueExact();
 	}
 
 	@Override

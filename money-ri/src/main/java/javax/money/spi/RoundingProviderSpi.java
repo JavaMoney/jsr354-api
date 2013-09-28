@@ -13,9 +13,11 @@
 package javax.money.spi;
 
 import java.util.ServiceLoader;
+import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAdjuster;
+import javax.money.MonetaryAmount;
 
 /**
  * This SPI allows to extends/override the roundings available for
@@ -95,5 +97,23 @@ public interface RoundingProviderSpi {
 	 * @return the corresponding rounding instance, or {@code null}.
 	 */
 	MonetaryAdjuster getCashRounding(CurrencyUnit currency, long timestamp);
+
+	/**
+	 * Access an {@link MonetaryAdjuster} for custom rounding
+	 * {@link MonetaryAmount} instances.
+	 * 
+	 * @param customRounding
+	 *            The customRounding identifier.
+	 * @return the corresponding {@link MonetaryAdjuster} implementing the
+	 *         rounding, or {@code null}.
+	 */
+	MonetaryAdjuster getCustomRounding(String customRoundingId);
+
+	/**
+	 * Access the ids of the custom roundigs defined by this provider.
+	 * 
+	 * @return the ids of the defined custom roundings, never {@code null}.
+	 */
+	Set<String> getCustomRoundingIds();
 
 }

@@ -17,8 +17,11 @@ package javax.money.function;
 
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Collections;
 import java.util.Currency;
+import java.util.HashSet;
 import java.util.ServiceLoader;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -103,10 +106,12 @@ public final class MonetaryRoundings {
 	 *         rounding, never {@code null}.
 	 */
 	public static MonetaryAdjuster getRounding(CurrencyUnit currency) {
-		MonetaryAdjuster op = null;
 		for (RoundingProviderSpi prov : providerSpis) {
 			try {
-				op = prov.getRounding(currency);
+				MonetaryAdjuster op = prov.getRounding(currency);
+				if (op != null) {
+					return op;
+				}
 			} catch (Exception e) {
 				Logger.getLogger(MonetaryRoundings.class.getName()).log(
 						Level.SEVERE,
@@ -114,10 +119,7 @@ public final class MonetaryRoundings {
 								+ prov, e);
 			}
 		}
-		if (op == null) {
-			op = defaultProvider.getRounding(currency);
-		}
-		return op;
+		return defaultProvider.getRounding(currency);
 	}
 
 	/**
@@ -132,12 +134,11 @@ public final class MonetaryRoundings {
 	 *         rounding, never {@code null}.
 	 */
 	public static MonetaryAdjuster getCashRounding(CurrencyUnit currency) {
-		MonetaryAdjuster op = null;
 		for (RoundingProviderSpi prov : providerSpis) {
 			try {
-				op = prov.getCashRounding(currency);
+				MonetaryAdjuster op = prov.getCashRounding(currency);
 				if (op != null) {
-					break;
+					return op;
 				}
 			} catch (Exception e) {
 				Logger.getLogger(MonetaryRoundings.class.getName()).log(
@@ -146,10 +147,7 @@ public final class MonetaryRoundings {
 								+ prov, e);
 			}
 		}
-		if (op == null) {
-			op = defaultProvider.getCashRounding(currency);
-		}
-		return op;
+		return defaultProvider.getCashRounding(currency);
 	}
 
 	/**
@@ -168,12 +166,11 @@ public final class MonetaryRoundings {
 	 */
 	public static MonetaryAdjuster getRounding(CurrencyUnit currency,
 			long timestamp) {
-		MonetaryAdjuster op = null;
 		for (RoundingProviderSpi prov : providerSpis) {
 			try {
-				op = prov.getRounding(currency, timestamp);
+				MonetaryAdjuster op = prov.getRounding(currency, timestamp);
 				if (op != null) {
-					break;
+					return op;
 				}
 			} catch (Exception e) {
 				Logger.getLogger(MonetaryRoundings.class.getName()).log(
@@ -182,10 +179,7 @@ public final class MonetaryRoundings {
 								+ prov, e);
 			}
 		}
-		if (op == null) {
-			op = defaultProvider.getRounding(currency, timestamp);
-		}
-		return op;
+		return defaultProvider.getRounding(currency, timestamp);
 	}
 
 	/**
@@ -204,12 +198,11 @@ public final class MonetaryRoundings {
 	 */
 	public static MonetaryAdjuster getCashRounding(CurrencyUnit currency,
 			long timestamp) {
-		MonetaryAdjuster op = null;
 		for (RoundingProviderSpi prov : providerSpis) {
 			try {
-				op = prov.getCashRounding(currency, timestamp);
+				MonetaryAdjuster op = prov.getCashRounding(currency, timestamp);
 				if (op != null) {
-					break;
+					return op;
 				}
 			} catch (Exception e) {
 				Logger.getLogger(MonetaryRoundings.class.getName()).log(
@@ -218,10 +211,56 @@ public final class MonetaryRoundings {
 								+ prov, e);
 			}
 		}
-		if (op == null) {
-			op = defaultProvider.getCashRounding(currency, timestamp);
+		return defaultProvider.getCashRounding(currency, timestamp);
+	}
+
+	/**
+	 * Access an {@link MonetaryAdjuster} for custom rounding
+	 * {@link MonetaryAmount} instances.
+	 * 
+	 * @param customRounding
+	 *            The customRounding identifier.
+	 * @return the corresponding {@link MonetaryAdjuster} implementing the
+	 *         rounding, never {@code null}.
+	 * @throws IllegalArgumentException
+	 *             if no such rounding is registered using a
+	 *             {@link RoundingProviderSpi} instance.
+	 */
+	public static MonetaryAdjuster getRounding(String customRoundingId) {
+		for (RoundingProviderSpi prov : providerSpis) {
+			try {
+				MonetaryAdjuster op = prov.getCustomRounding(customRoundingId);
+				if (op != null) {
+					return op;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryRoundings.class.getName()).log(
+						Level.SEVERE,
+						"Error loading RoundingProviderSpi from provider: "
+								+ prov, e);
+			}
 		}
-		return op;
+		return defaultProvider.getCustomRounding(customRoundingId);
+	}
+
+	/**
+	 * Allows to access the identifiers of the current defined custom roundings.
+	 * 
+	 * @return the set of custom rounding ids, never {@code null}.
+	 */
+	public static Set<String> getCustomRoundingIds() {
+		Set<String> result = new HashSet<String>();
+		for (RoundingProviderSpi prov : providerSpis) {
+			try {
+				result.addAll(prov.getCustomRoundingIds());
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryRoundings.class.getName()).log(
+						Level.SEVERE,
+						"Error loading RoundingProviderSpi from provider: "
+								+ prov, e);
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -265,6 +304,17 @@ public final class MonetaryRoundings {
 		public MonetaryAdjuster getCashRounding(CurrencyUnit currency,
 				long timestamp) {
 			return null;
+		}
+
+		@Override
+		public Set<String> getCustomRoundingIds() {
+			return Collections.emptySet();
+		}
+
+		@Override
+		public MonetaryAdjuster getCustomRounding(String customRoundingId) {
+			throw new IllegalArgumentException("No such custom rounding: "
+					+ customRoundingId);
 		}
 
 	}

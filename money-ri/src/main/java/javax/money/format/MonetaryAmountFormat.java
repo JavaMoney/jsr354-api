@@ -254,8 +254,9 @@ public final class MonetaryAmountFormat {
 			this.locale = locale;
 		}
 
-		public void withDefaultCurrency(CurrencyUnit currency) {
+		public Builder withDefaultCurrency(CurrencyUnit currency) {
 			this.defaultCurrency = currency;
+			return this;
 		}
 
 		/**

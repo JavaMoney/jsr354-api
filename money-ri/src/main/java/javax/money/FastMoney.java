@@ -21,17 +21,57 @@ package javax.money;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * <type>long</type> based implementation of {@link MonetaryAmount}.
+ * <type>long</type> based implementation of {@link MonetaryAmount}. This class
+ * internally uses a single long number as numeric reporesentation, which
+ * basically is interpreted as minor units.<br/>
+ * It suggested to have a performance advantage of a 10-15 times faster compared
+ * to {@link Money}, which interally uses {@link BigDecimal}. Nevertheless this
+ * comes with a price of less precision. As an example performing the following
+ * calulcation one milltion times, results in slightly different results:
+ * 
+ * <pre>
+ * Money money1 = money1.add(Money.of(EURO, 1234567.3444));
+ * money1 = money1.subtract(Money.of(EURO, 232323));
+ * money1 = money1.multiply(3.4);
+ * money1 = money1.divide(5.456);
+ * </pre>
+ * 
+ * Executed one million (1000000) times this results in
+ * {@code EUR 1657407.962529182}, calculated in 3680 ms, or roughly 3ns/loop.
+ * <p>
+ * whrereas
+ * 
+ * <pre>
+ * FastMoney money1 = money1.add(FastMoney.of(EURO, 1234567.3444));
+ * money1 = money1.subtract(FastMoney.of(EURO, 232323));
+ * money1 = money1.multiply(3.4);
+ * money1 = money1.divide(5.456);
+ * </pre>
+ * 
+ * executed one million (1000000) times results in {@code EUR 1657407.96251},
+ * calculated in 179 ms, which is less than 1ns/loop.
+ * <p>
+ * Also note than mixxing up types my drastically change the performance
+ * behaviour. E.g. replacing the code above with the following: *
+ * 
+ * <pre>
+ * FastMoney money1 = money1.add(Money.of(EURO, 1234567.3444));
+ * money1 = money1.subtract(FastMoney.of(EURO, 232323));
+ * money1 = money1.multiply(3.4);
+ * money1 = money1.divide(5.456);
+ * </pre>
+ * 
+ * executed one million (1000000) times may execute significantly longer, since
+ * monetary amount type conversion is involved.
  * 
  * @version 0.5
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public final class IntegralMoney implements MonetaryAmount,
-		Comparable<IntegralMoney>, Serializable {
+public final class FastMoney implements MonetaryAmount,
+		Comparable<FastMoney>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,18 +81,20 @@ public final class IntegralMoney implements MonetaryAmount,
 	/** The current scale represented by the number. */
 	private static final int SCALE = 5;
 
+	private static final long SCALING_DENOMINATOR = 100000L;
+
 	/** The currency of this amount. */
 	private final CurrencyUnit currency;
 
 	/**
-	 * Creates a new instance os {@link IntegralMoney}.
+	 * Creates a new instance os {@link FastMoney}.
 	 * 
 	 * @param currency
 	 *            the currency, not null.
 	 * @param number
 	 *            the amount, not null.
 	 */
-	private IntegralMoney(CurrencyUnit currency, Number number) {
+	private FastMoney(CurrencyUnit currency, Number number) {
 		if (currency == null) {
 			throw new IllegalArgumentException("Currency is required.");
 		}
@@ -61,15 +103,46 @@ public final class IntegralMoney implements MonetaryAmount,
 		}
 		checkNumber(number);
 		this.currency = currency;
-		this.number = getScaledNumber(number);
+		this.number = getInternalNumber(number);
 	}
 
-	private long getScaledNumber(Number number) {
-		BigDecimal bd = getBigDecimal(number);
-		return bd.movePointRight(SCALE).longValue();
+	private long getInternalNumber(Number number) {
+		long whole = number.longValue();
+		double fractions = number.doubleValue() % 1;
+		return (whole * SCALING_DENOMINATOR)
+				+ ((long) (fractions * SCALING_DENOMINATOR));
+		// BigDecimal bd = getBigDecimal(number);
+		// return bd.movePointRight(SCALE).longValue();
 	}
 
-	private IntegralMoney(CurrencyUnit currency, long number) {
+	private static long getInternalNumber(MonetaryAmount amount) {
+		long fractionNumerator = amount.getAmountFractionNumerator();
+		long divisor = amount.getAmountFractionDenominator()
+				* 10 / SCALING_DENOMINATOR;
+		
+		// Variant BD: slow!
+//		BigDecimal fraction = BigDecimal.valueOf(fractionNumerator).divide(
+//				BigDecimal.valueOf(divisor));
+//		return (amount.getAmountWhole() * SCALING_DENOMINATOR) + fraction.longValue();
+		
+		// Variant double
+		double fraction = ((double) fractionNumerator) / divisor;
+		return (amount.getAmountWhole() * SCALING_DENOMINATOR) + (long)fraction;
+		
+		// Variant number: fastest!
+//		return (long)(amount.asNumber().doubleValue() * SCALING_DENOMINATOR);
+	}
+
+	private static double getDoubleValue(MonetaryAmount amount) {
+		long fraction = amount.getAmountFractionNumerator();
+		double divisor = ((double) amount.getAmountFractionDenominator())
+				/ SCALING_DENOMINATOR;
+		double fractionNum = (long) (fraction / divisor);
+		return ((double) amount.getAmountWhole())
+				+ (fractionNum / SCALING_DENOMINATOR);
+	}
+
+	private FastMoney(CurrencyUnit currency, long number) {
 		if (currency == null) {
 			throw new IllegalArgumentException("Currency is required.");
 		}
@@ -81,14 +154,12 @@ public final class IntegralMoney implements MonetaryAmount,
 		if (num instanceof BigDecimal) {
 			return (BigDecimal) num;
 		}
-		if (num instanceof Long || num instanceof Integer) {
+		if (num instanceof Long || num instanceof Integer
+				|| num instanceof Byte) {
 			return BigDecimal.valueOf(num.longValue());
 		}
 		if (num instanceof Float || num instanceof Double) {
 			return new BigDecimal(num.toString());
-		}
-		if (num instanceof Byte || num instanceof AtomicLong) {
-			return BigDecimal.valueOf(num.longValue());
 		}
 		try {
 			// Avoid imprecise conversion to double value if at all possible
@@ -99,32 +170,30 @@ public final class IntegralMoney implements MonetaryAmount,
 	}
 
 	/**
-	 * Static factory method for creating a new instance of
-	 * {@link IntegralMoney}.
+	 * Static factory method for creating a new instance of {@link FastMoney}.
 	 * 
 	 * @param currency
 	 *            The target currency, not null.
 	 * @param number
 	 *            The numeric part, not null.
-	 * @return A new instance of {@link IntegralMoney}.
+	 * @return A new instance of {@link FastMoney}.
 	 */
-	public static IntegralMoney of(CurrencyUnit currency, Number number) {
+	public static FastMoney of(CurrencyUnit currency, Number number) {
 		// TODO caching
-		return new IntegralMoney(currency, number);
+		return new FastMoney(currency, number);
 	}
 
 	/**
-	 * Static factory method for creating a new instance of
-	 * {@link IntegralMoney}.
+	 * Static factory method for creating a new instance of {@link FastMoney}.
 	 * 
 	 * @param currencyCode
 	 *            The target currency as currency code.
 	 * @param number
 	 *            The numeric part, not null.
-	 * @return A new instance of {@link IntegralMoney}.
+	 * @return A new instance of {@link FastMoney}.
 	 */
-	public static IntegralMoney of(String currencyCode, Number number) {
-		return new IntegralMoney(MoneyCurrency.of(currencyCode), number);
+	public static FastMoney of(String currencyCode, Number number) {
+		return new FastMoney(MoneyCurrency.of(currencyCode), number);
 	}
 
 /**
@@ -133,7 +202,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * @return
 	 */
 	public static MonetaryAmount zero(CurrencyUnit currency) {
-		return new IntegralMoney(currency, 0L);
+		return new FastMoney(currency, 0L);
 	}
 
 	/**
@@ -148,7 +217,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	/*
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	public int compareTo(IntegralMoney o) {
+	public int compareTo(FastMoney o) {
 		int compare = -1;
 		if (this.currency.equals(o.getCurrency())) {
 			if (this.number < o.number) {
@@ -190,7 +259,7 @@ public final class IntegralMoney implements MonetaryAmount,
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IntegralMoney other = (IntegralMoney) obj;
+		FastMoney other = (FastMoney) obj;
 		if (currency == null) {
 			if (other.getCurrency() != null)
 				return false;
@@ -215,7 +284,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#abs()
 	 */
-	public IntegralMoney abs() {
+	public FastMoney abs() {
 		if (this.isPositiveOrZero()) {
 			return this;
 		}
@@ -229,22 +298,22 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#add(javax.money.MonetaryAmount)
 	 */
-	public IntegralMoney add(MonetaryAmount amount) {
+	public FastMoney add(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		return new IntegralMoney(getCurrency(), this.number
-				+ IntegralMoney.from(amount).number);
+		return new FastMoney(getCurrency(), this.number
+				+ FastMoney.from(amount).number);
 	}
-
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see javax.money.MonetaryAmount#divide(javax.money.MonetaryAmount)
 	 */
-	public IntegralMoney divide(MonetaryAmount divisor) {
+	public FastMoney divide(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
-		long divisorNum = IntegralMoney.from(divisor).number;
-		return new IntegralMoney(getCurrency(), this.number / divisorNum);
+		double div = getDoubleValue(divisor);
+		long finalValue = (long) (((double) this.number) / div);
+		return new FastMoney(getCurrency(), finalValue);
 	}
 
 	/*
@@ -252,10 +321,10 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#divide(java.lang.Number)
 	 */
-	public IntegralMoney divide(Number divisor) {
+	public FastMoney divide(Number divisor) {
 		checkNumber(divisor);
-		return new IntegralMoney(getCurrency(), this.number
-				/ getScaledNumber(divisor));
+		return new FastMoney(getCurrency(), (long) ((double) this.number
+				/ divisor.doubleValue()));
 	}
 
 	/*
@@ -264,13 +333,13 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * @see
 	 * javax.money.MonetaryAmount#divideAndRemainder(javax.money.MonetaryAmount)
 	 */
-	public IntegralMoney[] divideAndRemainder(MonetaryAmount divisor) {
+	public FastMoney[] divideAndRemainder(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
-		long divisorNum = IntegralMoney.from(divisor).number;
-		return new IntegralMoney[] {
-				new IntegralMoney(getCurrency(), Long.valueOf(this.number
+		long divisorNum = FastMoney.from(divisor).number;
+		return new FastMoney[] {
+				new FastMoney(getCurrency(), Long.valueOf(this.number
 						/ divisorNum)),
-				new IntegralMoney(getCurrency(), this.number % divisorNum) };
+				new FastMoney(getCurrency(), this.number % divisorNum) };
 	}
 
 	/*
@@ -278,13 +347,13 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#divideAndRemainder(java.lang.Number)
 	 */
-	public IntegralMoney[] divideAndRemainder(Number divisor) {
+	public FastMoney[] divideAndRemainder(Number divisor) {
 		checkNumber(divisor);
-		long divisorNum = getScaledNumber(divisor);
-		return new IntegralMoney[] {
-				new IntegralMoney(getCurrency(), Long.valueOf(this.number
+		long divisorNum = getInternalNumber(divisor);
+		return new FastMoney[] {
+				new FastMoney(getCurrency(), Long.valueOf(this.number
 						/ divisorNum)),
-				new IntegralMoney(getCurrency(), this.number % divisorNum) };
+				new FastMoney(getCurrency(), this.number % divisorNum) };
 	}
 
 	/*
@@ -294,12 +363,11 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * javax.money.MonetaryAmount#divideToIntegralValue(javax.money.MonetaryAmount
 	 * )
 	 */
-	public IntegralMoney divideToIntegralValue(MonetaryAmount divisor) {
+	public FastMoney divideToIntegralValue(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
-		long divisorNum = IntegralMoney.from(divisor)
-				.number;
-		return with(BigDecimal.valueOf(this.number / divisorNum)
-				.movePointLeft(SCALE).longValue());
+		long divisorNum = getInternalNumber(divisor);
+		return new FastMoney(getCurrency(),
+				(Number) ((this.number / divisorNum) / SCALING_DENOMINATOR));
 	}
 
 	/*
@@ -307,10 +375,13 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#divideToIntegralValue(java.lang.Number)
 	 */
-	public IntegralMoney divideToIntegralValue(Number divisor) {
+	public FastMoney divideToIntegralValue(Number divisor) {
 		checkNumber(divisor);
-		return with(BigDecimal.valueOf(this.number / divisor.longValue())
-				.movePointLeft(SCALE).longValue());
+		long result = (long) (((double) this.number) / divisor.doubleValue());
+		long remainder = result % SCALING_DENOMINATOR;
+		result -= remainder;
+		return new FastMoney(getCurrency(),
+				result);
 	}
 
 	/*
@@ -318,16 +389,18 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#multiply(javax.money.MonetaryAmount)
 	 */
-	public IntegralMoney multiply(MonetaryAmount multiplicand) {
+	public FastMoney multiply(MonetaryAmount multiplicand) {
 		checkAmountParameter(multiplicand);
-		long multiplicandNum = IntegralMoney.from(multiplicand).number;
-		return new IntegralMoney(getCurrency(), this.number * multiplicandNum);
+		double multiplicandNum = getDoubleValue(multiplicand);
+		return new FastMoney(getCurrency(),
+				(long) (this.number * multiplicandNum));
 	}
 
-	public IntegralMoney multiply(Number multiplicand) {
+	public FastMoney multiply(Number multiplicand) {
 		checkNumber(multiplicand);
-		long multiplicandNum = getScaledNumber(multiplicand);
-		return new IntegralMoney(getCurrency(), this.number * multiplicandNum);
+		double multiplicandNum = multiplicand.doubleValue();
+		return new FastMoney(getCurrency(),
+				(long) (this.number * multiplicandNum));
 	}
 
 	/*
@@ -335,11 +408,11 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#negate()
 	 */
-	public IntegralMoney negate() {
+	public FastMoney negate() {
 		if (this.number <= 0) {
 			return this;
 		}
-		return new IntegralMoney(getCurrency(), this.number * -1);
+		return new FastMoney(getCurrency(), this.number * -1);
 	}
 
 	/*
@@ -347,11 +420,11 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#plus()
 	 */
-	public IntegralMoney plus() {
+	public FastMoney plus() {
 		if (this.number >= 0) {
 			return this;
 		}
-		return new IntegralMoney(getCurrency(), this.number * -1);
+		return new FastMoney(getCurrency(), this.number * -1);
 	}
 
 	/*
@@ -359,10 +432,10 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#subtract(javax.money.MonetaryAmount)
 	 */
-	public IntegralMoney subtract(MonetaryAmount subtrahend) {
+	public FastMoney subtract(MonetaryAmount subtrahend) {
 		checkAmountParameter(subtrahend);
-		return new IntegralMoney(getCurrency(), this.number
-				- IntegralMoney.from(subtrahend).number);
+		return new FastMoney(getCurrency(), this.number
+				- FastMoney.from(subtrahend).number);
 	}
 
 	/*
@@ -370,8 +443,8 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#pow(int)
 	 */
-	public IntegralMoney pow(int n) {
-		return with(getBigDecimal().pow(n));
+	public FastMoney pow(int n) {
+		return with(asType(BigDecimal.class).pow(n));
 	}
 
 	/*
@@ -379,8 +452,8 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#ulp()
 	 */
-	public IntegralMoney ulp() {
-		return with(getBigDecimal().ulp());
+	public FastMoney ulp() {
+		return with(asType(BigDecimal.class).ulp());
 	}
 
 	/*
@@ -388,10 +461,10 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#remainder(javax.money.MonetaryAmount)
 	 */
-	public IntegralMoney remainder(MonetaryAmount divisor) {
+	public FastMoney remainder(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
-		return new IntegralMoney(getCurrency(), this.number
-				% IntegralMoney.from(divisor).number);
+		return new FastMoney(getCurrency(), this.number
+				% getInternalNumber(divisor));
 	}
 
 	/*
@@ -399,10 +472,10 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#remainder(java.lang.Number)
 	 */
-	public IntegralMoney remainder(Number divisor) {
+	public FastMoney remainder(Number divisor) {
 		checkNumber(divisor);
-		return new IntegralMoney(getCurrency(), this.number
-				% getScaledNumber(divisor));
+		return new FastMoney(getCurrency(), this.number
+				% getInternalNumber(divisor));
 	}
 
 	/*
@@ -410,8 +483,12 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#scaleByPowerOfTen(int)
 	 */
-	public IntegralMoney scaleByPowerOfTen(int n) {
-		return with(getBigDecimal().scaleByPowerOfTen(n));
+	public FastMoney scaleByPowerOfTen(int n) {
+		long result = this.number;
+		for (int i = 0; i < n; i++) {
+			result *= 10;
+		}
+		return new FastMoney(getCurrency(), result);
 	}
 
 	/*
@@ -464,8 +541,8 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * 
 	 * @see javax.money.MonetaryAmount#with(java.lang.Number)
 	 */
-	public IntegralMoney with(Number number) {
-		return new IntegralMoney(getCurrency(), getBigDecimal(number));
+	public FastMoney with(Number number) {
+		return new FastMoney(getCurrency(), getInternalNumber(number));
 	}
 
 	/*
@@ -487,7 +564,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	}
 
 	public long longValue() {
-		return getBigDecimal().longValue();
+		return this.number / SCALING_DENOMINATOR;
 	}
 
 	/*
@@ -496,7 +573,10 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * @see javax.money.MonetaryAmount#longValueExact()
 	 */
 	public long longValueExact() {
-		return getBigDecimal().longValueExact();
+		if ((this.number % SCALING_DENOMINATOR) == 0) {
+			return this.number / SCALING_DENOMINATOR;
+		}
+		throw new ArithmeticException("Amount has fractions: " + this);
 	}
 
 	/*
@@ -505,7 +585,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 * @see javax.money.MonetaryAmount#doubleValue()
 	 */
 	public double doubleValue() {
-		return getBigDecimal().doubleValue();
+		return ((double) this.number) / SCALING_DENOMINATOR;
 	}
 
 	/*
@@ -549,7 +629,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean isLessThan(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		return this.number < IntegralMoney.from(amount).number;
+		return this.number < FastMoney.from(amount).number;
 	}
 
 	/*
@@ -559,7 +639,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean isLessThan(Number number) {
 		checkNumber(number);
-		return this.number < getScaledNumber(number);
+		return this.number < getInternalNumber(number);
 	}
 
 	/*
@@ -570,7 +650,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean isLessThanOrEqualTo(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		return this.number <= IntegralMoney.from(amount).number;
+		return this.number <= FastMoney.from(amount).number;
 	}
 
 	/*
@@ -580,7 +660,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean isLessThanOrEqualTo(Number number) {
 		checkNumber(number);
-		return this.number <= getScaledNumber(number);
+		return this.number <= getInternalNumber(number);
 	}
 
 	/*
@@ -590,7 +670,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean isGreaterThan(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		return this.number > IntegralMoney.from(amount).number;
+		return this.number > FastMoney.from(amount).number;
 	}
 
 	/*
@@ -600,7 +680,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean isGreaterThan(Number number) {
 		checkNumber(number);
-		return this.number > getScaledNumber(number);
+		return this.number > getInternalNumber(number);
 	}
 
 	/*
@@ -612,7 +692,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean isGreaterThanOrEqualTo(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		return this.number >= IntegralMoney.from(amount).number;
+		return this.number >= FastMoney.from(amount).number;
 	}
 
 	/*
@@ -622,7 +702,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean isGreaterThanOrEqualTo(Number number) {
 		checkNumber(number);
-		return this.number >= getScaledNumber(number);
+		return this.number >= getInternalNumber(number);
 	}
 
 	/*
@@ -632,7 +712,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean isEqualTo(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		return this.number == IntegralMoney.from(amount).number;
+		return this.number == FastMoney.from(amount).number;
 	}
 
 	/*
@@ -642,7 +722,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean hasSameNumberAs(Number number) {
 		checkNumber(number);
-		return this.number == getScaledNumber(number);
+		return this.number == getInternalNumber(number);
 	}
 
 	/*
@@ -652,7 +732,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean isNotEqualTo(MonetaryAmount amount) {
 		checkAmountParameter(amount);
-		return this.number != IntegralMoney.from(amount).number;
+		return this.number != FastMoney.from(amount).number;
 	}
 
 	/*
@@ -662,7 +742,7 @@ public final class IntegralMoney implements MonetaryAmount,
 	 */
 	public boolean isNotEqualTo(Number number) {
 		checkNumber(number);
-		return this.number != getScaledNumber(number);
+		return this.number != getInternalNumber(number);
 	}
 
 	/*
@@ -730,8 +810,8 @@ public final class IntegralMoney implements MonetaryAmount,
 	 *            currency unit of the {@code Money}.
 	 * @return a {@code Money} combining the numeric value and currency unit.
 	 */
-	public static IntegralMoney of(CurrencyUnit currency, BigDecimal number) {
-		return new IntegralMoney(currency, number);
+	public static FastMoney of(CurrencyUnit currency, BigDecimal number) {
+		return new FastMoney(currency, number);
 	}
 
 	/*
@@ -796,16 +876,12 @@ public final class IntegralMoney implements MonetaryAmount,
 		return query.queryFrom(this);
 	}
 
-	public static IntegralMoney from(MonetaryAmount amount) {
-		if (IntegralMoney.class == amount.getClass()) {
-			return (IntegralMoney) amount;
+	public static FastMoney from(MonetaryAmount amount) {
+		if (FastMoney.class == amount.getClass()) {
+			return (FastMoney) amount;
 		}
-		long whole = amount.getAmountWhole();
-		long fraction = amount.getAmountFractionNumerator();
-		long fractionDenom = amount.getAmountFractionDenominator();
-		long fractionNum = fraction / amount.getAmountFractionDenominator();
-		
-		return new IntegralMoney(amount.getCurrency(), whole + fraction);
+		return new FastMoney(amount.getCurrency(),
+				getInternalNumber(amount));
 	}
 
 	private BigDecimal getBigDecimal() {
@@ -814,17 +890,17 @@ public final class IntegralMoney implements MonetaryAmount,
 
 	@Override
 	public long getAmountWhole() {
-		return getBigDecimal().longValue();
+		return longValue();
 	}
 
 	@Override
 	public long getAmountFractionNumerator() {
-		return getBigDecimal().movePointRight(SCALE).longValue();
+		return this.number % SCALING_DENOMINATOR;
 	}
 
 	@Override
 	public long getAmountFractionDenominator() {
-		return 100000;
+		return SCALING_DENOMINATOR;
 	}
 
 }

@@ -887,7 +887,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	@Override
 	public long getAmountFractionDenominator() {
-		return BigDecimal.valueOf(10).pow(getScale()-1).longValueExact();
+		return BigDecimal.valueOf(10).pow(getScale()).longValueExact();
 	}
 
 	@Override

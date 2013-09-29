@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import javax.money.CurrencyMismatchException;
-import javax.money.IntegralMoney;
+import javax.money.FastMoney;
 import javax.money.Money;
 import javax.money.MoneyCurrency;
 import javax.money.UnknownCurrencyException;
@@ -34,7 +34,7 @@ public final class TCKTestSetup {
 		@Override
 		public Collection<Class> getAmountClasses() {
 			return Arrays
-					.asList(new Class[] { Money.class, IntegralMoney.class });
+					.asList(new Class[] { Money.class, FastMoney.class });
 		}
 
 		@Override
@@ -69,8 +69,8 @@ public final class TCKTestSetup {
 			if (Money.class.equals(type)) {
 				return (T) Money.of((String) params[0], (Number) params[1]);
 			}
-			if (IntegralMoney.class.equals(type)) {
-				return (T) IntegralMoney.of((String) params[0],
+			if (FastMoney.class.equals(type)) {
+				return (T) FastMoney.of((String) params[0],
 						(Number) params[1]);
 			}
 			return null;

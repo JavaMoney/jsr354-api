@@ -151,5 +151,7 @@ public interface MonetaryAmount {
 	 *         not null
 	 */
 	public MonetaryAmount with(MonetaryAdjuster adjuster);
+	
+	public Number asNumber();
 
 }

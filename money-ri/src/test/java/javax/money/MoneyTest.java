@@ -97,24 +97,39 @@ public class MoneyTest {
 		}
 		long end = System.currentTimeMillis();
 		long duration = end - start;
-		System.out.println("Duration for 1000000 multiplications (Money/BD): "
+		System.out.println("Duration for 1000000 operations (Money/BD): "
 				+ duration + " ms (" + ((duration * 1000) / NUM) + " ns per loop) -> "
 				+ money1);
 
-		IntegralMoney money2 = IntegralMoney.of(EURO, BigDecimal.ONE);
+		FastMoney money2 = FastMoney.of(EURO, BigDecimal.ONE);
 		start = System.currentTimeMillis();
 		for (int i = 0; i < NUM; i++) {
-			money2 = money2.add(IntegralMoney.of(EURO, 1234567.3434));
-			money2 = money2.subtract(IntegralMoney.of(EURO, 232323));
+			money2 = money2.add(FastMoney.of(EURO, 1234567.3444));
+			money2 = money2.subtract(FastMoney.of(EURO, 232323));
 			money2 = money2.multiply(3.4);
-			money1 = money1.divide(5.456);
-//			money1 = money1.with(MonetaryRoundings.getRounding());
+			money2 = money2.divide(5.456);
+//			money2 = money1.with(MonetaryRoundings.getRounding());
 		}
 		end = System.currentTimeMillis();
 		duration = end - start;
-		System.out.println("Duration for "+NUM+" multiplications (Money/BD): "
+		System.out.println("Duration for "+NUM+" operations (IntegralMoney/long): "
 				+ duration + " ms (" + ((duration * 1000) / NUM) + " ns per loop) -> "
 				+ money2);
+		
+		FastMoney money3 = FastMoney.of(EURO, BigDecimal.ONE);
+		start = System.currentTimeMillis();
+		for (int i = 0; i < NUM; i++) {
+			money3 = money3.add(Money.of(EURO, 1234567.3444));
+			money3 = money3.subtract(FastMoney.of(EURO, 232323));
+			money3 = money3.multiply(3.4);
+			money3 = money3.divide(5.456);
+//			money3 = money3.with(MonetaryRoundings.getRounding());
+		}
+		end = System.currentTimeMillis();
+		duration = end - start;
+		System.out.println("Duration for "+NUM+" operations (IntegralMoney/Money mixed): "
+				+ duration + " ms (" + ((duration * 1000) / NUM) + " ns per loop) -> "
+				+ money3);
 	}
 
 	/**

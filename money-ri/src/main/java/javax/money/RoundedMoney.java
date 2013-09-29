@@ -928,4 +928,9 @@ public final class RoundedMoney implements MonetaryAmount,
 				.pow(MoneyCurrency.from(currency).getDefaultFractionDigits())
 				.longValue();
 	}
+
+	@Override
+	public Number asNumber() {
+		return this.number;
+	}
 }

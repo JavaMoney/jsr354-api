@@ -929,7 +929,6 @@ public final class RoundedMoney implements MonetaryAmount,
 				.longValue();
 	}
 
-	@Override
 	public Number asNumber() {
 		return this.number;
 	}

@@ -10,8 +10,6 @@
  */
 package javax.money;
 
-import java.util.Locale;
-
 /**
  * A unit of currency.
  * <p>
@@ -27,7 +25,7 @@ import java.util.Locale;
  * <ul>
  * <li>thread-safe
  * <li>immutable
- * <li>serializable. 
+ * <li>serializable.
  * 
  * @version 0.4
  * @author Werner Keil

@@ -13,35 +13,66 @@
 package javax.money;
 
 /**
- * This interface defines a {@link MonetaryAdjuster}. It is hereby important to
- * distinguish between <i>internal rounding</i> such as implied by the maximal
- * precision/scale of an amount, and <i>rounding</i> applied to a
- * {@link MonetaryAmount} or a calculation algorithm. Since different use cases
- * may require <i>rounding</i> done at very different stages and differently
- * within a complex financial calculation, {@link MonetaryAdjuster} is not
- * directly attached to a monetary type, e.g. a {@link MonetaryAmount}.
+ * Strategy for querying a monetary amount.
  * <p>
- * Nevertheless the JSR's extensions provide a RoundingMonetaryAmount, which
- * wraps a {@link MonetaryAmount} and adds implicit rounding.
- * 
+ * Queries are a key tool for extracting information from monetary amounts.
+ * They match the strategy design pattern, allowing different types of
+ * query to be easily captured.
+ * Examples might be a query that checks if the amount is positive, or
+ * one that extracts the currency as a symbol.
  * <p>
- * It is considered to be used as a {@code java.util.function.UnaryOperator} as
- * introduced by Java 8. Modeling it here allows the JSR to forward port
- * functional interfaces, though the JSR itself, is based on Java 7.
+ * There are two equivalent ways of using a {@code MonetaryQuery}.
+ * The first is to invoke the method on this interface.
+ * The second is to use {@link MonetaryAmount#query(MonetaryQuery)}:
+ * <pre>
+ *   // these two lines are equivalent, but the second approach is recommended
+ *   monetary = thisQuery.queryFrom(monetary);
+ *   monetary = monetary.query(thisQuery);
+ * </pre>
+ * It is recommended to use the second approach, {@code query(MonetaryQuery)},
+ * as it is a lot clearer to read in code.
  * 
- * @version 0.9
- * @author Werner Keil
- * @author Anatole Tresch
+ * <h4>Implementation specification</h4>
+ * This interface places no restrictions on the mutability of implementations,
+ * however immutability is strongly recommended.
  */
 // @FunctionalInterface for Java 9
 public interface MonetaryQuery<R> {
 
 	/**
-	 * Query the monetary amount.
-	 * 
-	 * @param amount
-	 * @return
-	 */
+     * Queries the specified monetary amount.
+     * <p>
+     * This queries the specified monetary amount to return an object using the logic
+     * encapsulated in the implementing class.
+     * Examples might be a query that checks if the amount is positive, or
+     * one that extracts the currency as a symbol.
+     * <p>
+     * There are two equivalent ways of using a {@code MonetaryQuery}.
+     * The first is to invoke the method on this interface.
+     * The second is to use {@link MonetaryAmount#query(MonetaryQuery)}:
+     * <pre>
+     *   // these two lines are equivalent, but the second approach is recommended
+     *   monetary = thisQuery.queryFrom(monetary);
+     *   monetary = monetary.query(thisQuery);
+     * </pre>
+     * It is recommended to use the second approach, {@code query(MonetaryQuery)},
+     * as it is a lot clearer to read in code.
+     * 
+     * <h4>Implementation specification</h4>
+     * The implementation must take the input object and query it.
+     * The implementation defines the logic of the query and is responsible for
+     * documenting that logic.
+     * It may use any method on {@code MonetaryAmount} to determine the result.
+     * The input object must not be altered.
+     * <p>
+     * This method may be called from multiple threads in parallel.
+     * It must be thread-safe when invoked.
+     *
+     * @param amount  the monetary amount to query, not null
+     * @return the queried value, may return null to indicate not found
+     * @throws MonetaryException if unable to query
+     * @throws ArithmeticException if numeric overflow occurs
+     */
 	public R queryFrom(MonetaryAmount amount);
 
 }

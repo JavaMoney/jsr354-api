@@ -9,13 +9,11 @@
 package javax.money;
 
 /**
- * General Monetary exception, acting as a base exception for JSR 354, extending
- * {@link RuntimeException}.
- * <p>
- * This exception makes no guarantees about immutability or thread-safety.
+ * Exception thrown when an error occurs during monetary operations.
  * 
- * @version 0.9.1
- * @author Werner Keil
+ * <h4>Implementation specification</h4>
+ * This interface places no restrictions on the mutability of implementations,
+ * however immutability is strongly recommended.
  */
 public class MonetaryException extends RuntimeException {
 
@@ -25,22 +23,16 @@ public class MonetaryException extends RuntimeException {
 	private static final long serialVersionUID = -9039026008242959369L;
 
 	/**
-	 * Constructs a <code>MonetaryException</code> with the specified detail
-	 * message.
-	 * 
-	 * @param s
-	 *            the detail message.
-	 */
+     * Creates an instance.
+     * 
+     * @param message  the message
+     */
 	public MonetaryException(String s) {
 		super(s);
 	}
 
 	/**
-	 * Constructs a new exception with the specified detail message and cause.
-	 * 
-	 * <p>
-	 * Note that the detail message associated with <code>cause</code> is
-	 * <i>not</i> automatically incorporated in this exception's detail message.
+	 * Creates an instance with the specified detail message and cause.
 	 * 
 	 * @param message
 	 *            the detail message (which is saved for later retrieval by the

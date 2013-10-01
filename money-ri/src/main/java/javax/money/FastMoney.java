@@ -21,6 +21,7 @@ package javax.money;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 
 /**
  * <type>long</type> based implementation of {@link MonetaryAmount}. This class
@@ -107,40 +108,60 @@ public final class FastMoney implements MonetaryAmount,
 	}
 
 	private long getInternalNumber(Number number) {
-		long whole = number.longValue();
-		double fractions = number.doubleValue() % 1;
-		return (whole * SCALING_DENOMINATOR)
-				+ ((long) (fractions * SCALING_DENOMINATOR));
-		// BigDecimal bd = getBigDecimal(number);
-		// return bd.movePointRight(SCALE).longValue();
+		// long whole = number.longValue();
+		// double fractions = number.doubleValue() % 1;
+		// return (whole * SCALING_DENOMINATOR)
+		// + ((long) (fractions * SCALING_DENOMINATOR));
+		BigDecimal bd = getBigDecimal(number);
+		return bd.movePointRight(SCALE).longValue();
 	}
 
 	private static long getInternalNumber(MonetaryAmount amount) {
-		long fractionNumerator = amount.getAmountFractionNumerator();
-		long divisor = amount.getAmountFractionDenominator()
-				* 10 / SCALING_DENOMINATOR;
-		
-		// Variant BD: slow!
-//		BigDecimal fraction = BigDecimal.valueOf(fractionNumerator).divide(
-//				BigDecimal.valueOf(divisor));
-//		return (amount.getAmountWhole() * SCALING_DENOMINATOR) + fraction.longValue();
-		
-		// Variant double
-		double fraction = ((double) fractionNumerator) / divisor;
-		return (amount.getAmountWhole() * SCALING_DENOMINATOR) + (long)fraction;
-		
-		// Variant number: fastest!
-//		return (long)(amount.asNumber().doubleValue() * SCALING_DENOMINATOR);
+		BigDecimal bd = Money.asNumber(amount);
+		return bd.movePointRight(SCALE).longValue();
+		//
+		// long fractionNumerator = amount.getAmountFractionNumerator();
+		// long divisor = amount.getAmountFractionDenominator()
+		// * 10 / SCALING_DENOMINATOR;
+		//
+		// // Variant BD: slow!
+		// // BigDecimal fraction =
+		// BigDecimal.valueOf(fractionNumerator).divide(
+		// // BigDecimal.valueOf(divisor));
+		// // return (amount.getAmountWhole() * SCALING_DENOMINATOR) +
+		// fraction.longValue();
+		//
+		// // Variant double
+		// double fraction = ((double) fractionNumerator) / divisor;
+		// return (amount.getAmountWhole() * SCALING_DENOMINATOR) +
+		// (long)fraction;
+		//
+		// // Variant number: fastest!
+		// // return (long)(amount.asNumber().doubleValue() *
+		// SCALING_DENOMINATOR);
 	}
 
-	private static double getDoubleValue(MonetaryAmount amount) {
-		long fraction = amount.getAmountFractionNumerator();
-		double divisor = ((double) amount.getAmountFractionDenominator())
-				/ SCALING_DENOMINATOR;
-		double fractionNum = (long) (fraction / divisor);
-		return ((double) amount.getAmountWhole())
-				+ (fractionNum / SCALING_DENOMINATOR);
+	private static double getInternalDouble(MonetaryAmount amount) {
+		if (amount.getClass() == Money.class) {
+			return ((Money) amount).asNumber().doubleValue();
+		}
+
+		long fractionNumerator = amount.getAmountFractionNumerator();
+		long divisor = amount.getAmountFractionDenominator() / SCALING_DENOMINATOR;
+
+		double fraction = ((double) fractionNumerator) / divisor / SCALING_DENOMINATOR;
+		return amount.getAmountWhole() +
+				fraction;
 	}
+
+	// private static double getDoubleValue(MonetaryAmount amount) {
+	// long fraction = amount.getAmountFractionNumerator();
+	// double divisor = ((double) amount.getAmountFractionDenominator())
+	// / SCALING_DENOMINATOR;
+	// double fractionNum = (long) (fraction / divisor);
+	// return ((double) amount.getAmountWhole())
+	// + (fractionNum / SCALING_DENOMINATOR);
+	// }
 
 	private FastMoney(CurrencyUnit currency, long number) {
 		if (currency == null) {
@@ -311,9 +332,17 @@ public final class FastMoney implements MonetaryAmount,
 	 */
 	public FastMoney divide(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
-		double div = getDoubleValue(divisor);
-		long finalValue = (long) (((double) this.number) / div);
-		return new FastMoney(getCurrency(), finalValue);
+		double factor = getInternalDouble(divisor);
+		if (divisor.getClass() == FastMoney.class) {
+			return new FastMoney(getCurrency(), Math.round(this.number
+					/ factor));
+		}
+		double divNum = getInternalDouble(divisor);
+		BigDecimal div = Money.asNumber(divisor);
+		return new FastMoney(getCurrency(), Math.round(this.number
+				/ divNum));
+		// return new FastMoney(getCurrency(), getBigDecimal().divide(div,
+		// MathContext.DECIMAL64));
 	}
 
 	/*
@@ -323,7 +352,7 @@ public final class FastMoney implements MonetaryAmount,
 	 */
 	public FastMoney divide(Number divisor) {
 		checkNumber(divisor);
-		return new FastMoney(getCurrency(), (long) ((double) this.number
+		return new FastMoney(getCurrency(), Math.round(this.number
 				/ divisor.doubleValue()));
 	}
 
@@ -335,11 +364,11 @@ public final class FastMoney implements MonetaryAmount,
 	 */
 	public FastMoney[] divideAndRemainder(MonetaryAmount divisor) {
 		checkAmountParameter(divisor);
-		long divisorNum = FastMoney.from(divisor).number;
+		double divNum = getInternalDouble(divisor);
 		return new FastMoney[] {
-				new FastMoney(getCurrency(), Long.valueOf(this.number
-						/ divisorNum)),
-				new FastMoney(getCurrency(), this.number % divisorNum) };
+				new FastMoney(getCurrency(), Math.round(this.number
+						/ divNum)),
+				new FastMoney(getCurrency(), Math.round(this.number % Math.round((divNum * SCALING_DENOMINATOR)))) };
 	}
 
 	/*
@@ -349,11 +378,11 @@ public final class FastMoney implements MonetaryAmount,
 	 */
 	public FastMoney[] divideAndRemainder(Number divisor) {
 		checkNumber(divisor);
-		long divisorNum = getInternalNumber(divisor);
+		double divNum = divisor.doubleValue();
 		return new FastMoney[] {
-				new FastMoney(getCurrency(), Long.valueOf(this.number
-						/ divisorNum)),
-				new FastMoney(getCurrency(), this.number % divisorNum) };
+				new FastMoney(getCurrency(), Math.round(this.number
+						/ divNum)),
+				new FastMoney(getCurrency(), Math.round(this.number % Math.round((divNum * SCALING_DENOMINATOR)))) };
 	}
 
 	/*
@@ -377,7 +406,8 @@ public final class FastMoney implements MonetaryAmount,
 	 */
 	public FastMoney divideToIntegralValue(Number divisor) {
 		checkNumber(divisor);
-		long result = (long) (((double) this.number) / divisor.doubleValue());
+		long divisorNum = getInternalNumber(divisor);
+		long result = Math.round(this.number / divisor.doubleValue());
 		long remainder = result % SCALING_DENOMINATOR;
 		result -= remainder;
 		return new FastMoney(getCurrency(),
@@ -391,16 +421,16 @@ public final class FastMoney implements MonetaryAmount,
 	 */
 	public FastMoney multiply(MonetaryAmount multiplicand) {
 		checkAmountParameter(multiplicand);
-		double multiplicandNum = getDoubleValue(multiplicand);
+		double multiplicandNum = getInternalDouble(multiplicand);
 		return new FastMoney(getCurrency(),
-				(long) (this.number * multiplicandNum));
+				Math.round(this.number * multiplicandNum));
 	}
 
 	public FastMoney multiply(Number multiplicand) {
 		checkNumber(multiplicand);
 		double multiplicandNum = multiplicand.doubleValue();
 		return new FastMoney(getCurrency(),
-				(long) (this.number * multiplicandNum));
+				Math.round(this.number * multiplicandNum));
 	}
 
 	/*
@@ -880,8 +910,12 @@ public final class FastMoney implements MonetaryAmount,
 		if (FastMoney.class == amount.getClass()) {
 			return (FastMoney) amount;
 		}
+		else if (Money.class == amount.getClass()) {
+			return new FastMoney(amount.getCurrency(),
+					((Money) amount).asNumber());
+		}
 		return new FastMoney(amount.getCurrency(),
-				getInternalNumber(amount));
+				Money.asNumber(amount));
 	}
 
 	private BigDecimal getBigDecimal() {

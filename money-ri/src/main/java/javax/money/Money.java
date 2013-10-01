@@ -30,8 +30,8 @@ import java.math.RoundingMode;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Platform RI: Default immutable implementation of {@link MonetaryAmount} based on
- * {@link BigDecimal} for the numeric representation.
+ * Platform RI: Default immutable implementation of {@link MonetaryAmount} based
+ * on {@link BigDecimal} for the numeric representation.
  * <p>
  * As required by {@link MonetaryAmount} this class is final, thread-safe,
  * immutable and serializable.
@@ -44,6 +44,9 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 		Serializable {
 
 	private static final MathContext DEFAULT_MATH_CONTEXT = initDefaultMathContext();
+
+	private static final int[] DENOM_ARRAY = new int[] { 1, 10, 100, 1000,
+			10000, 100000, 1000000 };
 
 	/** The numeric part of this amount. */
 	private BigDecimal number;
@@ -332,8 +335,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 				this.mathContext);
 	}
 
-
-
 	private BigDecimal getBigDecimal(Number num) {
 		if (num instanceof BigDecimal) {
 			return (BigDecimal) num;
@@ -495,7 +496,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 				this.mathContext);
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -603,14 +603,49 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 		return new Money(this.currency, getBigDecimal(amount), this.mathContext);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Creates a new Money instance, hereby changing the {@link MathContext} to
+	 * be used. This allows to adapt the {@link MathContext}, when required.
 	 * 
-	 * @see javax.money.MonetaryAmount#with(CurrencyUnit, java.lang.Number)
+	 * @param context
+	 *            the {@link MathContext} to be replaced, not {@code null}
+	 * @return the new amount with the same numeric value and
+	 *         {@link CurrencyUnit}, but the new {@link MathContext}.
+	 */
+	public Money with(MathContext context) {
+		if (context == null) {
+			throw new IllegalArgumentException("MathContext required");
+		}
+		return new Money(currency, this.number, context);
+	}
+
+	/**
+	 * Creates a new Money instance, by just replacing the {@link CurrencyUnit}
+	 * and the numeric amount.
+	 * 
+	 * @param currency
+	 *            the currency unit to be replaced, not {@code null}
+	 * @return the new amount with the same numeric value and
+	 *         {@link MathContext}, but the new {@link CurrencyUnit}.
 	 */
 	public Money with(CurrencyUnit currency, Number amount) {
 		checkNumber(amount);
 		return new Money(currency, getBigDecimal(amount), this.mathContext);
+	}
+
+	/**
+	 * Creates a new Money instance, by just replacing the {@link CurrencyUnit}.
+	 * 
+	 * @param currency
+	 *            the currency unit to be replaced, not {@code null}
+	 * @return the new amount with the same numeric value and
+	 *         {@link MathContext}, but the new {@link CurrencyUnit}.
+	 */
+	public Money with(CurrencyUnit currency) {
+		if (currency == null) {
+			throw new IllegalArgumentException("currency required");
+		}
+		return new Money(currency, this.number, this.mathContext);
 	}
 
 	/*
@@ -631,7 +666,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 		return this.number.precision();
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -650,7 +684,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 		return this.number.longValueExact();
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -659,8 +692,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	public double doubleValue() {
 		return this.number.doubleValue();
 	}
-
-
 
 	/*
 	 * (non-Javadoc)
@@ -811,7 +842,6 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 				+ type);
 	}
 
-	
 	/**
 	 * Gets the number representation of the numeric value of this item.
 	 * 
@@ -823,15 +853,15 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 
 	private void writeObject(ObjectOutputStream oos) throws IOException {
 		oos.writeObject(this.number);
-		oos.writeObject(this.mathContext);
 		oos.writeObject(this.currency);
+		oos.writeObject(this.mathContext);
 	}
 
 	private void readObject(ObjectInputStream ois) throws IOException,
 			ClassNotFoundException {
 		this.number = (BigDecimal) ois.readObject();
-		this.mathContext = (MathContext) ois.readObject();
 		this.currency = (CurrencyUnit) ois.readObject();
+		this.mathContext = (MathContext) ois.readObject();
 	}
 
 	private void readObjectNoData()
@@ -839,12 +869,12 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 		if (this.number == null) {
 			this.number = BigDecimal.ZERO;
 		}
-		if (this.mathContext == null) {
-			this.mathContext = DEFAULT_MATH_CONTEXT;
-		}
 		if (this.currency == null) {
 			this.currency = MoneyCurrency.of(
 					"XXX"); // no currency
+		}
+		if (this.mathContext == null) {
+			this.mathContext = DEFAULT_MATH_CONTEXT;
 		}
 	}
 
@@ -855,7 +885,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	 */
 	@Override
 	public String toString() {
-		return currency.getCurrencyCode() + ' ' + number;
+		return currency.getCurrencyCode() + ' ' + number.toString();
 	}
 
 	/*
@@ -900,12 +930,32 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 		if (amt.getClass() == Money.class) {
 			return (Money) amt;
 		}
+		if (amt.getClass() == FastMoney.class) {
+			return Money.of(amt.getCurrency(), ((FastMoney) amt).asNumber(),
+					getDefaultMathContext());
+		}
+		return Money.of(amt.getCurrency(), asNumber(amt),
+				getDefaultMathContext());
+	}
+
+	public static BigDecimal asNumber(MonetaryAmount amt) {
+		long denom = amt.getAmountFractionDenominator();
+		for (int i = 0; i < DENOM_ARRAY.length; i++) {
+			if (denom == DENOM_ARRAY[i]) {
+				try {
+					long total = amt.getAmountWhole() * denom;
+					total = total + amt.getAmountFractionNumerator();
+					return BigDecimal.valueOf(total, i);
+				} catch (ArithmeticException ex) {
+					// go ahead, using slow conversion
+				}
+			}
+		}
+		// slow creation follows here
 		BigDecimal whole = BigDecimal.valueOf(amt.getAmountWhole());
 		BigDecimal fraction = BigDecimal.valueOf(amt
 				.getAmountFractionNumerator());
-		BigDecimal number = whole.add(fraction);
-		fraction = fraction.scaleByPowerOfTen(-fraction.precision());
-		return Money.of(amt.getCurrency(), number, getDefaultMathContext());
+		return whole.add(fraction);
 	}
 
 	/**

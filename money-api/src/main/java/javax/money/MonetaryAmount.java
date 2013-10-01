@@ -152,6 +152,4 @@ public interface MonetaryAmount {
 	 */
 	public MonetaryAmount with(MonetaryAdjuster adjuster);
 	
-//	public Number asNumber();
-
 }

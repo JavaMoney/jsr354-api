@@ -273,7 +273,7 @@ public final class MonetaryRoundings {
 			MonetaryAdjuster {
 
 		@Override
-		public <T extends MonetaryAmount> T adjustInto(T amount) {
+		public MonetaryAmount adjustInto(MonetaryAmount amount) {
 			MonetaryAdjuster r = MonetaryRoundings.getRounding(amount
 					.getCurrency());
 			return r.adjustInto(amount);

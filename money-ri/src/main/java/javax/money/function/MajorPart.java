@@ -53,12 +53,12 @@ final class MajorPart implements MonetaryAdjuster {
 	 * @return the major units part of the amount, never {@code null}
 	 */
 	@Override
-	public <T extends MonetaryAmount> T adjustInto(T amount) {
+	public MonetaryAmount adjustInto(MonetaryAmount amount) {
 		if (amount == null) {
 			throw new NullPointerException("Amount required.");
 		}
 		BigDecimal number = Money.from(amount).asType(BigDecimal.class);
-		return (T) Money.of(amount.getCurrency(), number.setScale(0,
+		return Money.of(amount.getCurrency(), number.setScale(0,
 				RoundingMode.DOWN));
 	}
 

@@ -28,7 +28,7 @@ import java.math.RoundingMode;
 
 import org.junit.Test;
 
-public class IntegralMoneyTest {
+public class FastMoneyTest {
 
 	private static final BigDecimal TEN = new BigDecimal(10.0d);
 	protected static final CurrencyUnit EURO = MoneyCurrency.of("EUR");

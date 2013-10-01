@@ -17,9 +17,8 @@ package javax.money;
  * US Dollar, Bitcoin or other. It is mainly defined to provide interoperability
  * between different implementations.
  * <p>
- * Currencies can be distinguished within separate arbitrary currency name
- * spaces, whereas as {@link #ISO_NAMESPACE} will be the the most commonly used
- * one, similar to {@link java.util.Currency}.
+ * Currencies can be distinguished by separate {@link #getCurrencyCode()} codes,
+ * similar to {@link java.util.Currency}.
  * <p>
  * Implementation of this class are required to be
  * <ul>
@@ -37,23 +36,18 @@ package javax.money;
 public interface CurrencyUnit {
 
 	/**
-	 * Gets the currency code, the effective code depends on the currency and
-	 * the name space. It is possible that the two currency may have the same
-	 * code, but different name spaces.
+	 * Gets the unique currency code, the effective code depends on the
+	 * currency.
 	 * <p>
-	 * Each currency is uniquely identified within its name space by this code.
-	 * As a consequence the currency code is required to be uniqie in
-	 * combination with the namespace and not {@code null} or empty.
-	 * <p>
-	 * This method matches basically the API of <type>java.util.Currency</type>.
+	 * Since each currency is identified by this code, the currency code is
+	 * required to be defined for every {@link CurrencyUnit} and not
+	 * {@code null} or empty.
 	 * 
-	 * @see #getNamespace()
 	 * @return the currency code, never {@code null}. For the ISO-4217
 	 *         namespace, this this will be the three letter ISO-4217 code.
-	 *         However, alternate namespaces can have different codes. Also
+	 *         However, alternate currencies can have different codes. Also
 	 *         there is no constraint about the formatting of alternate codes,
-	 *         despite they have to be unique within its corresponding
-	 *         namespace.
+	 *         despite they fact that the currency codes must be unique.
 	 */
 	public String getCurrencyCode();
 

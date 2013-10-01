@@ -9,7 +9,7 @@
  * reserved.
  */
 /**
- * Money and Currencies core API.
+ * Money and Currencies API.
  */
 package javax.money;
 

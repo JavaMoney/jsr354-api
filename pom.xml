@@ -777,7 +777,7 @@
 
 	<modules>
 		<module>money-api</module>
-		<module>money-impl</module>
+		<module>money-ri</module>
 		<module>money-tck</module>
 	</modules>
 

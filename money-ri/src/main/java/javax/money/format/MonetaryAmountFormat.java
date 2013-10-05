@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil.
+ * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil,
+ * and individual contributors by the @author tags.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,17 +17,14 @@
 package javax.money.format;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAdjuster;
 import javax.money.MonetaryAmount;
 import javax.money.Money;
-import javax.money.format.MonetaryAmountFormat.Builder;
 import javax.money.function.MonetaryRoundings;
 
 /**

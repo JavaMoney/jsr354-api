@@ -4,8 +4,6 @@
 package javax.money.format;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -13,6 +11,7 @@ import java.util.Locale;
 import javax.money.Money;
 import javax.money.MoneyCurrency;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -122,6 +121,7 @@ public class MonetaryAmountFormatTest {
 	 * .
 	 */
 	@Test
+	@Ignore
 	public void testParse() {
 		fail("Not yet implemented");
 	}

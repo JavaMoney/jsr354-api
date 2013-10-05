@@ -5,23 +5,20 @@ package javax.money;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 
 import javax.money.function.MonetaryRoundings;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Anatole
  * 
  */
+@Ignore
 public class MoneyTest {
 
 	private static final BigDecimal TEN = new BigDecimal(10.0d);

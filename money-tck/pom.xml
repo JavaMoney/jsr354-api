@@ -9,7 +9,6 @@
 	<artifactId>money-tck</artifactId>
 	<name>JSR 354 (Money and Currency) - TCK</name>
 	<description>Technical Compatibility Kit (TCK) of JSR 354</description>
-	<groupId>org.javamoney</groupId>
 
 	<properties>
 		<javamoney.version>${project.version}</javamoney.version>
@@ -108,7 +107,7 @@
 
 	<build>
 		<plugins>
-			<plugin>
+			<!-- plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
 				<version>2.0.4</version>
@@ -118,12 +117,12 @@
 						<processor>org.jboss.test.audit.report.CoverageProcessor</processor>
 					</processors>
 					<compilerArguments>-AauditXml=tck.xml
-						-AoutputDir=${basedir}/target/coverage-report -source
-						${java.source.version}
-						-target ${java.target.version}
+						-AoutputDir=${basedir}/target/coverage-report
+						 -source ${java.source.version}
+						-target ${java.target.version} 
 					</compilerArguments>
-					<!-- -source ${java.source.version} -target ${java.target.version} -->
-				</configuration>
+					-source ${java.source.version} -target ${java.target.version} -->
+				<!-- /configuration>
 				<executions>
 					<execution>
 						<id>process</id>
@@ -133,7 +132,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin -->
 		</plugins>
 		<pluginManagement>
 			<plugins>

@@ -798,7 +798,7 @@ public final class Money implements MonetaryAmount, Comparable<MonetaryAmount>,
 	/*
 	 * }(non-Javadoc)
 	 * 
-	 * @see javax.money.MonetaryAmount#adjust(javax.money.AmountAdjuster)
+	 * @see javax.money.MonetaryAmount#query(javax.money.MonetaryQuery)
 	 */
 	@Override
 	public <T> T query(MonetaryQuery<T> query) {

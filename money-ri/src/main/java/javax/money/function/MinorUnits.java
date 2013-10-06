@@ -18,7 +18,6 @@ package javax.money.function;
 import java.math.BigDecimal;
 
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryAdjuster;
 import javax.money.MonetaryQuery;
 import javax.money.Money;
 

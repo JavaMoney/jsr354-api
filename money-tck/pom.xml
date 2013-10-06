@@ -11,7 +11,7 @@
 	<description>Technical Compatibility Kit (TCK) of JSR 354</description>
 
 	<properties>
-		<javamoney.version>${project.version}</javamoney.version>
+		<jsr.version>${project.version}</jsr.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jboss.test.audit.version>1.1.0.Final</jboss.test.audit.version>
@@ -37,7 +37,7 @@
 			<dependency>
 				<groupId>javax.money</groupId>
 				<artifactId>money-api</artifactId>
-				<version>${javamoney.version}</version>
+				<version>${jsr.version}</version>
 			</dependency>
 
 			<dependency>
@@ -75,7 +75,7 @@
 		<dependency>
 			<groupId>javax.money</groupId>
 			<artifactId>money-api</artifactId>
-			<version>${javamoney.version}</version>
+			<version>${jsr.version}</version>
 		</dependency>
 
 		<dependency>
@@ -179,4 +179,5 @@
 		</repository>
 	</repositories>
 
+	<groupId>org.javamoney.tck</groupId>
 </project>

@@ -26,17 +26,22 @@ import java.math.BigDecimal;
  * This JSR additionally defines a couple of interoperability rules that each
  * implementation must follow:
  * <ul>
+ * <li>The numeric values on the MonetaryAmount interface are for
+ * interoperability only. They should not used for calculations. Instead of each
+ * implementation of this interface must provide a static method
+ * {@code T from(MonetaryAmount)} to create an instance of a concrete
+ * implementation type {@code T} based on a given amount instance.</li>
+ * <li>If the numeric representation of a {@code MonetaryAmount} exceeds the
+ * numeric capabilities of the concrete type {@code T from(MonetaryAmount)} must
+ * throw an {@code ArithemticOperationException}.</li>
+ * <li>On the other hand, when the numeric value can not be mapped into the
+ * numeric exchange format defined by this interface, by default also an
+ * {@code ArithmeticException} must be thrown. Never should truncation be
+ * performed implicitly.</li>
+ * <li>Nevertheless truncation is possible, but must be enabled explicitly by
+ * passing an additional {@code boolean} parameter as {@code true} to allow it.</li>
  * <li>Rounding is never done automatically, exception internal rounding implied
  * by the numeric implementation type.</li>
- * <li>Each implementation must at least provide two constructors, one taking
- * {@code (BigDecimal, CurrencyUnit)}, one taking
- * {@code (BigDecimal, CurrencyUnit)}.</li>
- * <li>External rounding must be applied, when accessing the numeric part of an
- * amount, if implied by the required target type. E.g. externalizing to a
- * double may truncate precision. If the target type supports the current
- * scale/precision, it is required that no external rounding is performed.</li>
- * <li>It is required that each implementation supports externalization to
- * {@link BigDecimal}.</li>
  * <li>Since implementations are required to be immutable, an operation must
  * never change any internal state of an instance. Given an instance, all
  * operations are required to be fully reproducible.</li>
@@ -44,9 +49,7 @@ import java.math.BigDecimal;
  * the same type as type on which {@code with} was called. The {@code with}
  * method also defines additional interoperability requirements.</li>
  * </ul>
- * Nevertheless basically an amount provides a functionality similar to
- * {@link BigDecimal}. Also it is required that implementations of this
- * interface are
+ * It is required that implementations of this interface are
  * <ul>
  * <li>immutable</li>
  * <li>thread-safe</li>
@@ -130,8 +133,8 @@ public interface MonetaryAmount {
 	public <R> R query(MonetaryQuery<R> query);
 
 	/**
-	 * Returns an adjusted object of the same type as this object with the
-	 * adjustment made.
+	 * Returns an adjusted object <b>of the same type</b> as this object with
+	 * the adjustment made.
 	 * <p>
 	 * This adjusts this monetary amount according to the rules of the specified
 	 * adjuster. A typical adjuster will change the amount and leave the
@@ -145,11 +148,25 @@ public interface MonetaryAmount {
 	 * date = date.with(amountRoundedToNearestWholeUnit());
 	 * </pre>
 	 * 
+	 * Hereby also the method signatur on the implementation type must return
+	 * the concrete type, to enable a fluent API, e.g.
+	 * 
+	 * <pre>
+	 * public final class MM implements MonetaryAmount{
+	 *   ...
+	 *   public MM with(MonetaryAdjuster adjuster){
+	 *     ...
+	 *   }
+	 *   
+	 *   ...
+	 * }
+	 * </pre>
+	 * 
 	 * @param adjuster
 	 *            the adjuster to use, not null
 	 * @return an object of the same type with the specified adjustment made,
 	 *         not null
 	 */
 	public MonetaryAmount with(MonetaryAdjuster adjuster);
-	
+
 }

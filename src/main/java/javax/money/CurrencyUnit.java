@@ -19,14 +19,16 @@ package javax.money;
  * <p>
  * Currencies can be distinguished by separate {@link #getCurrencyCode()} codes,
  * similar to {@link java.util.Currency}.
- * <p>
- * Implementation of this class are required to be
+ * <h4>Implementation specification</h4>
+ * Implementation of this class
  * <ul>
- * <li>thread-safe
- * <li>immutable
- * <li>serializable.
+ * <li>are required to be implement {@code equals/hashCode} considering the
+ * concrete implementation type and currency code.
+ * <li>are required to be thread-safe
+ * <li>are required to be immutable
+ * <li>are highly recommended to be serializable.
+ * </ul>
  * 
- * @version 0.4
  * @author Werner Keil
  * @author Stephen Colebourne
  * @author Anatole Tresch
@@ -42,6 +44,9 @@ public interface CurrencyUnit {
 	 * Since each currency is identified by this code, the currency code is
 	 * required to be defined for every {@link CurrencyUnit} and not
 	 * {@code null} or empty.
+	 * <p>
+	 * For ISO codes the 3-letter ISO code should be returned. For non ISO
+	 * currencies no constraints are defined.
 	 * 
 	 * @return the currency code, never {@code null}. For the ISO-4217
 	 *         namespace, this this will be the three letter ISO-4217 code.

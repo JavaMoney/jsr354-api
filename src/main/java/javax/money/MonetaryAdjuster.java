@@ -37,7 +37,6 @@ package javax.money;
  * 
  * It is recommended to use the second approach, {@code with(MonetaryAdjuster)},
  * as it is a lot clearer to read in code.
- * 
  * <h4>Implementation specification</h4>
  * This interface places no restrictions on the mutability of implementations,
  * however immutability is strongly recommended.

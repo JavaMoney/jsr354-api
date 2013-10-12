@@ -10,10 +10,6 @@ package javax.money;
 
 /**
  * Exception thrown when an error occurs during monetary operations.
- * 
- * <h4>Implementation specification</h4>
- * This interface places no restrictions on the mutability of implementations,
- * however immutability is strongly recommended.
  */
 public class MonetaryException extends RuntimeException {
 

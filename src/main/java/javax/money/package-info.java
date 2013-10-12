@@ -9,7 +9,27 @@
  * reserved.
  */
 /**
- * Money and Currencies API.
+ * This package defines the Money and Currency API. In more detail:
+ * <ul>
+ * <li>JSR 354 defines a minimal set of interfaces for interoperability, since
+ * concrete usage scenarios do not allow to define an implementation that is
+ * capable of covering all aspects identified. Consequently it must be possible
+ * that implementations can provide several implementations for monetary
+ * amounts. <br/>
+ * Users should not reference the interfaces, instead the value types should be
+ * used.</li>
+ * <li>Implementations must provide value types for currencies and amounts,
+ * implementing {@link javax.money.CurrencyUnit} and
+ * {@link javax.money.MonetaryAmount}.</li>
+ * <li>Implementations must also provide a minimal set of roundings, modeled as
+ * {@link javax.money.MonetaryAdjuster}. This should include basic roundings for
+ * ISO currencies, roundings defined by {@link java.math.MathContext} or
+ * {@link java.math.RoundingMode}.</li>
+ * <li>This API must avoid restrictions that prevents its use in different
+ * runtime environments, such as EE or ME.</li>
+ * <li>Method naming and style for currency modelling should be in alignment
+ * with parts of the Java Collection API or {@code java.time} / [JodaMoney].</li>
+ * </ul>
  */
 package javax.money;
 

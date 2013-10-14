@@ -158,7 +158,7 @@ public interface MonetaryAmount {
 	 * 
 	 * @return the fraction numerator
 	 */
-	public long getAmountFractionNumerator();
+	//public long getAmountFractionNumerator();
 
 	/**
 	 * Gets the denominator of the fractional amount of the currency.
@@ -180,7 +180,7 @@ public interface MonetaryAmount {
 	 * 
 	 * @return the fraction denominator
 	 */
-	public long getAmountFractionDenominator();
+	//public long getAmountFractionDenominator();
 
 	/**
 	 * Queries this monetary amount for a value.
@@ -214,7 +214,7 @@ public interface MonetaryAmount {
 	 * date = date.with(amountRoundedToNearestWholeUnit());
 	 * </pre>
 	 * 
-	 * Hereby also the method signatur on the implementation type must return
+	 * Hereby also the method signature on the implementation type must return
 	 * the concrete type, to enable a fluent API, e.g.
 	 * 
 	 * <pre>
@@ -238,14 +238,14 @@ public interface MonetaryAmount {
 	/**
 	 * Returns the list of subunits uniquely defining the value of this MonetaryAmount.
 	 * The list may be empty, but never {@code null}
-	 * @return the list of currency units, never {@code null}
+	 * @return the list of subunits, never {@code null}
 	 */
-	public List<Subunit> getSubunits();
+	public List<SubUnit> getSubUnits();
 
 	/**
 	 * Returns the value of the requested unit. 
 	 * The units returned from getUnits() uniquely define the value of the TemporalAmount.
-	 * A value must be returned for the main CurrencyUnit. If the unit listed in getUnits.
+	 * A value must be returned for the main CurrencyUnit. If the currency has subunits, each .
 	 */
 	public long get(CurrencyUnit unit);
 

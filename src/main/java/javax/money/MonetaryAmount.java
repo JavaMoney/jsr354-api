@@ -13,6 +13,7 @@
 package javax.money;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Interface defining a monetary amount. The effective internal representation
@@ -233,5 +234,19 @@ public interface MonetaryAmount {
 	 *         not null
 	 */
 	public MonetaryAmount with(MonetaryAdjuster adjuster);
+	
+	/**
+	 * Returns the list of subunits uniquely defining the value of this MonetaryAmount.
+	 * The list may be empty, but never {@code null}
+	 * @return the list of currency units, never {@code null}
+	 */
+	public List<Subunit> getSubunits();
+
+	/**
+	 * Returns the value of the requested unit. 
+	 * The units returned from getUnits() uniquely define the value of the TemporalAmount.
+	 * A value must be returned for the main CurrencyUnit. If the unit listed in getUnits.
+	 */
+	public long get(CurrencyUnit unit);
 
 }

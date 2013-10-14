@@ -11,11 +11,10 @@
 package javax.money;
 
 /**
- * A unit of currency.
+ * A subunit of currency.
  * <p>
- * This interface represents a unit of currency such as the British Pound, Euro,
- * US Dollar, Bitcoin or other. It is mainly defined to provide interoperability
- * between different implementations.
+ * In a currency, there is usually a main unit (base), and a subunit that is a fraction of the main unit.
+ * In some countries, there are multiple levels of subunits.
  * <p>
  * Currencies can be distinguished by separate {@link #getCurrencyCode()} codes,
  * similar to {@link java.util.Currency}.
@@ -34,26 +33,14 @@ package javax.money;
  * @see <a href="http://en.wikipedia.org/wiki/Denomination_(currency)">Wikipedia: Denomination (currency)</a>
  */
 public interface Subunit extends CurrencyUnit {
-
-	/**
-	 * Gets the unique currency code, the effective code depends on the
-	 * currency.
-	 * <p>
-	 * Since each currency is identified by this code, the currency code is
-	 * required to be defined for every {@link Subunit} and not
-	 * {@code null} or empty.
-	 * <p>
-	 * For ISO codes the 3-letter ISO code should be returned. For non ISO
-	 * currencies no constraints are defined.
-	 * 
-	 * @return the currency code, never {@code null}. For the ISO-4217
-	 *         namespace, this this will be the three letter ISO-4217 code.
-	 *         However, alternate currencies can have different codes. Also
-	 *         there is no constraint about the formatting of alternate codes,
-	 *         despite they fact that the currency codes must be unique.
-	 */
-	public String getCurrencyCode();
 	
+	/**
+	 * Get the identifier of this subunit.
+	 * 
+	 * @return The identifier, never null.
+	 */
+	public String getId();
+		
     /**
      * Gets the number of fraction digits used with this subunit.
      * For example, the default number of fraction digits for the Euro is 2,

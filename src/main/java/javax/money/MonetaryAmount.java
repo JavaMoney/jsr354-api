@@ -124,6 +124,9 @@ public interface MonetaryAmount {
 	/**
 	 * Gets the amount in terms of whole units of the currency.
 	 * <p>
+	 * This is a convenience method for {@code get(getCurrency())}
+	 * </p>
+	 * <p>
 	 * An amount is defined to consist of an amount of whole currency units plus
 	 * a fraction of the unit. This method returns the amount of whole units,
 	 * such as the number of complete US dollars represented.

@@ -28,6 +28,7 @@ package javax.money;
  * </ul>
  * 
  * @author Werner Keil
+ * @version 0.2
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Denomination_(currency)">Wikipedia: Denomination (currency)</a>
  * @see <a href="http://publications.europa.eu/code/en/en-5000500.htm#fn-4">EU: Currency subunit</a>

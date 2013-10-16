@@ -26,6 +26,7 @@ package javax.money;
  * concrete implementation type and currency code.
  * <li>are required to be thread-safe
  * <li>are required to be immutable
+ * <li>are required to be comparable
  * <li>are highly recommended to be serializable.
  * </ul>
  * 
@@ -48,11 +49,11 @@ public interface CurrencyUnit {
 	 * For ISO codes the 3-letter ISO code should be returned. For non ISO
 	 * currencies no constraints are defined.
 	 * 
-	 * @return the currency code, never {@code null}. For the ISO-4217
-	 *         namespace, this this will be the three letter ISO-4217 code.
-	 *         However, alternate currencies can have different codes. Also
-	 *         there is no constraint about the formatting of alternate codes,
-	 *         despite they fact that the currency codes must be unique.
+	 * @return the currency code, never {@code null}. For ISO-4217 this this
+	 *         will be the three letter ISO-4217 code. However, alternate
+	 *         currencies can have different codes. Also there is no constraint
+	 *         about the formatting of alternate codes, despite they fact that
+	 *         the currency codes must be unique.
 	 */
 	public String getCurrencyCode();
 

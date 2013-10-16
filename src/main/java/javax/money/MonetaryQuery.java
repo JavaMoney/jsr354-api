@@ -27,6 +27,7 @@ package javax.money;
  * <pre>
  *   // these two lines are equivalent, but the second approach is recommended
  *   monetary = thisQuery.queryFrom(monetary);
+ *   // recommened approach
  *   monetary = monetary.query(thisQuery);
  * </pre>
  * It is recommended to use the second approach, {@code query(MonetaryQuery)},

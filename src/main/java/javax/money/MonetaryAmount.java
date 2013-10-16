@@ -34,8 +34,9 @@ import java.math.BigDecimal;
  * <li>Monetary amounts should allow numbers as argument for arithmetic
  * operations like division and multiplication additionally to a MonetaryAmount.
  * Adding or subtracting of amounts must only be possible by passing instances
- * of MonetaryAmount. Arguments of type {@link Number} should be avoided, since
- * it does not allow to extract its numeric value in a feasible way.
+ * of MonetaryAmount.</li>
+ * <li>Arguments of type {@link Number} should be avoided, since
+ * it does not allow to extract its numeric value in a feasible way.</li>
  * <li>If the numeric representation of a {@code MonetaryAmount} exceeds the
  * numeric capabilities of the concrete type {@code T from(MonetaryAmount)}, an
  * implementation should throw an {@code ArithemticOperationException}.</li>
@@ -44,7 +45,7 @@ import java.math.BigDecimal;
  * {@code ArithmeticException} should be thrown. Never should truncation be
  * performed implicitly.</li>
  * <li>Nevertheless truncation may be supported by passing additional parameters
- * or using <i>exact</i> methods, similar to {@link BigDecimal#longValueExact()}.
+ * or defining <i>exact</i> methods, similar to {@link BigDecimal#longValueExact()}.
  * <li>Rounding should never be done automatically, exception internal rounding
  * implied by the numeric implementation type.</li>
  * <li>Since implementations are recommended to be immutable, an operation

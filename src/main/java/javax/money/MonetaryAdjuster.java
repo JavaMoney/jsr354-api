@@ -27,11 +27,11 @@ package javax.money;
  * instead of the interface to support a fluent style:
  * 
  * <pre>
- * // these two lines are equivalent, but the second approach is recommended
+ * // these two variants are equivalent
  * monetary = thisAdjuster.adjustInto(monetary);
  * monetary = anotherAdjuster.adjustInto(monetary);
  * 
- * // second approach, using a fluent API
+ * // second, recommended, approach, using a fluent API
  * monetary = monetary.with(thisAdjuster).with(anotherAdjuster);
  * </pre>
  * 

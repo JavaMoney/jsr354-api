@@ -12,9 +12,6 @@
  */
 package javax.money;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 /**
  * Interface defining a monetary amount. The effective internal representation
  * of an amount may vary depending on the implementation used. JSR 354
@@ -145,7 +142,7 @@ public interface MonetaryAmount {
 	public long getAmountWhole();
 
 	/**
-	 * Gets the numerator of the fractional amount of the currency.
+	 * Gets the numerator of the currency's fractional amount.
 	 * <p>
 	 * An amount is defined to consist of an amount of whole currency units plus
 	 * a fraction of the unit. This method returns the numerator of the fraction
@@ -164,7 +161,7 @@ public interface MonetaryAmount {
 	//public long getAmountFractionNumerator();
 
 	/**
-	 * Gets the denominator of the fractional amount of the currency.
+	 * Gets the denominator of the currency's fractional amount.
 	 * <p>
 	 * An amount is defined to consist of an amount of whole currency units plus
 	 * a fraction of the unit. This method returns the denominator of the
@@ -177,8 +174,6 @@ public interface MonetaryAmount {
 	 * <ul>
 	 * <li>{@code fractionDenominator > 0}.
 	 * <li>{@code fractionDenominator > abs(fractionNominator)}.
-	 * <li>it is recommended that the denominator is a power of 10 (1, 10, 100,
-	 * 1000,...).
 	 * </ul>
 	 * 
 	 * @return the fraction denominator
@@ -243,12 +238,15 @@ public interface MonetaryAmount {
 	 * The list may be empty, but never {@code null}
 	 * @return the list of subunits, never {@code null}
 	 */
-	public List<SubUnit> getSubUnits();
+	//public List<SubUnit> getSubUnits();
 
 	/**
 	 * Returns the value of the requested unit. 
-	 * The units returned from getUnits() uniquely define the value of the TemporalAmount.
-	 * A value must be returned for the main CurrencyUnit. If the currency has subunits, each .
+	 * A value must be returned for the main CurrencyUnit. 
+	 * If the currency has subunits, each subunit used by the amount returns a value, 
+	 * for subunits not used in this amount the value returned will be zero.
+	 * 
+	 * @return the amount's number for the given currency unit
 	 */
 	public long get(CurrencyUnit unit);
 

@@ -15,7 +15,7 @@
 	<artifactId>jsr354-api</artifactId>
 	<packaging>jar</packaging>
 
-	<version>0.7-SNAPSHOT</version>
+	<version>0.7</version>
 
 	<name>JSR 354 (Money and Currency API)</name>
 	<url>http://java.net/projects/javamoney</url>
@@ -205,7 +205,7 @@
 		<license>
 			<name>Spec License</name>
 			<comments>Spec</comments>
-			<url>LICENSE.txt</url>
+			<url>LICENSE.html</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -227,8 +227,8 @@
 	<distributionManagement>
 		<site>
 			<id>javamoney.java.net-site</id>
-			<url>scm:svn:https://svn.java.net/svn/javamoney~maven-site</url>
-			<name>Java Net Public SVN Site Repository</name>
+			<url>dav:https://kenai.com/website/javamoney/api/</url>
+			<name>Java net Public SVN Site Repository</name>
 		</site>
 		<repository>
 			<id>sonatype-nexus-staging</id>
@@ -369,6 +369,11 @@
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ssh</artifactId>
 				<version>2.4</version>
+			</extension>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>2.2</version>
 			</extension>
 		</extensions>
 

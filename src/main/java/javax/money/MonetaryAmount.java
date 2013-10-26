@@ -158,7 +158,7 @@ public interface MonetaryAmount {
 	 * 
 	 * @return the fraction numerator
 	 */
-	//public long getAmountFractionNumerator();
+	public long getAmountFractionNumerator();
 
 	/**
 	 * Gets the denominator of the currency's fractional amount.
@@ -178,7 +178,7 @@ public interface MonetaryAmount {
 	 * 
 	 * @return the fraction denominator
 	 */
-	//public long getAmountFractionDenominator();
+	public long getAmountFractionDenominator();
 
 	/**
 	 * Queries this monetary amount for a value.

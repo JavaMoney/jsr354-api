@@ -205,7 +205,7 @@
 		<license>
 			<name>Spec License</name>
 			<comments>Spec</comments>
-			<url>LICENSE.txt</url>
+			<url>LICENSE.html</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>

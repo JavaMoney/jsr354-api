@@ -9,10 +9,9 @@
 package javax.money;
 
 /**
- * Represents an operation on a single operand that produces a result of the
- * same type as its operand.  This is a specialization of {@code MonetaryFunction} for
- * the case where the operand and result are of type {@link MonetaryAmount}.
- * 
+ * Represents an operation on a single operand that produces a result of 
+ * type {@link MonetaryAmount}.
+ * <p>
  * Examples might be an operator that rounds the
  * amount to the nearest 1000, or one that performs currency conversion.
  * <p>
@@ -50,7 +49,7 @@ package javax.money;
  * @author Anatole Tresch
  * @author Stephen Colebourne
  * 
- * @version 0.8
+ * @version 0.8.2
  */
 public interface MonetaryOperator { // extends java.util.function.UnaryOperator<MonetaryAmount> for Java 8/9
 	/**

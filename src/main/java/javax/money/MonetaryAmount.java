@@ -12,8 +12,6 @@
  */
 package javax.money;
 
-import java.math.BigDecimal;
-
 /**
  * Interface defining a monetary amount. The effective internal representation
  * of an amount may vary depending on the implementation used. JSR 354
@@ -51,7 +49,7 @@ import java.math.BigDecimal;
  * <li>Since implementations are recommended to be immutable, an operation
  * should never change any internal state of an instance. Given an instance, all
  * operations are required to be fully reproducible.</li>
- * <li>Finally the result of calling {@link #with(MonetaryAdjuster)} should be
+ * <li>Finally the result of calling {@link #with(MonetaryOperator)} should be
  * of the same type as type on which {@code with} was called. The {@code with}
  * method also defines additional interoperability requirements.</li>
  * <li>To enable interoperability a static method {@code from(MonetaryAmount)}
@@ -62,7 +60,7 @@ import java.math.BigDecimal;
  * public static T from(MonetaryAmount amount);}
  * </pre>
  * 
- * This is particularly useful when implementing monetary adjusters or queries,
+ * This is particularly useful when implementing monetary operators or queries,
  * since arithmetic operations are not available on the MonetaryAmount
  * interface, which is defined for interoperability only.</li>
  * <li>Finally implementations should not implement a method {@code getAmount()}
@@ -106,9 +104,10 @@ import java.math.BigDecimal;
  * Since {@link Number} is not an interface, this type is not extending
  * {@link Number}.
  * 
- * @see #with(MonetaryAdjuster)
+ * @see #with(MonetaryOperator)
  * @author Anatole Tresch
  * @author Werner Keil
+ * @version 0.8
  */
 public interface MonetaryAmount {
 
@@ -192,7 +191,7 @@ public interface MonetaryAmount {
 	 * 
 	 * @param <R>
 	 *            the type of the result
-	 * @param adjuster
+	 * @param operator
 	 *            the query to invoke, not null
 	 * @return the query result, null may be returned (defined by the query)
 	 */
@@ -203,8 +202,8 @@ public interface MonetaryAmount {
 	 * the adjustment made.
 	 * <p>
 	 * This adjusts this monetary amount according to the rules of the specified
-	 * adjuster. A typical adjuster will change the amount and leave the
-	 * currency unchanged. A more complex adjuster might also change the
+	 * operator. A typical operator will change the amount and leave the
+	 * currency unchanged. A more complex operator might also change the
 	 * currency.
 	 * <p>
 	 * Some example code indicating how and why this method is used:
@@ -214,13 +213,13 @@ public interface MonetaryAmount {
 	 * date = date.with(amountRoundedToNearestWholeUnit());
 	 * </pre>
 	 * 
-	 * Hereby also the method signatur on the implementation type must return
+	 * Hereby also the method signature on the implementation type must return
 	 * the concrete type, to enable a fluent API, e.g.
 	 * 
 	 * <pre>
 	 * public final class MM implements MonetaryAmount{
 	 *   ...
-	 *   public MM with(MonetaryAdjuster adjuster){
+	 *   public MM with(MonetaryOperator operator){
 	 *     ... 
 	 *   }
 	 *   
@@ -228,11 +227,11 @@ public interface MonetaryAmount {
 	 * }
 	 * </pre>
 	 * 
-	 * @param adjuster
-	 *            the adjuster to use, not null
+	 * @param operator
+	 *            the operator to use, not null
 	 * @return an object of the same type with the specified adjustment made,
 	 *         not null
 	 */
-	public MonetaryAmount with(MonetaryAdjuster adjuster);
+	public MonetaryAmount with(MonetaryOperator operator);
 
 }

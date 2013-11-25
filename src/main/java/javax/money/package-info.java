@@ -22,7 +22,7 @@
  * implementing {@link javax.money.CurrencyUnit} and
  * {@link javax.money.MonetaryAmount}.</li>
  * <li>Implementations must also provide a minimal set of roundings, modeled as
- * {@link javax.money.MonetaryAdjuster}. This should include basic roundings for
+ * {@link javax.money.MonetaryOperator}. This should include basic roundings for
  * ISO currencies, roundings defined by {@link java.math.MathContext} or
  * {@link java.math.RoundingMode}.</li>
  * <li>This API must avoid restrictions that prevents its use in different

@@ -7,6 +7,5 @@ http://jcp.org/en/jsr/detail?id=354
 This is the API module of JSR 354 licenced under JSR Spec Licence (see LICENCE.html)
 
 See also:
-http://javamoney.github.io/jsr354-api/
-
+http://javamoney.java.net/api/
 

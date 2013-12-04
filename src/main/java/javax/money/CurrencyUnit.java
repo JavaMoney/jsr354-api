@@ -14,7 +14,7 @@ package javax.money;
  * A unit of currency.
  * <p>
  * This interface represents a unit of currency such as the British Pound, Euro,
- * US Dollar, Bitcoin or other. It is mainly defined to provide interoperability
+ * US Dollar, Bitcoin or other. It provides interoperability
  * between different implementations.
  * <p>
  * Currencies can be distinguished by separate {@link #getCurrencyCode()} codes,
@@ -34,6 +34,8 @@ package javax.money;
  * @author Stephen Colebourne
  * @author Anatole Tresch
  * 
+ * @version 0.6
+ * 
  * @see <a href="https://en.wikipedia.org/wiki/Currency">Wikipedia: Currency</a>
  */
 public interface CurrencyUnit {
@@ -52,7 +54,7 @@ public interface CurrencyUnit {
 	 * @return the currency code, never {@code null}. For ISO-4217 this this
 	 *         will be the three letter ISO-4217 code. However, alternate
 	 *         currencies can have different codes. Also there is no constraint
-	 *         about the formatting of alternate codes, despite they fact that
+	 *         about the formatting of alternate codes, despite the fact that
 	 *         the currency codes must be unique.
 	 */
 	public String getCurrencyCode();

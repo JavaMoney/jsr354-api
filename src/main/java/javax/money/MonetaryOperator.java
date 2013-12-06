@@ -67,4 +67,5 @@ public interface MonetaryOperator { // extends
 	 * @return the result of the function
 	 */
 	public <T extends MonetaryAmount<?>> T apply(T value);
+
 }

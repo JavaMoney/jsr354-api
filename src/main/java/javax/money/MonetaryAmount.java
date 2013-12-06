@@ -90,13 +90,14 @@ package javax.money;
  * Since {@link Number} is not an interface, this type is not extending
  * {@link Number}.
  * 
- * @see #with(MonetaryAdjuster)
+ * @see #with(MonetaryOperator)
  * @author Anatole Tresch
  * @author Werner Keil
  * 
  * @param <T>
  *            The numeric representation type to be exposed by
  *            {@link #getNumber()}
+ * @version 0.8
  */
 public interface MonetaryAmount<T> {
 

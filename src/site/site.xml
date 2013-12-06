@@ -1,57 +1,65 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!--
-
-    CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
-
-    Specification:  JSR-354  Money and Currency API ("Specification")
-
--->
-<!--
-
-    CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.
-
-    Specification:  <JSR-354  Money and Currency API > ("Specification")
-
--->
+<!-- CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON 
+	THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. 
+	PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING 
+	THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. 
+	IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT 
+	THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") -->
+<!-- CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON 
+	THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. 
+	PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING 
+	THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. 
+	IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT 
+	THE BOTTOM OF THIS PAGE. Specification: <JSR-354 Money and Currency API > 
+	("Specification") -->
 <project name="JSR 354 API">
-  <publishDate position="navigation-bottom" format="yyyy-MM-dd"/>
-  <bannerLeft>
-    <name>JCP.org</name>
-    <!--src>images/joda.png</src-->
-    <href>http://javamoney.java.net/</href>
-  </bannerLeft>
-  <bannerRight>
-    <name>Java Money</name>
-    <!--src>images/jodamoney.png</src-->
-    <href>http://javamoney.java.net/</href>
-  </bannerRight>
+	<publishDate position="navigation-bottom" format="yyyy-MM-dd" />
+	<bannerLeft>
+		<name>JCP.org</name>
+		<!--src>images/joda.png</src -->
+		<href>http://javamoney.java.net/</href>
+	</bannerLeft>
+	<bannerRight>
+		<name>Java Money API</name>
+		<!--src>images/jodamoney.png</src -->
+		<href>http://javamoney.java.net/</href>
+	</bannerRight>
 
-  <body>
-    <menu name="Java Money">
-      <item name="Overview" href="index.html"/>
-      <item name="User guide" href="userguide.html"/>
-      <!--item name="FAQ" href="faq.html"/-->
-      <item name="Javadoc" href="apidocs/index.html"/>
-      <item name="License" href="licensecover.html"/>
-      <item name="Release notes" href="changes-report.html"/>
-      <item name="Download" href="http://java.net/projects/javamoney/downloads"/>
-    </menu>
+	<body>
+		<menu name="Java Money">
+			<item name="Overview" href="project-summary.html" />
+			<!-- item name="User guide" href="userguide.html"/ -->
+			<item name="License" href="license.html" />
+			<item name="Team" href="team-list.html" />
+			<item name="Issue Tracking" href="issue-tracking.html" />
+			<item name="Mailing lists" href="mail-lists.html" />
+			<item name="Continous Integration" href="integration.html" />
+			<item name="Downloads" href="https://java.net/projects/javamoney/downloads" />
+		</menu>
 
-    <menu name="Development">
-      <item name="GitHub (Source code)" href="https://github.com/JavaMoney/javamoney"/>
-      <item name="Java.net" href="http://java.net/projects/javamoney/"/>
-      <item name="Test results" href="surefire-report.html"/>
-      <item name="Test coverage" href="/cobertura/index.html"/>
-      <item name="Mailing lists" href="mail-lists.html"/>
-      <item name="Tasks" href="tasks.html"/>
-      <item name="Javadoc (Latest)" href="apidocs/index.html"/>
-    </menu>
+		<menu name="Development">
+			<item name="Overview" href="project-info.html" />
+			<item name="Javadoc (Latest)" href="apidocs/index.html" />
+			<item name="Source Repository" href="source-repository.html" />
+			<item name="Browsable Source (Latest)" href="xref/index.html" />
+			<item name="Java.net Project" href="http://java.net/projects/javamoney/" />
+			<item name="Dependencies" href="dependencies.html" />
+			<item name="Plugins" href="plugins.html" />
+		</menu>
 
-    <menu ref="reports"/>
-  </body>
+		<menu name="Quality Reports">
+			<item name="Quality Dashboard" href="dashboard-report.html" />
+			<item name="Dependency Management" href="dependency-management.html" />
+			<item name="Plugin Management" href="plugin-management.html" />
+			<!-- item name="Test results" href="surefire-report.html" / -->
+			<!-- item name="Test coverage" href="/cobertura/index.html" / -->
+		</menu>
 
-  <poweredBy>
-    <logo name="Java.net" href="http://java.net"
-        img="http://www.java.net/sites/all/themes/java_adaptive/images/logo.png" width="154" height="60" />
-  </poweredBy>
+	</body>
+
+	<poweredBy>
+		<logo name="Java.net" href="http://java.net"
+			img="http://www.java.net/sites/all/themes/java_adaptive/images/logo.png"
+			width="154" height="60" />
+	</poweredBy>
 </project>

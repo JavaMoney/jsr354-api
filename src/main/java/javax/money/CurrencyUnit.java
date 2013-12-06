@@ -14,7 +14,7 @@ package javax.money;
  * A unit of currency.
  * <p>
  * This interface represents a unit of currency such as the British Pound, Euro,
- * US Dollar, Bitcoin or other. It is mainly defined to provide interoperability
+ * US Dollar, Bitcoin or other. It provides interoperability
  * between different implementations.
  * <p>
  * Currencies can be distinguished by separate {@link #getCurrencyCode()} codes,
@@ -27,7 +27,7 @@ package javax.money;
  * <li>are required to be thread-safe
  * <li>are required to be immutable
  * <li>are required to be comparable
- * <li>are highly recommended to be serializable.
+ * <li>are required to be serializable.
  * </ul>
  * 
  * @author Werner Keil
@@ -52,9 +52,39 @@ public interface CurrencyUnit {
 	 * @return the currency code, never {@code null}. For ISO-4217 this this
 	 *         will be the three letter ISO-4217 code. However, alternate
 	 *         currencies can have different codes. Also there is no constraint
-	 *         about the formatting of alternate codes, despite they fact that
+	 *         about the formatting of alternate codes, despite the fact that
 	 *         the currency codes must be unique.
 	 */
 	public String getCurrencyCode();
+
+	/**
+	 * Gets a numeric currency code. within the ISO-4217 name space, this equals
+	 * to the ISO numeric code. In other currency name spaces this number may be
+	 * different, or even undefined (-1).
+	 * <p>
+	 * The numeric code is an optional alternative to the standard currency
+	 * code. If defined, the numeric code is required to be unique.
+	 * <p>
+	 * This method matches the API of <type>java.util.Currency</type>.
+	 * 
+	 * @return the numeric currency code
+	 */
+	public int getNumericCode();
+
+	/**
+	 * Gets the number of fractional digits typically used by this currency.
+	 * <p>
+	 * Different currencies have different numbers of fractional digits by
+	 * default. For example, 'GBP' has 2 fractional digits, but 'JPY' has zero.
+	 * virtual currencies or those with no applicable fractional are indicated
+	 * by -1.
+	 * <p>
+	 * This method matches the API of <type>java.util.Currency</type>.
+	 * 
+	 * @return the fractional digits, from 0 to 9 (normally 0, 2 or 3), or 0 for
+	 *         pseudo-currencies.
+	 * 
+	 */
+	public int getDefaultFractionDigits();
 
 }

@@ -15,7 +15,7 @@
 	<artifactId>jsr354-api</artifactId>
 	<packaging>jar</packaging>
 
-	<version>0.7</version>
+	<version>0.8-SNAPSHOT</version>
 
 	<name>JSR 354 (Money and Currency API)</name>
 	<url>http://java.net/projects/javamoney</url>
@@ -227,7 +227,7 @@
 	<distributionManagement>
 		<site>
 			<id>javamoney.java.net-site</id>
-			<url>dav:https://kenai.com/website/javamoney/api/</url>
+			<url>dav:https://java.net/website/javamoney/api/</url>
 			<name>Java net Public SVN Site Repository</name>
 		</site>
 		<repository>

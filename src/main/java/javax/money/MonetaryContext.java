@@ -216,6 +216,55 @@ public final class MonetaryContext implements Serializable {
 		return this.attributes.keySet();
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((attributes == null) ? 0 : attributes.hashCode());
+		result = prime * result + (fixedScale ? 1231 : 1237);
+		result = prime * result + maxScale;
+		result = prime * result
+				+ ((numberType == null) ? 0 : numberType.hashCode());
+		result = prime * result + precision;
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MonetaryContext other = (MonetaryContext) obj;
+		if (attributes == null) {
+			if (other.attributes != null)
+				return false;
+		} else if (!attributes.equals(other.attributes))
+			return false;
+		if (fixedScale != other.fixedScale)
+			return false;
+		if (maxScale != other.maxScale)
+			return false;
+		if (numberType == null) {
+			if (other.numberType != null)
+				return false;
+		} else if (!numberType.equals(other.numberType))
+			return false;
+		if (precision != other.precision)
+			return false;
+		return true;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

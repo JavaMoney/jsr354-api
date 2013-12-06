@@ -10,6 +10,7 @@
  */
 package javax.money.spi;
 
+import java.util.Locale;
 import java.util.ServiceLoader;
 
 import javax.money.CurrencyUnit;
@@ -23,15 +24,54 @@ import javax.money.CurrencyUnit;
  * @author Anatole Tresch
  */
 public interface CurrencyProviderSpi {
-	
+
 	/**
-	 * Return a {@link CurrencyUnit} matching the given currency code.
+	 * Return a (current) {@link CurrencyUnit} matching the given currency code.
+	 * 
+	 * @param currencyCode
+	 *            the currency code. not null.
+	 * @return the corresponding {@link CurrencyUnit}, or null, if no such unit
+	 *         is provided by this provider.
+	 */
+	public CurrencyUnit getCurrencyUnit(String currencyCode);
+
+	/**
+	 * Return a (historic) {@link CurrencyUnit} matching the given currency
+	 * code.
+	 * 
+	 * @param currencyCode
+	 *            the currency code. not null.
+	 * @param timestamp
+	 *            the UTC timestamp of the time, when the {@link CurrencyUnit}
+	 *            should be valid.
+	 * @return the corresponding {@link CurrencyUnit}, or null, if no such unit
+	 *         is provided by this provider.
+	 */
+	public CurrencyUnit getCurrencyUnit(String currencyCode, long timestamp);
+
+	/**
+	 * Return a (current) {@link CurrencyUnit} matching the given (country)
+	 * {@link Locale}.
 	 * 
 	 * @param code
 	 *            the currency code. not null.
 	 * @return the corresponding {@link CurrencyUnit}, or null, if no such unit
 	 *         is provided by this provider.
 	 */
-	public CurrencyUnit getCurrencyUnit(String code);
+	public CurrencyUnit getCurrencyUnit(Locale locale);
+
+	/**
+	 * Return a (historic) {@link CurrencyUnit} matching the given (country)
+	 * {@link Locale}.
+	 * 
+	 * @param locale
+	 *            the currency {@link Locale}. not null.
+	 * @param timestamp
+	 *            the UTC timestamp of the time, when the {@link CurrencyUnit}
+	 *            should be valid.
+	 * @return the corresponding {@link CurrencyUnit}, or null, if no such unit
+	 *         is provided by this provider.
+	 */
+	public CurrencyUnit getCurrencyUnit(Locale locale, long timestamp);
 
 }

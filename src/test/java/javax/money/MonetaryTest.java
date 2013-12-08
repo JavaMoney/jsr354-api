@@ -34,11 +34,11 @@ import org.junit.Test;
  * 
  * @author Anatole Tresch
  */
-public class CurrenciesTest {
+public class MonetaryTest {
 
 	@Test
-	public void testGetInstanceString() {
-		CurrencyUnit cur = Currencies.of("test1");
+	public void testgetCurrencyString() {
+		CurrencyUnit cur = Monetary.getCurrency("test1");
 		assertNotNull(cur);
 		assertEquals(cur.getCurrencyCode(), "test1");
 		assertEquals(cur.getNumericCode(), 1);
@@ -47,13 +47,13 @@ public class CurrenciesTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testGetInstanceString_NA() {
-		Currencies.of("testGetInstanceCurrency_NA");
+	public void testgetCurrencyString_NA() {
+		Monetary.getCurrency("testGetInstanceCurrency_NA");
 	}
 
 	@Test
-	public void testGetInstanceLocale() {
-		CurrencyUnit cur = Currencies.of(new Locale("", "TEST1L"));
+	public void testgetCurrencyLocale() {
+		CurrencyUnit cur = Monetary.getCurrency(new Locale("", "TEST1L"));
 		assertNotNull(cur);
 		assertEquals(cur.getCurrencyCode(), "TEST1L");
 		assertEquals(cur.getNumericCode(), 1);
@@ -62,13 +62,13 @@ public class CurrenciesTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testGetInstanceLocale_NA() {
-		Currencies.of(new Locale("", "sdsdsd"));
+	public void testgetCurrencyLocale_NA() {
+		Monetary.getCurrency(new Locale("", "sdsdsd"));
 	}
 
 	@Test
 	public void testGetInstanceLocaleLong() {
-		CurrencyUnit cur = Currencies.of(new Locale("", "TEST1L"), 100L);
+		CurrencyUnit cur = Monetary.getCurrency(new Locale("", "TEST1L"), 100L);
 		assertNotNull(cur);
 		assertEquals(cur.getCurrencyCode(), "TEST1L");
 		assertEquals(cur.getNumericCode(), 1);
@@ -77,8 +77,8 @@ public class CurrenciesTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testGetInstanceLocaleLong_NA() {
-		Currencies.of(new Locale("", "sdsdsd"));
+	public void testgetCurrencyLocaleLong_NA() {
+		Monetary.getCurrency(new Locale("", "sdsdsd"), -200L);
 	}
 
 }

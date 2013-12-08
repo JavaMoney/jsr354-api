@@ -10,11 +10,50 @@
  */
 package javax.money.format;
 
+import javax.money.CurrencyUnit;
+
 /**
- * Defins the different variants of currency formatting.
+ * Defines the different variants of currency formatting.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public enum CurrencyStyle {
-	CODE, NAME, NUMERIC_CODE, SYMBOL
+
+	/**
+	 * The currency will be rendered as its (non localized) currency code.
+	 * 
+	 * @see CurrencyUnit#getCurrencyCode()
+	 */
+	CODE,
+
+	/**
+	 * The currency will be rendered as its localized diplay name. If no display
+	 * name is known for the required {@link CurrencyUnit}, the currency code
+	 * should be used as a fall-back.
+	 * 
+	 * @see CurrencyUnit#getCurrencyCode()
+	 */
+	NAME,
+
+	/**
+	 * The currency will be rendered as its (non localized) numeric code.
+	 * 
+	 * @see CurrencyUnit#getNumericCode()
+	 */
+	NUMERIC_CODE,
+
+	/**
+	 * The currency will be rendered as its localized currency symbol. If no
+	 * symbol name is known for the required {@link CurrencyUnit}, the currency
+	 * code should be used as a fall-back.
+	 * 
+	 * @see CurrencyUnit#getCurrencyCode()
+	 */
+	SYMBOL,
+
+	/**
+	 * The currency will be not rendered at all.
+	 */
+	OMIT
 }

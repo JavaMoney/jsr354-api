@@ -19,8 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmount;
-import javax.money.function.MonetaryRoundings;
+import javax.money.MonetaryContext;
 import javax.money.spi.MonetaryAmountFormatProviderSpi;
 
 /**
@@ -65,41 +64,89 @@ public final class MonetaryFormats {
 		}
 	}
 
-//	/**
-//	 * Creates a rounding that can be added as {@link MonetaryAdjuster} to
-//	 * chained calculations. The instance will lookup the concrete
-//	 * {@link MonetaryAdjuster} instance from the {@link MonetaryRoundings}
-//	 * based on the input {@link MonetaryAmount}'s {@link CurrencyUnit}.
-//	 * 
-//	 * @return the (shared) default rounding instance.
-//	 */
-//	public static MonetaryAmountFormat getAmountFormat(Locale locale,
-//			CurrencyUnit currency) {
-//		Objects.requireNonNull(locale, "Locale required.");
-//		Objects.requireNonNull(currency, "CurrencyUnit required.");
-//		if (providerSpi == null) {
-//			throw new IllegalStateException(
-//					"No MonetaryAmountFormatProviderSpi registered.");
-//		}
-//		return providerSpi.getFormat(locale, currency);
-//	}
-
-	/**
-	 * Creates a rounding that can be added as {@link MonetaryAdjuster} to
-	 * chained calculations. The instance will lookup the concrete
-	 * {@link MonetaryAdjuster} instance from the {@link MonetaryRoundings}
-	 * based on the input {@link MonetaryAmount}'s {@link CurrencyUnit}.
-	 * 
-	 * @return the (shared) default rounding instance.
-	 */
-	public static MonetaryAmountFormat.Builder getAmountFormatBuilder(
-			Locale locale) {
+	public static MonetaryAmountFormat getAmountFormat(Locale locale) {
 		Objects.requireNonNull(locale, "Locale required.");
 		if (providerSpi == null) {
 			throw new IllegalStateException(
 					"No MonetaryAmountFormatProviderSpi registered.");
 		}
-		return providerSpi.getFormatBuilder(locale);
+		return providerSpi.getFormat(locale, null, null, null);
+	}
+
+	public static MonetaryAmountFormat getAmountFormat(Locale locale,
+			CurrencyUnit defaultCurrency) {
+		Objects.requireNonNull(locale, "Locale required.");
+		if (providerSpi == null) {
+			throw new IllegalStateException(
+					"No MonetaryAmountFormatProviderSpi registered.");
+		}
+		return providerSpi.getFormat(locale, null, null, defaultCurrency);
+	}
+
+	public static MonetaryAmountFormat getAmountFormat(Locale locale,
+			MonetaryContext monetaryContext) {
+		Objects.requireNonNull(locale, "Locale required.");
+		if (providerSpi == null) {
+			throw new IllegalStateException(
+					"No MonetaryAmountFormatProviderSpi registered.");
+		}
+		return providerSpi.getFormat(locale, null, monetaryContext, null);
+	}
+
+	public static MonetaryAmountFormat getAmountFormat(Locale locale,
+			MonetaryContext monetaryContext,
+			CurrencyUnit defaultCurrency) {
+		Objects.requireNonNull(locale, "Locale required.");
+		if (providerSpi == null) {
+			throw new IllegalStateException(
+					"No MonetaryAmountFormatProviderSpi registered.");
+		}
+		return providerSpi.getFormat(locale, null, monetaryContext,
+				defaultCurrency);
+	}
+
+	public static MonetaryAmountFormat getAmountFormat(FormatStyle style) {
+		Objects.requireNonNull(style, "FormatStyle required.");
+		if (providerSpi == null) {
+			throw new IllegalStateException(
+					"No MonetaryAmountFormatProviderSpi registered.");
+		}
+		return providerSpi.getFormat(null, style, null, null);
+	}
+
+	public static MonetaryAmountFormat getAmountFormat(
+			FormatStyle style,
+			CurrencyUnit defaultCurrency) {
+		Objects.requireNonNull(style, "FormatStyle required.");
+		if (providerSpi == null) {
+			throw new IllegalStateException(
+					"No MonetaryAmountFormatProviderSpi registered.");
+		}
+		return providerSpi.getFormat(null, style, null, defaultCurrency);
+	}
+
+	public static MonetaryAmountFormat getAmountFormat(
+			FormatStyle style,
+			MonetaryContext monetaryContext) {
+		Objects.requireNonNull(style, "FormatStyle required.");
+		if (providerSpi == null) {
+			throw new IllegalStateException(
+					"No MonetaryAmountFormatProviderSpi registered.");
+		}
+		return providerSpi.getFormat(null, style, monetaryContext, null);
+	}
+
+	public static MonetaryAmountFormat getAmountFormat(
+			FormatStyle style,
+			MonetaryContext monetaryContext,
+			CurrencyUnit defaultCurrency) {
+		Objects.requireNonNull(style, "FormatStyle required.");
+		if (providerSpi == null) {
+			throw new IllegalStateException(
+					"No MonetaryAmountFormatProviderSpi registered.");
+		}
+		return providerSpi.getFormat(null, style, monetaryContext,
+				defaultCurrency);
 	}
 
 }

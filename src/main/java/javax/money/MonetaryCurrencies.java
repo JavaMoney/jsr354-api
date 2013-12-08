@@ -91,7 +91,9 @@ public final class MonetaryCurrencies {
 								+ spi.getClass().getName(), e);
 			}
 		}
-		cu = REGISTERED.get(currencyCode);
+		if (cu == null) {
+			cu = REGISTERED.get(currencyCode);
+		}
 		if (cu == null) {
 			throw new IllegalArgumentException("No such currency: "
 					+ currencyCode);

@@ -11,10 +11,14 @@
 package javax.money.format;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.Locale;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.MonetaryAmounts;
+import javax.money.MonetaryContext;
 import javax.money.MonetaryQuery;
 import javax.money.function.MonetaryRoundings;
 
@@ -28,9 +32,30 @@ import javax.money.function.MonetaryRoundings;
  */
 public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 
-	public AmountStyle getAmountStyle();
+	/**
+	 * The {@link MonetaryContext} to be applied when a {@link MonetaryAmount} is parsed.
+	 * @return the {@link MonetaryContext} used, or {@code null}, when the defaults should be used.
+	 * @see MonetaryAmounts#getDefaultMonetaryContext
+	 */
+	public MonetaryContext getMonetaryContext();
 
+	/**
+	 * Get the {@link CurrencyUnit} applied by this {@link MonetaryAmountFormat}
+	 * instance, when a {@link MonetaryAmount} is parsed from an input, where no
+	 * currency information is available/detectable.
+	 * 
+	 * @return the default {@link CurrencyUnit} instance uses, or {@code null}.
+	 */
 	public CurrencyUnit getDefaultCurrency();
+
+	/**
+	 * Get the {@link FormatStyle} used by this {@link MonetaryAmountFormat}
+	 * instance.
+	 * 
+	 * @return the {@link MonetaryAmountFormat} instance user, never
+	 *         {@code null}.
+	 */
+	public FormatStyle getFormatStyle();
 
 	/**
 	 * Formats a value of {@code T} to a {@code String}. The {@link Locale}
@@ -62,7 +87,7 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 */
-	public String format(MonetaryAmount amount);
+	public String format(MonetaryAmount<?> amount);
 
 	/**
 	 * Prints a item value to an {@code Appendable}.
@@ -82,9 +107,11 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	 * @throws ItemFormatException
 	 *             if there is a problem while printing
 	 * @throws IOException
-	 *             if an IO error occurs
+	 *             if an IO error occurs, thrown by the {@code appendable}
+	 * @throws MonetaryParseException
+	 *             if there is a problem while parsing
 	 */
-	public void print(Appendable appendable, MonetaryAmount amount)
+	public void print(Appendable appendable, MonetaryAmount<?> amount)
 			throws IOException;
 
 	/**
@@ -108,92 +135,10 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	 * @return the parsed value, never {@code null}
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to parse
-	 * @throws ItemParseException
+	 * @throws MonetaryParseException
 	 *             if there is a problem while parsing
 	 */
-	public MonetaryAmount parse(CharSequence text)
+	public MonetaryAmount<?> parse(CharSequence text)
 			throws ParseException;
-
-	/**
-	 * This class implements a builder that allows creating of
-	 * {@link MonetaryFormat} instances programmatically using a fluent API. The
-	 * formatting hereby is modeled by a concatenation of {@link FormatToken}
-	 * instances. The same {@link FormatToken} instances also are responsible
-	 * for implementing the opposite, parsing, of an item from an input
-	 * character sequence. Each {@link FormatToken} gets access to the current
-	 * parsing location, and the original and current character input sequence,
-	 * modeled by the {@link ParseContext}. Finall if parsing of a part failed,
-	 * a {@link FormatToken} throws an {@link ItemParseException} describing the
-	 * problem.
-	 * <p>
-	 * This class is not thread-safe and therefore should not be shared among
-	 * different threads.
-	 * 
-	 * @author Anatole Tresch
-	 * 
-	 * @param <T>
-	 *            the target type.
-	 */
-	public interface Builder {
-
-		public Builder setDefaultCurrency(CurrencyUnit currency);
-
-		/**
-		 * Add a {@link FormatToken} to the token list.
-		 * 
-		 * @param token
-		 *            the token to add.
-		 * @return the builder, for chaining.
-		 */
-		public Builder appendAmount(AmountStyle style);
-
-		/**
-		 * Add the amount to the given format. Hereby the number default style
-		 * for the {@link #locale} is used, and the number is rounded with the
-		 * currencies, default rounding as returned by
-		 * {@link MonetaryRoundings#getRounding()}.
-		 * 
-		 * @param token
-		 *            the token to add.
-		 * @return the builder, for chaining.
-		 */
-		public Builder appendAmount();
-
-		/**
-		 * Adds a currency unit to the format using the given
-		 * {@link CurrencyStyle}.
-		 * 
-		 * @param style
-		 *            the style to be used, not {@code null}.
-		 * @return the builder, for chaining.
-		 */
-		public Builder appendCurrency(CurrencyStyle style);
-
-		/**
-		 * Adds a currency to the format printing using the currency code.
-		 * 
-		 * @return the builder, for chaining.
-		 */
-		public Builder appendCurrency();
-
-		/**
-		 * Add a {@link FormatToken} to the token list.
-		 * 
-		 * @param literal
-		 *            the literal to add, not {@code null}.
-		 * @return the builder, for chaining.
-		 */
-		public Builder appendLiteral(String literal);
-
-		/**
-		 * This method creates an {@link MonetaryFormat} based on this instance,
-		 * hereby using the given a {@link ItemFactory} to extract the item to
-		 * be returned from the {@link ParseContext}'s results.
-		 * 
-		 * @return the {@link MonetaryFormat} instance, never null.
-		 */
-		public MonetaryAmountFormat build();
-
-	}
 
 }

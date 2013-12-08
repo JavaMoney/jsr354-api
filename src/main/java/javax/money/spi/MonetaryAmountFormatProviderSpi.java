@@ -13,28 +13,37 @@ package javax.money.spi;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
-import javax.money.format.AmountStyle;
-import javax.money.format.CurrencyStyle;
+import javax.money.MonetaryAmount;
+import javax.money.MonetaryContext;
+import javax.money.format.FormatStyle;
 import javax.money.format.MonetaryAmountFormat;
-import javax.money.format.MonetaryAmountFormat.Builder;
 
 /**
- * SPI providing {@link MonetaryAmountFormat} instances and the according
- * {@link Builder} instances for dynamic format.
+ * SPI providing {@link MonetaryAmountFormat} instances.
  * 
  * @author Anatole Tresch
  */
 public interface MonetaryAmountFormatProviderSpi {
-	
+
 	/**
-	 * Access a {@link MonetaryAmountFormat.Builder} for the given
-	 * {@link Locale}.
+	 * Create a new {@link MonetaryAmountFormat} for the given input.
 	 * 
-	 * @param locale
-	 *            the target {@link Locale}, not {@code null}.
-	 * @return the target {@link MonetaryAmountFormat.Builder}, never
-	 *         {@code null}.
+	 * @param formatStyle
+	 *            The {@link FormatStyle} to be used.
+	 * @param monetaryContext
+	 *            The {@link MonetaryContext}, to be required for creation of
+	 *            new {@link MonetaryAmount} instances during parsing.
+	 * @param defaultCurrency
+	 *            The {@link CurrencyUnit} to be set, if a
+	 *            {@link MonetaryAmount} is parsed from an input, without
+	 *            currency information.
+	 * @return An according {@link MonetaryAmountFormat} instance, or
+	 *         {@code null}, which delegates the request to subsequent
+	 *         {@link MonetaryAmountFormatProviderSpi} instances registered.
 	 */
-	public Builder getFormatBuilder(Locale locale);
+	public MonetaryAmountFormat getFormat(Locale locale,
+			FormatStyle formatStyle,
+			MonetaryContext monetaryContext,
+			CurrencyUnit defaultCurrency);
 
 }

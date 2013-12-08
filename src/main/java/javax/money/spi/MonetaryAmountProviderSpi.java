@@ -129,7 +129,8 @@ public interface MonetaryAmountProviderSpi {
 	 *         not provide a {@link MonetaryAmount} for the given
 	 *         {@link MonetaryContext} or runtime state.
 	 */
-	public MonetaryAmount getAmountFrom(MonetaryAmount amt,
-			MonetaryAmount monetaryContext);
+	public MonetaryAmount getAmountFrom(MonetaryAmount<?> amt,
+			MonetaryContext monetaryContext);
+
 
 }

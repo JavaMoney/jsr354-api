@@ -27,10 +27,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -79,6 +77,41 @@ public final class MonetaryAmounts {
 	private MonetaryAmounts() {
 	}
 
+	/**
+	 * Creates a new instance of {@link MonetaryAmount}, using the default
+	 * {@link MonetaryContext}.
+	 * 
+	 * @param number
+	 *            numeric value, not {@code null}.
+	 * @param currency
+	 *            currency unit, not {@code null}.
+	 * @return a {@code MonetaryAmount} combining the numeric value and currency
+	 *         unit.
+	 * @throws ArithmeticException
+	 *             If the number exceeds the capabilities of the default
+	 *             {@link MonetaryContext} used.
+	 */
+	public static MonetaryAmount<?> getAmount(CurrencyUnit currency, long number) {
+		MonetaryAmount<?> amt = null;
+		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+			try {
+				amt = spi.getAmount(currency, number, DEFAULT_MONETARY_CONTEXT);
+				if (amt != null) {
+					return amt;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
+						Level.SEVERE,
+						"Error loading MonetaryAmount "
+								+ amt + "(" + DEFAULT_MONETARY_CONTEXT
+								+ ") from provider: "
+								+ spi.getClass().getName(), e);
+			}
+		}
+		throw new MonetaryException(
+				"Unsupported MonetaryAmount requested: "
+						+ amt + "(" + DEFAULT_MONETARY_CONTEXT + ")");
+	}
 
 	/**
 	 * Creates a new instance of {@link MonetaryAmount}, using the default
@@ -94,8 +127,30 @@ public final class MonetaryAmounts {
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
 	 */
-	public static MonetaryAmount getAmount(CurrencyUnit currency, long number) {
-		return null;
+	public static MonetaryAmount<?> getAmount(CurrencyUnit currency,
+			double number) {
+		MonetaryAmount<?> amt = null;
+		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+			try {
+				amt = spi.getAmount(currency, number, DEFAULT_MONETARY_CONTEXT);
+				if (amt != null) {
+					return amt;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
+						Level.SEVERE,
+						"Error loading MonetaryAmount<?> "
+								+ currency.getCurrencyCode() + " " + number
+								+ "(" + DEFAULT_MONETARY_CONTEXT
+								+ ") from provider: "
+								+ spi.getClass().getName(), e);
+			}
+		}
+		throw new MonetaryException(
+				"Unsupported MonetaryAmount<?> type requested: "
+						+ currency.getCurrencyCode() + " " + number
+						+ "(" + DEFAULT_MONETARY_CONTEXT
+						+ ")");
 	}
 
 	/**
@@ -112,43 +167,30 @@ public final class MonetaryAmounts {
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
 	 */
-	public static MonetaryAmount getAmount(CurrencyUnit currency, double number) {
-		return null;
-	}
-
-	/**
-	 * Creates a new instance of {@link MonetaryAmount}, using the default
-	 * {@link MonetaryContext}.
-	 * 
-	 * @param number
-	 *            numeric value, not {@code null}.
-	 * @param currency
-	 *            currency unit, not {@code null}.
-	 * @return a {@code MonetaryAmount} combining the numeric value and currency
-	 *         unit.
-	 * @throws ArithmeticException
-	 *             If the number exceeds the capabilities of the default
-	 *             {@link MonetaryContext} used.
-	 */
-	public static MonetaryAmount getAmount(CurrencyUnit currency, Number number) {
-		return null;
-	}
-
-	/**
-	 * Creates a new instance of {@link MonetaryAmounts}, using the default
-	 * {@link MonetaryContext}.
-	 * 
-	 * @param number
-	 *            numeric value, not {@code null}.
-	 * @param currency
-	 *            currency unit, not {@code null}.
-	 * @return a {@code Money} combining the numeric value and currency unit.
-	 * @throws ArithmeticException
-	 *             If the number exceeds the capabilities of the default
-	 *             {@link MonetaryContext} used.
-	 */
-	public static MonetaryAmount getAmount(String currency, long number) {
-		return null;
+	public static MonetaryAmount<?> getAmount(CurrencyUnit currency,
+			Number number) {
+		MonetaryAmount<?> amt = null;
+		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+			try {
+				amt = spi.getAmount(currency, number, DEFAULT_MONETARY_CONTEXT);
+				if (amt != null) {
+					return amt;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
+						Level.SEVERE,
+						"Error loading MonetaryAmount<?> "
+								+ currency.getCurrencyCode() + " " + number
+								+ "(" + DEFAULT_MONETARY_CONTEXT
+								+ ") from provider: "
+								+ spi.getClass().getName(), e);
+			}
+		}
+		throw new MonetaryException(
+				"Unsupported MonetaryAmount<?> type requested: "
+						+ currency.getCurrencyCode() + " " + number
+						+ "(" + DEFAULT_MONETARY_CONTEXT
+						+ ")");
 	}
 
 	/**
@@ -157,15 +199,36 @@ public final class MonetaryAmounts {
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
-	 * @param currency
-	 *            currency unit, not {@code null}.
+	 * @param currencyCode
+	 *            currency code, not {@code null}.
 	 * @return a {@code Money} combining the numeric value and currency unit.
 	 * @throws ArithmeticException
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
 	 */
-	public static MonetaryAmount getAmount(String currency, double number) {
-		return null;
+	public static MonetaryAmount<?> getAmount(String currencyCode, long number) {
+		MonetaryAmount<?> amt = null;
+		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+			try {
+				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currencyCode), number, DEFAULT_MONETARY_CONTEXT);
+				if (amt != null) {
+					return amt;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
+						Level.SEVERE,
+						"Error loading MonetaryAmount<?> "
+								+ currencyCode + " " + number
+								+ "(" + DEFAULT_MONETARY_CONTEXT
+								+ ") from provider: "
+								+ spi.getClass().getName(), e);
+			}
+		}
+		throw new MonetaryException(
+				"Unsupported MonetaryAmount<?> type requested: "
+						+ currencyCode + " " + number
+						+ "(" + DEFAULT_MONETARY_CONTEXT
+						+ ")");
 	}
 
 	/**
@@ -174,15 +237,74 @@ public final class MonetaryAmounts {
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
-	 * @param currency
-	 *            currency unit, not {@code null}.
+	 * @param currencyCode
+	 *            currency code, not {@code null}.
 	 * @return a {@code Money} combining the numeric value and currency unit.
 	 * @throws ArithmeticException
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
 	 */
-	public static MonetaryAmount getAmount(String currency, Number number) {
-		return null;
+	public static MonetaryAmount<?> getAmount(String currencyCode, double number) {
+		MonetaryAmount<?> amount = null;
+		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+			try {
+				amount = spi.getAmount(MonetaryCurrencies.getCurrency(currencyCode), number, DEFAULT_MONETARY_CONTEXT)
+;				if (amount != null) {
+					return amount;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
+						Level.SEVERE,
+						"Error loading MonetaryAmount<?> "
+								+ currencyCode + " " + number
+								+ "(" + DEFAULT_MONETARY_CONTEXT
+								+ ") from provider: "
+								+ spi.getClass().getName(), e);
+			}
+		}
+		throw new MonetaryException(
+				"Unsupported MonetaryAmount<?> type requested: "
+						+ currencyCode + " " + number
+						+ "(" + DEFAULT_MONETARY_CONTEXT
+						+ ")");
+	}
+
+	/**
+	 * Creates a new instance of {@link MonetaryAmounts}, using the default
+	 * {@link MonetaryContext}.
+	 * 
+	 * @param number
+	 *            numeric value, not {@code null}.
+	 * @param currencyCode
+	 *            currency code, not {@code null}.
+	 * @return a {@code Money} combining the numeric value and currency unit.
+	 * @throws ArithmeticException
+	 *             If the number exceeds the capabilities of the default
+	 *             {@link MonetaryContext} used.
+	 */
+	public static MonetaryAmount<?> getAmount(String currencyCode, Number number) {
+		MonetaryAmount<?> amt = null;
+		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+			try {
+				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currencyCode), number, DEFAULT_MONETARY_CONTEXT);
+				if (amt != null) {
+					return amt;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
+						Level.SEVERE,
+						"Error loading MonetaryAmount<?> "
+								+ currencyCode + " " + number
+								+ "(" + DEFAULT_MONETARY_CONTEXT
+								+ ") from provider: "
+								+ spi.getClass().getName(), e);
+			}
+		}
+		throw new MonetaryException(
+				"Unsupported MonetaryAmount<?> type requested: "
+						+ currencyCode + " " + number
+						+ "(" + DEFAULT_MONETARY_CONTEXT
+						+ ")");
 	}
 
 	/**
@@ -200,9 +322,30 @@ public final class MonetaryAmounts {
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
 	 */
-	public static MonetaryAmount getAmount(String currency, long number,
+	public static MonetaryAmount<?> getAmount(String currency, long number,
 			MonetaryContext context) {
-		return null;
+		MonetaryAmount<?> amt = null;
+		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+			try {
+				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currency), number, DEFAULT_MONETARY_CONTEXT);
+				if (amt != null) {
+					return amt;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
+						Level.SEVERE,
+						"Error loading MonetaryAmount<?> "
+								+ currency + " " + number
+								+ "(" + DEFAULT_MONETARY_CONTEXT
+								+ ") from provider: "
+								+ spi.getClass().getName(), e);
+			}
+		}
+		throw new MonetaryException(
+				"Unsupported MonetaryAmount<?> type requested: "
+						+ currency + " " + number
+						+ "(" + DEFAULT_MONETARY_CONTEXT
+						+ ")");
 	}
 
 	/**
@@ -211,7 +354,7 @@ public final class MonetaryAmounts {
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
-	 * @param currency
+	 * @param currencyCode
 	 *            currency unit, not {@code null}.
 	 * @param context
 	 *            the {@link MonetaryContext} required.
@@ -220,9 +363,30 @@ public final class MonetaryAmounts {
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
 	 */
-	public static MonetaryAmount getAmount(String currency, double number,
+	public static MonetaryAmount<?> getAmount(String currencyCode, double number,
 			MonetaryContext context) {
-		return null;
+		MonetaryAmount<?> amt = null;
+		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+			try {
+				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currencyCode), number, DEFAULT_MONETARY_CONTEXT);
+				if (amt != null) {
+					return amt;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
+						Level.SEVERE,
+						"Error loading MonetaryAmount<?> "
+								+ currencyCode + " " + number
+								+ "(" + DEFAULT_MONETARY_CONTEXT
+								+ ") from provider: "
+								+ spi.getClass().getName(), e);
+			}
+		}
+		throw new MonetaryException(
+				"Unsupported MonetaryAmount<?> type requested: "
+						+ currencyCode + " " + number
+						+ "(" + DEFAULT_MONETARY_CONTEXT
+						+ ")");
 	}
 
 	/**
@@ -231,7 +395,7 @@ public final class MonetaryAmounts {
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
-	 * @param currency
+	 * @param currencyCode
 	 *            currency unit, not {@code null}.
 	 * @param context
 	 *            the {@link MonetaryContext} required.
@@ -240,31 +404,28 @@ public final class MonetaryAmounts {
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
 	 */
-	public static MonetaryAmount getAmount(String currency, Number number,
-			MonetaryContext context) {
-		return null;
-	}
-
-	/**
-	 * Creates a new instance of {@link MonetaryAmounts}, using an explicit
-	 * {@link MonetaryContext}.
-	 * 
-	 * @param number
-	 *            numeric value, not {@code null}.
-	 * @param currency
-	 *            currency unit, not {@code null}.
-	 * @param monetaryContext
-	 *            the {@link MonetaryContext} to be used, if {@code null} the
-	 *            default {@link MonetaryContext} is used.
-	 * @return a {@code Money} instance based on the monetary context with the
-	 *         given numeric value, currency unit.
-	 * @throws ArithmeticException
-	 *             If the number exceeds the capabilities of the
-	 *             {@link MonetaryContext} used.
-	 */
-	public static MonetaryAmount getAmount(CurrencyUnit currency, long number,
+	public static MonetaryAmount<?> getAmount(String currencyCode, Number number,
 			MonetaryContext monetaryContext) {
-		return null;
+		MonetaryAmount<?> amt = null;
+		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+			try {
+				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currencyCode), number, DEFAULT_MONETARY_CONTEXT);
+				if (amt != null) {
+					return amt;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
+						Level.SEVERE,
+						"Error loading MonetaryAmount<?> "
+								+ currencyCode + " " + number
+								+ "(" + DEFAULT_MONETARY_CONTEXT
+								+ ") from provider: "
+								+ spi.getClass().getName(), e);
+			}
+		}
+		throw new MonetaryException(
+				"Unsupported MonetaryAmount requested: "
+						+ amt + "(" + monetaryContext + ")");
 	}
 
 	/**
@@ -284,33 +445,52 @@ public final class MonetaryAmounts {
 	 *             If the number exceeds the capabilities of the
 	 *             {@link MonetaryContext} used.
 	 */
-	public static MonetaryAmount getAmount(CurrencyUnit currency,
+	public static MonetaryAmount<?> getAmount(CurrencyUnit currency,
+			long number,
+			MonetaryContext monetaryContext) {
+		MonetaryAmount<?> amt = null;
+		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+			try {
+				amt = spi.getAmount(currency, number, monetaryContext);
+				if (amt != null) {
+					return amt;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
+						Level.SEVERE,
+						"Error loading MonetaryAmount<?> "
+								+ currency.getCurrencyCode() + " " + number
+								+ "(" + DEFAULT_MONETARY_CONTEXT
+								+ ") from provider: "
+								+ spi.getClass().getName(), e);
+			}
+		}
+		throw new MonetaryException(
+				"Unsupported MonetaryAmount requested: "
+						+ amt + "(" + monetaryContext + ")");
+	}
+
+	/**
+	 * Creates a new instance of {@link MonetaryAmounts}, using an explicit
+	 * {@link MonetaryContext}.
+	 * 
+	 * @param number
+	 *            numeric value, not {@code null}.
+	 * @param currency
+	 *            currency unit, not {@code null}.
+	 * @param monetaryContext
+	 *            the {@link MonetaryContext} to be used, if {@code null} the
+	 *            default {@link MonetaryContext} is used.
+	 * @return a {@code Money} instance based on the monetary context with the
+	 *         given numeric value, currency unit.
+	 * @throws ArithmeticException
+	 *             If the number exceeds the capabilities of the
+	 *             {@link MonetaryContext} used.
+	 */
+	public static MonetaryAmount<?> getAmount(CurrencyUnit currency,
 			double number,
 			MonetaryContext monetaryContext) {
-		return null;
-	}
-
-	/**
-	 * Creates a new instance of {@link MonetaryAmounts}, using an explicit
-	 * {@link MonetaryContext}.
-	 * 
-	 * @param number
-	 *            numeric value, not {@code null}.
-	 * @param currency
-	 *            currency unit, not {@code null}.
-	 * @param monetaryContext
-	 *            the {@link MonetaryContext} to be used, if {@code null} the
-	 *            default {@link MonetaryContext} is used.
-	 * @return a {@code Money} instance based on the monetary context with the
-	 *         given numeric value, currency unit.
-	 * @throws ArithmeticException
-	 *             If the number exceeds the capabilities of the
-	 *             {@link MonetaryContext} used.
-	 */
-	public static MonetaryAmount getAmount(CurrencyUnit currency,
-			Number number,
-			MonetaryContext monetaryContext) {
-		MonetaryAmount amt = null;
+		MonetaryAmount<?> amt = null;
 		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
 			try {
 				amt = spi.getAmount(currency, number, monetaryContext);
@@ -321,6 +501,47 @@ public final class MonetaryAmounts {
 				Logger.getLogger(MonetaryAmounts.class.getName()).log(
 						Level.SEVERE,
 						"Error loading MonetaryAmount "
+								+ amt + "(" + monetaryContext
+								+ ") from provider: "
+								+ spi.getClass().getName(), e);
+			}
+		}
+		throw new MonetaryException(
+				"Unsupported MonetaryAmount requested: "
+						+ amt + "(" + monetaryContext + ")");
+	}
+
+	/**
+	 * Creates a new instance of {@link MonetaryAmounts}, using an explicit
+	 * {@link MonetaryContext}.
+	 * 
+	 * @param number
+	 *            numeric value, not {@code null}.
+	 * @param currency
+	 *            currency unit, not {@code null}.
+	 * @param monetaryContext
+	 *            the {@link MonetaryContext} to be used, if {@code null} the
+	 *            default {@link MonetaryContext} is used.
+	 * @return a {@code Money} instance based on the monetary context with the
+	 *         given numeric value, currency unit.
+	 * @throws ArithmeticException
+	 *             If the number exceeds the capabilities of the
+	 *             {@link MonetaryContext} used.
+	 */
+	public static MonetaryAmount<?> getAmount(CurrencyUnit currency,
+			Number number,
+			MonetaryContext monetaryContext) {
+		MonetaryAmount<?> amt = null;
+		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+			try {
+				amt = spi.getAmount(currency, number, monetaryContext);
+				if (amt != null) {
+					return amt;
+				}
+			} catch (Exception e) {
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
+						Level.SEVERE,
+						"Error loading MonetaryAmount<?> "
 								+ currency.getCurrencyCode() + " " + number
 								+ "(" + monetaryContext
 								+ ") from provider: "
@@ -328,7 +549,7 @@ public final class MonetaryAmounts {
 			}
 		}
 		throw new MonetaryException(
-				"Unsupported MonetaryAmount type requested: "
+				"Unsupported MonetaryAmount<?> type requested: "
 						+ currency.getCurrencyCode() + " " + number
 						+ "(" + monetaryContext
 						+ ")");
@@ -340,7 +561,7 @@ public final class MonetaryAmounts {
 	 * 			the target {@link CurrencyUnit} of the {@link MonetaryAmount} being created, not {@code null}.
 	 * @return a new Money instance of zero, with a default {@link MonetaryContext}.
 	 */
-	public static MonetaryAmount getAmountZero(CurrencyUnit currency) {
+	public static MonetaryAmount<?> getAmountZero(CurrencyUnit currency) {
 		return getAmount(currency, BigDecimal.ZERO, DEFAULT_MONETARY_CONTEXT);
 	}
 
@@ -350,8 +571,9 @@ public final class MonetaryAmounts {
 	 * 			the currency code to determine the {@link CurrencyUnit} of the {@link MonetaryAmount} being created.
 	 * @return a new Money instance of zero, with a default {@link MonetaryContext}.
 	 */
-	public static MonetaryAmount getAmountZero(String currencyCode) {
-		return getAmount(MonetaryCurrencies.getCurrency(currencyCode), BigDecimal.ZERO,
+	public static MonetaryAmount<?> getAmountZero(String currencyCode) {
+		return getAmount(MonetaryCurrencies.getCurrency(currencyCode),
+				BigDecimal.ZERO,
 				DEFAULT_MONETARY_CONTEXT);
 	}
 
@@ -361,7 +583,7 @@ public final class MonetaryAmounts {
 	 * 			the target currency of the amount being created, not {@code null}.
 	 * @return a new Money instance of zero, with a default {@link MonetaryContext}.
 	 */
-	public static MonetaryAmount getAmountZero(CurrencyUnit currency,
+	public static MonetaryAmount<?> getAmountZero(CurrencyUnit currency,
 			MonetaryContext monetaryContext) {
 		return getAmount(currency, BigDecimal.ZERO, monetaryContext);
 	}
@@ -372,10 +594,21 @@ public final class MonetaryAmounts {
 	 * 			the target currency code to determine the {@link CurrencyUnit} of the {@link MonetaryAmount} being created.
 	 * @return a new {@link MonetaryAmount} instance of zero, with a default {@link MonetaryContext}.
 	 */
-	public static MonetaryAmount getAmountZero(String currencyCode,
+	public static MonetaryAmount<?> getAmountZero(String currencyCode,
 			MonetaryContext monetaryContext) {
-		return getAmount(MonetaryCurrencies.getCurrency(currencyCode), BigDecimal.ZERO,
+		return getAmount(MonetaryCurrencies.getCurrency(currencyCode),
+				BigDecimal.ZERO,
 				monetaryContext);
+	}
+
+	/**
+	 * Returns the default {@link MonetaryContext} used, when no
+	 * {@link MonetaryContext} is provided.
+	 * 
+	 * @return the default {@link MonetaryContext}, never {@code null}.
+	 */
+	public static MonetaryContext getDefaultMonetaryContext() {
+		return DEFAULT_MONETARY_CONTEXT;
 	}
 
 	/**
@@ -390,9 +623,8 @@ public final class MonetaryAmounts {
 	 *            default {@link MonetaryContext} is used.
 	 * @return an according Money instance.
 	 */
-	public static MonetaryAmount getAmountFrom(MonetaryAmount amt,
-			MonetaryContext context) {
-		MonetaryAmount monetaryContext = null;
+	public static MonetaryAmount<?> getAmountFrom(MonetaryAmount<?> amt,
+			MonetaryContext monetaryContext) {
 		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
 			try {
 				amt = spi.getAmountFrom(amt, monetaryContext);
@@ -409,33 +641,11 @@ public final class MonetaryAmounts {
 			}
 		}
 		throw new MonetaryException(
-				"Unsupported MonetaryAmount type requested: "
+				"Unsupported MonetaryAmount requested: "
 						+ amt + "(" + monetaryContext + ")");
 	}
 
 	// private methods
-
-	/**
-	 * Loader method, executed on startup once.
-	 * 
-	 * @return the {@link CurrencyProviderSpi} loaded.
-	 */
-	private static Collection<CurrencyProviderSpi> loadCurrencyProviderSpis() {
-		List<CurrencyProviderSpi> spis = new ArrayList<CurrencyProviderSpi>();
-		try {
-			for (CurrencyProviderSpi spi : ServiceLoader
-					.load(CurrencyProviderSpi.class)) {
-				spis.add(spi);
-			}
-		} catch (Exception e) {
-			Logger.getLogger(MonetaryAmounts.class.getName()).log(
-					Level.SEVERE,
-					"Error loading CurrencyProviderSpi instances.", e);
-			return null;
-		}
-		Collections.sort(spis, new PriorityComparator());
-		return spis;
-	}
 
 	/**
 	 * Loader method, executed on startup once.
@@ -461,8 +671,8 @@ public final class MonetaryAmounts {
 
 	/**
 	 * Evaluates the default {@link MonetaryContext} to be used for the
-	 * {@link MonetaryAmounts} singleton. The default {@link MonetaryContext} can be
-	 * configured by adding a file {@code /javamoney.properties} from the
+	 * {@link MonetaryAmounts} singleton. The default {@link MonetaryContext}
+	 * can be configured by adding a file {@code /javamoney.properties} from the
 	 * classpath with the following content:
 	 * 
 	 * <pre>
@@ -483,7 +693,8 @@ public final class MonetaryAmounts {
 		InputStream is = null;
 		try {
 			Properties props = new Properties();
-			URL url = MonetaryAmounts.class.getResource("/javamoney.properties");
+			URL url = MonetaryAmounts.class
+					.getResource("/javamoney.properties");
 			if (url != null) {
 				is = url
 						.openStream();
@@ -514,13 +725,15 @@ public final class MonetaryAmounts {
 					if (value != null) {
 						switch (value.toUpperCase(Locale.ENGLISH)) {
 						case "DECIMAL32":
-							Logger.getLogger(MonetaryAmounts.class.getName()).info(
-									"Using MathContext.DECIMAL32");
+							Logger.getLogger(MonetaryAmounts.class.getName())
+									.info(
+											"Using MathContext.DECIMAL32");
 							builder.setAttribute(MathContext.DECIMAL32);
 							break;
 						case "DECIMAL64":
-							Logger.getLogger(MonetaryAmounts.class.getName()).info(
-									"Using MathContext.DECIMAL64");
+							Logger.getLogger(MonetaryAmounts.class.getName())
+									.info(
+											"Using MathContext.DECIMAL64");
 							builder.setAttribute(MathContext.DECIMAL64);
 							break;
 						case "DECIMAL128":
@@ -530,8 +743,9 @@ public final class MonetaryAmounts {
 							builder.setAttribute(MathContext.DECIMAL128);
 							break;
 						case "UNLIMITED":
-							Logger.getLogger(MonetaryAmounts.class.getName()).info(
-									"Using MathContext.UNLIMITED");
+							Logger.getLogger(MonetaryAmounts.class.getName())
+									.info(
+											"Using MathContext.UNLIMITED");
 							builder.setAttribute(MathContext.UNLIMITED);
 							break;
 						}

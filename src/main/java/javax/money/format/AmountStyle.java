@@ -57,6 +57,15 @@ public final class AmountStyle {
 	}
 
 	/**
+	 * Access the style's {@link DecimalFormat}.
+	 * 
+	 * @return the style's {@link DecimalFormat}, never {@code null}.
+	 */
+	public DecimalFormat getDecimalFormat() {
+		return this.format;
+	}
+
+	/**
 	 * Get the rounding used.
 	 * 
 	 * @return the rounding used, or null.
@@ -90,8 +99,6 @@ public final class AmountStyle {
 		}
 		return this.groupChars.clone();
 	}
-
-
 
 	/**
 	 * Builder for creating a new {@link AmountStyle}
@@ -211,4 +218,5 @@ public final class AmountStyle {
 		}
 
 	}
+
 }

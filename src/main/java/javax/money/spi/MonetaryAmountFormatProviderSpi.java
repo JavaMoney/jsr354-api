@@ -13,6 +13,8 @@ package javax.money.spi;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
+import javax.money.format.AmountStyle;
+import javax.money.format.CurrencyStyle;
 import javax.money.format.MonetaryAmountFormat;
 import javax.money.format.MonetaryAmountFormat.Builder;
 
@@ -23,25 +25,15 @@ import javax.money.format.MonetaryAmountFormat.Builder;
  * @author Anatole Tresch
  */
 public interface MonetaryAmountFormatProviderSpi {
-	/**
-	 * Access a {@link MonetaryAmountFormat} for the given {@link Locale} and
-	 * {@link CurrencyUnit}.
-	 * 
-	 * @param locale
-	 *            the target {@link Locale}, not {@code null}.
-	 * @param currency
-	 *            the target {@link CurrencyUnit}, not {@code null}.
-	 * @return the target {@link MonetaryAmountFormat}, never {@code null}.
-	 */
-	public MonetaryAmountFormat getFormat(Locale locale, CurrencyUnit currency);
-
+	
 	/**
 	 * Access a {@link MonetaryAmountFormat.Builder} for the given
 	 * {@link Locale}.
 	 * 
 	 * @param locale
 	 *            the target {@link Locale}, not {@code null}.
-	 * @return the target {@link MonetaryAmountFormat.Builder}, never {@code null}.
+	 * @return the target {@link MonetaryAmountFormat.Builder}, never
+	 *         {@code null}.
 	 */
 	public Builder getFormatBuilder(Locale locale);
 

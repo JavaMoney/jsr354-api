@@ -65,24 +65,24 @@ public final class MonetaryFormats {
 		}
 	}
 
-	/**
-	 * Creates a rounding that can be added as {@link MonetaryAdjuster} to
-	 * chained calculations. The instance will lookup the concrete
-	 * {@link MonetaryAdjuster} instance from the {@link MonetaryRoundings}
-	 * based on the input {@link MonetaryAmount}'s {@link CurrencyUnit}.
-	 * 
-	 * @return the (shared) default rounding instance.
-	 */
-	public static MonetaryAmountFormat getAmountFormat(Locale locale,
-			CurrencyUnit currency) {
-		Objects.requireNonNull(locale, "Locale required.");
-		Objects.requireNonNull(currency, "CurrencyUnit required.");
-		if (providerSpi == null) {
-			throw new IllegalStateException(
-					"No MonetaryAmountFormatProviderSpi registered.");
-		}
-		return providerSpi.getFormat(locale, currency);
-	}
+//	/**
+//	 * Creates a rounding that can be added as {@link MonetaryAdjuster} to
+//	 * chained calculations. The instance will lookup the concrete
+//	 * {@link MonetaryAdjuster} instance from the {@link MonetaryRoundings}
+//	 * based on the input {@link MonetaryAmount}'s {@link CurrencyUnit}.
+//	 * 
+//	 * @return the (shared) default rounding instance.
+//	 */
+//	public static MonetaryAmountFormat getAmountFormat(Locale locale,
+//			CurrencyUnit currency) {
+//		Objects.requireNonNull(locale, "Locale required.");
+//		Objects.requireNonNull(currency, "CurrencyUnit required.");
+//		if (providerSpi == null) {
+//			throw new IllegalStateException(
+//					"No MonetaryAmountFormatProviderSpi registered.");
+//		}
+//		return providerSpi.getFormat(locale, currency);
+//	}
 
 	/**
 	 * Creates a rounding that can be added as {@link MonetaryAdjuster} to

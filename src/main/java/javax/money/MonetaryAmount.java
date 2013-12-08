@@ -12,7 +12,6 @@
  */
 package javax.money;
 
-import java.math.BigDecimal;
 
 /**
  * Interface defining a monetary amount. The effective internal representation
@@ -32,13 +31,13 @@ import java.math.BigDecimal;
  * recommendation does not affect internal rounding, as required by the internal
  * numeric representation of a monetary amount.
  * <li>Monetary amounts should allow numbers as argument for arithmetic
- * operations like division and multiplication additionally to a MonetaryAmount.
+ * operations like division and multiplication additionally to a M.
  * Adding or subtracting of amounts must only be possible by passing instances
- * of MonetaryAmount.</li>
+ * of M.</li>
  * <li>Arguments of type {@link Number} should be avoided, since it does not
  * allow to extract its numeric value in a feasible way.</li>
- * <li>If the numeric representation of a {@code MonetaryAmount} exceeds the
- * numeric capabilities of the concrete type {@code T from(MonetaryAmount)}, an
+ * <li>If the numeric representation of a {@code M} exceeds the
+ * numeric capabilities of the concrete type {@code T from(M)}, an
  * implementation should throw an {@code ArithemticOperationException}.</li>
  * <li>On the other hand, when the numeric value can not be mapped into the
  * numeric exchange format defined by this interface, by default also an
@@ -56,11 +55,11 @@ import java.math.BigDecimal;
  * of the same type as type on which {@code with} was called. The {@code with}
  * method also defines additional interoperability requirements.</li>
  * <li>To enable further interoperability a static method
- * {@code from(MonetaryAmount)} is recommended to be implemented, that allows
- * conversion of a {@code MonetaryAmount} to a concrete type {@code M}:<br/>
+ * {@code from(M)} is recommended to be implemented, that allows
+ * conversion of a {@code M} to a concrete type {@code M}:<br/>
  * 
  * <pre>
- * public static M from(MonetaryAmount amount);}
+ * public static M from(S amount);}
  * </pre>
  * 
  * </li>
@@ -96,9 +95,8 @@ import java.math.BigDecimal;
  * @author Anatole Tresch
  * @author Werner Keil
  * 
- * @param <T>
- *            The numeric representation type to be exposed by
- *            {@link #getNumber()}
+ * @param <M>
+ *            The concrete implementation of <code>MonetaryAmount</code>
  * @version 0.8
  */
 public interface MonetaryAmount {

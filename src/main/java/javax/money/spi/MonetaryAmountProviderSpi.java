@@ -18,7 +18,6 @@ package javax.money.spi;
 import java.util.ServiceLoader;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmounts;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryContext;
 

@@ -15,6 +15,7 @@ import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
+import javax.money.MonetaryContext;
 import javax.money.MonetaryOperator;
 
 /**
@@ -106,6 +107,15 @@ public interface RoundingProviderSpi {
 	 *         rounding, or {@code null}.
 	 */
 	MonetaryOperator getCustomRounding(String customRoundingId);
+
+	/**
+	 * Access a rounding that models the given {@link MonetaryContext}.
+	 * 
+	 * @param monetaryContext
+	 *            The target {@link MonetaryContext}
+	 * @return the corresponding rounding, or {@code null}
+	 */
+	MonetaryOperator getRounding(MonetaryContext monetaryContext);
 
 	/**
 	 * Access the ids of the custom roundigs defined by this provider.

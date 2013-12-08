@@ -20,12 +20,8 @@ package javax.money;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
-import java.util.Currency;
 import java.util.Locale;
-
-import javax.money.CurrencyUnit;
 
 import org.junit.Test;
 
@@ -34,11 +30,11 @@ import org.junit.Test;
  * 
  * @author Anatole Tresch
  */
-public class MonetaryTest {
+public class MonetaryCurrenciesTest {
 
 	@Test
 	public void testgetCurrencyString() {
-		CurrencyUnit cur = Monetary.getCurrency("test1");
+		CurrencyUnit cur = MonetaryCurrencies.getCurrency("test1");
 		assertNotNull(cur);
 		assertEquals(cur.getCurrencyCode(), "test1");
 		assertEquals(cur.getNumericCode(), 1);
@@ -48,12 +44,13 @@ public class MonetaryTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testgetCurrencyString_NA() {
-		Monetary.getCurrency("testGetInstanceCurrency_NA");
+		MonetaryCurrencies.getCurrency("testGetInstanceCurrency_NA");
 	}
 
 	@Test
 	public void testgetCurrencyLocale() {
-		CurrencyUnit cur = Monetary.getCurrency(new Locale("", "TEST1L"));
+		CurrencyUnit cur = MonetaryCurrencies.getCurrency(new Locale("",
+				"TEST1L"));
 		assertNotNull(cur);
 		assertEquals(cur.getCurrencyCode(), "TEST1L");
 		assertEquals(cur.getNumericCode(), 1);
@@ -63,12 +60,13 @@ public class MonetaryTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testgetCurrencyLocale_NA() {
-		Monetary.getCurrency(new Locale("", "sdsdsd"));
+		MonetaryCurrencies.getCurrency(new Locale("", "sdsdsd"));
 	}
 
 	@Test
 	public void testGetInstanceLocaleLong() {
-		CurrencyUnit cur = Monetary.getCurrency(new Locale("", "TEST1L"), 100L);
+		CurrencyUnit cur = MonetaryCurrencies.getCurrency(new Locale("",
+				"TEST1L"), 100L);
 		assertNotNull(cur);
 		assertEquals(cur.getCurrencyCode(), "TEST1L");
 		assertEquals(cur.getNumericCode(), 1);
@@ -78,7 +76,7 @@ public class MonetaryTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testgetCurrencyLocaleLong_NA() {
-		Monetary.getCurrency(new Locale("", "sdsdsd"), -200L);
+		MonetaryCurrencies.getCurrency(new Locale("", "sdsdsd"), -200L);
 	}
 
 }

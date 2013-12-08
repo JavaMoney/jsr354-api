@@ -62,19 +62,10 @@ import javax.money.spi.MonetaryAmountProviderSpi;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public final class Monetary {
-
-	/** Currently loaded {@link CurrencyProviderSpi} instances. */
-	private static Collection<CurrencyProviderSpi> currencyProviderSpis = loadCurrencyProviderSpis();
+public final class MonetaryAmounts {
 
 	/** Currently loaded {@link MonetaryAmountProviderSpi} instances. */
 	private static Collection<MonetaryAmountProviderSpi> amountProviderSpis = loadMonetaryAmountProviderSpis();
-
-	/**
-	 * Internal shared cache of {@link CustomCurrency} instances, registered
-	 * using {@link Builder} instances.
-	 */
-	private static final Map<String, CurrencyUnit> REGISTERED = new ConcurrentHashMap<String, CurrencyUnit>();
 
 	/**
 	 * The default {@link MonetaryContext} applied, if not set explicitly on
@@ -85,236 +76,9 @@ public final class Monetary {
 	/**
 	 * Required for deserialization only.
 	 */
-	private Monetary() {
+	private MonetaryAmounts() {
 	}
 
-	/**
-	 * Access a new instance based on the currency code. Currencies are
-	 * available as provided by {@link CurrencyProviderSpi} instances registered
-	 * with the {@link ServiceLoader}.
-	 * 
-	 * @param currencyCode
-	 *            the ISO currency code, not {@code null}.
-	 * @return the corresponding {@link CurrencyUnit} instance.
-	 * @throws IllegalArgumentException
-	 *             if no such currency exists.
-	 */
-	public static CurrencyUnit getCurrency(String currencyCode) {
-		CurrencyUnit cu = null;
-		for (CurrencyProviderSpi spi : currencyProviderSpis) {
-			try {
-				cu = spi.getCurrencyUnit(currencyCode);
-				if (cu != null) {
-					if (!currencyCode.equals(cu.getCurrencyCode())) {
-						throw new IllegalStateException(
-								"Provider("
-										+ spi.getClass().getName()
-										+ ") returned an invalid CurrencyUnit for '"
-										+ currencyCode + "': "
-										+ cu.getCurrencyCode());
-					}
-					return cu;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(Monetary.class.getName()).log(
-						Level.SEVERE,
-						"Error loading Currency '" + currencyCode
-								+ "' from provider: "
-								+ spi.getClass().getName(), e);
-			}
-		}
-		cu = REGISTERED.get(currencyCode);
-		if (cu == null) {
-			throw new IllegalArgumentException("No such currency: "
-					+ currencyCode);
-		}
-		return cu;
-	}
-
-	/**
-	 * Access a new instance based on the currency code. Currencies are
-	 * available as provided by {@link CurrencyProviderSpi} instances registered
-	 * with the {@link ServiceLoader}.
-	 * 
-	 * @param currencyCode
-	 *            the ISO currency code, not {@code null}.
-	 * @param timestamp
-	 *            the UTC timestamp of the time, when the {@link CurrencyUnit}
-	 *            should be valid.
-	 * @return the corresponding {@link CurrencyUnit} instance.
-	 * @throws IllegalArgumentException
-	 *             if no such currency exists.
-	 */
-	public static CurrencyUnit getCurrency(String currencyCode, long timestamp) {
-		CurrencyUnit cu = null;
-		for (CurrencyProviderSpi spi : currencyProviderSpis) {
-			try {
-				cu = spi.getCurrencyUnit(currencyCode, timestamp);
-				if (cu != null) {
-					if (!currencyCode.equals(cu.getCurrencyCode())) {
-						throw new IllegalStateException(
-								"Provider("
-										+ spi.getClass().getName()
-										+ ") returned an invalid CurrencyUnit for '"
-										+ currencyCode + "': "
-										+ cu.getCurrencyCode());
-					}
-					return cu;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(Monetary.class.getName()).log(
-						Level.SEVERE,
-						"Error loading Currency '" + currencyCode
-								+ "'/ts=" + timestamp + " from provider: "
-								+ spi.getClass().getName(), e);
-			}
-		}
-		throw new IllegalArgumentException("No such currency: "
-				+ currencyCode);
-	}
-
-	/**
-	 * Access a new instance based on the {@link Locale}. Currencies are
-	 * available as provided by {@link CurrencyProviderSpi} instances registered
-	 * with the {@link ServiceLoader}.
-	 * 
-	 * @param currencyCode
-	 *            the ISO currency code, not {@code null}.
-	 * @return the corresponding {@link CurrencyUnit} instance.
-	 * @throws IllegalArgumentException
-	 *             if no such currency exists.
-	 */
-	public static CurrencyUnit getCurrency(Locale locale) {
-		CurrencyUnit cu = null;
-		for (CurrencyProviderSpi spi : currencyProviderSpis) {
-			try {
-				cu = spi.getCurrencyUnit(locale);
-				if (cu != null) {
-					return cu;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(Monetary.class.getName()).log(
-						Level.SEVERE,
-						"Error loading Currency for Locale '" + locale
-								+ " from provider: "
-								+ spi.getClass().getName(), e);
-			}
-		}
-		throw new IllegalArgumentException("No such currency: "
-				+ locale);
-	}
-
-	/**
-	 * Access a new instance based on the {@link Locale}. Currencies are
-	 * available as provided by {@link CurrencyProviderSpi} instances registered
-	 * with the {@link ServiceLoader}.
-	 * 
-	 * @param currencyCode
-	 *            the ISO currency code, not {@code null}.
-	 * @param timestamp
-	 *            the UTC timestamp of the time, when the {@link CurrencyUnit}
-	 *            should be valid.
-	 * @return the corresponding {@link CurrencyUnit} instance.
-	 * @throws IllegalArgumentException
-	 *             if no such currency exists.
-	 */
-	public static CurrencyUnit getCurrency(Locale locale, long timestamp) {
-		CurrencyUnit cu = null;
-		for (CurrencyProviderSpi spi : currencyProviderSpis) {
-			try {
-				cu = spi.getCurrencyUnit(locale, timestamp);
-				if (cu != null) {
-					return cu;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(Monetary.class.getName()).log(
-						Level.SEVERE,
-						"Error loading Currency for Locale '" + locale
-								+ "'/ts=" + timestamp + " from provider: "
-								+ spi.getClass().getName(), e);
-			}
-		}
-		throw new IllegalArgumentException("No such currency: "
-				+ locale);
-	}
-
-	/**
-	 * Allows to check if a {@link Currencies} instance is defined, i.e.
-	 * accessible from {@link Currencies#of(String)}.
-	 * 
-	 * @param code
-	 *            the currency code, not {@code null}.
-	 * @return {@code true} if {@link Currencies#of(String)} would return a
-	 *         result for the given code.
-	 */
-	public static boolean isCurrencyAvailable(String code) {
-		try {
-			getCurrency(code);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Allows to check if a {@link Currencies} instance is defined, i.e.
-	 * accessible from {@link Currencies#of(String)}.
-	 * 
-	 * @param code
-	 *            the currency code, not {@code null}.
-	 * @param timestamp
-	 *            the UTC timestamp of the time, when the {@link CurrencyUnit}
-	 *            should be valid.
-	 * @return {@code true} if {@link Currencies#of(String)} would return a
-	 *         result for the given code.
-	 */
-	public static boolean isCurrencyAvailable(String code, long timestamp) {
-		try {
-			getCurrency(code, timestamp);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Allows to check if a {@link Currencies} instance is defined, i.e.
-	 * accessible from {@link Currencies#of(String)}.
-	 * 
-	 * @param code
-	 *            the currency code, not {@code null}.
-	 * @return {@code true} if {@link Currencies#of(String)} would return a
-	 *         result for the given code.
-	 */
-	public static boolean isCurrencyAvailable(Locale locale) {
-		try {
-			getCurrency(locale);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Allows to check if a {@link Currencies} instance is defined, i.e.
-	 * accessible from {@link Currencies#of(String)}.
-	 * 
-	 * @param code
-	 *            the currency code, not {@code null}.
-	 * @param timestamp
-	 *            the UTC timestamp of the time, when the {@link CurrencyUnit}
-	 *            should be valid.
-	 * @return {@code true} if {@link Currencies#of(String)} would return a
-	 *         result for the given code.
-	 */
-	public static boolean isCurrencyAvailable(Locale locale, long timestamp) {
-		try {
-			getCurrency(locale, timestamp);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
 
 	/**
 	 * Creates a new instance of {@link MonetaryAmount}, using the default
@@ -371,7 +135,7 @@ public final class Monetary {
 	}
 
 	/**
-	 * Creates a new instance of {@link Monetary}, using the default
+	 * Creates a new instance of {@link MonetaryAmounts}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -388,7 +152,7 @@ public final class Monetary {
 	}
 
 	/**
-	 * Creates a new instance of {@link Monetary}, using the default
+	 * Creates a new instance of {@link MonetaryAmounts}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -405,7 +169,7 @@ public final class Monetary {
 	}
 
 	/**
-	 * Creates a new instance of {@link Monetary}, using the default
+	 * Creates a new instance of {@link MonetaryAmounts}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -422,7 +186,7 @@ public final class Monetary {
 	}
 
 	/**
-	 * Creates a new instance of {@link Monetary}, using the default
+	 * Creates a new instance of {@link MonetaryAmounts}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -442,7 +206,7 @@ public final class Monetary {
 	}
 
 	/**
-	 * Creates a new instance of {@link Monetary}, using the default
+	 * Creates a new instance of {@link MonetaryAmounts}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -462,7 +226,7 @@ public final class Monetary {
 	}
 
 	/**
-	 * Creates a new instance of {@link Monetary}, using the default
+	 * Creates a new instance of {@link MonetaryAmounts}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -482,7 +246,7 @@ public final class Monetary {
 	}
 
 	/**
-	 * Creates a new instance of {@link Monetary}, using an explicit
+	 * Creates a new instance of {@link MonetaryAmounts}, using an explicit
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -504,7 +268,7 @@ public final class Monetary {
 	}
 
 	/**
-	 * Creates a new instance of {@link Monetary}, using an explicit
+	 * Creates a new instance of {@link MonetaryAmounts}, using an explicit
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -527,7 +291,7 @@ public final class Monetary {
 	}
 
 	/**
-	 * Creates a new instance of {@link Monetary}, using an explicit
+	 * Creates a new instance of {@link MonetaryAmounts}, using an explicit
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -554,7 +318,7 @@ public final class Monetary {
 					return amt;
 				}
 			} catch (Exception e) {
-				Logger.getLogger(Monetary.class.getName()).log(
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
 						Level.SEVERE,
 						"Error loading MonetaryAmount "
 								+ currency.getCurrencyCode() + " " + number
@@ -587,7 +351,7 @@ public final class Monetary {
 	 * @return a new Money instance of zero, with a default {@link MonetaryContext}.
 	 */
 	public static MonetaryAmount getAmountZero(String currencyCode) {
-		return getAmount(getCurrency(currencyCode), BigDecimal.ZERO,
+		return getAmount(MonetaryCurrencies.getCurrency(currencyCode), BigDecimal.ZERO,
 				DEFAULT_MONETARY_CONTEXT);
 	}
 
@@ -610,7 +374,7 @@ public final class Monetary {
 	 */
 	public static MonetaryAmount getAmountZero(String currencyCode,
 			MonetaryContext monetaryContext) {
-		return getAmount(getCurrency(currencyCode), BigDecimal.ZERO,
+		return getAmount(MonetaryCurrencies.getCurrency(currencyCode), BigDecimal.ZERO,
 				monetaryContext);
 	}
 
@@ -636,7 +400,7 @@ public final class Monetary {
 					return amt;
 				}
 			} catch (Exception e) {
-				Logger.getLogger(Monetary.class.getName()).log(
+				Logger.getLogger(MonetaryAmounts.class.getName()).log(
 						Level.SEVERE,
 						"Error loading MonetaryAmount "
 								+ amt + "(" + monetaryContext
@@ -664,7 +428,7 @@ public final class Monetary {
 				spis.add(spi);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(Monetary.class.getName()).log(
+			Logger.getLogger(MonetaryAmounts.class.getName()).log(
 					Level.SEVERE,
 					"Error loading CurrencyProviderSpi instances.", e);
 			return null;
@@ -686,7 +450,7 @@ public final class Monetary {
 				spis.add(spi);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(Monetary.class.getName()).log(
+			Logger.getLogger(MonetaryAmounts.class.getName()).log(
 					Level.SEVERE,
 					"Error loading CurrencyProviderSpi instances.", e);
 			return null;
@@ -697,7 +461,7 @@ public final class Monetary {
 
 	/**
 	 * Evaluates the default {@link MonetaryContext} to be used for the
-	 * {@link Monetary} singleton. The default {@link MonetaryContext} can be
+	 * {@link MonetaryAmounts} singleton. The default {@link MonetaryContext} can be
 	 * configured by adding a file {@code /javamoney.properties} from the
 	 * classpath with the following content:
 	 * 
@@ -719,7 +483,7 @@ public final class Monetary {
 		InputStream is = null;
 		try {
 			Properties props = new Properties();
-			URL url = Monetary.class.getResource("/javamoney.properties");
+			URL url = MonetaryAmounts.class.getResource("/javamoney.properties");
 			if (url != null) {
 				is = url
 						.openStream();
@@ -737,7 +501,7 @@ public final class Monetary {
 					MonetaryContext mc = new MonetaryContext.Builder(
 							BigDecimal.class).setPrecision(prec)
 							.setAttribute(rm).build();
-					Logger.getLogger(Monetary.class.getName()).info(
+					Logger.getLogger(MonetaryAmounts.class.getName()).info(
 							"Using custom MathContext: precision=" + prec
 									+ ", roundingMode=" + rm);
 					return mc;
@@ -750,23 +514,23 @@ public final class Monetary {
 					if (value != null) {
 						switch (value.toUpperCase(Locale.ENGLISH)) {
 						case "DECIMAL32":
-							Logger.getLogger(Monetary.class.getName()).info(
+							Logger.getLogger(MonetaryAmounts.class.getName()).info(
 									"Using MathContext.DECIMAL32");
 							builder.setAttribute(MathContext.DECIMAL32);
 							break;
 						case "DECIMAL64":
-							Logger.getLogger(Monetary.class.getName()).info(
+							Logger.getLogger(MonetaryAmounts.class.getName()).info(
 									"Using MathContext.DECIMAL64");
 							builder.setAttribute(MathContext.DECIMAL64);
 							break;
 						case "DECIMAL128":
-							Logger.getLogger(Monetary.class.getName())
+							Logger.getLogger(MonetaryAmounts.class.getName())
 									.info(
 											"Using MathContext.DECIMAL128");
 							builder.setAttribute(MathContext.DECIMAL128);
 							break;
 						case "UNLIMITED":
-							Logger.getLogger(Monetary.class.getName()).info(
+							Logger.getLogger(MonetaryAmounts.class.getName()).info(
 									"Using MathContext.UNLIMITED");
 							builder.setAttribute(MathContext.UNLIMITED);
 							break;
@@ -777,12 +541,12 @@ public final class Monetary {
 			}
 			MonetaryContext.Builder builder = new MonetaryContext.Builder(
 					BigDecimal.class);
-			Logger.getLogger(Monetary.class.getName()).info(
+			Logger.getLogger(MonetaryAmounts.class.getName()).info(
 					"Using default MathContext.DECIMAL64");
 			builder.setAttribute(MathContext.DECIMAL64);
 			return builder.build();
 		} catch (Exception e) {
-			Logger.getLogger(Monetary.class.getName())
+			Logger.getLogger(MonetaryAmounts.class.getName())
 					.log(Level.SEVERE,
 							"Error evaluating default NumericContext, using default (NumericContext.NUM64).",
 							e);
@@ -794,7 +558,7 @@ public final class Monetary {
 				try {
 					is.close();
 				} catch (IOException e) {
-					Logger.getLogger(Monetary.class.getName())
+					Logger.getLogger(MonetaryAmounts.class.getName())
 							.log(Level.WARNING,
 									"Error closing InputStream after evaluating default NumericContext.",
 									e);

@@ -14,15 +14,24 @@ public class TestAmountFormatProvider implements
 
 	@Override
 	public MonetaryAmountFormat getFormat(Locale locale,
+			MonetaryContext monetaryContext,
+			CurrencyUnit defaultCurrency) {
+		return new TestFormat(locale, null, monetaryContext,
+				defaultCurrency);
+	}
+
+	@Override
+	public MonetaryAmountFormat getFormat(
 			FormatStyle formatStyle, MonetaryContext monetaryContext,
 			CurrencyUnit defaultCurrency) {
-		return new TestFormat(locale, formatStyle, monetaryContext,
+		return new TestFormat(null, formatStyle, monetaryContext,
 				defaultCurrency);
 	}
 
 	public static final class TestFormat implements MonetaryAmountFormat {
 
-		private FormatStyle formatStyle = new FormatStyle.Builder(Locale.ENGLISH)
+		private FormatStyle formatStyle = new FormatStyle.Builder(
+				Locale.ENGLISH)
 				.build();
 		private MonetaryContext monetaryContext;
 		private CurrencyUnit defaultCurrency;

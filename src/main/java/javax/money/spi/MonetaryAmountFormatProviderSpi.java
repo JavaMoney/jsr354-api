@@ -28,6 +28,27 @@ public interface MonetaryAmountFormatProviderSpi {
 	/**
 	 * Create a new {@link MonetaryAmountFormat} for the given input.
 	 * 
+	 * @param locale
+	 *            The {@link Locale} to be used for determining the
+	 *            {@link FormatStyle} to be used.
+	 * @param monetaryContext
+	 *            The {@link MonetaryContext}, to be required for creation of
+	 *            new {@link MonetaryAmount} instances during parsing.
+	 * @param defaultCurrency
+	 *            The {@link CurrencyUnit} to be set, if a
+	 *            {@link MonetaryAmount} is parsed from an input, without
+	 *            currency information.
+	 * @return An according {@link MonetaryAmountFormat} instance, or
+	 *         {@code null}, which delegates the request to subsequent
+	 *         {@link MonetaryAmountFormatProviderSpi} instances registered.
+	 */
+	public MonetaryAmountFormat getFormat(Locale locale,
+			MonetaryContext monetaryContext,
+			CurrencyUnit defaultCurrency);
+
+	/**
+	 * Create a new {@link MonetaryAmountFormat} for the given input.
+	 * 
 	 * @param formatStyle
 	 *            The {@link FormatStyle} to be used.
 	 * @param monetaryContext
@@ -41,7 +62,7 @@ public interface MonetaryAmountFormatProviderSpi {
 	 *         {@code null}, which delegates the request to subsequent
 	 *         {@link MonetaryAmountFormatProviderSpi} instances registered.
 	 */
-	public MonetaryAmountFormat getFormat(Locale locale,
+	public MonetaryAmountFormat getFormat(
 			FormatStyle formatStyle,
 			MonetaryContext monetaryContext,
 			CurrencyUnit defaultCurrency);

@@ -27,7 +27,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.money.bootstrap.Bootstrap;
 import javax.money.spi.CurrencyProviderSpi;
+import javax.money.spi.RoundingProviderSpi;
 
 /**
  * Factory singleton for {@link CurrencyUnit} instances as provided by the
@@ -39,9 +41,6 @@ import javax.money.spi.CurrencyProviderSpi;
  * @author Anatole Tresch
  */
 public final class MonetaryCurrencies {
-
-	/** Currently loaded {@link CurrencyProviderSpi} instances. */
-	private static Collection<CurrencyProviderSpi> currencyProviderSpis = loadCurrencyProviderSpis();
 
 	/**
 	 * Internal shared cache of {@link CustomCurrency} instances, registered
@@ -69,7 +68,9 @@ public final class MonetaryCurrencies {
 	 */
 	public static CurrencyUnit getCurrency(String currencyCode) {
 		CurrencyUnit cu = null;
-		for (CurrencyProviderSpi spi : currencyProviderSpis) {
+		for (CurrencyProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						CurrencyProviderSpi.class)) {
 			try {
 				cu = spi.getCurrencyUnit(currencyCode);
 				if (cu != null) {
@@ -117,7 +118,9 @@ public final class MonetaryCurrencies {
 	 */
 	public static CurrencyUnit getCurrency(String currencyCode, long timestamp) {
 		CurrencyUnit cu = null;
-		for (CurrencyProviderSpi spi : currencyProviderSpis) {
+		for (CurrencyProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						CurrencyProviderSpi.class)) {
 			try {
 				cu = spi.getCurrencyUnit(currencyCode, timestamp);
 				if (cu != null) {
@@ -156,7 +159,9 @@ public final class MonetaryCurrencies {
 	 */
 	public static CurrencyUnit getCurrency(Locale locale) {
 		CurrencyUnit cu = null;
-		for (CurrencyProviderSpi spi : currencyProviderSpis) {
+		for (CurrencyProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						CurrencyProviderSpi.class)) {
 			try {
 				cu = spi.getCurrencyUnit(locale);
 				if (cu != null) {
@@ -190,7 +195,9 @@ public final class MonetaryCurrencies {
 	 */
 	public static CurrencyUnit getCurrency(Locale locale, long timestamp) {
 		CurrencyUnit cu = null;
-		for (CurrencyProviderSpi spi : currencyProviderSpis) {
+		for (CurrencyProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						CurrencyProviderSpi.class)) {
 			try {
 				cu = spi.getCurrencyUnit(locale, timestamp);
 				if (cu != null) {

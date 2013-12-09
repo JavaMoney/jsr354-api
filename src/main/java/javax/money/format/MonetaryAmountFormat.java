@@ -11,7 +11,6 @@
 package javax.money.format;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
@@ -20,15 +19,12 @@ import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmounts;
 import javax.money.MonetaryContext;
 import javax.money.MonetaryQuery;
-import javax.money.function.MonetaryRoundings;
 
 /**
  * Formats instances of {@code MonetaryAmount} to a {@link String} or an
  * {@link Appendable}.
  * <p>
- * Instances of this class are not thread-safe. Basically when using
- * {@link MonetaryAmountFormat} instances a new instance should be created on
- * each access.
+ * Instances of this class are not required to be thread-safe.
  */
 public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 

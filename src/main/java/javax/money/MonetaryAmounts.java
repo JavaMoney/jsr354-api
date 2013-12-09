@@ -32,6 +32,7 @@ import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.money.bootstrap.Bootstrap;
 import javax.money.spi.CurrencyProviderSpi;
 import javax.money.spi.MonetaryAmountProviderSpi;
 
@@ -62,9 +63,6 @@ import javax.money.spi.MonetaryAmountProviderSpi;
  */
 public final class MonetaryAmounts {
 
-	/** Currently loaded {@link MonetaryAmountProviderSpi} instances. */
-	private static Collection<MonetaryAmountProviderSpi> amountProviderSpis = loadMonetaryAmountProviderSpis();
-
 	/**
 	 * The default {@link MonetaryContext} applied, if not set explicitly on
 	 * creation.
@@ -93,7 +91,9 @@ public final class MonetaryAmounts {
 	 */
 	public static MonetaryAmount<?> getAmount(CurrencyUnit currency, long number) {
 		MonetaryAmount<?> amt = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
 				amt = spi.getAmount(currency, number, DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
@@ -130,7 +130,9 @@ public final class MonetaryAmounts {
 	public static MonetaryAmount<?> getAmount(CurrencyUnit currency,
 			double number) {
 		MonetaryAmount<?> amt = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
 				amt = spi.getAmount(currency, number, DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
@@ -170,7 +172,9 @@ public final class MonetaryAmounts {
 	public static MonetaryAmount<?> getAmount(CurrencyUnit currency,
 			Number number) {
 		MonetaryAmount<?> amt = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
 				amt = spi.getAmount(currency, number, DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
@@ -208,9 +212,13 @@ public final class MonetaryAmounts {
 	 */
 	public static MonetaryAmount<?> getAmount(String currencyCode, long number) {
 		MonetaryAmount<?> amt = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
-				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currencyCode), number, DEFAULT_MONETARY_CONTEXT);
+				amt = spi.getAmount(
+						MonetaryCurrencies.getCurrency(currencyCode), number,
+						DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
 					return amt;
 				}
@@ -246,10 +254,14 @@ public final class MonetaryAmounts {
 	 */
 	public static MonetaryAmount<?> getAmount(String currencyCode, double number) {
 		MonetaryAmount<?> amount = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
-				amount = spi.getAmount(MonetaryCurrencies.getCurrency(currencyCode), number, DEFAULT_MONETARY_CONTEXT)
-;				if (amount != null) {
+				amount = spi.getAmount(
+						MonetaryCurrencies.getCurrency(currencyCode), number,
+						DEFAULT_MONETARY_CONTEXT);
+				if (amount != null) {
 					return amount;
 				}
 			} catch (Exception e) {
@@ -284,9 +296,13 @@ public final class MonetaryAmounts {
 	 */
 	public static MonetaryAmount<?> getAmount(String currencyCode, Number number) {
 		MonetaryAmount<?> amt = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
-				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currencyCode), number, DEFAULT_MONETARY_CONTEXT);
+				amt = spi.getAmount(
+						MonetaryCurrencies.getCurrency(currencyCode), number,
+						DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
 					return amt;
 				}
@@ -325,9 +341,12 @@ public final class MonetaryAmounts {
 	public static MonetaryAmount<?> getAmount(String currency, long number,
 			MonetaryContext context) {
 		MonetaryAmount<?> amt = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
-				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currency), number, DEFAULT_MONETARY_CONTEXT);
+				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currency),
+						number, DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
 					return amt;
 				}
@@ -363,12 +382,17 @@ public final class MonetaryAmounts {
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
 	 */
-	public static MonetaryAmount<?> getAmount(String currencyCode, double number,
+	public static MonetaryAmount<?> getAmount(String currencyCode,
+			double number,
 			MonetaryContext context) {
 		MonetaryAmount<?> amt = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
-				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currencyCode), number, DEFAULT_MONETARY_CONTEXT);
+				amt = spi.getAmount(
+						MonetaryCurrencies.getCurrency(currencyCode), number,
+						DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
 					return amt;
 				}
@@ -404,12 +428,17 @@ public final class MonetaryAmounts {
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
 	 */
-	public static MonetaryAmount<?> getAmount(String currencyCode, Number number,
+	public static MonetaryAmount<?> getAmount(String currencyCode,
+			Number number,
 			MonetaryContext monetaryContext) {
 		MonetaryAmount<?> amt = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
-				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currencyCode), number, DEFAULT_MONETARY_CONTEXT);
+				amt = spi.getAmount(
+						MonetaryCurrencies.getCurrency(currencyCode), number,
+						DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
 					return amt;
 				}
@@ -449,7 +478,9 @@ public final class MonetaryAmounts {
 			long number,
 			MonetaryContext monetaryContext) {
 		MonetaryAmount<?> amt = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
 				amt = spi.getAmount(currency, number, monetaryContext);
 				if (amt != null) {
@@ -491,7 +522,9 @@ public final class MonetaryAmounts {
 			double number,
 			MonetaryContext monetaryContext) {
 		MonetaryAmount<?> amt = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
 				amt = spi.getAmount(currency, number, monetaryContext);
 				if (amt != null) {
@@ -532,7 +565,9 @@ public final class MonetaryAmounts {
 			Number number,
 			MonetaryContext monetaryContext) {
 		MonetaryAmount<?> amt = null;
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
 				amt = spi.getAmount(currency, number, monetaryContext);
 				if (amt != null) {
@@ -625,7 +660,9 @@ public final class MonetaryAmounts {
 	 */
 	public static MonetaryAmount<?> getAmountFrom(MonetaryAmount<?> amt,
 			MonetaryContext monetaryContext) {
-		for (MonetaryAmountProviderSpi spi : amountProviderSpis) {
+		for (MonetaryAmountProviderSpi spi : Bootstrap
+				.getServiceProvider().getServices(
+						MonetaryAmountProviderSpi.class)) {
 			try {
 				amt = spi.getAmountFrom(amt, monetaryContext);
 				if (amt != null) {

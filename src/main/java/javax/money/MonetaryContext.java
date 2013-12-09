@@ -216,8 +216,9 @@ public final class MonetaryContext implements Serializable {
 		return this.attributes.keySet();
 	}
 
-	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -234,7 +235,9 @@ public final class MonetaryContext implements Serializable {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -330,6 +333,13 @@ public final class MonetaryContext implements Serializable {
 		public Builder(Class<?> numberType) {
 			Objects.requireNonNull(numberType);
 			this.numberType = numberType;
+		}
+
+		/**
+		 * Creates a new {@link Builder}.
+		 */
+		public Builder() {
+			this.numberType = Number.class; // unspecified
 		}
 
 		/**

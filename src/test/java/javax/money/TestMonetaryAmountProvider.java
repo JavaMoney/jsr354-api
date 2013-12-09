@@ -2,7 +2,8 @@ package javax.money;
 
 import javax.money.spi.MonetaryAmountProviderSpi;
 
-public final class TestMonetaryAmountProvider implements MonetaryAmountProviderSpi{
+public final class TestMonetaryAmountProvider implements
+		MonetaryAmountProviderSpi {
 
 	@Override
 	public MonetaryAmount<?> getAmount(CurrencyUnit currency, long number,
@@ -28,7 +29,8 @@ public final class TestMonetaryAmountProvider implements MonetaryAmountProviderS
 		return new DummyAmount();
 	}
 
-	private static final class DummyAmount implements MonetaryAmount<DummyAmount>{
+	private static final class DummyAmount implements
+			MonetaryAmount<DummyAmount> {
 
 		@Override
 		public CurrencyUnit getCurrency() {
@@ -51,6 +53,11 @@ public final class TestMonetaryAmountProvider implements MonetaryAmountProviderS
 		@Override
 		public MonetaryContext getMonetaryContext() {
 			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Number getNumber() {
 			return null;
 		}
 
@@ -305,7 +312,7 @@ public final class TestMonetaryAmountProvider implements MonetaryAmountProviderS
 			// TODO Auto-generated method stub
 			return null;
 		}
-		
+
 	}
 
 }

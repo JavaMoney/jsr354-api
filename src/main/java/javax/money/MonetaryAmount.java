@@ -12,15 +12,16 @@
  */
 package javax.money;
 
+import java.math.BigDecimal;
 
 /**
  * Interface defining a monetary amount. The effective internal representation
  * of an amount may vary depending on the implementation used. JSR 354
- * explicitly supports different types of M to be implemented and
- * used. Reason behind is that the requirements to an implementation heavily
- * vary for different usage scenarios. E.g. product calculations may require
- * high precision and scale, whereas low latency order and trading systems
- * require high calculation performance for algorithmic operations.
+ * explicitly supports different types of M to be implemented and used. Reason
+ * behind is that the requirements to an implementation heavily vary for
+ * different usage scenarios. E.g. product calculations may require high
+ * precision and scale, whereas low latency order and trading systems require
+ * high calculation performance for algorithmic operations.
  * <p>
  * This JSR additionally recommends to consider the following aspects:
  * <ul>
@@ -31,14 +32,13 @@ package javax.money;
  * recommendation does not affect internal rounding, as required by the internal
  * numeric representation of a monetary amount.
  * <li>Monetary amounts should allow numbers as argument for arithmetic
- * operations like division and multiplication additionally to a M.
- * Adding or subtracting of amounts must only be possible by passing instances
- * of M.</li>
+ * operations like division and multiplication additionally to a M. Adding or
+ * subtracting of amounts must only be possible by passing instances of M.</li>
  * <li>Arguments of type {@link Number} should be avoided, since it does not
  * allow to extract its numeric value in a feasible way.</li>
- * <li>If the numeric representation of a {@code M} exceeds the
- * numeric capabilities of the concrete type {@code T from(M)}, an
- * implementation should throw an {@code ArithemticOperationException}.</li>
+ * <li>If the numeric representation of a {@code M} exceeds the numeric
+ * capabilities of the concrete type {@code T from(M)}, an implementation should
+ * throw an {@code ArithemticOperationException}.</li>
  * <li>On the other hand, when the numeric value can not be mapped into the
  * numeric exchange format defined by this interface, by default also an
  * {@code ArithmeticException} should be thrown. Never should truncation be
@@ -54,9 +54,9 @@ package javax.money;
  * <li>Finally the result of calling {@link #with(MonetaryOperator)} should be
  * of the same type as type on which {@code with} was called. The {@code with}
  * method also defines additional interoperability requirements.</li>
- * <li>To enable further interoperability a static method
- * {@code from(M)} is recommended to be implemented, that allows
- * conversion of a {@code M} to a concrete type {@code M}:<br/>
+ * <li>To enable further interoperability a static method {@code from(M)} is
+ * recommended to be implemented, that allows conversion of a {@code M} to a
+ * concrete type {@code M}:<br/>
  * 
  * <pre>
  * public static M from(S amount);}
@@ -111,8 +111,8 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public CurrencyUnit getCurrency();
 
 	/**
-	 * Returns the <i>precision</i> of this {@code M}. (The
-	 * precision is the number of digits in the unscaled value.)
+	 * Returns the <i>precision</i> of this {@code M}. (The precision is the
+	 * number of digits in the unscaled value.)
 	 * 
 	 * <p>
 	 * The precision of a zero value is 1.
@@ -122,11 +122,11 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public int getPrecision();
 
 	/**
-	 * Returns the <i>scale</i> of this {@code M}. If zero or
-	 * positive, the scale is the number of digits to the right of the decimal
-	 * point. If negative, the unscaled value of the number is multiplied by ten
-	 * to the power of the negation of the scale. For example, a scale of
-	 * {@code -3} means the unscaled value is multiplied by 1000.
+	 * Returns the <i>scale</i> of this {@code M}. If zero or positive, the
+	 * scale is the number of digits to the right of the decimal point. If
+	 * negative, the unscaled value of the number is multiplied by ten to the
+	 * power of the negation of the scale. For example, a scale of {@code -3}
+	 * means the unscaled value is multiplied by 1000.
 	 * 
 	 * @return the scale of this {@code M}.
 	 */
@@ -136,15 +136,25 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 * Returns the {@link MonetaryContext} of this {@code M}. The
 	 * {@link MonetaryContext} provides additional information about the numeric
 	 * representation and the numeric capabilities. This information can be used
-	 * by code to determine situations where {@code M} instances
-	 * must be converted to avoid implicit truncation, which can lead to invalid
+	 * by code to determine situations where {@code M} instances must be
+	 * converted to avoid implicit truncation, which can lead to invalid
 	 * results.
 	 * 
-	 * @return the {@link MonetaryContext} of this {@code M}, never
-	 *         {@code null}.
+	 * @return the {@link MonetaryContext} of this {@code M}, never {@code null}
+	 *         .
 	 */
 	public MonetaryContext getMonetaryContext();
 
+	/**
+	 * Simple accessor for the numeric part of an {@link MonetaryAmount}. The
+	 * representation type returned should be the best matching according to the
+	 * internal representation. In all cases never any truncation should occur,
+	 * so this method must be exact regarding the numeric value externalized.
+	 * 
+	 * @return the numeric value of this {@link MonetaryAmount}, never
+	 *         {@code null}.
+	 */
+	public Number getNumber();
 
 	/**
 	 * Access the numeric representation of this amount instance as
@@ -229,9 +239,9 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public M with(MonetaryOperator operator);
 
 	/**
-	 * Creates a new {@link M}, using the current amount as a
-	 * template, reusing the algorithmic implementation, the current
-	 * {@link MonetaryContext} and the numeric value.
+	 * Creates a new {@link M}, using the current amount as a template, reusing
+	 * the algorithmic implementation, the current {@link MonetaryContext} and
+	 * the numeric value.
 	 * <p>
 	 * This method is used for creating a new amount result after having done
 	 * calculations that are not directly mappable to the default monetary
@@ -239,15 +249,14 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 * 
 	 * @param unit
 	 *            the new {@link CurrencyUnit} of the amount to be created.
-	 * @return the new {@link M} with the given
-	 *         {@link CurrencyUnit}, but the same numeric value and
-	 *         {@link MonetaryContext}.
+	 * @return the new {@link M} with the given {@link CurrencyUnit}, but the
+	 *         same numeric value and {@link MonetaryContext}.
 	 */
 	public M with(CurrencyUnit unit);
 
 	/**
-	 * Creates a new {@link M}, using the given amount as a
-	 * template, e.g. reusing the algorithmic implementation and the current
+	 * Creates a new {@link M}, using the given amount as a template, e.g.
+	 * reusing the algorithmic implementation and the current
 	 * {@link MonetaryContext}.
 	 * <p>
 	 * This method is used for creating a new amount result after having done
@@ -258,14 +267,14 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 *            the {@link CurrencyUnit} of the amount to be created.
 	 * @param amount
 	 *            the numeric value of the amount to be created.
-	 * @return the new {@link M} with the given
-	 *         {@link CurrencyUnit} and numeric value.
+	 * @return the new {@link M} with the given {@link CurrencyUnit} and numeric
+	 *         value.
 	 */
 	public M with(CurrencyUnit unit, long amount);
 
 	/**
-	 * Creates a new {@link M}, using the given amount as a
-	 * template, e.g. reusing the algorithmic implementation and the current
+	 * Creates a new {@link M}, using the given amount as a template, e.g.
+	 * reusing the algorithmic implementation and the current
 	 * {@link MonetaryContext}.
 	 * <p>
 	 * This method is used for creating a new amount result after having done
@@ -276,14 +285,14 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 *            the {@link CurrencyUnit} of the amount to be created.
 	 * @param amount
 	 *            the numeric value of the amount to be created.
-	 * @return the new {@link M} with the given
-	 *         {@link CurrencyUnit} and numeric value.
+	 * @return the new {@link M} with the given {@link CurrencyUnit} and numeric
+	 *         value.
 	 */
 	public M with(CurrencyUnit unit, double amount);
 
 	/**
-	 * Creates a new {@link M}, using the given amount as a
-	 * template, e.g. reusing the algorithmic implementation and the current
+	 * Creates a new {@link M}, using the given amount as a template, e.g.
+	 * reusing the algorithmic implementation and the current
 	 * {@link MonetaryContext}.
 	 * <p>
 	 * This method is used for creating a new amount result after having done
@@ -294,8 +303,8 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 *            the {@link CurrencyUnit} of the amount to be created.
 	 * @param amount
 	 *            the numeric value of the amount to be created.
-	 * @return the new {@link M} with the given
-	 *         {@link CurrencyUnit} and numeric value.
+	 * @return the new {@link M} with the given {@link CurrencyUnit} and numeric
+	 *         value.
 	 */
 	public M with(CurrencyUnit unit, Number amount);
 
@@ -402,8 +411,8 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	/**
 	 * Returns the signum function of this {@code M}.
 	 * 
-	 * @return -1, 0, or 1 as the value of this {@code M} is
-	 *         negative, zero, or positive.
+	 * @return -1, 0, or 1 as the value of this {@code M} is negative, zero, or
+	 *         positive.
 	 */
 	public int signum();
 
@@ -591,9 +600,9 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public M remainder(Number amount);
 
 	/**
-	 * Returns a two-element {@code M} array containing the result
-	 * of {@code divideToIntegralValue} followed by the result of
-	 * {@code remainder} on the two operands.
+	 * Returns a two-element {@code M} array containing the result of
+	 * {@code divideToIntegralValue} followed by the result of {@code remainder}
+	 * on the two operands.
 	 * 
 	 * <p>
 	 * Note that if both the integer quotient and remainder are needed, this
@@ -602,11 +611,11 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 * carried out once.
 	 * 
 	 * @param divisor
-	 *            value by which this {@code M} is to be divided,
-	 *            and the remainder computed.
-	 * @return a two element {@code M} array: the quotient (the
-	 *         result of {@code divideToIntegralValue}) is the initial element
-	 *         and the remainder is the final element.
+	 *            value by which this {@code M} is to be divided, and the
+	 *            remainder computed.
+	 * @return a two element {@code M} array: the quotient (the result of
+	 *         {@code divideToIntegralValue}) is the initial element and the
+	 *         remainder is the final element.
 	 * @throws ArithmeticException
 	 *             if {@code divisor==0}, or if the result exceeds the numeric
 	 *             capabilities of this implementation class, i.e. the
@@ -617,9 +626,9 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public M[] divideAndRemainder(long amount);
 
 	/**
-	 * Returns a two-element {@code M} array containing the result
-	 * of {@code divideToIntegralValue} followed by the result of
-	 * {@code remainder} on the two operands.
+	 * Returns a two-element {@code M} array containing the result of
+	 * {@code divideToIntegralValue} followed by the result of {@code remainder}
+	 * on the two operands.
 	 * 
 	 * <p>
 	 * Note that if both the integer quotient and remainder are needed, this
@@ -628,11 +637,11 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 * carried out once.
 	 * 
 	 * @param divisor
-	 *            value by which this {@code M} is to be divided,
-	 *            and the remainder computed.
-	 * @return a two element {@code M} array: the quotient (the
-	 *         result of {@code divideToIntegralValue}) is the initial element
-	 *         and the remainder is the final element.
+	 *            value by which this {@code M} is to be divided, and the
+	 *            remainder computed.
+	 * @return a two element {@code M} array: the quotient (the result of
+	 *         {@code divideToIntegralValue}) is the initial element and the
+	 *         remainder is the final element.
 	 * @throws ArithmeticException
 	 *             if {@code divisor==0}, or if the result exceeds the numeric
 	 *             capabilities of this implementation class, i.e. the
@@ -643,9 +652,9 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public M[] divideAndRemainder(double amount);
 
 	/**
-	 * Returns a two-element {@code M} array containing the result
-	 * of {@code divideToIntegralValue} followed by the result of
-	 * {@code remainder} on the two operands.
+	 * Returns a two-element {@code M} array containing the result of
+	 * {@code divideToIntegralValue} followed by the result of {@code remainder}
+	 * on the two operands.
 	 * 
 	 * <p>
 	 * Note that if both the integer quotient and remainder are needed, this
@@ -654,11 +663,11 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 * carried out once.
 	 * 
 	 * @param divisor
-	 *            value by which this {@code M} is to be divided,
-	 *            and the remainder computed.
-	 * @return a two element {@code M} array: the quotient (the
-	 *         result of {@code divideToIntegralValue}) is the initial element
-	 *         and the remainder is the final element.
+	 *            value by which this {@code M} is to be divided, and the
+	 *            remainder computed.
+	 * @return a two element {@code M} array: the quotient (the result of
+	 *         {@code divideToIntegralValue}) is the initial element and the
+	 *         remainder is the final element.
 	 * @throws ArithmeticException
 	 *             if {@code divisor==0}, or if the result exceeds the numeric
 	 *             capabilities of this implementation class, i.e. the
@@ -675,9 +684,8 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public M divideToIntegralValue(Number divisor);
 
 	/**
-	 * Returns a {@link M} whose numerical value is equal to (
-	 * {@code this} * 10<sup>n</sup>). The scale of the result is
-	 * {@code (this.scale() - n)}.
+	 * Returns a {@link M} whose numerical value is equal to ( {@code this} *
+	 * 10<sup>n</sup>). The scale of the result is {@code (this.scale() - n)}.
 	 * 
 	 * @throws ArithmeticException
 	 *             if the scale would be outside the range of a 32-bit integer,
@@ -688,24 +696,24 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public M scaleByPowerOfTen(int power);
 
 	/**
-	 * Returns a {@code M} whose value is the absolute value of
-	 * this {@code M}, and whose scale is {@code this.scale()}.
+	 * Returns a {@code M} whose value is the absolute value of this {@code M},
+	 * and whose scale is {@code this.scale()}.
 	 * 
 	 * @return {@code abs(this)}
 	 */
 	public M abs();
 
 	/**
-	 * Returns a {@code M} whose value is {@code (-this)}, and
-	 * whose scale is {@code this.scale()}.
+	 * Returns a {@code M} whose value is {@code (-this)}, and whose scale is
+	 * {@code this.scale()}.
 	 * 
 	 * @return {@code -this}.
 	 */
 	public M negate();
 
 	/**
-	 * Returns a {@code M} whose value is {@code (+this)}, with
-	 * rounding according to the context settings.
+	 * Returns a {@code M} whose value is {@code (+this)}, with rounding
+	 * according to the context settings.
 	 * 
 	 * @see BigDecimal#plus()
 	 * 
@@ -717,9 +725,8 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public M plus();
 
 	/**
-	 * Returns a {@code M} whose value is
-	 * <tt>(this<sup>n</sup>)</tt>, The power is computed exactly, to unlimited
-	 * precision.
+	 * Returns a {@code M} whose value is <tt>(this<sup>n</sup>)</tt>, The power
+	 * is computed exactly, to unlimited precision.
 	 * 
 	 * <p>
 	 * The parameter {@code n} must be in the range 0 through 999999999,
@@ -736,15 +743,14 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public M pow(int power);
 
 	/**
-	 * Returns a {@code M} which is numerically equal to this one
-	 * but with any trailing zeros removed from the representation. For example,
-	 * stripping the trailing zeros from the {@code M} value
-	 * {@code CHF 600.0}, which has [{@code BigInteger}, {@code scale}]
-	 * components equals to [6000, 1], yields {@code 6E2} with [
-	 * {@code BigInteger}, {@code scale}] components equals to [6, -2]
+	 * Returns a {@code M} which is numerically equal to this one but with any
+	 * trailing zeros removed from the representation. For example, stripping
+	 * the trailing zeros from the {@code M} value {@code CHF 600.0}, which has
+	 * [{@code BigInteger}, {@code scale}] components equals to [6000, 1],
+	 * yields {@code 6E2} with [ {@code BigInteger}, {@code scale}] components
+	 * equals to [6, -2]
 	 * 
-	 * @return a numerically equal {@code M} with any trailing zeros
-	 *         removed.
+	 * @return a numerically equal {@code M} with any trailing zeros removed.
 	 */
 	public M stripTrailingZeros();
 

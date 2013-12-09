@@ -38,11 +38,13 @@ public final class FormatStyle {
 	/** The customized group characters. */
 	private char[] groupChars;
 	/** The {@link CurrencyStyle} to be used, not {@code null}. */
-	public CurrencyStyle currencyStyle;
+	private CurrencyStyle currencyStyle;
 	/** The {@link CurrencyPlacement} to be used, not {@code null}. */
-	public CurrencyPlacement currencyPlacement;
+	private CurrencyPlacement currencyPlacement;
 	/** The {@link CurrencyPlacement} to be used, not {@code null}. */
-	public String currencySeparator;
+	private String currencySeparator;
+	/** The target {@link Locale} this style is representing. */
+	private Locale locale;
 
 	/**
 	 * Constructor.
@@ -58,7 +60,7 @@ public final class FormatStyle {
 	 * @param currencyPlacement2
 	 * @param currencyStyle2
 	 */
-	private FormatStyle(DecimalFormat format, int[] groupSizes,
+	private FormatStyle(Locale locale, DecimalFormat format, int[] groupSizes,
 			char[] groupChars, MonetaryOperator rounding,
 			CurrencyStyle currencyStyle, CurrencyPlacement currencyPlacement,
 			String currencySeparator) {
@@ -69,6 +71,16 @@ public final class FormatStyle {
 		this.currencyPlacement = currencyPlacement;
 		this.currencyStyle = currencyStyle;
 		this.currencySeparator = currencySeparator;
+		this.locale = locale;
+	}
+
+	/**
+	 * Access the style's {@link Locale}.
+	 * 
+	 * @return the {@link Locale}, never {@code null}.
+	 */
+	public Locale getLocale() {
+		return locale;
 	}
 
 	/**
@@ -134,6 +146,8 @@ public final class FormatStyle {
 						.hashCode());
 		result = prime * result
 				+ ((currencyStyle == null) ? 0 : currencyStyle.hashCode());
+		result = prime * result
+				+ ((locale == null) ? 0 : locale.hashCode());
 		result = prime * result + ((format == null) ? 0 : format.hashCode());
 		result = prime * result + Arrays.hashCode(groupChars);
 		result = prime * result + Arrays.hashCode(groupSizes);
@@ -170,6 +184,11 @@ public final class FormatStyle {
 				return false;
 		} else if (!format.equals(other.format))
 			return false;
+		if (locale == null) {
+			if (other.locale != null)
+				return false;
+		} else if (!locale.equals(other.locale))
+			return false;
 		if (!Arrays.equals(groupChars, other.groupChars))
 			return false;
 		if (!Arrays.equals(groupSizes, other.groupSizes))
@@ -189,7 +208,8 @@ public final class FormatStyle {
 	 */
 	@Override
 	public String toString() {
-		return "FormatStyle [format=" + format + ", currencyStyle="
+		return "FormatStyle [locale=" + locale + ", format=" + format
+				+ ", currencyStyle="
 				+ currencyStyle + ", currencyPlacement=" + currencyPlacement
 				+ ", currencySeparator=" + currencySeparator + ", rounding="
 				+ rounding + ", groupSizes=" + Arrays.toString(groupSizes)
@@ -202,6 +222,8 @@ public final class FormatStyle {
 	 * @author Anatole Tresch
 	 */
 	public static final class Builder {
+		/** The target {@link Locale} to be used. */
+		private Locale locale;
 		/** The underlying {@link DecimalFormat}. */
 		private DecimalFormat format;
 		/** The rounding operator, if any. */
@@ -224,10 +246,22 @@ public final class FormatStyle {
 		 *            the target {@link Locale}, not {@code null}.
 		 */
 		public Builder(Locale locale) {
-			if (locale == null) {
-				throw new IllegalArgumentException("Locale required.");
-			}
+			Objects.requireNonNull(locale, "Locale required.");
 			this.format = (DecimalFormat) DecimalFormat.getInstance(locale);
+			this.locale = locale;
+		}
+
+		/**
+		 * Allows to adapt the {@link Locale}.
+		 * 
+		 * @param locale
+		 *            the locale, not null.
+		 * @return the {@link Builder} for chaining.
+		 */
+		public Builder setLocale(Locale locale) {
+			Objects.requireNonNull(locale, "Locale required.");
+			this.locale = locale;
+			return this;
 		}
 
 		/**
@@ -254,6 +288,7 @@ public final class FormatStyle {
 		 * @return the {@link Builder} for chaining.
 		 */
 		public Builder setNumberGroupSizes(int... groupSizes) {
+			Objects.requireNonNull(groupSizes, "groupSizes required.");
 			this.groupSizes = groupSizes;
 			return this;
 		}
@@ -270,6 +305,7 @@ public final class FormatStyle {
 		 * @return the {@link Builder} for chaining.
 		 */
 		public Builder setNumberGroupChars(char... groupChars) {
+			Objects.requireNonNull(groupChars, "groupChars required.");
 			this.groupChars = groupChars;
 			return this;
 		}
@@ -285,9 +321,7 @@ public final class FormatStyle {
 		 * @return the {@link Builder} for chaining.
 		 */
 		public Builder setDecimalFormat(Locale locale) {
-			if (locale == null) {
-				throw new IllegalArgumentException("locale required.");
-			}
+			Objects.requireNonNull(locale, "Locale required.");
 			this.format = (DecimalFormat) DecimalFormat.getInstance(locale);
 			return this;
 		}
@@ -349,10 +383,10 @@ public final class FormatStyle {
 		 *             if no {@link DecimalFormat} could be applied.
 		 */
 		public FormatStyle build() {
-			if (format == null) {
-				throw new IllegalStateException("DecimalFormat required.");
-			}
-			return new FormatStyle(format, groupSizes, groupChars, rounding,
+			Objects.requireNonNull(format, "DecimalFormat required.");
+			Objects.requireNonNull(locale, "Locale required.");
+			return new FormatStyle(locale, format, groupSizes, groupChars,
+					rounding,
 					currencyStyle, currencyPlacement, currencySeparator);
 		}
 
@@ -363,7 +397,8 @@ public final class FormatStyle {
 		 */
 		@Override
 		public String toString() {
-			return "FormatStyle.Builder [format=" + format.toPattern()
+			return "FormatStyle.Builder [locale=" + locale + ", format="
+					+ format.toPattern()
 					+ ", currencyStyle=" + currencyStyle
 					+ ", currencyPlacement="
 					+ currencyPlacement + ", currencySeparator="

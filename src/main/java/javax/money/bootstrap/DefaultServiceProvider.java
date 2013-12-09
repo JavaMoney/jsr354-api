@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class implements the {@link ServiceProvider} interface and hereby uses
@@ -56,23 +58,24 @@ public class DefaultServiceProvider implements ServiceProvider {
 	}
 
 	public <T> List<T> loadServices(Class<T> serviceType, List<T> defaultList) {
+		List<T> found = null;
 		synchronized (servicesLoaded) {
-			List<T> found = (List<T>) servicesLoaded.get(serviceType);
+			found = (List<T>) servicesLoaded.get(serviceType);
 			if (found != null) {
 				return found;
 			}
 			found = new ArrayList<>();
-			try {
-				for (T t : ServiceLoader.load(serviceType)) {
-					found.add(t);
-				}
-				servicesLoaded.put(serviceType,
-						(List<Object>) Collections.unmodifiableList(found));
-			} catch (Exception e) {
-
-			}
-			return found;
+			servicesLoaded.put(serviceType, (List<Object>) found);
 		}
+		try {
+			for (T t : ServiceLoader.load(serviceType)) {
+				found.add(t);
+			}
+		} catch (Exception e) {
+			Logger.getLogger(DefaultServiceProvider.class.getName()).log(
+					Level.WARNING,
+					"Error loading services of type " + serviceType, e);
+		}
+		return found;
 	}
-
 }

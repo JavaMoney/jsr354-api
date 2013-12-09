@@ -11,11 +11,11 @@ import javax.money.MonetaryOperator;
 import javax.money.spi.CurrencyProviderSpi;
 import javax.money.spi.RoundingProviderSpi;
 
-public final class TestRoundingProvider implements RoundingProviderSpi{
+public final class TestRoundingProvider implements RoundingProviderSpi {
 
 	@Override
 	public MonetaryOperator getRounding(CurrencyUnit currency) {
-		return new MonetaryOperator(){
+		return new MonetaryOperator() {
 			@Override
 			public <T extends MonetaryAmount<T>> T apply(T value) {
 				return value;
@@ -25,7 +25,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi{
 
 	@Override
 	public MonetaryOperator getRounding(CurrencyUnit currency, long timestamp) {
-		return new MonetaryOperator(){
+		return new MonetaryOperator() {
 			@Override
 			public <T extends MonetaryAmount<T>> T apply(T value) {
 				return value;
@@ -35,7 +35,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi{
 
 	@Override
 	public MonetaryOperator getCashRounding(CurrencyUnit currency) {
-		return new MonetaryOperator(){
+		return new MonetaryOperator() {
 			@Override
 			public <T extends MonetaryAmount<T>> T apply(T value) {
 				return value;
@@ -46,7 +46,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi{
 	@Override
 	public MonetaryOperator getCashRounding(CurrencyUnit currency,
 			long timestamp) {
-		return new MonetaryOperator(){
+		return new MonetaryOperator() {
 			@Override
 			public <T extends MonetaryAmount<T>> T apply(T value) {
 				return value;
@@ -56,17 +56,20 @@ public final class TestRoundingProvider implements RoundingProviderSpi{
 
 	@Override
 	public MonetaryOperator getCustomRounding(String customRoundingId) {
-		return new MonetaryOperator(){
-			@Override
-			public <T extends MonetaryAmount<T>> T apply(T value) {
-				return value;
-			}
-		};
+		if (!"foo".equals(customRoundingId)) {
+			return new MonetaryOperator() {
+				@Override
+				public <T extends MonetaryAmount<T>> T apply(T value) {
+					return value;
+				}
+			};
+		}
+		return null;
 	}
 
 	@Override
 	public MonetaryOperator getRounding(MonetaryContext monetaryContext) {
-		return new MonetaryOperator(){
+		return new MonetaryOperator() {
 			@Override
 			public <T extends MonetaryAmount<T>> T apply(T value) {
 				return value;
@@ -78,6 +81,5 @@ public final class TestRoundingProvider implements RoundingProviderSpi{
 	public Set<String> getCustomRoundingIds() {
 		return Collections.emptySet();
 	}
-
 
 }

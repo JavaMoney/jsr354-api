@@ -10,6 +10,8 @@
  */
 package javax.money.bootstrap;
 
+import java.util.Collection;
+
 /**
  * This singleton provides access to the services available in the current
  * context. The behaviour can be adapted, by calling
@@ -43,7 +45,7 @@ public final class Bootstrap {
 		}
 	}
 
-	public static ServiceProvider getServiceProvider() {
+	static ServiceProvider getServiceProvider() {
 		if (services == null) {
 			synchronized (LOCK) {
 				if (services == null) {
@@ -52,6 +54,22 @@ public final class Bootstrap {
 			}
 		}
 		return services;
+	}
+
+	public static <T> Collection<T> getServices(Class<T> serviceType) {
+		return getServiceProvider().getServices(serviceType);
+	}
+	
+	public static <T> Collection<T> getServices(Class<T> serviceType, Collection<T> defaultServices) {
+		return getServiceProvider().getServices(serviceType, defaultServices);
+	}
+	
+	public static <T> T getService(Class<T> serviceType) {
+		return getServiceProvider().getService(serviceType);
+	}
+	
+	public static <T> T getService(Class<T> serviceType, T defaultService) {
+		return getServiceProvider().getService(serviceType, defaultService);
 	}
 
 }

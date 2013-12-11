@@ -27,7 +27,7 @@ package javax.money;
  * <pre>
  *   // these two lines are equivalent, but the second approach is recommended
  *   monetary = thisQuery.queryFrom(monetary);
- *   // recommened approach
+ *   // Recommended approach
  *   monetary = monetary.query(thisQuery);
  * </pre>
  * It is recommended to use the second approach, {@code query(MonetaryQuery)},
@@ -35,6 +35,10 @@ package javax.money;
  * <h4>Implementation specification</h4>
  * This interface places no restrictions on the mutability of implementations,
  * however immutability is strongly recommended.
+ * 
+ * @author Anatole Tresch
+ * @author Stephen Colebourne
+ * @author Werner Keil
  */
 // @FunctionalInterface for Java 9
 public interface MonetaryQuery<R> {

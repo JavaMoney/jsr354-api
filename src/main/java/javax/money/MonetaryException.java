@@ -10,6 +10,9 @@ package javax.money;
 
 /**
  * Exception thrown when an error occurs during monetary operations.
+ * 
+ * @author Werner Keil
+ * @author Anatole Tresch
  */
 public class MonetaryException extends RuntimeException {
 

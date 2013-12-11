@@ -27,7 +27,7 @@
  * {@link java.math.RoundingMode}.</li>
  * <li>This API must avoid restrictions that prevents its use in different
  * runtime environments, such as EE or ME.</li>
- * <li>Method naming and style for currency modelling should be in alignment
+ * <li>Method naming and style for currency modeling should be in alignment
  * with parts of the Java Collection API or {@code java.time} / [JodaMoney].</li>
  * </ul>
  */

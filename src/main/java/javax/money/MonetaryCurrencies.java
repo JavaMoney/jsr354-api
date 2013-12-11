@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 
 import javax.money.bootstrap.Bootstrap;
 import javax.money.spi.CurrencyProviderSpi;
-import javax.money.spi.RoundingProviderSpi;
 
 /**
  * Factory singleton for {@link CurrencyUnit} instances as provided by the

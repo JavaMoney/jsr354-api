@@ -69,7 +69,7 @@ public final class MonetaryCurrencies {
 	public static CurrencyUnit getCurrency(String currencyCode) {
 		CurrencyUnit cu = null;
 		for (CurrencyProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						CurrencyProviderSpi.class)) {
 			try {
 				cu = spi.getCurrencyUnit(currencyCode);
@@ -119,7 +119,7 @@ public final class MonetaryCurrencies {
 	public static CurrencyUnit getCurrency(String currencyCode, long timestamp) {
 		CurrencyUnit cu = null;
 		for (CurrencyProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						CurrencyProviderSpi.class)) {
 			try {
 				cu = spi.getCurrencyUnit(currencyCode, timestamp);
@@ -160,7 +160,7 @@ public final class MonetaryCurrencies {
 	public static CurrencyUnit getCurrency(Locale locale) {
 		CurrencyUnit cu = null;
 		for (CurrencyProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						CurrencyProviderSpi.class)) {
 			try {
 				cu = spi.getCurrencyUnit(locale);
@@ -196,7 +196,7 @@ public final class MonetaryCurrencies {
 	public static CurrencyUnit getCurrency(Locale locale, long timestamp) {
 		CurrencyUnit cu = null;
 		for (CurrencyProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						CurrencyProviderSpi.class)) {
 			try {
 				cu = spi.getCurrencyUnit(locale, timestamp);

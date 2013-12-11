@@ -40,7 +40,7 @@ public final class MonetaryFormats {
 	public static MonetaryAmountFormat getAmountFormat(Locale locale) {
 		Objects.requireNonNull(locale, "Locale required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						MonetaryAmountFormatProviderSpi.class)) {
 			MonetaryAmountFormat f = spi.getFormat(locale, null, null);
 			if (f != null) {
@@ -55,7 +55,7 @@ public final class MonetaryFormats {
 			CurrencyUnit defaultCurrency) {
 		Objects.requireNonNull(locale, "Locale required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						MonetaryAmountFormatProviderSpi.class)) {
 			MonetaryAmountFormat f = spi.getFormat(locale, null, defaultCurrency);
 			if (f != null) {
@@ -70,7 +70,7 @@ public final class MonetaryFormats {
 			MonetaryContext monetaryContext) {
 		Objects.requireNonNull(locale, "Locale required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						MonetaryAmountFormatProviderSpi.class)) {
 			MonetaryAmountFormat f = spi.getFormat(locale, monetaryContext, null);
 			if (f != null) {
@@ -86,7 +86,7 @@ public final class MonetaryFormats {
 			CurrencyUnit defaultCurrency) {
 		Objects.requireNonNull(locale, "Locale required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						MonetaryAmountFormatProviderSpi.class)) {
 			MonetaryAmountFormat f = spi.getFormat(locale, monetaryContext, defaultCurrency);
 			if (f != null) {
@@ -100,7 +100,7 @@ public final class MonetaryFormats {
 	public static MonetaryAmountFormat getAmountFormat(FormatStyle style) {
 		Objects.requireNonNull(style, "FormatStyle required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						MonetaryAmountFormatProviderSpi.class)) {
 			MonetaryAmountFormat f = spi.getFormat(style, null, null);
 			if (f != null) {
@@ -116,7 +116,7 @@ public final class MonetaryFormats {
 			CurrencyUnit defaultCurrency) {
 		Objects.requireNonNull(style, "FormatStyle required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						MonetaryAmountFormatProviderSpi.class)) {
 			MonetaryAmountFormat f = spi.getFormat(style, null, defaultCurrency);
 			if (f != null) {
@@ -132,7 +132,7 @@ public final class MonetaryFormats {
 			MonetaryContext monetaryContext) {
 		Objects.requireNonNull(style, "FormatStyle required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						MonetaryAmountFormatProviderSpi.class)) {
 			MonetaryAmountFormat f = spi.getFormat(style, monetaryContext, null);
 			if (f != null) {
@@ -149,7 +149,7 @@ public final class MonetaryFormats {
 			CurrencyUnit defaultCurrency) {
 		Objects.requireNonNull(style, "FormatStyle required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						MonetaryAmountFormatProviderSpi.class)) {
 			MonetaryAmountFormat f = spi.getFormat(style, monetaryContext, defaultCurrency);
 			if (f != null) {

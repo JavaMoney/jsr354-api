@@ -10,7 +10,7 @@
  */
 package javax.money.bootstrap;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * This class models the component that is managing the lifecycle of the
@@ -24,8 +24,9 @@ public interface ServiceProvider {
 
 	public <T> T getService(Class<T> serviceType, T defaultInstance);
 
-	public <T> List<T> getServices(Class<T> serviceType);
+	public <T> Collection<T> getServices(Class<T> serviceType);
 
-	public <T> List<T> getServices(Class<T> serviceType, List<T> defaultList);
+	public <T> Collection<T> getServices(Class<T> serviceType,
+			Collection<T> defaultList);
 
 }

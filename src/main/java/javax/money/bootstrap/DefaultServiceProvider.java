@@ -11,6 +11,7 @@
 package javax.money.bootstrap;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -36,20 +37,21 @@ public class DefaultServiceProvider implements ServiceProvider {
 
 	@Override
 	public <T> T getService(Class<T> serviceType, T defaultInstance) {
-		List<T> services = getServices(serviceType);
+		Collection<T> services = getServices(serviceType);
 		if (services.isEmpty()) {
 			return defaultInstance;
 		}
-		return services.get(0);
+		return services.iterator().next();
 	}
 
 	@Override
-	public <T> List<T> getServices(Class<T> serviceType) {
-		return getServices(serviceType, (List<T>) Collections.emptyList());
+	public <T> Collection<T> getServices(Class<T> serviceType) {
+		return getServices(serviceType, (Collection<T>) Collections.emptyList());
 	}
 
 	@Override
-	public <T> List<T> getServices(Class<T> serviceType, List<T> defaultList) {
+	public <T> Collection<T> getServices(Class<T> serviceType,
+			Collection<T> defaultList) {
 		List<T> found = (List<T>) servicesLoaded.get(serviceType);
 		if (found != null) {
 			return found;
@@ -57,7 +59,7 @@ public class DefaultServiceProvider implements ServiceProvider {
 		return loadServices(serviceType, defaultList);
 	}
 
-	public <T> List<T> loadServices(Class<T> serviceType, List<T> defaultList) {
+	public <T> Collection<T> loadServices(Class<T> serviceType, Collection<T> defaultList) {
 		List<T> found = null;
 		synchronized (servicesLoaded) {
 			found = (List<T>) servicesLoaded.get(serviceType);

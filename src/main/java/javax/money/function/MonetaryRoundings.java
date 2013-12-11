@@ -84,7 +84,7 @@ public final class MonetaryRoundings {
 	public static MonetaryOperator getRounding(MonetaryContext monetaryContext) {
 		Objects.requireNonNull(monetaryContext, "MonetaryContext required.");
 		for (RoundingProviderSpi prov : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getRounding(monetaryContext);
@@ -116,7 +116,7 @@ public final class MonetaryRoundings {
 	public static MonetaryOperator getRounding(CurrencyUnit currency) {
 		Objects.requireNonNull(currency, "Currency required.");
 		for (RoundingProviderSpi prov : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getRounding(currency);
@@ -148,7 +148,7 @@ public final class MonetaryRoundings {
 	public static MonetaryOperator getCashRounding(CurrencyUnit currency) {
 		Objects.requireNonNull(currency, "Currency required.");
 		for (RoundingProviderSpi prov : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getCashRounding(currency);
@@ -184,7 +184,7 @@ public final class MonetaryRoundings {
 			long timestamp) {
 		Objects.requireNonNull(currency, "Currency required.");
 		for (RoundingProviderSpi prov : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getRounding(currency, timestamp);
@@ -220,7 +220,7 @@ public final class MonetaryRoundings {
 			long timestamp) {
 		Objects.requireNonNull(currency, "Currency required.");
 		for (RoundingProviderSpi prov : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getCashRounding(currency, timestamp);
@@ -253,7 +253,7 @@ public final class MonetaryRoundings {
 	public static MonetaryOperator getRounding(String customRoundingId) {
 		Objects.requireNonNull(customRoundingId, "CustomRoundingId required.");
 		for (RoundingProviderSpi prov : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getCustomRounding(customRoundingId);
@@ -279,7 +279,7 @@ public final class MonetaryRoundings {
 	public static Set<String> getCustomRoundingIds() {
 		Set<String> result = new HashSet<String>();
 		for (RoundingProviderSpi prov : Bootstrap
-				.getServiceProvider().getServices(
+				.getServices(
 						RoundingProviderSpi.class)) {
 			try {
 				result.addAll(prov.getCustomRoundingIds());

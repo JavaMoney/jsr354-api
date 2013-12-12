@@ -63,20 +63,4 @@ public class MonetaryCurrenciesTest {
 		MonetaryCurrencies.getCurrency(new Locale("", "sdsdsd"));
 	}
 
-	@Test
-	public void testGetInstanceLocaleLong() {
-		CurrencyUnit cur = MonetaryCurrencies.getCurrency(new Locale("",
-				"TEST1L"), 100L);
-		assertNotNull(cur);
-		assertEquals(cur.getCurrencyCode(), "TEST1L");
-		assertEquals(cur.getNumericCode(), 1);
-		assertEquals(cur.getDefaultFractionDigits(),
-				100L);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testgetCurrencyLocaleLong_NA() {
-		MonetaryCurrencies.getCurrency(new Locale("", "sdsdsd"), -200L);
-	}
-
 }

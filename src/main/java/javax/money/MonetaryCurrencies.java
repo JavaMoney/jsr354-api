@@ -102,49 +102,6 @@ public final class MonetaryCurrencies {
 		return cu;
 	}
 
-	/**
-	 * Access a new instance based on the currency code. Currencies are
-	 * available as provided by {@link CurrencyProviderSpi} instances registered
-	 * with the {@link ServiceLoader}.
-	 * 
-	 * @param currencyCode
-	 *            the ISO currency code, not {@code null}.
-	 * @param timestamp
-	 *            the UTC timestamp of the time, when the {@link CurrencyUnit}
-	 *            should be valid.
-	 * @return the corresponding {@link CurrencyUnit} instance.
-	 * @throws IllegalArgumentException
-	 *             if no such currency exists.
-	 */
-	public static CurrencyUnit getCurrency(String currencyCode, long timestamp) {
-		CurrencyUnit cu = null;
-		for (CurrencyProviderSpi spi : Bootstrap
-				.getServices(
-						CurrencyProviderSpi.class)) {
-			try {
-				cu = spi.getCurrencyUnit(currencyCode, timestamp);
-				if (cu != null) {
-					if (!currencyCode.equals(cu.getCurrencyCode())) {
-						throw new IllegalStateException(
-								"Provider("
-										+ spi.getClass().getName()
-										+ ") returned an invalid CurrencyUnit for '"
-										+ currencyCode + "': "
-										+ cu.getCurrencyCode());
-					}
-					return cu;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(MonetaryCurrencies.class.getName()).log(
-						Level.SEVERE,
-						"Error loading Currency '" + currencyCode
-								+ "'/ts=" + timestamp + " from provider: "
-								+ spi.getClass().getName(), e);
-			}
-		}
-		throw new IllegalArgumentException("No such currency: "
-				+ currencyCode);
-	}
 
 	/**
 	 * Access a new instance based on the {@link Locale}. Currencies are
@@ -179,41 +136,6 @@ public final class MonetaryCurrencies {
 				+ locale);
 	}
 
-	/**
-	 * Access a new instance based on the {@link Locale}. Currencies are
-	 * available as provided by {@link CurrencyProviderSpi} instances registered
-	 * with the {@link ServiceLoader}.
-	 * 
-	 * @param currencyCode
-	 *            the ISO currency code, not {@code null}.
-	 * @param timestamp
-	 *            the UTC timestamp of the time, when the {@link CurrencyUnit}
-	 *            should be valid.
-	 * @return the corresponding {@link CurrencyUnit} instance.
-	 * @throws IllegalArgumentException
-	 *             if no such currency exists.
-	 */
-	public static CurrencyUnit getCurrency(Locale locale, long timestamp) {
-		CurrencyUnit cu = null;
-		for (CurrencyProviderSpi spi : Bootstrap
-				.getServices(
-						CurrencyProviderSpi.class)) {
-			try {
-				cu = spi.getCurrencyUnit(locale, timestamp);
-				if (cu != null) {
-					return cu;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(MonetaryCurrencies.class.getName()).log(
-						Level.SEVERE,
-						"Error loading Currency for Locale '" + locale
-								+ "'/ts=" + timestamp + " from provider: "
-								+ spi.getClass().getName(), e);
-			}
-		}
-		throw new IllegalArgumentException("No such currency: "
-				+ locale);
-	}
 
 	/**
 	 * Allows to check if a {@link Currencies} instance is defined, i.e.
@@ -233,26 +155,6 @@ public final class MonetaryCurrencies {
 		}
 	}
 
-	/**
-	 * Allows to check if a {@link Currencies} instance is defined, i.e.
-	 * accessible from {@link Currencies#of(String)}.
-	 * 
-	 * @param code
-	 *            the currency code, not {@code null}.
-	 * @param timestamp
-	 *            the UTC timestamp of the time, when the {@link CurrencyUnit}
-	 *            should be valid.
-	 * @return {@code true} if {@link Currencies#of(String)} would return a
-	 *         result for the given code.
-	 */
-	public static boolean isCurrencyAvailable(String code, long timestamp) {
-		try {
-			getCurrency(code, timestamp);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
 
 	/**
 	 * Allows to check if a {@link Currencies} instance is defined, i.e.
@@ -272,26 +174,6 @@ public final class MonetaryCurrencies {
 		}
 	}
 
-	/**
-	 * Allows to check if a {@link Currencies} instance is defined, i.e.
-	 * accessible from {@link Currencies#of(String)}.
-	 * 
-	 * @param code
-	 *            the currency code, not {@code null}.
-	 * @param timestamp
-	 *            the UTC timestamp of the time, when the {@link CurrencyUnit}
-	 *            should be valid.
-	 * @return {@code true} if {@link Currencies#of(String)} would return a
-	 *         result for the given code.
-	 */
-	public static boolean isCurrencyAvailable(Locale locale, long timestamp) {
-		try {
-			getCurrency(locale, timestamp);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
 
 	// private methods
 

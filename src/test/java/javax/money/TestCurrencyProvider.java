@@ -15,13 +15,6 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 		return null;
 	}
 
-	@Override
-	public CurrencyUnit getCurrencyUnit(String currencyCode, long timestamp) {
-		if("test1".equals(currencyCode)){
-			return new TestCurrency("test1",1,100);
-		}
-		return null;
-	}
 
 	@Override
 	public CurrencyUnit getCurrencyUnit(Locale locale) {
@@ -31,13 +24,6 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 		return null;
 	}
 
-	@Override
-	public CurrencyUnit getCurrencyUnit(Locale locale, long timestamp) {
-		if("TEST1L".equals(locale.getCountry())){
-			return new TestCurrency("TEST1L",1,100);
-		}
-		return null;
-	}
 	
 	private static final class TestCurrency implements CurrencyUnit{
 

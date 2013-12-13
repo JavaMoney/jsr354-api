@@ -17,9 +17,10 @@ import java.util.Collection;
  * monetary services used by the Money and Currency API.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public interface ServiceProvider {
-
+// TODO Could this be part of SPI?
 	public <T> T getService(Class<T> serviceType);
 
 	public <T> T getService(Class<T> serviceType, T defaultInstance);

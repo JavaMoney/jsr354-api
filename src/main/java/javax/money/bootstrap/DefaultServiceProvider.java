@@ -80,4 +80,9 @@ public class DefaultServiceProvider implements ServiceProvider {
 		}
 		return found;
 	}
+
+	@Override
+	public int getPriority() {
+		return 0;
+	}
 }

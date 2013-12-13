@@ -12,13 +12,19 @@
  */
 package javax.money.bootstrap;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ServiceLoader;
+import java.util.logging.Logger;
 
 /**
  * This singleton provides access to the services available in the current
  * context. The behaviour can be adapted, by calling
- * {@link Bootstrap#init(ServiceProvider)} before accessing any
- * moneteray services.
+ * {@link Bootstrap#init(ServiceProvider)} before accessing any moneteray
+ * services.
  * 
  * @author Anatole Tresch
  */
@@ -31,8 +37,18 @@ public final class Bootstrap {
 	}
 
 	private static ServiceProvider loadDefaultServiceProvider() {
-		// TODO Implement more flexible variant...
-		return new DefaultServiceProvider();
+		try {
+			List<ServiceProvider> providers = new ArrayList<>();
+			for (ServiceProvider sp : ServiceLoader.load(ServiceProvider.class)) {
+				providers.add(sp);
+			}
+			Collections.sort(providers, new ProviderComparator());
+			return providers.get(0);
+		} catch (Exception e) {
+			Logger.getLogger(Bootstrap.class.getName()).info(
+					"No ServiceProvider loaded, using default.");
+			return new DefaultServiceProvider();
+		}
 	}
 
 	public static void init(ServiceProvider services) {
@@ -61,17 +77,26 @@ public final class Bootstrap {
 	public static <T> Collection<T> getServices(Class<T> serviceType) {
 		return getServiceProvider().getServices(serviceType);
 	}
-	
-	public static <T> Collection<T> getServices(Class<T> serviceType, Collection<T> defaultServices) {
+
+	public static <T> Collection<T> getServices(Class<T> serviceType,
+			Collection<T> defaultServices) {
 		return getServiceProvider().getServices(serviceType, defaultServices);
 	}
-	
+
 	public static <T> T getService(Class<T> serviceType) {
 		return getServiceProvider().getService(serviceType);
 	}
-	
+
 	public static <T> T getService(Class<T> serviceType, T defaultService) {
 		return getServiceProvider().getService(serviceType, defaultService);
+	}
+
+	private static final class ProviderComparator implements
+			Comparator<ServiceProvider> {
+		@Override
+		public int compare(ServiceProvider p1, ServiceProvider p2) {
+			return p2.getPriority() - p1.getPriority();
+		}
 	}
 
 }

@@ -36,7 +36,7 @@ public class MonetaryCurrenciesTest {
 				2);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = UnknownCurrencyException.class)
 	public void testgetCurrencyString_NA() {
 		MonetaryCurrencies.getCurrency("testGetInstanceCurrency_NA");
 	}

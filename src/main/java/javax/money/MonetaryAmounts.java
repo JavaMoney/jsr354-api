@@ -206,15 +206,19 @@ public final class MonetaryAmounts {
 	 * @throws ArithmeticException
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
+	 * @throws UnknownCurrencyException
+	 *             if the currency code can not be resolved to
+	 *             {@link CurrencyUnit}.
 	 */
 	public static MonetaryAmount<?> getAmount(String currencyCode, long number) {
 		MonetaryAmount<?> amt = null;
+		CurrencyUnit currency = MonetaryCurrencies.getCurrency(currencyCode);
 		for (MonetaryAmountProviderSpi spi : Bootstrap
 				.getServices(
 				MonetaryAmountProviderSpi.class)) {
 			try {
 				amt = spi.getAmount(
-						MonetaryCurrencies.getCurrency(currencyCode), number,
+						currency, number,
 						DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
 					return amt;
@@ -248,15 +252,19 @@ public final class MonetaryAmounts {
 	 * @throws ArithmeticException
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
+	 * @throws UnknownCurrencyException
+	 *             if the currency code can not be resolved to
+	 *             {@link CurrencyUnit}.
 	 */
 	public static MonetaryAmount<?> getAmount(String currencyCode, double number) {
 		MonetaryAmount<?> amount = null;
+		CurrencyUnit currency = MonetaryCurrencies.getCurrency(currencyCode);
 		for (MonetaryAmountProviderSpi spi : Bootstrap
 				.getServices(
 				MonetaryAmountProviderSpi.class)) {
 			try {
 				amount = spi.getAmount(
-						MonetaryCurrencies.getCurrency(currencyCode), number,
+						currency, number,
 						DEFAULT_MONETARY_CONTEXT);
 				if (amount != null) {
 					return amount;
@@ -290,15 +298,19 @@ public final class MonetaryAmounts {
 	 * @throws ArithmeticException
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
+	 * @throws UnknownCurrencyException
+	 *             if the currency code can not be resolved to
+	 *             {@link CurrencyUnit}.
 	 */
 	public static MonetaryAmount<?> getAmount(String currencyCode, Number number) {
 		MonetaryAmount<?> amt = null;
+		CurrencyUnit currency = MonetaryCurrencies.getCurrency(currencyCode);
 		for (MonetaryAmountProviderSpi spi : Bootstrap
 				.getServices(
 				MonetaryAmountProviderSpi.class)) {
 			try {
 				amt = spi.getAmount(
-						MonetaryCurrencies.getCurrency(currencyCode), number,
+						currency, number,
 						DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
 					return amt;
@@ -334,15 +346,19 @@ public final class MonetaryAmounts {
 	 * @throws ArithmeticException
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
+	 * @throws UnknownCurrencyException
+	 *             if the currency code can not be resolved to
+	 *             {@link CurrencyUnit}.
 	 */
-	public static MonetaryAmount<?> getAmount(String currency, long number,
+	public static MonetaryAmount<?> getAmount(String currencyCode, long number,
 			MonetaryContext context) {
 		MonetaryAmount<?> amt = null;
+		CurrencyUnit currency = MonetaryCurrencies.getCurrency(currencyCode);
 		for (MonetaryAmountProviderSpi spi : Bootstrap
 				.getServices(
 				MonetaryAmountProviderSpi.class)) {
 			try {
-				amt = spi.getAmount(MonetaryCurrencies.getCurrency(currency),
+				amt = spi.getAmount(currency,
 						number, DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
 					return amt;
@@ -359,7 +375,7 @@ public final class MonetaryAmounts {
 		}
 		throw new MonetaryException(
 				"Unsupported MonetaryAmount<?> type requested: "
-						+ currency + " " + number
+						+ currencyCode + " " + number
 						+ "(" + DEFAULT_MONETARY_CONTEXT
 						+ ")");
 	}
@@ -378,17 +394,21 @@ public final class MonetaryAmounts {
 	 * @throws ArithmeticException
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
+	 * @throws UnknownCurrencyException
+	 *             if the currency code can not be resolved to
+	 *             {@link CurrencyUnit}.
 	 */
 	public static MonetaryAmount<?> getAmount(String currencyCode,
 			double number,
 			MonetaryContext context) {
 		MonetaryAmount<?> amt = null;
+		CurrencyUnit currency = MonetaryCurrencies.getCurrency(currencyCode);
 		for (MonetaryAmountProviderSpi spi : Bootstrap
 				.getServices(
 				MonetaryAmountProviderSpi.class)) {
 			try {
 				amt = spi.getAmount(
-						MonetaryCurrencies.getCurrency(currencyCode), number,
+						currency, number,
 						DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
 					return amt;
@@ -424,17 +444,21 @@ public final class MonetaryAmounts {
 	 * @throws ArithmeticException
 	 *             If the number exceeds the capabilities of the default
 	 *             {@link MonetaryContext} used.
+	 * @throws UnknownCurrencyException
+	 *             if the currency code can not be resolved to
+	 *             {@link CurrencyUnit}.
 	 */
 	public static MonetaryAmount<?> getAmount(String currencyCode,
 			Number number,
 			MonetaryContext monetaryContext) {
 		MonetaryAmount<?> amt = null;
+		CurrencyUnit currency = MonetaryCurrencies.getCurrency(currencyCode);
 		for (MonetaryAmountProviderSpi spi : Bootstrap
 				.getServices(
 				MonetaryAmountProviderSpi.class)) {
 			try {
 				amt = spi.getAmount(
-						MonetaryCurrencies.getCurrency(currencyCode), number,
+						currency, number,
 						DEFAULT_MONETARY_CONTEXT);
 				if (amt != null) {
 					return amt;
@@ -602,6 +626,9 @@ public final class MonetaryAmounts {
 	 * @param currencyCode
 	 * 			the currency code to determine the {@link CurrencyUnit} of the {@link MonetaryAmount} being created.
 	 * @return a new Money instance of zero, with a default {@link MonetaryContext}.
+	 * @throws UnknownCurrencyException
+	 *             if the currency code can not be resolved to
+	 *             {@link CurrencyUnit}.
 	 */
 	public static MonetaryAmount<?> getAmountZero(String currencyCode) {
 		return getAmount(MonetaryCurrencies.getCurrency(currencyCode),
@@ -625,6 +652,9 @@ public final class MonetaryAmounts {
 	 * @param currencyCode
 	 * 			the target currency code to determine the {@link CurrencyUnit} of the {@link MonetaryAmount} being created.
 	 * @return a new {@link MonetaryAmount} instance of zero, with a default {@link MonetaryContext}.
+	 * @throws UnknownCurrencyException
+	 *             if the currency code can not be resolved to
+	 *             {@link CurrencyUnit}.
 	 */
 	public static MonetaryAmount<?> getAmountZero(String currencyCode,
 			MonetaryContext monetaryContext) {

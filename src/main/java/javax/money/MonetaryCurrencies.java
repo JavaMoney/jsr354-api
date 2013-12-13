@@ -60,7 +60,7 @@ public final class MonetaryCurrencies {
 	 * @param currencyCode
 	 *            the ISO currency code, not {@code null}.
 	 * @return the corresponding {@link CurrencyUnit} instance.
-	 * @throws IllegalArgumentException
+	 * @throws UnknownCurrencyException
 	 *             if no such currency exists.
 	 */
 	public static CurrencyUnit getCurrency(String currencyCode) {
@@ -93,8 +93,7 @@ public final class MonetaryCurrencies {
 			cu = REGISTERED.get(currencyCode);
 		}
 		if (cu == null) {
-			throw new IllegalArgumentException("No such currency: "
-					+ currencyCode);
+			throw new UnknownCurrencyException(currencyCode);
 		}
 		return cu;
 	}

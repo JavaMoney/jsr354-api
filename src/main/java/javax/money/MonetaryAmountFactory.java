@@ -39,7 +39,7 @@ package javax.money;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public interface AmountFactory<T extends MonetaryAmount<T>> {
+public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 
 	/**
 	 * Access the {@link MonetaryAmount} implementation type.
@@ -47,7 +47,7 @@ public interface AmountFactory<T extends MonetaryAmount<T>> {
 	 * @return the {@link MonetaryAmount} implementation type, never
 	 *         {@code null}.
 	 */
-	public Class<T> getImplementationType();
+	public Class<T> getAmountType();
 
 	/**
 	 * Creates a new instance of {@link MonetaryAmount}, using the default
@@ -98,7 +98,7 @@ public interface AmountFactory<T extends MonetaryAmount<T>> {
 	public T getAmount(CurrencyUnit currency, Number number);
 
 	/**
-	 * Creates a new instance of {@link AmountFactory}, using the default
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -116,7 +116,7 @@ public interface AmountFactory<T extends MonetaryAmount<T>> {
 	public T getAmount(String currencyCode, long number);
 
 	/**
-	 * Creates a new instance of {@link AmountFactory}, using the default
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -134,7 +134,7 @@ public interface AmountFactory<T extends MonetaryAmount<T>> {
 	public T getAmount(String currencyCode, double number);
 
 	/**
-	 * Creates a new instance of {@link AmountFactory}, using the default
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -152,7 +152,7 @@ public interface AmountFactory<T extends MonetaryAmount<T>> {
 	public T getAmount(String currencyCode, Number number);
 
 	/**
-	 * Creates a new instance of {@link AmountFactory}, using the default
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -173,7 +173,7 @@ public interface AmountFactory<T extends MonetaryAmount<T>> {
 			MonetaryContext<?> context);
 
 	/**
-	 * Creates a new instance of {@link AmountFactory}, using the default
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -195,7 +195,7 @@ public interface AmountFactory<T extends MonetaryAmount<T>> {
 			MonetaryContext<?> context);
 
 	/**
-	 * Creates a new instance of {@link AmountFactory}, using the default
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -217,7 +217,7 @@ public interface AmountFactory<T extends MonetaryAmount<T>> {
 			MonetaryContext<?> monetaryContext);
 
 	/**
-	 * Creates a new instance of {@link AmountFactory}, using an explicit
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using an explicit
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -238,7 +238,7 @@ public interface AmountFactory<T extends MonetaryAmount<T>> {
 			MonetaryContext<?> monetaryContext);
 
 	/**
-	 * Creates a new instance of {@link AmountFactory}, using an explicit
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using an explicit
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number
@@ -259,7 +259,7 @@ public interface AmountFactory<T extends MonetaryAmount<T>> {
 			MonetaryContext<?> monetaryContext);
 
 	/**
-	 * Creates a new instance of {@link AmountFactory}, using an explicit
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using an explicit
 	 * {@link MonetaryContext}.
 	 * 
 	 * @param number

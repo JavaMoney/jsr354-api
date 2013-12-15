@@ -26,14 +26,14 @@ public class MonetaryAmountsTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MonetaryAmounts#getFactory(java.lang.Class)}.
+	 * {@link javax.money.MonetaryAmounts#getAmountFactory(java.lang.Class)}.
 	 */
 	@Test
 	public void testGetFactory() {
-		assertNotNull(MonetaryAmounts.getFactory());
-		assertNotNull(MonetaryAmounts.getFactory(DummyAmount.class));
-		assertTrue(MonetaryAmounts.getFactory() == MonetaryAmounts
-				.getFactory(DummyAmount.class));
+		assertNotNull(MonetaryAmounts.getDefaultAmountFactory());
+		assertNotNull(MonetaryAmounts.getAmountFactory(DummyAmount.class));
+		assertTrue(MonetaryAmounts.getDefaultAmountFactory() == MonetaryAmounts
+				.getAmountFactory(DummyAmount.class));
 	}
 
 	/**
@@ -58,12 +58,12 @@ public class MonetaryAmountsTest {
 
 	/**
 	 * Test method for
-	 * {@link javax.money.MonetaryAmounts#getAmountType(javax.money.MonetaryContext)}
+	 * {@link javax.money.MonetaryAmounts#queryAmountType(javax.money.MonetaryContext)}
 	 * .
 	 */
 	@Test
 	public void testGetAmountType() {
-		assertNotNull(MonetaryAmounts.getAmountType(null));
+		assertNotNull(MonetaryAmounts.queryAmountType(null));
 	}
 
 }

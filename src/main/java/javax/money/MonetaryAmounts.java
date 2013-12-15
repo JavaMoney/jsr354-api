@@ -21,7 +21,7 @@ import javax.money.spi.MonetaryAmountsSpi;
  * Factory singleton for {@link MonetaryAmount} instances as provided by the
  * different registered {@link MonetaryAmountProviderSpi} instances.
  * <p>
- * This singleton allows to get {@link AmountFactory} instances for the
+ * This singleton allows to get {@link MonetaryAmountFactory} instances for the
  * registered {@link MonetaryAmount} implementation classes or depending on the
  * precision and scale requirements.
  * 
@@ -43,19 +43,19 @@ public final class MonetaryAmounts {
 	}
 
 	/**
-	 * Access an {@link AmountFactory} for the given {@link MonetaryAmount}
+	 * Access an {@link MonetaryAmountFactory} for the given {@link MonetaryAmount}
 	 * implementation type.
 	 * 
 	 * @param amountType
 	 *            {@link MonetaryAmount} implementation type, nor {@code null}.
-	 * @return the corresponding {@link AmountFactory}, never {@code null}.
+	 * @return the corresponding {@link MonetaryAmountFactory}, never {@code null}.
 	 * @throws MonetaryException
-	 *             if no {@link AmountFactory} targeting the given
+	 *             if no {@link MonetaryAmountFactory} targeting the given
 	 *             {@link MonetaryAmount} implementation class is registered.
 	 */
-	public static <T extends MonetaryAmount<T>> AmountFactory<T> getFactory(
+	public static <T extends MonetaryAmount<T>> MonetaryAmountFactory<T> getAmountFactory(
 			Class<T> amountType) {
-		AmountFactory<T> factory = monetaryAmountsSpi.getFactory(amountType);
+		MonetaryAmountFactory<T> factory = monetaryAmountsSpi.getAmountFactory(amountType);
 		if (factory == null) {
 			throw new MonetaryException("No AmountFactory registered for "
 					+ amountType);
@@ -64,18 +64,18 @@ public final class MonetaryAmounts {
 	}
 
 	/**
-	 * Access the default {@link AmountFactory} as defined by
+	 * Access the default {@link MonetaryAmountFactory} as defined by
 	 * {@link #getDefaultAmountType()}.
 	 * 
-	 * @return the {@link AmountFactory} corresponding to
+	 * @return the {@link MonetaryAmountFactory} corresponding to
 	 *         {@link #getDefaultAmountType()}, never {@code null}.
 	 * @throws MonetaryException
-	 *             if no {@link AmountFactory} targeting the
+	 *             if no {@link MonetaryAmountFactory} targeting the
 	 *             {@link #getDefaultAmountType()} implementation class is
 	 *             registered.
 	 */
-	public static AmountFactory<?> getFactory() {
-		return getFactory(getDefaultAmountType());
+	public static MonetaryAmountFactory<?> getDefaultAmountFactory() {
+		return getAmountFactory(getDefaultAmountType());
 	}
 
 	/**
@@ -83,11 +83,11 @@ public final class MonetaryAmounts {
 	 * classes that are accessible from this {@link MonetaryAmount} singleton.
 	 * 
 	 * @return all currently available {@link MonetaryAmount} implementation
-	 *         classes that have corresponding {@link AmountFactory} instances
+	 *         classes that have corresponding {@link MonetaryAmountFactory} instances
 	 *         provided, never {@code null}
 	 */
 	public static Set<Class<? extends MonetaryAmount<?>>> getTypes() {
-		return monetaryAmountsSpi.getTypes();
+		return monetaryAmountsSpi.getAmountTypes();
 	}
 
 	/**
@@ -97,7 +97,7 @@ public final class MonetaryAmounts {
 	 * @return the default {@link MonetaryAmount} implementation class, never
 	 *         {@code null}.
 	 * @throws MonetaryException
-	 *             if no {@link AmountFactory} is registered.
+	 *             if no {@link MonetaryAmountFactory} is registered.
 	 */
 	public static Class<? extends MonetaryAmount> getDefaultAmountType() {
 		return monetaryAmountsSpi.getDefaultAmountType();
@@ -114,9 +114,9 @@ public final class MonetaryAmounts {
 	 *             if no {@link MonetaryAmount} implementation class can cover
 	 *             the required {@link MonetaryContext}.
 	 */
-	public static Class<? extends MonetaryAmount> getAmountType(
+	public static Class<? extends MonetaryAmount> queryAmountType(
 			MonetaryContext<?> requiredContext) {
-		return monetaryAmountsSpi.getAmountType(requiredContext);
+		return monetaryAmountsSpi.queryAmountType(requiredContext);
 	}
 
 }

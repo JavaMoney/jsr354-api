@@ -14,7 +14,7 @@ package javax.money.spi;
 
 import java.util.Set;
 
-import javax.money.AmountFactory;
+import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmounts;
 import javax.money.MonetaryContext;
@@ -23,22 +23,22 @@ import javax.money.MonetaryException;
 /**
  * SPI for the backing implementation of the {@link MonetaryAmounts} singleton.
  * It should load and manage (including contextual behavior), if needed) the
- * different registered {@link AmountFactory} instances.
+ * different registered {@link MonetaryAmountFactory} instances.
  * 
  * @author Anatole Tresch
  */
 public interface MonetaryAmountsSpi {
 
 	/**
-	 * Access the {@link AmountFactory} for the given {@code amountType}.
+	 * Access the {@link MonetaryAmountFactory} for the given {@code amountType}.
 	 * 
 	 * @param amountType
 	 *            the {@link MonetaryAmount} implementation type, targeted by
 	 *            the factory.
-	 * @return the {@link AmountFactory}, or {@code null}, if no such
-	 *         {@link AmountFactory} is available in the current context.
+	 * @return the {@link MonetaryAmountFactory}, or {@code null}, if no such
+	 *         {@link MonetaryAmountFactory} is available in the current context.
 	 */
-	public <T extends MonetaryAmount<T>> AmountFactory<T> getFactory(
+	public <T extends MonetaryAmount<T>> MonetaryAmountFactory<T> getAmountFactory(
 			Class<T> amountType);
 
 	/**
@@ -47,7 +47,7 @@ public interface MonetaryAmountsSpi {
 	 * @return the {@link Set} if registered {@link MonetaryAmount}
 	 *         implementation types, never{@code null}.
 	 */
-	public Set<Class<? extends MonetaryAmount<?>>> getTypes();
+	public Set<Class<? extends MonetaryAmount<?>>> getAmountTypes();
 
 	/**
 	 * Get the default {@link MonetaryAmount} implementation class, if no
@@ -57,7 +57,7 @@ public interface MonetaryAmountsSpi {
 	 * @return the default {@link MonetaryAmount} implementation class, never
 	 *         {@code null}.
 	 * @throws MonetaryException
-	 *             if no {@link AmountFactory} is registered.
+	 *             if no {@link MonetaryAmountFactory} is registered.
 	 */
 	public Class<? extends MonetaryAmount<?>> getDefaultAmountType();
 
@@ -89,7 +89,7 @@ public interface MonetaryAmountsSpi {
 	 *             if no {@link MonetaryAmount} implementation class can cover
 	 *             the required {@link MonetaryContext}.
 	 */
-	public Class<? extends MonetaryAmount<?>> getAmountType(
+	public Class<? extends MonetaryAmount<?>> queryAmountType(
 			MonetaryContext<?> requiredContext);
 
 }

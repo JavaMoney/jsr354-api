@@ -12,28 +12,20 @@
  */
 package javax.money;
 
+import java.math.BigDecimal;
+
 import javax.money.DummyAmountFactory.DummyAmount;
 
-public final class DummyAmountFactory extends
-		AbstractAmountFactory<DummyAmount> {
+public final class DummyAmountFactory implements
+		MonetaryAmountFactory<DummyAmount> {
 
-	private MonetaryContext<DummyAmount> DUMMY_CONTEXT = new MonetaryContext.Builder()
+	private static MonetaryContext<DummyAmount> DUMMY_CONTEXT = new MonetaryContext.Builder()
 			.setFixedScale(true).setMaxScale(0)
 			.setPrecision(0).build(DummyAmount.class);
 
 	@Override
-	public Class<DummyAmount> getImplementationType() {
+	public Class<DummyAmount> getAmountType() {
 		return DummyAmount.class;
-	}
-
-	@Override
-	protected MonetaryContext<DummyAmount> loadDefaultMonetaryContext() {
-		return DUMMY_CONTEXT;
-	}
-
-	@Override
-	protected MonetaryContext<DummyAmount> loadMaxMonetaryContext() {
-		return DUMMY_CONTEXT;
 	}
 
 	@Override
@@ -59,7 +51,6 @@ public final class DummyAmountFactory extends
 
 		@Override
 		public CurrencyUnit getCurrency() {
-
 			return null;
 		}
 
@@ -76,61 +67,57 @@ public final class DummyAmountFactory extends
 
 		@Override
 		public MonetaryContext getMonetaryContext() {
-
-			return null;
+			return DUMMY_CONTEXT;
 		}
 
 		@Override
 		public Number getNumber() {
-			return null;
+			return BigDecimal.ZERO;
 		}
 
 		@Override
 		public <N extends Number> N getNumber(Class<N> type) {
-
 			return null;
 		}
 
 		@Override
 		public <N extends Number> N getNumberExact(Class<N> type) {
-
 			return null;
 		}
 
 		@Override
 		public <R> R query(MonetaryQuery<R> query) {
-
 			return null;
 		}
 
 		@Override
 		public DummyAmount with(MonetaryOperator operator) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount with(CurrencyUnit unit) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount with(CurrencyUnit unit, long amount) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount with(CurrencyUnit unit, double amount) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount with(CurrencyUnit unit, Number amount) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
@@ -202,141 +189,237 @@ public final class DummyAmountFactory extends
 		@Override
 		public DummyAmount add(MonetaryAmount<?> amount) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount subtract(MonetaryAmount<?> amount) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount multiply(long multiplicand) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount multiply(double multiplicand) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount multiply(Number multiplicand) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount divide(long amount) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount divide(double amount) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount divide(Number amount) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount remainder(long amount) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount remainder(double amount) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount remainder(Number amount) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount[] divideAndRemainder(long amount) {
-
-			return null;
+			return new DummyAmount[] { new DummyAmount(), new DummyAmount() };
 		}
 
 		@Override
 		public DummyAmount[] divideAndRemainder(double amount) {
-
-			return null;
+			return new DummyAmount[] { new DummyAmount(), new DummyAmount() };
 		}
 
 		@Override
 		public DummyAmount[] divideAndRemainder(Number amount) {
-
-			return null;
+			return new DummyAmount[] { new DummyAmount(), new DummyAmount() };
 		}
 
 		@Override
 		public DummyAmount divideToIntegralValue(long divisor) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount divideToIntegralValue(double divisor) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount divideToIntegralValue(Number divisor) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount scaleByPowerOfTen(int power) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount abs() {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount negate() {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount plus() {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount pow(int power) {
 
-			return null;
+			return new DummyAmount();
 		}
 
 		@Override
 		public DummyAmount stripTrailingZeros() {
 
-			return null;
+			return new DummyAmount();
 		}
 
+	}
+
+	@Override
+	public DummyAmount getAmount(CurrencyUnit currency, long number) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmount(CurrencyUnit currency, double number) {
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmount(CurrencyUnit currency, Number number) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmount(String currencyCode, long number) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmount(String currencyCode, double number) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmount(String currencyCode, Number number) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmount(String currencyCode, long number,
+			MonetaryContext<?> context) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmount(String currencyCode, double number,
+			MonetaryContext<?> context) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmount(String currencyCode, Number number,
+			MonetaryContext<?> monetaryContext) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmountZero(CurrencyUnit currency) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmountZero(String currencyCode) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmountZero(CurrencyUnit currency,
+			MonetaryContext<?> monetaryContext) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public DummyAmount getAmountZero(String currencyCode,
+			MonetaryContext<?> monetaryContext) {
+
+		return new DummyAmount();
+	}
+
+	@Override
+	public MonetaryContext<DummyAmount> getDefaultMonetaryContext() {
+		return DUMMY_CONTEXT;
+	}
+
+	@Override
+	public MonetaryContext<DummyAmount> getMaximalMonetaryContext() {
+		return DUMMY_CONTEXT;
+	}
+
+	@Override
+	public DummyAmount getAmountFrom(MonetaryAmount<?> amt,
+			MonetaryContext<?> monetaryContext) {
+
+		return new DummyAmount();
 	}
 
 }

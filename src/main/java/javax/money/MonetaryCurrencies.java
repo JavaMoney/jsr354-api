@@ -14,7 +14,6 @@ package javax.money;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;

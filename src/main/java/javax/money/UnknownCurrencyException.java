@@ -16,7 +16,9 @@ package javax.money;
  * Exception thrown when a currency code cannot be resolved into a
  * {@link CurrencyUnit}.
  * 
+ * @author Werner Keil
  * @author Anatole Tresch
+ * @version 0.8
  */
 public class UnknownCurrencyException extends MonetaryException {
 
@@ -48,9 +50,7 @@ public class UnknownCurrencyException extends MonetaryException {
 		return currencyCode;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

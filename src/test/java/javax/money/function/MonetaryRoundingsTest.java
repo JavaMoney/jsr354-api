@@ -68,7 +68,7 @@ public class MonetaryRoundingsTest {
 	@Test
 	public void testMonetaryRoundingsGetRoundingMonetaryContext() {
 		MonetaryOperator op = MonetaryRoundings
-				.getRounding(new MonetaryContext.Builder(BigDecimal.class).build());
+				.getRounding(new MonetaryContext.Builder().build());
 		assertNotNull(op);
 	}
 }

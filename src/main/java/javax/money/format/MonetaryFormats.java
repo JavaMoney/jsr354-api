@@ -97,7 +97,7 @@ public final class MonetaryFormats {
 				+ locale +", monetaryContext=" + monetaryContext+", defaultCurrency=" + defaultCurrency);
 	}
 
-	public static MonetaryAmountFormat getAmountFormat(FormatStyle style) {
+	public static MonetaryAmountFormat getAmountFormat(AmountStyle style) {
 		Objects.requireNonNull(style, "FormatStyle required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
 				.getServices(
@@ -112,7 +112,7 @@ public final class MonetaryFormats {
 	}
 
 	public static MonetaryAmountFormat getAmountFormat(
-			FormatStyle style,
+			AmountStyle style,
 			CurrencyUnit defaultCurrency) {
 		Objects.requireNonNull(style, "FormatStyle required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
@@ -128,7 +128,7 @@ public final class MonetaryFormats {
 	}
 
 	public static MonetaryAmountFormat getAmountFormat(
-			FormatStyle style,
+			AmountStyle style,
 			MonetaryContext monetaryContext) {
 		Objects.requireNonNull(style, "FormatStyle required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
@@ -144,7 +144,7 @@ public final class MonetaryFormats {
 	}
 
 	public static MonetaryAmountFormat getAmountFormat(
-			FormatStyle style,
+			AmountStyle style,
 			MonetaryContext monetaryContext,
 			CurrencyUnit defaultCurrency) {
 		Objects.requireNonNull(style, "FormatStyle required.");

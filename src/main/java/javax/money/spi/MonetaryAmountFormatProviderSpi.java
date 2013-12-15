@@ -17,7 +17,7 @@ import java.util.Locale;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryContext;
-import javax.money.format.FormatStyle;
+import javax.money.format.AmountStyle;
 import javax.money.format.MonetaryAmountFormat;
 
 /**
@@ -32,7 +32,7 @@ public interface MonetaryAmountFormatProviderSpi {
 	 * 
 	 * @param locale
 	 *            The {@link Locale} to be used for determining the
-	 *            {@link FormatStyle} to be used.
+	 *            {@link AmountStyle} to be used.
 	 * @param monetaryContext
 	 *            The {@link MonetaryContext}, to be required for creation of
 	 *            new {@link MonetaryAmount} instances during parsing.
@@ -52,7 +52,7 @@ public interface MonetaryAmountFormatProviderSpi {
 	 * Create a new {@link MonetaryAmountFormat} for the given input.
 	 * 
 	 * @param formatStyle
-	 *            The {@link FormatStyle} to be used.
+	 *            The {@link AmountStyle} to be used.
 	 * @param monetaryContext
 	 *            The {@link MonetaryContext}, to be required for creation of
 	 *            new {@link MonetaryAmount} instances during parsing.
@@ -65,7 +65,7 @@ public interface MonetaryAmountFormatProviderSpi {
 	 *         {@link MonetaryAmountFormatProviderSpi} instances registered.
 	 */
 	public MonetaryAmountFormat getFormat(
-			FormatStyle formatStyle,
+			AmountStyle formatStyle,
 			MonetaryContext monetaryContext,
 			CurrencyUnit defaultCurrency);
 

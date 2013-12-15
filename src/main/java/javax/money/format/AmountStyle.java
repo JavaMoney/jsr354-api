@@ -20,19 +20,21 @@ import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
 
 /**
- * The amount style defines how a {@link MonetaryAmount} should be formatted.
+ * The {@link AmountStyle} defines how a {@link MonetaryAmount} should be formatted.
  * 
  * @author Anatole Tresch
  */
-public final class FormatStyle {
+public final class AmountStyle {
 	/** Default array for uncostimized group characters. */
 	private static final char[] EMPTY_CHAR_ARRAY = new char[0];
 	/** Default array for uncostimized group sizes. */
 	private static final int[] EMPTY_INT_ARRAY = new int[0];
 	/** The {@link DecimalFormat} used. */
 	private DecimalFormat format;
-	/** The rounding used (optional). */
-	private MonetaryOperator rounding;
+	/** The conversion applied before formatting (optional). */
+	private MonetaryOperator formatConversion;
+	/** The conversion applied after parsing (optional). */
+	private MonetaryOperator parseConversion;
 	/** The customized group sizes. */
 	private int[] groupSizes;
 	/** The customized group characters. */
@@ -60,13 +62,14 @@ public final class FormatStyle {
 	 * @param currencyPlacement2
 	 * @param currencyStyle2
 	 */
-	private FormatStyle(Locale locale, DecimalFormat format, int[] groupSizes,
-			char[] groupChars, MonetaryOperator rounding,
+	private AmountStyle(Locale locale, DecimalFormat format, int[] groupSizes,
+			char[] groupChars, MonetaryOperator formatConversion, MonetaryOperator parseConversion,
 			CurrencyStyle currencyStyle, CurrencyPlacement currencyPlacement,
 			String currencySeparator) {
 		this.groupSizes = groupSizes;
 		this.groupChars = groupChars;
-		this.rounding = rounding;
+		this.formatConversion = formatConversion;
+		this.parseConversion = parseConversion;
 		this.format = format;
 		this.currencyPlacement = currencyPlacement;
 		this.currencyStyle = currencyStyle;
@@ -93,19 +96,28 @@ public final class FormatStyle {
 	}
 
 	/**
-	 * Get the rounding used.
+	 * Get the conversion applied before formatting.
 	 * 
-	 * @return the rounding used, or null.
+	 * @return the conversion used, or {@code null}.
 	 */
-	public MonetaryOperator getMoneyRounding() {
-		return this.rounding;
+	public MonetaryOperator getFormatConversion() {
+		return this.formatConversion;
+	}
+
+	/**
+	 * Get the conversion applied after parsing.
+	 * 
+	 * @return the conversion used, or {@code null}.
+	 */
+	public MonetaryOperator getParseConversion() {
+		return this.formatConversion;
 	}
 
 	/**
 	 * Get the number groups sizes used, or an empty array if no custom sizes
 	 * are configured.
 	 * 
-	 * @return the groupings sizes, never null.
+	 * @return the groupings sizes, never {@code null}.
 	 */
 	public int[] getNumberGroupSizes() {
 		if (this.groupSizes == null) {
@@ -151,8 +163,9 @@ public final class FormatStyle {
 		result = prime * result + ((format == null) ? 0 : format.hashCode());
 		result = prime * result + Arrays.hashCode(groupChars);
 		result = prime * result + Arrays.hashCode(groupSizes);
-		result = prime * result
-				+ ((rounding == null) ? 0 : rounding.hashCode());
+		result = prime
+				* result
+				+ ((formatConversion == null) ? 0 : formatConversion.hashCode());
 		return result;
 	}
 
@@ -169,7 +182,7 @@ public final class FormatStyle {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FormatStyle other = (FormatStyle) obj;
+		AmountStyle other = (AmountStyle) obj;
 		if (currencyPlacement != other.currencyPlacement)
 			return false;
 		if (currencySeparator == null) {
@@ -193,10 +206,10 @@ public final class FormatStyle {
 			return false;
 		if (!Arrays.equals(groupSizes, other.groupSizes))
 			return false;
-		if (rounding == null) {
-			if (other.rounding != null)
+		if (formatConversion == null) {
+			if (other.formatConversion != null)
 				return false;
-		} else if (!rounding.equals(other.rounding))
+		} else if (!formatConversion.equals(other.formatConversion))
 			return false;
 		return true;
 	}
@@ -212,12 +225,13 @@ public final class FormatStyle {
 				+ ", currencyStyle="
 				+ currencyStyle + ", currencyPlacement=" + currencyPlacement
 				+ ", currencySeparator=" + currencySeparator + ", rounding="
-				+ rounding + ", groupSizes=" + Arrays.toString(groupSizes)
+				+ formatConversion + ", groupSizes="
+				+ Arrays.toString(groupSizes)
 				+ ", groupChars=" + Arrays.toString(groupChars) + "]";
 	}
 
 	/**
-	 * Builder for creating a new {@link FormatStyle}
+	 * Builder for creating a new {@link AmountStyle}
 	 * 
 	 * @author Anatole Tresch
 	 */
@@ -226,8 +240,10 @@ public final class FormatStyle {
 		private Locale locale;
 		/** The underlying {@link DecimalFormat}. */
 		private DecimalFormat format;
-		/** The rounding operator, if any. */
-		private MonetaryOperator rounding;
+		/** The formatting conversion operator, if any. */
+		private MonetaryOperator formatConversion;
+		/** The parse conversion operator, if any. */
+		private MonetaryOperator parseConversion;
 		/** The customized goup sizes, if any. */
 		private int[] groupSizes;
 		/** The customized group characters, if any. */
@@ -265,14 +281,26 @@ public final class FormatStyle {
 		}
 
 		/**
-		 * Sets the rounding to be used for formatting.
+		 * Sets the conversion to be applied before formatting.
 		 * 
-		 * @param rounding
-		 *            the rounding, not null.
+		 * @param conversion
+		 *            the conversion.
 		 * @return the {@link Builder} for chaining.
 		 */
-		public Builder setRounding(MonetaryOperator rounding) {
-			this.rounding = rounding;
+		public Builder setFormatConversion(MonetaryOperator conversion) {
+			this.formatConversion = conversion;
+			return this;
+		}
+		
+		/**
+		 * Sets the conversion to be applied after parsing.
+		 * 
+		 * @param conversion
+		 *            the conversion.
+		 * @return the {@link Builder} for chaining.
+		 */
+		public Builder setParseConversion(MonetaryOperator conversion) {
+			this.parseConversion = conversion;
 			return this;
 		}
 
@@ -376,17 +404,17 @@ public final class FormatStyle {
 		}
 
 		/**
-		 * Creates a new {@link FormatStyle}.
+		 * Creates a new {@link AmountStyle}.
 		 * 
-		 * @return a new {@link FormatStyle} instance, never {@code null}.
+		 * @return a new {@link AmountStyle} instance, never {@code null}.
 		 * @throws IllegalStateException
 		 *             if no {@link DecimalFormat} could be applied.
 		 */
-		public FormatStyle build() {
+		public AmountStyle build() {
 			Objects.requireNonNull(format, "DecimalFormat required.");
 			Objects.requireNonNull(locale, "Locale required.");
-			return new FormatStyle(locale, format, groupSizes, groupChars,
-					rounding,
+			return new AmountStyle(locale, format, groupSizes, groupChars,
+					formatConversion, parseConversion,
 					currencyStyle, currencyPlacement, currencySeparator);
 		}
 
@@ -403,7 +431,7 @@ public final class FormatStyle {
 					+ ", currencyPlacement="
 					+ currencyPlacement + ", currencySeparator="
 					+ currencySeparator + ", rounding="
-					+ rounding
+					+ formatConversion
 					+ ", groupSizes=" + Arrays.toString(groupSizes)
 					+ ", groupChars=" + Arrays.toString(groupChars) + "]";
 		}

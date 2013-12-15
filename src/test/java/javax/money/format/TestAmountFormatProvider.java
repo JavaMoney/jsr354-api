@@ -34,7 +34,7 @@ public class TestAmountFormatProvider implements
 
 	@Override
 	public MonetaryAmountFormat getFormat(
-			FormatStyle formatStyle, MonetaryContext monetaryContext,
+			AmountStyle formatStyle, MonetaryContext monetaryContext,
 			CurrencyUnit defaultCurrency) {
 		return new TestFormat(null, formatStyle, monetaryContext,
 				defaultCurrency);
@@ -42,17 +42,17 @@ public class TestAmountFormatProvider implements
 
 	public static final class TestFormat implements MonetaryAmountFormat {
 
-		private FormatStyle formatStyle = new FormatStyle.Builder(
+		private AmountStyle formatStyle = new AmountStyle.Builder(
 				Locale.ENGLISH)
 				.build();
 		private MonetaryContext monetaryContext;
 		private CurrencyUnit defaultCurrency;
 
 		TestFormat(Locale locale,
-				FormatStyle formatStyle, MonetaryContext monetaryContext,
+				AmountStyle formatStyle, MonetaryContext monetaryContext,
 				CurrencyUnit defaultCurrency) {
 			if (locale != null && formatStyle == null) {
-				formatStyle = new FormatStyle.Builder(locale)
+				formatStyle = new AmountStyle.Builder(locale)
 						.build();
 			}
 			this.formatStyle = formatStyle;
@@ -66,7 +66,7 @@ public class TestAmountFormatProvider implements
 		}
 
 		@Override
-		public FormatStyle getFormatStyle() {
+		public AmountStyle getAmountStyle() {
 			return formatStyle;
 		}
 

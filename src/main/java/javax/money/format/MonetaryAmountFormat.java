@@ -45,13 +45,13 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	public CurrencyUnit getDefaultCurrency();
 
 	/**
-	 * Get the {@link FormatStyle} used by this {@link MonetaryAmountFormat}
+	 * Get the {@link AmountStyle} used by this {@link MonetaryAmountFormat}
 	 * instance.
 	 * 
 	 * @return the {@link MonetaryAmountFormat} instance user, never
 	 *         {@code null}.
 	 */
-	public FormatStyle getFormatStyle();
+	public AmountStyle getAmountStyle();
 
 	/**
 	 * Formats a value of {@code T} to a {@code String}. The {@link Locale}

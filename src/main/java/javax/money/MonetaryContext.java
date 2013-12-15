@@ -37,9 +37,33 @@ import java.util.Set;
  * 
  * @author Anatole Tresch
  */
-public final class MonetaryContext implements Serializable {
+public final class MonetaryContext<T extends MonetaryAmount<?>> implements
+		Serializable {
 
 	private static final long serialVersionUID = 5579720004786848255L;
+
+	/**
+	 * Defines the common flavors of {@link MonetaryAmount} implementations.
+	 * This information can be additionally used to determine which
+	 * implementation type should be used, additionally to the other properties
+	 * and attributes in {@link MonetaryContext}.
+	 * 
+	 * @author Anatole Tresch
+	 */
+	public static enum Flavor {
+		/**
+		 * The implementation is optimized for precise results, not primarly for
+		 * performance.
+		 */
+		PRECISION,
+		/**
+		 * The implementation is optimized for fast results, but reduced
+		 * precision and scale, may be possible.
+		 */
+		PERFORMANCE,
+		/** The implementation has no defined flavor. */
+		UNDEFINED,
+	}
 
 	/**
 	 * The number of digits to be used for an operation. A value of 0 indicates
@@ -58,7 +82,10 @@ public final class MonetaryContext implements Serializable {
 	 * representation type can be accessed from from
 	 * {@link MonetaryAmount#getNumber()}.
 	 */
-	private final Class<?> numberType;
+	private final Class<T> amountType;
+
+	/** The generic amount bahavioral characteristics. */
+	private final Flavor flavor;
 
 	/**
 	 * This map contains arbitrary attributes, identified by class. This allows
@@ -97,10 +124,11 @@ public final class MonetaryContext implements Serializable {
 	 *             if the {@code setPrecision} parameter is less than zero.
 	 */
 	@SuppressWarnings("rawtypes")
-	private MonetaryContext(Class numberType, int precision, int maxScale,
+	private MonetaryContext(Class<T> implementationType, int precision,
+			int maxScale,
 			boolean fixedScale,
+			Flavor flavor,
 			Map<Class, Object> attributes) {
-		Objects.requireNonNull(numberType);
 		if (precision < 0)
 			throw new IllegalArgumentException("precision < 0");
 		if (maxScale < -1)
@@ -108,7 +136,8 @@ public final class MonetaryContext implements Serializable {
 		this.precision = precision;
 		this.fixedScale = fixedScale;
 		this.maxScale = maxScale;
-		this.numberType = numberType;
+		this.amountType = implementationType;
+		this.flavor = flavor;
 		if (attributes != null) {
 			this.attributes.putAll(attributes);
 		}
@@ -120,7 +149,7 @@ public final class MonetaryContext implements Serializable {
 	 * @return an {@code int} which is the value of the {@code precision}
 	 *         setting
 	 */
-	public int getMaxPrecision() {
+	public int getPrecision() {
 		return precision;
 	}
 
@@ -146,16 +175,22 @@ public final class MonetaryContext implements Serializable {
 	}
 
 	/**
-	 * Access the numeric representation type for the {@link MonetaryAmount}
-	 * implementation. In most cases the representation type equals also the
-	 * numeric implementation type used, whereas this is not required. Though
-	 * only instances of this representation type can be accessed from from
-	 * {@link MonetaryAmount#getNumber()}.
+	 * Access the amount implementation type for the {@link MonetaryAmount}
+	 * implementation.
 	 * 
-	 * @return the numeric representation type, never {@code null}.
+	 * @return the amount representation type, never {@code null}.
 	 */
-	public Class<?> getNumberType() {
-		return numberType;
+	public Class<T> getAmountType() {
+		return amountType;
+	}
+
+	/**
+	 * Get the {@link Flavor}.
+	 * 
+	 * @return the {@link MonetaryAmount}s {@link Flavor}.
+	 */
+	public Flavor getAmountFlavor() {
+		return flavor;
 	}
 
 	/**
@@ -229,8 +264,10 @@ public final class MonetaryContext implements Serializable {
 				+ ((attributes == null) ? 0 : attributes.hashCode());
 		result = prime * result + (fixedScale ? 1231 : 1237);
 		result = prime * result + maxScale;
-		result = prime * result
-				+ ((numberType == null) ? 0 : numberType.hashCode());
+		result = prime
+				* result
+				+ ((amountType == null) ? 0 : amountType
+						.hashCode());
 		result = prime * result + precision;
 		return result;
 	}
@@ -248,7 +285,7 @@ public final class MonetaryContext implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MonetaryContext other = (MonetaryContext) obj;
+		MonetaryContext<?> other = (MonetaryContext<?>) obj;
 		if (attributes == null) {
 			if (other.attributes != null)
 				return false;
@@ -258,14 +295,19 @@ public final class MonetaryContext implements Serializable {
 			return false;
 		if (maxScale != other.maxScale)
 			return false;
-		if (numberType == null) {
-			if (other.numberType != null)
+		if (amountType == null) {
+			if (other.amountType != null)
 				return false;
-		} else if (!numberType.equals(other.numberType))
+		} else if (!amountType.equals(other.amountType))
 			return false;
 		if (precision != other.precision)
 			return false;
 		return true;
+	}
+
+	public static <I extends MonetaryAmount<I>> MonetaryContext<I> from(
+			MonetaryContext<?> context, Class<I> amountType) {
+		return new MonetaryContext.Builder(context).build(amountType);
 	}
 
 	/*
@@ -275,7 +317,8 @@ public final class MonetaryContext implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "MonetaryContext [numberType=" + numberType + ", precision="
+		return "MonetaryContext [amountType=" + amountType
+				+ ", precision="
 				+ precision + ", maxScale=" + maxScale + ", fixedScale="
 				+ fixedScale
 				+ ", attributes=" + attributes + "]";
@@ -310,9 +353,15 @@ public final class MonetaryContext implements Serializable {
 		/** The maximal precision of the {@link MonetaryContext} built. */
 		private int precision;
 		/**
-		 * The numeric representation type of the {@link MonetaryContext} built.
+		 * The amount's implementationType type for the {@link MonetaryContext}
+		 * built.
 		 */
-		private Class<?> numberType;
+		private Class<?> amountType;
+		/**
+		 * The basic required {@link Flavor} of the {@link MonetaryAmount}
+		 * implementation.
+		 */
+		private Flavor flavor = Flavor.UNDEFINED;
 		/** Any additional attributes of the {@link MonetaryContext} built. */
 		@SuppressWarnings("rawtypes")
 		private Map<Class, Object> attributes = new HashMap<>();
@@ -330,16 +379,39 @@ public final class MonetaryContext implements Serializable {
 		 * @param numberType
 		 *            the numeric representation type, not {@code null}.
 		 */
-		public Builder(Class<?> numberType) {
-			Objects.requireNonNull(numberType);
-			this.numberType = numberType;
+		public Builder(Class<? extends MonetaryAmount<?>> amountType) {
+			Objects.requireNonNull(amountType);
+			this.amountType = amountType;
 		}
 
 		/**
 		 * Creates a new {@link Builder}.
 		 */
 		public Builder() {
-			this.numberType = Number.class; // unspecified
+			this.amountType = MonetaryAmount.class; // unspecified
+		}
+
+		public Builder(MonetaryContext<?> context) {
+			this.amountType = context.getAmountType();
+			this.maxScale = context.getMaxScale();
+			this.fixedScale = context.isFixedScale();
+			this.precision = context.getPrecision();
+			this.attributes.putAll(context.getAttributes());
+		}
+
+		/**
+		 * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to
+		 * {@code fixedScale}.
+		 * 
+		 * @param fixedScale
+		 *            the min/max scale to be used, which must be {@code >=0}.
+		 * @return the {@link Builder}, for chaining.
+		 */
+		public Builder setAmountType(
+				Class<? extends MonetaryAmount<?>> amountType) {
+			Objects.requireNonNull(amountType);
+			this.amountType = amountType;
+			return this;
 		}
 
 		/**
@@ -367,6 +439,20 @@ public final class MonetaryContext implements Serializable {
 		 */
 		public Builder setFixedScale(boolean fixedScale) {
 			this.fixedScale = fixedScale;
+			return this;
+		}
+
+		/**
+		 * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to
+		 * {@code fixedScale}.
+		 * 
+		 * @param fixedScale
+		 *            the min/max scale to be used, which must be {@code >=0}.
+		 * @return the {@link Builder}, for chaining.
+		 */
+		public Builder setFlavor(Flavor flavor) {
+			Objects.requireNonNull(flavor);
+			this.flavor = flavor;
 			return this;
 		}
 
@@ -422,10 +508,28 @@ public final class MonetaryContext implements Serializable {
 		 * @throws IllegalArgumentException
 		 *             if building of the {@link MonetaryContext} fails.
 		 */
-		public MonetaryContext build() {
-			return new MonetaryContext(numberType, precision,
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public MonetaryContext<?> build() {
+			return new MonetaryContext(amountType, precision,
 					maxScale, fixedScale,
-					attributes);
+					flavor, attributes);
+		}
+
+		/**
+		 * Builds a new instance of {@link MonetaryContext}, hereby allowing for
+		 * explicit templating.
+		 * 
+		 * @param amountType
+		 *            the {@link MonetaryAmount} implementation type.
+		 * @return a new instance of {@link MonetaryContext}, never {@code null}
+		 * @throws IllegalArgumentException
+		 *             if building of the {@link MonetaryContext} fails.
+		 */
+		public <T extends MonetaryAmount<T>> MonetaryContext<T> build(
+				Class<T> amountType) {
+			return new MonetaryContext<T>(amountType, precision,
+					maxScale, fixedScale,
+					flavor, attributes);
 		}
 
 		/*
@@ -435,7 +539,7 @@ public final class MonetaryContext implements Serializable {
 		 */
 		@Override
 		public String toString() {
-			return "MonetaryContext.Builder [numberType=" + numberType
+			return "MonetaryContext.Builder [amountType=" + amountType
 					+ ", precision="
 					+ precision + ", maxScale=" + maxScale + ", fixedScale="
 					+ fixedScale + ", attributes=" + attributes + "]";

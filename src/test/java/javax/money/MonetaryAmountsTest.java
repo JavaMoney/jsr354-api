@@ -14,46 +14,56 @@ package javax.money;
 
 import static org.junit.Assert.*;
 
-import java.math.BigDecimal;
+import javax.money.DummyAmountFactory.DummyAmount;
 
 import org.junit.Test;
 
+/**
+ * @author Anatole
+ * 
+ */
 public class MonetaryAmountsTest {
 
+	/**
+	 * Test method for
+	 * {@link javax.money.MonetaryAmounts#getFactory(java.lang.Class)}.
+	 */
 	@Test
-	public void testGetAmountDouble() {
-		MonetaryAmount amt = MonetaryAmounts.getAmount("test1", 10.0d);
-		assertNotNull(amt);
+	public void testGetFactory() {
+		assertNotNull(MonetaryAmounts.getFactory());
+		assertNotNull(MonetaryAmounts.getFactory(DummyAmount.class));
+		assertTrue(MonetaryAmounts.getFactory() == MonetaryAmounts
+				.getFactory(DummyAmount.class));
 	}
-	
+
+	/**
+	 * Test method for {@link javax.money.MonetaryAmounts#getTypes()}.
+	 */
 	@Test
-	public void testGetAmountLong() {
-		MonetaryAmount amt = MonetaryAmounts.getAmount("test1", 10L);
-		assertNotNull(amt);
+	public void testGetTypes() {
+		assertNotNull(MonetaryAmounts.getTypes());
+		assertTrue(MonetaryAmounts.getTypes().size() == 1);
+		assertTrue(MonetaryAmounts.getTypes().contains(DummyAmount.class));
 	}
-	
+
+	/**
+	 * Test method for
+	 * {@link javax.money.MonetaryAmounts#getDefaultAmountType()}.
+	 */
 	@Test
-	public void testGetAmountNumber() {
-		MonetaryAmount amt = MonetaryAmounts.getAmount("test1", Integer.valueOf(10));
-		assertNotNull(amt);
+	public void testGetDefaultAmountType() {
+		assertNotNull(MonetaryAmounts.getDefaultAmountType());
+		assertEquals(DummyAmount.class, MonetaryAmounts.getDefaultAmountType());
 	}
-	
+
+	/**
+	 * Test method for
+	 * {@link javax.money.MonetaryAmounts#getAmountType(javax.money.MonetaryContext)}
+	 * .
+	 */
 	@Test
-	public void testGetAmountDoubleMonetaryContext() {
-		MonetaryAmount amt = MonetaryAmounts.getAmount("test1", 10.0d, new MonetaryContext.Builder(BigDecimal.class).build());
-		assertNotNull(amt);
-	}
-	
-	@Test
-	public void testGetAmountLongMonetaryContext() {
-		MonetaryAmount amt = MonetaryAmounts.getAmount("test1", 10L, new MonetaryContext.Builder(BigDecimal.class).build());
-		assertNotNull(amt);
-	}
-	
-	@Test
-	public void testGetAmountNumberMonetaryContext() {
-		MonetaryAmount amt = MonetaryAmounts.getAmount("test1", Integer.valueOf(10), new MonetaryContext.Builder(BigDecimal.class).build());
-		assertNotNull(amt);
+	public void testGetAmountType() {
+		assertNotNull(MonetaryAmounts.getAmountType(null));
 	}
 
 }

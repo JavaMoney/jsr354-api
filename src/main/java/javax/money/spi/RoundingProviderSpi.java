@@ -115,7 +115,7 @@ public interface RoundingProviderSpi {
 	 *            The target {@link MonetaryContext}
 	 * @return the corresponding rounding, or {@code null}
 	 */
-	MonetaryOperator getRounding(MonetaryContext monetaryContext);
+	MonetaryOperator getRounding(MonetaryContext<?> monetaryContext);
 
 	/**
 	 * Access the ids of the custom roundigs defined by this provider.

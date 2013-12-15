@@ -52,10 +52,5 @@ public enum CurrencyStyle {
 	 * 
 	 * @see CurrencyUnit#getCurrencyCode()
 	 */
-	SYMBOL,
-
-	/**
-	 * The currency will be not rendered at all.
-	 */
-	OMIT
+	SYMBOL
 }

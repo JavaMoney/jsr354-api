@@ -29,13 +29,22 @@ import java.util.logging.Logger;
  * @author Anatole Tresch
  */
 public final class Bootstrap {
-
+	/** The ServiceProvider used. */
 	private static volatile ServiceProvider services;
+	/** The shared lock instance user. */
 	private static final Object LOCK = new Object();
 
-	public Bootstrap() {
+	/**
+	 * Private singletons constructor.
+	 */
+	private Bootstrap() {
 	}
 
+	/**
+	 * Load the {@link ServiceProvider} to be used.
+	 * 
+	 * @return {@link ServiceProvider} to be used for loading the services.
+	 */
 	private static ServiceProvider loadDefaultServiceProvider() {
 		try {
 			List<ServiceProvider> providers = new ArrayList<>();
@@ -51,10 +60,16 @@ public final class Bootstrap {
 		}
 	}
 
-	public static void init(ServiceProvider services) {
+	/**
+	 * Replace the current {@link ServiceProvider} in use.
+	 * 
+	 * @param serviceProvider
+	 *            the new {@link ServiceProvider}
+	 */
+	public static void init(ServiceProvider serviceProvider) {
 		synchronized (LOCK) {
-			if (services == null) {
-				Bootstrap.services = services;
+			if (serviceProvider == null) {
+				Bootstrap.services = serviceProvider;
 			}
 			else {
 				throw new IllegalStateException(
@@ -63,6 +78,12 @@ public final class Bootstrap {
 		}
 	}
 
+	/**
+	 * Ge {@link ServiceProvider}. If necessary the {@link ServiceProvider} will
+	 * be laziliy loaded.
+	 * 
+	 * @return the {@link ServiceProvider} used.
+	 */
 	static ServiceProvider getServiceProvider() {
 		if (services == null) {
 			synchronized (LOCK) {
@@ -74,23 +95,64 @@ public final class Bootstrap {
 		return services;
 	}
 
+	/**
+	 * Convenience method for {@link #getServiceProvider()#getServices(Class)}.
+	 * 
+	 * @see ServiceProvider#getServices(Class)
+	 * @param serviceType
+	 *            the service type.
+	 * @return the services found.
+	 */
 	public static <T> Collection<T> getServices(Class<T> serviceType) {
 		return getServiceProvider().getServices(serviceType);
 	}
 
+	/**
+	 * Convenience method for {@link #getServiceProvider()#getServices(Class)}.
+	 * 
+	 * @see ServiceProvider#getServices(Class, Collection)
+	 * @param serviceType
+	 *            the service type.
+	 * @param defaultServices
+	 *            the default servicve list.
+	 * @return the services found.
+	 */
 	public static <T> Collection<T> getServices(Class<T> serviceType,
 			Collection<T> defaultServices) {
 		return getServiceProvider().getServices(serviceType, defaultServices);
 	}
 
+	/**
+	 * Convenience method for {@link #getServiceProvider()#getService(Class)}.
+	 * 
+	 * @see ServiceProvider#getService(Class)
+	 * @param serviceType
+	 *            the service type.
+	 * @return the services found.
+	 */
 	public static <T> T getService(Class<T> serviceType) {
 		return getServiceProvider().getService(serviceType);
 	}
 
+	/**
+	 * Convenience method for {@link #getServiceProvider()#getService(Class)}.
+	 * 
+	 * @see ServiceProvider#getService(Class, Object)
+	 * @param serviceType
+	 *            the service type.
+	 * @param defaultService
+	 *            returned if no service was found.
+	 * @return the services found.
+	 */
 	public static <T> T getService(Class<T> serviceType, T defaultService) {
 		return getServiceProvider().getService(serviceType, defaultService);
 	}
 
+	/**
+	 * Comparator used for ordering the services provided.
+	 * 
+	 * @author Anatole Tresch
+	 */
 	private static final class ProviderComparator implements
 			Comparator<ServiceProvider> {
 		@Override

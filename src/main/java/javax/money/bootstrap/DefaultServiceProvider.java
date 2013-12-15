@@ -27,14 +27,36 @@ import java.util.logging.Logger;
  * @author Anatole Tresch
  */
 public class DefaultServiceProvider implements ServiceProvider {
-
+	/** List of services loaded, per class. */
+	@SuppressWarnings("rawtypes")
 	private Map<Class, List<Object>> servicesLoaded = new ConcurrentHashMap<>();
 
+	/**
+	 * Access the given service by type.
+	 * 
+	 * @param serviceType
+	 *            the service type.
+	 * @param <T>
+	 *            the concrete type.
+	 * @return the required service, or {@code null}.
+	 */
 	@Override
 	public <T> T getService(Class<T> serviceType) {
 		return getService(serviceType, null);
 	}
 
+	/**
+	 * Access the given service by type.
+	 * 
+	 * @param serviceType
+	 *            the service type.
+	 * @param <T>
+	 *            the concrete type.
+	 * @param defaultInstance
+	 *            The instance to be returned, if no service is registered, also
+	 *            {@code null} is a valid default value.
+	 * @return the required service, or {@code defaultInstance}.
+	 */
 	@Override
 	public <T> T getService(Class<T> serviceType, T defaultInstance) {
 		Collection<T> services = getServices(serviceType);
@@ -44,14 +66,36 @@ public class DefaultServiceProvider implements ServiceProvider {
 		return services.iterator().next();
 	}
 
+	/**
+	 * Access all services available by type.
+	 * 
+	 * @param serviceType
+	 *            the service type.
+	 * @param <T>
+	 *            the concrete type.
+	 * @return all services available, never {@code null}.
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Collection<T> getServices(Class<T> serviceType) {
 		return getServices(serviceType, (Collection<T>) Collections.emptyList());
 	}
 
+	/**
+	 * Access all services available by type.
+	 * 
+	 * @param serviceType
+	 *            the service type.
+	 * @param <T>
+	 *            the concrete type.
+	 * @param defaultList
+	 *            the list of items returned, if no services were found.
+	 * @return all services available, never {@code defaultList}.
+	 */
 	@Override
 	public <T> Collection<T> getServices(Class<T> serviceType,
 			Collection<T> defaultList) {
+		@SuppressWarnings("unchecked")
 		List<T> found = (List<T>) servicesLoaded.get(serviceType);
 		if (found != null) {
 			return found;
@@ -59,7 +103,20 @@ public class DefaultServiceProvider implements ServiceProvider {
 		return loadServices(serviceType, defaultList);
 	}
 
-	public <T> Collection<T> loadServices(Class<T> serviceType, Collection<T> defaultList) {
+	/**
+	 * Loads and registers services.
+	 * 
+	 * @param serviceType
+	 *            The service type.
+	 * @param <T>
+	 *            the concrete type.
+	 * @param defaultList
+	 *            the list of items returned, if no services were found.
+	 * @return the items found, never {@code null}.
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> Collection<T> loadServices(Class<T> serviceType,
+			Collection<T> defaultList) {
 		List<T> found = null;
 		synchronized (servicesLoaded) {
 			found = (List<T>) servicesLoaded.get(serviceType);

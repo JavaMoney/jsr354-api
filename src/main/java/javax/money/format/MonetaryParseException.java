@@ -44,7 +44,7 @@ public class MonetaryParseException extends MonetaryException {
 	 *            the detail message
 	 * @param parsedData
 	 *            the parsed text, should not be null
-	 * @param errorOffset
+	 * @param errorIndex
 	 *            the position where the error is found while parsing.
 	 */
 	public MonetaryParseException(String message, CharSequence parsedData,
@@ -60,7 +60,7 @@ public class MonetaryParseException extends MonetaryException {
 	 * 
 	 * @param parsedData
 	 *            the parsed text, should not be null
-	 * @param errorOffset
+	 * @param errorIndex
 	 *            the position where the error is found while parsing.
 	 */
 	public MonetaryParseException(CharSequence parsedData,

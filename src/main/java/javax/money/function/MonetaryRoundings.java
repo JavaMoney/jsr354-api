@@ -10,11 +10,8 @@
  */
 package javax.money.function;
 
-import java.math.RoundingMode;
-import java.util.Currency;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,8 +22,6 @@ import javax.money.MonetaryContext;
 import javax.money.MonetaryException;
 import javax.money.MonetaryOperator;
 import javax.money.bootstrap.Bootstrap;
-import javax.money.format.MonetaryAmountFormat;
-import javax.money.spi.MonetaryAmountFormatProviderSpi;
 import javax.money.spi.RoundingProviderSpi;
 
 /**
@@ -52,17 +47,6 @@ public final class MonetaryRoundings {
 		// Singleton
 	}
 
-	private static ServiceLoader<RoundingProviderSpi> loadSpis() {
-		try {
-			return ServiceLoader.load(RoundingProviderSpi.class);
-		} catch (Exception e) {
-			Logger.getLogger(MonetaryRoundings.class.getName()).log(
-					Level.SEVERE,
-					"Error loading RoundingProviderSpi instances.", e);
-			return null;
-		}
-	}
-
 	/**
 	 * Creates a rounding that can be added as {@link MonetaryAdjuster} to
 	 * chained calculations. The instance will lookup the concrete
@@ -78,14 +62,18 @@ public final class MonetaryRoundings {
 	/**
 	 * Creates an rounding instance using {@link RoundingMode#UP} rounding.
 	 * 
-	 * @param scale
-	 *            The target scale, not < 0.
+	 * @param monetaryContext
+	 *            The {@link MonetaryContext} defining the required rounding.
+	 * @return the corresponding {@link MonetaryOperator} implementing the
+	 *         rounding.
+	 * @throws MonetaryException
+	 *             if no such rounding could be evaluated.
 	 */
-	public static MonetaryOperator getRounding(MonetaryContext monetaryContext) {
+	public static MonetaryOperator getRounding(MonetaryContext<?> monetaryContext) {
 		Objects.requireNonNull(monetaryContext, "MonetaryContext required.");
 		for (RoundingProviderSpi prov : Bootstrap
 				.getServices(
-						RoundingProviderSpi.class)) {
+				RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getRounding(monetaryContext);
 				if (op != null) {
@@ -117,7 +105,7 @@ public final class MonetaryRoundings {
 		Objects.requireNonNull(currency, "Currency required.");
 		for (RoundingProviderSpi prov : Bootstrap
 				.getServices(
-						RoundingProviderSpi.class)) {
+				RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getRounding(currency);
 				if (op != null) {
@@ -149,7 +137,7 @@ public final class MonetaryRoundings {
 		Objects.requireNonNull(currency, "Currency required.");
 		for (RoundingProviderSpi prov : Bootstrap
 				.getServices(
-						RoundingProviderSpi.class)) {
+				RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getCashRounding(currency);
 				if (op != null) {
@@ -185,7 +173,7 @@ public final class MonetaryRoundings {
 		Objects.requireNonNull(currency, "Currency required.");
 		for (RoundingProviderSpi prov : Bootstrap
 				.getServices(
-						RoundingProviderSpi.class)) {
+				RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getRounding(currency, timestamp);
 				if (op != null) {
@@ -221,7 +209,7 @@ public final class MonetaryRoundings {
 		Objects.requireNonNull(currency, "Currency required.");
 		for (RoundingProviderSpi prov : Bootstrap
 				.getServices(
-						RoundingProviderSpi.class)) {
+				RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getCashRounding(currency, timestamp);
 				if (op != null) {
@@ -242,7 +230,7 @@ public final class MonetaryRoundings {
 	 * Access an {@link MonetaryAdjuster} for custom rounding
 	 * {@link MonetaryAmount} instances.
 	 * 
-	 * @param customRounding
+	 * @param customRoundingId
 	 *            The customRounding identifier.
 	 * @return the corresponding {@link MonetaryAdjuster} implementing the
 	 *         rounding, never {@code null}.
@@ -254,7 +242,7 @@ public final class MonetaryRoundings {
 		Objects.requireNonNull(customRoundingId, "CustomRoundingId required.");
 		for (RoundingProviderSpi prov : Bootstrap
 				.getServices(
-						RoundingProviderSpi.class)) {
+				RoundingProviderSpi.class)) {
 			try {
 				MonetaryOperator op = prov.getCustomRounding(customRoundingId);
 				if (op != null) {
@@ -280,7 +268,7 @@ public final class MonetaryRoundings {
 		Set<String> result = new HashSet<String>();
 		for (RoundingProviderSpi prov : Bootstrap
 				.getServices(
-						RoundingProviderSpi.class)) {
+				RoundingProviderSpi.class)) {
 			try {
 				result.addAll(prov.getCustomRoundingIds());
 			} catch (Exception e) {
@@ -302,7 +290,7 @@ public final class MonetaryRoundings {
 	private static final class DefaultCurrencyRounding implements
 			MonetaryOperator {
 		@Override
-		public MonetaryAmount apply(MonetaryAmount amount) {
+		public <T extends MonetaryAmount<T>> T apply(T amount) {
 			MonetaryOperator r = MonetaryRoundings.getRounding(amount
 					.getCurrency());
 			return r.apply(amount);

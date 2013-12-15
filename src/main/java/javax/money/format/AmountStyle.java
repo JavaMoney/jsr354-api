@@ -15,12 +15,11 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
 
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
 
 /**
- * The {@link AmountStyle} defines how a {@link MonetaryAmount} should be formatted.
+ * The {@link AmountStyle} defines how a {@link MonetaryAmount} should be
+ * formatted.
  * 
  * @author Anatole Tresch
  */
@@ -51,19 +50,30 @@ public final class AmountStyle {
 	/**
 	 * Constructor.
 	 * 
+	 * @param locale
+	 *            The locale
 	 * @param format
 	 *            The {@link DecimalFormat} used.
 	 * @param groupSizes
 	 *            the customized group sizes.
 	 * @param groupChars
 	 *            the customized group characters.
-	 * @param rounding
-	 *            the custom rounding.
-	 * @param currencyPlacement2
-	 * @param currencyStyle2
+	 * @param formatConversion
+	 *            the conversion {@link MonetaryOperator} done before formatting
+	 *            the amount.
+	 * @param currencyStyle
+	 *            the {@link CurrencyStyle} to be applied.
+	 * @param parseConversion
+	 *            the conversion {@link MonetaryOperator} done after parsing the
+	 *            amount.
+	 * @param currencyPlacement
+	 *            THe {@link CurrencyPlacement}
+	 * @param currencySeparator
+	 *            the currency separating String.
 	 */
 	private AmountStyle(Locale locale, DecimalFormat format, int[] groupSizes,
-			char[] groupChars, MonetaryOperator formatConversion, MonetaryOperator parseConversion,
+			char[] groupChars, MonetaryOperator formatConversion,
+			MonetaryOperator parseConversion,
 			CurrencyStyle currencyStyle, CurrencyPlacement currencyPlacement,
 			String currencySeparator) {
 		this.groupSizes = groupSizes;
@@ -231,7 +241,7 @@ public final class AmountStyle {
 	}
 
 	/**
-	 * Builder for creating a new {@link AmountStyle}
+	 * Builder for creating a new {@link AmountStyle}.
 	 * 
 	 * @author Anatole Tresch
 	 */
@@ -249,11 +259,11 @@ public final class AmountStyle {
 		/** The customized group characters, if any. */
 		private char[] groupChars;
 		/** The {@link CurrencyStyle} to be used, not {@code null}. */
-		public CurrencyStyle currencyStyle = CurrencyStyle.CODE;
+		private CurrencyStyle currencyStyle = CurrencyStyle.CODE;
 		/** The {@link CurrencyPlacement} to be used, not {@code null}. */
-		public CurrencyPlacement currencyPlacement = CurrencyPlacement.BEFORE;
+		private CurrencyPlacement currencyPlacement = CurrencyPlacement.BEFORE;
 		/** The {@link CurrencyPlacement} to be used, not {@code null}. */
-		public String currencySeparator = " ";
+		private String currencySeparator = " ";
 
 		/**
 		 * Creates a new {@link Builder}.
@@ -291,7 +301,7 @@ public final class AmountStyle {
 			this.formatConversion = conversion;
 			return this;
 		}
-		
+
 		/**
 		 * Sets the conversion to be applied after parsing.
 		 * 

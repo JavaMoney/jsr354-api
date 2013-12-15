@@ -12,11 +12,6 @@
  */
 package javax.money;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ServiceLoader;
@@ -26,7 +21,6 @@ import java.util.logging.Logger;
 
 import javax.money.bootstrap.Bootstrap;
 import javax.money.spi.CurrencyProviderSpi;
-import javax.money.spi.RoundingProviderSpi;
 
 /**
  * Factory singleton for {@link CurrencyUnit} instances as provided by the
@@ -167,42 +161,6 @@ public final class MonetaryCurrencies {
 			return true;
 		} catch (Exception e) {
 			return false;
-		}
-	}
-
-
-	// private methods
-
-	/**
-	 * Loader method, executed on startup once.
-	 * 
-	 * @return the {@link CurrencyProviderSpi} loaded.
-	 */
-	private static Collection<CurrencyProviderSpi> loadCurrencyProviderSpis() {
-		List<CurrencyProviderSpi> spis = new ArrayList<CurrencyProviderSpi>();
-		try {
-			for (CurrencyProviderSpi spi : ServiceLoader
-					.load(CurrencyProviderSpi.class)) {
-				spis.add(spi);
-			}
-		} catch (Exception e) {
-			Logger.getLogger(MonetaryCurrencies.class.getName()).log(
-					Level.SEVERE,
-					"Error loading CurrencyProviderSpi instances.", e);
-			return null;
-		}
-		Collections.sort(spis, new PriorityComparator());
-		return spis;
-	}
-
-	
-	private static final class PriorityComparator implements Comparator<Object> {
-		@Override
-		public int compare(Object o1, Object o2) {
-			Class class1 = o1.getClass();
-			Class class2 = o2.getClass();
-			// TODO
-			return 0;
 		}
 	}
 

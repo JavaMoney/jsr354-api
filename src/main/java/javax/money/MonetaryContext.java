@@ -13,8 +13,6 @@
 package javax.money;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +37,7 @@ import java.util.Set;
  */
 public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		Serializable {
-
+	/** serialVersionUID. */
 	private static final long serialVersionUID = 5579720004786848255L;
 
 	/**
@@ -50,7 +48,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	 * 
 	 * @author Anatole Tresch
 	 */
-	public static enum Flavor {
+	public static enum AmountFlavor {
 		/**
 		 * The implementation is optimized for precise results, not primarly for
 		 * performance.
@@ -85,7 +83,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	private final Class<T> amountType;
 
 	/** The generic amount bahavioral characteristics. */
-	private final Flavor flavor;
+	private final AmountFlavor flavor;
 
 	/**
 	 * This map contains arbitrary attributes, identified by class. This allows
@@ -114,29 +112,37 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	 * Constructs a new {@code MonetaryContext} with the specified precision and
 	 * rounding mode.
 	 * 
-	 * @param numberType
-	 *            The numeric representation class.
+	 * @param amountType
+	 *            The {@link MonetaryAmount} implementation class.
 	 * @param precision
 	 *            The non-negative {@code int} precision setting.
-	 * @param convertibleTypes
-	 *            The convertible target classes for this type.
+	 * @param maxScale
+	 *            the maximal scale.
+	 * @param fixedScale
+	 *            Flag for determining a fixed scale context.
+	 * @param flavor
+	 *            the {@link AmountFlavor} set.
+	 * @param attributes
+	 *            Any additional attributes.
 	 * @throws IllegalArgumentException
 	 *             if the {@code setPrecision} parameter is less than zero.
 	 */
 	@SuppressWarnings("rawtypes")
-	private MonetaryContext(Class<T> implementationType, int precision,
+	private MonetaryContext(Class<T> amountType, int precision,
 			int maxScale,
 			boolean fixedScale,
-			Flavor flavor,
+			AmountFlavor flavor,
 			Map<Class, Object> attributes) {
-		if (precision < 0)
+		if (precision < 0) {
 			throw new IllegalArgumentException("precision < 0");
-		if (maxScale < -1)
+		}
+		if (maxScale < -1) {
 			throw new IllegalArgumentException("maxScale < -1");
+		}
 		this.precision = precision;
 		this.fixedScale = fixedScale;
 		this.maxScale = maxScale;
-		this.amountType = implementationType;
+		this.amountType = amountType;
 		this.flavor = flavor;
 		if (attributes != null) {
 			this.attributes.putAll(attributes);
@@ -185,11 +191,11 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	}
 
 	/**
-	 * Get the {@link Flavor}.
+	 * Get the {@link AmountFlavor}.
 	 * 
-	 * @return the {@link MonetaryAmount}s {@link Flavor}.
+	 * @return the {@link MonetaryAmount}s {@link AmountFlavor}.
 	 */
-	public Flavor getAmountFlavor() {
+	public AmountFlavor getAmountFlavor() {
 		return flavor;
 	}
 
@@ -305,6 +311,17 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		return true;
 	}
 
+	/**
+	 * Creates a new {@link MonetaryContext} targeting the the given amount
+	 * type, using the given {@link MonetaryContext} (so converting it).
+	 * 
+	 * @param context
+	 *            the {@link MonetaryContext} to be used.
+	 * @param amountType
+	 *            the target amount type.
+	 * @return the {@link MonetaryContext}, not {@code null .
+
+	 */
 	public static <I extends MonetaryAmount<I>> MonetaryContext<I> from(
 			MonetaryContext<?> context, Class<I> amountType) {
 		return new MonetaryContext.Builder(context).build(amountType);
@@ -330,6 +347,8 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	 * 
 	 * @param s
 	 *            the stream being read.
+	 * @throws ClassNotFoundException
+	 * @throws IOException
 	 */
 	private void readObject(java.io.ObjectInputStream s)
 			throws java.io.IOException, ClassNotFoundException {
@@ -349,7 +368,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	 * 
 	 * @author Anatole Tresch
 	 */
-	public final static class Builder {
+	public static final class Builder {
 		/** The maximal precision of the {@link MonetaryContext} built. */
 		private int precision;
 		/**
@@ -358,10 +377,10 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		 */
 		private Class<?> amountType;
 		/**
-		 * The basic required {@link Flavor} of the {@link MonetaryAmount}
+		 * The basic required {@link AmountFlavor} of the {@link MonetaryAmount}
 		 * implementation.
 		 */
-		private Flavor flavor = Flavor.UNDEFINED;
+		private AmountFlavor amountFlavor = AmountFlavor.UNDEFINED;
 		/** Any additional attributes of the {@link MonetaryContext} built. */
 		@SuppressWarnings("rawtypes")
 		private Map<Class, Object> attributes = new HashMap<>();
@@ -376,7 +395,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		/**
 		 * Creates a new {@link Builder}.
 		 * 
-		 * @param numberType
+		 * @param amountType
 		 *            the numeric representation type, not {@code null}.
 		 */
 		public Builder(Class<? extends MonetaryAmount<?>> amountType) {
@@ -391,6 +410,13 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 			this.amountType = MonetaryAmount.class; // unspecified
 		}
 
+		/**
+		 * Creates a new {@link Builder} and uses the given context to
+		 * initialize this instance.
+		 * 
+		 * @param context
+		 *            the base {@link MonetaryContext} to be used.
+		 */
 		public Builder(MonetaryContext<?> context) {
 			this.amountType = context.getAmountType();
 			this.maxScale = context.getMaxScale();
@@ -403,8 +429,8 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		 * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to
 		 * {@code fixedScale}.
 		 * 
-		 * @param fixedScale
-		 *            the min/max scale to be used, which must be {@code >=0}.
+		 * @param amountType
+		 *            the amount type to be used, not {@code null}.
 		 * @return the {@link Builder}, for chaining.
 		 */
 		public Builder setAmountType(
@@ -446,13 +472,13 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		 * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to
 		 * {@code fixedScale}.
 		 * 
-		 * @param fixedScale
-		 *            the min/max scale to be used, which must be {@code >=0}.
+		 * @param flavor
+		 *            the {@link AmountFlavor} to be used, not {@code null}.
 		 * @return the {@link Builder}, for chaining.
 		 */
-		public Builder setFlavor(Flavor flavor) {
+		public Builder setFlavor(AmountFlavor flavor) {
 			Objects.requireNonNull(flavor);
-			this.flavor = flavor;
+			this.amountFlavor = flavor;
 			return this;
 		}
 
@@ -512,7 +538,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		public MonetaryContext<?> build() {
 			return new MonetaryContext(amountType, precision,
 					maxScale, fixedScale,
-					flavor, attributes);
+					amountFlavor, attributes);
 		}
 
 		/**
@@ -529,7 +555,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 				Class<T> amountType) {
 			return new MonetaryContext<T>(amountType, precision,
 					maxScale, fixedScale,
-					flavor, attributes);
+					amountFlavor, attributes);
 		}
 
 		/*

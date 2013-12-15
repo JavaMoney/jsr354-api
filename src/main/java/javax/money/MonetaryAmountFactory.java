@@ -98,8 +98,8 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 	public T getAmount(CurrencyUnit currency, Number number);
 
 	/**
-	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
-	 * {@link MonetaryContext}.
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the
+	 * default {@link MonetaryContext}.
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
@@ -116,8 +116,8 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 	public T getAmount(String currencyCode, long number);
 
 	/**
-	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
-	 * {@link MonetaryContext}.
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the
+	 * default {@link MonetaryContext}.
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
@@ -134,8 +134,8 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 	public T getAmount(String currencyCode, double number);
 
 	/**
-	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
-	 * {@link MonetaryContext}.
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the
+	 * default {@link MonetaryContext}.
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
@@ -152,13 +152,13 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 	public T getAmount(String currencyCode, Number number);
 
 	/**
-	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
-	 * {@link MonetaryContext}.
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the
+	 * default {@link MonetaryContext}.
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
-	 * @param currency
-	 *            currency unit, not {@code null}.
+	 * @param currencyCode
+	 *            the currency code, not {@code null}.
 	 * @param context
 	 *            the {@link MonetaryContext} required.
 	 * @return a {@code Money} combining the numeric value and currency unit.
@@ -173,8 +173,8 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 			MonetaryContext<?> context);
 
 	/**
-	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
-	 * {@link MonetaryContext}.
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the
+	 * default {@link MonetaryContext}.
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
@@ -195,14 +195,14 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 			MonetaryContext<?> context);
 
 	/**
-	 * Creates a new instance of {@link MonetaryAmountFactory}, using the default
-	 * {@link MonetaryContext}.
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using the
+	 * default {@link MonetaryContext}.
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
 	 * @param currencyCode
 	 *            currency unit, not {@code null}.
-	 * @param context
+	 * @param monetaryContext
 	 *            the {@link MonetaryContext} required.
 	 * @return a {@code Money} combining the numeric value and currency unit.
 	 * @throws ArithmeticException
@@ -217,8 +217,8 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 			MonetaryContext<?> monetaryContext);
 
 	/**
-	 * Creates a new instance of {@link MonetaryAmountFactory}, using an explicit
-	 * {@link MonetaryContext}.
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using an
+	 * explicit {@link MonetaryContext}.
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
@@ -238,8 +238,8 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 			MonetaryContext<?> monetaryContext);
 
 	/**
-	 * Creates a new instance of {@link MonetaryAmountFactory}, using an explicit
-	 * {@link MonetaryContext}.
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using an
+	 * explicit {@link MonetaryContext}.
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
@@ -259,16 +259,15 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 			MonetaryContext<?> monetaryContext);
 
 	/**
-	 * Creates a new instance of {@link MonetaryAmountFactory}, using an explicit
-	 * {@link MonetaryContext}.
+	 * Creates a new instance of {@link MonetaryAmountFactory}, using an
+	 * explicit {@link MonetaryContext}.
 	 * 
 	 * @param number
 	 *            numeric value, not {@code null}.
 	 * @param currency
 	 *            currency unit, not {@code null}.
 	 * @param monetaryContext
-	 *            the {@link MonetaryContext} to be used, if {@code null} the
-	 *            default {@link MonetaryContext} is used.
+	 *            the {@link MonetaryContext} to be used, not{@code null}.
 	 * @return a {@code Money} instance based on the monetary context with the
 	 *         given numeric value, currency unit.
 	 * @throws ArithmeticException
@@ -280,7 +279,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 			MonetaryContext<?> monetaryContext);
 
 /**
-	 * Factory method creating a zero instance with the given {@code currency);
+	 * Factory method creating a zero instance with the given {@code currency).
 	 * @param currency 
 	 * 			the target {@link CurrencyUnit} of the {@link MonetaryAmount} being created, not {@code null}.
 	 * @return a new Money instance of zero, with a default {@link MonetaryContext}.
@@ -288,7 +287,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 	public T getAmountZero(CurrencyUnit currency);
 
 /**
-	 * Factory method creating a zero instance with the given {@code currencyCode);
+	 * Factory method creating a zero instance with the given {@code currencyCode).
 	 * @param currencyCode
 	 * 			the currency code to determine the {@link CurrencyUnit} of the {@link MonetaryAmount} being created.
 	 * @return a new Money instance of zero, with a default {@link MonetaryContext}.
@@ -299,18 +298,23 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 	public T getAmountZero(String currencyCode);
 
 /**
-	 * Factory method creating a zero instance with the given {@code currency);
+	 * Factory method creating a zero instance with the given {@code currency).
 	 * @param currency 
 	 * 			the target currency of the amount being created, not {@code null}.
+	 * @param monetaryContext
+	 *            the {@link MonetaryContext} to be used, not{@code null}.
 	 * @return a new Money instance of zero, with a default {@link MonetaryContext}.
 	 */
 	public T getAmountZero(CurrencyUnit currency,
 			MonetaryContext<?> monetaryContext);
 
 /**
-	 * Factory method creating a zero instance with the given {@code currency);
+	 * Factory method creating a zero instance with the given {@code currency).
 	 * @param currencyCode
-	 * 			the target currency code to determine the {@link CurrencyUnit} of the {@link MonetaryAmount} being created.
+	 * 			the target currency code to determine the {@link CurrencyUnit} 
+	 * 			of the {@link MonetaryAmount} being created.
+	 * @param monetaryContext 
+	 * 			The {@link MonetaryContext} to be used, not {@code null}.
 	 * @return a new {@link MonetaryAmount} instance of zero, with a default {@link MonetaryContext}.
 	 * @throws UnknownCurrencyException
 	 *             if the currency code can not be resolved to

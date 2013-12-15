@@ -30,10 +30,9 @@ public class UnknownCurrencyException extends MonetaryException {
 	/**
 	 * Creates a new exception instance.
 	 * 
-	 * @param message
-	 *            The error message
 	 * @param code
-	 *            The unknown currency code, not null.
+	 *            The unknown currency code (the message is constructed
+	 *            automatically), not null.
 	 */
 	public UnknownCurrencyException(String code) {
 		super("Unknown currency code: " + code);
@@ -49,7 +48,9 @@ public class UnknownCurrencyException extends MonetaryException {
 		return currencyCode;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

@@ -13,7 +13,6 @@
 package javax.money.spi;
 
 import java.util.Locale;
-import java.util.ServiceLoader;
 
 import javax.money.CurrencyUnit;
 
@@ -41,12 +40,11 @@ public interface CurrencyProviderSpi {
 	 * Return a (current) {@link CurrencyUnit} matching the given (country)
 	 * {@link Locale}.
 	 * 
-	 * @param code
-	 *            the currency code. not null.
+	 * @param locale
+	 *            the country {@link Locale}. not null.
 	 * @return the corresponding {@link CurrencyUnit}, or null, if no such unit
 	 *         is provided by this provider.
 	 */
 	public CurrencyUnit getCurrencyUnit(Locale locale);
-
 
 }

@@ -15,7 +15,6 @@ package javax.money.spi;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmount;
 import javax.money.MonetaryContext;
 import javax.money.format.AmountStyle;
 import javax.money.format.MonetaryAmountFormat;
@@ -45,7 +44,7 @@ public interface MonetaryAmountFormatProviderSpi {
 	 *         {@link MonetaryAmountFormatProviderSpi} instances registered.
 	 */
 	public MonetaryAmountFormat getFormat(Locale locale,
-			MonetaryContext monetaryContext,
+			MonetaryContext<?> monetaryContext,
 			CurrencyUnit defaultCurrency);
 
 	/**
@@ -66,7 +65,7 @@ public interface MonetaryAmountFormatProviderSpi {
 	 */
 	public MonetaryAmountFormat getFormat(
 			AmountStyle formatStyle,
-			MonetaryContext monetaryContext,
+			MonetaryContext<?> monetaryContext,
 			CurrencyUnit defaultCurrency);
 
 }

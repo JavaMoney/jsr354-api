@@ -43,19 +43,21 @@ public final class MonetaryAmounts {
 	}
 
 	/**
-	 * Access an {@link MonetaryAmountFactory} for the given {@link MonetaryAmount}
-	 * implementation type.
+	 * Access an {@link MonetaryAmountFactory} for the given
+	 * {@link MonetaryAmount} implementation type.
 	 * 
 	 * @param amountType
 	 *            {@link MonetaryAmount} implementation type, nor {@code null}.
-	 * @return the corresponding {@link MonetaryAmountFactory}, never {@code null}.
+	 * @return the corresponding {@link MonetaryAmountFactory}, never
+	 *         {@code null}.
 	 * @throws MonetaryException
 	 *             if no {@link MonetaryAmountFactory} targeting the given
 	 *             {@link MonetaryAmount} implementation class is registered.
 	 */
 	public static <T extends MonetaryAmount<T>> MonetaryAmountFactory<T> getAmountFactory(
 			Class<T> amountType) {
-		MonetaryAmountFactory<T> factory = monetaryAmountsSpi.getAmountFactory(amountType);
+		MonetaryAmountFactory<T> factory = monetaryAmountsSpi
+				.getAmountFactory(amountType);
 		if (factory == null) {
 			throw new MonetaryException("No AmountFactory registered for "
 					+ amountType);
@@ -74,6 +76,7 @@ public final class MonetaryAmounts {
 	 *             {@link #getDefaultAmountType()} implementation class is
 	 *             registered.
 	 */
+	@SuppressWarnings("unchecked")
 	public static MonetaryAmountFactory<?> getDefaultAmountFactory() {
 		return getAmountFactory(getDefaultAmountType());
 	}
@@ -83,8 +86,8 @@ public final class MonetaryAmounts {
 	 * classes that are accessible from this {@link MonetaryAmount} singleton.
 	 * 
 	 * @return all currently available {@link MonetaryAmount} implementation
-	 *         classes that have corresponding {@link MonetaryAmountFactory} instances
-	 *         provided, never {@code null}
+	 *         classes that have corresponding {@link MonetaryAmountFactory}
+	 *         instances provided, never {@code null}
 	 */
 	public static Set<Class<? extends MonetaryAmount<?>>> getTypes() {
 		return monetaryAmountsSpi.getAmountTypes();
@@ -107,6 +110,9 @@ public final class MonetaryAmounts {
 	 * Get the {@link MonetaryAmount} implementation class, that best matches to
 	 * cover the given {@link MonetaryContext}.
 	 * 
+	 * @param requiredContext
+	 *            the {@link MonetaryContext} to be queried for a matching
+	 *            {@link MonetaryAmount} implementation, not{@code null}.
 	 * @return the {@link MonetaryAmount} implementation class, that best
 	 *         matches to cover the given {@link MonetaryContext}, never
 	 *         {@code null}.

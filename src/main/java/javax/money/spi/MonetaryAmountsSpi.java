@@ -14,11 +14,9 @@ package javax.money.spi;
 
 import java.util.Set;
 
-import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryAmounts;
+import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryContext;
-import javax.money.MonetaryException;
 
 /**
  * SPI for the backing implementation of the {@link MonetaryAmounts} singleton.
@@ -30,13 +28,15 @@ import javax.money.MonetaryException;
 public interface MonetaryAmountsSpi {
 
 	/**
-	 * Access the {@link MonetaryAmountFactory} for the given {@code amountType}.
+	 * Access the {@link MonetaryAmountFactory} for the given {@code amountType}
+	 * .
 	 * 
 	 * @param amountType
 	 *            the {@link MonetaryAmount} implementation type, targeted by
 	 *            the factory.
 	 * @return the {@link MonetaryAmountFactory}, or {@code null}, if no such
-	 *         {@link MonetaryAmountFactory} is available in the current context.
+	 *         {@link MonetaryAmountFactory} is available in the current
+	 *         context.
 	 */
 	public <T extends MonetaryAmount<T>> MonetaryAmountFactory<T> getAmountFactory(
 			Class<T> amountType);
@@ -67,8 +67,8 @@ public interface MonetaryAmountsSpi {
 	 * <p>
 	 * The evaluation order should consider the following aspects:
 	 * <ul>
-	 * <li>If {@link MonetaryContext#getAmountType()} is defined, it
-	 * should be considered. Nevertheless if precision/scale cannot be met, a
+	 * <li>If {@link MonetaryContext#getAmountType()} is defined, it should be
+	 * considered. Nevertheless if precision/scale cannot be met, a
 	 * {@link MonetaryException} should be thrown.
 	 * <li>The remaining implementation class candidates must cover the required
 	 * precision.
@@ -82,6 +82,8 @@ public interface MonetaryAmountsSpi {
 	 * <li>After this point the selection may be arbitrary.
 	 * </ul>
 	 * 
+	 * @param requiredContext
+	 *            the required {@link MonetaryContext}
 	 * @return the {@link MonetaryAmount} implementation class, that best
 	 *         matches to cover the given {@link MonetaryContext}, never
 	 *         {@code null}.

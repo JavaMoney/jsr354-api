@@ -13,7 +13,6 @@
 package javax.money.format;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
@@ -49,7 +48,7 @@ public class TestAmountFormatProvider implements
 		private CurrencyUnit defaultCurrency;
 
 		TestFormat(Locale locale,
-				AmountStyle formatStyle, MonetaryContext monetaryContext,
+				AmountStyle formatStyle, MonetaryContext<?> monetaryContext,
 				CurrencyUnit defaultCurrency) {
 			if (locale != null && formatStyle == null) {
 				formatStyle = new AmountStyle.Builder(locale)
@@ -87,7 +86,8 @@ public class TestAmountFormatProvider implements
 		}
 
 		@Override
-		public MonetaryAmount<?> parse(CharSequence text) throws ParseException {
+		public MonetaryAmount<?> parse(CharSequence text)
+				throws MonetaryParseException {
 			throw new UnsupportedOperationException("TestFormat only.");
 		}
 

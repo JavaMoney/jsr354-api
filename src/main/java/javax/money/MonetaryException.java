@@ -30,8 +30,8 @@ public class MonetaryException extends RuntimeException {
      * 
      * @param message  the message
      */
-	public MonetaryException(String s) {
-		super(s);
+	public MonetaryException(String message) {
+		super(message);
 	}
 
 	/**

@@ -9,11 +9,15 @@
  * reserved.
  */
 /**
- * This package defines the Money and Currency format API bootstrap artifacts. In more detail:
+ * This package defines the Money and Currency format API bootstrap artifacts.
+ * In more detail:
  * <ul>
- * <li>By default all dependent services are loaded using the JDK {@link java.util.ServiceLoader}.</li>
- * <li>This default loader can be changed by reimplementing {@link javax.money.bootstrap.ServiceProvider} and
- * calling {@link javax.money.bootstrap.Bootstrap#setServiceProvider(ServiceProvider)} before the Money & Currency API is used the first time.
+ * <li>By default all dependent services are loaded using the JDK
+ * {@link java.util.ServiceLoader}.</li>
+ * <li>This default loader can be changed by reimplementing
+ * {@link javax.money.bootstrap.ServiceProvider} and calling
+ * {@link javax.money.bootstrap.Bootstrap#setServiceProvider(ServiceProvider)}
+ * before the Money & Currency API is used the first time.
  * </ul>
  */
 package javax.money.bootstrap;

@@ -10,11 +10,9 @@
  */
 package javax.money.spi;
 
-import java.util.ServiceLoader;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmount;
 import javax.money.MonetaryContext;
 import javax.money.MonetaryOperator;
 
@@ -101,7 +99,7 @@ public interface RoundingProviderSpi {
 	 * Access an {@link MonetaryAdjuster} for custom rounding
 	 * {@link MonetaryAmount} instances.
 	 * 
-	 * @param customRounding
+	 * @param customRoundingId
 	 *            The customRounding identifier.
 	 * @return the corresponding {@link MonetaryAdjuster} implementing the
 	 *         rounding, or {@code null}.

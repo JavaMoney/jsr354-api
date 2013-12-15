@@ -14,8 +14,8 @@ package javax.money;
  * A unit of currency.
  * <p>
  * This interface represents a unit of currency such as the British Pound, Euro,
- * US Dollar, Bitcoin or other. It provides interoperability
- * between different implementations.
+ * US Dollar, Bitcoin or other. It provides interoperability between different
+ * implementations.
  * <p>
  * Currencies can be distinguished by separate {@link #getCurrencyCode()} codes,
  * similar to {@link java.util.Currency}.
@@ -67,7 +67,7 @@ public interface CurrencyUnit {
 	 * The numeric code is an optional alternative to the standard currency
 	 * code. If defined, the numeric code is required to be unique.
 	 * <p>
-	 * This method matches the API of <type>java.util.Currency</type>.
+	 * This method matches the API of {@link java.util.Currency}.
 	 * 
 	 * @return the numeric currency code
 	 */
@@ -81,7 +81,7 @@ public interface CurrencyUnit {
 	 * virtual currencies or those with no applicable fractional are indicated
 	 * by -1.
 	 * <p>
-	 * This method matches the API of <type>java.util.Currency</type>.
+	 * This method matches the API of {@link java.util.Currency}.
 	 * 
 	 * @return the fractional digits, from 0 to 9 (normally 0, 2 or 3), or 0 for
 	 *         pseudo-currencies.

@@ -11,12 +11,9 @@
 package javax.money.format;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Locale;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryAmounts;
 import javax.money.MonetaryContext;
 import javax.money.MonetaryQuery;
 
@@ -29,11 +26,14 @@ import javax.money.MonetaryQuery;
 public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 
 	/**
-	 * The {@link MonetaryContext} to be applied when a {@link MonetaryAmount} is parsed.
-	 * @return the {@link MonetaryContext} used, or {@code null}, when the defaults should be used.
+	 * The {@link MonetaryContext} to be applied when a {@link MonetaryAmount}
+	 * is parsed.
+	 * 
+	 * @return the {@link MonetaryContext} used, or {@code null}, when the
+	 *         defaults should be used.
 	 * @see MonetaryAmounts#getDefaultMonetaryContext
 	 */
-	public MonetaryContext getMonetaryContext();
+	public MonetaryContext<?> getMonetaryContext();
 
 	/**
 	 * Get the {@link CurrencyUnit} applied by this {@link MonetaryAmountFormat}
@@ -94,14 +94,10 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	 * 
 	 * @param appendable
 	 *            the appendable to add to, not null
-	 * @param item
-	 *            the item to print, not null
-	 * @param locale
-	 *            the main target {@link Locale} to be used, not {@code null}
+	 * @param amount
+	 *            the amount to print, not null
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
-	 * @throws ItemFormatException
-	 *             if there is a problem while printing
 	 * @throws IOException
 	 *             if an IO error occurs, thrown by the {@code appendable}
 	 * @throws MonetaryParseException
@@ -126,8 +122,6 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	 * 
 	 * @param text
 	 *            the text to parse, not null
-	 * @param locale
-	 *            the main target {@link Locale} to be used, not {@code null}
 	 * @return the parsed value, never {@code null}
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to parse
@@ -135,6 +129,6 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	 *             if there is a problem while parsing
 	 */
 	public MonetaryAmount<?> parse(CharSequence text)
-			throws ParseException;
+			throws MonetaryParseException;
 
 }

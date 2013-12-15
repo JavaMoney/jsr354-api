@@ -89,7 +89,7 @@ public final class MonetaryAmounts {
 	 *         classes that have corresponding {@link MonetaryAmountFactory}
 	 *         instances provided, never {@code null}
 	 */
-	public static Set<Class<? extends MonetaryAmount<?>>> getTypes() {
+	public static Set<Class<? extends MonetaryAmount<?>>> getAmountTypes() {
 		return monetaryAmountsSpi.getAmountTypes();
 	}
 

@@ -37,13 +37,13 @@ public class MonetaryAmountsTest {
 	}
 
 	/**
-	 * Test method for {@link javax.money.MonetaryAmounts#getTypes()}.
+	 * Test method for {@link javax.money.MonetaryAmounts#getAmountTypes()}.
 	 */
 	@Test
 	public void testGetTypes() {
-		assertNotNull(MonetaryAmounts.getTypes());
-		assertTrue(MonetaryAmounts.getTypes().size() == 1);
-		assertTrue(MonetaryAmounts.getTypes().contains(DummyAmount.class));
+		assertNotNull(MonetaryAmounts.getAmountTypes());
+		assertTrue(MonetaryAmounts.getAmountTypes().size() == 1);
+		assertTrue(MonetaryAmounts.getAmountTypes().contains(DummyAmount.class));
 	}
 
 	/**

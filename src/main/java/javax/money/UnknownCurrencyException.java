@@ -12,6 +12,8 @@
  */
 package javax.money;
 
+import java.util.Locale;
+
 /**
  * Exception thrown when a currency code cannot be resolved into a
  * {@link CurrencyUnit}.
@@ -28,6 +30,8 @@ public class UnknownCurrencyException extends MonetaryException {
 	private static final long serialVersionUID = 1421993009305080653L;
 	/** The invalid currency code requested. */
 	private final String currencyCode;
+	/** The invalid {@link Locale} requested. */
+	private final Locale locale;
 
 	/**
 	 * Creates a new exception instance.
@@ -39,6 +43,21 @@ public class UnknownCurrencyException extends MonetaryException {
 	public UnknownCurrencyException(String code) {
 		super("Unknown currency code: " + code);
 		this.currencyCode = code;
+		this.locale = null;
+	}
+
+	/**
+	 * Creates a new exception instance.
+	 * 
+	 * @param locale
+	 *            The unknown {@link Locale}, for which a {@link CurrencyUnit}
+	 *            was queried (the message is constructed automatically), not
+	 *            null.
+	 */
+	public UnknownCurrencyException(Locale locale) {
+		super("No currency for found for Locale: " + locale);
+		this.locale = locale;
+		this.currencyCode = null;
 	}
 
 	/**
@@ -50,7 +69,9 @@ public class UnknownCurrencyException extends MonetaryException {
 		return currencyCode;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

@@ -38,7 +38,6 @@ public final class MonetaryCurrencies {
 	 */
 	private static final Map<String, CurrencyUnit> REGISTERED = new ConcurrentHashMap<String, CurrencyUnit>();
 
-
 	/**
 	 * Required for deserialization only.
 	 */
@@ -60,7 +59,7 @@ public final class MonetaryCurrencies {
 		CurrencyUnit cu = null;
 		for (CurrencyProviderSpi spi : Bootstrap
 				.getServices(
-						CurrencyProviderSpi.class)) {
+				CurrencyProviderSpi.class)) {
 			try {
 				cu = spi.getCurrencyUnit(currencyCode);
 				if (cu != null) {
@@ -91,23 +90,23 @@ public final class MonetaryCurrencies {
 		return cu;
 	}
 
-
 	/**
 	 * Access a new instance based on the {@link Locale}. Currencies are
 	 * available as provided by {@link CurrencyProviderSpi} instances registered
 	 * with the {@link ServiceLoader}.
 	 * 
-	 * @param currencyCode
-	 *            the ISO currency code, not {@code null}.
+	 * @param locale
+	 *            the target {@link Locale}, typically representing an ISO
+	 *            country, not {@code null}.
 	 * @return the corresponding {@link CurrencyUnit} instance.
-	 * @throws IllegalArgumentException
+	 * @throws UnknownCurrencyException
 	 *             if no such currency exists.
 	 */
 	public static CurrencyUnit getCurrency(Locale locale) {
 		CurrencyUnit cu = null;
 		for (CurrencyProviderSpi spi : Bootstrap
 				.getServices(
-						CurrencyProviderSpi.class)) {
+				CurrencyProviderSpi.class)) {
 			try {
 				cu = spi.getCurrencyUnit(locale);
 				if (cu != null) {
@@ -121,10 +120,8 @@ public final class MonetaryCurrencies {
 								+ spi.getClass().getName(), e);
 			}
 		}
-		throw new IllegalArgumentException("No such currency: "
-				+ locale);
+		throw new UnknownCurrencyException(locale);
 	}
-
 
 	/**
 	 * Allows to check if a {@link Currencies} instance is defined, i.e.
@@ -144,15 +141,14 @@ public final class MonetaryCurrencies {
 		}
 	}
 
-
 	/**
-	 * Allows to check if a {@link javax.money.CurrencyUnit} instance is defined, i.e.
-	 * accessible from {@link #getCurrency(String)}.
+	 * Allows to check if a {@link javax.money.CurrencyUnit} instance is
+	 * defined, i.e. accessible from {@link #getCurrency(String)}.
 	 * 
 	 * @param locale
 	 *            the target {@link Locale}, not {@code null}.
-	 * @return {@code true} if {@link #of(String)} would return a
-	 *         result for the given code.
+	 * @return {@code true} if {@link #of(String)} would return a result for the
+	 *         given code.
 	 */
 	public static boolean isCurrencyAvailable(Locale locale) {
 		try {

@@ -366,7 +366,7 @@ public final class AmountStyle {
 
 		/**
 		 * Set the separating String between the numeric part of an amount and
-		 * the {@link CurrencyUnit} rendered.
+		 * the {@link javax.money.CurrencyUnit} rendered.
 		 * 
 		 * @param currencySeparator
 		 *            The currency separator, not {@code null} (but may be
@@ -382,7 +382,7 @@ public final class AmountStyle {
 
 		/**
 		 * Set the {@link CurrencyStyle} to be used for renderering the
-		 * {@link CurrencyUnit}.
+		 * {@link javax.money.CurrencyUnit}.
 		 * 
 		 * @param currencyStyle
 		 *            The CurrencyStyle to be used, not {@code null} (but may be
@@ -398,7 +398,7 @@ public final class AmountStyle {
 
 		/**
 		 * Set the {@link CurrencyStyle} to be used for renderering the
-		 * {@link CurrencyUnit}.
+		 * {@link javax.money.CurrencyUnit}.
 		 * 
 		 * @param currencyPlacement
 		 *            The {@link CurrencyPlacement} to be used, not {@code null}

@@ -146,12 +146,12 @@ public final class MonetaryCurrencies {
 
 
 	/**
-	 * Allows to check if a {@link Currencies} instance is defined, i.e.
-	 * accessible from {@link Currencies#of(String)}.
+	 * Allows to check if a {@link javax.money.CurrencyUnit} instance is defined, i.e.
+	 * accessible from {@link #getCurrency(String)}.
 	 * 
-	 * @param code
-	 *            the currency code, not {@code null}.
-	 * @return {@code true} if {@link Currencies#of(String)} would return a
+	 * @param locale
+	 *            the target {@link Locale}, not {@code null}.
+	 * @return {@code true} if {@link #of(String)} would return a
 	 *         result for the given code.
 	 */
 	public static boolean isCurrencyAvailable(Locale locale) {

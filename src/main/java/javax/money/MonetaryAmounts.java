@@ -31,7 +31,7 @@ import javax.money.spi.MonetaryAmountsSpi;
  */
 public final class MonetaryAmounts {
 	/**
-	 * The used {@link MonetaryAmountsSpi} instance.
+	 * The used {@link javax.money.spi.MonetaryAmountsSpi} instance.
 	 */
 	private static MonetaryAmountsSpi monetaryAmountsSpi = Bootstrap
 			.getService(MonetaryAmountsSpi.class);

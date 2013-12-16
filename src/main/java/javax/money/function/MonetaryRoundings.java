@@ -26,7 +26,7 @@ import javax.money.spi.RoundingProviderSpi;
 
 /**
  * This class models the accessor for rounding instances, modeled by
- * {@link MonetaryAdjuster}.
+ * {@link javax.money.MonetaryOperator}.
  * <p>
  * This class is thread-safe.
  * 

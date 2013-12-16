@@ -241,7 +241,7 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public M with(MonetaryOperator operator);
 
 	/**
-	 * Creates a new {@link M}, using the current amount as a template, reusing
+	 * Creates a new {@code M}, using the current amount as a template, reusing
 	 * the algorithmic implementation, the current {@link MonetaryContext} and
 	 * the numeric value.
 	 * <p>
@@ -251,13 +251,13 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 * 
 	 * @param unit
 	 *            the new {@link CurrencyUnit} of the amount to be created.
-	 * @return the new {@link M} with the given {@link CurrencyUnit}, but the
+	 * @return the new {@code M} with the given {@link CurrencyUnit}, but the
 	 *         same numeric value and {@link MonetaryContext}.
 	 */
 	public M with(CurrencyUnit unit);
 
 	/**
-	 * Creates a new {@link M}, using the given amount as a template, e.g.
+	 * Creates a new {@code M}, using the given amount as a template, e.g.
 	 * reusing the algorithmic implementation and the current
 	 * {@link MonetaryContext}.
 	 * <p>
@@ -269,13 +269,13 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 *            the {@link CurrencyUnit} of the amount to be created.
 	 * @param amount
 	 *            the numeric value of the amount to be created.
-	 * @return the new {@link M} with the given {@link CurrencyUnit} and numeric
+	 * @return the new {@code M} with the given {@link CurrencyUnit} and numeric
 	 *         value.
 	 */
 	public M with(CurrencyUnit unit, long amount);
 
 	/**
-	 * Creates a new {@link M}, using the given amount as a template, e.g.
+	 * Creates a new {@code M}, using the given amount as a template, e.g.
 	 * reusing the algorithmic implementation and the current
 	 * {@link MonetaryContext}.
 	 * <p>
@@ -287,13 +287,13 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 *            the {@link CurrencyUnit} of the amount to be created.
 	 * @param amount
 	 *            the numeric value of the amount to be created.
-	 * @return the new {@link M} with the given {@link CurrencyUnit} and numeric
+	 * @return the new {@code M} with the given {@link CurrencyUnit} and numeric
 	 *         value.
 	 */
 	public M with(CurrencyUnit unit, double amount);
 
 	/**
-	 * Creates a new {@link M}, using the given amount as a template, e.g.
+	 * Creates a new {@code M}, using the given amount as a template, e.g.
 	 * reusing the algorithmic implementation and the current
 	 * {@link MonetaryContext}.
 	 * <p>
@@ -305,7 +305,7 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 *            the {@link CurrencyUnit} of the amount to be created.
 	 * @param amount
 	 *            the numeric value of the amount to be created.
-	 * @return the new {@link M} with the given {@link CurrencyUnit} and numeric
+	 * @return the new {@code M} with the given {@link CurrencyUnit} and numeric
 	 *         value.
 	 */
 	public M with(CurrencyUnit unit, Number amount);
@@ -315,7 +315,7 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 * significant trailing zeroes and different numeric capabilities.
 	 * 
 	 * @param amount
-	 *            the {@link M} to be compared with this instance.
+	 *            the {@code M} to be compared with this instance.
 	 * @return {@code true} if {@code amount > this}.
 	 * @throws MonetaryException
 	 *             if the amount's currency is not equals to the currency of
@@ -376,35 +376,35 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public boolean isEqualTo(MonetaryAmount<?> amount);
 
 	/**
-	 * Checks if a {@link M} is negative.
+	 * Checks if a {@code M} is negative.
 	 * 
 	 * @return {@code true} if {@link #signum()} < 0.
 	 */
 	public boolean isNegative();
 
 	/**
-	 * Checks if a {@link M} is negative or zero.
+	 * Checks if a {@code M} is negative or zero.
 	 * 
 	 * @return {@code true} if {@link #signum()} <= 0.
 	 */
 	public boolean isNegativeOrZero();
 
 	/**
-	 * Checks if a {@link M} is positive.
+	 * Checks if a {@code M} is positive.
 	 * 
 	 * @return {@code true} if {@link #signum()} > 0.
 	 */
 	public boolean isPositive();
 
 	/**
-	 * Checks if a {@link M} is positive or zero.
+	 * Checks if a {@code M} is positive or zero.
 	 * 
 	 * @return {@code true} if {@link #signum()} >= 0.
 	 */
 	public boolean isPositiveOrZero();
 
 	/**
-	 * Checks if an {@link M} is zero.
+	 * Checks if an {@code M} is zero.
 	 * 
 	 * @return {@code true} if {@link #signum()} == 0.
 	 */
@@ -704,7 +704,7 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public M divideToIntegralValue(Number divisor);
 
 	/**
-	 * Returns a {@link M} whose numerical value is equal to ( {@code this} *
+	 * Returns a {@code M} whose numerical value is equal to ( {@code this} *
 	 * 10<sup>n</sup>). The scale of the result is {@code (this.scale() - n)}.
 	 * 
 	 * @param power

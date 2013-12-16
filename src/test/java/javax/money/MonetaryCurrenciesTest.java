@@ -52,7 +52,7 @@ public class MonetaryCurrenciesTest {
 				2);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = UnknownCurrencyException.class)
 	public void testgetCurrencyLocale_NA() {
 		MonetaryCurrencies.getCurrency(new Locale("", "sdsdsd"));
 	}

@@ -96,7 +96,7 @@ public final class Bootstrap {
 	}
 
 	/**
-	 * Convenience method for {@link #getServiceProvider()#getServices(Class)}.
+	 * Delegate method for {@link ServiceProvider#getServices(Class)}.
 	 * 
 	 * @see ServiceProvider#getServices(Class)
 	 * @param serviceType
@@ -108,7 +108,7 @@ public final class Bootstrap {
 	}
 
 	/**
-	 * Convenience method for {@link #getServiceProvider()#getServices(Class)}.
+	 * Delegate method for {@link ServiceProvider#getServices(Class)}.
 	 * 
 	 * @see ServiceProvider#getServices(Class, Collection)
 	 * @param serviceType
@@ -123,7 +123,7 @@ public final class Bootstrap {
 	}
 
 	/**
-	 * Convenience method for {@link #getServiceProvider()#getService(Class)}.
+	 * Delegate method for {@link ServiceProvider#getService(Class)}.
 	 * 
 	 * @see ServiceProvider#getService(Class)
 	 * @param serviceType
@@ -135,7 +135,7 @@ public final class Bootstrap {
 	}
 
 	/**
-	 * Convenience method for {@link #getServiceProvider()#getService(Class)}.
+	 * Delegate method for {@link ServiceProvider#getService(Class)}.
 	 * 
 	 * @see ServiceProvider#getService(Class, Object)
 	 * @param serviceType

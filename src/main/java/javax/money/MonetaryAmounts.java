@@ -19,7 +19,7 @@ import javax.money.spi.MonetaryAmountsSpi;
 
 /**
  * Factory singleton for {@link MonetaryAmount} instances as provided by the
- * different registered {@link MonetaryAmountProviderSpi} instances.
+ * different registered {@link MonetaryAmountFactory} instances.
  * <p>
  * This singleton allows to get {@link MonetaryAmountFactory} instances for the
  * registered {@link MonetaryAmount} implementation classes or depending on the

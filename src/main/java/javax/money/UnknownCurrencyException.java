@@ -63,7 +63,7 @@ public class UnknownCurrencyException extends MonetaryException {
 	/**
 	 * Access the invalid currency code.
 	 * 
-	 * @return the invalid currency code, or {@null}.
+	 * @return the invalid currency code, or {@code null}.
 	 */
 	public String getCurrencyCode() {
 		return currencyCode;

@@ -278,44 +278,56 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount<T>> {
 			Number number,
 			MonetaryContext<?> monetaryContext);
 
-/**
-	 * Factory method creating a zero instance with the given {@code currency).
-	 * @param currency 
-	 * 			the target {@link CurrencyUnit} of the {@link MonetaryAmount} being created, not {@code null}.
-	 * @return a new Money instance of zero, with a default {@link MonetaryContext}.
+	/**
+	 * Factory method creating a zero instance with the given {@code currency}..
+	 * 
+	 * @param currency
+	 *            the target {@link CurrencyUnit} of the {@link MonetaryAmount}
+	 *            being created, not {@code null}.
+	 * @return a new Money instance of zero, with a default
+	 *         {@link MonetaryContext}.
 	 */
 	public T getAmountZero(CurrencyUnit currency);
 
-/**
-	 * Factory method creating a zero instance with the given {@code currencyCode).
+	/**
+	 * Factory method creating a zero instance with the given
+	 * {@code currencyCode}.
+	 * 
 	 * @param currencyCode
-	 * 			the currency code to determine the {@link CurrencyUnit} of the {@link MonetaryAmount} being created.
-	 * @return a new Money instance of zero, with a default {@link MonetaryContext}.
+	 *            the currency code to determine the {@link CurrencyUnit} of the
+	 *            {@link MonetaryAmount} being created.
+	 * @return a new Money instance of zero, with a default
+	 *         {@link MonetaryContext}.
 	 * @throws UnknownCurrencyException
 	 *             if the currency code can not be resolved to
 	 *             {@link CurrencyUnit}.
 	 */
 	public T getAmountZero(String currencyCode);
 
-/**
-	 * Factory method creating a zero instance with the given {@code currency).
-	 * @param currency 
-	 * 			the target currency of the amount being created, not {@code null}.
+	/**
+	 * Factory method creating a zero instance with the given {@code currency}.
+	 * 
+	 * @param currency
+	 *            the target currency of the amount being created, not
+	 *            {@code null}.
 	 * @param monetaryContext
 	 *            the {@link MonetaryContext} to be used, not{@code null}.
-	 * @return a new Money instance of zero, with a default {@link MonetaryContext}.
+	 * @return a new Money instance of zero, with a default
+	 *         {@link MonetaryContext}.
 	 */
 	public T getAmountZero(CurrencyUnit currency,
 			MonetaryContext<?> monetaryContext);
 
-/**
-	 * Factory method creating a zero instance with the given {@code currency).
+	/**
+	 * Factory method creating a zero instance with the given {@code currency}.
+	 * 
 	 * @param currencyCode
-	 * 			the target currency code to determine the {@link CurrencyUnit} 
-	 * 			of the {@link MonetaryAmount} being created.
-	 * @param monetaryContext 
-	 * 			The {@link MonetaryContext} to be used, not {@code null}.
-	 * @return a new {@link MonetaryAmount} instance of zero, with a default {@link MonetaryContext}.
+	 *            the target currency code to determine the {@link CurrencyUnit}
+	 *            of the {@link MonetaryAmount} being created.
+	 * @param monetaryContext
+	 *            The {@link MonetaryContext} to be used, not {@code null}.
+	 * @return a new {@link MonetaryAmount} instance of zero, with a default
+	 *         {@link MonetaryContext}.
 	 * @throws UnknownCurrencyException
 	 *             if the currency code can not be resolved to
 	 *             {@link CurrencyUnit}.

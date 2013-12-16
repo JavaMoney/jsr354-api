@@ -15,9 +15,8 @@
  * <li>By default all dependent services are loaded using the JDK
  * {@link java.util.ServiceLoader}.</li>
  * <li>This default loader can be changed by reimplementing
- * {@link javax.money.bootstrap.ServiceProvider} and calling
- * {@link javax.money.bootstrap.Bootstrap#setServiceProvider(ServiceProvider)}
- * before the Money & Currency API is used the first time.
+ * {@link javax.money.bootstrap.ServiceProvider} and registering it using the
+ * {@link java.util.ServiceLoader}.
  * </ul>
  */
 package javax.money.bootstrap;

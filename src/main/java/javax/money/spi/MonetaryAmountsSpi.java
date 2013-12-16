@@ -19,7 +19,7 @@ import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryContext;
 
 /**
- * SPI for the backing implementation of the {@link MonetaryAmounts} singleton.
+ * SPI for the backing implementation of the {@link javax.money.MonetaryAmounts} singleton.
  * It should load and manage (including contextual behavior), if needed) the
  * different registered {@link MonetaryAmountFactory} instances.
  * 
@@ -69,7 +69,7 @@ public interface MonetaryAmountsSpi {
 	 * <ul>
 	 * <li>If {@link MonetaryContext#getAmountType()} is defined, it should be
 	 * considered. Nevertheless if precision/scale cannot be met, a
-	 * {@link MonetaryException} should be thrown.
+	 * {@link javax.money.MonetaryException} should be thrown.
 	 * <li>The remaining implementation class candidates must cover the required
 	 * precision.
 	 * <li>The remaining implementation class candidates must cover the required
@@ -87,7 +87,7 @@ public interface MonetaryAmountsSpi {
 	 * @return the {@link MonetaryAmount} implementation class, that best
 	 *         matches to cover the given {@link MonetaryContext}, never
 	 *         {@code null}.
-	 * @throws MonetaryException
+	 * @throws javax.money.MonetaryException
 	 *             if no {@link MonetaryAmount} implementation class can cover
 	 *             the required {@link MonetaryContext}.
 	 */

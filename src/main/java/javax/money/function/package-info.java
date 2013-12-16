@@ -15,9 +15,6 @@
  * <li>{@link javax.money.function.MonetaryRoundings} provides access to
  * rounding operators, based on a target {@link javax.money.CurrencyUnit}, a
  * {@link javax.money.MonetaryContext} or a name (for custom roundings).</li>
- * <li>{@link javax.money.function.MonetaryFunctions} provides access to
- * additional common functions, such as precentages, permil, major, minor parts
- * etc.</li>
  * </ul>
  */
 package javax.money.function;

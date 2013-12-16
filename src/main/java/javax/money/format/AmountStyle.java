@@ -18,8 +18,8 @@ import java.util.Objects;
 import javax.money.MonetaryOperator;
 
 /**
- * The {@link AmountStyle} defines how a {@link MonetaryAmount} should be
- * formatted.
+ * The {@link AmountStyle} defines how a {@link javax.money.MonetaryAmount}
+ * should be formatted.
  * 
  * @author Anatole Tresch
  */
@@ -349,11 +349,11 @@ public final class AmountStyle {
 		}
 
 		/**
-		 * Set the {@link DecimalFormat} as defined by
-		 * {@link DecimalFormat#getInstance(Locale)} by the given {@link Locale}
-		 * .
+		 * Set the {@link java.text.DecimalFormat} as defined by
+		 * {@link java.text.DecimalFormat#getInstance(Locale)} by the given
+		 * {@link Locale} .
 		 * 
-		 * @see {@link DecimalFormat#getInstance(Locale)}
+		 * @see java.text.DecimalFormat#getInstance(Locale)
 		 * @param locale
 		 *            The target {@link Locale}, not null.
 		 * @return the {@link Builder} for chaining.
@@ -386,7 +386,7 @@ public final class AmountStyle {
 		 * 
 		 * @param currencyStyle
 		 *            The CurrencyStyle to be used, not {@code null} (but may be
-		 *            {@link CurrencyStyle#OMIT}).
+		 *            ignored when {@link CurrencyPlacement#OMIT} is set).
 		 * @return the {@link Builder} for chaining.
 		 */
 		public Builder setCurrencyStyle(CurrencyStyle currencyStyle) {
@@ -402,8 +402,8 @@ public final class AmountStyle {
 		 * 
 		 * @param currencyPlacement
 		 *            The {@link CurrencyPlacement} to be used, not {@code null}
-		 *            . If {@link CurrencyStyle#OMIT} is the current
-		 *            {@code currencyStyle}, this setting is ignored..
+		 *            . If {@link CurrencyPlacement#OMIT} is set, the current
+		 *            {@code currencyStyle} is ignored.
 		 * @return the {@link Builder} for chaining.
 		 */
 		public Builder setCurrencyPlacement(CurrencyPlacement currencyPlacement) {

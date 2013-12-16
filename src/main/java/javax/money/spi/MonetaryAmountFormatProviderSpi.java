@@ -33,11 +33,11 @@ public interface MonetaryAmountFormatProviderSpi {
 	 *            The {@link Locale} to be used for determining the
 	 *            {@link AmountStyle} to be used.
 	 * @param monetaryContext
-	 *            The {@link MonetaryContext}, to be required for creation of
-	 *            new {@link MonetaryAmount} instances during parsing.
+	 *            The {@link javax.money.MonetaryContext}, to be required for creation of
+	 *            new {@link javax.money.MonetaryAmount} instances during parsing.
 	 * @param defaultCurrency
-	 *            The {@link CurrencyUnit} to be set, if a
-	 *            {@link MonetaryAmount} is parsed from an input, without
+	 *            The {@link javax.money.CurrencyUnit} to be set, if a
+	 *            {@link javax.money.MonetaryAmount} is parsed from an input, without
 	 *            currency information.
 	 * @return An according {@link MonetaryAmountFormat} instance, or
 	 *         {@code null}, which delegates the request to subsequent
@@ -53,11 +53,11 @@ public interface MonetaryAmountFormatProviderSpi {
 	 * @param formatStyle
 	 *            The {@link AmountStyle} to be used.
 	 * @param monetaryContext
-	 *            The {@link MonetaryContext}, to be required for creation of
-	 *            new {@link MonetaryAmount} instances during parsing.
+	 *            The {@link javax.money.MonetaryContext}, to be required for creation of
+	 *            new {@link javax.money.MonetaryAmount} instances during parsing.
 	 * @param defaultCurrency
 	 *            The {@link CurrencyUnit} to be set, if a
-	 *            {@link MonetaryAmount} is parsed from an input, without
+	 *            {@link javax.money.MonetaryAmount} is parsed from an input, without
 	 *            currency information.
 	 * @return An according {@link MonetaryAmountFormat} instance, or
 	 *         {@code null}, which delegates the request to subsequent

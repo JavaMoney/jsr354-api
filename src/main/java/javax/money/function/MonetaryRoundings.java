@@ -48,9 +48,9 @@ public final class MonetaryRoundings {
 	}
 
 	/**
-	 * Creates a rounding that can be added as {@link MonetaryAdjuster} to
+	 * Creates a rounding that can be added as {@link MonetaryOperator} to
 	 * chained calculations. The instance will lookup the concrete
-	 * {@link MonetaryAdjuster} instance from the {@link MonetaryRoundings}
+	 * {@link MonetaryOperator} instance from the {@link MonetaryRoundings}
 	 * based on the input {@link MonetaryAmount}'s {@link CurrencyUnit}.
 	 * 
 	 * @return the (shared) default rounding instance.
@@ -60,7 +60,7 @@ public final class MonetaryRoundings {
 	}
 
 	/**
-	 * Creates an rounding instance using {@link RoundingMode#UP} rounding.
+	 * Creates an rounding instance using {@link java.math.RoundingMode#UP} rounding.
 	 * 
 	 * @param monetaryContext
 	 *            The {@link MonetaryContext} defining the required rounding.
@@ -91,14 +91,14 @@ public final class MonetaryRoundings {
 	}
 
 	/**
-	 * Creates an {@link MonetaryAdjuster} for rounding {@link MonetaryAmount}
+	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
 	 * instances given a currency.
 	 * 
 	 * @param currency
 	 *            The currency, which determines the required precision. As
-	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
+	 *            {@link java.math.RoundingMode}, by default, {@link java.math.RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link MonetaryAdjuster} implementing the
+	 * @return a new instance {@link MonetaryOperator} implementing the
 	 *         rounding, never {@code null}.
 	 */
 	public static MonetaryOperator getRounding(CurrencyUnit currency) {
@@ -123,14 +123,14 @@ public final class MonetaryRoundings {
 	}
 
 	/**
-	 * Creates an {@link MonetaryAdjuster} for rounding {@link MonetaryAmount}
+	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
 	 * instances given a currency.
 	 * 
 	 * @param currency
 	 *            The currency, which determines the required precision. As
-	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
+	 *            {@link java.math.RoundingMode}, by default, {@link java.math.RoundingMode#HALF_UP}
 	 *            is sued.
-	 * @return a new instance {@link MonetaryAdjuster} implementing the
+	 * @return a new instance {@link MonetaryOperator} implementing the
 	 *         rounding, never {@code null}.
 	 */
 	public static MonetaryOperator getCashRounding(CurrencyUnit currency) {
@@ -155,17 +155,17 @@ public final class MonetaryRoundings {
 	}
 
 	/**
-	 * Creates an {@link MonetaryAdjuster} for rounding {@link MonetaryAmount}
+	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
 	 * instances given a currency, hereby the rounding must be valid for the
 	 * given timestamp.
 	 * 
 	 * @param currency
 	 *            The currency, which determines the required precision. As
-	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
+	 *            {@link java.math.RoundingMode}, by default, {@link java.math.RoundingMode#HALF_UP}
 	 *            is used.
 	 * @param timestamp
 	 *            the UTC timestamp.
-	 * @return a new instance {@link MonetaryAdjuster} implementing the
+	 * @return a new instance {@link MonetaryOperator} implementing the
 	 *         rounding, or {@code null}.
 	 */
 	public static MonetaryOperator getRounding(CurrencyUnit currency,
@@ -191,17 +191,17 @@ public final class MonetaryRoundings {
 	}
 
 	/**
-	 * Creates an {@link MonetaryAdjuster} for rounding {@link MonetaryAmount}
+	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
 	 * instances given a currency, hereby the rounding must be valid for the
 	 * given timestamp.
 	 * 
 	 * @param currency
 	 *            The currency, which determines the required precision. As
-	 *            {@link RoundingMode}, by default, {@link RoundingMode#HALF_UP}
+	 *            {@link java.math.RoundingMode}, by default, {@link java.math.RoundingMode#HALF_UP}
 	 *            is sued.
 	 * @param timestamp
 	 *            the UTC timestamp.
-	 * @return a new instance {@link MonetaryAdjuster} implementing the
+	 * @return a new instance {@link MonetaryOperator} implementing the
 	 *         rounding, or {@code null}.
 	 */
 	public static MonetaryOperator getCashRounding(CurrencyUnit currency,
@@ -227,12 +227,12 @@ public final class MonetaryRoundings {
 	}
 
 	/**
-	 * Access an {@link MonetaryAdjuster} for custom rounding
+	 * Access an {@link MonetaryOperator} for custom rounding
 	 * {@link MonetaryAmount} instances.
 	 * 
 	 * @param customRoundingId
 	 *            The customRounding identifier.
-	 * @return the corresponding {@link MonetaryAdjuster} implementing the
+	 * @return the corresponding {@link MonetaryOperator} implementing the
 	 *         rounding, never {@code null}.
 	 * @throws IllegalArgumentException
 	 *             if no such rounding is registered using a

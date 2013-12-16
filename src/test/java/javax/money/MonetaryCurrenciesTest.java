@@ -20,7 +20,7 @@ import java.util.Locale;
 import org.junit.Test;
 
 /**
- * Tests for the {@link CurrencyUnitImpl} class.
+ * Tests for the {@link MonetaryCurrencies} class.
  * 
  * @author Anatole Tresch
  */

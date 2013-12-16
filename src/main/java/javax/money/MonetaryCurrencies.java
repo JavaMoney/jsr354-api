@@ -47,7 +47,7 @@ public final class MonetaryCurrencies {
 	/**
 	 * Access a new instance based on the currency code. Currencies are
 	 * available as provided by {@link CurrencyProviderSpi} instances registered
-	 * with the {@link ServiceLoader}.
+	 * with the {@link javax.money.bootstrap.Bootstrap}.
 	 * 
 	 * @param currencyCode
 	 *            the ISO currency code, not {@code null}.
@@ -93,7 +93,7 @@ public final class MonetaryCurrencies {
 	/**
 	 * Access a new instance based on the {@link Locale}. Currencies are
 	 * available as provided by {@link CurrencyProviderSpi} instances registered
-	 * with the {@link ServiceLoader}.
+	 * with the {@link javax.money.bootstrap.Bootstrap}.
 	 * 
 	 * @param locale
 	 *            the target {@link Locale}, typically representing an ISO
@@ -124,13 +124,13 @@ public final class MonetaryCurrencies {
 	}
 
 	/**
-	 * Allows to check if a {@link Currencies} instance is defined, i.e.
-	 * accessible from {@link Currencies#of(String)}.
+	 * Allows to check if a {@link CurrencyUnit} instance is defined, i.e.
+	 * accessible from {@link MonetaryCurrencies#getCurrency(String)}.
 	 * 
 	 * @param code
 	 *            the currency code, not {@code null}.
-	 * @return {@code true} if {@link Currencies#of(String)} would return a
-	 *         result for the given code.
+	 * @return {@code true} if {@link MonetaryCurrencies#getCurrency(String)}
+	 *         would return a result for the given code.
 	 */
 	public static boolean isCurrencyAvailable(String code) {
 		try {
@@ -147,8 +147,8 @@ public final class MonetaryCurrencies {
 	 * 
 	 * @param locale
 	 *            the target {@link Locale}, not {@code null}.
-	 * @return {@code true} if {@link #of(String)} would return a result for the
-	 *         given code.
+	 * @return {@code true} if {@link #getCurrency(Locale)} would return a
+	 *         result for the given code.
 	 */
 	public static boolean isCurrencyAvailable(Locale locale) {
 		try {

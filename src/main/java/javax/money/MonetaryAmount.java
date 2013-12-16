@@ -43,7 +43,7 @@ package javax.money;
  * performed implicitly.</li>
  * <li>Nevertheless truncation may be supported by passing additional parameters
  * or defining <i>exact</i> methods, similar to
- * {@link BigDecimal#longValueExact()}.
+ * {@link java.math.BigDecimal#longValueExact()}.
  * <li>Rounding should never be done automatically, exception internal rounding
  * implied by the numeric implementation type.</li>
  * <li>Since implementations are recommended to be immutable, an operation
@@ -680,26 +680,41 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	public M[] divideAndRemainder(Number divisor);
 
 	/**
-	 * @see BigDecimal#divideToIntegralValue(BigDecimal)
-	 * @param divisor
-	 *            the divisor
-	 * @return the divided amount.
+	 * Returns a {@code M} whose value is the integer part
+     * of the quotient {@code (this / divisor)} rounded down.  The
+     * preferred scale of the result is {@code (this.scale() -
+     * divisor.scale())}.
+     *
+     * @param  divisor value by which this {@code BigDecimal} is to be divided.
+     * @return The integer part of {@code this / divisor}.
+     * @throws ArithmeticException if {@code divisor==0}
+	 * @see java.math.BigDecimal#divideToIntegralValue(java.math.BigDecimal)
 	 */
 	public M divideToIntegralValue(long divisor);
 
 	/**
-	 * @see BigDecimal#divideToIntegralValue(BigDecimal)
-	 * @param divisor
-	 *            the divisor
-	 * @return the divided amount.
+	 * Returns a {@code M} whose value is the integer part
+     * of the quotient {@code (this / divisor)} rounded down.  The
+     * preferred scale of the result is {@code (this.scale() -
+     * divisor.scale())}.
+     *
+     * @param  divisor value by which this {@code BigDecimal} is to be divided.
+     * @return The integer part of {@code this / divisor}.
+     * @throws ArithmeticException if {@code divisor==0}
+	 * @see java.math.BigDecimal#divideToIntegralValue(java.math.BigDecimal)
 	 */
 	public M divideToIntegralValue(double divisor);
 
 	/**
-	 * @see BigDecimal#divideToIntegralValue(BigDecimal)
-	 * @param divisor
-	 *            the divisor
-	 * @return the divided amount.
+	 * Returns a {@code M} whose value is the integer part
+     * of the quotient {@code (this / divisor)} rounded down.  The
+     * preferred scale of the result is {@code (this.scale() -
+     * divisor.scale())}.
+     *
+     * @param  divisor value by which this {@code BigDecimal} is to be divided.
+     * @return The integer part of {@code this / divisor}.
+     * @throws ArithmeticException if {@code divisor==0}
+	 * @see java.math.BigDecimal#divideToIntegralValue(java.math.BigDecimal)
 	 */
 	public M divideToIntegralValue(Number divisor);
 
@@ -738,7 +753,7 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> {
 	 * Returns a {@code M} whose value is {@code (+this)}, with rounding
 	 * according to the context settings.
 	 * 
-	 * @see BigDecimal#plus()
+	 * @see java.math.BigDecimal#plus()
 	 * 
 	 * @return {@code this}, rounded as necessary. A zero result will have a
 	 *         scale of 0.

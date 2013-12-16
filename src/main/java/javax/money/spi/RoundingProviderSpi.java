@@ -19,9 +19,9 @@ import javax.money.MonetaryOperator;
 /**
  * This SPI allows to extends/override the roundings available for
  * {@link CurrencyUnit}. The JSRs implementation already provides default
- * roundings. By registering instances of this interface using the JDK
- * {@link ServiceLoader}, the default behaviour can be overridden and extended,
- * e.g. for supporting also special roundings.
+ * roundings. By registering instances of this interface using the
+ * {@link javax.money.bootstrap.Bootstrap}, the default behaviour can be
+ * overridden and extended, e.g. for supporting also special roundings.
  * <p>
  * Implementations of this interface must be
  * <ul>
@@ -40,7 +40,7 @@ public interface RoundingProviderSpi {
 	/**
 	 * Access the current valid rounding for the given {@link CurrencyUnit}.
 	 * <p>
-	 * Instances of {@link MonetaryAdjuster} returned, must be thread safe and
+	 * Instances of {@link MonetaryOperator} returned, must be thread safe and
 	 * immutable.
 	 * 
 	 * @param currency
@@ -54,7 +54,7 @@ public interface RoundingProviderSpi {
 	 * Access the rounding for the given {@link CurrencyUnit}, that was valid at
 	 * the given timestamp.
 	 * <p>
-	 * Instances of {@link MonetaryAdjuster} returned, must be thread safe and
+	 * Instances of {@link MonetaryOperator} returned, must be thread safe and
 	 * immutable.
 	 * 
 	 * @param currency
@@ -69,7 +69,7 @@ public interface RoundingProviderSpi {
 	/**
 	 * Access the current valid rounding for the given {@link CurrencyUnit}.
 	 * <p>
-	 * Instances of {@link MonetaryAdjuster} returned, must be thread safe and
+	 * Instances of {@link MonetaryOperator} returned, must be thread safe and
 	 * immutable.
 	 * 
 	 * @param currency
@@ -83,7 +83,7 @@ public interface RoundingProviderSpi {
 	 * Access the cash rounding for the given {@link CurrencyUnit}, that was
 	 * valid at the given timestamp.
 	 * <p>
-	 * Instances of {@link MonetaryAdjuster} returned, must be thread safe and
+	 * Instances of {@link MonetaryOperator} returned, must be thread safe and
 	 * immutable.
 	 * 
 	 * @param currency
@@ -96,12 +96,12 @@ public interface RoundingProviderSpi {
 	MonetaryOperator getCashRounding(CurrencyUnit currency, long timestamp);
 
 	/**
-	 * Access an {@link MonetaryAdjuster} for custom rounding
-	 * {@link MonetaryAmount} instances.
+	 * Access an {@link MonetaryOperator} for custom rounding
+	 * {@link javax.money.MonetaryAmount} instances.
 	 * 
 	 * @param customRoundingId
 	 *            The customRounding identifier.
-	 * @return the corresponding {@link MonetaryAdjuster} implementing the
+	 * @return the corresponding {@link MonetaryOperator} implementing the
 	 *         rounding, or {@code null}.
 	 */
 	MonetaryOperator getCustomRounding(String customRoundingId);

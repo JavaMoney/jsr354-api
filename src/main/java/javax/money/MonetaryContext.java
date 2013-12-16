@@ -12,6 +12,7 @@
  */
 package javax.money;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -88,9 +89,9 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	/**
 	 * This map contains arbitrary attributes, identified by class. This allows
 	 * to store additional context data in a platform independent way, e.g. when
-	 * using {@link BigDecimal} as a representation type on SE, the
-	 * {@link RoundingMode} used can be stored as an attribute. Adding it as
-	 * part of the API would break compatibility with SE.
+	 * using {@link java.math.BigDecimal} as a representation type on SE, the
+	 * {@link java.math.RoundingMode} used can be stored as an attribute. Adding
+	 * it as part of the API would break compatibility with SE.
 	 */
 	@SuppressWarnings("rawtypes")
 	private final Map<Class, Object> attributes = new HashMap<>();
@@ -102,9 +103,9 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	private final boolean fixedScale;
 
 	/**
-	 * The maximal scale supported, always >= -1. Fixed scaled numbers will have
-	 * the same value for {@link #minScale} and {@link #maxScale}. -1 declares
-	 * the maximal scale to be unlimited.
+	 * The maximal scale supported, always >= -1. Fixed scaled numbers a fixed
+	 * value for {@link #maxScale}. -1 declares the maximal scale to be
+	 * unlimited.
 	 */
 	private final int maxScale;
 
@@ -170,9 +171,8 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 
 	/**
 	 * Get the maximal scale supported, always {@code >= -1}. Fixed scaled
-	 * numbers will have the same value for {@link #minScale} and
-	 * {@link #maxScale}. {@code -1} declares the maximal scale to be
-	 * <i>unlimited</i>.
+	 * numbers will have {@code scale==maxScale} for all values. {@code -1}
+	 * declares the maximal scale to be <i>unlimited</i>.
 	 * 
 	 * @return the maximal scale supported, always {@code >= -1}
 	 */
@@ -202,10 +202,14 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	/**
 	 * Access the additional attributes. This map contains arbitrary attributes,
 	 * identified by class. This allows to store additional context data in a
-	 * platform independent way, e.g. when using {@link BigDecimal} as a
-	 * representation type on SE, the {@link RoundingMode} used can be stored as
-	 * an attribute. Adding it as part of the API would break compatibility with
-	 * SE.
+	 * platform independent way, e.g. when using {@link java.math.BigDecimal} as
+	 * a representation type on SE, the {@link java.math.RoundingMode} used can
+	 * be stored as an attribute. Adding it as part of the API would break
+	 * compatibility with SE.
+	 * <p>
+	 * The complete listing of the supported attributes depends on the concrete
+	 * {@link MonetaryAmount} implementation classes and must be documented
+	 * there.
 	 * 
 	 * @return the immutable additional attributes map, never {@code null}.
 	 */
@@ -319,8 +323,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	 *            the {@link MonetaryContext} to be used.
 	 * @param amountType
 	 *            the target amount type.
-	 * @return the {@link MonetaryContext}, not {@code null .
-
+	 * @return the {@link MonetaryContext}, not {@code null}.
 	 */
 	public static <I extends MonetaryAmount<I>> MonetaryContext<I> from(
 			MonetaryContext<?> context, Class<I> amountType) {

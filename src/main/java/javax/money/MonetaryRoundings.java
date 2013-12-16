@@ -8,7 +8,7 @@
  * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
  * reserved.
  */
-package javax.money.function;
+package javax.money;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -16,11 +16,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmount;
-import javax.money.MonetaryContext;
-import javax.money.MonetaryException;
-import javax.money.MonetaryOperator;
 import javax.money.bootstrap.Bootstrap;
 import javax.money.spi.RoundingProviderSpi;
 

@@ -9,7 +9,7 @@
  * reserved.
  */
 /**
- * This package defines the SPIs and bootstrap classes of the Money and Currency API.
+ * SPI interfaces of the Money and Currency API.
  */
 package javax.money.spi;
 

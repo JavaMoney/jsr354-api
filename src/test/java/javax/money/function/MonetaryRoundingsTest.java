@@ -20,6 +20,7 @@ import java.util.Locale;
 import javax.money.MonetaryContext;
 import javax.money.MonetaryCurrencies;
 import javax.money.MonetaryOperator;
+import javax.money.MonetaryRoundings;
 
 import org.junit.Test;
 

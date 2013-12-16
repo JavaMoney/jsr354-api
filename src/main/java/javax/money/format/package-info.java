@@ -9,7 +9,7 @@
  * reserved.
  */
 /**
- * This package defines the Money and Currency format API. In more detail:
+ * Money and Currency format API. In more detail:
  * <ul>
  * <li>JSR 354 defines a minimal {@link javax.money.format.MonetaryAmountFormat} that
  * uses the JDK's {@link java.text.DecimalFormat} internally, but adds some additional

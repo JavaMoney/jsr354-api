@@ -9,7 +9,7 @@
  * reserved.
  */
 /**
- * This package defines the Money and Currency API. In more detail:
+ * Main package of the Money and Currency API. In more detail:
  * <ul>
  * <li>JSR 354 defines a minimal set of interfaces for interoperability, since
  * concrete usage scenarios do not allow to define an implementation that is

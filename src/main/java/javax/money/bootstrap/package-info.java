@@ -9,7 +9,7 @@
  * reserved.
  */
 /**
- * This package defines the Money and Currency format API bootstrap artifacts.
+ * Money and Currency API bootstrap artifacts.
  * In more detail:
  * <ul>
  * <li>By default all dependent services are loaded using the JDK

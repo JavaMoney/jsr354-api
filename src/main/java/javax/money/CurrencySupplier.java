@@ -13,18 +13,18 @@ package javax.money;
 
 /**
  * Represents a supplier of {@link CurrencyUnit}-valued results. This is the
- * {@link CurrencyUnit}-producing specialization of {@code Supplier}.
+ * {@link CurrencyUnit}-producing specialization of {@code Supplier} (as in Java 8).
  * 
  * <p>
  * There is no requirement that a distinct result be returned each time the
  * supplier is invoked.
  * 
  * <p>
- * This is a <a href="package-summary.html">functional interface</a> whose
+ * This is a <b>functional interface</b> whose
  * functional method is {@link #getCurrency()}.
  * 
  * @author Werner Keil
- * @version 0.4
+ * @version 0.5
  * @since 0.8
  * @see Supplier
  */

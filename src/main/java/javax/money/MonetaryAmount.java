@@ -95,9 +95,9 @@ package javax.money;
  * 
  * @param <M>
  *            The concrete implementation of <code>MonetaryAmount</code>
- * @version 0.8
+ * @version 0.8.1
  */
-public interface MonetaryAmount<M extends MonetaryAmount<M>> {
+public interface MonetaryAmount<M extends MonetaryAmount<M>> extends CurrencySupplier {
 
 	/**
 	 * Returns the amount’s currency, modeled as {@link CurrencyUnit}.

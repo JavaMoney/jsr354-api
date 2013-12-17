@@ -310,12 +310,6 @@ public final class DummyAmountFactory implements
 		}
 
 		@Override
-		public DummyAmount pow(int power) {
-
-			return new DummyAmount();
-		}
-
-		@Override
 		public DummyAmount stripTrailingZeros() {
 
 			return new DummyAmount();

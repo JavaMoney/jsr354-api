@@ -763,24 +763,6 @@ public interface MonetaryAmount<M extends MonetaryAmount<M>> extends CurrencySup
 	public M plus();
 
 	/**
-	 * Returns a {@code M} whose value is <tt>(this<sup>n</sup>)</tt>, The power
-	 * is computed exactly, to unlimited precision.
-	 * 
-	 * <p>
-	 * The parameter {@code n} must be in the range 0 through 999999999,
-	 * inclusive. {@code 0.pow(0)} returns {@code 1}.
-	 * 
-	 * @param power
-	 *            power to raise this {@code M} to.
-	 * @return <tt>this<sup>n</sup></tt>
-	 * @throws ArithmeticException
-	 *             if {@code n} is out of range, or if the result exceeds the
-	 *             numeric capabilities of this implementation class, i.e. the
-	 *             {@link MonetaryContext} cannot be adapted as required.
-	 */
-	public M pow(int power);
-
-	/**
 	 * Returns a {@code M} which is numerically equal to this one but with any
 	 * trailing zeros removed from the representation. For example, stripping
 	 * the trailing zeros from the {@code M} value {@code CHF 600.0}, which has

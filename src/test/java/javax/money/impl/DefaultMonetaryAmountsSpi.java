@@ -8,7 +8,7 @@ import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryContext;
 import javax.money.DummyAmountFactory.DummyAmount;
-import javax.money.bootstrap.Bootstrap;
+import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountsSpi;
 
 public class DefaultMonetaryAmountsSpi implements MonetaryAmountsSpi {

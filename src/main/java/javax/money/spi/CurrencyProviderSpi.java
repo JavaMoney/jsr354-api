@@ -17,7 +17,7 @@ import java.util.Locale;
 import javax.money.CurrencyUnit;
 
 /**
- * SPI to be registered using the {@link javax.money.bootstrap.Bootstrap}, which allows to
+ * SPI to be registered using the {@link javax.money.spi.Bootstrap}, which allows to
  * register/provide additional currencies into the system automatically on
  * startup. The implementation is allowed to be implemented in y contextual way,
  * so depending on the runtime context, different currencies may be available.

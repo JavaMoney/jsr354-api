@@ -16,7 +16,7 @@ import java.util.Objects;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryContext;
 import javax.money.MonetaryException;
-import javax.money.bootstrap.Bootstrap;
+import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFormatProviderSpi;
 
 /**

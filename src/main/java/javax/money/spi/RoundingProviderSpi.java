@@ -20,7 +20,7 @@ import javax.money.MonetaryOperator;
  * This SPI allows to extends/override the roundings available for
  * {@link CurrencyUnit}. The JSRs implementation already provides default
  * roundings. By registering instances of this interface using the
- * {@link javax.money.bootstrap.Bootstrap}, the default behaviour can be
+ * {@link javax.money.spi.Bootstrap}, the default behaviour can be
  * overridden and extended, e.g. for supporting also special roundings.
  * <p>
  * Implementations of this interface must be

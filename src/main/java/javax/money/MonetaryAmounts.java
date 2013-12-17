@@ -14,7 +14,7 @@ package javax.money;
 
 import java.util.Set;
 
-import javax.money.bootstrap.Bootstrap;
+import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountsSpi;
 
 /**

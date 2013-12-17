@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.money.bootstrap.Bootstrap;
+import javax.money.spi.Bootstrap;
 import javax.money.spi.CurrencyProviderSpi;
 
 /**
@@ -47,7 +47,7 @@ public final class MonetaryCurrencies {
 	/**
 	 * Access a new instance based on the currency code. Currencies are
 	 * available as provided by {@link CurrencyProviderSpi} instances registered
-	 * with the {@link javax.money.bootstrap.Bootstrap}.
+	 * with the {@link javax.money.spi.Bootstrap}.
 	 * 
 	 * @param currencyCode
 	 *            the ISO currency code, not {@code null}.
@@ -93,7 +93,7 @@ public final class MonetaryCurrencies {
 	/**
 	 * Access a new instance based on the {@link Locale}. Currencies are
 	 * available as provided by {@link CurrencyProviderSpi} instances registered
-	 * with the {@link javax.money.bootstrap.Bootstrap}.
+	 * with the {@link javax.money.spi.Bootstrap}.
 	 * 
 	 * @param locale
 	 *            the target {@link Locale}, typically representing an ISO

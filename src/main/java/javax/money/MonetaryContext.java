@@ -12,7 +12,6 @@
  */
 package javax.money;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,7 +35,7 @@ import java.util.Set;
  * 
  * @author Anatole Tresch
  */
-public final class MonetaryContext<T extends MonetaryAmount<?>> implements
+public final class MonetaryContext implements
 		Serializable {
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 5579720004786848255L;
@@ -81,7 +80,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	 * representation type can be accessed from from
 	 * {@link MonetaryAmount#getNumber()}.
 	 */
-	private final Class<T> amountType;
+	private final Class<? extends MonetaryAmount> amountType;
 
 	/** The generic amount bahavioral characteristics. */
 	private final AmountFlavor flavor;
@@ -129,7 +128,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	 *             if the {@code setPrecision} parameter is less than zero.
 	 */
 	@SuppressWarnings("rawtypes")
-	private MonetaryContext(Class<T> amountType, int precision,
+	private MonetaryContext(Class<? extends MonetaryAmount> amountType, int precision,
 			int maxScale,
 			boolean fixedScale,
 			AmountFlavor flavor,
@@ -186,7 +185,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	 * 
 	 * @return the amount representation type, never {@code null}.
 	 */
-	public Class<T> getAmountType() {
+	public Class<? extends MonetaryAmount> getAmountType() {
 		return amountType;
 	}
 
@@ -295,7 +294,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MonetaryContext<?> other = (MonetaryContext<?>) obj;
+		MonetaryContext other = (MonetaryContext) obj;
 		if (attributes == null) {
 			if (other.attributes != null)
 				return false;
@@ -325,9 +324,9 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 	 *            the target amount type.
 	 * @return the {@link MonetaryContext}, not {@code null}.
 	 */
-	public static <I extends MonetaryAmount<I>> MonetaryContext<I> from(
-			MonetaryContext<?> context, Class<I> amountType) {
-		return new MonetaryContext.Builder(context).build(amountType);
+	public static MonetaryContext from(
+			MonetaryContext context, Class<? extends MonetaryAmount> amountType) {
+		return new MonetaryContext.Builder(context).setAmountType(amountType).build();
 	}
 
 	/*
@@ -378,7 +377,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		 * The amount's implementationType type for the {@link MonetaryContext}
 		 * built.
 		 */
-		private Class<?> amountType;
+		private Class<? extends MonetaryAmount> amountType;
 		/**
 		 * The basic required {@link AmountFlavor} of the {@link MonetaryAmount}
 		 * implementation.
@@ -401,7 +400,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		 * @param amountType
 		 *            the numeric representation type, not {@code null}.
 		 */
-		public Builder(Class<? extends MonetaryAmount<?>> amountType) {
+		public Builder(Class<? extends MonetaryAmount> amountType) {
 			Objects.requireNonNull(amountType);
 			this.amountType = amountType;
 		}
@@ -420,7 +419,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		 * @param context
 		 *            the base {@link MonetaryContext} to be used.
 		 */
-		public Builder(MonetaryContext<?> context) {
+		public Builder(MonetaryContext context) {
 			this.amountType = context.getAmountType();
 			this.maxScale = context.getMaxScale();
 			this.fixedScale = context.isFixedScale();
@@ -437,7 +436,7 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		 * @return the {@link Builder}, for chaining.
 		 */
 		public Builder setAmountType(
-				Class<? extends MonetaryAmount<?>> amountType) {
+				Class<? extends MonetaryAmount> amountType) {
 			Objects.requireNonNull(amountType);
 			this.amountType = amountType;
 			return this;
@@ -538,28 +537,12 @@ public final class MonetaryContext<T extends MonetaryAmount<?>> implements
 		 *             if building of the {@link MonetaryContext} fails.
 		 */
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public MonetaryContext<?> build() {
+		public MonetaryContext build() {
 			return new MonetaryContext(amountType, precision,
 					maxScale, fixedScale,
 					amountFlavor, attributes);
 		}
 
-		/**
-		 * Builds a new instance of {@link MonetaryContext}, hereby allowing for
-		 * explicit templating.
-		 * 
-		 * @param amountType
-		 *            the {@link MonetaryAmount} implementation type.
-		 * @return a new instance of {@link MonetaryContext}, never {@code null}
-		 * @throws IllegalArgumentException
-		 *             if building of the {@link MonetaryContext} fails.
-		 */
-		public <T extends MonetaryAmount<T>> MonetaryContext<T> build(
-				Class<T> amountType) {
-			return new MonetaryContext<T>(amountType, precision,
-					maxScale, fixedScale,
-					amountFlavor, attributes);
-		}
 
 		/*
 		 * (non-Javadoc)

@@ -114,7 +114,7 @@ public final class Bootstrap {
 	 * @param serviceType
 	 *            the service type.
 	 * @param defaultServices
-	 *            the default servicve list.
+	 *            the default service list.
 	 * @return the services found.
 	 */
 	public static <T> Collection<T> getServices(Class<T> serviceType,
@@ -128,7 +128,7 @@ public final class Bootstrap {
 	 * @see ServiceProvider#getService(Class)
 	 * @param serviceType
 	 *            the service type.
-	 * @return the services found.
+	 * @return the service found, never {@code null}.
 	 */
 	public static <T> T getService(Class<T> serviceType) {
 		return getServiceProvider().getService(serviceType);
@@ -142,7 +142,8 @@ public final class Bootstrap {
 	 *            the service type.
 	 * @param defaultService
 	 *            returned if no service was found.
-	 * @return the services found.
+	 * @return the service found, only {@code null}, if no service was found and
+	 *         {@code defaultService==null}.
 	 */
 	public static <T> T getService(Class<T> serviceType, T defaultService) {
 		return getServiceProvider().getService(serviceType, defaultService);
@@ -153,11 +154,21 @@ public final class Bootstrap {
 	 * 
 	 * @author Anatole Tresch
 	 */
-	private static final class ProviderComparator implements
-			Comparator<ServiceProvider> {
+	public static final class ProviderComparator implements
+			Comparator<Object> {
 		@Override
-		public int compare(ServiceProvider p1, ServiceProvider p2) {
-			return p2.getPriority() - p1.getPriority();
+		public int compare(Object p1, Object p2) {
+			Priority prioAnnot = p1.getClass().getAnnotation(Priority.class);
+			int prio1 = 0;
+			if (prioAnnot != null) {
+				prio1 = prioAnnot.value();
+			}
+			prioAnnot = p2.getClass().getAnnotation(Priority.class);
+			int prio2 = 0;
+			if (prioAnnot != null) {
+				prio2 = prioAnnot.value();
+			}
+			return prio2 - prio1;
 		}
 	}
 

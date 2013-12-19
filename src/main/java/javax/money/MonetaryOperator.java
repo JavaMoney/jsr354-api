@@ -59,13 +59,13 @@ public interface MonetaryOperator { // extends
 									// java.util.function.UnaryOperator<MonetaryAmount>
 									// for Java 8/9
 	/**
-	 * Apply a function to the input argument T, yielding an appropriate result
-	 * R.
+	 * Apply a function to the input argument T, returning the operated instance
+	 * of T.
 	 * 
 	 * @param value
 	 *            the input value
 	 * @return the result of the function
 	 */
-	public <T extends MonetaryAmount<T>> T apply(T value);
+	public <T extends MonetaryAmount> T apply(T value);
 
 }

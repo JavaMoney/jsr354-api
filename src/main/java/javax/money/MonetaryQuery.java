@@ -84,6 +84,6 @@ public interface MonetaryQuery<R> {
 	 * @throws ArithmeticException
 	 *             if numeric overflow occurs
 	 */
-	public R queryFrom(MonetaryAmount<?> amount);
+	public R queryFrom(MonetaryAmount amount);
 
 }

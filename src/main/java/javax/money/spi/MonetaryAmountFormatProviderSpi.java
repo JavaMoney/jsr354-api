@@ -44,7 +44,7 @@ public interface MonetaryAmountFormatProviderSpi {
 	 *         {@link MonetaryAmountFormatProviderSpi} instances registered.
 	 */
 	public MonetaryAmountFormat getFormat(Locale locale,
-			MonetaryContext<?> monetaryContext,
+			MonetaryContext monetaryContext,
 			CurrencyUnit defaultCurrency);
 
 	/**
@@ -65,7 +65,7 @@ public interface MonetaryAmountFormatProviderSpi {
 	 */
 	public MonetaryAmountFormat getFormat(
 			AmountStyle formatStyle,
-			MonetaryContext<?> monetaryContext,
+			MonetaryContext monetaryContext,
 			CurrencyUnit defaultCurrency);
 
 }

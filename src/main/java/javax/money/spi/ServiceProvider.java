@@ -19,16 +19,8 @@ import java.util.Collection;
  * @author Anatole Tresch
  * @author Werner Keil
  */
+@Priority(Priority.LOW)
 public interface ServiceProvider {
-
-	/**
-	 * Returns the providers priority. This is used to determine which provider
-	 * should be used, if multiple providers are registered. Higher priorities
-	 * hereby override service with lower priorities.
-	 * 
-	 * @return the numeric priority, 0 by default.
-	 */
-	int getPriority();
 
 	/**
 	 * Access a service, given its type. If multiple instances are registered

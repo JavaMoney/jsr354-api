@@ -35,7 +35,7 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	 *         defaults should be used.
 	 * @see MonetaryAmount#getMonetaryContext
 	 */
-	public MonetaryContext<?> getMonetaryContext();
+	public MonetaryContext getMonetaryContext();
 
 	/**
 	 * Get the {@link CurrencyUnit} applied by this {@link MonetaryAmountFormat}
@@ -64,7 +64,7 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	 * @throws UnsupportedOperationException
 	 *             if the formatter is unable to print
 	 */
-	public String format(MonetaryAmount<?> amount);
+	public String format(MonetaryAmount amount);
 
 	/**
 	 * Formats the given {@link MonetaryAmount} to a {@code Appendable}.
@@ -84,7 +84,7 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	 * @throws MonetaryParseException
 	 *             if there is a problem while parsing
 	 */
-	public void print(Appendable appendable, MonetaryAmount<?> amount)
+	public void print(Appendable appendable, MonetaryAmount amount)
 			throws IOException;
 
 	/**
@@ -114,7 +114,7 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	 * @throws MonetaryParseException
 	 *             if there is a problem while parsing
 	 */
-	public MonetaryAmount<?> parse(CharSequence text)
+	public MonetaryAmount parse(CharSequence text)
 			throws MonetaryParseException;
 
 }

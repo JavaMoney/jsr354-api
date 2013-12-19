@@ -19,9 +19,9 @@ import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryContext;
 
 /**
- * SPI for the backing implementation of the {@link javax.money.MonetaryAmounts} singleton.
- * It should load and manage (including contextual behavior), if needed) the
- * different registered {@link MonetaryAmountFactory} instances.
+ * SPI for the backing implementation of the {@link javax.money.MonetaryAmounts}
+ * singleton. It should load and manage (including contextual behavior), if
+ * needed) the different registered {@link MonetaryAmountFactory} instances.
  * 
  * @author Anatole Tresch
  */
@@ -38,8 +38,8 @@ public interface MonetaryAmountsSpi {
 	 *         {@link MonetaryAmountFactory} is available in the current
 	 *         context.
 	 */
-	public <T extends MonetaryAmount<T>> MonetaryAmountFactory<T> getAmountFactory(
-			Class<T> amountType);
+	public MonetaryAmountFactory getAmountFactory(
+			Class<? extends MonetaryAmount> amountType);
 
 	/**
 	 * Get the currently registered {@link MonetaryAmount} implementation types.
@@ -47,7 +47,7 @@ public interface MonetaryAmountsSpi {
 	 * @return the {@link Set} if registered {@link MonetaryAmount}
 	 *         implementation types, never{@code null}.
 	 */
-	public Set<Class<? extends MonetaryAmount<?>>> getAmountTypes();
+	public Set<Class<? extends MonetaryAmount>> getAmountTypes();
 
 	/**
 	 * Get the default {@link MonetaryAmount} implementation class, if no
@@ -59,7 +59,7 @@ public interface MonetaryAmountsSpi {
 	 * @throws MonetaryException
 	 *             if no {@link MonetaryAmountFactory} is registered.
 	 */
-	public Class<? extends MonetaryAmount<?>> getDefaultAmountType();
+	public Class<? extends MonetaryAmount> getDefaultAmountType();
 
 	/**
 	 * Get the {@link MonetaryAmount} implementation class, that best matches to
@@ -91,7 +91,7 @@ public interface MonetaryAmountsSpi {
 	 *             if no {@link MonetaryAmount} implementation class can cover
 	 *             the required {@link MonetaryContext}.
 	 */
-	public Class<? extends MonetaryAmount<?>> queryAmountType(
-			MonetaryContext<?> requiredContext);
+	public Class<? extends MonetaryAmount> queryAmountType(
+			MonetaryContext requiredContext);
 
 }

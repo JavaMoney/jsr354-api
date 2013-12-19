@@ -29,7 +29,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi {
 	public MonetaryOperator getRounding(CurrencyUnit currency) {
 		return new MonetaryOperator() {
 			@Override
-			public <T extends MonetaryAmount<T>> T apply(T value) {
+			public MonetaryAmount apply(MonetaryAmount value) {
 				return value;
 			}
 		};
@@ -39,7 +39,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi {
 	public MonetaryOperator getRounding(CurrencyUnit currency, long timestamp) {
 		return new MonetaryOperator() {
 			@Override
-			public <T extends MonetaryAmount<T>> T apply(T value) {
+			public MonetaryAmount apply(MonetaryAmount value) {
 				return value;
 			}
 		};
@@ -49,7 +49,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi {
 	public MonetaryOperator getCashRounding(CurrencyUnit currency) {
 		return new MonetaryOperator() {
 			@Override
-			public <T extends MonetaryAmount<T>> T apply(T value) {
+			public MonetaryAmount apply(MonetaryAmount value) {
 				return value;
 			}
 		};
@@ -60,7 +60,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi {
 			long timestamp) {
 		return new MonetaryOperator() {
 			@Override
-			public <T extends MonetaryAmount<T>> T apply(T value) {
+			public MonetaryAmount apply(MonetaryAmount value) {
 				return value;
 			}
 		};
@@ -71,7 +71,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi {
 		if (!"foo".equals(customRoundingId)) {
 			return new MonetaryOperator() {
 				@Override
-				public <T extends MonetaryAmount<T>> T apply(T value) {
+				public MonetaryAmount apply(MonetaryAmount value) {
 					return value;
 				}
 			};
@@ -83,7 +83,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi {
 	public MonetaryOperator getRounding(MonetaryContext monetaryContext) {
 		return new MonetaryOperator() {
 			@Override
-			public <T extends MonetaryAmount<T>> T apply(T value) {
+			public <T extends MonetaryAmount> T apply(T value){
 				return value;
 			}
 		};

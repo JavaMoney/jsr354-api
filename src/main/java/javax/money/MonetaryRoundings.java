@@ -64,7 +64,7 @@ public final class MonetaryRoundings {
 	 * @throws MonetaryException
 	 *             if no such rounding could be evaluated.
 	 */
-	public static MonetaryOperator getRounding(MonetaryContext<?> monetaryContext) {
+	public static MonetaryOperator getRounding(MonetaryContext monetaryContext) {
 		Objects.requireNonNull(monetaryContext, "MonetaryContext required.");
 		for (RoundingProviderSpi prov : Bootstrap
 				.getServices(
@@ -285,7 +285,7 @@ public final class MonetaryRoundings {
 	private static final class DefaultCurrencyRounding implements
 			MonetaryOperator {
 		@Override
-		public <T extends MonetaryAmount<T>> T apply(T amount) {
+		public <T extends MonetaryAmount> T apply(T amount) {
 			MonetaryOperator r = MonetaryRoundings.getRounding(amount
 					.getCurrency());
 			return r.apply(amount);

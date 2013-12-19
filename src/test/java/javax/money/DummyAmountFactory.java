@@ -14,14 +14,12 @@ package javax.money;
 
 import java.math.BigDecimal;
 
-import javax.money.DummyAmountFactory.DummyAmount;
-
 public final class DummyAmountFactory implements
-		MonetaryAmountFactory<DummyAmount> {
+		MonetaryAmountFactory {
 
-	private static MonetaryContext<DummyAmount> DUMMY_CONTEXT = new MonetaryContext.Builder()
+	private static MonetaryContext DUMMY_CONTEXT = new MonetaryContext.Builder()
 			.setFixedScale(true).setMaxScale(0)
-			.setPrecision(0).build(DummyAmount.class);
+			.setPrecision(0).setAmountType(DummyAmount.class).build();
 
 	@Override
 	public Class<DummyAmount> getAmountType() {
@@ -29,25 +27,57 @@ public final class DummyAmountFactory implements
 	}
 
 	@Override
-	public DummyAmount getAmount(CurrencyUnit currency, long number,
-			MonetaryContext<?> monetaryContext) {
+	public MonetaryContext getDefaultMonetaryContext() {
+		return DUMMY_CONTEXT;
+	}
+
+	@Override
+	public MonetaryContext getMaximalMonetaryContext() {
+		return DUMMY_CONTEXT;
+	}
+
+	@Override
+	public DummyAmountFactory withCurrency(String currencyCode) {
+		return this;
+	}
+
+	@Override
+	public DummyAmountFactory with(CurrencyUnit currency) {
+		return this;
+	}
+
+	@Override
+	public DummyAmount create() {
 		return new DummyAmount();
 	}
 
 	@Override
-	public DummyAmount getAmount(CurrencyUnit currency, double number,
-			MonetaryContext<?> monetaryContext) {
-		return new DummyAmount();
+	public MonetaryAmountFactory with(double number) {
+		return this;
 	}
 
 	@Override
-	public DummyAmount getAmount(CurrencyUnit currency, Number number,
-			MonetaryContext<?> monetaryContext) {
-		return new DummyAmount();
+	public MonetaryAmountFactory with(long number) {
+		return this;
+	}
+
+	@Override
+	public MonetaryAmountFactory with(Number number) {
+		return this;
+	}
+
+	@Override
+	public MonetaryAmountFactory with(MonetaryContext monetaryContext) {
+		return this;
+	}
+
+	@Override
+	public MonetaryAmountFactory with(MonetaryAmount amount) {
+		return this;
 	}
 
 	public static final class DummyAmount implements
-			MonetaryAmount<DummyAmount> {
+			MonetaryAmount {
 
 		@Override
 		public CurrencyUnit getCurrency() {
@@ -97,55 +127,31 @@ public final class DummyAmountFactory implements
 		}
 
 		@Override
-		public DummyAmount with(CurrencyUnit unit) {
-
-			return new DummyAmount();
-		}
-
-		@Override
-		public DummyAmount with(CurrencyUnit unit, long amount) {
-
-			return new DummyAmount();
-		}
-
-		@Override
-		public DummyAmount with(CurrencyUnit unit, double amount) {
-
-			return new DummyAmount();
-		}
-
-		@Override
-		public DummyAmount with(CurrencyUnit unit, Number amount) {
-
-			return new DummyAmount();
-		}
-
-		@Override
-		public boolean isGreaterThan(MonetaryAmount<?> amount) {
+		public boolean isGreaterThan(MonetaryAmount amount) {
 
 			return false;
 		}
 
 		@Override
-		public boolean isGreaterThanOrEqualTo(MonetaryAmount<?> amt) {
+		public boolean isGreaterThanOrEqualTo(MonetaryAmount amt) {
 
 			return false;
 		}
 
 		@Override
-		public boolean isLessThan(MonetaryAmount<?> amt) {
+		public boolean isLessThan(MonetaryAmount amt) {
 
 			return false;
 		}
 
 		@Override
-		public boolean isLessThanOrEqualTo(MonetaryAmount<?> amt) {
+		public boolean isLessThanOrEqualTo(MonetaryAmount amt) {
 
 			return false;
 		}
 
 		@Override
-		public boolean isEqualTo(MonetaryAmount<?> amount) {
+		public boolean isEqualTo(MonetaryAmount amount) {
 
 			return false;
 		}
@@ -187,13 +193,13 @@ public final class DummyAmountFactory implements
 		}
 
 		@Override
-		public DummyAmount add(MonetaryAmount<?> amount) {
+		public DummyAmount add(MonetaryAmount amount) {
 
 			return new DummyAmount();
 		}
 
 		@Override
-		public DummyAmount subtract(MonetaryAmount<?> amount) {
+		public DummyAmount subtract(MonetaryAmount amount) {
 
 			return new DummyAmount();
 		}
@@ -315,105 +321,11 @@ public final class DummyAmountFactory implements
 			return new DummyAmount();
 		}
 
-	}
+		@Override
+		public MonetaryAmountFactory getFactory() {
+			return new DummyAmountFactory();
+		}
 
-	@Override
-	public DummyAmount getAmount(CurrencyUnit currency, long number) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmount(CurrencyUnit currency, double number) {
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmount(CurrencyUnit currency, Number number) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmount(String currencyCode, long number) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmount(String currencyCode, double number) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmount(String currencyCode, Number number) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmount(String currencyCode, long number,
-			MonetaryContext<?> context) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmount(String currencyCode, double number,
-			MonetaryContext<?> context) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmount(String currencyCode, Number number,
-			MonetaryContext<?> monetaryContext) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmountZero(CurrencyUnit currency) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmountZero(String currencyCode) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmountZero(CurrencyUnit currency,
-			MonetaryContext<?> monetaryContext) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public DummyAmount getAmountZero(String currencyCode,
-			MonetaryContext<?> monetaryContext) {
-
-		return new DummyAmount();
-	}
-
-	@Override
-	public MonetaryContext<DummyAmount> getDefaultMonetaryContext() {
-		return DUMMY_CONTEXT;
-	}
-
-	@Override
-	public MonetaryContext<DummyAmount> getMaximalMonetaryContext() {
-		return DUMMY_CONTEXT;
-	}
-
-	@Override
-	public DummyAmount getAmountFrom(MonetaryAmount<?> amt,
-			MonetaryContext<?> monetaryContext) {
-
-		return new DummyAmount();
 	}
 
 }

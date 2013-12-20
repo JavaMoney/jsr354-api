@@ -4,10 +4,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.money.DummyAmount;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryContext;
-import javax.money.DummyAmountFactory.DummyAmount;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountsSpi;
 

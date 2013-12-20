@@ -54,9 +54,10 @@ public final class MonetaryAmounts {
 	 *             if no {@link MonetaryAmountFactory} targeting the given
 	 *             {@link MonetaryAmount} implementation class is registered.
 	 */
-	public static MonetaryAmountFactory getAmountFactory(
-			Class<? extends MonetaryAmount> amountType) {
-		MonetaryAmountFactory factory = monetaryAmountsSpi
+	public static <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(
+			Class<T> amountType) {
+		@SuppressWarnings("unchecked")
+		MonetaryAmountFactory<T> factory = monetaryAmountsSpi
 				.getAmountFactory(amountType);
 		if (factory == null) {
 			throw new MonetaryException("No AmountFactory registered for "
@@ -76,8 +77,7 @@ public final class MonetaryAmounts {
 	 *             {@link #getDefaultAmountType()} implementation class is
 	 *             registered.
 	 */
-	@SuppressWarnings("unchecked")
-	public static MonetaryAmountFactory getDefaultAmountFactory() {
+	public static MonetaryAmountFactory<?> getDefaultAmountFactory() {
 		return getAmountFactory(getDefaultAmountType());
 	}
 

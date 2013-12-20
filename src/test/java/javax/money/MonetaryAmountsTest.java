@@ -14,8 +14,6 @@ package javax.money;
 
 import static org.junit.Assert.*;
 
-import javax.money.DummyAmountFactory.DummyAmount;
-
 import org.junit.Test;
 
 /**

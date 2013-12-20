@@ -15,34 +15,27 @@ package javax.money;
 /**
  * Factory for {@link MonetaryAmount} instances for a given type.
  * <p>
- * This singleton allows to get {@link MonetaryAmount} instances depending on
- * the precision and scale requirements. If not defined a default
- * {@link MonetaryContext} is used, which can also be configured by adding a
- * file {@code /javamoney.properties} to the classpath, with the following
- * content:
+ * This singleton allows to get {@link MonetaryAmount} instances depending on the precision and
+ * scale requirements. If not defined a default {@link MonetaryContext} is used, which can also be
+ * configured by adding configuration to a file {@code /javamoney.properties} to the classpath.
  * 
- * <pre>
- * # Default MathContext for Money
- * #-------------------------------
- * # Custom MonetaryContext, overrides default entries from 
- * # org.javamoney.moneta.Money.monetaryContext
- * # RoundingMode hereby is optional (default = HALF_EVEN)
- * Money.defaults.precision=256
- * Money.defaults.scale=-1
- * Money.attributes.java.math.RoundingMode=RoundingMode.HALF_EVEN
- * </pre>
- * 
- * whereas {@code Money} should be replaced with the simple class name of the
- * implementation class.
+ * Hereby the entries should start with {@code a.b.Money.ctx}. The entries valid must be documented
+ * on the according implementation class, where the following entries should be defined as follows
+ * (example below given for a class {@code a.b.Money}:
+ * <ul>
+ * <li>{@code a.b.Money.ctx.precision} to define the maximal supported precision.</li>
+ * <li>{@code a.b.Money.ctx.scale} to define the maximal supported scale.</li>
+ * <li>{@code a.b.Money.ctx.fixedScale} to define the scale to be fixed (constant).</li>
+ * </ul>
  * <p>
- * <h2>Implementation specification</h2> Due to the builder like style,
- * instances of this interface are <b>not</b> required to be thread-safe!
+ * <h2>Implementation specification</h2> 
+ * Instances of this interface are <b>not</b> required to be thread-safe!
  * 
  * @version 0.6.1
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public interface MonetaryAmountFactory {
+public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 
 	/**
 	 * Access the {@link MonetaryAmount} implementation type.
@@ -61,7 +54,7 @@ public interface MonetaryAmountFactory {
 	 *             if the {@code currencyCode} is not resolvable.
 	 * @return This factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory withCurrency(String currencyCode);
+	public MonetaryAmountFactory<T> withCurrency(String currencyCode);
 
 	/**
 	 * Sets the {@link CurrencyUnit} to be used.
@@ -70,7 +63,7 @@ public interface MonetaryAmountFactory {
 	 *            the {@link CurrencyUnit} to be used, not {@code null}
 	 * @return This factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory with(CurrencyUnit currency);
+	public MonetaryAmountFactory<T> with(CurrencyUnit currency);
 
 	/**
 	 * Sets the number to be used.
@@ -79,7 +72,7 @@ public interface MonetaryAmountFactory {
 	 *            the number to be used
 	 * @return This factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory with(double number);
+	public MonetaryAmountFactory<T> with(double number);
 
 	/**
 	 * Sets the number to be used.
@@ -88,7 +81,7 @@ public interface MonetaryAmountFactory {
 	 *            the number to be used
 	 * @return This factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory with(long number);
+	public MonetaryAmountFactory<T> with(long number);
 
 	/**
 	 * Sets the number to be used.
@@ -97,7 +90,7 @@ public interface MonetaryAmountFactory {
 	 *            the number to be used, not {@code null}.
 	 * @return This factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory with(Number number);
+	public MonetaryAmountFactory<T> with(Number number);
 
 	/**
 	 * Sets the {@link MonetaryContext} to be used.
@@ -110,7 +103,7 @@ public interface MonetaryAmountFactory {
 	 * @return This factory instance, for chaining.
 	 * @see #getMaximalMonetaryContext()
 	 */
-	public MonetaryAmountFactory with(
+	public MonetaryAmountFactory<T> with(
 			MonetaryContext monetaryContext);
 
 	/**
@@ -130,7 +123,7 @@ public interface MonetaryAmountFactory {
 	 *             supported by this factory type.
 	 * @return this factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory with(MonetaryAmount amount);
+	public MonetaryAmountFactory<T> with(MonetaryAmount amount);
 
 	/**
 	 * Creates a new instance of {@link MonetaryAmount}, using the current data
@@ -139,19 +132,7 @@ public interface MonetaryAmountFactory {
 	 * @return the corresponding {@link MonetaryAmount}.
 	 * @see #getAmountType()
 	 */
-	public MonetaryAmount create();
-
-	/**
-	 * Creates a new instance of {@link MonetaryAmount}, using the current data
-	 * set on this factory. This method allows the concrete implementation type.
-	 * 
-	 * @return the corresponding {@link MonetaryAmount}.
-	 * @see #getAmountType()
-	 * @throws IllegalArgumentException
-	 *             when the given type is not the same as
-	 *             {@link #getAmountType()}.
-	 */
-	public <T extends MonetaryAmount> T create(Class<T> type);
+	public T create();
 
 	/**
 	 * Returns the default {@link MonetaryContext} used, when no

@@ -21,6 +21,15 @@ package javax.money;
  * high precision and scale, whereas low latency order and trading systems
  * require high calculation performance for algorithmic operations.
  * <p>
+ * Each instance of an amount provides additional meta-data in form of a
+ * {@link MonetaryContext}. This context contains detailed information on the
+ * numeric capabilities, e.g. the supported precision and scale, as well as the
+ * common implementation flavor.
+ * <br/>Also a {@link MonetaryAmount} provides a NumberBinding, which allows
+ * easily to extract the numeric value, of the amount. And finally {@link #getFactory()}
+ * provides a {@link MonetaryAmountFactory}, which allows to create instances of {@link MonetaryAmount}
+ * based on the same numeric implementation.
+ * <p>
  * This JSR additionally recommends to consider the following aspects:
  * <ul>
  * <li>Arithmetic operations should throw an {@link ArithmeticException}, if
@@ -32,8 +41,6 @@ package javax.money;
  * <li>Monetary amounts should allow numbers as argument for arithmetic
  * operations like division and multiplication. Adding or subtracting of amounts
  * must only be possible by passing instances of {@link MonetaryAmount}.</li>
- * <li>Arguments of type {@link Number} should be avoided, since it does not
- * allow to extract its numeric value in a feasible way.</li>
  * <li>If the numeric representation of a monetary amount exceeds the numeric
  * capabilities of the concrete type {@code T extends MonetaryAmount}, an
  * implementation should throw an {@code ArithemticOperationException}.</li>
@@ -54,12 +61,14 @@ package javax.money;
  * of the same type as type on which {@code with} was called. The {@code with}
  * method also defines additional interoperability requirements.</li>
  * <li>To enable further interoperability a static method
- * {@code from(MonetaryAmount)} is recommended to be implemented, that allows
- * conversion of a {@code MonetaryAmount} to a concrete type
- * {@code MonetaryAmount}:<br/>
+ * {@code from(MonetaryAmount)} is recommended to be implemented on each implementation class {@code M}, that allows
+ * conversion of a {@code MonetaryAmount} to a concrete instance of {@code M extends MonetaryAmount}:<br/>
  * 
  * <pre>
- * public static M from(MonetaryAmount amount);}
+ * public final class M implements MonetaryAmount{
+ *   ...
+ *   public static M from(MonetaryAmount amount)(...)
+ * }
  * </pre>
  * 
  * </li>
@@ -152,40 +161,7 @@ public interface MonetaryAmount extends CurrencySupplier {
 	 * @return the numeric value of this {@link MonetaryAmount}, never
 	 *         {@code null}.
 	 */
-	public Number getNumber();
-
-	/**
-	 * Access the numeric representation of this amount instance as
-	 * {@link Number}, if necessary truncate the value so it matches into the
-	 * value returned. Hereby all types extending {@link Number} that are
-	 * available on a platform must be supported.
-	 * 
-	 * @param type
-	 *            the number type.
-	 * @param <N>
-	 *            The Number type expected.
-	 * @return the numeric value of this amount instance as {@link Number}.
-	 */
-	public <N extends Number> N getNumber(Class<N> type);
-
-	/**
-	 * Access the numeric representation of this amount instance as
-	 * {@link Number}. If the value must be truncated, to matches into the value
-	 * returned, an {@link ArithmeticException} is throwsn. Hereby all types
-	 * extending {@link Number} that are available on a platform must be
-	 * supported.
-	 * 
-	 * @param type
-	 *            the number type.
-	 * @param <N>
-	 *            The Number type expected.
-	 * @return the numeric value of this amount instance as {@link Number}.
-	 * @throws ArithmeticException
-	 *             if the current numeric value exceeds the numeric capabilities
-	 *             of the required number type, i.e. the {@code 1.2, or 500}
-	 *             should be converted to {@link Byte}.
-	 */
-	public <N extends Number> N getNumberExact(Class<N> type);
+	public NumberValue getNumber();
 
 	/**
 	 * Queries this monetary amount for a value.
@@ -253,9 +229,8 @@ public interface MonetaryAmount extends CurrencySupplier {
 	 * @return the new {@code MonetaryAmountFactory} with the given
 	 *         {@link MonetaryAmount} as its default values.
 	 */
-	public MonetaryAmountFactory getFactory();
+	public MonetaryAmountFactory<?> getFactory();
 
-	
 	/**
 	 * Compares two instances of {@link MonetaryAmount}, hereby ignoring non
 	 * significant trailing zeroes and different numeric capabilities.

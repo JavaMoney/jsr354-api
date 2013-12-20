@@ -61,19 +61,17 @@ package javax.money;
  * of the same type as type on which {@code with} was called. The {@code with}
  * method also defines additional interoperability requirements.</li>
  * <li>To enable further interoperability a static method
- * {@code from(MonetaryAmount)} is recommended to be implemented on each implementation class {@code M}, that allows
- * conversion of a {@code MonetaryAmount} to a concrete instance of {@code M extends MonetaryAmount}:<br/>
+ * {@code from(MonetaryAmount)} is recommended to be implemented on each implementation class {@code MyMoney}, that allows
+ * conversion of a {@code MonetaryAmount} to a concrete instance of {@code MyMoney extends MonetaryAmount}:<br/>
  * 
  * <pre>
- * public final class M implements MonetaryAmount{
+ * public final class MyMoney implements MonetaryAmount{
  *   ...
- *   public static M from(MonetaryAmount amount)(...)
+ *   public static MyMoney from(MonetaryAmount amount)(...)
  * }
  * </pre>
  * 
  * </li>
- * <li>Finally implementations should not implement a method {@code getAmount()}
- * . This method is reserved for future integration into the JDK.</li>
  * </ul>
  * <h4>Implementation specification</h4>
  * Implementations of this interface should be
@@ -104,7 +102,7 @@ package javax.money;
  * @author Anatole Tresch
  * @author Werner Keil
  * 
- * @version 0.8.1
+ * @version 0.8.3
  */
 public interface MonetaryAmount extends CurrencySupplier {
 
@@ -199,9 +197,9 @@ public interface MonetaryAmount extends CurrencySupplier {
 	 * the concrete type, to enable a fluent API, e.g.
 	 * 
 	 * <pre>
-	 * public final class M implements MonetaryAmount{
+	 * public final class MyMoney implements MonetaryAmount{
 	 *   ...
-	 *   public M with(MonetaryOperator operator){
+	 *   public MyMoney with(MonetaryOperator operator){
 	 *     ... 
 	 *   }
 	 *   

@@ -65,10 +65,14 @@ package javax.money;
  * conversion of a {@code MonetaryAmount} to a concrete instance of {@code MyMoney extends MonetaryAmount}:<br/>
  * 
  * <pre>
+<<<<<<< HEAD
  * public final class MyMoney implements MonetaryAmount{
  *   ...
  *   public static MyMoney from(MonetaryAmount amount)(...)
  * }
+=======
+ * public static MyMoney from(MonetaryAmount amount);}
+>>>>>>> branch 'master' of https://github.com/JavaMoney/jsr354-api.git
  * </pre>
  * 
  * </li>
@@ -102,7 +106,11 @@ package javax.money;
  * @author Anatole Tresch
  * @author Werner Keil
  * 
+<<<<<<< HEAD
  * @version 0.8.3
+=======
+ * @version 0.8.2
+>>>>>>> branch 'master' of https://github.com/JavaMoney/jsr354-api.git
  */
 public interface MonetaryAmount extends CurrencySupplier {
 

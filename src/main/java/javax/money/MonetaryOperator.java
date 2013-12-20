@@ -46,14 +46,14 @@ package javax.money;
  * thread-safe when invoked.
  * 
  * <p>
- * This interface is considered to be adapted/compatible with
+ * This interface is considered to be adaptable/compatible with
  * {@code java.util.function.UnaryOperator} as introduced in Java 8.
  * 
  * @author Werner Keil
  * @author Anatole Tresch
  * @author Stephen Colebourne
  * 
- * @version 0.8.2
+ * @version 0.8.3
  */
 public interface MonetaryOperator { // extends
 									// java.util.function.UnaryOperator<MonetaryAmount>

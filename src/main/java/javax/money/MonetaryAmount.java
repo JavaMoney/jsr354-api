@@ -59,12 +59,10 @@ package javax.money;
  * {@code MonetaryAmount}:<br/>
  * 
  * <pre>
- * public static M from(MonetaryAmount amount);}
+ * public static MyMoney from(MonetaryAmount amount);}
  * </pre>
  * 
  * </li>
- * <li>Finally implementations should not implement a method {@code getAmount()}
- * . This method is reserved for future integration into the JDK.</li>
  * </ul>
  * <h4>Implementation specification</h4>
  * Implementations of this interface should be
@@ -95,7 +93,7 @@ package javax.money;
  * @author Anatole Tresch
  * @author Werner Keil
  * 
- * @version 0.8.1
+ * @version 0.8.2
  */
 public interface MonetaryAmount extends CurrencySupplier {
 
@@ -223,9 +221,9 @@ public interface MonetaryAmount extends CurrencySupplier {
 	 * the concrete type, to enable a fluent API, e.g.
 	 * 
 	 * <pre>
-	 * public final class M implements MonetaryAmount{
+	 * public final class MyMoney implements MonetaryAmount{
 	 *   ...
-	 *   public M with(MonetaryOperator operator){
+	 *   public MyMoney with(MonetaryOperator operator){
 	 *     ... 
 	 *   }
 	 *   

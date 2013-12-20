@@ -42,6 +42,7 @@ package javax.money;
  * @author Anatole Tresch
  * @author Stephen Colebourne
  * @author Werner Keil
+ * @version 0.8
  */
 // @FunctionalInterface for Java 9
 public interface MonetaryQuery<R> {

@@ -142,6 +142,18 @@ public interface MonetaryAmountFactory {
 	public MonetaryAmount create();
 
 	/**
+	 * Creates a new instance of {@link MonetaryAmount}, using the current data
+	 * set on this factory. This method allows the concrete implementation type.
+	 * 
+	 * @return the corresponding {@link MonetaryAmount}.
+	 * @see #getAmountType()
+	 * @throws IllegalArgumentException
+	 *             when the given type is not the same as
+	 *             {@link #getAmountType()}.
+	 */
+	public <T extends MonetaryAmount> T create(Class<T> type);
+
+	/**
 	 * Returns the default {@link MonetaryContext} used, when no
 	 * {@link MonetaryContext} is provided.
 	 * <p>

@@ -76,6 +76,12 @@ public final class DummyAmountFactory implements
 		return this;
 	}
 
+	@Override
+	public <T extends MonetaryAmount> T create(Class<T> type) {
+		return (T)new DummyAmount();
+	}
+	
+	
 	public static final class DummyAmount implements
 			MonetaryAmount {
 
@@ -327,5 +333,6 @@ public final class DummyAmountFactory implements
 		}
 
 	}
+
 
 }

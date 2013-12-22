@@ -123,27 +123,6 @@ public interface MonetaryAmount extends CurrencySupplier {
 	 */
 	public CurrencyUnit getCurrency();
 
-	/**
-	 * Returns the <i>precision</i> of this {@code MonetaryAmount}. (The
-	 * precision is the number of digits in the unscaled value.)
-	 * 
-	 * <p>
-	 * The precision of a zero value is 1.
-	 * 
-	 * @return the precision of this {@code MonetaryAmount}.
-	 */
-	public int getPrecision();
-
-	/**
-	 * Returns the <i>scale</i> of this {@code MonetaryAmount}. If zero or
-	 * positive, the scale is the number of digits to the right of the decimal
-	 * point. If negative, the unscaled value of the number is multiplied by ten
-	 * to the power of the negation of the scale. For example, a scale of
-	 * {@code -3} means the unscaled value is multiplied by 1000.
-	 * 
-	 * @return the scale of this {@code MonetaryAmount}.
-	 */
-	public int getScale();
 
 	/**
 	 * Returns the {@link MonetaryContext} of this {@code MonetaryAmount}. The

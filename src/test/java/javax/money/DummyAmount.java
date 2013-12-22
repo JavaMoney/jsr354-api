@@ -22,17 +22,6 @@ public final class DummyAmount implements
 	}
 
 	@Override
-	public int getPrecision() {
-		return 0;
-	}
-
-	@Override
-	public int getScale() {
-
-		return 0;
-	}
-
-	@Override
 	public MonetaryContext getMonetaryContext() {
 		return DummyAmountFactory.DUMMY_CONTEXT;
 	}
@@ -40,6 +29,17 @@ public final class DummyAmount implements
 	@Override
 	public NumberValue getNumber() {
 		return new NumberValue() {
+
+			@Override
+			public int getPrecision() {
+				return 0;
+			}
+
+			@Override
+			public int getScale() {
+
+				return 0;
+			}
 
 			@Override
 			public int intValue() {

@@ -100,22 +100,12 @@ package javax.money;
  * Since {@link Number} is not an interface, this type is not extending
  * {@link Number}.
  * 
- * @see #with(MonetaryOperator)
  * @author Anatole Tresch
  * @author Werner Keil
  * 
  * @version 0.8.1
  */
 public interface MonetaryValue extends CurrencySupplier {
-
-	/**
-	 * Returns the amount’s currency, modeled as {@link CurrencyUnit}.
-	 * Implementations may co-variantly change the return type to a more
-	 * specific implementation of {@link CurrencyUnit} if desired.
-	 * 
-	 * @return the currency, never {@code null}
-	 */
-	public CurrencyUnit getCurrency();
 
 	/**
 	 * Returns the <i>precision</i> of this {@code MonetaryAmount}. (The

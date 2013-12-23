@@ -106,11 +106,6 @@ package javax.money;
  * @author Anatole Tresch
  * @author Werner Keil
  * 
-<<<<<<< HEAD
- * @version 0.8.3
-=======
- * @version 0.8.2
->>>>>>> branch 'master' of https://github.com/JavaMoney/jsr354-api.git
  */
 public interface MonetaryAmount extends CurrencySupplier {
 

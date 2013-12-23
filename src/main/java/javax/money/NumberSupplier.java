@@ -24,6 +24,7 @@ package javax.money;
  * functional method is {@link #getNumber()}.
  * 
  * @author Werner Keil
+ * @author Anatol Tresch
  * @version 0.5
  * @since 0.8
  * @see Supplier

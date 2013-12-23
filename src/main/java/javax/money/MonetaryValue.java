@@ -103,9 +103,9 @@ package javax.money;
  * @author Anatole Tresch
  * @author Werner Keil
  * 
- * @version 0.8.1
+ * @version 0.1
  */
-public interface MonetaryValue extends CurrencySupplier {
+public interface MonetaryValue extends CurrencySupplier, NumberSupplier {
 
 	/**
 	 * Returns the <i>precision</i> of this {@code MonetaryAmount}. (The
@@ -128,16 +128,5 @@ public interface MonetaryValue extends CurrencySupplier {
 	 * @return the scale of this {@code MonetaryAmount}.
 	 */
 	public int getScale();
-
-	/**
-	 * Simple accessor for the numeric part of an {@link MonetaryValue}. The
-	 * representation type returned should be the best matching according to the
-	 * internal representation. In all cases never any truncation should occur,
-	 * so this method must be exact regarding the numeric value externalized.
-	 * 
-	 * @return the numeric value of this {@link MonetaryValue}, never
-	 *         {@code null}.
-	 */
-	public NumberValue getNumber();
 
 }

@@ -65,14 +65,10 @@ package javax.money;
  * conversion of a {@code MonetaryAmount} to a concrete instance of {@code MyMoney extends MonetaryAmount}:<br/>
  * 
  * <pre>
-<<<<<<< HEAD
  * public final class MyMoney implements MonetaryAmount{
  *   ...
  *   public static MyMoney from(MonetaryAmount amount)(...)
  * }
-=======
- * public static MyMoney from(MonetaryAmount amount);}
->>>>>>> branch 'master' of https://github.com/JavaMoney/jsr354-api.git
  * </pre>
  * 
  * </li>
@@ -99,15 +95,13 @@ package javax.money;
  * currency and numeric value are NOT equal.</li>
  * </ul>
  * <p>
- * Since {@link Number} is not an interface, this type is not extending
- * {@link Number}.
  * 
  * @see #with(MonetaryOperator)
  * @author Anatole Tresch
  * @author Werner Keil
- * 
+ * @version 0.8.1
  */
-public interface MonetaryAmount extends CurrencySupplier {
+public interface MonetaryAmount extends CurrencySupplier, NumberSupplier {
 
 	/**
 	 * Returns the amount’s currency, modeled as {@link CurrencyUnit}.
@@ -133,7 +127,7 @@ public interface MonetaryAmount extends CurrencySupplier {
 	public MonetaryContext getMonetaryContext();
 
 	/**
-	 * Simple accessor for the numeric part of an {@link MonetaryAmount}. The
+	 * Simple accessor for the numeric part of a {@link MonetaryAmount}. The
 	 * representation type returned should be the best matching according to the
 	 * internal representation. In all cases never any truncation should occur,
 	 * so this method must be exact regarding the numeric value externalized.

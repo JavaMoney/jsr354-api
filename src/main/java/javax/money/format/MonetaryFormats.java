@@ -1,12 +1,10 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
- * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
- * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
- * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
- * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
- * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
- * reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU
+ * ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS
+ * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
+ * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
+ * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
+ * (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money.format;
 
@@ -20,8 +18,7 @@ import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFormatProviderSpi;
 
 /**
- * This class models the singleton accessor for {@link MonetaryAmountFormat}
- * instances.
+ * This class models the singleton accessor for {@link MonetaryAmountFormat} instances.
  * <p>
  * This class is thread-safe.
  * 
@@ -37,7 +34,17 @@ public final class MonetaryFormats {
 		// Singleton
 	}
 
-	public static MonetaryAmountFormat getAmountFormat(Locale locale) {
+	/**
+	 * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
+	 * 
+	 * @param locale
+	 *            the target {@link Locale}, not {@code null}.
+	 * @return the matching {@link MonetaryAmountFormat}
+	 * @throws MonetaryException
+	 *             if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
+	 *             corresponding {@link MonetaryAmountFormat} instance.
+	 */
+	public static MonetaryAmountFormat getDefaultFormat(Locale locale) {
 		Objects.requireNonNull(locale, "Locale required.");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
 				.getServices(
@@ -51,180 +58,101 @@ public final class MonetaryFormats {
 				+ locale);
 	}
 
-	public static MonetaryAmountFormat getAmountFormat(Locale locale,
-			CurrencyUnit defaultCurrency) {
-		Objects.requireNonNull(locale, "Locale required.");
-		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServices(
-				MonetaryAmountFormatProviderSpi.class)) {
-			MonetaryAmountFormat f = spi.getFormat(locale, null,
-					defaultCurrency);
-			if (f != null) {
-				return f;
-			}
-		}
-		throw new MonetaryException("No MonetaryAmountFormat found for locale="
-				+ locale + ", defaultCurrency=" + defaultCurrency);
-	}
-
 	/**
-	 * Access a new {@link MonetaryAmountFormat}.
-	 * 
-	 * @param locale
-	 *            the target {@link Locale}.
-	 * @param monetaryContext
-	 *            the {@link MonetaryContext} to be used.
-	 * @return the corresponding {@link MonetaryAmountFormat} instance.
+	 * Builder for creating new instances of {@link MonetaryAmountFormat}.
 	 */
-	public static MonetaryAmountFormat getAmountFormat(Locale locale,
-			MonetaryContext monetaryContext) {
-		Objects.requireNonNull(locale, "Locale required.");
-		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServices(
-				MonetaryAmountFormatProviderSpi.class)) {
-			MonetaryAmountFormat f = spi.getFormat(locale, monetaryContext,
-					null);
-			if (f != null) {
-				return f;
-			}
-		}
-		throw new MonetaryException("No MonetaryAmountFormat found for locale="
-				+ locale + ", monetaryContext=" + monetaryContext);
-	}
+	public static final class Builder {
+		/** The {@link Locale} to be used, may be null, when an {@link AmountStyle} is set. */
+		private Locale locale;
+		/** The default {@link CurrencyUnit}, may be null. */
+		private CurrencyUnit defaultCurrency;
+		/** The required {@link MonetaryContext}, may be null. */
+		private MonetaryContext monetaryContext;
+		/** The {@link AmountStyle} to be used, may be null, when an {@link Locale} is set. */
+		private AmountStyle style;
 
-	/**
-	 * Access a new {@link MonetaryAmountFormat}.
-	 * 
-	 * @param locale
-	 *            the target {@link Locale}.
-	 * @param monetaryContext
-	 *            the {@link MonetaryContext} to be used.
-	 * @param defaultCurrency
-	 *            the default currency to be applied, when no currency is in the
-	 *            input stream of a parse.
-	 * @return the corresponding {@link MonetaryAmountFormat} instance.
-	 */
-	public static MonetaryAmountFormat getAmountFormat(Locale locale,
-			MonetaryContext monetaryContext,
-			CurrencyUnit defaultCurrency) {
-		Objects.requireNonNull(locale, "Locale required.");
-		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServices(
-				MonetaryAmountFormatProviderSpi.class)) {
-			MonetaryAmountFormat f = spi.getFormat(locale, monetaryContext,
-					defaultCurrency);
-			if (f != null) {
-				return f;
-			}
+		/**
+		 * Creates a new {@link Builder}, hereby the {@link AmountStyle} is determined by the
+		 * {@link Locale} given.
+		 * 
+		 * @param locale
+		 *            the target {@link Locale}.
+		 */
+		public Builder(Locale locale) {
+			Objects.requireNonNull(locale, "Locale required.");
+			this.locale = locale;
 		}
-		throw new MonetaryException("No MonetaryAmountFormat found for locale="
-				+ locale + ", monetaryContext=" + monetaryContext
-				+ ", defaultCurrency=" + defaultCurrency);
-	}
 
-	/**
-	 * Access a new {@link MonetaryAmountFormat}.
-	 * 
-	 * @param style
-	 *            the {@link AmountStyle} defining the format.
-	 * @return the corresponding {@link MonetaryAmountFormat} instance.
-	 */
-	public static MonetaryAmountFormat getAmountFormat(AmountStyle style) {
-		Objects.requireNonNull(style, "FormatStyle required.");
-		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServices(
-				MonetaryAmountFormatProviderSpi.class)) {
-			MonetaryAmountFormat f = spi.getFormat(style, null, null);
-			if (f != null) {
-				return f;
-			}
+		/**
+		 * Creates a new {@link Builder}.
+		 * 
+		 * @param style
+		 *            the {@link AmountStyle} required.
+		 */
+		public Builder(AmountStyle style) {
+			Objects.requireNonNull(style, "style required.");
+			this.style = style;
 		}
-		throw new MonetaryException("No MonetaryAmountFormat found for style="
-				+ style);
-	}
 
-	/**
-	 * Access a new {@link MonetaryAmountFormat}.
-	 * 
-	 * @param style
-	 *            the {@link AmountStyle} defining the format.
-	 * @param defaultCurrency
-	 *            the default currency to be applied, when no currency is in the
-	 *            input stream of a parse.
-	 * @return the corresponding {@link MonetaryAmountFormat} instance.
-	 */
-	public static MonetaryAmountFormat getAmountFormat(
-			AmountStyle style,
-			CurrencyUnit defaultCurrency) {
-		Objects.requireNonNull(style, "FormatStyle required.");
-		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServices(
-				MonetaryAmountFormatProviderSpi.class)) {
-			MonetaryAmountFormat f = spi
-					.getFormat(style, null, defaultCurrency);
-			if (f != null) {
-				return f;
-			}
+		/**
+		 * Sets the default {@link CurrencyUnit} to be used, when parsing amounts where no currency
+		 * is available on the input.
+		 * 
+		 * @param defaultCurrency
+		 *            the default {@link CurrencyUnit}
+		 * @return the {@link Builder}, for chaining.
+		 */
+		public Builder with(CurrencyUnit defaultCurrency) {
+			this.defaultCurrency = defaultCurrency;
+			return this;
 		}
-		throw new MonetaryException("No MonetaryAmountFormat found for style="
-				+ style + ", defaultCurrency=" + defaultCurrency);
-	}
 
-	/**
-	 * Access a new {@link MonetaryAmountFormat}.
-	 * 
-	 * @param style
-	 *            the {@link AmountStyle} defining the format.
-	 * @param monetaryContext
-	 *            the {@link MonetaryContext} to be used.
-	 * @return the corresponding {@link MonetaryAmountFormat} instance.
-	 */
-	public static MonetaryAmountFormat getAmountFormat(
-			AmountStyle style,
-			MonetaryContext monetaryContext) {
-		Objects.requireNonNull(style, "FormatStyle required.");
-		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServices(
-				MonetaryAmountFormatProviderSpi.class)) {
-			MonetaryAmountFormat f = spi
-					.getFormat(style, monetaryContext, null);
-			if (f != null) {
-				return f;
-			}
+		/**
+		 * Sets the {@link MonetaryContext} that determines the amount implementation class returned
+		 * from parsing.
+		 * 
+		 * @param monetaryContext
+		 *            the {@link MonetaryContext} to be used, or {@code null} for using the default
+		 *            amount type.
+		 * @return the {@link Builder}, for chaining.
+		 * @see javax.money.MonetaryAmounts#queryAmountType(MonetaryContext)
+		 * @see javax.money.MonetaryAmounts#getDefaultAmountType()
+		 * @see javax.money.MonetaryAmounts#getDefaultAmountFactory()
+		 */
+		public Builder with(MonetaryContext monetaryContext) {
+			this.monetaryContext = monetaryContext;
+			return this;
 		}
-		throw new MonetaryException("No MonetaryAmountFormat found for style="
-				+ style + ", monetaryContext=" + monetaryContext);
-	}
 
-	/**
-	 * Access a new {@link MonetaryAmountFormat}.
-	 * 
-	 * @param style
-	 *            the {@link AmountStyle} defining the format.
-	 * @param monetaryContext
-	 *            the {@link MonetaryContext} to be used.
-	 * @param defaultCurrency
-	 *            the default currency to be applied, when no currency is in the
-	 *            input stream of a parse.
-	 * @return the corresponding {@link MonetaryAmountFormat} instance.
-	 */
-	public static MonetaryAmountFormat getAmountFormat(
-			AmountStyle style,
-			MonetaryContext monetaryContext,
-			CurrencyUnit defaultCurrency) {
-		Objects.requireNonNull(style, "FormatStyle required.");
-		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
-				.getServices(
-				MonetaryAmountFormatProviderSpi.class)) {
-			MonetaryAmountFormat f = spi.getFormat(style, monetaryContext,
-					defaultCurrency);
-			if (f != null) {
-				return f;
+		/**
+		 * Access a new {@link MonetaryAmountFormat}, matching the properties set.
+		 * 
+		 * @return a new {@link MonetaryAmountFormat} instance, never {@code null}.
+		 * @throws MonetaryException
+		 *             if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
+		 *             corresponding {@link MonetaryAmountFormat} instance.
+		 */
+		public MonetaryAmountFormat create() {
+			for (MonetaryAmountFormatProviderSpi spi : Bootstrap
+					.getServices(
+					MonetaryAmountFormatProviderSpi.class)) {
+				MonetaryAmountFormat f = null;
+				if (style == null) {
+					f = spi.getFormat(locale, monetaryContext, defaultCurrency);
+				}
+				else {
+					f = spi.getFormat(style, monetaryContext, defaultCurrency);
+				}
+				if (f != null) {
+					return f;
+				}
 			}
+			throw new MonetaryException(
+					"No MonetaryAmountFormat found for locale="
+							+ locale + ", defaultCurrency=" + defaultCurrency
+							+ ", monetaryContext=" + monetaryContext
+							+ ", amountStyle=" + style);
 		}
-		throw new MonetaryException("No MonetaryAmountFormat found for style="
-				+ style + ", monetaryContext=" + monetaryContext
-				+ ", defaultCurrency=" + defaultCurrency);
 	}
 
 }

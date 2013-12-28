@@ -1,14 +1,10 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
- * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
- * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
- * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
- * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
- * BUTTON AT THE BOTTOM OF THIS PAGE.
- * 
- * Specification: JSR-354 Money and Currency API ("Specification")
- * 
- * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU
+ * ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS
+ * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
+ * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
+ * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
+ * (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money.format;
 
@@ -27,16 +23,15 @@ public class MonetaryFormatsTest {
 	@Test
 	public void testGetAmountFormatLocale() {
 		MonetaryAmountFormat fmt = MonetaryFormats
-				.getAmountFormat(Locale.ENGLISH);
+				.getDefaultFormat(Locale.ENGLISH);
 		assertNotNull(fmt);
 		assertEquals(fmt.getClass(), TestAmountFormatProvider.TestFormat.class);
 	}
 
 	@Test
 	public void testGetAmountFormatLocaleCurrencyUnit() {
-		MonetaryAmountFormat fmt = MonetaryFormats
-				.getAmountFormat(Locale.ENGLISH,
-						MonetaryCurrencies.getCurrency("test1"));
+		MonetaryAmountFormat fmt = new MonetaryFormats.Builder(Locale.ENGLISH)
+				.with(MonetaryCurrencies.getCurrency("test1")).create();
 		assertNotNull(fmt);
 		assertEquals(TestAmountFormatProvider.TestFormat.class, fmt.getClass());
 		assertEquals(MonetaryCurrencies.getCurrency("test1"),
@@ -45,24 +40,26 @@ public class MonetaryFormatsTest {
 
 	@Test
 	public void testGetAmountFormatLocaleMonetaryContext() {
-		MonetaryAmountFormat fmt = MonetaryFormats
-				.getAmountFormat(Locale.ENGLISH,
-						MonetaryAmounts.getDefaultAmountFactory().getDefaultMonetaryContext());
+		MonetaryAmountFormat fmt = new MonetaryFormats.Builder(Locale.ENGLISH)
+				.with(MonetaryAmounts.getDefaultAmountFactory()
+						.getDefaultMonetaryContext()).create();
 		assertNotNull(fmt);
 		assertEquals(TestAmountFormatProvider.TestFormat.class, fmt.getClass());
-		assertEquals(MonetaryAmounts.getDefaultAmountFactory().getDefaultMonetaryContext(),
+		assertEquals(MonetaryAmounts.getDefaultAmountFactory()
+				.getDefaultMonetaryContext(),
 				fmt.getMonetaryContext());
 	}
 
 	@Test
 	public void testGetAmountFormatLocaleMonetaryContextCurrencyUnit() {
-		MonetaryAmountFormat fmt = MonetaryFormats
-				.getAmountFormat(Locale.ENGLISH,
-						MonetaryAmounts.getDefaultAmountFactory().getDefaultMonetaryContext(),
-						MonetaryCurrencies.getCurrency("test1"));
+		MonetaryAmountFormat fmt = new MonetaryFormats.Builder(Locale.ENGLISH)
+				.with(MonetaryAmounts.getDefaultAmountFactory()
+						.getDefaultMonetaryContext())
+				.with(MonetaryCurrencies.getCurrency("test1")).create();
 		assertNotNull(fmt);
 		assertEquals(TestAmountFormatProvider.TestFormat.class, fmt.getClass());
-		assertEquals(MonetaryAmounts.getDefaultAmountFactory().getDefaultMonetaryContext(),
+		assertEquals(MonetaryAmounts.getDefaultAmountFactory()
+				.getDefaultMonetaryContext(),
 				fmt.getMonetaryContext());
 		assertEquals(MonetaryCurrencies.getCurrency("test1"),
 				fmt.getDefaultCurrency());
@@ -73,8 +70,7 @@ public class MonetaryFormatsTest {
 	@Test
 	public void testGetAmountFormatStyle() {
 		AmountStyle s = new AmountStyle.Builder(Locale.GERMAN).build();
-		MonetaryAmountFormat fmt = MonetaryFormats
-				.getAmountFormat(s);
+		MonetaryAmountFormat fmt = new MonetaryFormats.Builder(s).create();
 		assertNotNull(fmt);
 		assertEquals(fmt.getClass(), TestAmountFormatProvider.TestFormat.class);
 		assertEquals(s, fmt.getAmountStyle());
@@ -83,8 +79,8 @@ public class MonetaryFormatsTest {
 	@Test
 	public void testGetAmountFormatFormatStyleCurrencyUnit() {
 		AmountStyle s = new AmountStyle.Builder(Locale.GERMAN).build();
-		MonetaryAmountFormat fmt = MonetaryFormats
-				.getAmountFormat(s, MonetaryCurrencies.getCurrency("test1"));
+		MonetaryAmountFormat fmt = new MonetaryFormats.Builder(s).with(
+				MonetaryCurrencies.getCurrency("test1")).create();
 		assertNotNull(fmt);
 		assertEquals(TestAmountFormatProvider.TestFormat.class, fmt.getClass());
 		assertEquals(MonetaryCurrencies.getCurrency("test1"),
@@ -95,11 +91,13 @@ public class MonetaryFormatsTest {
 	@Test
 	public void testGetAmountFormatFormatStyleMonetaryContext() {
 		AmountStyle s = new AmountStyle.Builder(Locale.GERMAN).build();
-		MonetaryAmountFormat fmt = MonetaryFormats
-				.getAmountFormat(s, MonetaryAmounts.getDefaultAmountFactory().getDefaultMonetaryContext());
+		MonetaryAmountFormat fmt = new MonetaryFormats.Builder(s).with(
+				MonetaryAmounts.getDefaultAmountFactory()
+						.getDefaultMonetaryContext()).create();
 		assertNotNull(fmt);
 		assertEquals(TestAmountFormatProvider.TestFormat.class, fmt.getClass());
-		assertEquals(MonetaryAmounts.getDefaultAmountFactory().getDefaultMonetaryContext(),
+		assertEquals(MonetaryAmounts.getDefaultAmountFactory()
+				.getDefaultMonetaryContext(),
 				fmt.getMonetaryContext());
 		assertEquals(s, fmt.getAmountStyle());
 	}
@@ -107,13 +105,14 @@ public class MonetaryFormatsTest {
 	@Test
 	public void testGetAmountFormatFormatStyleMonetaryContextCurrencyUnit() {
 		AmountStyle s = new AmountStyle.Builder(Locale.GERMAN).build();
-		MonetaryAmountFormat fmt = MonetaryFormats
-				.getAmountFormat(s,
-						MonetaryAmounts.getDefaultAmountFactory().getDefaultMonetaryContext(),
-						MonetaryCurrencies.getCurrency("test1"));
+		MonetaryAmountFormat fmt = new MonetaryFormats.Builder(s)
+				.with(MonetaryAmounts.getDefaultAmountFactory()
+						.getDefaultMonetaryContext()).with(
+						MonetaryCurrencies.getCurrency("test1")).create();
 		assertNotNull(fmt);
 		assertEquals(TestAmountFormatProvider.TestFormat.class, fmt.getClass());
-		assertEquals(MonetaryAmounts.getDefaultAmountFactory().getDefaultMonetaryContext(),
+		assertEquals(MonetaryAmounts.getDefaultAmountFactory()
+				.getDefaultMonetaryContext(),
 				fmt.getMonetaryContext());
 		assertEquals(MonetaryCurrencies.getCurrency("test1"),
 				fmt.getDefaultCurrency());

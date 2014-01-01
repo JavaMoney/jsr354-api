@@ -15,25 +15,21 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.money.MonetaryAmount;
 import javax.money.MonetaryException;
 import javax.money.spi.AmountFormatSymbolsProviderSpi;
 import javax.money.spi.Bootstrap;
 
 /**
  * This class represents the set of symbols (such as the decimal separator, the grouping separators,
- * and so on) needed by {@link AmountStyle} to format {@link MonetaryAmount}. Instance of
- * <code>MonetaryFormatSymbols</code> based on its locale data can be obtained from the
- * {@link MonetaryFormats} singleton. If you need to change any of these symbols, you can access
- * also access <code>Builder</code> object from your {@link MonetaryFormats} singleton.
+ * and so on) needed by {@link AmountStyle} to format {@link javax.money.MonetaryAmount} instances.
+ * Instances of this class can be obtained by calling {@link #getInstance(Locale)}. If you need to
+ * change any of these symbols, you can access also access a <code>Builder</code> by calling
+ * {@link #getBuilder()} .
  * <p>
- * This class itself has no dependencies to <code>javax.text</code> to be platform independent.
+ * This class itself has no dependencies to <code>java.text</code> to be platform independent.
  * Nevertheless the similarities are obvious. In most cases users will never work with this class
  * here explicitly, since it is loaded with correct localized platform defaults implicitly, when
- * accessing a default {@link MonetaryAmountFormat} instance. Nevertheless if users want to
- * customize the defaults, e.g. for using with an {@link AmountStyle.Builder}, default instances for
- * a given {@link Locale} can be accessed calling
- * {@link MonetaryAmountFormat#getAmountFormatSymbols(java.util.Locale)}.
+ * accessing a default {@link MonetaryAmountFormat} instance.
  * 
  * @see java.text.DecimalFormat
  * @see java.util.Locale
@@ -123,6 +119,7 @@ public final class AmountFormatSymbols implements Cloneable, Serializable {
 		this.patternSeparator = builder.patternSeparator;
 		this.zeroDigit = builder.zeroDigit;
 		this.exponentialSeparator = builder.exponentialSeparator;
+		this.infinity = builder.infinity;
 	}
 
 	/**
@@ -279,20 +276,22 @@ public final class AmountFormatSymbols implements Cloneable, Serializable {
 	/**
 	 * Builder for creating new instances of {@link AmountFormatSymbols}.
 	 * 
-	 * @author Anatole
-	 * 
+	 * @author Anatole Tresch
 	 */
 	public static final class Builder {
 
 		// Constants for characters used in programmatic (unlocalized) patterns.
+		/** Default zero digit, equals to value from DecimalFormat. */
 		private static final char PATTERN_ZERO_DIGIT = '0';
-		private static final char PATTERN_GROUPING_SEPARATOR = ',';
+		/** Default decimal separator, equals to value from DecimalFormat. */
 		private static final char PATTERN_DECIMAL_SEPARATOR = '.';
-		private static final char PATTERN_PER_MILLE = '\u2030';
-		private static final char PATTERN_PERCENT = '%';
+		/** Default digit character used in patterns, equals to value from DecimalFormat. */
 		private static final char PATTERN_DIGIT = '#';
+		/** Default pattern separator, equals to value from DecimalFormat. */
 		private static final char PATTERN_SEPARATOR = ';';
+		/** Default exponent character, equals to value from DecimalFormat. */
 		private static final String PATTERN_EXPONENT = "E";
+		/** Default minus sign, equals to value from DecimalFormat. */
 		private static final char PATTERN_MINUS = '-';
 
 		/**
@@ -432,6 +431,18 @@ public final class AmountFormatSymbols implements Cloneable, Serializable {
 		 */
 		public Builder setExponentialSeparator(String exponentialSeparator) {
 			this.exponentialSeparator = exponentialSeparator;
+			return this;
+		}
+
+		/**
+		 * Sets the infinity String used. Different for French, etc.
+		 * 
+		 * @param infinity
+		 *            the infinity String to be used.
+		 * @return the {@link Builder} for chaining.
+		 */
+		public Builder setInfinity(String infinity) {
+			this.infinity = infinity;
 			return this;
 		}
 

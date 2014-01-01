@@ -158,12 +158,12 @@ public final class Bootstrap {
 			Comparator<Object> {
 		@Override
 		public int compare(Object p1, Object p2) {
-			Priority prioAnnot = p1.getClass().getAnnotation(Priority.class);
+			ServicePriority prioAnnot = p1.getClass().getAnnotation(ServicePriority.class);
 			int prio1 = 0;
 			if (prioAnnot != null) {
 				prio1 = prioAnnot.value();
 			}
-			prioAnnot = p2.getClass().getAnnotation(Priority.class);
+			prioAnnot = p2.getClass().getAnnotation(ServicePriority.class);
 			int prio2 = 0;
 			if (prioAnnot != null) {
 				prio2 = prioAnnot.value();

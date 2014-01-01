@@ -12,7 +12,8 @@
  */
 package javax.money.format;
 
-import javax.money.CurrencyUnit;
+import java.util.Currency;
+
 
 /**
  * Defines the different variants of currency formatting.
@@ -25,32 +26,34 @@ public enum CurrencyStyle {
 	/**
 	 * The currency will be rendered as its (non localized) currency code.
 	 * 
-	 * @see CurrencyUnit#getCurrencyCode()
+	 * @see javax.money.CurrencyUnit#getCurrencyCode()
 	 */
 	CODE,
 
 	/**
-	 * The currency will be rendered as its localized diplay name. If no display
-	 * name is known for the required {@link CurrencyUnit}, the currency code
+	 * The currency will be rendered as its localized display name. If no display
+	 * name is known for the required {@link javax.money.CurrencyUnit}, the currency code
 	 * should be used as a fall-back.
 	 * 
-	 * @see CurrencyUnit#getCurrencyCode()
+	 * @see javax.money.CurrencyUnit#getCurrencyCode()
+	 * @see Currency#getDisplayName(java.util.Locale)
 	 */
 	NAME,
 
 	/**
 	 * The currency will be rendered as its (non localized) numeric code.
 	 * 
-	 * @see CurrencyUnit#getNumericCode()
+	 * @see javax.money.CurrencyUnit#getNumericCode()
 	 */
 	NUMERIC_CODE,
 
 	/**
 	 * The currency will be rendered as its localized currency symbol. If no
-	 * symbol name is known for the required {@link CurrencyUnit}, the currency
+	 * symbol name is known for the required {@link javax.money.CurrencyUnit}, the currency
 	 * code should be used as a fall-back.
 	 * 
-	 * @see CurrencyUnit#getCurrencyCode()
+	 * @see javax.money.CurrencyUnit#getCurrencyCode()
+	 * @see Currency#getSymbol(java.util.Locale)
 	 */
 	SYMBOL
 }

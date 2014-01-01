@@ -36,7 +36,7 @@ public interface MonetaryLogger {
 	/**
 	 * Logs a warning message.
 	 * 
-	 * @param message
+	 * @param warning
 	 *            The message, not {@code null}.
 	 */
 	public void logWarning(String warning);

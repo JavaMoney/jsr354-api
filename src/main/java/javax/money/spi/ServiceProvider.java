@@ -19,7 +19,6 @@ import java.util.Collection;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-@Priority(Priority.LOW)
 public interface ServiceProvider {
 
 	/**

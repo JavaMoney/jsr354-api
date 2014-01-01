@@ -26,6 +26,7 @@ import java.util.logging.Logger;
  * 
  * @author Anatole Tresch
  */
+@ServicePriority(ServicePriority.LOW_PRIORITY)
 public class DefaultServiceProvider implements ServiceProvider {
 	/** List of services loaded, per class. */
 	@SuppressWarnings("rawtypes")

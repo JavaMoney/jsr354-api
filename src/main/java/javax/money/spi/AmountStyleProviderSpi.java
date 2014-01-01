@@ -10,12 +10,11 @@ package javax.money.spi;
 
 import java.util.Collection;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.money.format.AmountStyle;
 
 /**
- * SPI providing {@link AmountStyle} instances. 
+ * SPI providing {@link AmountStyle} instances.
  * <p>
  * <h3>Implementation specification</h3>
  * Instances of this interfaces must be
@@ -34,9 +33,8 @@ public interface AmountStyleProviderSpi {
 	 * 
 	 * @param locale
 	 *            The target {@link Locale}, not {@code null}.
-	 * @return An according {@link AmountStyle} instance, or {@code null}, which delegates
-	 *         the request to subsequent {@link AmountStyleProviderSpi} instances
-	 *         registered.
+	 * @return An according {@link AmountStyle} instance, or {@code null}, which delegates the
+	 *         request to subsequent {@link AmountStyleProviderSpi} instances registered.
 	 */
 	public AmountStyle getAmountStyle(Locale locale);
 

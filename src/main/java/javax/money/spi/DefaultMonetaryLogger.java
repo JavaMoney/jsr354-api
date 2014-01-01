@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * 
  * @author Anatole Tresch
  */
-@Priority(Priority.LOW)
+@ServicePriority(ServicePriority.LOW_PRIORITY)
 public class DefaultMonetaryLogger implements MonetaryLogger {
 	/** The Logger used. */
 	private static final Logger LOGGER = Logger

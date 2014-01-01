@@ -1,90 +1,107 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
- * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
- * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
- * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
- * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
- * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
- * reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU
+ * ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS
+ * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
+ * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
+ * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
+ * (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money.format;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
+import javax.money.MonetaryException;
 import javax.money.MonetaryOperator;
+import javax.money.spi.AmountStyleProviderSpi;
+import javax.money.spi.Bootstrap;
 
 /**
- * The {@link AmountStyle} defines how a {@link javax.money.MonetaryAmount}
- * should be formatted.
+ * The {@link AmountStyle} defines how a {@link javax.money.MonetaryAmount} should be formatted.
  * 
  * @author Anatole Tresch
  */
 public final class AmountStyle {
-	/** Default array for uncostimized group characters. */
-	private static final char[] EMPTY_CHAR_ARRAY = new char[0];
-	/** Default array for uncostimized group sizes. */
-	private static final int[] EMPTY_INT_ARRAY = new int[0];
-	/** The {@link DecimalFormat} used. */
-	private DecimalFormat format;
-	/** The conversion applied before formatting (optional). */
-	private MonetaryOperator formatConversion;
+	/** The format pattern used. */
+	private String pattern;
+	/** The conversion applied before formatting/displaying (optional). */
+	private MonetaryOperator displayConversion;
 	/** The conversion applied after parsing (optional). */
 	private MonetaryOperator parseConversion;
 	/** The customized group sizes. */
 	private int[] groupSizes;
-	/** The customized group characters. */
-	private char[] groupChars;
 	/** The {@link CurrencyStyle} to be used, not {@code null}. */
 	private CurrencyStyle currencyStyle;
-	/** The {@link CurrencyPlacement} to be used, not {@code null}. */
-	private CurrencyPlacement currencyPlacement;
-	/** The {@link CurrencyPlacement} to be used, not {@code null}. */
-	private String currencySeparator;
 	/** The target {@link Locale} this style is representing. */
 	private Locale locale;
+	/** The {@link AmountFormatSymbols} used for this style. */
+	private AmountFormatSymbols symbols;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param locale
-	 *            The locale
-	 * @param format
-	 *            The {@link DecimalFormat} used.
-	 * @param groupSizes
-	 *            the customized group sizes.
-	 * @param groupChars
-	 *            the customized group characters.
-	 * @param formatConversion
-	 *            the conversion {@link MonetaryOperator} done before formatting
-	 *            the amount.
-	 * @param currencyStyle
-	 *            the {@link CurrencyStyle} to be applied.
-	 * @param parseConversion
-	 *            the conversion {@link MonetaryOperator} done after parsing the
-	 *            amount.
-	 * @param currencyPlacement
-	 *            THe {@link CurrencyPlacement}
-	 * @param currencySeparator
-	 *            the currency separating String.
+	 * @param builder
+	 *            the {@link Builder} providing the data required.
 	 */
-	private AmountStyle(Locale locale, DecimalFormat format, int[] groupSizes,
-			char[] groupChars, MonetaryOperator formatConversion,
-			MonetaryOperator parseConversion,
-			CurrencyStyle currencyStyle, CurrencyPlacement currencyPlacement,
-			String currencySeparator) {
-		this.groupSizes = groupSizes;
-		this.groupChars = groupChars;
-		this.formatConversion = formatConversion;
-		this.parseConversion = parseConversion;
-		this.format = format;
-		this.currencyPlacement = currencyPlacement;
-		this.currencyStyle = currencyStyle;
-		this.currencySeparator = currencySeparator;
-		this.locale = locale;
+	private AmountStyle(Builder builder) {
+		Objects.requireNonNull(builder.pattern,
+				"Format pattern required.");
+		Objects.requireNonNull(builder.symbols,
+				"Symbols required.");
+		Objects.requireNonNull(builder.currencyStyle,
+				"currencyFormat required.");
+		Objects.requireNonNull(builder.locale, "Locale required.");
+		this.groupSizes = builder.groupSizes;
+		this.displayConversion = builder.displayConversion;
+		this.parseConversion = builder.parseConversion;
+		this.pattern = builder.pattern;
+		this.currencyStyle = builder.currencyStyle;
+		this.locale = builder.locale;
+		this.symbols = builder.symbols;
+	}
+
+	/**
+	 * Get an {@link AmountStyle} given a {@link Locale}.
+	 * 
+	 * @param locale
+	 *            the target {@link Locale}
+	 * @return a corresponding {@link AmountStyle} instance, never {@code null}.
+	 * @throws MonetaryException
+	 *             if no registered {@link AmountStyleProviderSpi} can provide a matching instance.
+	 */
+	public static final AmountStyle getInstance(Locale locale) {
+		Objects.requireNonNull(locale, "Locale required.");
+		for (AmountStyleProviderSpi spi : Bootstrap
+				.getServices(
+				AmountStyleProviderSpi.class)) {
+			AmountStyle style = spi.getAmountStyle(locale);
+			if (style != null) {
+				return style;
+			}
+		}
+		throw new MonetaryException(
+				"No AmountStyle for locale "
+						+ locale);
+	}
+
+	/**
+	 * Get all available locales. For each {@link Locale} returned {@link #getInstance(Locale)} will
+	 * return an instance of {@link AmountStyle}.
+	 * 
+	 * @return all available locales, never {@code null}.
+	 */
+	public static final Set<Locale> getAvailableLocales() {
+		Set<Locale> locales = new HashSet<>();
+		for (AmountStyleProviderSpi spi : Bootstrap
+				.getServices(
+				AmountStyleProviderSpi.class)) {
+			locales.addAll(spi.getSupportedLocales());
+		}
+		return locales;
 	}
 
 	/**
@@ -101,8 +118,26 @@ public final class AmountStyle {
 	 * 
 	 * @return the style's {@link DecimalFormat}, never {@code null}.
 	 */
-	public DecimalFormat getDecimalFormat() {
-		return this.format;
+	public String getPattern() {
+		return this.pattern;
+	}
+
+	/**
+	 * Access the {@link CurrencyUnitFormat} to be used.
+	 * 
+	 * @return the format to be used.
+	 */
+	public CurrencyStyle getCurrencyStyle() {
+		return this.currencyStyle;
+	}
+
+	/**
+	 * Access the style's {@link AmountFormatSymbols}.
+	 * 
+	 * @return the style's {@link AmountFormatSymbols}, never {@code null}.
+	 */
+	public AmountFormatSymbols getSymbols() {
+		return this.symbols;
 	}
 
 	/**
@@ -110,8 +145,8 @@ public final class AmountStyle {
 	 * 
 	 * @return the conversion used, or {@code null}.
 	 */
-	public MonetaryOperator getFormatConversion() {
-		return this.formatConversion;
+	public MonetaryOperator getDisplayConversion() {
+		return this.displayConversion;
 	}
 
 	/**
@@ -120,68 +155,42 @@ public final class AmountStyle {
 	 * @return the conversion used, or {@code null}.
 	 */
 	public MonetaryOperator getParseConversion() {
-		return this.formatConversion;
+		return this.parseConversion;
 	}
 
 	/**
-	 * Get the number groups sizes used, or an empty array if no custom sizes
-	 * are configured.
+	 * Get the number groups sizes used, or an empty array if no custom sizes are configured.
 	 * 
 	 * @return the groupings sizes, never {@code null}.
 	 */
 	public int[] getNumberGroupSizes() {
-		if (this.groupSizes == null) {
-			return EMPTY_INT_ARRAY;
-		}
 		return this.groupSizes.clone();
-	}
-
-	/**
-	 * Get the number groups chars used, or an empty array if no custom chars
-	 * are configured.
-	 * 
-	 * @return the groupings chars, never null.
-	 */
-	public char[] getNumberGroupChars() {
-		if (this.groupChars == null) {
-			return EMPTY_CHAR_ARRAY;
-		}
-		return this.groupChars.clone();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime
-				* result
-				+ ((currencyPlacement == null) ? 0 : currencyPlacement
-						.hashCode());
-		result = prime
-				* result
-				+ ((currencySeparator == null) ? 0 : currencySeparator
-						.hashCode());
 		result = prime * result
 				+ ((currencyStyle == null) ? 0 : currencyStyle.hashCode());
 		result = prime * result
 				+ ((locale == null) ? 0 : locale.hashCode());
-		result = prime * result + ((format == null) ? 0 : format.hashCode());
-		result = prime * result + Arrays.hashCode(groupChars);
+		result = prime * result
+				+ ((pattern == null) ? 0 : pattern.hashCode());
 		result = prime * result + Arrays.hashCode(groupSizes);
 		result = prime
 				* result
-				+ ((formatConversion == null) ? 0 : formatConversion.hashCode());
+				+ ((displayConversion == null) ? 0 : displayConversion
+						.hashCode());
 		return result;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -193,51 +202,42 @@ public final class AmountStyle {
 		if (getClass() != obj.getClass())
 			return false;
 		AmountStyle other = (AmountStyle) obj;
-		if (currencyPlacement != other.currencyPlacement)
-			return false;
-		if (currencySeparator == null) {
-			if (other.currencySeparator != null)
-				return false;
-		} else if (!currencySeparator.equals(other.currencySeparator))
-			return false;
 		if (currencyStyle != other.currencyStyle)
 			return false;
-		if (format == null) {
-			if (other.format != null)
+		if (pattern == null) {
+			if (other.pattern != null)
 				return false;
-		} else if (!format.equals(other.format))
+		} else if (!pattern.equals(other.pattern))
 			return false;
 		if (locale == null) {
 			if (other.locale != null)
 				return false;
 		} else if (!locale.equals(other.locale))
 			return false;
-		if (!Arrays.equals(groupChars, other.groupChars))
-			return false;
 		if (!Arrays.equals(groupSizes, other.groupSizes))
 			return false;
-		if (formatConversion == null) {
-			if (other.formatConversion != null)
+		if (displayConversion == null) {
+			if (other.displayConversion != null)
 				return false;
-		} else if (!formatConversion.equals(other.formatConversion))
+		} else if (!displayConversion.equals(other.displayConversion))
 			return false;
 		return true;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "FormatStyle [locale=" + locale + ", format=" + format
+		return "FormatStyle [locale=" + locale + ", formatPattern="
+				+ pattern
 				+ ", currencyStyle="
-				+ currencyStyle + ", currencyPlacement=" + currencyPlacement
-				+ ", currencySeparator=" + currencySeparator + ", rounding="
-				+ formatConversion + ", groupSizes="
+				+ currencyStyle
+				+ ", rounding="
+				+ displayConversion + ", groupSizes="
 				+ Arrays.toString(groupSizes)
-				+ ", groupChars=" + Arrays.toString(groupChars) + "]";
+				+ "]";
 	}
 
 	/**
@@ -246,24 +246,22 @@ public final class AmountStyle {
 	 * @author Anatole Tresch
 	 */
 	public static final class Builder {
+		/** Default array for uncostimized group sizes. */
+		private static final int[] EMPTY_INT_ARRAY = new int[0];
 		/** The target {@link Locale} to be used. */
 		private Locale locale;
-		/** The underlying {@link DecimalFormat}. */
-		private DecimalFormat format;
+		/** The underlying format pattern. */
+		private String pattern;
 		/** The formatting conversion operator, if any. */
-		private MonetaryOperator formatConversion;
+		private MonetaryOperator displayConversion;
 		/** The parse conversion operator, if any. */
 		private MonetaryOperator parseConversion;
 		/** The customized goup sizes, if any. */
-		private int[] groupSizes;
-		/** The customized group characters, if any. */
-		private char[] groupChars;
+		private int[] groupSizes = EMPTY_INT_ARRAY;
+		/** The symbols to be used, or {@code null}, for the defaults based on the {@link #locale}. */
+		private AmountFormatSymbols symbols;
 		/** The {@link CurrencyStyle} to be used, not {@code null}. */
 		private CurrencyStyle currencyStyle = CurrencyStyle.CODE;
-		/** The {@link CurrencyPlacement} to be used, not {@code null}. */
-		private CurrencyPlacement currencyPlacement = CurrencyPlacement.BEFORE;
-		/** The {@link CurrencyPlacement} to be used, not {@code null}. */
-		private String currencySeparator = " ";
 
 		/**
 		 * Creates a new {@link Builder}.
@@ -273,21 +271,10 @@ public final class AmountStyle {
 		 */
 		public Builder(Locale locale) {
 			Objects.requireNonNull(locale, "Locale required.");
-			this.format = (DecimalFormat) DecimalFormat.getInstance(locale);
+			this.pattern = ((DecimalFormat) DecimalFormat
+					.getCurrencyInstance(locale)).toPattern();
 			this.locale = locale;
-		}
-
-		/**
-		 * Allows to adapt the {@link Locale}.
-		 * 
-		 * @param locale
-		 *            the locale, not null.
-		 * @return the {@link Builder} for chaining.
-		 */
-		public Builder setLocale(Locale locale) {
-			Objects.requireNonNull(locale, "Locale required.");
-			this.locale = locale;
-			return this;
+			this.symbols = AmountFormatSymbols.getInstance(locale);
 		}
 
 		/**
@@ -297,8 +284,21 @@ public final class AmountStyle {
 		 *            the conversion.
 		 * @return the {@link Builder} for chaining.
 		 */
-		public Builder setFormatConversion(MonetaryOperator conversion) {
-			this.formatConversion = conversion;
+		public Builder setDisplayConversion(MonetaryOperator conversion) {
+			this.displayConversion = conversion;
+			return this;
+		}
+
+		/**
+		 * Sets the {@link AmountFormatSymbols} to be used.
+		 * 
+		 * @param symbols
+		 *            the {@link AmountFormatSymbols}, not null.
+		 * @return the {@link Builder} for chaining.
+		 */
+		public Builder setSymbols(AmountFormatSymbols symbols) {
+			Objects.requireNonNull(symbols);
+			this.symbols = symbols;
 			return this;
 		}
 
@@ -315,11 +315,10 @@ public final class AmountStyle {
 		}
 
 		/**
-		 * Sets the customized number group sizes to be used for formatting.
-		 * Hereby each value in the array represents a group size, starting from
-		 * the decimal point and going up the significant digits. The last entry
-		 * in the array is used as a default group size for all subsequent
-		 * groupings.
+		 * Sets the customized number group sizes to be used for formatting. Hereby each value in
+		 * the array represents a group size, starting from the decimal point and going up the
+		 * significant digits. The last entry in the array is used as a default group size for all
+		 * subsequent groupings.
 		 * 
 		 * @param groupSizes
 		 *            the group sizes, not null.
@@ -332,84 +331,45 @@ public final class AmountStyle {
 		}
 
 		/**
-		 * Sets the customized number group characters to be used for
-		 * formatting. Hereby each value in the array represents a group
-		 * character for a group, starting from the decimal point and going up
-		 * the significant digits. The last entry in the array is used as a
-		 * default group character for all subsequent groupings.
-		 * 
-		 * @param groupChars
-		 *            the group characters, not null.
-		 * @return the {@link Builder} for chaining.
-		 */
-		public Builder setNumberGroupChars(char... groupChars) {
-			Objects.requireNonNull(groupChars, "groupChars required.");
-			this.groupChars = groupChars;
-			return this;
-		}
-
-		/**
 		 * Set the {@link java.text.DecimalFormat} as defined by
-		 * {@link java.text.DecimalFormat#getInstance(Locale)} by the given
-		 * {@link Locale} .
+		 * {@link java.text.DecimalFormat#getInstance(Locale)} by the given {@link Locale} .
 		 * 
 		 * @see java.text.DecimalFormat#getInstance(Locale)
 		 * @param locale
 		 *            The target {@link Locale}, not null.
 		 * @return the {@link Builder} for chaining.
 		 */
-		public Builder setDecimalFormat(Locale locale) {
-			Objects.requireNonNull(locale, "Locale required.");
-			this.format = (DecimalFormat) DecimalFormat.getInstance(locale);
+		public Builder setPattern(String pattern) {
+			Objects.requireNonNull(pattern, "pattern required.");
+			this.pattern = pattern;
 			return this;
 		}
 
 		/**
-		 * Set the separating String between the numeric part of an amount and
-		 * the {@link javax.money.CurrencyUnit} rendered.
+		 * Sets the {@link AmountFormatSymbols}.
 		 * 
-		 * @param currencySeparator
-		 *            The currency separator, not {@code null} (but may be
-		 *            empty).
+		 * @param symbols
+		 *            The target {@link AmountFormatSymbols}, not null.
 		 * @return the {@link Builder} for chaining.
 		 */
-		public Builder setCurrencySeparator(String currencySeparator) {
-			Objects.requireNonNull(currencySeparator,
-					"currencySeparator must not be null.");
-			this.currencySeparator = currencySeparator;
+		public Builder withSymbols(AmountFormatSymbols symbols) {
+			Objects.requireNonNull(symbols, "symbols required.");
+			this.symbols = symbols;
 			return this;
 		}
 
 		/**
-		 * Set the {@link CurrencyStyle} to be used for renderering the
+		 * Set the {@link CurrencyUnitFormat} to be used for renderering the
 		 * {@link javax.money.CurrencyUnit}.
 		 * 
-		 * @param currencyStyle
-		 *            The CurrencyStyle to be used, not {@code null} (but may be
-		 *            ignored when {@link CurrencyPlacement#OMIT} is set).
+		 * @param currencyFormat
+		 *            The {@link CurrencyUnitFormat} to be used, not {@code null}.
 		 * @return the {@link Builder} for chaining.
 		 */
 		public Builder setCurrencyStyle(CurrencyStyle currencyStyle) {
 			Objects.requireNonNull(currencyStyle,
 					"CurrencyStyle must not be null.");
 			this.currencyStyle = currencyStyle;
-			return this;
-		}
-
-		/**
-		 * Set the {@link CurrencyStyle} to be used for renderering the
-		 * {@link javax.money.CurrencyUnit}.
-		 * 
-		 * @param currencyPlacement
-		 *            The {@link CurrencyPlacement} to be used, not {@code null}
-		 *            . If {@link CurrencyPlacement#OMIT} is set, the current
-		 *            {@code currencyStyle} is ignored.
-		 * @return the {@link Builder} for chaining.
-		 */
-		public Builder setCurrencyPlacement(CurrencyPlacement currencyPlacement) {
-			Objects.requireNonNull(currencyPlacement,
-					"CurrencyPlacement must not be null.");
-			this.currencyPlacement = currencyPlacement;
 			return this;
 		}
 
@@ -421,29 +381,22 @@ public final class AmountStyle {
 		 *             if no {@link DecimalFormat} could be applied.
 		 */
 		public AmountStyle build() {
-			Objects.requireNonNull(format, "DecimalFormat required.");
-			Objects.requireNonNull(locale, "Locale required.");
-			return new AmountStyle(locale, format, groupSizes, groupChars,
-					formatConversion, parseConversion,
-					currencyStyle, currencyPlacement, currencySeparator);
+			return new AmountStyle(this);
 		}
 
 		/*
 		 * (non-Javadoc)
-		 * 
 		 * @see java.lang.Object#toString()
 		 */
 		@Override
 		public String toString() {
-			return "FormatStyle.Builder [locale=" + locale + ", format="
-					+ format.toPattern()
-					+ ", currencyStyle=" + currencyStyle
-					+ ", currencyPlacement="
-					+ currencyPlacement + ", currencySeparator="
-					+ currencySeparator + ", rounding="
-					+ formatConversion
+			return "FormatStyle.Builder [locale=" + locale + ", formatPattern="
+					+ pattern
+					+ ", currencyFormat=" + currencyStyle
+					+ ", rounding="
+					+ displayConversion
 					+ ", groupSizes=" + Arrays.toString(groupSizes)
-					+ ", groupChars=" + Arrays.toString(groupChars) + "]";
+					+ ", symbols=" + symbols + "]";
 		}
 
 	}

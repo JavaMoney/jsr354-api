@@ -8,12 +8,15 @@
  */
 package javax.money.format;
 
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryContext;
 import javax.money.MonetaryException;
+import javax.money.MonetaryOperator;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFormatProviderSpi;
 
@@ -44,8 +47,8 @@ public final class MonetaryFormats {
 	 *             if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
 	 *             corresponding {@link MonetaryAmountFormat} instance.
 	 */
-	public static MonetaryAmountFormat getDefaultFormat(Locale locale) {
-		Objects.requireNonNull(locale, "Locale required.");
+	public static MonetaryAmountFormat getAmountFormat(Locale locale) {
+		Objects.requireNonNull(locale, "Locale required");
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
 				.getServices(
 				MonetaryAmountFormatProviderSpi.class)) {
@@ -54,22 +57,62 @@ public final class MonetaryFormats {
 				return f;
 			}
 		}
-		throw new MonetaryException("No MonetaryAmountFormat found for locale "
+		throw new MonetaryException("No MonetaryAmountFormat for locale "
 				+ locale);
 	}
+	
+	/**
+	 * Get all available locales. For each {@link Locale} returned {@link #getAmountFormat(Locale)} will
+	 * return an instance of {@link MonetaryAmountFormat}.
+	 * 
+	 * @return all available locales, never {@code null}.
+	 */
+	public static final Set<Locale> getAvailableLocales() {
+		Set<Locale> locales = new HashSet<>();
+		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
+				.getServices(
+						MonetaryAmountFormatProviderSpi.class)) {
+			locales.addAll(spi.getSupportedLocales());
+		}
+		return locales;
+	}
+
+	// /**
+	// * Access the default {@link AmountStyle} given a {@link Locale}.
+	// *
+	// * @param locale
+	// * the target {@link Locale}, not {@code null}.
+	// * @return the matching {@link AmountStyle}
+	// * @throws MonetaryException
+	// * if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
+	// * corresponding {@link AmountStyle} instance.
+	// */
+	// public static AmountStyle getAmountStyle(CurrencyStyle currencyStyle,
+	// Locale locale) {
+	// for (MonetaryAmountFormatProviderSpi spi : Bootstrap
+	// .getServices(
+	// MonetaryAmountFormatProviderSpi.class)) {
+	// AmountStyle s = spi.getAmountStyle(currencyStyle, locale);
+	// if (s != null) {
+	// return s;
+	// }
+	// }
+	// throw new MonetaryException("No AmountStyle found for locale "
+	// + locale);
+	// }
 
 	/**
 	 * Builder for creating new instances of {@link MonetaryAmountFormat}.
 	 */
 	public static final class Builder {
-		/** The {@link Locale} to be used, may be null, when an {@link AmountStyle} is set. */
-		private Locale locale;
 		/** The default {@link CurrencyUnit}, may be null. */
 		private CurrencyUnit defaultCurrency;
 		/** The required {@link MonetaryContext}, may be null. */
 		private MonetaryContext monetaryContext;
 		/** The {@link AmountStyle} to be used, may be null, when an {@link Locale} is set. */
-		private AmountStyle style;
+		private AmountStyle.Builder styleBuilder;
+		/** The format's name (optional). */
+		private String name;
 
 		/**
 		 * Creates a new {@link Builder}, hereby the {@link AmountStyle} is determined by the
@@ -80,18 +123,19 @@ public final class MonetaryFormats {
 		 */
 		public Builder(Locale locale) {
 			Objects.requireNonNull(locale, "Locale required.");
-			this.locale = locale;
+			this.styleBuilder = new AmountStyle.Builder(locale);
 		}
 
 		/**
-		 * Creates a new {@link Builder}.
+		 * Sets the format's name.
 		 * 
-		 * @param style
-		 *            the {@link AmountStyle} required.
+		 * @param name
+		 *            the name, not null.
+		 * @return the {@link Builder}, for chaining.
 		 */
-		public Builder(AmountStyle style) {
-			Objects.requireNonNull(style, "style required.");
-			this.style = style;
+		public Builder setName(String name) {
+			this.name = name;
+			return this;
 		}
 
 		/**
@@ -102,8 +146,86 @@ public final class MonetaryFormats {
 		 *            the default {@link CurrencyUnit}
 		 * @return the {@link Builder}, for chaining.
 		 */
-		public Builder with(CurrencyUnit defaultCurrency) {
+		public Builder setDefaultCurrency(CurrencyUnit defaultCurrency) {
 			this.defaultCurrency = defaultCurrency;
+			return this;
+		}
+
+		/**
+		 * Sets the {@link CurrencyStyle} to be used.
+		 * 
+		 * @param currencyFormat
+		 *            the {@link CurrencyStyle}, not null.
+		 * @return the {@link Builder}, for chaining.
+		 */
+		public Builder set(CurrencyStyle currencyStyle) {
+			this.styleBuilder.setCurrencyStyle(currencyStyle);
+			return this;
+		}
+
+		/**
+		 * Sets the {@link MonetaryOperator} to be used as display conversion before formatting the
+		 * amount.
+		 * 
+		 * @param conversion
+		 *            the {@link MonetaryOperator}, or null.
+		 * @return the {@link Builder}, for chaining.
+		 */
+		public Builder setDisplayConversion(MonetaryOperator conversion) {
+			this.styleBuilder.setDisplayConversion(conversion);
+			return this;
+		}
+
+		/**
+		 * Sets the {@link MonetaryOperator} to be used as parse conversion after parsing the
+		 * amount.
+		 * 
+		 * @param conversion
+		 *            the {@link MonetaryOperator}, or null.
+		 * @return the {@link Builder}, for chaining.
+		 */
+		public Builder setParseConversion(MonetaryOperator conversion) {
+			this.styleBuilder.setParseConversion(conversion);
+			return this;
+		}
+
+		/**
+		 * Sets the customized number group sizes to be used for formatting. Hereby each value in
+		 * the array represents a group size, starting from the decimal point and going up the
+		 * significant digits. The last entry in the array is used as a default group size for all
+		 * subsequent groupings.
+		 * 
+		 * @param groupSizes
+		 *            the group sizes, not null.
+		 * @return the {@link Builder}, for chaining.
+		 */
+		public Builder setNumberGroupSizes(int... groupSizes) {
+			this.styleBuilder.setNumberGroupSizes(groupSizes);
+			return this;
+		}
+
+		/**
+		 * Sets the formats pattern, similar as in {@link java.text.DecimalFormat}.
+		 * 
+		 * @param pattern
+		 *            the pattern, not null.
+		 * @return the {@link Builder}, for chaining.
+		 */
+		public Builder setPattern(String pattern) {
+			this.styleBuilder.setPattern(pattern);
+			return this;
+		}
+
+		/**
+		 * Sets the formats {@link AmountFormatSymbols}, similar as in
+		 * {@link java.text.DecimalFormatSymbols}.
+		 * 
+		 * @param symbols
+		 *            the symbols, not null.
+		 * @return the {@link Builder}, for chaining.
+		 */
+		public Builder setSymbols(AmountFormatSymbols symbols) {
+			this.styleBuilder.setSymbols(symbols);
 			return this;
 		}
 
@@ -119,7 +241,7 @@ public final class MonetaryFormats {
 		 * @see javax.money.MonetaryAmounts#getDefaultAmountType()
 		 * @see javax.money.MonetaryAmounts#getDefaultAmountFactory()
 		 */
-		public Builder with(MonetaryContext monetaryContext) {
+		public Builder set(MonetaryContext monetaryContext) {
 			this.monetaryContext = monetaryContext;
 			return this;
 		}
@@ -133,25 +255,20 @@ public final class MonetaryFormats {
 		 *             corresponding {@link MonetaryAmountFormat} instance.
 		 */
 		public MonetaryAmountFormat create() {
+			AmountStyle style = styleBuilder.build();
 			for (MonetaryAmountFormatProviderSpi spi : Bootstrap
 					.getServices(
 					MonetaryAmountFormatProviderSpi.class)) {
-				MonetaryAmountFormat f = null;
-				if (style == null) {
-					f = spi.getFormat(locale, monetaryContext, defaultCurrency);
-				}
-				else {
-					f = spi.getFormat(style, monetaryContext, defaultCurrency);
-				}
+				MonetaryAmountFormat f = spi.getFormat(style, monetaryContext,
+						defaultCurrency);
 				if (f != null) {
 					return f;
 				}
 			}
 			throw new MonetaryException(
-					"No MonetaryAmountFormat found for locale="
-							+ locale + ", defaultCurrency=" + defaultCurrency
-							+ ", monetaryContext=" + monetaryContext
-							+ ", amountStyle=" + style);
+					"No MonetaryAmountFormat found for amountStyle=" + style
+							+ ", defaultCurrency=" + defaultCurrency
+							+ ", monetaryContext=" + monetaryContext);
 		}
 	}
 

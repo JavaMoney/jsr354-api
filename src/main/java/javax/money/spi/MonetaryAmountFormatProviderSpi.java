@@ -1,18 +1,16 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
- * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
- * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
- * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
- * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
- * BUTTON AT THE BOTTOM OF THIS PAGE.
- * 
- * Specification: JSR-354 Money and Currency API ("Specification")
- * 
- * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU
+ * ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS
+ * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
+ * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
+ * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
+ * (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money.spi;
 
+import java.util.Collection;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryContext;
@@ -30,18 +28,17 @@ public interface MonetaryAmountFormatProviderSpi {
 	 * Create a new {@link MonetaryAmountFormat} for the given input.
 	 * 
 	 * @param locale
-	 *            The {@link Locale} to be used for determining the
-	 *            {@link AmountStyle} to be used.
+	 *            The {@link Locale} to be used for determining the {@link AmountStyle} to be used.
 	 * @param monetaryContext
-	 *            The {@link javax.money.MonetaryContext}, to be required for creation of
-	 *            new {@link javax.money.MonetaryAmount} instances during parsing.
+	 *            The {@link javax.money.MonetaryContext}, to be required for creation of new
+	 *            {@link javax.money.MonetaryAmount} instances during parsing.
 	 * @param defaultCurrency
 	 *            The {@link javax.money.CurrencyUnit} to be set, if a
-	 *            {@link javax.money.MonetaryAmount} is parsed from an input, without
-	 *            currency information.
-	 * @return An according {@link MonetaryAmountFormat} instance, or
-	 *         {@code null}, which delegates the request to subsequent
-	 *         {@link MonetaryAmountFormatProviderSpi} instances registered.
+	 *            {@link javax.money.MonetaryAmount} is parsed from an input, without currency
+	 *            information.
+	 * @return An according {@link MonetaryAmountFormat} instance, or {@code null}, which delegates
+	 *         the request to subsequent {@link MonetaryAmountFormatProviderSpi} instances
+	 *         registered.
 	 */
 	public MonetaryAmountFormat getFormat(Locale locale,
 			MonetaryContext monetaryContext,
@@ -53,19 +50,25 @@ public interface MonetaryAmountFormatProviderSpi {
 	 * @param formatStyle
 	 *            The {@link AmountStyle} to be used.
 	 * @param monetaryContext
-	 *            The {@link javax.money.MonetaryContext}, to be required for creation of
-	 *            new {@link javax.money.MonetaryAmount} instances during parsing.
+	 *            The {@link javax.money.MonetaryContext}, to be required for creation of new
+	 *            {@link javax.money.MonetaryAmount} instances during parsing.
 	 * @param defaultCurrency
-	 *            The {@link CurrencyUnit} to be set, if a
-	 *            {@link javax.money.MonetaryAmount} is parsed from an input, without
-	 *            currency information.
-	 * @return An according {@link MonetaryAmountFormat} instance, or
-	 *         {@code null}, which delegates the request to subsequent
-	 *         {@link MonetaryAmountFormatProviderSpi} instances registered.
+	 *            The {@link CurrencyUnit} to be set, if a {@link javax.money.MonetaryAmount} is
+	 *            parsed from an input, without currency information.
+	 * @return An according {@link MonetaryAmountFormat} instance, or {@code null}, which delegates
+	 *         the request to subsequent {@link MonetaryAmountFormatProviderSpi} instances
+	 *         registered.
 	 */
 	public MonetaryAmountFormat getFormat(
 			AmountStyle formatStyle,
 			MonetaryContext monetaryContext,
 			CurrencyUnit defaultCurrency);
+
+	/**
+	 * Access the locales supported by this instance.
+	 * 
+	 * @return the {@link Locale} instances, never {@code null}.
+	 */
+	public Collection<Locale> getSupportedLocales();
 
 }

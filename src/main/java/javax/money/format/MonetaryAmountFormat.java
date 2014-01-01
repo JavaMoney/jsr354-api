@@ -38,24 +38,6 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	public MonetaryContext getMonetaryContext();
 
 	/**
-	 * Get the {@link CurrencyUnit} applied by this {@link MonetaryAmountFormat}
-	 * instance, when a {@link MonetaryAmount} is parsed from an input, where no
-	 * currency information is available/detectable.
-	 * 
-	 * @return the default {@link CurrencyUnit} instance uses, or {@code null}.
-	 */
-	public CurrencyUnit getDefaultCurrency();
-
-	/**
-	 * Get the {@link AmountStyle} used by this {@link MonetaryAmountFormat}
-	 * instance.
-	 * 
-	 * @return the {@link MonetaryAmountFormat} instance user, never
-	 *         {@code null}.
-	 */
-	public AmountStyle getAmountStyle();
-
-	/**
 	 * Formats the given {@link MonetaryAmount} to a String.
 	 * 
 	 * @param amount

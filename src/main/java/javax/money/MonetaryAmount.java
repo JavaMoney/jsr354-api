@@ -203,7 +203,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier {
 	 * @return the new {@code MonetaryAmountFactory} with the given
 	 *         {@link MonetaryAmount} as its default values.
 	 */
-	public MonetaryAmountFactory<?> getFactory();
+	public MonetaryAmountFactory<? extends MonetaryAmount> getFactory();
 
 	/**
 	 * Compares two instances of {@link MonetaryAmount}, hereby ignoring non

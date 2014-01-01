@@ -30,6 +30,11 @@ public final class DummyAmount implements
 	public NumberValue getNumber() {
 		return new NumberValue() {
 
+			/**
+			 * serialVersionUID.
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public int getPrecision() {
 				return 0;
@@ -301,7 +306,7 @@ public final class DummyAmount implements
 	}
 
 	@Override
-	public MonetaryAmountFactory getFactory() {
+	public MonetaryAmountFactory<DummyAmount> getFactory() {
 		return new DummyAmountFactory();
 	}
 

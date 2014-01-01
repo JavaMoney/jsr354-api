@@ -1,22 +1,17 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
- * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
- * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
- * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
- * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
- * BUTTON AT THE BOTTOM OF THIS PAGE.
- * 
- * Specification: JSR-354 Money and Currency API ("Specification")
- * 
- * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU
+ * ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS
+ * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
+ * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
+ * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
+ * (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money;
 
 import java.util.Locale;
 
 /**
- * Exception thrown when a currency code cannot be resolved into a
- * {@link CurrencyUnit}.
+ * Exception thrown when a currency code cannot be resolved into a {@link CurrencyUnit}.
  * 
  * @author Werner Keil
  * @author Anatole Tresch
@@ -34,11 +29,12 @@ public class UnknownCurrencyException extends MonetaryException {
 	private final Locale locale;
 
 	/**
-	 * Creates a new exception instance.
+	 * Creates a new exception instance when a {@link CurrencyUnit} could not be evaluated given a
+	 * currency code.
 	 * 
+	 * @see MonetaryCurrencies#getCurrency(String)
 	 * @param code
-	 *            The unknown currency code (the message is constructed
-	 *            automatically), not null.
+	 *            The unknown currency code (the message is constructed automatically), not null.
 	 */
 	public UnknownCurrencyException(String code) {
 		super("Unknown currency code: " + code);
@@ -47,12 +43,13 @@ public class UnknownCurrencyException extends MonetaryException {
 	}
 
 	/**
-	 * Creates a new exception instance.
+	 * Creates a new exception instance when a {@link CurrencyUnit} could not be evaluated given a
+	 * (country) {@link Locale}.
 	 * 
+	 * @see MonetaryCurrencies#getCurrency(Locale)
 	 * @param locale
-	 *            The unknown {@link Locale}, for which a {@link CurrencyUnit}
-	 *            was queried (the message is constructed automatically), not
-	 *            null.
+	 *            The unknown {@link Locale}, for which a {@link CurrencyUnit} was queried (the
+	 *            message is constructed automatically), not null.
 	 */
 	public UnknownCurrencyException(Locale locale) {
 		super("No currency for found for Locale: " + locale);
@@ -69,9 +66,17 @@ public class UnknownCurrencyException extends MonetaryException {
 		return currencyCode;
 	}
 
+	/**
+	 * Access the invalid {@link Locale}.
+	 * 
+	 * @return the invalid {@link Locale}, or {@code null}.
+	 */
+	public Locale getLocale() {
+		return locale;
+	}
+
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

@@ -38,8 +38,8 @@ public interface MonetaryAmountsSpi {
 	 *         {@link MonetaryAmountFactory} is available in the current
 	 *         context.
 	 */
-	public MonetaryAmountFactory getAmountFactory(
-			Class<? extends MonetaryAmount> amountType);
+	public <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(
+			Class<T> amountType);
 
 	/**
 	 * Get the currently registered {@link MonetaryAmount} implementation types.

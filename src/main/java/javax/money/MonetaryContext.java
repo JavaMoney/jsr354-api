@@ -53,13 +53,6 @@ public final class MonetaryContext implements
 		 * possible.
 		 */
 		PERFORMANCE,
-		/**
-		 * These implementations decorate, extend or adapt another registered implementation.
-		 * Implementation with this flavor should not be considered by the algorithm performed when
-		 * calling {@link MonetaryAmounts#queryAmountType(MonetaryContext)}, unless the target type
-		 * is set explcitly in {@link MonetaryContext#amountType}.
-		 */
-		DECORATION,
 		/** The implementation has no defined flavor. */
 		UNDEFINED,
 	}
@@ -517,7 +510,6 @@ public final class MonetaryContext implements
 		 * @throws IllegalArgumentException
 		 *             if building of the {@link MonetaryContext} fails.
 		 */
-		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public MonetaryContext build() {
 			return new MonetaryContext(amountType, precision,
 					maxScale, fixedScale,

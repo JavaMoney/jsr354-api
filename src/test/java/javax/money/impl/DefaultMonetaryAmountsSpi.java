@@ -13,27 +13,28 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.money.DummyAmount;
-import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmount;
+import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryContext;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountsSpi;
 
 public class DefaultMonetaryAmountsSpi implements MonetaryAmountsSpi {
 
-	private Map<Class<? extends MonetaryAmount>, MonetaryAmountFactory> factories = new ConcurrentHashMap<>();
+	private Map<Class<? extends MonetaryAmount>, MonetaryAmountFactory<?>> factories = new ConcurrentHashMap<>();
 
 	public DefaultMonetaryAmountsSpi() {
-		for (MonetaryAmountFactory f : Bootstrap.getServices(MonetaryAmountFactory.class)) {
+		for (MonetaryAmountFactory<?> f : Bootstrap
+				.getServices(MonetaryAmountFactory.class)) {
 			factories.put(f.getAmountType(), f);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public MonetaryAmountFactory getAmountFactory(
-			Class<? extends MonetaryAmount> amountType) {
-		return (MonetaryAmountFactory) factories.get(amountType);
+	public <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(
+			Class<T> amountType) {
+		return (MonetaryAmountFactory<T>) factories.get(amountType);
 	}
 
 	@Override

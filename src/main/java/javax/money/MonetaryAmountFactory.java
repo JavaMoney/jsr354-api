@@ -52,11 +52,45 @@ package javax.money;
 public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 
 	/**
+	 * Determines how the factory should be considered when querying for matching implementation
+	 * types calling {@link MonetaryAmounts#queryAmountType(MonetaryContext)}.
+	 * 
+	 * @see MonetaryAmounts#queryAmountType(MonetaryContext)
+	 */
+	public static enum QueryInclusionPolicy {
+		/**
+		 * Always include this factory (and the corresponding amount type) within queries. This is
+		 * the default for normal {@link MonetaryAmount} implementation types.
+		 */
+		ALWAYS,
+		/**
+		 * Only consider this factory, when the implementation type is specified explicitly in the
+		 * {@link MonetaryContext} required.
+		 */
+		DIRECT_REFERENCE_ONLY,
+		/**
+		 * Never consider this factory in a query for a matching {@link MonetaryAmount}
+		 * implementation.
+		 */
+		NEVER
+	}
+
+	/**
+	 * Method that determines if this factory should be considered for general evaluation of
+	 * matching {@link MonetaryAmount} implementation types when calling
+	 * {@link MonetaryAmounts#queryAmountType(MonetaryContext)}.
+	 * 
+	 * @see MonetaryAmounts#queryAmountType(MonetaryContext)
+	 * @return {@code true} to include this factory into the evaluation.
+	 */
+	QueryInclusionPolicy getQueryInclusionPolicy();
+
+	/**
 	 * Access the {@link MonetaryAmount} implementation type.
 	 * 
 	 * @return the {@link MonetaryAmount} implementation type, never {@code null}.
 	 */
-	public Class<? extends MonetaryAmount> getAmountType();
+	Class<? extends MonetaryAmount> getAmountType();
 
 	/**
 	 * Sets the {@link CurrencyUnit} to be used.
@@ -68,7 +102,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 *             if the {@code currencyCode} is not resolvable.
 	 * @return This factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory<T> withCurrency(String currencyCode);
+	MonetaryAmountFactory<T> setCurrency(String currencyCode);
 
 	/**
 	 * Sets the {@link CurrencyUnit} to be used.
@@ -77,7 +111,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 *            the {@link CurrencyUnit} to be used, not {@code null}
 	 * @return This factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory<T> with(CurrencyUnit currency);
+	MonetaryAmountFactory<T> setCurrency(CurrencyUnit currency);
 
 	/**
 	 * Sets the number to be used.
@@ -86,7 +120,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 *            the number to be used
 	 * @return This factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory<T> with(double number);
+	MonetaryAmountFactory<T> setNumber(double number);
 
 	/**
 	 * Sets the number to be used.
@@ -95,7 +129,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 *            the number to be used
 	 * @return This factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory<T> with(long number);
+	MonetaryAmountFactory<T> setNumber(long number);
 
 	/**
 	 * Sets the number to be used.
@@ -104,7 +138,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 *            the number to be used, not {@code null}.
 	 * @return This factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory<T> with(Number number);
+	MonetaryAmountFactory<T> setNumber(Number number);
 
 	/**
 	 * Sets the {@link MonetaryContext} to be used.
@@ -117,7 +151,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 * @return This factory instance, for chaining.
 	 * @see #getMaximalMonetaryContext()
 	 */
-	public MonetaryAmountFactory<T> with(
+	MonetaryAmountFactory<T> setContext(
 			MonetaryContext monetaryContext);
 
 	/**
@@ -135,7 +169,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 *             exceeds the capabilities supported by this factory type.
 	 * @return this factory instance, for chaining.
 	 */
-	public MonetaryAmountFactory<T> with(MonetaryAmount amount);
+	MonetaryAmountFactory<T> setAmount(MonetaryAmount amount);
 
 	/**
 	 * Creates a new instance of {@link MonetaryAmount}, using the current data set on this factory.
@@ -143,7 +177,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 * @return the corresponding {@link MonetaryAmount}.
 	 * @see #getAmountType()
 	 */
-	public T create();
+	T create();
 
 	/**
 	 * Returns the default {@link MonetaryContext} used, when no {@link MonetaryContext} is
@@ -155,7 +189,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 * @see #getMaximalMonetaryContext()
 	 * @return the default {@link MonetaryContext}, never {@code null}.
 	 */
-	public MonetaryContext getDefaultMonetaryContext();
+	MonetaryContext getDefaultMonetaryContext();
 
 	/**
 	 * Returns the maximal {@link MonetaryContext} supported, for requests that exceed these maximal
@@ -163,6 +197,6 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 * 
 	 * @return the maximal {@link MonetaryContext} supported, never {@code null}
 	 */
-	public MonetaryContext getMaximalMonetaryContext();
+	MonetaryContext getMaximalMonetaryContext();
 
 }

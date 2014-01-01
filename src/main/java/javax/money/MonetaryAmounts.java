@@ -56,7 +56,6 @@ public final class MonetaryAmounts {
 	 */
 	public static <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(
 			Class<T> amountType) {
-		@SuppressWarnings("unchecked")
 		MonetaryAmountFactory<T> factory = monetaryAmountsSpi
 				.getAmountFactory(amountType);
 		if (factory == null) {

@@ -11,8 +11,6 @@ package javax.money.spi;
 import java.util.Collection;
 import java.util.Locale;
 
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryContext;
 import javax.money.format.AmountStyle;
 import javax.money.format.MonetaryAmountFormat;
 
@@ -26,48 +24,12 @@ public interface MonetaryAmountFormatProviderSpi {
 	/**
 	 * Create a new {@link MonetaryAmountFormat} for the given input.
 	 * 
-	 * @param locale
-	 *            The {@link Locale} to be used for determining the {@link AmountStyle} to be used.
-	 * @param monetaryContext
-	 *            The {@link javax.money.MonetaryContext}, to be required for creation of new
-	 *            {@link javax.money.MonetaryAmount} instances during parsing.
-	 * @param defaultCurrency
-	 *            The {@link javax.money.CurrencyUnit} to be set, if a
-	 *            {@link javax.money.MonetaryAmount} is parsed from an input, without currency
-	 *            information.
-	 * @return An according {@link MonetaryAmountFormat} instance, or {@code null}, which delegates
-	 *         the request to subsequent {@link MonetaryAmountFormatProviderSpi} instances
-	 *         registered.
-	 */
-	public MonetaryAmountFormat getFormat(Locale locale,
-			MonetaryContext monetaryContext,
-			CurrencyUnit defaultCurrency);
-
-	/**
-	 * Create a new {@link MonetaryAmountFormat} for the given input.
-	 * 
 	 * @param formatStyle
 	 *            The {@link AmountStyle} to be used.
-	 * @param monetaryContext
-	 *            The {@link javax.money.MonetaryContext}, to be required for creation of new
-	 *            {@link javax.money.MonetaryAmount} instances during parsing.
-	 * @param defaultCurrency
-	 *            The {@link CurrencyUnit} to be set, if a {@link javax.money.MonetaryAmount} is
-	 *            parsed from an input, without currency information.
 	 * @return An according {@link MonetaryAmountFormat} instance, or {@code null}, which delegates
 	 *         the request to subsequent {@link MonetaryAmountFormatProviderSpi} instances
 	 *         registered.
 	 */
-	public MonetaryAmountFormat getFormat(
-			AmountStyle formatStyle,
-			MonetaryContext monetaryContext,
-			CurrencyUnit defaultCurrency);
-
-	/**
-	 * Access the locales supported by this instance.
-	 * 
-	 * @return the {@link Locale} instances, never {@code null}.
-	 */
-	public Collection<Locale> getSupportedLocales();
+	public MonetaryAmountFormat getFormat(AmountStyle formatStyle);
 
 }

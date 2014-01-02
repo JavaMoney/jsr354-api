@@ -11,6 +11,7 @@ package javax.money.format;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.money.CurrencyUnit;
@@ -28,39 +29,20 @@ public class TestAmountFormatProvider implements
 	}
 
 	@Override
-	public MonetaryAmountFormat getFormat(Locale locale,
-			MonetaryContext monetaryContext,
-			CurrencyUnit defaultCurrency) {
-		return new TestFormat(locale, null, monetaryContext,
-				defaultCurrency);
-	}
-
-	@Override
 	public MonetaryAmountFormat getFormat(
-			AmountStyle formatStyle, MonetaryContext monetaryContext,
-			CurrencyUnit defaultCurrency) {
-		return new TestFormat(null, formatStyle, monetaryContext,
-				defaultCurrency);
+			AmountStyle formatStyle) {
+		return new TestFormat(formatStyle);
 	}
 
 	public static final class TestFormat implements MonetaryAmountFormat {
 
-		private AmountStyle formatStyle = new AmountStyle.Builder(
-				Locale.ENGLISH)
-				.build();
+		private AmountStyle formatStyle;
 		private MonetaryContext monetaryContext;
 		private CurrencyUnit defaultCurrency;
 
-		TestFormat(Locale locale,
-				AmountStyle formatStyle, MonetaryContext monetaryContext,
-				CurrencyUnit defaultCurrency) {
-			if (locale != null && formatStyle == null) {
-				formatStyle = new AmountStyle.Builder(locale)
-						.build();
-			}
+		TestFormat(AmountStyle formatStyle) {
+			Objects.requireNonNull(formatStyle);
 			this.formatStyle = formatStyle;
-			this.monetaryContext = monetaryContext;
-			this.defaultCurrency = defaultCurrency;
 		}
 
 		@Override
@@ -68,15 +50,15 @@ public class TestAmountFormatProvider implements
 			return toString();
 		}
 
-//		@Override
-//		public AmountStyle getAmountStyle() {
-//			return formatStyle;
-//		}
-//
-//		@Override
-//		public CurrencyUnit getDefaultCurrency() {
-//			return defaultCurrency;
-//		}
+		@Override
+		public AmountStyle getAmountStyle() {
+			return formatStyle;
+		}
+
+		@Override
+		public CurrencyUnit getDefaultCurrency() {
+			return defaultCurrency;
+		}
 
 		@Override
 		public String format(MonetaryAmount amount) {
@@ -100,12 +82,21 @@ public class TestAmountFormatProvider implements
 			return monetaryContext;
 		}
 
-	}
+		@Override
+		public void setDefaultCurrency(CurrencyUnit currency) {
+			this.defaultCurrency = currency;
+		}
 
-	@Override
-	public Set<Locale> getSupportedLocales() {
-		// TODO Auto-generated method stub
-		return null;
+		@Override
+		public void setAmountStyle(AmountStyle style) {
+			this.formatStyle = style;
+		}
+
+		@Override
+		public void setMonetaryContext(MonetaryContext context) {
+			this.monetaryContext = context;
+		}
+
 	}
 
 }

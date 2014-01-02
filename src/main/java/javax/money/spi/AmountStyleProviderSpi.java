@@ -44,5 +44,5 @@ public interface AmountStyleProviderSpi {
 	 * @return the {@link Locale} instances, never {@code null}.
 	 */
 	public Collection<Locale> getSupportedLocales();
-
+	
 }

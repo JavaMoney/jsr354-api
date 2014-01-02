@@ -33,7 +33,7 @@ public class TestAmountStyleProvider implements
 	@Override
 	public AmountStyle getAmountStyle(Locale locale) {
 		if (Locale.ENGLISH.equals(locale)) {
-			return new AmountStyle.Builder(locale).build();
+			return new AmountStyle.Builder(locale).setPattern("test").build();
 		}
 		return null;
 	}

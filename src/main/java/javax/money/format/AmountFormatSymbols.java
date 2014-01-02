@@ -22,7 +22,7 @@ import javax.money.spi.Bootstrap;
 /**
  * This class represents the set of symbols (such as the decimal separator, the grouping separators,
  * and so on) needed by {@link AmountStyle} to format {@link javax.money.MonetaryAmount} instances.
- * Instances of this class can be obtained by calling {@link #getInstance(Locale)}. If you need to
+ * Instances of this class can be obtained by calling {@link #of(Locale)}. If you need to
  * change any of these symbols, you can access also access a <code>Builder</code> by calling
  * {@link #getBuilder()} .
  * <p>
@@ -132,7 +132,7 @@ public final class AmountFormatSymbols implements Cloneable, Serializable {
 	 *             if no registered {@link AmountFormatSymbolsProviderSpi} can provide a matching
 	 *             instance.
 	 */
-	public static final AmountFormatSymbols getInstance(Locale locale) {
+	public static final AmountFormatSymbols of(Locale locale) {
 		Objects.requireNonNull(locale, "Locale required.");
 		for (AmountFormatSymbolsProviderSpi spi : Bootstrap
 				.getServices(
@@ -148,7 +148,7 @@ public final class AmountFormatSymbols implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Get all available locales. For each {@link Locale} returned {@link #getInstance(Locale)} will
+	 * Get all available locales. For each {@link Locale} returned {@link #of(Locale)} will
 	 * return an instance of {@link AmountFormatSymbols}.
 	 * 
 	 * @return all available locales, never {@code null}.
@@ -358,7 +358,19 @@ public final class AmountFormatSymbols implements Cloneable, Serializable {
 		private Locale locale;
 
 		/**
-		 * Creates a new Builder.
+		 * Creates a new Builder. The builder will be initialized with non localized defaults:
+		 * <blockquote>
+		 * 
+		 * <pre>
+		 * private static final char PATTERN_ZERO_DIGIT = '0';
+		 * private static final char PATTERN_DECIMAL_SEPARATOR = '.';
+		 * private static final char PATTERN_DIGIT = '#';
+		 * private static final char PATTERN_SEPARATOR = ';';
+		 * private static final String PATTERN_EXPONENT = &quot;E&quot;;
+		 * private static final char PATTERN_MINUS = '-';
+		 * </pre>
+		 * 
+		 * </blockquote>
 		 * 
 		 * @param locale
 		 *            the {@link Locale}, not {@code null}.
@@ -369,7 +381,8 @@ public final class AmountFormatSymbols implements Cloneable, Serializable {
 		}
 
 		/**
-		 * Creates a new Builder.
+		 * Creates a new Builder based on existing {@link AmountFormatSymbols}, e.g. for changing
+		 * the given <code>AmountFormatSymbols</code>.
 		 * 
 		 * @param symbols
 		 *            the {@link AmountFormatSymbols}, not {@code null}.
@@ -476,13 +489,19 @@ public final class AmountFormatSymbols implements Cloneable, Serializable {
 		 * 
 		 * @param minusSign
 		 *            the sign to be used.
+		 * @return the {@link Builder} for chaining.
 		 */
 		public Builder setMinusSign(char minusSign) {
 			this.minusSign = minusSign;
 			return this;
 		}
 
-		public AmountFormatSymbols build() {
+		/**
+		 * Creates an instance of {@link AmountFormatSymbols} given the current data,
+		 * 
+		 * @return a new instance of {@link AmountFormatSymbols}, never {@code null}.
+		 */
+		public AmountFormatSymbols create() {
 			return new AmountFormatSymbols(this);
 		}
 

@@ -12,7 +12,6 @@
  */
 package javax.money.format;
 
-import java.util.Currency;
 
 
 /**
@@ -36,7 +35,7 @@ public enum CurrencyStyle {
 	 * should be used as a fall-back.
 	 * 
 	 * @see javax.money.CurrencyUnit#getCurrencyCode()
-	 * @see Currency#getDisplayName(java.util.Locale)
+	 * @see java.util.Currency#getDisplayName(java.util.Locale)
 	 */
 	NAME,
 
@@ -53,7 +52,7 @@ public enum CurrencyStyle {
 	 * code should be used as a fall-back.
 	 * 
 	 * @see javax.money.CurrencyUnit#getCurrencyCode()
-	 * @see Currency#getSymbol(java.util.Locale)
+	 * @see java.util.Currency#getSymbol(java.util.Locale)
 	 */
 	SYMBOL
 }

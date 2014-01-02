@@ -8,7 +8,6 @@
  */
 package javax.money.format;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -19,10 +18,13 @@ import javax.money.MonetaryException;
 import javax.money.MonetaryOperator;
 import javax.money.spi.AmountStyleProviderSpi;
 import javax.money.spi.Bootstrap;
+import javax.money.spi.MonetaryAmountFormatProviderSpi;
 
 /**
- * The {@link AmountStyle} defines how a {@link javax.money.MonetaryAmount} should be formatted.
+ * The {@link AmountStyle} defines how a {@link javax.money.MonetaryAmount} should be formatted and
+ * is used within a {@link MonetaryAmountFormat}.
  * 
+ * @see MonetaryAmountFormat
  * @author Anatole Tresch
  */
 public final class AmountStyle {
@@ -33,7 +35,7 @@ public final class AmountStyle {
 	/** The conversion applied after parsing (optional). */
 	private MonetaryOperator parseConversion;
 	/** The customized group sizes. */
-	private int[] groupSizes;
+	private int[] groupingSizes;
 	/** The {@link CurrencyStyle} to be used, not {@code null}. */
 	private CurrencyStyle currencyStyle;
 	/** The target {@link Locale} this style is representing. */
@@ -55,7 +57,7 @@ public final class AmountStyle {
 		Objects.requireNonNull(builder.currencyStyle,
 				"currencyFormat required.");
 		Objects.requireNonNull(builder.locale, "Locale required.");
-		this.groupSizes = builder.groupSizes;
+		this.groupingSizes = builder.groupingSizes;
 		this.displayConversion = builder.displayConversion;
 		this.parseConversion = builder.parseConversion;
 		this.pattern = builder.pattern;
@@ -73,7 +75,7 @@ public final class AmountStyle {
 	 * @throws MonetaryException
 	 *             if no registered {@link AmountStyleProviderSpi} can provide a matching instance.
 	 */
-	public static final AmountStyle getInstance(Locale locale) {
+	public static final AmountStyle of(Locale locale) {
 		Objects.requireNonNull(locale, "Locale required.");
 		for (AmountStyleProviderSpi spi : Bootstrap
 				.getServices(
@@ -87,9 +89,9 @@ public final class AmountStyle {
 				"No AmountStyle for locale "
 						+ locale);
 	}
-
+	
 	/**
-	 * Get all available locales. For each {@link Locale} returned {@link #getInstance(Locale)} will
+	 * Get all available locales. For each {@link Locale} returned {@link #of(Locale)} will
 	 * return an instance of {@link AmountStyle}.
 	 * 
 	 * @return all available locales, never {@code null}.
@@ -103,7 +105,7 @@ public final class AmountStyle {
 		}
 		return locales;
 	}
-
+	
 	/**
 	 * Access the style's {@link Locale}.
 	 * 
@@ -114,11 +116,20 @@ public final class AmountStyle {
 	}
 
 	/**
-	 * Access the style's {@link DecimalFormat}.
+	 * Access the style's pattern.
 	 * 
-	 * @return the style's {@link DecimalFormat}, never {@code null}.
+	 * @return the style's pattern, never {@code null}.
 	 */
 	public String getPattern() {
+		return this.pattern;
+	}
+
+	/**
+	 * Access the style's pattern, localized with the values from {@link AmountFormatSymbols}.
+	 * 
+	 * @return the style's localized pattern, never {@code null}.
+	 */
+	public String getLocalizedPattern() {
 		return this.pattern;
 	}
 
@@ -163,10 +174,14 @@ public final class AmountStyle {
 	 * 
 	 * @return the groupings sizes, never {@code null}.
 	 */
-	public int[] getNumberGroupSizes() {
-		return this.groupSizes.clone();
+	public int[] getGroupingSizes() {
+		return this.groupingSizes.clone();
 	}
 
+	public Builder toBuilder(){
+		return new Builder(this);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -181,7 +196,7 @@ public final class AmountStyle {
 				+ ((locale == null) ? 0 : locale.hashCode());
 		result = prime * result
 				+ ((pattern == null) ? 0 : pattern.hashCode());
-		result = prime * result + Arrays.hashCode(groupSizes);
+		result = prime * result + Arrays.hashCode(groupingSizes);
 		result = prime
 				* result
 				+ ((displayConversion == null) ? 0 : displayConversion
@@ -214,7 +229,7 @@ public final class AmountStyle {
 				return false;
 		} else if (!locale.equals(other.locale))
 			return false;
-		if (!Arrays.equals(groupSizes, other.groupSizes))
+		if (!Arrays.equals(groupingSizes, other.groupingSizes))
 			return false;
 		if (displayConversion == null) {
 			if (other.displayConversion != null)
@@ -236,7 +251,7 @@ public final class AmountStyle {
 				+ currencyStyle
 				+ ", rounding="
 				+ displayConversion + ", groupSizes="
-				+ Arrays.toString(groupSizes)
+				+ Arrays.toString(groupingSizes)
 				+ "]";
 	}
 
@@ -257,7 +272,7 @@ public final class AmountStyle {
 		/** The parse conversion operator, if any. */
 		private MonetaryOperator parseConversion;
 		/** The customized goup sizes, if any. */
-		private int[] groupSizes = EMPTY_INT_ARRAY;
+		private int[] groupingSizes = EMPTY_INT_ARRAY;
 		/** The symbols to be used, or {@code null}, for the defaults based on the {@link #locale}. */
 		private AmountFormatSymbols symbols;
 		/** The {@link CurrencyStyle} to be used, not {@code null}. */
@@ -266,15 +281,30 @@ public final class AmountStyle {
 		/**
 		 * Creates a new {@link Builder}.
 		 * 
+		 * @param style
+		 *            the base {@link AmountStyle}, not {@code null}.
+		 */
+		public Builder(AmountStyle style) {
+			Objects.requireNonNull(style, "style required.");
+			this.locale = style.locale;
+			this.symbols = style.symbols;
+			this.currencyStyle = style.currencyStyle;
+			this.displayConversion = style.displayConversion;
+			this.groupingSizes = style.groupingSizes;
+			this.parseConversion = style.parseConversion;
+			this.pattern = style.pattern;
+		}
+		
+		/**
+		 * Creates a new {@link Builder}.
+		 * 
 		 * @param locale
 		 *            the target {@link Locale}, not {@code null}.
 		 */
 		public Builder(Locale locale) {
 			Objects.requireNonNull(locale, "Locale required.");
-			this.pattern = ((DecimalFormat) DecimalFormat
-					.getCurrencyInstance(locale)).toPattern();
 			this.locale = locale;
-			this.symbols = AmountFormatSymbols.getInstance(locale);
+			this.symbols = AmountFormatSymbols.of(locale);
 		}
 
 		/**
@@ -324,9 +354,9 @@ public final class AmountStyle {
 		 *            the group sizes, not null.
 		 * @return the {@link Builder} for chaining.
 		 */
-		public Builder setNumberGroupSizes(int... groupSizes) {
+		public Builder setGroupingSizes(int... groupSizes) {
 			Objects.requireNonNull(groupSizes, "groupSizes required.");
-			this.groupSizes = groupSizes;
+			this.groupingSizes = groupSizes;
 			return this;
 		}
 
@@ -395,7 +425,7 @@ public final class AmountStyle {
 					+ ", currencyFormat=" + currencyStyle
 					+ ", rounding="
 					+ displayConversion
-					+ ", groupSizes=" + Arrays.toString(groupSizes)
+					+ ", groupSizes=" + Arrays.toString(groupingSizes)
 					+ ", symbols=" + symbols + "]";
 		}
 

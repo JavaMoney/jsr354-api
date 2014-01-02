@@ -30,15 +30,14 @@ public class TestAmountFormatSymbolsProvider implements
 					.setExponentialSeparator("test").setGroupingSeparator('\'')
 					.setDecimalSeparator('.').setDigit('#').setMinusSign('-')
 					.setPatternSeparator(';').setZeroDigit('-')
-					.build();
+					.create();
 		}
 		return null;
 	}
 
 	@Override
 	public Set<Locale> getSupportedLocales() {
-		// TODO Auto-generated method stub
-		return null;
+		return testSet;
 	}
 
 }

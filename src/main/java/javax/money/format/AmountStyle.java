@@ -134,7 +134,7 @@ public final class AmountStyle {
 	}
 
 	/**
-	 * Access the {@link CurrencyUnitFormat} to be used.
+	 * Access the {@link CurrencyStyle} to be used.
 	 * 
 	 * @return the format to be used.
 	 */
@@ -365,8 +365,8 @@ public final class AmountStyle {
 		 * {@link java.text.DecimalFormat#getInstance(Locale)} by the given {@link Locale} .
 		 * 
 		 * @see java.text.DecimalFormat#getInstance(Locale)
-		 * @param locale
-		 *            The target {@link Locale}, not null.
+		 * @param pattern
+		 *            The (non localized) pattern to be used, not null.
 		 * @return the {@link Builder} for chaining.
 		 */
 		public Builder setPattern(String pattern) {
@@ -389,16 +389,16 @@ public final class AmountStyle {
 		}
 
 		/**
-		 * Set the {@link CurrencyUnitFormat} to be used for renderering the
+		 * Set the {@link CurrencyStyle} to be used for rendering the
 		 * {@link javax.money.CurrencyUnit}.
 		 * 
-		 * @param currencyFormat
-		 *            The {@link CurrencyUnitFormat} to be used, not {@code null}.
+		 * @param currencyStyle
+		 *            The {@link CurrencyStyle} to be used, not {@code null}.
 		 * @return the {@link Builder} for chaining.
 		 */
 		public Builder setCurrencyStyle(CurrencyStyle currencyStyle) {
 			Objects.requireNonNull(currencyStyle,
-					"CurrencyStyle must not be null.");
+					"CurrencyStyle null.");
 			this.currencyStyle = currencyStyle;
 			return this;
 		}
@@ -408,7 +408,7 @@ public final class AmountStyle {
 		 * 
 		 * @return a new {@link AmountStyle} instance, never {@code null}.
 		 * @throws IllegalStateException
-		 *             if no {@link DecimalFormat} could be applied.
+		 *             if no {@link AmountStyle} could be created.
 		 */
 		public AmountStyle build() {
 			return new AmountStyle(this);

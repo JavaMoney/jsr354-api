@@ -30,7 +30,7 @@ public interface MonetaryLogger {
 	 * @param t
 	 *            any {@link Throwable}, or {@code null}.
 	 */
-	public void logDebug(String string, Throwable t);
+	public void logDebug(String message, Throwable t);
 
 	/**
 	 * Logs an information message.

@@ -93,8 +93,7 @@ public abstract class NumberValue extends Number {
 	 *            <ul>
 	 *            <li>{@code java.lang.Long}</li>
 	 *            <li>{@code java.lang.Double}</li>
-	 *            <li>{@code java.lang.Number} hereby returning the same values as
-	 *            {@link #getNumberValue()}.</li>
+	 *            <li>{@code java.lang.Number}</li>
 	 *            <li>{@code java.math.BigInteger}, currently not available on all platforms.</li>
 	 *            <li>{@code java.math.BigDecimal}, currently not available on all platforms.</li>
 	 *            </ul>
@@ -112,8 +111,7 @@ public abstract class NumberValue extends Number {
 	 *            <ul>
 	 *            <li>{@code java.lang.Long}</li>
 	 *            <li>{@code java.lang.Double}</li>
-	 *            <li>{@code java.lang.Number} hereby returning the same values as
-	 *            {@link #getNumberValue()}.</li>
+	 *            <li>{@code java.lang.Number}</li>
 	 *            <li>{@code java.math.BigInteger}, currently not available on all platforms.</li>
 	 *            <li>{@code java.math.BigDecimal}, currently not available on all platforms.</li>
 	 *            </ul>

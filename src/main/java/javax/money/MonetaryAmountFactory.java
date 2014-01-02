@@ -13,8 +13,8 @@ package javax.money;
  * <ul>
  * <li>calling {@link MonetaryAmount#getFactory()}, returning a {@link MonetaryAmountFactory}
  * creating amounts of the same implementation type, which also provided the factory instance.</li>
- * <li>calling {@link MonetaryAmounts#getAmountFactory(Class)} accessing a
- * {@link MonetaryAmountFactory} for a concrete type.</li>
+ * <li>calling {@link MonetaryAmounts#getAmountFactory(Class<T>)} accessing a
+ * {@link MonetaryAmountFactory<T>} for a concrete type <code>Class<T></code>.</li>
  * <li>calling {@link MonetaryAmounts#getDefaultAmountFactory()} accessing a default
  * {@link MonetaryAmountFactory}.
  * </ul>
@@ -22,10 +22,11 @@ package javax.money;
  * Implementations of this interface allow to get {@link MonetaryAmount} instances providing
  * different data as required:
  * <ul>
- * <li>the {@link CurrencyUnit}, or the corresponding currency code</li>
+ * <li>the {@link CurrencyUnit}, or the corresponding currency code (must be solvable by
+ * {@link javax.money.MonetaryCurrencies}).</li>
  * <li>the number part</li>
- * <li>the required {@link MonetaryContext}</li>
- * <li>by passing a {@link MonetaryAmount} instance, it is possible to convert an arbitrary amount
+ * <li>the {@link MonetaryContext}</li>
+ * <li>by passing any {@link MonetaryAmount} instance, it is possible to convert an arbitrary amount
  * implementation to the implementation provided by this factory. If the current factory cannot
  * support the precision/scale as required by the current {@link NumberValue} a
  * {@link MonetaryException} must be thrown.</li>
@@ -33,13 +34,13 @@ package javax.money;
  * If not defined a default {@link MonetaryContext} is used, which can also be configured by adding
  * configuration to a file {@code /javamoney.properties} to the classpath.
  * 
- * Hereby the entries should start with {@code a.b.Money.ctx}. The entries valid must be documented
- * on the according implementation class, where the following entries should be defined as follows
- * (example below given for a class {@code a.b.Money}:
+ * Hereby the entries. e.g. for a class {@code MyMoney} should start with {@code a.b.MyMoney.ctx}. The entries valid must be documented
+ * on the according implementation class, where the following entries are defined for all implementation types
+ * (example below given for a class {@code a.b.MyMoney}:
  * <ul>
- * <li>{@code a.b.Money.ctx.precision} to define the maximal supported precision.</li>
- * <li>{@code a.b.Money.ctx.scale} to define the maximal supported scale.</li>
- * <li>{@code a.b.Money.ctx.fixedScale} to define the scale to be fixed (constant).</li>
+ * <li>{@code a.b.MyMoney.ctx.precision} to define the maximal supported precision.</li>
+ * <li>{@code a.b.MyMoney.ctx.maxScale} to define the maximal supported scale.</li>
+ * <li>{@code a.b.MyMoney.ctx.fixedScale} to define the scale to be fixed (constant).</li>
  * </ul>
  * <p>
  * <h2>Implementation specification</h2> Instances of this interface are <b>not</b> required to be

@@ -52,7 +52,7 @@ public final class MonetaryFormats {
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
 				.getServices(
 				MonetaryAmountFormatProviderSpi.class)) {
-			MonetaryAmountFormat f = spi.getFormat(AmountStyle
+			MonetaryAmountFormat f = spi.getAmountFormat(AmountStyle
 					.of(locale));
 			if (f != null) {
 				return f;
@@ -77,7 +77,7 @@ public final class MonetaryFormats {
 		for (MonetaryAmountFormatProviderSpi spi : Bootstrap
 				.getServices(
 				MonetaryAmountFormatProviderSpi.class)) {
-			MonetaryAmountFormat f = spi.getFormat(style);
+			MonetaryAmountFormat f = spi.getAmountFormat(style);
 			if (f != null) {
 				return f;
 			}

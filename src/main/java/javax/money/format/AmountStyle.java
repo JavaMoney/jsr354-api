@@ -8,6 +8,7 @@
  */
 package javax.money.format;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -27,7 +28,9 @@ import javax.money.spi.MonetaryAmountFormatProviderSpi;
  * @see MonetaryAmountFormat
  * @author Anatole Tresch
  */
-public final class AmountStyle {
+public final class AmountStyle implements Serializable{
+	/** serialVersionUID. */
+	private static final long serialVersionUID = -7744853434156071725L;
 	/** The format pattern used. */
 	private String pattern;
 	/** The conversion applied before formatting/displaying (optional). */

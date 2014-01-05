@@ -30,6 +30,6 @@ public interface MonetaryAmountFormatProviderSpi {
 	 *         the request to subsequent {@link MonetaryAmountFormatProviderSpi} instances
 	 *         registered.
 	 */
-	public MonetaryAmountFormat getFormat(AmountStyle formatStyle);
+	public MonetaryAmountFormat getAmountFormat(AmountStyle formatStyle);
 
 }

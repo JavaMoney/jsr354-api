@@ -29,7 +29,7 @@ public class TestAmountFormatProvider implements
 	}
 
 	@Override
-	public MonetaryAmountFormat getFormat(
+	public MonetaryAmountFormat getAmountFormat(
 			AmountStyle formatStyle) {
 		return new TestFormat(formatStyle);
 	}

@@ -82,10 +82,10 @@ public class MonetaryParseException extends MonetaryException {
 	/**
 	 * Returns the string that was being parsed.
 	 * 
-	 * @return the parsed string, or {@code null}, if {@code null} was passed as
+	 * @return the parsed input string, or {@code null}, if {@code null} was passed as
 	 *         input.
 	 */
-	public String getParsedString() {
+	public String getInput() {
 		if (data == null)
 			return null;
 		return data.toString();

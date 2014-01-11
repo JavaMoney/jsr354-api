@@ -358,7 +358,7 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String> {
 	 *            the context, or {@code null} for using the default {@link MonetaryContext} as
 	 *            returned by {@link MonetaryAmountFactory#getDefaultMonetaryContext()} returned
 	 *            from the {@link MonetaryAmountFactory} as returned by
-	 *            {@link MonetaryAmounts#getDefaultAmountFactory()}.
+	 *            {@link MonetaryAmounts#getAmountFactory()}.
 	 */
 	public void setMonetaryContext(MonetaryContext context);
 

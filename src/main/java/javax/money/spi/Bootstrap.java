@@ -1,14 +1,10 @@
 /*
- * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE
- * CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT.
- * PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY
- * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
- * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
- * BUTTON AT THE BOTTOM OF THIS PAGE.
- * 
- * Specification: JSR-354 Money and Currency API ("Specification")
- * 
- * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU
+ * ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS
+ * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
+ * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
+ * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
+ * (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money.spi;
 
@@ -21,9 +17,8 @@ import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
 /**
- * This singleton provides access to the services available in the current
- * context. The behaviour can be adapted, by calling
- * {@link Bootstrap#init(ServiceProvider)} before accessing any moneteray
+ * This singleton provides access to the services available in the current context. The behaviour
+ * can be adapted, by calling {@link Bootstrap#init(ServiceProvider)} before accessing any moneteray
  * services.
  * 
  * @author Anatole Tresch
@@ -79,8 +74,7 @@ public final class Bootstrap {
 	}
 
 	/**
-	 * Ge {@link ServiceProvider}. If necessary the {@link ServiceProvider} will
-	 * be laziliy loaded.
+	 * Ge {@link ServiceProvider}. If necessary the {@link ServiceProvider} will be laziliy loaded.
 	 * 
 	 * @return the {@link ServiceProvider} used.
 	 */
@@ -158,18 +152,42 @@ public final class Bootstrap {
 			Comparator<Object> {
 		@Override
 		public int compare(Object p1, Object p2) {
-			ServicePriority prioAnnot = p1.getClass().getAnnotation(ServicePriority.class);
-			int prio1 = 0;
-			if (prioAnnot != null) {
-				prio1 = prioAnnot.value();
-			}
-			prioAnnot = p2.getClass().getAnnotation(ServicePriority.class);
-			int prio2 = 0;
-			if (prioAnnot != null) {
-				prio2 = prioAnnot.value();
-			}
-			return prio2 - prio1;
+			return comparePriority(p1, p2);
 		}
+	}
+
+	/**
+	 * Evaluates the service priority. Uses a {@link ServicePriority}, if present.
+	 * 
+	 * @param service
+	 *            the service, not null.
+	 * @return the priority from {@link ServicePriority}, or 0.
+	 */
+	private static int getPriority(Object service) {
+		ServicePriority prioAnnot = service.getClass().getAnnotation(
+				ServicePriority.class);
+		int prio = 0;
+		if (prioAnnot != null) {
+			prio = prioAnnot.value();
+		}
+		return prio;
+	}
+
+	/**
+	 * Compare two service priorities given the same service interface.
+	 * 
+	 * @param service1
+	 *            first service, not null.
+	 * @param service2
+	 *            second service, not null.
+	 * @param <T>
+	 *            the interface type
+	 * @return the comparison result.
+	 */
+	public static <T> int comparePriority(
+			T service1,
+			T service2) {
+		return getPriority(service2) - getPriority(service1);
 	}
 
 }

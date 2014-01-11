@@ -15,7 +15,7 @@ package javax.money;
  * creating amounts of the same implementation type, which also provided the factory instance.</li>
  * <li>calling {@link MonetaryAmounts#getAmountFactory(Class<T>)} accessing a
  * {@link MonetaryAmountFactory<T>} for a concrete type <code>Class<T></code>.</li>
- * <li>calling {@link MonetaryAmounts#getDefaultAmountFactory()} accessing a default
+ * <li>calling {@link MonetaryAmounts#getAmountFactory()} accessing a default
  * {@link MonetaryAmountFactory}.
  * </ul>
  * <p>
@@ -51,40 +51,6 @@ package javax.money;
  * @author Werner Keil
  */
 public interface MonetaryAmountFactory<T extends MonetaryAmount> {
-
-	/**
-	 * Determines how the factory should be considered when querying for matching implementation
-	 * types calling {@link MonetaryAmounts#queryAmountType(MonetaryContext)}.
-	 * 
-	 * @see MonetaryAmounts#queryAmountType(MonetaryContext)
-	 */
-	public static enum QueryInclusionPolicy {
-		/**
-		 * Always include this factory (and the corresponding amount type) within queries. This is
-		 * the default for normal {@link MonetaryAmount} implementation types.
-		 */
-		ALWAYS,
-		/**
-		 * Only consider this factory, when the implementation type is specified explicitly in the
-		 * {@link MonetaryContext} required.
-		 */
-		DIRECT_REFERENCE_ONLY,
-		/**
-		 * Never consider this factory in a query for a matching {@link MonetaryAmount}
-		 * implementation.
-		 */
-		NEVER
-	}
-
-	/**
-	 * Method that determines if this factory should be considered for general evaluation of
-	 * matching {@link MonetaryAmount} implementation types when calling
-	 * {@link MonetaryAmounts#queryAmountType(MonetaryContext)}.
-	 * 
-	 * @see MonetaryAmounts#queryAmountType(MonetaryContext)
-	 * @return {@code true} to include this factory into the evaluation.
-	 */
-	QueryInclusionPolicy getQueryInclusionPolicy();
 
 	/**
 	 * Access the {@link MonetaryAmount} implementation type.

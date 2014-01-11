@@ -16,16 +16,18 @@ import javax.money.DummyAmount;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryContext;
+import javax.money.MonetaryException;
 import javax.money.spi.Bootstrap;
+import javax.money.spi.MonetaryAmountFactoryProviderSpi;
 import javax.money.spi.MonetaryAmountsSpi;
 
 public class DefaultMonetaryAmountsSpi implements MonetaryAmountsSpi {
 
-	private Map<Class<? extends MonetaryAmount>, MonetaryAmountFactory<?>> factories = new ConcurrentHashMap<>();
+	private Map<Class<? extends MonetaryAmount>, MonetaryAmountFactoryProviderSpi<?>> factories = new ConcurrentHashMap<>();
 
 	public DefaultMonetaryAmountsSpi() {
-		for (MonetaryAmountFactory<?> f : Bootstrap
-				.getServices(MonetaryAmountFactory.class)) {
+		for (MonetaryAmountFactoryProviderSpi<?> f : Bootstrap
+				.getServices(MonetaryAmountFactoryProviderSpi.class)) {
 			factories.put(f.getAmountType(), f);
 		}
 	}
@@ -34,7 +36,14 @@ public class DefaultMonetaryAmountsSpi implements MonetaryAmountsSpi {
 	@Override
 	public <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(
 			Class<T> amountType) {
-		return (MonetaryAmountFactory<T>) factories.get(amountType);
+		MonetaryAmountFactoryProviderSpi<T> f = MonetaryAmountFactoryProviderSpi.class
+				.cast(factories.get(amountType));
+		if (f != null) {
+			return f.createMonetaryAmountFactory();
+		}
+		throw new MonetaryException(
+				"No matching MonetaryAmountFactory found, type="
+						+ amountType.getName());
 	}
 
 	@Override
@@ -43,13 +52,13 @@ public class DefaultMonetaryAmountsSpi implements MonetaryAmountsSpi {
 	}
 
 	@Override
-	public Class<? extends MonetaryAmount> getDefaultAmountType() {
+	public Class<? extends MonetaryAmount> queryAmountType(
+			MonetaryContext requiredContext) {
 		return DummyAmount.class;
 	}
 
 	@Override
-	public Class<? extends MonetaryAmount> queryAmountType(
-			MonetaryContext requiredContext) {
+	public Class<? extends MonetaryAmount> getDefaultAmountType() {
 		return DummyAmount.class;
 	}
 

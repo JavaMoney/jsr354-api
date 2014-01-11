@@ -122,13 +122,4 @@ public final class DummyAmountFactory implements
 		return this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#getQueryInclusionPolicy()
-	 */
-	@Override
-	public QueryInclusionPolicy getQueryInclusionPolicy() {
-		return QueryInclusionPolicy.ALWAYS;
-	}
-
 }

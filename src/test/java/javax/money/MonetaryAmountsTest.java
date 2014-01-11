@@ -28,10 +28,10 @@ public class MonetaryAmountsTest {
 	 */
 	@Test
 	public void testGetFactory() {
-		assertNotNull(MonetaryAmounts.getDefaultAmountFactory());
+		assertNotNull(MonetaryAmounts.getAmountFactory());
 		assertNotNull(MonetaryAmounts.getAmountFactory(DummyAmount.class));
-		assertTrue(MonetaryAmounts.getDefaultAmountFactory() == MonetaryAmounts
-				.getAmountFactory(DummyAmount.class));
+		assertTrue(MonetaryAmounts.getAmountFactory().getClass() == MonetaryAmounts
+				.getAmountFactory(DummyAmount.class).getClass());
 	}
 
 	/**
@@ -50,8 +50,8 @@ public class MonetaryAmountsTest {
 	 */
 	@Test
 	public void testGetDefaultAmountType() {
-		assertNotNull(MonetaryAmounts.getDefaultAmountType());
-		assertEquals(DummyAmount.class, MonetaryAmounts.getDefaultAmountType());
+		assertNotNull(MonetaryAmounts.getAmountFactory());
+		assertEquals(DummyAmountFactory.class, MonetaryAmounts.getAmountFactory().getClass());
 	}
 
 	/**

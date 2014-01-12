@@ -368,6 +368,31 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>cloudbees-deployment</id>
+			<activation>
+				<property>
+					<name>cloudbees</name>
+				</property>
+			</activation>
+			<distributionManagement>
+				<site>
+					<id>cloudbees</id>
+					<url>svn:https://svn-jsr354.forge.cloudbees.com/site/</url>
+					<name>Cloudbees Public SVN Site Repository</name>
+				</site>
+				<repository>
+					<id>cloudbees</id>
+					<url>http://repository-jsr354.forge.cloudbees.com/release/</url>
+					<name>Cloudbees Release Repository</name>
+				</repository>
+				<snapshotRepository>
+					<id>cloudbees</id>
+					<url>http://repository-jsr354.forge.cloudbees.com/snapshot/</url>
+					<name>Cloudbees Nexus Snapshots</name>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
 	</profiles>
 
 	<dependencyManagement>
@@ -552,6 +577,31 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<!-- phase>verify</phase -->
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>

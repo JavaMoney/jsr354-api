@@ -11,6 +11,7 @@
 package javax.money.spi;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * This class models the component that is managing the lifecycle of the
@@ -21,30 +22,30 @@ import java.util.Collection;
  */
 public interface ServiceProvider {
 
-	/**
-	 * Access a service, given its type. If multiple instances are registered
-	 * some priority mechanism must be implemented to determine which
-	 * implementation should be used.
-	 * 
-	 * @param serviceType
-	 *            the service type.
-	 * @return The instance to be used, never {@code null}
-	 */
-	public <T> T getService(Class<T> serviceType);
-
-	/**
-	 * Access a service, given its type. If multiple instances are registered
-	 * some priority mechanism must be implemented to determine which
-	 * implementation should be used.
-	 * 
-	 * @param serviceType
-	 *            the service type.
-	 * @param defaultInstance
-	 *            returned if not such service is registered.
-	 * @return The instance to be used, also {@code null}, if no instance is
-	 *         registered and {@code defaultInstance == null}.
-	 */
-	public <T> T getService(Class<T> serviceType, T defaultInstance);
+//	/**
+//	 * Access a service, given its type. If multiple instances are registered
+//	 * some priority mechanism must be implemented to determine which
+//	 * implementation should be used.
+//	 * 
+//	 * @param serviceType
+//	 *            the service type.
+//	 * @return The instance to be used, never {@code null}
+//	 */
+//	public <T> T getService(Class<T> serviceType);
+//
+//	/**
+//	 * Access a service, given its type. If multiple instances are registered
+//	 * some priority mechanism must be implemented to determine which
+//	 * implementation should be used.
+//	 * 
+//	 * @param serviceType
+//	 *            the service type.
+//	 * @param defaultInstance
+//	 *            returned if not such service is registered.
+//	 * @return The instance to be used, also {@code null}, if no instance is
+//	 *         registered and {@code defaultInstance == null}.
+//	 */
+//	public <T> T getService(Class<T> serviceType, T defaultInstance);
 
 	/**
 	 * Access a list of services, given its type. The bootstrap mechanism should
@@ -55,7 +56,7 @@ public interface ServiceProvider {
 	 *            the service type.
 	 * @return The instance to be used, never {@code null}
 	 */
-	public <T> Collection<T> getServices(Class<T> serviceType);
+	public <T> List<T> getServices(Class<T> serviceType);
 
 	/**
 	 * Access a list of services, given its type. The bootstrap mechanism should
@@ -68,7 +69,7 @@ public interface ServiceProvider {
 	 *            the lis returned, if no services could be found.
 	 * @return The instance to be used, never {@code null}
 	 */
-	public <T> Collection<T> getServices(Class<T> serviceType,
-			Collection<T> defaultList);
+	public <T> List<T> getServices(Class<T> serviceType,
+			List<T> defaultList);
 
 }

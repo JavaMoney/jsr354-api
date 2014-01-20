@@ -24,7 +24,7 @@ import javax.money.spi.Bootstrap;
  * and so on) needed by {@link AmountStyle} to format {@link javax.money.MonetaryAmount} instances.
  * Instances of this class can be obtained by calling {@link #of(Locale)}. If you need to
  * change any of these symbols, you can access also access a <code>Builder</code> by calling
- * {@link #getBuilder()} .
+ * {@link #toBuilder()} .
  * <p>
  * This class itself has no dependencies to <code>java.text</code> to be platform independent.
  * Nevertheless the similarities are obvious. In most cases users will never work with this class
@@ -254,7 +254,7 @@ public final class AmountFormatSymbols implements Cloneable, Serializable {
 	 * 
 	 * @return a new {@link Builder}, never {@code null}.
 	 */
-	public Builder getBuilder() {
+	public Builder toBuilder() {
 		return new Builder(this);
 	}
 

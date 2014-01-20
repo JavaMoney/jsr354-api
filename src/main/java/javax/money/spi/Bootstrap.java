@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
+import javax.money.MonetaryException;
+
 /**
  * This singleton provides access to the services available in the current context. The behaviour
  * can be adapted, by calling {@link Bootstrap#init(ServiceProvider)} before accessing any moneteray
@@ -25,7 +27,7 @@ import java.util.logging.Logger;
  */
 public final class Bootstrap {
 	/** The ServiceProvider used. */
-	private static volatile ServiceProvider services;
+	private static volatile ServiceProvider serviceProviderDelegate;
 	/** The shared lock instance user. */
 	private static final Object LOCK = new Object();
 
@@ -42,17 +44,14 @@ public final class Bootstrap {
 	 */
 	private static ServiceProvider loadDefaultServiceProvider() {
 		try {
-			List<ServiceProvider> providers = new ArrayList<>();
 			for (ServiceProvider sp : ServiceLoader.load(ServiceProvider.class)) {
-				providers.add(sp);
+				return sp;
 			}
-			Collections.sort(providers, new ProviderComparator());
-			return providers.get(0);
 		} catch (Exception e) {
 			Logger.getLogger(Bootstrap.class.getName()).info(
 					"No ServiceProvider loaded, using default.");
-			return new DefaultServiceProvider();
 		}
+		return new DefaultServiceProvider();
 	}
 
 	/**
@@ -63,8 +62,11 @@ public final class Bootstrap {
 	 */
 	public static void init(ServiceProvider serviceProvider) {
 		synchronized (LOCK) {
-			if (serviceProvider == null) {
-				Bootstrap.services = serviceProvider;
+			if (serviceProvider != null) {
+				Bootstrap.serviceProviderDelegate = serviceProvider;
+				getService(MonetaryLogger.class).logInfo(
+						"Money Bootstrap: new ServiceProvider set: "
+								+ serviceProvider.getClass().getName());
 			}
 			else {
 				throw new IllegalStateException(
@@ -79,14 +81,14 @@ public final class Bootstrap {
 	 * @return the {@link ServiceProvider} used.
 	 */
 	static ServiceProvider getServiceProvider() {
-		if (services == null) {
+		if (serviceProviderDelegate == null) {
 			synchronized (LOCK) {
-				if (services == null) {
-					services = loadDefaultServiceProvider();
+				if (serviceProviderDelegate == null) {
+					serviceProviderDelegate = loadDefaultServiceProvider();
 				}
 			}
 		}
-		return services;
+		return serviceProviderDelegate;
 	}
 
 	/**
@@ -111,8 +113,8 @@ public final class Bootstrap {
 	 *            the default service list.
 	 * @return the services found.
 	 */
-	public static <T> Collection<T> getServices(Class<T> serviceType,
-			Collection<T> defaultServices) {
+	public static <T> List<T> getServices(Class<T> serviceType,
+			List<T> defaultServices) {
 		return getServiceProvider().getServices(serviceType, defaultServices);
 	}
 
@@ -125,7 +127,11 @@ public final class Bootstrap {
 	 * @return the service found, never {@code null}.
 	 */
 	public static <T> T getService(Class<T> serviceType) {
-		return getServiceProvider().getService(serviceType);
+		List<T> services = getServiceProvider().getServices(serviceType);
+		if (services.isEmpty()) {
+			throw new MonetaryException("No such service found: " + serviceType);
+		}
+		return services.get(0);
 	}
 
 	/**
@@ -140,54 +146,11 @@ public final class Bootstrap {
 	 *         {@code defaultService==null}.
 	 */
 	public static <T> T getService(Class<T> serviceType, T defaultService) {
-		return getServiceProvider().getService(serviceType, defaultService);
-	}
-
-	/**
-	 * Comparator used for ordering the services provided.
-	 * 
-	 * @author Anatole Tresch
-	 */
-	public static final class ProviderComparator implements
-			Comparator<Object> {
-		@Override
-		public int compare(Object p1, Object p2) {
-			return comparePriority(p1, p2);
+		List<T> services = getServiceProvider().getServices(serviceType);
+		if (services.isEmpty()) {
+			return defaultService;
 		}
-	}
-
-	/**
-	 * Evaluates the service priority. Uses a {@link ServicePriority}, if present.
-	 * 
-	 * @param service
-	 *            the service, not null.
-	 * @return the priority from {@link ServicePriority}, or 0.
-	 */
-	private static int getPriority(Object service) {
-		ServicePriority prioAnnot = service.getClass().getAnnotation(
-				ServicePriority.class);
-		int prio = 0;
-		if (prioAnnot != null) {
-			prio = prioAnnot.value();
-		}
-		return prio;
-	}
-
-	/**
-	 * Compare two service priorities given the same service interface.
-	 * 
-	 * @param service1
-	 *            first service, not null.
-	 * @param service2
-	 *            second service, not null.
-	 * @param <T>
-	 *            the interface type
-	 * @return the comparison result.
-	 */
-	public static <T> int comparePriority(
-			T service1,
-			T service2) {
-		return getPriority(service2) - getPriority(service1);
+		return services.get(0);
 	}
 
 }

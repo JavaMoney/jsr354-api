@@ -421,7 +421,7 @@ public final class ExchangeRate implements Serializable,
 		 *            the {@link ExchangeRate} chain to be applied
 		 * @return the builder instance
 		 */
-		public Builder setChain(ExchangeRate... exchangeRates) {
+		public Builder setRateChain(ExchangeRate... exchangeRates) {
 			if (exchangeRates != null) {
 				this.rateChain = exchangeRates.clone();
 			} else {

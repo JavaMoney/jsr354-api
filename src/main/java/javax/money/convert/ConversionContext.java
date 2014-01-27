@@ -13,9 +13,10 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class models a context for which a {@link CurrencyConversion} is valid, or an
- * {@link ExchangeRateProvider} provides rates. Such a context allows to model simple
- * implementations as well as more complex conversion architectures.
+ * This class models a context for which a {@link CurrencyConversion} is valid,
+ * or an {@link ExchangeRateProvider} provides rates. Such a context allows to
+ * model simple implementations as well as more complex conversion
+ * architectures.
  * <p>
  * Instances of this class are immutable and thread-safe.
  * 
@@ -24,19 +25,30 @@ import java.util.Objects;
 public final class ConversionContext {
 	/**
 	 * Common context attributes.
-	 * 
+	 *
 	 * @author Anatole
-	 * 
+	 *
 	 */
-	public static enum ConversionAttribute {
+	public static enum AttributeType {
 		/** The provider serving the conversion data. */
 		PROVIDER,
-		/** The starting range, where a rate is valid or a converter can deliver useful results. */
+		/**
+		 * The timestamp of a rate, this may be extended by a valid from/to
+		 * range.
+		 */
+		TIMESTAMP,
+		/**
+		 * The starting range, where a rate is valid or a converter can deliver
+		 * useful results.
+		 */
 		VALID_FROM,
-		/** The ending range, where a rate is valid or a converter can deliver useful results. */
+		/**
+		 * The ending range, where a rate is valid or a converter can deliver
+		 * useful results.
+		 */
 		VALID_TO,
-		/** Flag if the rate/rates is deferred or real-time. */
-		DEFERRED,
+		/** Flag, if the rates provided are historic rates. */
+		HISTORIC
 	}
 
 	/**
@@ -74,6 +86,25 @@ public final class ConversionContext {
 	}
 
 	/**
+	 * Access an attribute, using the {@link AttributeType}.
+	 * 
+	 * @param type
+	 *            the attribute's type, not {@code null}
+	 * @param attributeType
+	 *            the {@link AttributeType}, not {@code null}
+	 * @return the attribute value, or {@code null}.
+	 */
+	// Type safe cast
+	@SuppressWarnings("unchecked")
+	public <T> T getAttribute(Class<T> type, AttributeType attributeType) {
+		Map<Object, ?> typedAttrs = attributes.get(type);
+		if (typedAttrs != null) {
+			return (T) typedAttrs.get(attributeType);
+		}
+		return null;
+	}
+
+	/**
 	 * Access an attribute, hereby using the class name as key.
 	 * 
 	 * @param type
@@ -87,44 +118,83 @@ public final class ConversionContext {
 	}
 
 	/**
-	 * Returns the UTC timestamp defining from what date/time this rate is valid.
+	 * Returns the starting date/time this rate is valid. The result can also be
+	 * {@code null}, since it is possible, that an {@link ExchangeRate} does not
+	 * have starting validity range. This also can be queried by calling
+	 * {@link #isLowerBound()}.
 	 * <p>
-	 * This is modelled as {@link Long} instaed of {@code long}, since it is possible, that an
-	 * {@link ExchangeRate} does not have starting validity range. This also can be queried by
-	 * calling {@link #isLowerBound()}.
+	 * Basically all date time types that are available on a platform must be
+	 * supported. On SE this includes Date, Calendar and the new 310 types
+	 * introduced in JDK8). Additionally calling this method with
+	 * {@code Long.class} returns the POSIX/UTC timestamp in milliseconds.
 	 * 
-	 * @return The UTC timestamp of the rate, defining valid from, or {@code null}, if no starting
-	 *         validity constraint is set.
+	 * @return The starting timestamp of the rate, defining valid from, or
+	 *         {@code null}, if no starting validity constraint is set.
+	 */
+	public final <T> T getValidFrom(Class<T> type) {
+		return getAttribute(type, AttributeType.VALID_FROM);
+	}
+
+	/**
+	 * Returns the UTC timestamp defining from what date/time this rate is
+	 * valid.
+	 * <p>
+	 * This is modelled as {@link Long} instaed of {@code long}, since it is
+	 * possible, that an {@link ExchangeRate} does not have starting validity
+	 * range. This also can be queried by calling {@link #isLowerBound()}.
+	 * 
+	 * @return The UTC timestamp of the rate, defining valid from, or
+	 *         {@code null}, if no starting validity constraint is set.
 	 */
 	public final Long getValidFromMillis() {
-		return getAttribute(Long.class, ConversionAttribute.VALID_FROM);
+		return getAttribute(Long.class, AttributeType.VALID_FROM);
 	}
 
 	/**
-	 * Get the data validity timestamp of this rate in milliseconds. This can be useful, when a rate
-	 * in a system only should be used within some specified time. *
-	 * <p>
-	 * This is modelled as {@link Long} instaed of {@code long}, since it is possible, that an
-	 * {@link ExchangeRate} does not have ending validity range. This also can be queried by calling
+	 * Returns the ending date/time this rate is valid. The result can also be
+	 * {@code null}, since it is possible, that an {@link ExchangeRate} does not
+	 * have ending validity range. This also can be queried by calling
 	 * {@link #isUpperBound()}.
+	 * <p>
+	 * Basically all date time types that are available on a platform must be
+	 * supported. On SE this includes Date, Calendar and the new 310 types
+	 * introduced in JDK8). Additionally calling this method with
+	 * {@code Long.class} returns the POSIX/UTC timestamp in milliseconds.
 	 * 
-	 * @return the duration of validity in milliseconds, or {@code null} if no ending validity
-	 *         constraint is set.
+	 * @return The ending timestamp of the rate, defining valid until, or
+	 *         {@code null}, if no ending validity constraint is set.
+	 */
+	public final <T> T getValidTo(Class<T> type) {
+		return getAttribute(type, AttributeType.VALID_TO);
+	}
+
+	/**
+	 * Get the data validity timestamp of this rate in milliseconds. This can be
+	 * useful, when a rate in a system only should be used within some specified
+	 * time. *
+	 * <p>
+	 * This is modelled as {@link Long} instaed of {@code long}, since it is
+	 * possible, that an {@link ExchangeRate} does not have ending validity
+	 * range. This also can be queried by calling {@link #isUpperBound()}.
+	 * 
+	 * @return the duration of validity in milliseconds, or {@code null} if no
+	 *         ending validity constraint is set.
 	 */
 	public final Long getValidToMillis() {
-		return getAttribute(Long.class, ConversionAttribute.VALID_TO);
+		return getAttribute(Long.class, AttributeType.VALID_TO);
 	}
 
 	/**
-	 * Method to quickly check if an {@link ExchangeRate} is valid for a given UTC timestamp.
+	 * Method to quickly check if an {@link ExchangeRate} is valid for a given
+	 * UTC timestamp.
 	 * 
 	 * @param timestamp
 	 *            the UTC timestamp.
 	 * @return {@code true}, if the rate is valid.
 	 */
 	public boolean isValid(long timestamp) {
-		Long validTo = getValidToMillis();
-		Long validFrom = getValidFromMillis();
+		Long validTo = getValidTo(Long.class);
+		Long validFrom = getValidFrom(Long.class);
 		if (validTo != null && validTo.longValue() < timestamp) {
 			return false;
 		}
@@ -135,31 +205,35 @@ public final class ConversionContext {
 	}
 
 	/**
-	 * Method to easily check if the {@link #getValidFromMillis()} is not {@code null}.
+	 * Method to easily check if the {@link #getValidFromMillis()} is not
+	 * {@code null}.
 	 * 
-	 * @return {@code true} if {@link #getValidFromMillis()} is not {@code null} .
+	 * @return {@code true} if {@link #getValidFromMillis()} is not {@code null}
+	 *         .
 	 */
 	public boolean isLowerBound() {
-		return getValidFromMillis() != null;
+		return getValidFrom(Long.class) != null;
 	}
 
 	/**
-	 * Method to easily check if the {@link #getValidToMillis()} is not {@code null}.
+	 * Method to easily check if the {@link #getValidToMillis()} is not
+	 * {@code null}.
 	 * 
 	 * @return {@code true} if {@link #getValidToMillis()} is not {@code null}.
 	 */
 	public boolean isUpperBound() {
-		return getValidToMillis() != null;
+		return getValidTo(Long.class) != null;
 	}
 
 	/**
-	 * Get the provider of this rate. The provider of a rate can have different contexts in
-	 * different usage scenarios, such as the service type or the stock exchange.
+	 * Get the provider of this rate. The provider of a rate can have different
+	 * contexts in different usage scenarios, such as the service type or the
+	 * stock exchange.
 	 * 
 	 * @return the provider, or {code null}.
 	 */
 	public String getProvider() {
-		return getAttribute(String.class, ConversionAttribute.PROVIDER);
+		return getAttribute(String.class, AttributeType.PROVIDER);
 	}
 
 	/**
@@ -167,8 +241,8 @@ public final class ConversionContext {
 	 * 
 	 * @return the deferred flag, or {code null}.
 	 */
-	public Boolean isDeferred() {
-		return getAttribute(Boolean.class, ConversionAttribute.DEFERRED);
+	public Boolean isHistoric() {
+		return getAttribute(Boolean.class, AttributeType.HISTORIC);
 	}
 
 	/**
@@ -182,6 +256,7 @@ public final class ConversionContext {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -195,6 +270,7 @@ public final class ConversionContext {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -215,8 +291,9 @@ public final class ConversionContext {
 	}
 
 	/**
-	 * Simple factory method for {@link ConversionContext}. For more possibilities to initialize a
-	 * {@link ConversionContext}, please use a {@link Builder},
+	 * Simple factory method for {@link ConversionContext}. For more
+	 * possibilities to initialize a {@link ConversionContext}, please use a
+	 * {@link Builder},
 	 * 
 	 * @param provider
 	 *            the provider name, not {@code null}
@@ -224,8 +301,7 @@ public final class ConversionContext {
 	 *            Any additional attributes
 	 * @return a new instance of {@link ConversionContext}
 	 */
-	public static ConversionContext of(String provider,
-			Object... attributes) {
+	public static ConversionContext of(String provider, Object... attributes) {
 		Builder b = new Builder(provider);
 		for (int i = 0; i < attributes.length; i++) {
 			b.set(attributes[i]);
@@ -234,8 +310,8 @@ public final class ConversionContext {
 	}
 
 	/**
-	 * Builder class to create {@link ConversionContext} instances. Instances of this class are not
-	 * thread-safe.
+	 * Builder class to create {@link ConversionContext} instances. Instances of
+	 * this class are not thread-safe.
 	 * 
 	 * @author Anatole Tresch
 	 */
@@ -247,7 +323,7 @@ public final class ConversionContext {
 
 		public Builder(String provider) {
 			Objects.requireNonNull(provider);
-			set(provider, ConversionAttribute.PROVIDER);
+			set(provider, AttributeType.PROVIDER);
 		}
 
 		public Builder(ConversionContext context) {
@@ -264,8 +340,7 @@ public final class ConversionContext {
 			return set(attribute, key, attribute.getClass());
 		}
 
-		public <T> Builder set(T attribute, Object key,
-				Class<? extends T> type) {
+		public <T> Builder set(T attribute, Object key, Class<? extends T> type) {
 			Map<Object, Object> typedAttrs = attributes.get(type);
 			if (typedAttrs == null) {
 				typedAttrs = new HashMap<>();
@@ -276,23 +351,28 @@ public final class ConversionContext {
 		}
 
 		public Builder setProvider(String provider) {
-			return set(provider, ConversionAttribute.PROVIDER,
-					String.class);
+			return set(provider, AttributeType.PROVIDER, String.class);
 		}
 
-		public Builder setDeferred(boolean deferred) {
-			return set(Boolean.valueOf(deferred), ConversionAttribute.DEFERRED,
+		public Builder setHistoric(boolean historic) {
+			return set(Boolean.valueOf(historic), AttributeType.HISTORIC,
 					Boolean.class);
 		}
 
+		public Builder setValidFrom(Object validFrom) {
+			return set(validFrom, AttributeType.VALID_FROM);
+		}
+
 		public Builder setValidFromMillis(long validFrom) {
-			return set(Long.valueOf(validFrom), ConversionAttribute.VALID_FROM,
-					Long.class);
+			return set(validFrom, AttributeType.VALID_FROM, Long.class);
+		}
+
+		public Builder setValidTo(Object validTo) {
+			return set(validTo, AttributeType.VALID_TO);
 		}
 
 		public Builder setValidToMillis(long validTo) {
-			return set(Long.valueOf(validTo), ConversionAttribute.VALID_TO,
-					Long.class);
+			return set(validTo, AttributeType.VALID_TO, Long.class);
 		}
 
 		public ConversionContext create() {

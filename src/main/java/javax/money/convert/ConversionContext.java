@@ -186,6 +186,15 @@ public final class ConversionContext {
 	}
 
 	/**
+	 * Returns the UTC timestamp of this rate.
+	 * 
+	 * @return The UTC timestamp of the rate, or {@code null}.
+	 */
+	public final Long getTimestamp() {
+		return getAttribute(Long.class, AttributeType.TIMESTAMP);
+	}
+
+	/**
 	 * Method to quickly check if an {@link ExchangeRate} is valid for a given
 	 * UTC timestamp.
 	 * 
@@ -422,6 +431,17 @@ public final class ConversionContext {
 		public Builder setHistoric(boolean historic) {
 			return set(Boolean.valueOf(historic), AttributeType.HISTORIC,
 					Boolean.class);
+		}
+
+		/**
+		 * Sets the timestamp attribute as UTC timestamp in millis.
+		 * 
+		 * @param timestamp
+		 *            the timestamp value
+		 * @return this Builder, for chaining
+		 */
+		public Builder setTimestamp(long timestamp) {
+			return set(timestamp, AttributeType.TIMESTAMP, Long.class);
 		}
 
 		/**

@@ -24,10 +24,11 @@ import java.util.Objects;
  */
 public final class ConversionContext {
 	/**
-	 * Common context attributes.
-	 *
-	 * @author Anatole
-	 *
+	 * Common context attributes, using this attributes ansures interoperability
+	 * on property key level. Where possible according type safe methods are
+	 * also definedon this class.
+	 * 
+	 * @author Anatole Tresch
 	 */
 	public static enum AttributeType {
 		/** The provider serving the conversion data. */
@@ -321,25 +322,75 @@ public final class ConversionContext {
 		 */
 		private Map<Class<?>, Map<Object, Object>> attributes = new HashMap<>();
 
+		/**
+		 * Create a new Builder instance without any provider, e.g. for creating
+		 * new {@link ConversionContext} instances for querying.
+		 */
+		public Builder() {
+		}
+
+		/**
+		 * Create a new Builder instance.
+		 * 
+		 * @param provider
+		 *            the provider name, not {@code null}.
+		 */
 		public Builder(String provider) {
 			Objects.requireNonNull(provider);
 			set(provider, AttributeType.PROVIDER);
 		}
 
+		/**
+		 * Create a new Builder, hereby using the given
+		 * {@link ConversionContext}'s values as defaults. This allows changing
+		 * an existing {@link ConversionContext} easily.
+		 * 
+		 * @param context
+		 *            the context, not {@code null}
+		 */
 		public Builder(ConversionContext context) {
 			Objects.requireNonNull(context);
 			this.attributes.putAll(context.attributes);
 		}
 
-		public Builder set(Object attribute) {
-			return set(attribute, attribute.getClass().getName(),
-					attribute.getClass());
+		/**
+		 * Sets an attribute, using {@code attribute.getClass()} as attribute
+		 * <i>type</i> and {@code attribute.getClass().getName()} as attribute
+		 * <i>name</i>.
+		 * 
+		 * @param value
+		 *            the attribute value
+		 * @return this Builder, for chaining
+		 */
+		public Builder set(Object value) {
+			return set(value, value.getClass().getName(), value.getClass());
 		}
 
-		public Builder set(Object attribute, Object key) {
-			return set(attribute, key, attribute.getClass());
+		/**
+		 * Sets an attribute, using {@code attribute.getClass()} as attribute
+		 * <i>type</i>.
+		 * 
+		 * @param value
+		 *            the attribute value
+		 * @param key
+		 *            the attribute's key, not {@code null}
+		 * @return this Builder, for chaining
+		 */
+		public Builder set(Object value, Object key) {
+			return set(value, key, value.getClass());
 		}
 
+		/**
+		 * Sets an attribute.
+		 * 
+		 * @param value
+		 *            the attribute's value
+		 * @param key
+		 *            the attribute's key
+		 * @param type
+		 *            the attribute's type
+		 * @return this Builder, for chaining
+		 */
 		public <T> Builder set(T attribute, Object key, Class<? extends T> type) {
 			Map<Object, Object> typedAttrs = attributes.get(type);
 			if (typedAttrs == null) {
@@ -350,31 +401,79 @@ public final class ConversionContext {
 			return this;
 		}
 
+		/**
+		 * Sets the provider attribute as {@link String} value.
+		 * 
+		 * @param provider
+		 *            the value, not {@code null}
+		 * @return this Builder, for chaining
+		 */
 		public Builder setProvider(String provider) {
 			return set(provider, AttributeType.PROVIDER, String.class);
 		}
 
+		/**
+		 * Sets the historic attribute as {@link Boolean} value.
+		 * 
+		 * @param historic
+		 *            the value
+		 * @return this Builder, for chaining
+		 */
 		public Builder setHistoric(boolean historic) {
 			return set(Boolean.valueOf(historic), AttributeType.HISTORIC,
 					Boolean.class);
 		}
 
+		/**
+		 * Sets the validFrom attribute.
+		 * 
+		 * @param validFrom
+		 *            the value, not {@code null}
+		 * @return this Builder, for chaining
+		 */
 		public Builder setValidFrom(Object validFrom) {
 			return set(validFrom, AttributeType.VALID_FROM);
 		}
 
+		/**
+		 * Sets the validFrom attribute as UTC timestamp in millis.
+		 * 
+		 * @param validFrom
+		 *            the value, not {@code null}
+		 * @return this Builder, for chaining
+		 */
 		public Builder setValidFromMillis(long validFrom) {
 			return set(validFrom, AttributeType.VALID_FROM, Long.class);
 		}
 
+		/**
+		 * Sets the validTo attribute.
+		 * 
+		 * @param validTo
+		 *            the value, not {@code null}
+		 * @return this Builder, for chaining
+		 */
 		public Builder setValidTo(Object validTo) {
 			return set(validTo, AttributeType.VALID_TO);
 		}
 
+		/**
+		 * Sets the validTo attribute as UTC timestamp in millis.
+		 * 
+		 * @param validTo
+		 *            the value, not {@code null}
+		 * @return this Builder, for chaining
+		 */
 		public Builder setValidToMillis(long validTo) {
 			return set(validTo, AttributeType.VALID_TO, Long.class);
 		}
 
+		/**
+		 * Creates a new {@link ConversionContext} with the data from this
+		 * Builder instance.
+		 * 
+		 * @return a new {@link ConversionContext}. never {@code null}.
+		 */
 		public ConversionContext create() {
 			return new ConversionContext(this);
 		}

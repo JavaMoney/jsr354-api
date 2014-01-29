@@ -17,40 +17,48 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * This class models the numeric capabilities of a {@link MonetaryAmount} in a platform independent
- * way. It provides information about
+ * This class models the numeric capabilities of a {@link MonetaryAmount} in a
+ * platform independent way. It provides information about
  * <ul>
  * <li>the maximal precision supported (0, for unlimited precision).
  * <li>the minimum scale (>=0)
  * <li>the maximal scale (>= -1, -1 for unlimited scale).
  * <li>the numeric representation class.
- * <li>any other attributes, identified by the attribute type, e.g. {@link java.math.RoundingMode}.
+ * <li>any other attributes, identified by the attribute type, e.g.
+ * {@link java.math.RoundingMode}.
  * </ul>
  * <p>
  * This class is serializable and thread-safe.
  * 
  * @author Anatole Tresch
  */
-public final class MonetaryContext implements
+public final class MonetaryContext extends AbstractContext implements
 		Serializable {
+	private static final String AMOUNT_FLAVOR_KEY = "amountFlavor";
+	private static final String AMOUNT_TYPE_KEY = "amountType";
+	private static final String MAX_SCALE_KEY = "maxScale";
+	private static final String FIXED_SCALE_KEY = "fixedScale";
+	private static final String PRECISION_KEY = "precision";
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 5579720004786848255L;
 
 	/**
-	 * Defines the common flavors of {@link MonetaryAmount} implementations. This information can be
-	 * additionally used to determine which implementation type should be used, additionally to the
-	 * other properties and attributes in {@link MonetaryContext}.
+	 * Defines the common flavors of {@link MonetaryAmount} implementations.
+	 * This information can be additionally used to determine which
+	 * implementation type should be used, additionally to the other properties
+	 * and attributes in {@link MonetaryContext}.
 	 * 
 	 * @author Anatole Tresch
 	 */
 	public static enum AmountFlavor {
 		/**
-		 * The implementation is optimized for precise results, not primarly for performance.
+		 * The implementation is optimized for precise results, not primarly for
+		 * performance.
 		 */
 		PRECISION,
 		/**
-		 * The implementation is optimized for fast results, but reduced precision and scale, may be
-		 * possible.
+		 * The implementation is optimized for fast results, but reduced
+		 * precision and scale, may be possible.
 		 */
 		PERFORMANCE,
 		/** The implementation has no defined flavor. */
@@ -58,18 +66,20 @@ public final class MonetaryContext implements
 	}
 
 	/**
-	 * The number of digits to be used for an operation. A value of 0 indicates that unlimited
-	 * precision (as many digits as are required) will be used. Note that leading zeros (in the
-	 * coefficient of a number) are never significant.
+	 * The number of digits to be used for an operation. A value of 0 indicates
+	 * that unlimited precision (as many digits as are required) will be used.
+	 * Note that leading zeros (in the coefficient of a number) are never
+	 * significant.
 	 * <p>
 	 * {@code precision} will always be non-negative.
 	 */
 	private final int precision;
 
 	/**
-	 * The numeric representation type of the amount implementation. In most cases the
-	 * representation type equals also the numeric implementation type used, whereas this is not
-	 * required. Though only instances of this representation type can be accessed from from
+	 * The numeric representation type of the amount implementation. In most
+	 * cases the representation type equals also the numeric implementation type
+	 * used, whereas this is not required. Though only instances of this
+	 * representation type can be accessed from from
 	 * {@link MonetaryAmount#getNumber()}.
 	 */
 	private final Class<? extends MonetaryAmount> amountType;
@@ -78,28 +88,31 @@ public final class MonetaryContext implements
 	private final AmountFlavor flavor;
 
 	/**
-	 * This map contains arbitrary attributes, identified by class. This allows to store additional
-	 * context data in a platform independent way, e.g. when using {@link java.math.BigDecimal} as a
-	 * representation type on SE, the {@link java.math.RoundingMode} used can be stored as an
-	 * attribute. Adding it as part of the API would break compatibility with SE.
+	 * This map contains arbitrary attributes, identified by class. This allows
+	 * to store additional context data in a platform independent way, e.g. when
+	 * using {@link java.math.BigDecimal} as a representation type on SE, the
+	 * {@link java.math.RoundingMode} used can be stored as an attribute. Adding
+	 * it as part of the API would break compatibility with SE.
 	 */
 	@SuppressWarnings("rawtypes")
 	private final Map<Class, Object> attributes = new HashMap<>();
 
 	/**
-	 * Flag, if the scale is fixed. Fixed scaled numbers will always have a scale of
-	 * {@link #maxScale}.
+	 * Flag, if the scale is fixed. Fixed scaled numbers will always have a
+	 * scale of {@link #maxScale}.
 	 */
 	private final boolean fixedScale;
 
 	/**
-	 * The maximal scale supported, always >= -1. Fixed scaled numbers a fixed value for
-	 * {@link #maxScale}. -1 declares the maximal scale to be unlimited.
+	 * The maximal scale supported, always >= -1. Fixed scaled numbers a fixed
+	 * value for {@link #maxScale}. -1 declares the maximal scale to be
+	 * unlimited.
 	 */
 	private final int maxScale;
 
 	/**
-	 * Constructs a new {@code MonetaryContext} with the specified precision and rounding mode.
+	 * Constructs a new {@code MonetaryContext} with the specified precision and
+	 * rounding mode.
 	 * 
 	 * @param amountType
 	 *            The {@link MonetaryAmount} implementation class.
@@ -117,32 +130,26 @@ public final class MonetaryContext implements
 	 *             if the {@code setPrecision} parameter is less than zero.
 	 */
 	@SuppressWarnings("rawtypes")
-	private MonetaryContext(Class<? extends MonetaryAmount> amountType,
-			int precision,
-			int maxScale,
-			boolean fixedScale,
-			AmountFlavor flavor,
-			Map<Class, Object> attributes) {
-		if (precision < 0) {
+	private MonetaryContext(Builder builder) {
+		super(builder);
+		if (builder.precision < 0) {
 			throw new IllegalArgumentException("precision < 0");
 		}
-		if (maxScale < -1) {
+		if (builder.maxScale < -1) {
 			throw new IllegalArgumentException("maxScale < -1");
 		}
-		this.precision = precision;
-		this.fixedScale = fixedScale;
-		this.maxScale = maxScale;
-		this.amountType = amountType;
-		this.flavor = flavor;
-		if (attributes != null) {
-			this.attributes.putAll(attributes);
-		}
+		this.precision = builder.precision;
+		this.fixedScale = builder.fixedScale;
+		this.maxScale = builder.maxScale;
+		this.amountType = builder.amountType;
+		this.flavor = builder.amountFlavor;
 	}
 
 	/**
 	 * Returns the {@code precision} setting. This value is always non-negative.
 	 * 
-	 * @return an {@code int} which is the value of the {@code precision} setting
+	 * @return an {@code int} which is the value of the {@code precision}
+	 *         setting
 	 */
 	public int getPrecision() {
 		return precision;
@@ -158,9 +165,9 @@ public final class MonetaryContext implements
 	}
 
 	/**
-	 * Get the maximal scale supported, always {@code >= -1}. Fixed scaled numbers will have
-	 * {@code scale==maxScale} for all values. {@code -1} declares the maximal scale to be
-	 * <i>unlimited</i>.
+	 * Get the maximal scale supported, always {@code >= -1}. Fixed scaled
+	 * numbers will have {@code scale==maxScale} for all values. {@code -1}
+	 * declares the maximal scale to be <i>unlimited</i>.
 	 * 
 	 * @return the maximal scale supported, always {@code >= -1}
 	 */
@@ -169,7 +176,8 @@ public final class MonetaryContext implements
 	}
 
 	/**
-	 * Access the amount implementation type for the {@link MonetaryAmount} implementation.
+	 * Access the amount implementation type for the {@link MonetaryAmount}
+	 * implementation.
 	 * 
 	 * @return the amount representation type, never {@code null}.
 	 */
@@ -183,69 +191,13 @@ public final class MonetaryContext implements
 	 * @return the {@link MonetaryAmount}s {@link AmountFlavor}.
 	 */
 	public AmountFlavor getAmountFlavor() {
-		return flavor;
-	}
-
-	/**
-	 * Access the additional attributes. This map contains arbitrary attributes, identified by
-	 * class. This allows to store additional context data in a platform independent way, e.g. when
-	 * using {@link java.math.BigDecimal} as a representation type on SE, the
-	 * {@link java.math.RoundingMode} used can be stored as an attribute. Adding it as part of the
-	 * API would break compatibility with SE.
-	 * <p>
-	 * The complete listing of the supported attributes depends on the concrete
-	 * {@link MonetaryAmount} implementation classes and must be documented there.
-	 * 
-	 * @return the immutable additional attributes map, never {@code null}.
-	 */
-	@SuppressWarnings("rawtypes")
-	public Map<Class, Object> getAttributes() {
-		return Collections.unmodifiableMap(attributes);
-	}
-
-	/**
-	 * Access a single attribute.
-	 * 
-	 * @param type
-	 *            the attribute's type, not {@code null}.
-	 * @return the attribute's value, or {@code null}, if no such attribute is present.
-	 */
-	@SuppressWarnings("unchecked")
-	public <A> A getAttribute(Class<A> type) {
-		return (A) this.attributes.get(type);
-	}
-
-	/**
-	 * Access a single attribute, also providing a default value.
-	 * 
-	 * @param type
-	 *            the attribute's type, not {@code null}.
-	 * @param defaultValue
-	 *            the default value, can also be {@code null}.
-	 * @return the attribute's value, or the {@code defaultValue} passed, if no such attribute is
-	 *         present.
-	 */
-	public <A> A getAttribute(Class<A> type,
-			A defaultValue) {
-		A t = getAttribute(type);
-		if (t == null) {
-			return defaultValue;
-		}
-		return t;
-	}
-
-	/**
-	 * Access the types of the attributes of this {@link MonetaryContext}.
-	 * 
-	 * @return the types of the attributes of this {@link MonetaryContext}, never {@code null}.
-	 */
-	@SuppressWarnings("rawtypes")
-	public Set<Class> getAttributeTypes() {
-		return this.attributes.keySet();
+		return getNamedAttribute(AmountFlavor.class, AMOUNT_FLAVOR_KEY,
+				AmountFlavor.UNDEFINED);
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -256,16 +208,15 @@ public final class MonetaryContext implements
 				+ ((attributes == null) ? 0 : attributes.hashCode());
 		result = prime * result + (fixedScale ? 1231 : 1237);
 		result = prime * result + maxScale;
-		result = prime
-				* result
-				+ ((amountType == null) ? 0 : amountType
-						.hashCode());
+		result = prime * result
+				+ ((amountType == null) ? 0 : amountType.hashCode());
 		result = prime * result + precision;
 		return result;
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -297,8 +248,8 @@ public final class MonetaryContext implements
 	}
 
 	/**
-	 * Creates a new {@link MonetaryContext} targeting the the given amount type, using the given
-	 * {@link MonetaryContext} (so converting it).
+	 * Creates a new {@link MonetaryContext} targeting the the given amount
+	 * type, using the given {@link MonetaryContext} (so converting it).
 	 * 
 	 * @param context
 	 *            the {@link MonetaryContext} to be used.
@@ -306,27 +257,15 @@ public final class MonetaryContext implements
 	 *            the target amount type.
 	 * @return the {@link MonetaryContext}, not {@code null}.
 	 */
-	public static MonetaryContext from(
-			MonetaryContext context, Class<? extends MonetaryAmount> amountType) {
+	public static MonetaryContext from(MonetaryContext context,
+			Class<? extends MonetaryAmount> amountType) {
 		return new MonetaryContext.Builder(context).setAmountType(amountType)
-				.build();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "MonetaryContext [amountType=" + amountType
-				+ ", precision="
-				+ precision + ", maxScale=" + maxScale + ", fixedScale="
-				+ fixedScale
-				+ ", attributes=" + attributes + "]";
+				.create();
 	}
 
 	/**
-	 * Reconstitute the {@code MonetaryContext} instance from a stream (that is, deserialize it).
+	 * Reconstitute the {@code MonetaryContext} instance from a stream (that is,
+	 * deserialize it).
 	 * 
 	 * @param s
 	 *            the stream being read.
@@ -344,27 +283,28 @@ public final class MonetaryContext implements
 	}
 
 	/**
-	 * This class allows to build and create instances of {@link MonetaryContext} using a fluent
-	 * API.
+	 * This class allows to build and create instances of
+	 * {@link MonetaryContext} using a fluent API.
 	 * <p>
 	 * This class is not serializable and not thread-safe.
 	 * 
 	 * @author Anatole Tresch
 	 */
-	public static final class Builder {
+	public static final class Builder extends AbstractBuilder<Builder> {
+
 		/** The maximal precision of the {@link MonetaryContext} built. */
 		private int precision = 0;
 		/**
-		 * The amount's implementationType type for the {@link MonetaryContext} built.
+		 * The amount's implementationType type for the {@link MonetaryContext}
+		 * built.
 		 */
 		private Class<? extends MonetaryAmount> amountType;
 		/**
-		 * The basic required {@link AmountFlavor} of the {@link MonetaryAmount} implementation.
+		 * The basic required {@link AmountFlavor} of the {@link MonetaryAmount}
+		 * implementation.
 		 */
 		private AmountFlavor amountFlavor = AmountFlavor.UNDEFINED;
-		/** Any additional attributes of the {@link MonetaryContext} built. */
-		@SuppressWarnings("rawtypes")
-		private Map<Class, Object> attributes = new HashMap<>();
+
 		/**
 		 * Flag that the scale of the {@link MonetaryContext} built is fixed to #maxScale.
 		 */
@@ -391,28 +331,29 @@ public final class MonetaryContext implements
 		}
 
 		/**
-		 * Creates a new {@link Builder} and uses the given context to initialize this instance.
+		 * Creates a new {@link Builder} and uses the given context to
+		 * initialize this instance.
 		 * 
 		 * @param context
 		 *            the base {@link MonetaryContext} to be used.
 		 */
 		public Builder(MonetaryContext context) {
+			super(context);
 			this.amountType = context.getAmountType();
 			this.maxScale = context.getMaxScale();
 			this.fixedScale = context.isFixedScale();
 			this.precision = context.getPrecision();
-			this.attributes.putAll(context.getAttributes());
 		}
 
 		/**
-		 * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to {@code fixedScale}.
+		 * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to
+		 * {@code fixedScale}.
 		 * 
 		 * @param amountType
 		 *            the amount type to be used, not {@code null}.
 		 * @return the {@link Builder}, for chaining.
 		 */
-		public Builder setAmountType(
-				Class<? extends MonetaryAmount> amountType) {
+		public Builder setAmountType(Class<? extends MonetaryAmount> amountType) {
 			Objects.requireNonNull(amountType);
 			this.amountType = amountType;
 			return this;
@@ -422,8 +363,8 @@ public final class MonetaryContext implements
 		 * Sets the maximal precision supported.
 		 * 
 		 * @param precision
-		 *            the maximal precision, aleays {@code >=0}, whereas 0 declares unlimited
-		 *            precision.
+		 *            the maximal precision, aleays {@code >=0}, whereas 0
+		 *            declares unlimited precision.
 		 * @return the {@link Builder}, for chaining.
 		 */
 		public Builder setPrecision(int precision) {
@@ -434,7 +375,8 @@ public final class MonetaryContext implements
 		}
 
 		/**
-		 * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to {@code fixedScale}.
+		 * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to
+		 * {@code fixedScale}.
 		 * 
 		 * @param fixedScale
 		 *            the min/max scale to be used, which must be {@code >=0}.
@@ -446,7 +388,8 @@ public final class MonetaryContext implements
 		}
 
 		/**
-		 * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to {@code fixedScale}.
+		 * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to
+		 * {@code fixedScale}.
 		 * 
 		 * @param flavor
 		 *            the {@link AmountFlavor} to be used, not {@code null}.
@@ -462,8 +405,8 @@ public final class MonetaryContext implements
 		 * Sets a maximal scale.
 		 * 
 		 * @param maxScale
-		 *            the maximal scale to be used, which must be {@code >=-1}. {@code -1} means
-		 *            unlimited maximal scale.
+		 *            the maximal scale to be used, which must be {@code >=-1}.
+		 *            {@code -1} means unlimited maximal scale.
 		 * @return the {@link Builder}, for chaining.
 		 */
 		public Builder setMaxScale(int maxScale) {
@@ -474,50 +417,19 @@ public final class MonetaryContext implements
 		}
 
 		/**
-		 * Adds the given attribute to the {@link MonetaryContext} to be built, hereby replacing
-		 * every existing attribute with the same type.
-		 * 
-		 * @param attribute
-		 *            the attribute to set, not {@code null}.
-		 * @return the {@link Builder}, for chaining.
-		 */
-		public Builder setAttribute(Object attribute) {
-			Objects.requireNonNull(attribute);
-			this.attributes.put(attribute.getClass(), attribute);
-			return this;
-		}
-
-		/**
-		 * Adds the given attribute to the {@link MonetaryContext} to be built, hereby replacing
-		 * every existing attribute with the same type.
-		 * 
-		 * @param type
-		 *            the attribute's type, not {@code null}.
-		 * @param attribute
-		 *            the attribute to set, not {@code null}.
-		 * @return the {@link Builder}, for chaining.
-		 */
-		public <T> Builder setAttribute(Class<T> type, T attribute) {
-			Objects.requireNonNull(attribute);
-			this.attributes.put(type, attribute);
-			return this;
-		}
-
-		/**
 		 * Builds a new instance of {@link MonetaryContext}.
 		 * 
 		 * @return a new instance of {@link MonetaryContext}, never {@code null}
 		 * @throws IllegalArgumentException
 		 *             if building of the {@link MonetaryContext} fails.
 		 */
-		public MonetaryContext build() {
-			return new MonetaryContext(amountType, precision,
-					maxScale, fixedScale,
-					amountFlavor, attributes);
+		public MonetaryContext create() {
+			return new MonetaryContext(this);
 		}
 
 		/*
 		 * (non-Javadoc)
+		 * 
 		 * @see java.lang.Object#toString()
 		 */
 		@Override

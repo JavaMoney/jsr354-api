@@ -34,7 +34,7 @@ public final class MonetaryCurrencies {
 
 	/**
 	 * Internal shared cache of {@link CustomCurrency} instances, registered
-	 * using {@link Builder} instances.
+	 * using {@link AbstractBuilder} instances.
 	 */
 	private static final Map<String, CurrencyUnit> REGISTERED = new ConcurrentHashMap<String, CurrencyUnit>();
 

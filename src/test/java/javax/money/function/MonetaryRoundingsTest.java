@@ -69,7 +69,7 @@ public class MonetaryRoundingsTest {
 	@Test
 	public void testMonetaryRoundingsGetRoundingMonetaryContext() {
 		MonetaryOperator op = MonetaryRoundings
-				.getRounding(new MonetaryContext.Builder().build());
+				.getRounding(new MonetaryContext.Builder().create());
 		assertNotNull(op);
 	}
 }

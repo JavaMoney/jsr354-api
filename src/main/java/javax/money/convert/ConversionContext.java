@@ -8,9 +8,9 @@
  */
 package javax.money.convert;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
+
+import javax.money.AbstractContext;
 
 /**
  * This class models a context for which a {@link CurrencyConversion} is valid,
@@ -22,7 +22,8 @@ import java.util.Objects;
  * 
  * @author Anatole Tresch
  */
-public final class ConversionContext {
+public final class ConversionContext extends AbstractContext{
+	
 	/**
 	 * Common context attributes, using this attributes ansures interoperability
 	 * on property key level. Where possible according type safe methods are
@@ -52,10 +53,6 @@ public final class ConversionContext {
 		HISTORIC
 	}
 
-	/**
-	 * Map with the attributes of this context.
-	 */
-	private Map<Class<?>, Map<Object, Object>> attributes = new HashMap<>();
 
 	/**
 	 * Private constructor, used by {@link Builder}.
@@ -64,58 +61,7 @@ public final class ConversionContext {
 	 *            the Builder.
 	 */
 	private ConversionContext(Builder builder) {
-		this.attributes = new HashMap<>(builder.attributes);
-	}
-
-	/**
-	 * Access an attribute.
-	 * 
-	 * @param type
-	 *            the attribute's type, not {@code null}
-	 * @param key
-	 *            the attribute's key, not {@code null}
-	 * @return the attribute value, or {@code null}.
-	 */
-	// Type safe cast
-	@SuppressWarnings("unchecked")
-	public <T> T getAttribute(Class<T> type, Object key) {
-		Map<Object, ?> typedAttrs = attributes.get(type);
-		if (typedAttrs != null) {
-			return (T) typedAttrs.get(key);
-		}
-		return null;
-	}
-
-	/**
-	 * Access an attribute, using the {@link AttributeType}.
-	 * 
-	 * @param type
-	 *            the attribute's type, not {@code null}
-	 * @param attributeType
-	 *            the {@link AttributeType}, not {@code null}
-	 * @return the attribute value, or {@code null}.
-	 */
-	// Type safe cast
-	@SuppressWarnings("unchecked")
-	public <T> T getAttribute(Class<T> type, AttributeType attributeType) {
-		Map<Object, ?> typedAttrs = attributes.get(type);
-		if (typedAttrs != null) {
-			return (T) typedAttrs.get(attributeType);
-		}
-		return null;
-	}
-
-	/**
-	 * Access an attribute, hereby using the class name as key.
-	 * 
-	 * @param type
-	 *            the attribute's type, not {@code null}
-	 * @return the attribute value, or {@code null}.
-	 */
-	// safe cast
-	@SuppressWarnings("unchecked")
-	public <T> T getAttribute(Class<T> type) {
-		return getAttribute(type, type.getName());
+		super(builder);
 	}
 
 	/**
@@ -133,7 +79,7 @@ public final class ConversionContext {
 	 *         {@code null}, if no starting validity constraint is set.
 	 */
 	public final <T> T getValidFrom(Class<T> type) {
-		return getAttribute(type, AttributeType.VALID_FROM);
+		return getNamedAttribute(type, AttributeType.VALID_FROM);
 	}
 
 	/**
@@ -148,7 +94,7 @@ public final class ConversionContext {
 	 *         {@code null}, if no starting validity constraint is set.
 	 */
 	public final Long getValidFromMillis() {
-		return getAttribute(Long.class, AttributeType.VALID_FROM);
+		return getNamedAttribute(Long.class, AttributeType.VALID_FROM);
 	}
 
 	/**
@@ -166,7 +112,7 @@ public final class ConversionContext {
 	 *         {@code null}, if no ending validity constraint is set.
 	 */
 	public final <T> T getValidTo(Class<T> type) {
-		return getAttribute(type, AttributeType.VALID_TO);
+		return getNamedAttribute(type, AttributeType.VALID_TO);
 	}
 
 	/**
@@ -182,7 +128,7 @@ public final class ConversionContext {
 	 *         ending validity constraint is set.
 	 */
 	public final Long getValidToMillis() {
-		return getAttribute(Long.class, AttributeType.VALID_TO);
+		return getNamedAttribute(Long.class, AttributeType.VALID_TO);
 	}
 
 	/**
@@ -191,7 +137,7 @@ public final class ConversionContext {
 	 * @return The UTC timestamp of the rate, or {@code null}.
 	 */
 	public final Long getTimestamp() {
-		return getAttribute(Long.class, AttributeType.TIMESTAMP);
+		return getNamedAttribute(Long.class, AttributeType.TIMESTAMP);
 	}
 
 	/**
@@ -243,7 +189,7 @@ public final class ConversionContext {
 	 * @return the provider, or {code null}.
 	 */
 	public String getProvider() {
-		return getAttribute(String.class, AttributeType.PROVIDER);
+		return getNamedAttribute(String.class, AttributeType.PROVIDER);
 	}
 
 	/**
@@ -252,7 +198,7 @@ public final class ConversionContext {
 	 * @return the deferred flag, or {code null}.
 	 */
 	public Boolean isHistoric() {
-		return getAttribute(Boolean.class, AttributeType.HISTORIC);
+		return getNamedAttribute(Boolean.class, AttributeType.HISTORIC);
 	}
 
 	/**
@@ -264,41 +210,6 @@ public final class ConversionContext {
 		return new Builder(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((attributes == null) ? 0 : attributes.hashCode());
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ConversionContext other = (ConversionContext) obj;
-		if (attributes == null) {
-			if (other.attributes != null)
-				return false;
-		} else if (!attributes.equals(other.attributes))
-			return false;
-		return true;
-	}
 
 	/**
 	 * Simple factory method for {@link ConversionContext}. For more
@@ -325,12 +236,8 @@ public final class ConversionContext {
 	 * 
 	 * @author Anatole Tresch
 	 */
-	public static final class Builder {
-		/**
-		 * Map with the attributes of this context.
-		 */
-		private Map<Class<?>, Map<Object, Object>> attributes = new HashMap<>();
-
+	public static final class Builder extends AbstractBuilder<Builder>{
+		
 		/**
 		 * Create a new Builder instance without any provider, e.g. for creating
 		 * new {@link ConversionContext} instances for querying.
@@ -358,134 +265,7 @@ public final class ConversionContext {
 		 *            the context, not {@code null}
 		 */
 		public Builder(ConversionContext context) {
-			Objects.requireNonNull(context);
-			this.attributes.putAll(context.attributes);
-		}
-
-		/**
-		 * Sets an attribute, using {@code attribute.getClass()} as attribute
-		 * <i>type</i> and {@code attribute.getClass().getName()} as attribute
-		 * <i>name</i>.
-		 * 
-		 * @param value
-		 *            the attribute value
-		 * @return this Builder, for chaining
-		 */
-		public Builder set(Object value) {
-			return set(value, value.getClass().getName(), value.getClass());
-		}
-
-		/**
-		 * Sets an attribute, using {@code attribute.getClass()} as attribute
-		 * <i>type</i>.
-		 * 
-		 * @param value
-		 *            the attribute value
-		 * @param key
-		 *            the attribute's key, not {@code null}
-		 * @return this Builder, for chaining
-		 */
-		public Builder set(Object value, Object key) {
-			return set(value, key, value.getClass());
-		}
-
-		/**
-		 * Sets an attribute.
-		 * 
-		 * @param value
-		 *            the attribute's value
-		 * @param key
-		 *            the attribute's key
-		 * @param type
-		 *            the attribute's type
-		 * @return this Builder, for chaining
-		 */
-		public <T> Builder set(T attribute, Object key, Class<? extends T> type) {
-			Map<Object, Object> typedAttrs = attributes.get(type);
-			if (typedAttrs == null) {
-				typedAttrs = new HashMap<>();
-				attributes.put(type, typedAttrs);
-			}
-			typedAttrs.put(key, attribute);
-			return this;
-		}
-
-		/**
-		 * Sets the provider attribute as {@link String} value.
-		 * 
-		 * @param provider
-		 *            the value, not {@code null}
-		 * @return this Builder, for chaining
-		 */
-		public Builder setProvider(String provider) {
-			return set(provider, AttributeType.PROVIDER, String.class);
-		}
-
-		/**
-		 * Sets the historic attribute as {@link Boolean} value.
-		 * 
-		 * @param historic
-		 *            the value
-		 * @return this Builder, for chaining
-		 */
-		public Builder setHistoric(boolean historic) {
-			return set(Boolean.valueOf(historic), AttributeType.HISTORIC,
-					Boolean.class);
-		}
-
-		/**
-		 * Sets the timestamp attribute as UTC timestamp in millis.
-		 * 
-		 * @param timestamp
-		 *            the timestamp value
-		 * @return this Builder, for chaining
-		 */
-		public Builder setTimestamp(long timestamp) {
-			return set(timestamp, AttributeType.TIMESTAMP, Long.class);
-		}
-
-		/**
-		 * Sets the validFrom attribute.
-		 * 
-		 * @param validFrom
-		 *            the value, not {@code null}
-		 * @return this Builder, for chaining
-		 */
-		public Builder setValidFrom(Object validFrom) {
-			return set(validFrom, AttributeType.VALID_FROM);
-		}
-
-		/**
-		 * Sets the validFrom attribute as UTC timestamp in millis.
-		 * 
-		 * @param validFrom
-		 *            the value, not {@code null}
-		 * @return this Builder, for chaining
-		 */
-		public Builder setValidFromMillis(long validFrom) {
-			return set(validFrom, AttributeType.VALID_FROM, Long.class);
-		}
-
-		/**
-		 * Sets the validTo attribute.
-		 * 
-		 * @param validTo
-		 *            the value, not {@code null}
-		 * @return this Builder, for chaining
-		 */
-		public Builder setValidTo(Object validTo) {
-			return set(validTo, AttributeType.VALID_TO);
-		}
-
-		/**
-		 * Sets the validTo attribute as UTC timestamp in millis.
-		 * 
-		 * @param validTo
-		 *            the value, not {@code null}
-		 * @return this Builder, for chaining
-		 */
-		public Builder setValidToMillis(long validTo) {
-			return set(validTo, AttributeType.VALID_TO, Long.class);
+			super(context);
 		}
 
 		/**

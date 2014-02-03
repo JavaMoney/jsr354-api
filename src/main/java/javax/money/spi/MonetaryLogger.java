@@ -7,69 +7,69 @@
  * (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money.spi;
-
-/**
- * Simple minimalistic SPI to abstract the logging of warning and error messages.
- * 
- * @author Anatole Tresch
- */
-public interface MonetaryLogger {
-	/**
-	 * Logs a debug message.
-	 * 
-	 * @param message
-	 *            The message, not {@code null}.
-	 */
-	public void logDebug(String message);
-
-	/**
-	 * Logs a debug message.
-	 * 
-	 * @param message
-	 *            The message, not {@code null}.
-	 * @param t
-	 *            any {@link Throwable}, or {@code null}.
-	 */
-	public void logDebug(String message, Throwable t);
-
-	/**
-	 * Logs an information message.
-	 * 
-	 * @param message
-	 *            The message, not {@code null}.
-	 */
-	public void logInfo(String message);
-
-	/**
-	 * Logs a warning message.
-	 * 
-	 * @param warning
-	 *            The message, not {@code null}.
-	 */
-	public void logWarning(String warning);
-
-	/**
-	 * Logs an error message.
-	 * 
-	 * @param message
-	 *            The message, not {@code null}.
-	 * @param t
-	 *            any {@link Throwable}, or {@code null}.
-	 */
-	public void logError(String message, Throwable t);
-
-	/**
-	 * Method to ensure debug logging is active.
-	 * 
-	 * @return true, if debugging is active.
-	 */
-	public boolean isDebugEnabled();
-
-	/**
-	 * Method to ensure warning logging is active.
-	 * 
-	 * @return true, if warn logging is active.
-	 */
-	public boolean isWarningEnabled();
-
-}
+//
+///**
+// * Simple minimalistic SPI to abstract the logging of warning and error messages.
+// * 
+// * @author Anatole Tresch
+// */
+//public interface MonetaryLogger {
+//	/**
+//	 * Logs a debug message.
+//	 * 
+//	 * @param message
+//	 *            The message, not {@code null}.
+//	 */
+//	public void logDebug(String message);
+//
+//	/**
+//	 * Logs a debug message.
+//	 * 
+//	 * @param message
+//	 *            The message, not {@code null}.
+//	 * @param t
+//	 *            any {@link Throwable}, or {@code null}.
+//	 */
+//	public void logDebug(String message, Throwable t);
+//
+//	/**
+//	 * Logs an information message.
+//	 * 
+//	 * @param message
+//	 *            The message, not {@code null}.
+//	 */
+//	public void logInfo(String message);
+//
+//	/**
+//	 * Logs a warning message.
+//	 * 
+//	 * @param warning
+//	 *            The message, not {@code null}.
+//	 */
+//	public void logWarning(String warning);
+//
+//	/**
+//	 * Logs an error message.
+//	 * 
+//	 * @param message
+//	 *            The message, not {@code null}.
+//	 * @param t
+//	 *            any {@link Throwable}, or {@code null}.
+//	 */
+//	public void logError(String message, Throwable t);
+//
+//	/**
+//	 * Method to ensure debug logging is active.
+//	 * 
+//	 * @return true, if debugging is active.
+//	 */
+//	public boolean isDebugEnabled();
+//
+//	/**
+//	 * Method to ensure warning logging is active.
+//	 * 
+//	 * @return true, if warn logging is active.
+//	 */
+//	public boolean isWarningEnabled();
+//
+//}

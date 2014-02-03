@@ -245,6 +245,19 @@ public abstract class AbstractContext implements Serializable {
 		public B set(Object value) {
 			return set(value, value.getClass(), value.getClass());
 		}
+		
+		/**
+		 * Removes all attributes of a given type, using {@code attribute.getClass()} as attribute
+		 * <i>type</i> and {@code attribute.getClass().getName()} as attribute
+		 * <i>name</i>.
+		 * 
+		 * @param type
+		 *            the attribute's type, not {@code null}
+		 * @return this Builder, for chaining
+		 */
+		public B remove(Class type) {
+			return remove(type, type);
+		}
 
 		/**
 		 * Sets an attribute, using {@code attribute.getClass()} as attribute
@@ -260,6 +273,25 @@ public abstract class AbstractContext implements Serializable {
 			return set(value, key, value.getClass());
 		}
 
+		/**
+		 * Removes an attribute, using {@code attribute.getClass()} as attribute
+		 * <i>type</i>.
+		 * 
+		 * @param value
+		 *            the attribute value to be removed
+		 * @param key
+		 *            the attribute's key, not {@code null}
+		 * @return this Builder, for chaining
+		 */
+		public B remove(Class type, Object key) {
+			Map<Object, Object> typedAttrs = attributes.get(type);
+			if (typedAttrs != null) {
+				attributes.remove(key);
+			}
+			return (B) this;
+		}
+
+		
 		/**
 		 * Sets an attribute.
 		 * 
@@ -280,6 +312,19 @@ public abstract class AbstractContext implements Serializable {
 			typedAttrs.put(key, attribute);
 			return (B) this;
 		}
+		
+
+		/**
+		 * Apply all attributes on the given context.
+		 * 
+		 * @param context
+		 *            the context to be applied, not null.
+		 * @return this Builder, for chaining
+		 */
+		public B setAll(AbstractContext context) {
+			this.attributes.putAll(context.attributes);
+			return (B) this;
+		}
 
 		/**
 		 * Creates a new {@link AbstractContext} with the data from this Builder
@@ -291,10 +336,10 @@ public abstract class AbstractContext implements Serializable {
 
 		@Override
 		public String toString() {
-			return getClass().getSimpleName() + " [attributes=" + attributes + "]";
+			return getClass().getSimpleName() + " [attributes=" + attributes
+					+ "]";
 		}
-		
-		
+
 	}
 
 }

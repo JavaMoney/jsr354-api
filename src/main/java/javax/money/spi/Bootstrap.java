@@ -64,7 +64,7 @@ public final class Bootstrap {
 		synchronized (LOCK) {
 			if (serviceProvider != null) {
 				Bootstrap.serviceProviderDelegate = serviceProvider;
-				getService(MonetaryLogger.class).logInfo(
+				Logger.getLogger(Bootstrap.class.getName()).info(
 						"Money Bootstrap: new ServiceProvider set: "
 								+ serviceProvider.getClass().getName());
 			}

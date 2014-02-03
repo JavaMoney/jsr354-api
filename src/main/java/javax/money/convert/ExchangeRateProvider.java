@@ -34,7 +34,7 @@ public interface ExchangeRateProvider {
 	 * 
 	 * @return the exchange rate type, never {@code null}.
 	 */
-	ConversionContext getConversionContext();
+	ProviderContext getProviderContext();
 
 	/**
 	 * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is

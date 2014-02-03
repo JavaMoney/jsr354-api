@@ -21,35 +21,38 @@ import javax.money.CurrencyUnit;
 /**
  * This class models an exchange rate between two currencies. Hereby
  * <ul>
- * <li>an exchange rate always models one rate from a base (source) to a term (target)
- * {@link CurrencyUnit}.</li>
- * <li>an exchange rate is always bound to a rate type, which typically matches the data source of
- * the conversion data, e.g. different credit card providers may use different rates for the same
- * conversion.</li>
- * <li>an exchange rate may restrict its validity. In most of the use cases a rates' validity will
- * be well defined, but it is also possible that the data provider is not able to support the rate's
- * validity, leaving it undefined-</li>
- * <li>an exchange rate has a provider, which is responsible for defining the rate. A provider
- * hereby may be, but must not be the same as the rate's data source.</li>
- * <li>an exchange rate can be a <i>direct</i> rate, where its factor is represented by a single
- * conversion step. Or it can model a <i>derived</i> rate, where multiple conversion steps are
- * required to define the overall base/term conversion. In case of derived rates the chained rates
- * define the overall factor, by multiplying the individual chain rate factors. Of course, this also
- * requires that each subsequent rate's base currency in the chain does match the previous term
- * currency (and vice versa):</li>
- * <li>Whereas the factor should be directly implied by the internal rate chain for derived rates,
- * this is obviously not the case for the validity range, since rates can have a undefined validity
- * range. Nevertheless in many cases also the validity range can (but must not) be derived from the
- * rate chain.</li>
- * <li>Finally a conversion rate is always unidirectional. There might be cases where the reciprocal
- * value of {@link #factor} matches the correct reverse rate. But in most use cases the reverse rate
- * either has a different rate (not equal to the reciprocal value), or might not be defined at all.
- * Therefore for reversing a ExchangeRate one must access an {@link ExchangeRateProvider} and query
- * for the reverse rate.</li>
+ * <li>an exchange rate always models one rate from a base (source) to a term
+ * (target) {@link CurrencyUnit}.</li>
+ * <li>an exchange rate is always bound to a rate type, which typically matches
+ * the data source of the conversion data, e.g. different credit card providers
+ * may use different rates for the same conversion.</li>
+ * <li>an exchange rate may restrict its validity. In most of the use cases a
+ * rates' validity will be well defined, but it is also possible that the data
+ * provider is not able to support the rate's validity, leaving it undefined-</li>
+ * <li>an exchange rate has a provider, which is responsible for defining the
+ * rate. A provider hereby may be, but must not be the same as the rate's data
+ * source.</li>
+ * <li>an exchange rate can be a <i>direct</i> rate, where its factor is
+ * represented by a single conversion step. Or it can model a <i>derived</i>
+ * rate, where multiple conversion steps are required to define the overall
+ * base/term conversion. In case of derived rates the chained rates define the
+ * overall factor, by multiplying the individual chain rate factors. Of course,
+ * this also requires that each subsequent rate's base currency in the chain
+ * does match the previous term currency (and vice versa):</li>
+ * <li>Whereas the factor should be directly implied by the internal rate chain
+ * for derived rates, this is obviously not the case for the validity range,
+ * since rates can have a undefined validity range. Nevertheless in many cases
+ * also the validity range can (but must not) be derived from the rate chain.</li>
+ * <li>Finally a conversion rate is always unidirectional. There might be cases
+ * where the reciprocal value of {@link #factor} matches the correct reverse
+ * rate. But in most use cases the reverse rate either has a different rate (not
+ * equal to the reciprocal value), or might not be defined at all. Therefore for
+ * reversing a ExchangeRate one must access an {@link ExchangeRateProvider} and
+ * query for the reverse rate.</li>
  * </ul>
  * <p>
- * The class also implements {@link Comparable} to allow sorting of multiple exchange rates using
- * the following sorting order;
+ * The class also implements {@link Comparable} to allow sorting of multiple
+ * exchange rates using the following sorting order;
  * <ul>
  * <li>Exchange rate type</li>
  * <li>Exchange rate provider</li>
@@ -57,8 +60,9 @@ import javax.money.CurrencyUnit;
  * <li>term currency</li>
  * </ul>
  * <p>
- * Finally ExchangeRate is modeled as an immutable and thread safe type. Also exchange rates are
- * {@link Serializable}, hereby serializing in the following form and order:
+ * Finally ExchangeRate is modeled as an immutable and thread safe type. Also
+ * exchange rates are {@link Serializable}, hereby serializing in the following
+ * form and order:
  * <ul>
  * <li>The {@link ExchangeRateType}
  * <li>The base {@link CurrencyUnit}
@@ -69,8 +73,9 @@ import javax.money.CurrencyUnit;
  * <li>The validTo timestamp (Long)
  * </ul>
  * 
- * @see <a href="https://en.wikipedia.org/wiki/Exchange_rate#Quotations">Wikipedia: Exchange Rate
- *      (Quotations)</a>
+ * @see <a
+ *      href="https://en.wikipedia.org/wiki/Exchange_rate#Quotations">Wikipedia:
+ *      Exchange Rate (Quotations)</a>
  * 
  * @author Werner Keil
  * @author Anatole Tresch
@@ -104,7 +109,8 @@ public final class ExchangeRate implements Serializable,
 	private ExchangeRate[] chain = new ExchangeRate[] { this };
 
 	/**
-	 * Evaluate a {@link BigDecimal} from a {@link Number} preserving maximal information.
+	 * Evaluate a {@link BigDecimal} from a {@link Number} preserving maximal
+	 * information.
 	 * 
 	 * @param num
 	 *            the number
@@ -121,8 +127,8 @@ public final class ExchangeRate implements Serializable,
 	}
 
 	/**
-	 * Creates a new instance with a custom chain of exchange rate type, e.g. or creating
-	 * <i>derived</i> rates.
+	 * Creates a new instance with a custom chain of exchange rate type, e.g. or
+	 * creating <i>derived</i> rates.
 	 * 
 	 * @param exchangeRateType
 	 *            The conversion type, never {@code null}.
@@ -135,9 +141,11 @@ public final class ExchangeRate implements Serializable,
 	 * @param chain
 	 *            the rate chain, never {@code null}, not empty.
 	 * @param validFrom
-	 *            the UTC timestamp from when this rate is valid from, or {@code null}
+	 *            the UTC timestamp from when this rate is valid from, or
+	 *            {@code null}
 	 * @param validUntil
-	 *            the UTC timestamp until when this rate is valid from, or {@code null}
+	 *            the UTC timestamp until when this rate is valid from, or
+	 *            {@code null}
 	 */
 	private ExchangeRate(Builder builder) {
 		Objects.requireNonNull(builder.base, "base may not be null.");
@@ -153,8 +161,8 @@ public final class ExchangeRate implements Serializable,
 	}
 
 	/**
-	 * Internal method to set the rate chain, which also ensure that the chain passed, when not
-	 * null, contains valid elements.
+	 * Internal method to set the rate chain, which also ensure that the chain
+	 * passed, when not null, contains valid elements.
 	 * 
 	 * @param chain
 	 *            the chain to set.
@@ -212,20 +220,22 @@ public final class ExchangeRate implements Serializable,
 	/**
 	 * Access the chain of exchange rates.
 	 * 
-	 * @return the chain of rates, in case of a derived rate, this may be several instances. For a
-	 *         direct exchange rate, this equals to <code>new ExchangeRate[]{this}</code>.
+	 * @return the chain of rates, in case of a derived rate, this may be
+	 *         several instances. For a direct exchange rate, this equals to
+	 *         <code>new ExchangeRate[]{this}</code>.
 	 */
 	public final List<ExchangeRate> getExchangeRateChain() {
 		return Arrays.asList(this.chain);
 	}
 
 	/**
-	 * Allows to evaluate if this exchange rate is a derived exchange rate. Derived exchange rates
-	 * are defined by an ordered list of subconversions with intermediate steps, whereas a direct
-	 * conversion is possible in one steps.
+	 * Allows to evaluate if this exchange rate is a derived exchange rate.
+	 * Derived exchange rates are defined by an ordered list of subconversions
+	 * with intermediate steps, whereas a direct conversion is possible in one
+	 * steps.
 	 * <p>
-	 * This method always returns {@code true}, if the chain contains more than one rate. Direct
-	 * rates, have also a chain, but with exact one rate.
+	 * This method always returns {@code true}, if the chain contains more than
+	 * one rate. Direct rates, have also a chain, but with exact one rate.
 	 * 
 	 * @return true, if the exchange rate is derived.
 	 */
@@ -235,6 +245,7 @@ public final class ExchangeRate implements Serializable,
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
@@ -249,8 +260,7 @@ public final class ExchangeRate implements Serializable,
 					.compareTo(o.getTerm().getCurrencyCode());
 		}
 		if (compare == 0) {
-			compare = this
-					.getConversionContext().getProvider()
+			compare = this.getConversionContext().getProvider()
 					.compareTo(o.getConversionContext().getProvider());
 		}
 		return compare;
@@ -258,6 +268,7 @@ public final class ExchangeRate implements Serializable,
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -268,6 +279,7 @@ public final class ExchangeRate implements Serializable,
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -289,6 +301,7 @@ public final class ExchangeRate implements Serializable,
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -340,8 +353,8 @@ public final class ExchangeRate implements Serializable,
 	}
 
 	/**
-	 * Builder for creating new instances of {@link ExchangeRate}. Note that instances of this class
-	 * are not thread-safe.
+	 * Builder for creating new instances of {@link ExchangeRate}. Note that
+	 * instances of this class are not thread-safe.
 	 * 
 	 * @author Anatole Tresch
 	 */
@@ -375,8 +388,8 @@ public final class ExchangeRate implements Serializable,
 		 *            to be applied
 		 * @return the builder instance
 		 */
-		public Builder(String provider, Object... attributes) {
-			this(ConversionContext.of(provider, attributes));
+		public Builder(String provider, RateType rateType) {
+			this(ConversionContext.of(provider, rateType));
 		}
 
 		/**
@@ -431,7 +444,8 @@ public final class ExchangeRate implements Serializable,
 		}
 
 		/**
-		 * Sets the conversion factor, as the factor {@code base * factor = target}.
+		 * Sets the conversion factor, as the factor
+		 * {@code base * factor = target}.
 		 * 
 		 * @param factor
 		 *            the factor.
@@ -449,7 +463,8 @@ public final class ExchangeRate implements Serializable,
 		}
 
 		/**
-		 * Sets the conversion factor, as the factor {@code base * factor = target}.
+		 * Sets the conversion factor, as the factor
+		 * {@code base * factor = target}.
 		 * 
 		 * @param factor
 		 *            the factor.
@@ -486,8 +501,9 @@ public final class ExchangeRate implements Serializable,
 		}
 
 		/**
-		 * Initialize the {@link Builder} with an {@link ExchangeRate}. This is useful for creating
-		 * a new rate, reusing some properties from an existing one.
+		 * Initialize the {@link Builder} with an {@link ExchangeRate}. This is
+		 * useful for creating a new rate, reusing some properties from an
+		 * existing one.
 		 * 
 		 * @param rate
 		 *            the base rate
@@ -502,5 +518,19 @@ public final class ExchangeRate implements Serializable,
 			this.term = rate.getTerm();
 			return this;
 		}
+	}
+
+	/**
+	 * Create a {@link Builder} based on the current rate instance.
+	 * 
+	 * @return a new {@link Builder}, never {@code null}.
+	 */
+	public Builder toBuilder() {
+		return new Builder(getConversionContext())
+				.setBase(getBase())
+				.setTerm(getTerm())
+				.setFactor(getFactor())
+				.setRateChain(
+						getExchangeRateChain().toArray(new ExchangeRate[0]));
 	}
 }

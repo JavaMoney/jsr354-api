@@ -191,8 +191,7 @@ public final class MonetaryContext extends AbstractContext implements
 	 * @return the {@link MonetaryAmount}s {@link AmountFlavor}.
 	 */
 	public AmountFlavor getAmountFlavor() {
-		return getNamedAttribute(AmountFlavor.class, AMOUNT_FLAVOR_KEY,
-				AmountFlavor.UNDEFINED);
+		return flavor;
 	}
 
 	/*
@@ -281,6 +280,17 @@ public final class MonetaryContext extends AbstractContext implements
 			throw new java.io.StreamCorruptedException(message);
 		}
 	}
+	
+
+	@Override
+	public String toString() {
+		return "MonetaryContext [amountType=" + amountType + ", flavor="
+				+ flavor + ", precision=" + precision + ", maxScale="
+				+ maxScale + ", fixedScale=" + fixedScale + ", attributes="
+				+ attributes + "]";
+	}
+
+
 
 	/**
 	 * This class allows to build and create instances of

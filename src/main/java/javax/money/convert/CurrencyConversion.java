@@ -15,14 +15,17 @@ import javax.money.MonetaryOperator;
 import javax.money.spi.MonetaryConversionsSpi;
 
 /**
- * This interface defines a {@link CurrencyConversion} that is converting to a specific target
- * {@link CurrencyUnit}. Each instance of this class is bound to a specific
- * {@link ExchangeRateProvider}, a term {@link CurrencyUnit} and (optionally) a target timestamp.<br/>
- * This interface serves a an API for the clients, but also must be implemented and registered as
- * SPI to the mechanisms required by the {@link MonetaryConversionsSpi} implementation.
+ * This interface defines a {@link CurrencyConversion} that is converting to a
+ * specific target {@link CurrencyUnit}. Each instance of this class is bound to
+ * a specific {@link ExchangeRateProvider}, a term {@link CurrencyUnit} and
+ * (optionally) a target timestamp.<br/>
+ * This interface serves a an API for the clients, but also must be implemented
+ * and registered as SPI to the mechanisms required by the
+ * {@link MonetaryConversionsSpi} implementation.
  * <p>
- * Instances of this class are required to be thread-safe, but it is not a requirement that they are
- * serializable. In a EE context they can be implemented using contextual beans.
+ * Instances of this class are required to be thread-safe, but it is not a
+ * requirement that they are serializable. In a EE context they can be
+ * implemented using contextual beans.
  * 
  * @author Anatole Tresch
  * @author Werner Keil
@@ -44,7 +47,8 @@ public interface CurrencyConversion extends MonetaryOperator {
 	public ConversionContext getConversionContext();
 
 	/**
-	 * Get the {@link ExchangeRate} applied for the given {@link MonetaryAmount}.
+	 * Get the {@link ExchangeRate} applied for the given {@link MonetaryAmount}
+	 * .
 	 * 
 	 * @param sourceAmount
 	 *            the amount to be converted.
@@ -53,5 +57,17 @@ public interface CurrencyConversion extends MonetaryOperator {
 	 *             if the amount can not be converted.
 	 */
 	public ExchangeRate getExchangeRate(MonetaryAmount sourceAmount);
+
+	/**
+	 * Get a new {@link CurrencyConversion}using the given
+	 * {@link ConversionContext} with additional attributes.
+	 * 
+	 * @param conversionContext
+	 *            the {@link ConversionContext} to be applied, not {@code null}
+	 * @return a new instance of {@link CurrencyConversion}, based on this
+	 *         instance, but with a changed {@link ConversionContext} to be
+	 *         applied. if the amount can not be converted.
+	 */
+	public CurrencyConversion with(ConversionContext conversionContext);
 
 }

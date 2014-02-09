@@ -11,6 +11,8 @@
 package javax.money.convert;
 
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryException;
+import javax.money.MonetaryOperator;
 
 /**
  * This interface defines access to the exchange conversion logic of JavaMoney.
@@ -70,6 +72,43 @@ public interface ExchangeRateProvider {
 			ConversionContext conversionContext);
 
 	/**
+	 * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
+	 * available from this provider. This method should check, if a given rate
+	 * is <i>currently</i> defined. It should be the same as
+	 * {@code isAvailable(base, term, System.currentTimeMillis())}.
+	 * 
+	 * @param baseCode
+	 *            the base currency code
+	 * @param term
+	 *            the terminal/target currency code
+	 * @return {@code true}, if such an {@link ExchangeRate} is currently
+	 *         defined.
+	 * @throws MonetaryException
+	 *             if one of the currency codes passed is not valid.
+	 */
+	boolean isAvailable(String baseCode, String termCode);
+
+	/**
+	 * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
+	 * available from this provider. This method should check, if a given rate
+	 * is <i>currently</i> defined. It should be the same as
+	 * {@code isAvailable(base, term, System.currentTimeMillis())}.
+	 * 
+	 * @param baseCode
+	 *            the base currency code
+	 * @param termCode
+	 *            the terminal/target currency code
+	 * @param conversionContext
+	 *            the required {@link ConversionContext}, not {@code null}
+	 * @return {@code true}, if such an {@link ExchangeRate} is currently
+	 *         defined.
+	 * @throws MonetaryException
+	 *             if one of the currency codes passed is not valid.
+	 */
+	boolean isAvailable(String baseCode, String termCode,
+			ConversionContext conversionContext);
+
+	/**
 	 * Access a {@link ExchangeRate} using the given currencies. The
 	 * {@link ExchangeRate} may be, depending on the data provider, eal-time or
 	 * deferred. This method should return the rate that is <i>currently</i>
@@ -107,6 +146,47 @@ public interface ExchangeRateProvider {
 			ConversionContext conversionContext);
 
 	/**
+	 * Access a {@link ExchangeRate} using the given currencies. The
+	 * {@link ExchangeRate} may be, depending on the data provider, eal-time or
+	 * deferred. This method should return the rate that is <i>currently</i>
+	 * valid. It should be the same as
+	 * {@code getExchangeRate(base, term, System.currentTimeMillis())}.
+	 * 
+	 * @param baseCode
+	 *            base currency code, not {@code null}
+	 * @param termCode
+	 *            term/target currency code, not {@code null}
+	 * @return the matching {@link ExchangeRate}.
+	 * @throws CurrencyConversionException
+	 *             If no such rate is available.
+	 * @throws MonetaryException
+	 *             if one of the currency codes passed is not valid.
+	 */
+	ExchangeRate getExchangeRate(String baseCode, String termCode);
+
+	/**
+	 * Access a {@link ExchangeRate} using the given currencies. The
+	 * {@link ExchangeRate} may be, depending on the data provider, eal-time or
+	 * deferred. This method should return the rate that is <i>currently</i>
+	 * valid. It should be the same as
+	 * {@code getExchangeRate(base, term, System.currentTimeMillis())}.
+	 * 
+	 * @param baseCode
+	 *            base currency code, not {@code null}
+	 * @param termCode
+	 *            term/target currency code, not {@code null}
+	 * @param conversionContext
+	 *            the required {@link ConversionContext}, not {@code null}
+	 * @return the matching {@link ExchangeRate}.
+	 * @throws CurrencyConversionException
+	 *             If no such rate is available.
+	 * @throws MonetaryException
+	 *             if one of the currency codes passed is not valid.
+	 */
+	ExchangeRate getExchangeRate(String baseCode, String termCode,
+			ConversionContext conversionContext);
+
+	/**
 	 * The method reverses the {@link ExchangeRate} to a rate mapping from term
 	 * to base {@link CurrencyUnit}. Hereby the factor must <b>not</b> be
 	 * recalculated as {@code 1/oldFactor}, since typically reverse rates are
@@ -140,5 +220,34 @@ public interface ExchangeRateProvider {
 	 *         never {@code null}.
 	 */
 	CurrencyConversion getCurrencyConversion(CurrencyUnit term,
+			ConversionContext conversionContext);
+
+	/**
+	 * Access a {@link CurrencyConverter} that can be applied as a
+	 * {@link MonetaryOperator} to an amount.
+	 * 
+	 * @param termCode
+	 *            terminal/target currency code, not {@code null}
+	 * @return a new instance of a corresponding {@link CurrencyConverter},
+	 *         never {@code null}.
+	 * @throws MonetaryException
+	 *             if one of the currency codes passed is not valid.
+	 */
+	CurrencyConversion getCurrencyConversion(String termCode);
+
+	/**
+	 * Access a {@link CurrencyConverter} that can be applied as a
+	 * {@link MonetaryOperator} to an amount.
+	 * 
+	 * @param termCode
+	 *            terminal/target currency code, not {@code null}
+	 * @param conversionContext
+	 *            the required {@link ConversionContext}, not {@code null}
+	 * @return a new instance of a corresponding {@link CurrencyConverter},
+	 *         never {@code null}.
+	 * @throws MonetaryException
+	 *             if one of the currency codes passed is not valid.
+	 */
+	CurrencyConversion getCurrencyConversion(String termCode,
 			ConversionContext conversionContext);
 }

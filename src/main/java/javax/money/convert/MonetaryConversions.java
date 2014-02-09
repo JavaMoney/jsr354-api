@@ -18,6 +18,8 @@ import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryCurrencies;
+import javax.money.MonetaryException;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryConversionsSpi;
 
@@ -66,8 +68,6 @@ public final class MonetaryConversions {
 	 * 
 	 * @param termCurrency
 	 *            the terminating or target currency, not {@code null}
-	 * @param conversionContext
-	 *            the {@link ConversionContext} required, not {@code null}
 	 * @param providers
 	 *            Additional providers, for building a provider chain
 	 * @return the exchange rate type if this instance.
@@ -90,10 +90,32 @@ public final class MonetaryConversions {
 	 * Use {@link #getSupportedExchangeRateTypes()} to check, which are
 	 * available.
 	 * 
+	 * @param termCurrencyCode
+	 *            the terminating or target currency code, not {@code null}
+	 * @param providers
+	 *            Additional providers, for building a provider chain
+	 * @return the exchange rate type if this instance.
+	 * @throws IllegalArgumentException
+	 *             if no such {@link ExchangeRateProvider} is available.
+	 * @throws MonetaryException
+	 *             if no {@link CurrencyUnit} was matching the given currency
+	 *             code.
+	 */
+	public static CurrencyConversion getConversion(String termCurrencyCode,
+			String... providers) {
+		return getConversion(MonetaryCurrencies.getCurrency(termCurrencyCode),
+				providers);
+	}
+
+	/**
+	 * Access an instance of {@link CurrencyConversion} for the given providers.
+	 * Use {@link #getSupportedExchangeRateTypes()} to check, which are
+	 * available.
+	 * 
 	 * @param termCurrency
 	 *            the terminating or target currency, not {@code null}
 	 * @param conversionContext
-	 *            the {@link ConversionContext} required, not {@code null}
+	 *            The {@link ConversionContext} required, not {@code null}
 	 * @param providers
 	 *            Additional providers, for building a provider chain
 	 * @return the exchange rate type if this instance.
@@ -108,6 +130,30 @@ public final class MonetaryConversions {
 					getDefaultProviderChain().toArray(new String[0]));
 		}
 		return MONETARY_CONVERSION_SPI.getConversion(termCurrency,
+				ConversionContext.of(), providers);
+	}
+
+	/**
+	 * Access an instance of {@link CurrencyConversion} for the given providers.
+	 * Use {@link #getSupportedExchangeRateTypes()} to check, which are
+	 * available.
+	 * 
+	 * @param termCurrencyCode
+	 *            the terminating or target currency code, not {@code null}
+	 * @param conversionContext
+	 *            The {@link ConversionContext} required, not {@code null}
+	 * @param providers
+	 *            Additional providers, for building a provider chain
+	 * @return the exchange rate type if this instance.
+	 * @throws IllegalArgumentException
+	 *             if no such {@link ExchangeRateProvider} is available.
+	 * @throws MonetaryException
+	 *             if no {@link CurrencyUnit} was matching the given currency
+	 *             code.
+	 */
+	public static CurrencyConversion getConversion(String termCurrencyCode,
+			ConversionContext conversionContext, String... providers) {
+		return getConversion(MonetaryCurrencies.getCurrency(termCurrencyCode),
 				conversionContext, providers);
 	}
 
@@ -139,7 +185,7 @@ public final class MonetaryConversions {
 	 * 
 	 * @return all supported provider ids, never {@code null}.
 	 */
-	public static Collection<String> getProvidersNames() {
+	public static Collection<String> getProviderNames() {
 		Collection<String> providers = MONETARY_CONVERSION_SPI
 				.getProviderNames();
 		if (providers == null) {

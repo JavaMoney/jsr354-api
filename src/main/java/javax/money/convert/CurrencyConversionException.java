@@ -29,8 +29,8 @@ public class CurrencyConversionException extends MonetaryException {
 	private CurrencyUnit base;
 	/** Terminating currency. */
 	private CurrencyUnit term;
-	/** The acquired target timestamp, may be null. */
-	private Long timestamp;
+	/** The acquired {@link ConversionContext}, may be null. */
+	private ConversionContext conversionContext;
 
 	/**
 	 * Constructs an <code>CurrencyConversionException</code> with the specified
@@ -45,13 +45,13 @@ public class CurrencyConversionException extends MonetaryException {
 	 * @param message
 	 *            the detail message.
 	 */
-	public CurrencyConversionException(CurrencyUnit base,
-			CurrencyUnit term, Long timestamp, String message) {
+	public CurrencyConversionException(CurrencyUnit base, CurrencyUnit term,
+			ConversionContext conversionContext, String message) {
 		super("Cannot convert " + String.valueOf(base) + " into "
-				+ String.valueOf(term) +": " + message);
+				+ String.valueOf(term) + ": " + message);
 		this.base = base;
 		this.term = term;
-		this.timestamp = timestamp;
+		this.conversionContext = conversionContext;
 	}
 
 	/**
@@ -64,13 +64,13 @@ public class CurrencyConversionException extends MonetaryException {
 	 * @param term
 	 *            the target currency, may be null.
 	 */
-	public CurrencyConversionException(CurrencyUnit base,
-			CurrencyUnit term, Long timestamp) {
+	public CurrencyConversionException(CurrencyUnit base, CurrencyUnit term,
+			ConversionContext conversionContext) {
 		super("Cannot convert " + String.valueOf(base) + " into "
 				+ String.valueOf(term));
 		this.base = base;
 		this.term = term;
-		this.timestamp = timestamp;
+		this.conversionContext = conversionContext;
 	}
 
 	/**
@@ -94,14 +94,14 @@ public class CurrencyConversionException extends MonetaryException {
 	 *            is permitted, and indicates that the cause is nonexistent or
 	 *            unknown.)
 	 */
-	public CurrencyConversionException(CurrencyUnit base,
-			CurrencyUnit term, Long timestamp, String message, Throwable cause) {
-        super("Cannot convert " + String.valueOf(base) + " into "
-            + String.valueOf(term) + (message != null ? ": " + message : ""),
-            cause);
+	public CurrencyConversionException(CurrencyUnit base, CurrencyUnit term,
+			ConversionContext conversionContext, String message, Throwable cause) {
+		super("Cannot convert " + String.valueOf(base) + " into "
+				+ String.valueOf(term)
+				+ (message != null ? ": " + message : ""), cause);
 		this.base = base;
 		this.term = term;
-		this.timestamp = timestamp;
+		this.conversionContext = conversionContext;
 	}
 
 	/**
@@ -127,8 +127,8 @@ public class CurrencyConversionException extends MonetaryException {
 	 * 
 	 * @return the queried timestamp, or {@code null}.
 	 */
-	public Long getTimestamp() {
-		return this.timestamp;
+	public ConversionContext getConversionContext() {
+		return this.conversionContext;
 	}
 
 	/*
@@ -138,8 +138,9 @@ public class CurrencyConversionException extends MonetaryException {
 	 */
 	@Override
 	public String toString() {
-		return "CurrencyConversionException [base=" + base + ", term="
-				+ term + ", timestamp=" + timestamp + "]: " + getMessage();
+		return "CurrencyConversionException [base=" + base + ", term=" + term
+				+ ", conversionContext=" + conversionContext + "]: "
+				+ getMessage();
 	}
 
 }

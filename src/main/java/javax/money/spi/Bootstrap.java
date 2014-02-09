@@ -106,7 +106,7 @@ public final class Bootstrap {
 	/**
 	 * Delegate method for {@link ServiceProvider#getServices(Class)}.
 	 * 
-	 * @see ServiceProvider#getServices(Class, Collection)
+	 * @see ServiceProvider#getServices(Class, List)
 	 * @param serviceType
 	 *            the service type.
 	 * @param defaultServices
@@ -119,9 +119,9 @@ public final class Bootstrap {
 	}
 
 	/**
-	 * Delegate method for {@link ServiceProvider#getService(Class)}.
+	 * Delegate method for {@link ServiceProvider#getServices(Class)}.
 	 * 
-	 * @see ServiceProvider#getService(Class)
+	 * @see ServiceProvider#getServices(Class)
 	 * @param serviceType
 	 *            the service type.
 	 * @return the service found, never {@code null}.
@@ -135,9 +135,9 @@ public final class Bootstrap {
 	}
 
 	/**
-	 * Delegate method for {@link ServiceProvider#getService(Class)}.
+	 * Delegate method for {@link ServiceProvider#getServices(Class)}.
 	 * 
-	 * @see ServiceProvider#getService(Class, Object)
+	 * @see ServiceProvider#getServices(Class, List)
 	 * @param serviceType
 	 *            the service type.
 	 * @param defaultService

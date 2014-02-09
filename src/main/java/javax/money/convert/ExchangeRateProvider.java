@@ -18,7 +18,7 @@ import javax.money.MonetaryOperator;
  * This interface defines access to the exchange conversion logic of JavaMoney.
  * It is provided by the {@link MonetaryConversions} singleton. Hereby a
  * instance of this class must only provide conversion data for exact one
- * exchange rate type, defined by {@link #getExchangeRateType()}.
+ * exchange rate provider, defined by {@link ProviderContext#getProviderName()}.
  * <p>
  * Implementations of this interface are required to be thread save.
  * <p>
@@ -79,7 +79,7 @@ public interface ExchangeRateProvider {
 	 * 
 	 * @param baseCode
 	 *            the base currency code
-	 * @param term
+	 * @param termCode
 	 *            the terminal/target currency code
 	 * @return {@code true}, if such an {@link ExchangeRate} is currently
 	 *         defined.
@@ -198,37 +198,37 @@ public interface ExchangeRateProvider {
 	ExchangeRate getReversed(ExchangeRate rate);
 
 	/**
-	 * Access a {@link CurrencyConverter} that can be applied as a
+	 * Access a {@link CurrencyConversion} that can be applied as a
 	 * {@link MonetaryOperator} to an amount.
 	 * 
 	 * @param term
 	 *            term {@link CurrencyUnit}, not {@code null}
-	 * @return a new instance of a corresponding {@link CurrencyConverter},
+	 * @return a new instance of a corresponding {@link CurrencyConversion},
 	 *         never {@code null}.
 	 */
 	CurrencyConversion getCurrencyConversion(CurrencyUnit term);
 
 	/**
-	 * Access a {@link CurrencyConverter} that can be applied as a
+	 * Access a {@link CurrencyConversion} that can be applied as a
 	 * {@link MonetaryOperator} to an amount.
 	 * 
 	 * @param term
 	 *            term {@link CurrencyUnit}, not {@code null}
 	 * @param conversionContext
 	 *            the required {@link ConversionContext}, not {@code null}
-	 * @return a new instance of a corresponding {@link CurrencyConverter},
+	 * @return a new instance of a corresponding {@link CurrencyConversion},
 	 *         never {@code null}.
 	 */
 	CurrencyConversion getCurrencyConversion(CurrencyUnit term,
 			ConversionContext conversionContext);
 
 	/**
-	 * Access a {@link CurrencyConverter} that can be applied as a
+	 * Access a {@link CurrencyConversion} that can be applied as a
 	 * {@link MonetaryOperator} to an amount.
 	 * 
 	 * @param termCode
 	 *            terminal/target currency code, not {@code null}
-	 * @return a new instance of a corresponding {@link CurrencyConverter},
+	 * @return a new instance of a corresponding {@link CurrencyConversion},
 	 *         never {@code null}.
 	 * @throws MonetaryException
 	 *             if one of the currency codes passed is not valid.
@@ -236,14 +236,14 @@ public interface ExchangeRateProvider {
 	CurrencyConversion getCurrencyConversion(String termCode);
 
 	/**
-	 * Access a {@link CurrencyConverter} that can be applied as a
+	 * Access a {@link CurrencyConversion} that can be applied as a
 	 * {@link MonetaryOperator} to an amount.
 	 * 
 	 * @param termCode
 	 *            terminal/target currency code, not {@code null}
 	 * @param conversionContext
 	 *            the required {@link ConversionContext}, not {@code null}
-	 * @return a new instance of a corresponding {@link CurrencyConverter},
+	 * @return a new instance of a corresponding {@link CurrencyConversion},
 	 *         never {@code null}.
 	 * @throws MonetaryException
 	 *             if one of the currency codes passed is not valid.

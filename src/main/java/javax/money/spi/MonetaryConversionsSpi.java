@@ -70,7 +70,7 @@ public interface MonetaryConversionsSpi {
 	 *            The providers to be used, in order of precedence, for building
 	 *            a provider chain. At least one provider must be passed.
 	 * @return the provider, if it is a registered rate type, never null.
-	 * @see #isSupportedExchangeRateType(ExchangeRateType)
+	 * @see #isProviderAvailable(String)
 	 * @throws IllegalArgumentException
 	 *             if a provider could not be found or not at least one provider
 	 *             name is passed.
@@ -94,8 +94,8 @@ public interface MonetaryConversionsSpi {
 	 * @return {@code true}, if the rate is supported, meaning an according
 	 *         {@link ExchangeRateProvider} or {@link CurrencyConversion} can be
 	 *         loaded.
-	 * @see #getConversion(ConversionContext, CurrencyUnit)
-	 * @see #getExchangeRateProvider(ConversionContext)
+	 * @see #getConversion(CurrencyUnit, ConversionContext, String...)
+	 * @see #getExchangeRateProvider(String...)
 	 */
 	boolean isProviderAvailable(String provider);
 

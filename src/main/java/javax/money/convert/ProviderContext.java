@@ -222,10 +222,8 @@ public final class ProviderContext extends AbstractContext {
 	 * 
 	 * @param provider
 	 *            the provider id, not null.
-	 * @param rateType
-	 *            the minimal {@link RateType}, not null
 	 * @param rateTypes
-	 *            any optional (addition) {@link RateType}s supported
+	 *            the required {@link RateType}s, not null
 	 * @return a new {@link ProviderContext} instance.
 	 */
 	public static ProviderContext of(String provider, RateType... rateTypes) {
@@ -237,10 +235,6 @@ public final class ProviderContext extends AbstractContext {
 	 * 
 	 * @param provider
 	 *            the provider id, not null.
-	 * @param rateType
-	 *            the minimal {@link RateType}, not null
-	 * @param rateTypes
-	 *            any optional (addition) {@link RateType}s supported
 	 * @return a new {@link ProviderContext} instance.
 	 */
 	public static ProviderContext of(String provider) {

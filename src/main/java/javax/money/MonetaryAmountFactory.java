@@ -13,8 +13,8 @@ package javax.money;
  * <ul>
  * <li>calling {@link MonetaryAmount#getFactory()}, returning a {@link MonetaryAmountFactory}
  * creating amounts of the same implementation type, which also provided the factory instance.</li>
- * <li>calling {@link MonetaryAmounts#getAmountFactory(Class<T>)} accessing a
- * {@link MonetaryAmountFactory<T>} for a concrete type <code>Class<T></code>.</li>
+ * <li>calling {@link MonetaryAmounts#getAmountFactory(Class)} accessing a
+ * {@link MonetaryAmountFactory} for a concrete type <code>Class<T></code>.</li>
  * <li>calling {@link MonetaryAmounts#getAmountFactory()} accessing a default
  * {@link MonetaryAmountFactory}.
  * </ul>

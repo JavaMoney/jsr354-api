@@ -63,8 +63,7 @@ public final class MonetaryConversions {
 
 	/**
 	 * Access an instance of {@link CurrencyConversion} for the given providers.
-	 * Use {@link #getSupportedExchangeRateTypes()} to check, which are
-	 * available.
+	 * Use {@link #isProviderAvailable(String)} to check, which are available.
 	 * 
 	 * @param termCurrency
 	 *            the terminating or target currency, not {@code null}
@@ -87,8 +86,7 @@ public final class MonetaryConversions {
 
 	/**
 	 * Access an instance of {@link CurrencyConversion} for the given providers.
-	 * Use {@link #getSupportedExchangeRateTypes()} to check, which are
-	 * available.
+	 * Use {@link #isProviderAvailable(String)} to check, which are available.
 	 * 
 	 * @param termCurrencyCode
 	 *            the terminating or target currency code, not {@code null}
@@ -109,7 +107,7 @@ public final class MonetaryConversions {
 
 	/**
 	 * Access an instance of {@link CurrencyConversion} for the given providers.
-	 * Use {@link #getSupportedExchangeRateTypes()} to check, which are
+	 * Use {@link #isProviderAvailable(String)} to check, which are
 	 * available.
 	 * 
 	 * @param termCurrency
@@ -135,8 +133,7 @@ public final class MonetaryConversions {
 
 	/**
 	 * Access an instance of {@link CurrencyConversion} for the given providers.
-	 * Use {@link #getSupportedExchangeRateTypes()} to check, which are
-	 * available.
+	 * Use {@link #isProviderAvailable(String)} to check, which are available.
 	 * 
 	 * @param termCurrencyCode
 	 *            the terminating or target currency code, not {@code null}
@@ -158,9 +155,9 @@ public final class MonetaryConversions {
 	}
 
 	/**
-	 * Access an instance of {@link CurrencyConversion} for the given
-	 * {@link ExchangeRateType}. Use {@link #getSupportedExchangeRateTypes()} to
-	 * check, which are available.
+	 * Access an instance of {@link CurrencyConversion} using the given
+	 * providers as a provider chain. Use {@link #isProviderAvailable(String)}
+	 * to check, which are available.
 	 * 
 	 * @param conversionContext
 	 *            the {@link ConversionContext} required, not {@code null}.

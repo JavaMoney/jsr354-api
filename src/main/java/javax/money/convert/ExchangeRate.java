@@ -64,13 +64,11 @@ import javax.money.CurrencyUnit;
  * exchange rates are {@link Serializable}, hereby serializing in the following
  * form and order:
  * <ul>
- * <li>The {@link ExchangeRateType}
  * <li>The base {@link CurrencyUnit}
  * <li>The target {@link CurrencyUnit}
  * <li>The factor (BigDecimal)
- * <li>The provider (String)
- * <li>The validFrom timestamp (Long)
- * <li>The validTo timestamp (Long)
+ * <li>The {@link ConversionContext}
+ * <li>The rate chain
  * </ul>
  * 
  * @see <a
@@ -384,9 +382,8 @@ public final class ExchangeRate implements Serializable,
 		/**
 		 * Sets the exchange rate type
 		 * 
-		 * @param exchangeRateType
-		 *            to be applied
-		 * @return the builder instance
+		 * @param rateType
+		 *            the {@link RateType} contained
 		 */
 		public Builder(String provider, RateType rateType) {
 			this(ConversionContext.of(provider, rateType));
@@ -397,7 +394,6 @@ public final class ExchangeRate implements Serializable,
 		 * 
 		 * @param context
 		 *            the {@link ConversionContext} to be applied
-		 * @return the builder instance
 		 */
 		public Builder(ConversionContext context) {
 			setContext(context);
@@ -478,8 +474,8 @@ public final class ExchangeRate implements Serializable,
 		/**
 		 * Sets the provider to be applied.
 		 * 
-		 * @param provider
-		 *            the provider, or null.
+		 * @param conversionContext
+		 *            the {@link ConversionContext}, not null.
 		 * @return The builder.
 		 */
 		public Builder setContext(ConversionContext conversionContext) {
@@ -494,7 +490,6 @@ public final class ExchangeRate implements Serializable,
 		 * @return a new instance of {@link ExchangeRate}.
 		 * @throws IllegalArgumentException
 		 *             if the rate could not be build.
-		 * @see #isBuildeable()
 		 */
 		public ExchangeRate create() {
 			return new ExchangeRate(this);

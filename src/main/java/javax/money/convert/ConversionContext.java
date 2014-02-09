@@ -168,8 +168,8 @@ public final class ConversionContext extends AbstractContext {
 	 * 
 	 * @param provider
 	 *            the provider name, not {@code null}
-	 * @param rateTypes
-	 *            the required rate types.
+	 * @param rateType
+	 *            the required rate type.
 	 * @return a new instance of {@link ConversionContext}
 	 */
 	public static ConversionContext of(String provider, RateType rateType) {
@@ -183,8 +183,8 @@ public final class ConversionContext extends AbstractContext {
 	 * Creates a {@link ConversionContext} for accessing rates of the given
 	 * type, without specifying the rate's provider.
 	 * 
-	 * @param rateTypes
-	 *            the required rate types.
+	 * @param rateType
+	 *            the required rate type.
 	 * @return a new instance of {@link ConversionContext}
 	 */
 	public static ConversionContext of(RateType rateType) {
@@ -208,10 +208,6 @@ public final class ConversionContext extends AbstractContext {
 	 * possibilities to initialize a {@link ConversionContext}, please use a
 	 * {@link Builder},
 	 * 
-	 * @param provider
-	 *            the provider name, not {@code null}
-	 * @param rateTypes
-	 *            the required rate types.
 	 * @return a new instance of {@link ConversionContext}
 	 */
 	public static ConversionContext of() {
@@ -222,8 +218,6 @@ public final class ConversionContext extends AbstractContext {
 	 * Converts the given {@link ProviderContext} to an according
 	 * {@link ConversionContext} using the given {@link RateType}.
 	 * 
-	 * @param context
-	 *            the {@link ProviderContext} to be converted, not null
 	 * @param rateType
 	 *            the {@link RateType}, not null
 	 * @param timestamp
@@ -295,7 +289,7 @@ public final class ConversionContext extends AbstractContext {
 		/**
 		 * Set the timestamp value.
 		 * 
-		 * @param timestamp
+		 * @param dateTime
 		 *            the timestamp value
 		 * @return this, for chaining.
 		 */
@@ -324,8 +318,8 @@ public final class ConversionContext extends AbstractContext {
 		/**
 		 * Set the ending period timestamp value.
 		 * 
-		 * @param timestamp
-		 *            the ending period timestamp value
+		 * @param dateTime
+		 *            the ending period dateTime value
 		 * @return this, for chaining.
 		 */
 		public Builder setValidTo(Object dateTime) {
@@ -341,8 +335,8 @@ public final class ConversionContext extends AbstractContext {
 		/**
 		 * Set the historic value.
 		 * 
-		 * @param historic
-		 *            the new value
+		 * @param rateType
+		 *            the rate type
 		 * @return this, for chaining.
 		 */
 		public Builder setRateType(RateType rateType) {

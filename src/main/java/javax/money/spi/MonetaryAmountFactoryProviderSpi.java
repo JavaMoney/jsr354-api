@@ -68,10 +68,6 @@ public interface MonetaryAmountFactoryProviderSpi<T extends MonetaryAmount> {
 	/**
 	 * Access a {@link MonetaryAmountFactory} given the required context.
 	 * 
-	 * @param context
-	 *            the context required. If this instance cannot provide an according implementation,
-	 *            it should return {@code null}, so other registered providers may serve the
-	 *            request.
 	 * @return the corresponding {@link MonetaryAmountFactory}, or {@code null}.
 	 */
 	MonetaryAmountFactory<T> createMonetaryAmountFactory();

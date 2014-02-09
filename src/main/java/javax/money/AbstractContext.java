@@ -277,8 +277,8 @@ public abstract class AbstractContext implements Serializable {
 		 * Removes an attribute, using {@code attribute.getClass()} as attribute
 		 * <i>type</i>.
 		 * 
-		 * @param value
-		 *            the attribute value to be removed
+		 * @param type
+		 *            the attribute's type to be removed
 		 * @param key
 		 *            the attribute's key, not {@code null}
 		 * @return this Builder, for chaining
@@ -295,7 +295,7 @@ public abstract class AbstractContext implements Serializable {
 		/**
 		 * Sets an attribute.
 		 * 
-		 * @param value
+		 * @param attribute
 		 *            the attribute's value
 		 * @param key
 		 *            the attribute's key

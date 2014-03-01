@@ -10,11 +10,9 @@ package javax.money;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * This class models the numeric capabilities of a {@link MonetaryAmount} in a

@@ -14,7 +14,6 @@ package javax.money.function;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.math.BigDecimal;
 import java.util.Locale;
 
 import javax.money.MonetaryContext;

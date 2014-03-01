@@ -8,9 +8,6 @@
  */
 package javax.money.spi;
 
-import java.util.Collection;
-import java.util.Locale;
-
 import javax.money.format.AmountStyle;
 import javax.money.format.MonetaryAmountFormat;
 

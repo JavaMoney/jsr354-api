@@ -5,7 +5,7 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * API ("Specification") Copyright (c) 2012-2014, Credit Suisse All rights
  * reserved.
  */
 package javax.money.convert;
@@ -25,6 +25,7 @@ import javax.money.MonetaryOperator;
  * Implementations of this class must neither be immutable nor serializable.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public interface ExchangeRateProvider {
 

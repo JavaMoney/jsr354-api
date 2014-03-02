@@ -5,18 +5,18 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * API ("Specification") Copyright (c) 2012-2014, Credit Suisse All rights
  * reserved.
  */
 package javax.money.convert;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 import javax.money.CurrencyUnit;
+import javax.money.NumberValue;
 
 /**
  * This class models an exchange rate between two currencies. Hereby
@@ -66,7 +66,7 @@ import javax.money.CurrencyUnit;
  * <ul>
  * <li>The base {@link CurrencyUnit}
  * <li>The target {@link CurrencyUnit}
- * <li>The factor (BigDecimal)
+ * <li>The factor (NumberValue)
  * <li>The {@link ConversionContext}
  * <li>The rate chain
  * </ul>
@@ -96,7 +96,7 @@ public final class ExchangeRate implements Serializable,
 	/**
 	 * The conversion factor.
 	 */
-	private final BigDecimal factor;
+	private final NumberValue factor;
 	/**
 	 * The {@link ConversionContext}
 	 */
@@ -114,15 +114,15 @@ public final class ExchangeRate implements Serializable,
 	 *            the number
 	 * @return a BigDecimal representing the number.
 	 */
-	private BigDecimal getBigDecimal(Number num) {
-		if (num instanceof BigDecimal) {
-			return (BigDecimal) num;
-		}
-		if (num instanceof Long) {
-			return BigDecimal.valueOf(num.longValue());
-		}
-		return BigDecimal.valueOf(num.doubleValue());
-	}
+//	private BigDecimal getBigDecimal(Number num) {
+//		if (num instanceof BigDecimal) {
+//			return (BigDecimal) num;
+//		}
+//		if (num instanceof Long) {
+//			return BigDecimal.valueOf(num.longValue());
+//		}
+//		return BigDecimal.valueOf(num.doubleValue());
+//	}
 
 	/**
 	 * Creates a new instance with a custom chain of exchange rate type, e.g. or
@@ -153,7 +153,7 @@ public final class ExchangeRate implements Serializable,
 				"exchangeRateType may not be null.");
 		this.base = builder.base;
 		this.term = builder.term;
-		this.factor = getBigDecimal(builder.factor);
+		this.factor = builder.factor;
 		this.conversionContext = builder.conversionContext;
 		setExchangeRateChain(builder.rateChain);
 	}
@@ -211,7 +211,7 @@ public final class ExchangeRate implements Serializable,
 	 * 
 	 * @return the bid factor for this exchange rate, or {@code null}.
 	 */
-	public final BigDecimal getFactor() {
+	public final NumberValue getFactor() {
 		return this.factor;
 	}
 
@@ -373,7 +373,7 @@ public final class ExchangeRate implements Serializable,
 		/**
 		 * The conversion factor.
 		 */
-		private BigDecimal factor;
+		private NumberValue factor;
 		/**
 		 * The chain of invovled rates.
 		 */
@@ -447,16 +447,12 @@ public final class ExchangeRate implements Serializable,
 		 *            the factor.
 		 * @return The builder instance.
 		 */
-		public Builder setFactor(Number factor) {
-			if (factor != null) {
-				if (factor instanceof BigDecimal) {
-					this.factor = (BigDecimal) factor;
-				} else {
-					this.factor = BigDecimal.valueOf(factor.doubleValue());
-				}
-			}
-			return this;
-		}
+//		public Builder setFactor(Number factor) {
+//			if (factor != null) {
+//				this.factor = new DefaultNumberValue(factor);
+//			}
+//			return this;
+//		}
 
 		/**
 		 * Sets the conversion factor, as the factor
@@ -466,7 +462,7 @@ public final class ExchangeRate implements Serializable,
 		 *            the factor.
 		 * @return The builder instance.
 		 */
-		public Builder setFactor(BigDecimal factor) {
+		public Builder setFactor(NumberValue factor) {
 			this.factor = factor;
 			return this;
 		}

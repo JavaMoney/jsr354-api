@@ -86,16 +86,6 @@ public final class MonetaryContext extends AbstractContext implements
 	private final AmountFlavor flavor;
 
 	/**
-	 * This map contains arbitrary attributes, identified by class. This allows
-	 * to store additional context data in a platform independent way, e.g. when
-	 * using {@link java.math.BigDecimal} as a representation type on SE, the
-	 * {@link java.math.RoundingMode} used can be stored as an attribute. Adding
-	 * it as part of the API would break compatibility with SE.
-	 */
-	@SuppressWarnings("rawtypes")
-	private final Map<Class, Object> attributes = new HashMap<>();
-
-	/**
 	 * Flag, if the scale is fixed. Fixed scaled numbers will always have a
 	 * scale of {@link #maxScale}.
 	 */
@@ -112,18 +102,8 @@ public final class MonetaryContext extends AbstractContext implements
 	 * Constructs a new {@code MonetaryContext} with the specified precision and
 	 * rounding mode.
 	 * 
-	 * @param amountType
-	 *            The {@link MonetaryAmount} implementation class.
-	 * @param precision
-	 *            The non-negative {@code int} precision setting.
-	 * @param maxScale
-	 *            the maximal scale.
-	 * @param fixedScale
-	 *            Flag for determining a fixed scale context.
-	 * @param flavor
-	 *            the {@link AmountFlavor} set.
-	 * @param attributes
-	 *            Any additional attributes.
+	 * @param builder
+	 *            The {@link Builder} with data to be used.
 	 * @throws IllegalArgumentException
 	 *             if the {@code setPrecision} parameter is less than zero.
 	 */
@@ -207,6 +187,8 @@ public final class MonetaryContext extends AbstractContext implements
 		result = prime * result + maxScale;
 		result = prime * result
 				+ ((amountType == null) ? 0 : amountType.hashCode());
+        result = prime * result
+                + ((flavor == null) ? 0 : flavor.hashCode());
 		result = prime * result + precision;
 		return result;
 	}
@@ -239,6 +221,11 @@ public final class MonetaryContext extends AbstractContext implements
 				return false;
 		} else if (!amountType.equals(other.amountType))
 			return false;
+        if (flavor == null) {
+            if (other.flavor != null)
+                return false;
+        } else if (!flavor.equals(other.flavor))
+            return false;
 		if (precision != other.precision)
 			return false;
 		return true;
@@ -351,6 +338,7 @@ public final class MonetaryContext extends AbstractContext implements
 			this.maxScale = context.getMaxScale();
 			this.fixedScale = context.isFixedScale();
 			this.precision = context.getPrecision();
+            this.amountFlavor = context.getAmountFlavor();
 		}
 
 		/**

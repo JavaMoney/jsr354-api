@@ -81,7 +81,12 @@ public class UnknownCurrencyException extends MonetaryException {
 	 */
 	@Override
 	public String toString() {
-		return "UnknownCurrencyException [currencyCode=" + currencyCode + "]";
+        if(locale==null){
+		    return "UnknownCurrencyException [currencyCode=" + currencyCode + "]";
+        }
+        else{
+            return "UnknownCurrencyException [locale=" + locale + "]";
+        }
 	}
 
 }

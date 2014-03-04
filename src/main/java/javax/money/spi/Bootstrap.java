@@ -8,12 +8,7 @@
  */
 package javax.money.spi;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.logging.Logger;
 
 import javax.money.MonetaryException;
@@ -61,8 +56,9 @@ public final class Bootstrap {
 	 *            the new {@link ServiceProvider}
 	 */
 	public static void init(ServiceProvider serviceProvider) {
-		synchronized (LOCK) {
-			if (serviceProvider != null) {
+        Objects.requireNonNull(serviceProvider);
+        synchronized (LOCK) {
+			if (Bootstrap.serviceProviderDelegate == null) {
 				Bootstrap.serviceProviderDelegate = serviceProvider;
 				Logger.getLogger(Bootstrap.class.getName()).info(
 						"Money Bootstrap: new ServiceProvider set: "

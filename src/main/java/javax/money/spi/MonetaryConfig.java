@@ -19,21 +19,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Loader for the Java Money configuration.
+ * Loader for the Java Money JSR configuration.
  * 
  * @author Anatole Tresch
  */
-public final class JavaMoneyConfig {
+public final class MonetaryConfig{
 
 	private static final Logger LOG = Logger
-			.getLogger(JavaMoneyConfig.class.getName());
+			.getLogger(MonetaryConfig.class.getName());
 
-	private static final JavaMoneyConfig INSTANCE = new JavaMoneyConfig();
+	private static final MonetaryConfig INSTANCE = new MonetaryConfig();
 	
 	private Map<String, String> config = new HashMap<>();
 	private Map<String, Integer> priorities = new HashMap<>();
 
-	private JavaMoneyConfig() {
+	private MonetaryConfig() {
 		try {
 			Enumeration<URL> urls = getClass().getClassLoader().getResources(
 					"javamoney.properties");

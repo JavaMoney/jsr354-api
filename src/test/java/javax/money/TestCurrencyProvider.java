@@ -24,6 +24,12 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 		if("test1".equals(currencyCode)){
 			return new TestCurrency("test1",1,2);
 		}
+        else if("error".equals(currencyCode)){
+            throw new IllegalArgumentException("error encountered!");
+        }
+        else if("invalid".equals(currencyCode)){
+            return new TestCurrency("invalid2",1,2);
+        }
 		return null;
 	}
 
@@ -33,6 +39,12 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 		if("TEST1L".equals(locale.getCountry())){
 			return new TestCurrency("TEST1L",1,2);
 		}
+        else if(Locale.CHINA.equals(locale)){
+            throw new IllegalArgumentException("CHINA error encountered!");
+        }
+        else if(Locale.CHINESE.equals(locale)){
+            return new TestCurrency("invalid2",1,2);
+        }
 		return null;
 	}
 

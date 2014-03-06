@@ -8,35 +8,50 @@
  */
 package javax.money.format;
 
+import org.junit.Test;
+
+import javax.money.MonetaryException;
+import java.util.Locale;
+import java.util.Set;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import java.util.Locale;
-
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for {@link MonetaryFormats}.
- * 
+ *
  * @author Anatole Tresch
  */
-public class MonetaryFormatsTest {
+public class MonetaryFormatsTest{
 
-	@Test
-	public void testGetAmountFormatLocale() {
-		MonetaryAmountFormat fmt = MonetaryFormats
-				.getAmountFormat(Locale.ENGLISH);
-		assertNotNull(fmt);
-		assertEquals(fmt.getClass(), TestAmountFormatProvider.TestFormat.class);
-	}
+    @Test
+    public void testGetAmountFormatLocale(){
+        MonetaryAmountFormat fmt = MonetaryFormats.getAmountFormat(Locale.ENGLISH);
+        assertNotNull(fmt);
+        assertEquals(fmt.getClass(), TestAmountFormatProvider.TestFormat.class);
+    }
 
-	@Test
-	public void testGetAmountFormatStyle() {
-		AmountStyle s = AmountStyle.of(Locale.ENGLISH);
-		MonetaryAmountFormat fmt = MonetaryFormats.getAmountFormat(s);
-		assertNotNull(fmt);
-		assertEquals(fmt.getClass(), TestAmountFormatProvider.TestFormat.class);
-		assertEquals(s, fmt.getAmountStyle());
-	}
+    @Test(expected = MonetaryException.class)
+    public void testGetAmountFormatLocale_Invalid(){
+        MonetaryFormats.getAmountFormat(Locale.CHINESE);
+    }
+
+    @Test
+    public void testGetAmountFormatStyle(){
+        AmountStyle s = AmountStyle.of(Locale.ENGLISH);
+        MonetaryAmountFormat fmt = MonetaryFormats.getAmountFormat(s);
+        assertNotNull(fmt);
+        assertEquals(fmt.getClass(), TestAmountFormatProvider.TestFormat.class);
+        assertEquals(s, fmt.getAmountStyle());
+    }
+
+    @Test
+    public void testGetAvailableLocales(){
+        Set<Locale> locales = MonetaryFormats.getAvailableLocales();
+        assertNotNull(locales);
+        assertTrue(locales.size() == 1);
+        assertTrue(locales.contains(Locale.ENGLISH));
+    }
 
 }

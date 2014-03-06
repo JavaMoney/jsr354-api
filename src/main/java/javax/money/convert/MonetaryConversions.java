@@ -10,11 +10,7 @@
  */
 package javax.money.convert;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.logging.Logger;
 
 import javax.money.CurrencyUnit;
@@ -158,9 +154,7 @@ public final class MonetaryConversions {
 	 * Access an instance of {@link CurrencyConversion} using the given
 	 * providers as a provider chain. Use {@link #isProviderAvailable(String)}
 	 * to check, which are available.
-	 * 
-	 * @param conversionContext
-	 *            the {@link ConversionContext} required, not {@code null}.
+	 *
 	 * @return the exchange rate provider.
 	 * @throws IllegalArgumentException
 	 *             if no such {@link ExchangeRateProvider} is available.
@@ -172,7 +166,11 @@ public final class MonetaryConversions {
 					.getExchangeRateProvider(getDefaultProviderChain().toArray(
 							new String[0]));
 		}
-		return MONETARY_CONVERSION_SPI.getExchangeRateProvider(providers);
+        ExchangeRateProvider provider = MONETARY_CONVERSION_SPI.getExchangeRateProvider(providers);
+        if(provider==null){
+            throw new MonetaryException("No such rate provider: " + Arrays.toString(providers));
+        }
+        return provider;
 	}
 
 	/**
@@ -204,7 +202,11 @@ public final class MonetaryConversions {
 	 *             if no such provider is registered.
 	 */
 	public static ProviderContext getProviderContext(String provider) {
-		return MONETARY_CONVERSION_SPI.getProviderContext(provider);
+        ProviderContext ctx = MONETARY_CONVERSION_SPI.getProviderContext(provider);
+        if(ctx==null){
+            throw new MonetaryException("No such rate provider: " + provider);
+        }
+        return ctx;
 	}
 
 	/**

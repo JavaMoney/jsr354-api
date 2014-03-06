@@ -10,9 +10,10 @@
  * 
  * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
  */
-package javax.money.function;
+package javax.money;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -68,14 +69,22 @@ public final class TestRoundingProvider implements RoundingProviderSpi {
 
 	@Override
 	public MonetaryOperator getCustomRounding(String customRoundingId) {
-		if (!"foo".equals(customRoundingId)) {
-			return new MonetaryOperator() {
-				@Override
-				public MonetaryAmount apply(MonetaryAmount value) {
-					return value;
-				}
-			};
-		}
+		if ("custom1".equals(customRoundingId)) {
+            return new MonetaryOperator() {
+                @Override
+                public MonetaryAmount apply(MonetaryAmount value) {
+                    return value;
+                }
+            };
+        }
+        else if ("custom2".equals(customRoundingId)) {
+            return new MonetaryOperator() {
+                @Override
+                public MonetaryAmount apply(MonetaryAmount value) {
+                    return value;
+                }
+            };
+        }
 		return null;
 	}
 
@@ -91,7 +100,10 @@ public final class TestRoundingProvider implements RoundingProviderSpi {
 
 	@Override
 	public Set<String> getCustomRoundingIds() {
-		return Collections.emptySet();
+        Set<String> result = new HashSet<>();
+        result.add("custom1");
+        result.add("custom2");
+		return result;
 	}
 
 }

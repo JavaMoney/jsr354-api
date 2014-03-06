@@ -13,8 +13,6 @@
 package javax.money;
 
 import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,12 +29,6 @@ import javax.money.spi.CurrencyProviderSpi;
  * @author Anatole Tresch
  */
 public final class MonetaryCurrencies {
-
-	/**
-	 * Internal shared cache of {@link CustomCurrency} instances, registered
-	 * using {@link AbstractBuilder} instances.
-	 */
-	private static final Map<String, CurrencyUnit> REGISTERED = new ConcurrentHashMap<String, CurrencyUnit>();
 
 	/**
 	 * Required for deserialization only.
@@ -82,9 +74,6 @@ public final class MonetaryCurrencies {
 			}
 		}
 		if (cu == null) {
-			cu = REGISTERED.get(currencyCode);
-		}
-		if (cu == null) {
 			throw new UnknownCurrencyException(currencyCode);
 		}
 		return cu;
@@ -104,9 +93,7 @@ public final class MonetaryCurrencies {
 	 */
 	public static CurrencyUnit getCurrency(Locale locale) {
 		CurrencyUnit cu = null;
-		for (CurrencyProviderSpi spi : Bootstrap
-				.getServices(
-				CurrencyProviderSpi.class)) {
+		for (CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)) {
 			try {
 				cu = spi.getCurrencyUnit(locale);
 				if (cu != null) {

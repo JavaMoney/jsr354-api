@@ -82,25 +82,6 @@ public final class ProviderContext extends AbstractContext {
 	}
 
 	/**
-	 * Add the given {@link RateType} to this context builder.
-	 * 
-	 * @param rateTypes
-	 *            the rate type, not {@code null}
-	 */
-	public void addRateTypes(RateType... rateTypes) {
-		Objects.requireNonNull(rateTypes);
-		Set<RateType> types = getNamedAttribute(Set.class,
-				ProviderAttribute.RATE_TYPES, null);
-		if (types == null) {
-			types = new HashSet<>();
-			set(types, ProviderAttribute.RATE_TYPES, Set.class);
-		}
-		for (RateType rateType : rateTypes) {
-			types.add(rateType);
-		}
-	}
-
-	/**
 	 * Returns the starting date/time this rate is valid. The result can also be
 	 * {@code null}, since it is possible, that an {@link ExchangeRate} does not
 	 * have starting validity range. This also can be queried by calling
@@ -178,7 +159,7 @@ public final class ProviderContext extends AbstractContext {
 	public boolean isInScope(long timestamp) {
 		Long validTo = getValidTo(Long.class);
 		Long validFrom = getValidFrom(Long.class);
-		if (validTo != null && validTo.longValue() < timestamp) {
+		if (validTo != null && validTo.longValue() <= timestamp) {
 			return false;
 		}
 		if (validFrom != null && validFrom.longValue() > timestamp) {
@@ -368,7 +349,7 @@ public final class ProviderContext extends AbstractContext {
 	public static ProviderContext from(ConversionContext conversionContext) {
 		return new Builder(conversionContext.getProvider())
 				.setRateTypes(conversionContext.getRateType())
-				.setAll(conversionContext).create();
+				.setAll(conversionContext).setProviderName(conversionContext.getProvider()).create();
 	}
 
 }

@@ -8,6 +8,8 @@
  */
 package javax.money.format;
 
+import org.junit.Test;
+
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -19,15 +21,13 @@ public class TestAmountStyleProvider implements
 		AmountStyleProviderSpi {
 
 	private Set<Locale> testSet = new HashSet<Locale>();
-
 	public TestAmountStyleProvider() {
 		testSet.add(Locale.ENGLISH);
 	}
 
 	@Override
 	public Set<Locale> getSupportedLocales() {
-		// TODO Auto-generated method stub
-		return null;
+		return testSet;
 	}
 
 	@Override

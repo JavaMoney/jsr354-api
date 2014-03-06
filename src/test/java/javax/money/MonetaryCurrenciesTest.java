@@ -12,49 +12,72 @@
  */
 package javax.money;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 import java.util.Locale;
 
-import org.junit.Test;
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Tests for the {@link MonetaryCurrencies} class.
- * 
+ *
  * @author Anatole Tresch
  */
-public class MonetaryCurrenciesTest {
+public class MonetaryCurrenciesTest{
 
-	@Test
-	public void testgetCurrencyString() {
-		CurrencyUnit cur = MonetaryCurrencies.getCurrency("test1");
-		assertNotNull(cur);
-		assertEquals(cur.getCurrencyCode(), "test1");
-		assertEquals(cur.getNumericCode(), 1);
-		assertEquals(cur.getDefaultFractionDigits(),
-				2);
-	}
+    @Test
+    public void testgetCurrencyString(){
+        CurrencyUnit cur = MonetaryCurrencies.getCurrency("test1");
+        assertNotNull(cur);
+        assertEquals(cur.getCurrencyCode(), "test1");
+        assertEquals(cur.getNumericCode(), 1);
+        assertEquals(cur.getDefaultFractionDigits(), 2);
+    }
 
-	@Test(expected = UnknownCurrencyException.class)
-	public void testgetCurrencyString_NA() {
-		MonetaryCurrencies.getCurrency("testGetInstanceCurrency_NA");
-	}
+    @Test
+    public void testIsAvailableString(){
+        assertTrue(MonetaryCurrencies.isCurrencyAvailable("test1"));
+        assertFalse(MonetaryCurrencies.isCurrencyAvailable("akjshakjshajsgdgsdgsdg"));
+    }
 
-	@Test
-	public void testgetCurrencyLocale() {
-		CurrencyUnit cur = MonetaryCurrencies.getCurrency(new Locale("",
-				"TEST1L"));
-		assertNotNull(cur);
-		assertEquals(cur.getCurrencyCode(), "TEST1L");
-		assertEquals(cur.getNumericCode(), 1);
-		assertEquals(cur.getDefaultFractionDigits(),
-				2);
-	}
+    @Test
+    public void testIsAvailableLocale(){
+        assertFalse(MonetaryCurrencies.isCurrencyAvailable(Locale.CHINA));
+        assertTrue(MonetaryCurrencies.isCurrencyAvailable(new Locale("", "TEST1L")));
+    }
 
-	@Test(expected = UnknownCurrencyException.class)
-	public void testgetCurrencyLocale_NA() {
-		MonetaryCurrencies.getCurrency(new Locale("", "sdsdsd"));
-	}
+    @Test(expected = UnknownCurrencyException.class)
+    public void testgetCurrencyString_NA(){
+        MonetaryCurrencies.getCurrency("testGetInstanceCurrency_NA");
+    }
+
+    @Test
+    public void testgetCurrencyLocale(){
+        CurrencyUnit cur = MonetaryCurrencies.getCurrency(new Locale("", "TEST1L"));
+        assertNotNull(cur);
+        assertEquals(cur.getCurrencyCode(), "TEST1L");
+        assertEquals(cur.getNumericCode(), 1);
+        assertEquals(cur.getDefaultFractionDigits(), 2);
+    }
+
+    @Test(expected=UnknownCurrencyException.class)
+    public void testgetCurrencyLocale_Error(){
+        CurrencyUnit cur = MonetaryCurrencies.getCurrency(Locale.CHINA);
+        assertNull(cur);
+    }
+
+    @Test(expected=UnknownCurrencyException.class)
+    public void testgetCurrencyString_Error(){
+        CurrencyUnit cur = MonetaryCurrencies.getCurrency("error");
+        assertNull(cur);
+        cur = MonetaryCurrencies.getCurrency("invalid");
+        assertNull(cur);
+    }
+
+    @Test(expected = UnknownCurrencyException.class)
+    public void testgetCurrencyLocale_NA(){
+        MonetaryCurrencies.getCurrency(new Locale("", "sdsdsd"));
+    }
 
 }

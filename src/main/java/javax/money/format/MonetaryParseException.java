@@ -50,6 +50,9 @@ public class MonetaryParseException extends MonetaryException {
 	public MonetaryParseException(String message, CharSequence parsedData,
 			int errorIndex) {
 		super(message);
+        if(errorIndex > parsedData.length()){
+            throw new IllegalArgumentException("Invalid error index > input.length");
+        }
 		this.data = parsedData;
 		this.errorIndex = errorIndex;
 	}
@@ -66,6 +69,9 @@ public class MonetaryParseException extends MonetaryException {
 	public MonetaryParseException(CharSequence parsedData,
 			int errorIndex) {
 		super("Parse Error");
+        if(errorIndex > parsedData.length()){
+            throw new IllegalArgumentException("Invalid error index > input.length");
+        }
 		this.data = parsedData;
 		this.errorIndex = errorIndex;
 	}

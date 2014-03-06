@@ -10,16 +10,15 @@
  * 
  * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
  */
-package javax.money.function;
+package javax.money;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Locale;
+import java.util.Set;
 
-import javax.money.MonetaryContext;
-import javax.money.MonetaryCurrencies;
-import javax.money.MonetaryOperator;
-import javax.money.MonetaryRoundings;
+import javax.money.*;
 
 import org.junit.Test;
 
@@ -39,6 +38,13 @@ public class MonetaryRoundingsTest {
 		assertNotNull(op);
 	}
 
+    @Test(expected=MonetaryException.class)
+    public void testMonetaryRoundingsGetCashRoundingCurrencyUnit_Error() {
+        MonetaryOperator op = MonetaryRoundings
+                .getCashRounding(MonetaryCurrencies.getCurrency(new Locale("", "TEST_ERROR")));
+        assertNotNull(op);
+    }
+
 	@Test
 	public void testMonetaryRoundingsGetRoundingCurrencyUnit() {
 		MonetaryOperator op = MonetaryRoundings.getRounding(MonetaryCurrencies
@@ -52,6 +58,13 @@ public class MonetaryRoundingsTest {
 				MonetaryCurrencies.getCurrency("test1"), 200L);
 		assertNotNull(op);
 	}
+
+    @Test(expected=MonetaryException.class)
+    public void testMonetaryRoundingsGetRoundingCurrencyUnit_Error() {
+        MonetaryOperator op = MonetaryRoundings
+                .getRounding(MonetaryCurrencies.getCurrency(new Locale("", "TEST_ERROR")));
+        assertNotNull(op);
+    }
 
 	@Test
 	public void testMonetaryRoundingsGetRounding() {
@@ -71,4 +84,12 @@ public class MonetaryRoundingsTest {
 				.getRounding(new MonetaryContext.Builder().create());
 		assertNotNull(op);
 	}
+
+    @Test
+    public void testMonetaryRoundingsGetCustomRoundingIds() {
+        Set<String> ids = MonetaryRoundings
+                .getCustomRoundingIds();
+        assertNotNull(ids);
+        assertTrue(ids.size() == 2);
+    }
 }

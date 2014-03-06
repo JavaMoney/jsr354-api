@@ -248,7 +248,7 @@ public final class AmountStyle implements Serializable{
 	 */
 	@Override
 	public String toString() {
-		return "FormatStyle [locale=" + locale + ", formatPattern="
+		return "AmountStyle [locale=" + locale + ", formatPattern="
 				+ pattern
 				+ ", currencyStyle="
 				+ currencyStyle

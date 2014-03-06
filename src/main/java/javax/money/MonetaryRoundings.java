@@ -260,7 +260,7 @@ public final class MonetaryRoundings {
 	 * @return the set of custom rounding ids, never {@code null}.
 	 */
 	public static Set<String> getCustomRoundingIds() {
-		Set<String> result = new HashSet<String>();
+		Set<String> result = new HashSet<>();
 		for (RoundingProviderSpi prov : Bootstrap
 				.getServices(
 				RoundingProviderSpi.class)) {
@@ -278,7 +278,7 @@ public final class MonetaryRoundings {
 
 	/**
 	 * Default Rounding that rounds a {@link MonetaryAmount} based on the
-	 * amount's {@link CurrencyUnit} {@link Currency}.
+	 * amount's {@link CurrencyUnit}.
 	 * 
 	 * @author Anatole Tresch
 	 */

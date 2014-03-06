@@ -330,7 +330,7 @@ public final class ProviderContext extends AbstractContext {
 		 * @return this, for chaining.
 		 */
 		public Builder setValidTo(Object dateTime) {
-			set(dateTime, ProviderAttribute.VALID_FROM);
+			set(dateTime, ProviderAttribute.VALID_TO);
 			return this;
 		}
 

@@ -41,7 +41,6 @@ public class ProviderContextTest{
     }
 
     @Test
-    @Ignore
     public void testGetValidTo1() throws Exception{
         Date date = new Date();
         ProviderContext ctx = new ProviderContext.Builder("myprov").setValidTo(date).create();

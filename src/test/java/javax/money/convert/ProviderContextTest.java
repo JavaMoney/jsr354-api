@@ -10,7 +10,6 @@
  */
 package javax.money.convert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Date;
@@ -97,24 +96,24 @@ public class ProviderContextTest{
     @Test
     public void testIsLowerBound() throws Exception{
         ProviderContext ctx = new ProviderContext.Builder("myprov").setValidTo(222L).create();
-        assertTrue(ctx.isUpperBound());
-        assertFalse(ctx.isLowerBound());
+        assertTrue(ctx.hasUpperBound());
+        assertFalse(ctx.hasLowerBound());
     }
 
     @Test
     public void testIsUpperBound() throws Exception{
         ProviderContext ctx = new ProviderContext.Builder("myprov").setValidFrom(222L).create();
-        assertFalse(ctx.isUpperBound());
-        assertTrue(ctx.isLowerBound());
+        assertFalse(ctx.hasUpperBound());
+        assertTrue(ctx.hasLowerBound());
     }
 
     @Test
     public void testIsUpperLowerBound() throws Exception{
         ProviderContext ctx = new ProviderContext.Builder("myprov").setValidFrom(222L).setValidTo(230L).create();
-        assertTrue(ctx.isUpperBound());
-        assertTrue(ctx.isLowerBound());
+        assertTrue(ctx.hasUpperBound());
+        assertTrue(ctx.hasLowerBound());
         ctx = new ProviderContext.Builder("myprov").create();
-        assertFalse(ctx.isUpperBound());
-        assertFalse(ctx.isLowerBound());
+        assertFalse(ctx.hasUpperBound());
+        assertFalse(ctx.hasLowerBound());
     }
 }

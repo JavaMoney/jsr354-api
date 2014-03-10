@@ -85,7 +85,7 @@ public final class ProviderContext extends AbstractContext {
 	 * Returns the starting date/time this rate is valid. The result can also be
 	 * {@code null}, since it is possible, that an {@link ExchangeRate} does not
 	 * have starting validity range. This also can be queried by calling
-	 * {@link #isLowerBound()}.
+	 * {@link #hasLowerBound()}.
 	 * <p>
 	 * Basically all date time types that are available on a platform must be
 	 * supported. On SE this includes Date, Calendar and the new 310 types
@@ -105,7 +105,7 @@ public final class ProviderContext extends AbstractContext {
 	 * <p>
 	 * This is modelled as {@link Long} instaed of {@code long}, since it is
 	 * possible, that an {@link ExchangeRate} does not have starting validity
-	 * range. This also can be queried by calling {@link #isLowerBound()}.
+	 * range. This also can be queried by calling {@link #hasLowerBound()}.
 	 * 
 	 * @return The UTC timestamp of the rate, defining valid from, or
 	 *         {@code null}, if no starting validity constraint is set.
@@ -118,7 +118,7 @@ public final class ProviderContext extends AbstractContext {
 	 * Returns the ending date/time this rate is valid. The result can also be
 	 * {@code null}, since it is possible, that an {@link ExchangeRate} does not
 	 * have ending validity range. This also can be queried by calling
-	 * {@link #isUpperBound()}.
+	 * {@link #hasUpperBound()}.
 	 * <p>
 	 * Basically all date time types that are available on a platform must be
 	 * supported. On SE this includes Date, Calendar and the new 310 types
@@ -139,7 +139,7 @@ public final class ProviderContext extends AbstractContext {
 	 * <p>
 	 * This is modelled as {@link Long} instaed of {@code long}, since it is
 	 * possible, that an {@link ExchangeRate} does not have ending validity
-	 * range. This also can be queried by calling {@link #isUpperBound()}.
+	 * range. This also can be queried by calling {@link #hasUpperBound()}.
 	 * 
 	 * @return the duration of validity in milliseconds, or {@code null} if no
 	 *         ending validity constraint is set.
@@ -175,7 +175,7 @@ public final class ProviderContext extends AbstractContext {
 	 * @return {@code true} if {@link #getValidFromMillis()} is not {@code null}
 	 *         .
 	 */
-	public boolean isLowerBound() {
+	public boolean hasLowerBound() {
 		return getValidFrom(Long.class) != null;
 	}
 
@@ -185,7 +185,7 @@ public final class ProviderContext extends AbstractContext {
 	 * 
 	 * @return {@code true} if {@link #getValidToMillis()} is not {@code null}.
 	 */
-	public boolean isUpperBound() {
+	public boolean hasUpperBound() {
 		return getValidTo(Long.class) != null;
 	}
 

@@ -4,7 +4,7 @@
  * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
  * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
  * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
- * (c) 2012-2013, Credit Suisse All rights reserved.
+ * (c) 2012-2014, Credit Suisse All rights reserved.
  */
 package javax.money.convert;
 
@@ -24,8 +24,14 @@ import javax.money.AbstractContext;
  * Instances of this class are immutable and thread-safe.
  * 
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public final class ProviderContext extends AbstractContext {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3536713139786856877L;
 
 	/**
 	 * Common context attributes, using this attributes ensures interoperability
@@ -103,7 +109,7 @@ public final class ProviderContext extends AbstractContext {
 	 * Returns the UTC timestamp defining from what date/time this rate is
 	 * valid.
 	 * <p>
-	 * This is modelled as {@link Long} instaed of {@code long}, since it is
+	 * This is modeled as {@link Long} instead of {@code long}, since it is
 	 * possible, that an {@link ExchangeRate} does not have starting validity
 	 * range. This also can be queried by calling {@link #hasLowerBound()}.
 	 * 

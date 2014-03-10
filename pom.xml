@@ -502,8 +502,6 @@
 						<target>${maven.compile.targetLevel}</target>
 						<compilerArgument>-g</compilerArgument>
 						<encoding>${project.build.sourceEncoding}</encoding>
-						<charset>${project.build.sourceEncoding}</charset>
-						<showDeprecations>true</showDeprecations>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -550,7 +548,7 @@
 						<keywords>true</keywords>
 						<linksource>true</linksource>
 						<!-- overview>${basedir}/overview.html</overview -->
-						<source>${project.build.sourceCompilerLevel}</source>
+						<source>${maven.compile.sourceLevel}</source>
 						<!-- stylesheetfile>${basedir}/src/site/css/money-jdoc.css</stylesheetfile -->
 						<verbose>true</verbose>
 					</configuration>

@@ -23,7 +23,7 @@ import javax.money.spi.MonetaryConversionsSpi;
  * This singleton defines access to the exchange and currency conversion logic
  * of JavaMoney. It allows to evaluate the currently available exchange rate
  * type instances and provides access to the corresponding
- * {@link ExchangeRateProvider} instances.
+ * {@link ExchangeRateProvider} and {@link javax.money.convert.CurrencyConversion} instances.
  * <p>
  * This class is thread safe.
  * <p>
@@ -32,8 +32,8 @@ import javax.money.spi.MonetaryConversionsSpi;
  * instances, e.g. by registering them as CDI beans. An EE container can
  * register an according {@link MonetaryConversionsSpi} that manages the
  * different application contexts transparently. In a SE environment this class
- * is expected to behave like an ordinary singleton, loading its SPIs from the
- * {@link ServiceLoader}.
+ * is expected to behave like an ordinary singleton, loading its SPIs e.g. from the
+ * JDK {@link ServiceLoader} or an alternate component and service provider.
  * <p>
  * This class is thread-safe. Hereby it is important to know that it delegates
  * to the registered {@link MonetaryConversionsSpi} SPI, which also is required

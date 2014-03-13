@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class implements the {@link ServiceProvider} interface and hereby uses the JDK
+ * This class implements the (default) {@link ServiceProvider} interface and hereby uses the JDK
  * {@link ServiceLoader} to load the services required.
  * 
  * @author Anatole Tresch

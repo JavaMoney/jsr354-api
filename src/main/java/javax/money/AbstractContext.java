@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * This class models a context. Such a context allows to define extendible and
+ * This class models an abstract context that allows to define extendible and
  * portable contexts with any kind of attributes in a type safe way.
  * <p>
  * Instances of this class should be immutable and thread-safe.

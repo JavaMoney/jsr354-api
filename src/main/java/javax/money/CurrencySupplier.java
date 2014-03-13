@@ -32,9 +32,9 @@ package javax.money;
 public interface CurrencySupplier {
 
 	/**
-	 * Gets a result.
+	 * Gets the corresponding {@link javax.money.CurrencyUnit}.
 	 * 
-	 * @return a result
+	 * @return the corresponding {@link javax.money.CurrencyUnit}, not null.
 	 */
 	CurrencyUnit getCurrency();
 }

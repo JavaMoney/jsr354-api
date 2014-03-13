@@ -33,9 +33,9 @@ package javax.money;
 public interface NumberSupplier {
 
 	/**
-	 * Gets a result.
+	 * Gets the corresponding {@link javax.money.NumberValue}.
 	 * 
-	 * @return a result
+	 * @return the corresponding {@link javax.money.NumberValue}, not null.
 	 */
 	NumberValue getNumber();
 }

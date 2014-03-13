@@ -12,7 +12,7 @@ import javax.money.format.AmountStyle;
 import javax.money.format.MonetaryAmountFormat;
 
 /**
- * SPI providing {@link MonetaryAmountFormat} instances.
+ * SPI (formatting) providing {@link MonetaryAmountFormat} instances.
  * 
  * @author Anatole Tresch
  */

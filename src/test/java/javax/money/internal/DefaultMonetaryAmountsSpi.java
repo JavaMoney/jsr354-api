@@ -6,7 +6,7 @@
  * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
  * (c) 2012-2013, Credit Suisse All rights reserved.
  */
-package javax.money.impl;
+package javax.money.internal;
 
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +21,9 @@ import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFactoryProviderSpi;
 import javax.money.spi.MonetaryAmountsSpi;
 
+/**
+ * Default implementation of MonetaryAmountsSpi for testing only.
+ */
 public class DefaultMonetaryAmountsSpi implements MonetaryAmountsSpi {
 
 	private Map<Class<? extends MonetaryAmount>, MonetaryAmountFactoryProviderSpi<?>> factories = new ConcurrentHashMap<>();

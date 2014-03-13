@@ -17,7 +17,7 @@ import javax.money.MonetaryContext;
 import javax.money.MonetaryException;
 
 /**
- * SPI for the backing implementation of the {@link javax.money.MonetaryAmounts} singleton. It
+ * SPI (core) for the backing implementation of the {@link javax.money.MonetaryAmounts} singleton. It
  * should load and manage (including contextual behavior), if needed) the different registered
  * {@link MonetaryAmountFactory} instances.
  * 

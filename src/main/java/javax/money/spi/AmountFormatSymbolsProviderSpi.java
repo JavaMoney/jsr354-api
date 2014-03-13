@@ -14,7 +14,7 @@ import java.util.Locale;
 import javax.money.format.AmountFormatSymbols;
 
 /**
- * SPI providing {@link AmountFormatSymbols} instances. <h3>Implementation specification</h3>
+ * SPI (formatting) providing {@link AmountFormatSymbols} instances. <h3>Implementation specification</h3>
  * Instances of this interfaces must be
  * <ul>
  * <li>thread-safe

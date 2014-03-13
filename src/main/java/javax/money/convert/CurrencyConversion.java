@@ -15,13 +15,21 @@ import javax.money.MonetaryOperator;
 import javax.money.spi.MonetaryConversionsSpi;
 
 /**
- * This interface defines a {@link CurrencyConversion} that is converting to a
- * specific target {@link CurrencyUnit}. Each instance of this class is bound to
- * a specific {@link ExchangeRateProvider}, a term {@link CurrencyUnit} and
- * (optionally) a target timestamp.<br/>
+ * This interface defines a {@link CurrencyConversion} that is converting a {@link MonetaryAmount} to another
+ * {@link MonetaryAmount} with a different target {@link CurrencyUnit}. Each instance of this class is bound to
+ * a specific {@link ExchangeRateProvider} (or a chain of rate providers), a term {@link CurrencyUnit} and
+ * (optionally) a target timestamp. Additionally the {@link javax.money.convert.ConversionContext} can have additional
+ * attributes set that are passed to the rate provider (chain).<br/>
  * This interface serves a an API for the clients, but also must be implemented
  * and registered as SPI to the mechanisms required by the
- * {@link MonetaryConversionsSpi} implementation.
+ * {@link MonetaryConversionsSpi} implementation.<br/>
+ * By extending {@link MonetaryOperator} currency conversion can simply be applied on each {@link MonetaryAmount}
+ * calling the amount'0s with method:
+ * <pre>
+ *     MonetaryAmount amount = ...;
+ *     CurrencyConversion conversion = MonetaryConversions.getCurrencyConversion("CHF");
+ *     MonetaryAmount amountInCHF = amount.with(conversion);
+ * </pre>
  * <p>
  * Instances of this class are required to be thread-safe, but it is not a
  * requirement that they are serializable. In a EE context they can be

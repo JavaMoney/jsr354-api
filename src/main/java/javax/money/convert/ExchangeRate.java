@@ -10,16 +10,17 @@
  */
 package javax.money.convert;
 
+import javax.money.CurrencyUnit;
+import javax.money.NumberValue;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import javax.money.CurrencyUnit;
-import javax.money.NumberValue;
-
 /**
- * This class models an exchange rate between two currencies. Hereby
+ * This class models an exchange rate, which defines the factor the numeric value of a base amount in some currency
+ * 'A' must be multiplied
+ * to get the corresponding amount in the terminating currency 'B'. Hereby
  * <ul>
  * <li>an exchange rate always models one rate from a base (source) to a term
  * (target) {@link CurrencyUnit}.</li>
@@ -50,7 +51,7 @@ import javax.money.NumberValue;
  * reversing a ExchangeRate one must access an {@link ExchangeRateProvider} and
  * query for the reverse rate.</li>
  * </ul>
- * <p>
+ * <p/>
  * The class also implements {@link Comparable} to allow sorting of multiple
  * exchange rates using the following sorting order;
  * <ul>
@@ -59,7 +60,7 @@ import javax.money.NumberValue;
  * <li>base currency</li>
  * <li>term currency</li>
  * </ul>
- * <p>
+ * <p/>
  * Finally ExchangeRate is modeled as an immutable and thread safe type. Also
  * exchange rates are {@link Serializable}, hereby serializing in the following
  * form and order:
@@ -70,458 +71,426 @@ import javax.money.NumberValue;
  * <li>The {@link ConversionContext}
  * <li>The rate chain
  * </ul>
- * 
- * @see <a
- *      href="https://en.wikipedia.org/wiki/Exchange_rate#Quotations">Wikipedia:
- *      Exchange Rate (Quotations)</a>
- * 
+ *
  * @author Werner Keil
  * @author Anatole Tresch
+ * @see <a
+ * href="https://en.wikipedia.org/wiki/Exchange_rate#Quotations">Wikipedia:
+ * Exchange Rate (Quotations)</a>
  */
-public final class ExchangeRate implements Serializable,
-		Comparable<ExchangeRate> {
+public final class ExchangeRate implements Serializable, Comparable<ExchangeRate>{
 
-	/**
-	 * serialVersionUID.
-	 */
-	private static final long serialVersionUID = 5077295306570465837L;
-	/**
-	 * The base currency.
-	 */
-	private final CurrencyUnit base;
-	/**
-	 * The terminating currency.
-	 */
-	private final CurrencyUnit term;
-	/**
-	 * The conversion factor.
-	 */
-	private final NumberValue factor;
-	/**
-	 * The {@link ConversionContext}
-	 */
-	private final ConversionContext conversionContext;
-	/**
-	 * The full chain, at least one instance long.
-	 */
-	private ExchangeRate[] chain = new ExchangeRate[] { this };
+    /**
+     * serialVersionUID.
+     */
+    private static final long serialVersionUID = 5077295306570465837L;
+    /**
+     * The base currency.
+     */
+    private final CurrencyUnit base;
+    /**
+     * The terminating currency.
+     */
+    private final CurrencyUnit term;
+    /**
+     * The conversion factor.
+     */
+    private final NumberValue factor;
+    /**
+     * The {@link ConversionContext}
+     */
+    private final ConversionContext conversionContext;
+    /**
+     * The full chain, at least one instance long.
+     */
+    private ExchangeRate[] chain = new ExchangeRate[]{this};
 
-	/**
-	 * Evaluate a {@link BigDecimal} from a {@link Number} preserving maximal
-	 * information.
-	 * 
-	 * @param num
-	 *            the number
-	 * @return a BigDecimal representing the number.
-	 */
-//	private BigDecimal getBigDecimal(Number num) {
-//		if (num instanceof BigDecimal) {
-//			return (BigDecimal) num;
-//		}
-//		if (num instanceof Long) {
-//			return BigDecimal.valueOf(num.longValue());
-//		}
-//		return BigDecimal.valueOf(num.doubleValue());
-//	}
+    /**
+     * Evaluate a {@link BigDecimal} from a {@link Number} preserving maximal
+     * information.
+     *
+     * @param num
+     *            the number
+     * @return a BigDecimal representing the number.
+     */
+    //	private BigDecimal getBigDecimal(Number num) {
+    //		if (num instanceof BigDecimal) {
+    //			return (BigDecimal) num;
+    //		}
+    //		if (num instanceof Long) {
+    //			return BigDecimal.valueOf(num.longValue());
+    //		}
+    //		return BigDecimal.valueOf(num.doubleValue());
+    //	}
 
-	/**
-	 * Creates a new instance with a custom chain of exchange rate type, e.g. or
-	 * creating <i>derived</i> rates.
-	 * 
-	 * @param exchangeRateType
-	 *            The conversion type, never {@code null}.
-	 * @param base
-	 *            the base {@link CurrencyUnit}
-	 * @param term
-	 *            the terminating {@link CurrencyUnit}
-	 * @param factor
-	 *            the conversion factor
-	 * @param chain
-	 *            the rate chain, never {@code null}, not empty.
-	 * @param validFrom
-	 *            the UTC timestamp from when this rate is valid from, or
-	 *            {@code null}
-	 * @param validUntil
-	 *            the UTC timestamp until when this rate is valid from, or
-	 *            {@code null}
-	 */
-	private ExchangeRate(Builder builder) {
-		Objects.requireNonNull(builder.base, "base may not be null.");
-		Objects.requireNonNull(builder.term, "term may not be null.");
-		Objects.requireNonNull(builder.factor, "factor may not be null.");
-		Objects.requireNonNull(builder.base,
-				"exchangeRateType may not be null.");
-		this.base = builder.base;
-		this.term = builder.term;
-		this.factor = builder.factor;
-		this.conversionContext = builder.conversionContext;
-		setExchangeRateChain(builder.rateChain);
-	}
+    /**
+     * Creates a new instance with a custom chain of exchange rate type, e.g. or
+     * creating <i>derived</i> rates.
+     *
+     * @param exchangeRateType The conversion type, never {@code null}.
+     * @param base             the base {@link CurrencyUnit}
+     * @param term             the terminating {@link CurrencyUnit}
+     * @param factor           the conversion factor
+     * @param chain            the rate chain, never {@code null}, not empty.
+     * @param validFrom        the UTC timestamp from when this rate is valid from, or
+     *                         {@code null}
+     * @param validUntil       the UTC timestamp until when this rate is valid from, or
+     *                         {@code null}
+     */
+    private ExchangeRate(Builder builder){
+        Objects.requireNonNull(builder.base, "base may not be null.");
+        Objects.requireNonNull(builder.term, "term may not be null.");
+        Objects.requireNonNull(builder.factor, "factor may not be null.");
+        Objects.requireNonNull(builder.base, "exchangeRateType may not be null.");
+        this.base = builder.base;
+        this.term = builder.term;
+        this.factor = builder.factor;
+        this.conversionContext = builder.conversionContext;
+        setExchangeRateChain(builder.rateChain);
+    }
 
-	/**
-	 * Internal method to set the rate chain, which also ensure that the chain
-	 * passed, when not null, contains valid elements.
-	 * 
-	 * @param chain
-	 *            the chain to set.
-	 */
-	private void setExchangeRateChain(ExchangeRate... chain) {
-		if (chain == null || chain.length == 0) {
-			this.chain = new ExchangeRate[] { this };
-		} else {
-			for (int i = 0; i < chain.length; i++) {
-				if (chain[i] == null) {
-					throw new IllegalArgumentException(
-							"Chain element can not be null.");
-				}
-			}
-			this.chain = chain;
-		}
-	}
+    /**
+     * Internal method to set the rate chain, which also ensure that the chain
+     * passed, when not null, contains valid elements.
+     *
+     * @param chain the chain to set.
+     */
+    private void setExchangeRateChain(ExchangeRate... chain){
+        if(chain == null || chain.length == 0){
+            this.chain = new ExchangeRate[]{this};
+        }else{
+            for(int i = 0; i < chain.length; i++){
+                if(chain[i] == null){
+                    throw new IllegalArgumentException("Chain element can not be null.");
+                }
+            }
+            this.chain = chain;
+        }
+    }
 
-	/**
-	 * Access the {@link ConversionContext} of {@link ExchangeRate}.
-	 * 
-	 * @return the conversion context, never null.
-	 */
-	public final ConversionContext getConversionContext() {
-		return this.conversionContext;
-	}
+    /**
+     * Access the {@link ConversionContext} of {@link ExchangeRate}.
+     *
+     * @return the conversion context, never null.
+     */
+    public final ConversionContext getConversionContext(){
+        return this.conversionContext;
+    }
 
-	/**
-	 * Get the base (source) {@link CurrencyUnit}.
-	 * 
-	 * @return the base {@link CurrencyUnit}.
-	 */
-	public final CurrencyUnit getBase() {
-		return this.base;
-	}
+    /**
+     * Get the base (source) {@link CurrencyUnit}.
+     *
+     * @return the base {@link CurrencyUnit}.
+     */
+    public final CurrencyUnit getBase(){
+        return this.base;
+    }
 
-	/**
-	 * Get the term (target) {@link CurrencyUnit}.
-	 * 
-	 * @return the term {@link CurrencyUnit}.
-	 */
-	public final CurrencyUnit getTerm() {
-		return this.term;
-	}
+    /**
+     * Get the term (target) {@link CurrencyUnit}.
+     *
+     * @return the term {@link CurrencyUnit}.
+     */
+    public final CurrencyUnit getTerm(){
+        return this.term;
+    }
 
-	/**
-	 * Access the rate's bid factor.
-	 * 
-	 * @return the bid factor for this exchange rate, or {@code null}.
-	 */
-	public final NumberValue getFactor() {
-		return this.factor;
-	}
+    /**
+     * Access the rate's bid factor.
+     *
+     * @return the bid factor for this exchange rate, or {@code null}.
+     */
+    public final NumberValue getFactor(){
+        return this.factor;
+    }
 
-	/**
-	 * Access the chain of exchange rates.
-	 * 
-	 * @return the chain of rates, in case of a derived rate, this may be
-	 *         several instances. For a direct exchange rate, this equals to
-	 *         <code>new ExchangeRate[]{this}</code>.
-	 */
-	public final List<ExchangeRate> getExchangeRateChain() {
-		return Arrays.asList(this.chain);
-	}
+    /**
+     * Access the chain of exchange rates.
+     *
+     * @return the chain of rates, in case of a derived rate, this may be
+     * several instances. For a direct exchange rate, this equals to
+     * <code>new ExchangeRate[]{this}</code>.
+     */
+    public final List<ExchangeRate> getExchangeRateChain(){
+        return Arrays.asList(this.chain);
+    }
 
-	/**
-	 * Allows to evaluate if this exchange rate is a derived exchange rate.
-	 * Derived exchange rates are defined by an ordered list of subconversions
-	 * with intermediate steps, whereas a direct conversion is possible in one
-	 * steps.
-	 * <p>
-	 * This method always returns {@code true}, if the chain contains more than
-	 * one rate. Direct rates, have also a chain, but with exact one rate.
-	 * 
-	 * @return true, if the exchange rate is derived.
-	 */
-	public final boolean isDerived() {
-		return this.chain.length > 1;
-	}
+    /**
+     * Allows to evaluate if this exchange rate is a derived exchange rate.
+     * Derived exchange rates are defined by an ordered list of subconversions
+     * with intermediate steps, whereas a direct conversion is possible in one
+     * steps.
+     * <p/>
+     * This method always returns {@code true}, if the chain contains more than
+     * one rate. Direct rates, have also a chain, but with exact one rate.
+     *
+     * @return true, if the exchange rate is derived.
+     */
+    public final boolean isDerived(){
+        return this.chain.length > 1;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	@Override
-	public int compareTo(ExchangeRate o) {
-		if (o == null) {
-			return -1;
-		}
-		int compare = this.getBase().getCurrencyCode()
-				.compareTo(o.getBase().getCurrencyCode());
-		if (compare == 0) {
-			compare = this.getTerm().getCurrencyCode()
-					.compareTo(o.getTerm().getCurrencyCode());
-		}
-		if (compare == 0) {
-			compare = this.getConversionContext().getProvider()
-					.compareTo(o.getConversionContext().getProvider());
-		}
-		return compare;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    @Override
+    public int compareTo(ExchangeRate o){
+        if(o == null){
+            return -1;
+        }
+        int compare = this.getBase().getCurrencyCode().compareTo(o.getBase().getCurrencyCode());
+        if(compare == 0){
+            compare = this.getTerm().getCurrencyCode().compareTo(o.getTerm().getCurrencyCode());
+        }
+        if(compare == 0){
+            compare = this.getConversionContext().getProvider().compareTo(o.getConversionContext().getProvider());
+        }
+        return compare;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "ExchangeRate [base=" + base + ", factor=" + factor
-				+ ", conversionContext=" + conversionContext + "]";
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString(){
+        return "ExchangeRate [base=" + base + ", factor=" + factor + ", conversionContext=" + conversionContext + "]";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((base == null) ? 0 : base.hashCode());
-		result = prime
-				* result
-				+ ((conversionContext == null) ? 0 : conversionContext
-						.hashCode());
-		result = prime * result + ((factor == null) ? 0 : factor.hashCode());
-		result = prime * result + ((term == null) ? 0 : term.hashCode());
-		if (chain[0] != this) {
-			result = prime * result + Arrays.hashCode(chain);
-		}
-		return result;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode(){
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((base == null) ? 0 : base.hashCode());
+        result = prime * result + ((conversionContext == null) ? 0 : conversionContext.hashCode());
+        result = prime * result + ((factor == null) ? 0 : factor.hashCode());
+        result = prime * result + ((term == null) ? 0 : term.hashCode());
+        if(chain[0] != this){
+            result = prime * result + Arrays.hashCode(chain);
+        }
+        return result;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		ExchangeRate other = (ExchangeRate) obj;
-		if (base == null) {
-			if (other.base != null) {
-				return false;
-			}
-		} else if (!base.equals(other.base)) {
-			return false;
-		}
-		if (chain[0] != this) {
-			if (!Arrays.equals(chain, other.chain)) {
-				return false;
-			}
-		}
-		if (conversionContext == null) {
-			if (other.conversionContext != null) {
-				return false;
-			}
-		} else if (!conversionContext.equals(other.conversionContext)) {
-			return false;
-		}
-		if (factor == null) {
-			if (other.factor != null) {
-				return false;
-			}
-		} else if (!factor.equals(other.factor)) {
-			return false;
-		}
-		if (term == null) {
-			if (other.term != null) {
-				return false;
-			}
-		} else if (!term.equals(other.term)) {
-			return false;
-		}
-		return true;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj){
+            return true;
+        }
+        if(obj == null){
+            return false;
+        }
+        if(getClass() != obj.getClass()){
+            return false;
+        }
+        ExchangeRate other = (ExchangeRate) obj;
+        if(base == null){
+            if(other.base != null){
+                return false;
+            }
+        }else if(!base.equals(other.base)){
+            return false;
+        }
+        if(chain[0] != this){
+            if(!Arrays.equals(chain, other.chain)){
+                return false;
+            }
+        }
+        if(conversionContext == null){
+            if(other.conversionContext != null){
+                return false;
+            }
+        }else if(!conversionContext.equals(other.conversionContext)){
+            return false;
+        }
+        if(factor == null){
+            if(other.factor != null){
+                return false;
+            }
+        }else if(!factor.equals(other.factor)){
+            return false;
+        }
+        if(term == null){
+            if(other.term != null){
+                return false;
+            }
+        }else if(!term.equals(other.term)){
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 * Builder for creating new instances of {@link ExchangeRate}. Note that
-	 * instances of this class are not thread-safe.
-	 * 
-	 * @author Anatole Tresch
-	 */
-	public static class Builder {
+    /**
+     * Builder for creating new instances of {@link ExchangeRate}. Note that
+     * instances of this class are not thread-safe.
+     *
+     * @author Anatole Tresch
+     */
+    public static class Builder{
 
-		/**
-		 * The {@link ConversionContext}.
-		 */
-		private ConversionContext conversionContext;
-		/**
-		 * The base (source) currency.
-		 */
-		private CurrencyUnit base;
-		/**
-		 * The term (target) currency.
-		 */
-		private CurrencyUnit term;
-		/**
-		 * The conversion factor.
-		 */
-		private NumberValue factor;
-		/**
-		 * The chain of invovled rates.
-		 */
-		private ExchangeRate[] rateChain;
+        /**
+         * The {@link ConversionContext}.
+         */
+        private ConversionContext conversionContext;
+        /**
+         * The base (source) currency.
+         */
+        private CurrencyUnit base;
+        /**
+         * The term (target) currency.
+         */
+        private CurrencyUnit term;
+        /**
+         * The conversion factor.
+         */
+        private NumberValue factor;
+        /**
+         * The chain of invovled rates.
+         */
+        private ExchangeRate[] rateChain;
 
-		/**
-		 * Sets the exchange rate type
-		 * 
-		 * @param rateType
-		 *            the {@link RateType} contained
-		 */
-		public Builder(String provider, RateType rateType) {
-			this(ConversionContext.of(provider, rateType));
-		}
+        /**
+         * Sets the exchange rate type
+         *
+         * @param rateType the {@link RateType} contained
+         */
+        public Builder(String provider, RateType rateType){
+            this(ConversionContext.of(provider, rateType));
+        }
 
-		/**
-		 * Sets the exchange rate type
-		 * 
-		 * @param context
-		 *            the {@link ConversionContext} to be applied
-		 */
-		public Builder(ConversionContext context) {
-			setContext(context);
-		}
+        /**
+         * Sets the exchange rate type
+         *
+         * @param context the {@link ConversionContext} to be applied
+         */
+        public Builder(ConversionContext context){
+            setContext(context);
+        }
 
-		/**
-		 * Sets the base {@link CurrencyUnit}
-		 * 
-		 * @param base
-		 *            to base (source) {@link CurrencyUnit} to be applied
-		 * @return the builder instance
-		 */
-		public Builder setBase(CurrencyUnit base) {
-			this.base = base;
-			return this;
-		}
+        /**
+         * Sets the base {@link CurrencyUnit}
+         *
+         * @param base to base (source) {@link CurrencyUnit} to be applied
+         * @return the builder instance
+         */
+        public Builder setBase(CurrencyUnit base){
+            this.base = base;
+            return this;
+        }
 
-		/**
-		 * Sets the terminating (target) {@link CurrencyUnit}
-		 * 
-		 * @param term
-		 *            to terminating {@link CurrencyUnit} to be applied
-		 * @return the builder instance
-		 */
-		public Builder setTerm(CurrencyUnit term) {
-			this.term = term;
-			return this;
-		}
+        /**
+         * Sets the terminating (target) {@link CurrencyUnit}
+         *
+         * @param term to terminating {@link CurrencyUnit} to be applied
+         * @return the builder instance
+         */
+        public Builder setTerm(CurrencyUnit term){
+            this.term = term;
+            return this;
+        }
 
-		/**
-		 * Sets the {@link ExchangeRate} chain.
-		 * 
-		 * @param exchangeRates
-		 *            the {@link ExchangeRate} chain to be applied
-		 * @return the builder instance
-		 */
-		public Builder setRateChain(ExchangeRate... exchangeRates) {
-			if (exchangeRates != null) {
-				this.rateChain = exchangeRates.clone();
-			} else {
-				this.rateChain = null;
-			}
-			return this;
-		}
+        /**
+         * Sets the {@link ExchangeRate} chain.
+         *
+         * @param exchangeRates the {@link ExchangeRate} chain to be applied
+         * @return the builder instance
+         */
+        public Builder setRateChain(ExchangeRate... exchangeRates){
+            if(exchangeRates != null){
+                this.rateChain = exchangeRates.clone();
+            }else{
+                this.rateChain = null;
+            }
+            return this;
+        }
 
-		/**
-		 * Sets the conversion factor, as the factor
-		 * {@code base * factor = target}.
-		 * 
-		 * @param factor
-		 *            the factor.
-		 * @return The builder instance.
-		 */
-//		public Builder setFactor(Number factor) {
-//			if (factor != null) {
-//				this.factor = new DefaultNumberValue(factor);
-//			}
-//			return this;
-//		}
+        /**
+         * Sets the conversion factor, as the factor
+         * {@code base * factor = target}.
+         *
+         * @param factor
+         *            the factor.
+         * @return The builder instance.
+         */
+        //		public Builder setFactor(Number factor) {
+        //			if (factor != null) {
+        //				this.factor = new DefaultNumberValue(factor);
+        //			}
+        //			return this;
+        //		}
 
-		/**
-		 * Sets the conversion factor, as the factor
-		 * {@code base * factor = target}.
-		 * 
-		 * @param factor
-		 *            the factor.
-		 * @return The builder instance.
-		 */
-		public Builder setFactor(NumberValue factor) {
-			this.factor = factor;
-			return this;
-		}
+        /**
+         * Sets the conversion factor, as the factor
+         * {@code base * factor = target}.
+         *
+         * @param factor the factor.
+         * @return The builder instance.
+         */
+        public Builder setFactor(NumberValue factor){
+            this.factor = factor;
+            return this;
+        }
 
-		/**
-		 * Sets the provider to be applied.
-		 * 
-		 * @param conversionContext
-		 *            the {@link ConversionContext}, not null.
-		 * @return The builder.
-		 */
-		public Builder setContext(ConversionContext conversionContext) {
-			Objects.requireNonNull(conversionContext);
-			this.conversionContext = conversionContext;
-			return this;
-		}
+        /**
+         * Sets the provider to be applied.
+         *
+         * @param conversionContext the {@link ConversionContext}, not null.
+         * @return The builder.
+         */
+        public Builder setContext(ConversionContext conversionContext){
+            Objects.requireNonNull(conversionContext);
+            this.conversionContext = conversionContext;
+            return this;
+        }
 
-		/**
-		 * Builds a new instance of {@link ExchangeRate}.
-		 * 
-		 * @return a new instance of {@link ExchangeRate}.
-		 * @throws IllegalArgumentException
-		 *             if the rate could not be build.
-		 */
-		public ExchangeRate create() {
-			return new ExchangeRate(this);
-		}
+        /**
+         * Builds a new instance of {@link ExchangeRate}.
+         *
+         * @return a new instance of {@link ExchangeRate}.
+         * @throws IllegalArgumentException if the rate could not be build.
+         */
+        public ExchangeRate create(){
+            return new ExchangeRate(this);
+        }
 
-		/**
-		 * Initialize the {@link Builder} with an {@link ExchangeRate}. This is
-		 * useful for creating a new rate, reusing some properties from an
-		 * existing one.
-		 * 
-		 * @param rate
-		 *            the base rate
-		 * @return the Builder, for chaining.
-		 */
-		public Builder setRate(ExchangeRate rate) {
-			this.base = rate.getBase();
-			this.term = rate.getTerm();
-			this.conversionContext = rate.getConversionContext();
-			this.factor = rate.getFactor();
-			this.rateChain = rate.chain;
-			this.term = rate.getTerm();
-			return this;
-		}
-	}
+        /**
+         * Initialize the {@link Builder} with an {@link ExchangeRate}. This is
+         * useful for creating a new rate, reusing some properties from an
+         * existing one.
+         *
+         * @param rate the base rate
+         * @return the Builder, for chaining.
+         */
+        public Builder setRate(ExchangeRate rate){
+            this.base = rate.getBase();
+            this.term = rate.getTerm();
+            this.conversionContext = rate.getConversionContext();
+            this.factor = rate.getFactor();
+            this.rateChain = rate.chain;
+            this.term = rate.getTerm();
+            return this;
+        }
+    }
 
-	/**
-	 * Create a {@link Builder} based on the current rate instance.
-	 * 
-	 * @return a new {@link Builder}, never {@code null}.
-	 */
-	public Builder toBuilder() {
-		return new Builder(getConversionContext())
-				.setBase(getBase())
-				.setTerm(getTerm())
-				.setFactor(getFactor())
-				.setRateChain(
-						getExchangeRateChain().toArray(new ExchangeRate[0]));
-	}
+    /**
+     * Create a {@link Builder} based on the current rate instance.
+     *
+     * @return a new {@link Builder}, never {@code null}.
+     */
+    public Builder toBuilder(){
+        return new Builder(getConversionContext()).setBase(getBase()).setTerm(getTerm()).setFactor(getFactor())
+                .setRateChain(getExchangeRateChain().toArray(new ExchangeRate[0]));
+    }
 }

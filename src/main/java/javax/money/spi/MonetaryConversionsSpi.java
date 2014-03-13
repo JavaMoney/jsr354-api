@@ -21,7 +21,7 @@ import javax.money.convert.MonetaryConversions;
 import javax.money.convert.ProviderContext;
 
 /**
- * This is the SPI to be implemented, and that is registered into the
+ * SPI (conversoin) that implements the functionalities provided by the
  * {@code MonetaryConversions} singleton accessor. It should be registered as a
  * service using the JDK {@code ServiceLoader}. Hereby only one instance can be
  * registered at a time.<br/>

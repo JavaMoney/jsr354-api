@@ -20,7 +20,7 @@ import javax.money.spi.Bootstrap;
 import javax.money.spi.RoundingProviderSpi;
 
 /**
- * This class models the accessor for rounding instances, modeled by
+ * This class models the accessor for rounding instances, modeled as
  * {@link javax.money.MonetaryOperator}.
  * <p>
  * This class is thread-safe.

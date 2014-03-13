@@ -13,7 +13,7 @@
 package javax.money;
 
 /**
- * Represents an operation on a single operand that produces a result of type
+ * Represents an operation on a single {@link MonetaryAmount} that produces a result of type
  * {@link MonetaryAmount}.
  * <p>
  * Examples might be an operator that rounds the amount to the nearest 1000, or

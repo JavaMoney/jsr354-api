@@ -459,7 +459,7 @@ public final class ExchangeRate implements Serializable, Comparable<ExchangeRate
          * Builds a new instance of {@link ExchangeRate}.
          *
          * @return a new instance of {@link ExchangeRate}.
-         * @throws IllegalArgumentException if the rate could not be build.
+         * @throws IllegalArgumentException if the rate could not be create.
          */
         public ExchangeRate create(){
             return new ExchangeRate(this);

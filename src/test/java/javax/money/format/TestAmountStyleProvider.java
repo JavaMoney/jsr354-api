@@ -8,13 +8,10 @@
  */
 package javax.money.format;
 
-import org.junit.Test;
-
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.money.spi.AmountFormatSymbolsProviderSpi;
 import javax.money.spi.AmountStyleProviderSpi;
 
 public class TestAmountStyleProvider implements
@@ -33,7 +30,7 @@ public class TestAmountStyleProvider implements
 	@Override
 	public AmountStyle getAmountStyle(Locale locale) {
 		if (Locale.ENGLISH.equals(locale)) {
-			return new AmountStyle.Builder(locale).setPattern("test").build();
+			return new AmountStyle.Builder(locale).setPattern("test").create();
 		}
 		return null;
 	}

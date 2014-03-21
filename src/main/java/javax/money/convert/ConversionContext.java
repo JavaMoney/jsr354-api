@@ -238,6 +238,17 @@ public final class ConversionContext extends AbstractContext{
     }
 
     /**
+     * Simple factory method for a {@link ConversionContext} for accessing historic rates. For more
+     * possibilities to initialize a {@link ConversionContext}, please use a
+     * {@link Builder},
+     *
+     * @return a new instance of {@link ConversionContext}
+     */
+    public static ConversionContext of(long timestamp){
+        return new Builder().setTimestamp(timestamp).create();
+    }
+
+    /**
      * Converts the given {@link ProviderContext} to an according
      * {@link ConversionContext} using the given {@link RateType}.
      *

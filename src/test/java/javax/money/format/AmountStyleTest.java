@@ -43,21 +43,21 @@ public class AmountStyleTest{
 
     @Test
     public void testGetPattern() throws Exception{
-        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").build();
+        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").create();
         assertNotNull(style.getPattern());
         assertEquals("###.##", style.getPattern());
     }
 
     @Test
     public void testGetLocalizedPattern() throws Exception{
-        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").build();
+        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").create();
         assertNotNull(style.getPattern());
         assertEquals("###.##", style.getLocalizedPattern());
     }
 
     @Test
     public void testGetCurrencyStyle() throws Exception{
-        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setCurrencyStyle(CurrencyStyle.NUMERIC_CODE).build();
+        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setCurrencyStyle(CurrencyStyle.NUMERIC_CODE).create();
         assertNotNull(style.getCurrencyStyle());
         assertEquals(CurrencyStyle.NUMERIC_CODE, style.getCurrencyStyle());
     }
@@ -65,7 +65,7 @@ public class AmountStyleTest{
     @Test
     public void testGetSymbols() throws Exception{
         AmountFormatSymbols symbols = AmountFormatSymbols.of(Locale.ENGLISH);
-        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setSymbols(symbols).build();
+        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setSymbols(symbols).create();
         assertNotNull(style.getSymbols());
         assertEquals(symbols, style.getSymbols());
     }
@@ -78,7 +78,7 @@ public class AmountStyleTest{
                 return (T) value.multiply(2.0d);
             }
         };
-        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setDisplayConversion(op).build();
+        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setDisplayConversion(op).create();
         assertNotNull(style.getDisplayConversion());
         assertTrue(style.getDisplayConversion() == op);
     }
@@ -91,14 +91,14 @@ public class AmountStyleTest{
                 return (T) value.divide(2d);
             }
         };
-        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setParseConversion(op).build();
+        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setParseConversion(op).create();
         assertNotNull(style.getParseConversion());
         assertTrue(style.getParseConversion() == op);
     }
 
     @Test
     public void testGetGroupingSizes() throws Exception{
-        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setGroupingSizes(1, 2, 3, 4).build();
+        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setGroupingSizes(1, 2, 3, 4).create();
         assertNotNull(style.getGroupingSizes());
         assertTrue(style.getGroupingSizes()[0] == 1);
         assertTrue(style.getGroupingSizes()[1] == 2);
@@ -108,10 +108,10 @@ public class AmountStyleTest{
 
     @Test
     public void testToBuilder() throws Exception{
-        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setGroupingSizes(1, 2, 3, 4).build();
+        AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setGroupingSizes(1, 2, 3, 4).create();
         AmountStyle.Builder builder = style.toBuilder();
         assertNotNull(builder);
-        assertEquals(style, builder.build());
+        assertEquals(style, builder.create());
     }
 
     @Test
@@ -123,12 +123,12 @@ public class AmountStyleTest{
             }
         };
         List<AmountStyle> contexts = new ArrayList<>();
-        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setGroupingSizes(1, 2).setParseConversion(op).build());
+        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setGroupingSizes(1, 2).setParseConversion(op).create());
         contexts.add(
-                new AmountStyle.Builder(Locale.ENGLISH).setPattern("###_##").setGroupingSizes(1, 2, 3, 4).setDisplayConversion(op).build());
-        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("###,##").setParseConversion(op).setDisplayConversion(op).build());
-        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("#.##").setParseConversion(op).build());
-        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("##.##").setDisplayConversion(op).build());
+                new AmountStyle.Builder(Locale.ENGLISH).setPattern("###_##").setGroupingSizes(1, 2, 3, 4).setDisplayConversion(op).create());
+        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("###,##").setParseConversion(op).setDisplayConversion(op).create());
+        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("#.##").setParseConversion(op).create());
+        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("##.##").setDisplayConversion(op).create());
         Set<Integer> hashCodes = new HashSet<>();
         for(AmountStyle ctx : contexts){
             hashCodes.add(ctx.hashCode());
@@ -146,12 +146,12 @@ public class AmountStyleTest{
             }
         };
         List<AmountStyle> contexts = new ArrayList<>();
-        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setGroupingSizes(1, 2).setParseConversion(op).build());
+        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("###.##").setGroupingSizes(1, 2).setParseConversion(op).create());
         contexts.add(
-                new AmountStyle.Builder(Locale.ENGLISH).setPattern("###_##").setGroupingSizes(1, 2, 3, 4).setDisplayConversion(op).build());
-        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("###,##").setParseConversion(op).setDisplayConversion(op).build());
-        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("#.##").setParseConversion(op).build());
-        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("##.##").setDisplayConversion(op).build());
+                new AmountStyle.Builder(Locale.ENGLISH).setPattern("###_##").setGroupingSizes(1, 2, 3, 4).setDisplayConversion(op).create());
+        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("###,##").setParseConversion(op).setDisplayConversion(op).create());
+        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("#.##").setParseConversion(op).create());
+        contexts.add(new AmountStyle.Builder(Locale.ENGLISH).setPattern("##.##").setDisplayConversion(op).create());
         Set<AmountStyle> checkContexts = new HashSet<>();
         for(AmountStyle ctx : contexts){
             checkContexts.add(ctx);
@@ -164,7 +164,7 @@ public class AmountStyleTest{
     @Test
     public void testToString() throws Exception{
         AmountStyle style = new AmountStyle.Builder(Locale.ENGLISH).setGroupingSizes(1, 2, 3, 4)
-                .setCurrencyStyle(CurrencyStyle.NUMERIC_CODE).setPattern("###").build();
+                .setCurrencyStyle(CurrencyStyle.NUMERIC_CODE).setPattern("###").create();
         String toString = style.toString();
         assertNotNull(toString);
         assertTrue(toString.contains("DE"));

@@ -273,7 +273,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
 
 
     /**
-     * This class allows to build and create instances of
+     * This class allows to create and create instances of
      * {@link MonetaryContext} using a fluent API.
      * <p/>
      * This class is not serializable and not thread-safe.

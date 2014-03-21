@@ -413,7 +413,7 @@ public final class AmountStyle implements Serializable{
 		 * @throws IllegalStateException
 		 *             if no {@link AmountStyle} could be created.
 		 */
-		public AmountStyle build() {
+		public AmountStyle create() {
 			return new AmountStyle(this);
 		}
 

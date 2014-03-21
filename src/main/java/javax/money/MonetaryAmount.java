@@ -87,7 +87,7 @@ package javax.money;
  * @author Werner Keil
  * @version 0.8.1
  */
-public interface MonetaryAmount extends CurrencySupplier, NumberSupplier {
+public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Comparable<MonetaryAmount> {
 
 	/**
 	 * Returns the amount’s currency, modeled as {@link CurrencyUnit}. Implementations may

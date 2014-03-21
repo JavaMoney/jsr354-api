@@ -38,7 +38,7 @@ package javax.money;
  * 
  * @see <a href="https://en.wikipedia.org/wiki/Currency">Wikipedia: Currency</a>
  */
-public interface CurrencyUnit {
+public interface CurrencyUnit extends Comparable<CurrencyUnit>{
 
 	/**
 	 * Gets the unique currency code, the effective code depends on the

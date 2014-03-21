@@ -310,4 +310,8 @@ public final class DummyAmount implements
 		return new DummyAmountFactory();
 	}
 
+    @Override
+    public int compareTo(MonetaryAmount o){
+        return 0;
+    }
 }

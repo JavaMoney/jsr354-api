@@ -122,4 +122,23 @@ public final class MonetaryAmounts {
 		return monetaryAmountsSpi.queryAmountType(requiredContext);
 	}
 
+    /**
+     * Get the {@link javax.money.MonetaryAmountFactory} implementation, that best matches to cover the given
+     * {@link MonetaryContext}.
+     *
+     * @param requiredContext
+     *            the {@link MonetaryContext} to be queried for a matching {@link MonetaryAmount}
+     *            implementation, not{@code null}.
+     * @return the {@link javax.money.MonetaryAmountFactory} implementation, that best matches to cover the given
+     *         {@link MonetaryContext}, never {@code null}.
+     * @throws MonetaryException
+     *             if no {@link MonetaryAmount} implementation class can cover the required
+     *             {@link MonetaryContext}.
+     */
+    public static MonetaryAmountFactory<?> getAmountFactory(
+            MonetaryContext requiredContext) {
+        Class<? extends MonetaryAmount> type = queryAmountType(requiredContext);
+        return getAmountFactory(type);
+    }
+
 }

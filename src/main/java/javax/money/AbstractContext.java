@@ -91,8 +91,8 @@ public abstract class AbstractContext implements Serializable {
 	 */
 	// Type safe cast
 	@SuppressWarnings("unchecked")
-	public <T> T getNamedAttribute(Class<T> type, Object key) {
-		return getNamedAttribute(type, key, null);
+	public <T> T getNamedAttribute(Object key, Class<T> type) {
+		return getNamedAttribute(key, type, null);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public abstract class AbstractContext implements Serializable {
 	 */
 	// Type safe cast
 	@SuppressWarnings("unchecked")
-	public <T> T getNamedAttribute(Class<T> type, Object key, T defaultValue) {
+	public <T> T getNamedAttribute(Object key, Class<T> type, T defaultValue) {
 		Map<Object, ?> typedAttrs = attributes.get(type);
 		if (typedAttrs != null) {
 			T val = (T) typedAttrs.get(key);
@@ -242,8 +242,8 @@ public abstract class AbstractContext implements Serializable {
 		 *            the attribute value
 		 * @return this Builder, for chaining
 		 */
-		public B set(Object value) {
-			return set(value, value.getClass(), value.getClass());
+		public B setAttribute(Object value) {
+			return setAttribute(value.getClass(), value, value.getClass());
 		}
 		
 		/**
@@ -255,8 +255,8 @@ public abstract class AbstractContext implements Serializable {
 		 *            the attribute's type, not {@code null}
 		 * @return this Builder, for chaining
 		 */
-		public B remove(Class type) {
-			return remove(type, type);
+		public B removeAttribute(Class type) {
+			return removeAttribute(type, type);
 		}
 
 		/**
@@ -269,8 +269,8 @@ public abstract class AbstractContext implements Serializable {
 		 *            the attribute's key, not {@code null}
 		 * @return this Builder, for chaining
 		 */
-		public B set(Object value, Object key) {
-			return set(value, key, value.getClass());
+		public B setAttribute(Object key, Object value) {
+			return setAttribute(key, value, value.getClass());
 		}
 
 		/**
@@ -283,7 +283,7 @@ public abstract class AbstractContext implements Serializable {
 		 *            the attribute's key, not {@code null}
 		 * @return this Builder, for chaining
 		 */
-		public B remove(Class type, Object key) {
+		public B removeAttribute(Object key, Class type) {
 			Map<Object, Object> typedAttrs = attributes.get(type);
 			if (typedAttrs != null) {
 				attributes.remove(key);
@@ -303,7 +303,7 @@ public abstract class AbstractContext implements Serializable {
 		 *            the attribute's type
 		 * @return this Builder, for chaining
 		 */
-		public <T> B set(T attribute, Object key, Class<? extends T> type) {
+		public <T> B setAttribute(Object key, T attribute, Class<? extends T> type) {
 			Map<Object, Object> typedAttrs = attributes.get(type);
 			if (typedAttrs == null) {
 				typedAttrs = new HashMap<>();

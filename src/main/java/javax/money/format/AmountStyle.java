@@ -9,6 +9,7 @@
 package javax.money.format;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -295,7 +296,7 @@ public final class AmountStyle implements Serializable{
 			this.displayConversion = style.displayConversion;
 			this.groupingSizes = style.groupingSizes;
 			this.parseConversion = style.parseConversion;
-			this.pattern = style.pattern;
+            setPattern(style.pattern);
 		}
 		
 		/**
@@ -308,6 +309,7 @@ public final class AmountStyle implements Serializable{
 			Objects.requireNonNull(locale, "Locale required.");
 			this.locale = locale;
 			this.symbols = AmountFormatSymbols.of(locale);
+            setPattern(((DecimalFormat)DecimalFormat.getCurrencyInstance(locale)).toPattern());
 		}
 
 		/**
@@ -375,19 +377,6 @@ public final class AmountStyle implements Serializable{
 		public Builder setPattern(String pattern) {
 			Objects.requireNonNull(pattern, "pattern required.");
 			this.pattern = pattern;
-			return this;
-		}
-
-		/**
-		 * Sets the {@link AmountFormatSymbols}.
-		 * 
-		 * @param symbols
-		 *            The target {@link AmountFormatSymbols}, not null.
-		 * @return the {@link Builder} for chaining.
-		 */
-		public Builder withSymbols(AmountFormatSymbols symbols) {
-			Objects.requireNonNull(symbols, "symbols required.");
-			this.symbols = symbols;
 			return this;
 		}
 

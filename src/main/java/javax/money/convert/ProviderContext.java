@@ -84,7 +84,7 @@ public final class ProviderContext extends AbstractContext{
      * @return the provider, or {code null}.
      */
     public String getProviderName(){
-        return getNamedAttribute(String.class, ProviderAttribute.PROVIDER);
+        return getNamedAttribute(ProviderAttribute.PROVIDER, String.class);
     }
 
     /**
@@ -93,7 +93,7 @@ public final class ProviderContext extends AbstractContext{
      * @return the deferred flag, or {code null}.
      */
     public Set<RateType> getRateTypes(){
-        return getNamedAttribute(Set.class, ProviderAttribute.RATE_TYPES);
+        return getNamedAttribute(ProviderAttribute.RATE_TYPES, Set.class);
     }
 
     /**
@@ -111,7 +111,7 @@ public final class ProviderContext extends AbstractContext{
      * {@code null}, if no starting validity constraint is set.
      */
     public <T> T getValidFrom(Class<T> type){
-        return getNamedAttribute(type, ProviderAttribute.VALID_FROM);
+        return getNamedAttribute(ProviderAttribute.VALID_FROM, type);
     }
 
     /**
@@ -126,7 +126,7 @@ public final class ProviderContext extends AbstractContext{
      * {@code null}, if no starting validity constraint is set.
      */
     public Long getValidFromMillis(){
-        return getNamedAttribute(Long.class, ProviderAttribute.VALID_FROM);
+        return getNamedAttribute(ProviderAttribute.VALID_FROM, Long.class);
     }
 
     /**
@@ -144,7 +144,7 @@ public final class ProviderContext extends AbstractContext{
      * {@code null}, if no ending validity constraint is set.
      */
     public <T> T getValidTo(Class<T> type){
-        return getNamedAttribute(type, ProviderAttribute.VALID_TO);
+        return getNamedAttribute(ProviderAttribute.VALID_TO, type);
     }
 
     /**
@@ -160,7 +160,7 @@ public final class ProviderContext extends AbstractContext{
      * ending validity constraint is set.
      */
     public Long getValidToMillis(){
-        return getNamedAttribute(Long.class, ProviderAttribute.VALID_TO);
+        return getNamedAttribute(ProviderAttribute.VALID_TO, Long.class);
     }
 
     /**
@@ -269,7 +269,7 @@ public final class ProviderContext extends AbstractContext{
          */
         public Builder setProviderName(String providerName){
             Objects.requireNonNull(providerName);
-            set(providerName, ProviderAttribute.PROVIDER);
+            setAttribute(ProviderAttribute.PROVIDER, providerName);
             return this;
         }
 
@@ -287,7 +287,7 @@ public final class ProviderContext extends AbstractContext{
                 throw new IllegalArgumentException("At least one RateType is required.");
             }
             types.addAll(Arrays.asList(rateTypes));
-            set(types, ProviderAttribute.RATE_TYPES, Set.class);
+            setAttribute(ProviderAttribute.RATE_TYPES, types, Set.class);
             return this;
         }
 
@@ -298,7 +298,7 @@ public final class ProviderContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setValidFrom(long timestamp){
-            set(Long.valueOf(timestamp), ProviderAttribute.VALID_FROM);
+            setAttribute(ProviderAttribute.VALID_FROM, Long.valueOf(timestamp));
             return this;
         }
 
@@ -309,7 +309,7 @@ public final class ProviderContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setValidFrom(Object dateTime){
-            set(dateTime, ProviderAttribute.VALID_FROM);
+            setAttribute(ProviderAttribute.VALID_FROM, dateTime);
             return this;
         }
 
@@ -320,7 +320,7 @@ public final class ProviderContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setValidTo(long timestamp){
-            set(Long.valueOf(timestamp), ProviderAttribute.VALID_TO);
+            setAttribute(ProviderAttribute.VALID_TO, Long.valueOf(timestamp));
             return this;
         }
 
@@ -331,7 +331,7 @@ public final class ProviderContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setValidTo(Object dateTime){
-            set(dateTime, ProviderAttribute.VALID_TO);
+            setAttribute(ProviderAttribute.VALID_TO, dateTime);
             return this;
         }
 

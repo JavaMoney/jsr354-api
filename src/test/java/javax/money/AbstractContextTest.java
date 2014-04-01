@@ -25,49 +25,49 @@ import static org.junit.Assert.*;
 public class AbstractContextTest{
     @Test
     public void testSet() {
-        TestContext ctx = new TestContext.Builder().set("Test").create();
+        TestContext ctx = new TestContext.Builder().setAttribute("Test").create();
         assertNotNull(ctx.getAttribute(String.class));
         assertEquals(ctx.getAttribute(String.class), "Test");
         assertEquals(ctx.getNamedAttribute(String.class, String.class), "Test");
-        assertEquals(ctx.getNamedAttribute(String.class, "String"), null);
+        assertEquals(ctx.getNamedAttribute("String", String.class), null);
     }
 
     @Test
     public void testSetWithKey(){
-        TestContext ctx = new TestContext.Builder().set("Test", "myKey").create();
+        TestContext ctx = new TestContext.Builder().setAttribute("myKey", "Test").create();
         assertNull(ctx.getAttribute(String.class));
-        assertEquals("Test", ctx.getNamedAttribute(String.class, "myKey"));
-        assertEquals(ctx.getNamedAttribute(String.class, "myKey"), "Test");
+        assertEquals("Test", ctx.getNamedAttribute("myKey", String.class));
+        assertEquals(ctx.getNamedAttribute("myKey", String.class), "Test");
         assertEquals(ctx.getNamedAttribute(String.class, String.class), null);
     }
 
     @Test
     public void testSetAll(){
-        TestContext ctx = new TestContext.Builder().set("Test", "myKey").create();
+        TestContext ctx = new TestContext.Builder().setAttribute("myKey", "Test").create();
         TestContext ctx2 = new TestContext.Builder().setAll(ctx).create();
         assertEquals(ctx, ctx2);
     }
 
     @Test
     public void testSetWithKeyAndType() {
-        TestContext ctx = new TestContext.Builder().set(Integer.valueOf(2), "MyNum", Number.class).create();
+        TestContext ctx = new TestContext.Builder().setAttribute("MyNum", Integer.valueOf(2), Number.class).create();
         assertNull(ctx.getAttribute(String.class));
         assertEquals("myKey", ctx.getAttribute(String.class, "myKey"));
-        assertEquals(ctx.getNamedAttribute(Number.class, "MyNum"), Integer.valueOf(2));
-        assertEquals(ctx.getNamedAttribute(Integer.class, "MyNum"), null);
+        assertEquals(ctx.getNamedAttribute("MyNum", Number.class), Integer.valueOf(2));
+        assertEquals(ctx.getNamedAttribute("MyNum", Integer.class), null);
     }
 
     @Test
     public void testGetAttribute() {
-        TestContext ctx = new TestContext.Builder().set("Test").create();
+        TestContext ctx = new TestContext.Builder().setAttribute("Test").create();
         assertNotNull(ctx.getAttribute(String.class));
-        assertEquals(ctx.getNamedAttribute(String.class, "Gugus", "defaultValue"), "defaultValue");
+        assertEquals(ctx.getNamedAttribute("Gugus", String.class, "defaultValue"), "defaultValue");
         assertEquals(ctx.getAttribute(Boolean.class, Boolean.TRUE), Boolean.TRUE);
     }
 
     @Test
     public void testGetAttributeTypes(){
-        TestContext ctx = new TestContext.Builder().set("Test").set(Integer.valueOf(2)).set(Long.valueOf(2)).create();
+        TestContext ctx = new TestContext.Builder().setAttribute("Test").setAttribute(Integer.valueOf(2)).setAttribute(Long.valueOf(2)).create();
         Set<Class<?>> types = ctx.getAttributeTypes();
         assertNotNull(types);
         assertTrue(types.size()==3);
@@ -79,11 +79,11 @@ public class AbstractContextTest{
     @Test
     public void testHashCode() {
         List<TestContext> contexts = new ArrayList<>();
-        contexts.add(new TestContext.Builder().set("Test").set(Integer.valueOf(1)).set(Long.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().set("Test").set(Integer.valueOf(2)).set(Long.valueOf(1)).create());
-        contexts.add(new TestContext.Builder().set("Test").set(Integer.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().set("Test").set(Long.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().set("Test").set(Boolean.TRUE).set("Test").create());
+        contexts.add(new TestContext.Builder().setAttribute("Test").setAttribute(Integer.valueOf(1)).setAttribute(Long.valueOf(2)).create());
+        contexts.add(new TestContext.Builder().setAttribute("Test").setAttribute(Integer.valueOf(2)).setAttribute(Long.valueOf(1)).create());
+        contexts.add(new TestContext.Builder().setAttribute("Test").setAttribute(Integer.valueOf(2)).create());
+        contexts.add(new TestContext.Builder().setAttribute("Test").setAttribute(Long.valueOf(2)).create());
+        contexts.add(new TestContext.Builder().setAttribute("Test").setAttribute(Boolean.TRUE).setAttribute("Test").create());
         Set<Integer> hashCodes = new HashSet<>();
         for(TestContext ctx : contexts){
             hashCodes.add(ctx.hashCode());
@@ -95,11 +95,11 @@ public class AbstractContextTest{
     @Test
     public void testEquals() {
         List<TestContext> contexts = new ArrayList<>();
-        contexts.add(new TestContext.Builder().set("Test").set(Integer.valueOf(11)).set(Long.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().set("Test").set(Integer.valueOf(2)).set(Long.valueOf(11)).create());
-        contexts.add(new TestContext.Builder().set("Test").set(Integer.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().set("Test").set(Long.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().set("Test").set(Boolean.TRUE).set("Test").create());
+        contexts.add(new TestContext.Builder().setAttribute("Test").setAttribute(Integer.valueOf(11)).setAttribute(Long.valueOf(2)).create());
+        contexts.add(new TestContext.Builder().setAttribute("Test").setAttribute(Integer.valueOf(2)).setAttribute(Long.valueOf(11)).create());
+        contexts.add(new TestContext.Builder().setAttribute("Test").setAttribute(Integer.valueOf(2)).create());
+        contexts.add(new TestContext.Builder().setAttribute("Test").setAttribute(Long.valueOf(2)).create());
+        contexts.add(new TestContext.Builder().setAttribute("Test").setAttribute(Boolean.TRUE).setAttribute("Test").create());
         Set<TestContext> checkContexts = new HashSet<>();
         for(TestContext ctx : contexts){
             checkContexts.add(ctx);
@@ -111,7 +111,7 @@ public class AbstractContextTest{
 
     @Test
     public void testToString() {
-        TestContext ctx = new TestContext.Builder().set("Test").set(Integer.valueOf(1)).set(Long.valueOf(2)).create();
+        TestContext ctx = new TestContext.Builder().setAttribute("Test").setAttribute(Integer.valueOf(1)).setAttribute(Long.valueOf(2)).create();
         assertNotNull(ctx.toString());
         System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("1"));

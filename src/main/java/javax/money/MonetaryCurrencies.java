@@ -12,6 +12,9 @@
  */
 package javax.money;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -145,5 +148,23 @@ public final class MonetaryCurrencies {
 			return false;
 		}
 	}
+
+    public static Collection<CurrencyUnit> getCurrencies(){
+        List<CurrencyUnit> result = new ArrayList<>();
+        for (CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)) {
+            try {
+                Collection<CurrencyUnit> cus = spi.getCurrencies();
+                if (cus != null) {
+                    result.addAll(cus);
+                }
+            } catch (Exception e) {
+                Logger.getLogger(MonetaryCurrencies.class.getName()).log(
+                        Level.SEVERE,
+                        "Error loading all Currencies from provider: "
+                                + spi.getClass().getName(), e);
+            }
+        }
+        return result;
+    }
 
 }

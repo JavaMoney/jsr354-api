@@ -114,7 +114,7 @@ public class MonetaryContextTest{
         abstract class TestAmount implements MonetaryAmount{}
         MonetaryContext ctx = new MonetaryContext.Builder().setFlavor(MonetaryContext.AmountFlavor.PERFORMANCE)
                 .setAmountType(TestAmount.class).setFixedScale(true).setMaxScale(111).setPrecision(200)
-                .set("myValue", "myKey").set("TEST").create();
+                .setAttribute("myKey", "myValue").setAttribute("TEST").create();
         assertNotNull(ctx.toString());
         System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("PERFORMANCE"));

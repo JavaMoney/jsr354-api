@@ -12,39 +12,43 @@
  */
 package javax.money.spi;
 
-import java.util.Locale;
-
 import javax.money.CurrencyUnit;
+import java.util.Collection;
+import java.util.Locale;
 
 /**
  * SPI (core) to be registered using the {@link javax.money.spi.Bootstrap}, which allows to
  * register/provide additional currencies into the system automatically on
  * startup. The implementation is allowed to be implemented in y contextual way,
  * so depending on the runtime context, different currencies may be available.
- * 
+ *
  * @author Anatole Tresch
  */
-public interface CurrencyProviderSpi {
+public interface CurrencyProviderSpi{
 
-	/**
-	 * Return a (current) {@link CurrencyUnit} matching the given currency code.
-	 * 
-	 * @param currencyCode
-	 *            the currency code. not null.
-	 * @return the corresponding {@link CurrencyUnit}, or null, if no such unit
-	 *         is provided by this provider.
-	 */
-	public CurrencyUnit getCurrencyUnit(String currencyCode);
+    /**
+     * Return a (current) {@link CurrencyUnit} matching the given currency code.
+     *
+     * @param currencyCode the currency code. not null.
+     * @return the corresponding {@link CurrencyUnit}, or null, if no such unit
+     * is provided by this provider.
+     */
+    public CurrencyUnit getCurrencyUnit(String currencyCode);
 
-	/**
-	 * Return a (current) {@link CurrencyUnit} matching the given (country)
-	 * {@link Locale}.
-	 * 
-	 * @param locale
-	 *            the country {@link Locale}. not null.
-	 * @return the corresponding {@link CurrencyUnit}, or null, if no such unit
-	 *         is provided by this provider.
-	 */
-	public CurrencyUnit getCurrencyUnit(Locale locale);
+    /**
+     * Return a (current) {@link CurrencyUnit} matching the given (country)
+     * {@link Locale}.
+     *
+     * @param locale the country {@link Locale}. not null.
+     * @return the corresponding {@link CurrencyUnit}, or null, if no such unit
+     * is provided by this provider.
+     */
+    public CurrencyUnit getCurrencyUnit(Locale locale);
 
+    /**
+     * Access a collection of all currencies known by this provider.
+     *
+     * @return a Collection of known currncies, never null.
+     */
+    public Collection<CurrencyUnit> getCurrencies();
 }

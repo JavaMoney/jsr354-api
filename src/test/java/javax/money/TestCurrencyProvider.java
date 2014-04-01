@@ -12,6 +12,9 @@
  */
 package javax.money;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 import javax.money.CurrencyUnit;
@@ -48,8 +51,16 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 		return null;
 	}
 
-	
-	private static final class TestCurrency implements CurrencyUnit{
+    @Override
+    public Collection<CurrencyUnit> getCurrencies(){
+        List<CurrencyUnit> result = new ArrayList<>();
+        result.add(new TestCurrency("test1",1,2));
+        result.add(new TestCurrency("invalid2",1,2));
+        return result;
+    }
+
+
+    private static final class TestCurrency implements CurrencyUnit{
 
 		private String code;
 		private int numCode;

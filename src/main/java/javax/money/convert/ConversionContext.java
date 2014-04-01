@@ -108,7 +108,7 @@ public final class ConversionContext extends AbstractContext{
      * @return the deferred flag, or {code null}.
      */
     public RateType getRateType(){
-        return getNamedAttribute(RateType.class, ConversionAttribute.RATE_TYPE, RateType.ANY);
+        return getNamedAttribute( ConversionAttribute.RATE_TYPE, RateType.class,RateType.ANY);
     }
 
     /**
@@ -117,7 +117,7 @@ public final class ConversionContext extends AbstractContext{
      * @return The UTC timestamp of the rate, or {@code null}.
      */
     public final Long getTimestamp(){
-        return getNamedAttribute(Long.class, ConversionAttribute.TIMESTAMP, null);
+        return getNamedAttribute(ConversionAttribute.TIMESTAMP, Long.class, null);
     }
 
     /**
@@ -127,7 +127,7 @@ public final class ConversionContext extends AbstractContext{
      * @return The timestamp of the rate, or {@code null}.
      */
     public final <T> T getTimestamp(Class<T> type){
-        return getNamedAttribute(type, ConversionAttribute.TIMESTAMP, null);
+        return getNamedAttribute(ConversionAttribute.TIMESTAMP, type, null);
     }
 
     /**
@@ -136,7 +136,7 @@ public final class ConversionContext extends AbstractContext{
      * @return The ending UTC timestamp of the rate, or {@code null}.
      */
     public final Long getValidTo(){
-        return getNamedAttribute(Long.class, ConversionAttribute.VALID_TO, null);
+        return getNamedAttribute(ConversionAttribute.VALID_TO, Long.class, null);
     }
 
     /**
@@ -146,7 +146,7 @@ public final class ConversionContext extends AbstractContext{
      * @return The ending date/time of the rate, or {@code null}.
      */
     public final <T> T getValidTo(Class<T> type){
-        return getNamedAttribute(type, ConversionAttribute.VALID_TO, null);
+        return getNamedAttribute(ConversionAttribute.VALID_TO, type, null);
     }
 
     /**
@@ -175,7 +175,7 @@ public final class ConversionContext extends AbstractContext{
      * @return the provider, or {code null}.
      */
     public String getProvider(){
-        return getNamedAttribute(String.class, ConversionAttribute.PROVIDER, null);
+        return getNamedAttribute(ConversionAttribute.PROVIDER, String.class, null);
     }
 
     /**
@@ -309,7 +309,7 @@ public final class ConversionContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setTimestamp(long timestamp){
-            set(Long.valueOf(timestamp), ConversionAttribute.TIMESTAMP);
+            setAttribute(ConversionAttribute.TIMESTAMP, Long.valueOf(timestamp));
             return this;
         }
 
@@ -320,7 +320,7 @@ public final class ConversionContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setTimestamp(Object dateTime){
-            set(dateTime, ConversionAttribute.TIMESTAMP);
+            setAttribute(ConversionAttribute.TIMESTAMP, dateTime);
             if(dateTime instanceof Date){
                 setTimestamp(((Date) dateTime).getTime());
             }else if(dateTime instanceof Calendar){
@@ -336,7 +336,7 @@ public final class ConversionContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setValidTo(long timestamp){
-            set(Long.valueOf(timestamp), ConversionAttribute.VALID_TO);
+            setAttribute(ConversionAttribute.VALID_TO, Long.valueOf(timestamp));
             return this;
         }
 
@@ -347,7 +347,7 @@ public final class ConversionContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setValidTo(Object dateTime){
-            set(dateTime, ConversionAttribute.VALID_TO);
+            setAttribute(ConversionAttribute.VALID_TO, dateTime);
             if(dateTime instanceof Date){
                 setValidTo(((Date) dateTime).getTime());
             }else if(dateTime instanceof Calendar){
@@ -364,7 +364,7 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder setRateType(RateType rateType){
             Objects.requireNonNull(rateType);
-            set(rateType, ConversionAttribute.RATE_TYPE);
+            setAttribute(ConversionAttribute.RATE_TYPE, rateType);
             return this;
         }
 
@@ -376,7 +376,7 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder setProvider(String provider){
             Objects.requireNonNull(provider);
-            set(provider, ConversionAttribute.PROVIDER);
+            setAttribute(ConversionAttribute.PROVIDER, provider);
             return this;
         }
 

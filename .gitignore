@@ -1,6 +1,7 @@
 /.settings
 /.classpath
 /.project
+/.idea
 /jdk-stub/bin
 /target
 /javamoney-api/core/bin

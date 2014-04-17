@@ -141,7 +141,7 @@ public final class ExchangeRate implements Serializable, Comparable<ExchangeRate
         Objects.requireNonNull(builder.base, "base may not be null.");
         Objects.requireNonNull(builder.term, "term may not be null.");
         Objects.requireNonNull(builder.factor, "factor may not be null.");
-        Objects.requireNonNull(builder.base, "exchangeRateType may not be null.");
+        Objects.requireNonNull(builder.conversionContext, "exchangeRateType may not be null.");
         this.base = builder.base;
         this.term = builder.term;
         this.factor = builder.factor;

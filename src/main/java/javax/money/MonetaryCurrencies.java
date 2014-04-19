@@ -12,10 +12,7 @@
  */
 package javax.money;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,7 +48,8 @@ public final class MonetaryCurrencies {
 	 *             if no such currency exists.
 	 */
 	public static CurrencyUnit getCurrency(String currencyCode) {
-		CurrencyUnit cu = null;
+        Objects.requireNonNull(currencyCode);
+        CurrencyUnit cu = null;
 		for (CurrencyProviderSpi spi : Bootstrap
 				.getServices(
 				CurrencyProviderSpi.class)) {
@@ -95,6 +93,7 @@ public final class MonetaryCurrencies {
 	 *             if no such currency exists.
 	 */
 	public static CurrencyUnit getCurrency(Locale locale) {
+        Objects.requireNonNull(locale);
 		CurrencyUnit cu = null;
 		for (CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)) {
 			try {
@@ -123,6 +122,7 @@ public final class MonetaryCurrencies {
 	 *         would return a result for the given code.
 	 */
 	public static boolean isCurrencyAvailable(String code) {
+        Objects.requireNonNull(code);
 		try {
 			getCurrency(code);
 			return true;
@@ -141,6 +141,7 @@ public final class MonetaryCurrencies {
 	 *         result for the given code.
 	 */
 	public static boolean isCurrencyAvailable(Locale locale) {
+        Objects.requireNonNull(locale);
 		try {
 			getCurrency(locale);
 			return true;

@@ -458,7 +458,7 @@ The JSR defines three packages:
   different runtime environments and component loading mechanisms.
 
 ==== Module/Repository Overview
-The JSR’s source code repository under [Source] provides several modules:
+The JSR’s source code repository under [[source]] provides several modules:
 
 money-api:: contains the JSR 354 API as described also be this specification.
 moneta:: contains the reference implementation. footnote:[Note that the reference implementation is not a required be
@@ -1338,7 +1338,7 @@ the range and type of rates provided etc. Each +ProviderContext+ can also be obt
 singleton, passing the corresponding provider name:
 
 [source,java]
-.Accessing an +ExchangeRateProvider+'s context
+.Accessing an ExchangeRateProvider's context
 -------------------------------------------------------------------------------
 ProviderContext ctx = MonetaryConversions.getProviderContext("ECB");
 -------------------------------------------------------------------------------
@@ -1348,7 +1348,7 @@ default provider chain. So the following two statements are equivalent, given th
 "ECB-HIST"+:
 
 [source,java]
-.Equivlent calls when the default provider chain equals +"ECB", "IMF", "ECB-HIST"+
+.Equivalent calls when the default provider chain equals "ECB", "IMF", "ECB-HIST"
 -------------------------------------------------------------------------------
 // equivlent calls when the default provider chain equals to 
 // {"ECB", "IMF", "ECB-HIST"}
@@ -1363,7 +1363,7 @@ Finally additional methods on the +MonetaryConversions+ singleton allow to get m
 available in the current context:
 
 [source,java]
-.Usage Example: Accessing +ExchangeRateProvider+ instances
+.Usage Example: Accessing ExchangeRateProvider instances
 -------------------------------------------------------------------------------
 public static Collection<String> getProviderNames();
 public static boolean isProviderAvailable(String providerName);
@@ -1392,7 +1392,7 @@ only, which covers the following aspects:
 . Similarly amount values can be operated after parsing by applying a +MonetaryOperator+. This is the reciprocal
   operation to the display rounding above.
 . It is possible to define number grouping with flexible group sizes and different grouping characters. as for example
-  needed to format +INR+ footnote::[+INR 123456000.21+ is formatted as +INR 12,34,56,000.21+].
+  needed to format +INR+ footnote:[+INR 123456000.21+ is formatted as +INR 12,34,56,000.21+].
 . The currency part of an amount can be formatted in different ways:
   .. as currency code, e.g. +USD+
   .. as numeric currency code, if such a code is defined.
@@ -1696,12 +1696,12 @@ Hereby
   *** the implementation is capable to support the required maximal _scale_.
   *** the implementation is capable to support the required maximal _precision_.
 
-If one of the conditions above fails a +MonetaryException+ must be thrown. footnote::[This makes sense, since acquiring
+If one of the conditions above fails a +MonetaryException+ must be thrown. footnote:[This makes sense, since acquiring
 for a concrete type with invalid capabilities can be seen as a programming error, since the default and maximal
 capabilities of a concrete type are accessible from the according implementation factory.]
 
 * If no concrete type is given (passing the +MonetaryAmount+ interface as type), the following must be checked against
-  each registered +MonetaryAmountFactoryProviderSpi+ that are eligible as a possible result type footnote::[This is the
+  each registered +MonetaryAmountFactoryProviderSpi+ that are eligible as a possible result type footnote:[This is the
   case, if the the value from +MonetaryAmountFactoryProviderSpi.getInclusionPolicy()+ does not equal to
   +QueryInclusionPolicy.NEVER+, or  +QueryInclusionPolicy.DIRECT_REF_ONLY+.] to be returned from a query:
   ** is the +MonetaryAmountFactoryProviderSpi+ capable to support the required maximal scale (+required scale <=
@@ -2006,7 +2006,7 @@ representation of the class implementing +MonetaryAmount+. Hereby:
   currency, or in other words rounding should only be done implicitly when required by the internal numeric
   representation to minimize the loss of numeric precision.
 * For calculations that require high scaled results, e.g. financial product calculations, it is recommended to work
-  with relatively high scales, e.g. +64+ or even higher scales, as provided by the +BigDecimal+ class footnote::[Therefore
+  with relatively high scales, e.g. +64+ or even higher scales, as provided by the +BigDecimal+ class footnote:[Therefore
   the default reference implementation class, +Money+,is based on +BigDecimal+ and allows to explicitly configure
   its +MathContext+ used on creation.]. On the
   other hand when monetary arithmetics must be fast, e.g. in trading, scale requirements are often reduced in favor
@@ -2055,7 +2055,7 @@ arbitrary monetary adjustments (modeled as +MonetaryOperator+).
 == Examples
 The following sections illustrate the API’s usage in more detail.
 
-=== Working with +org.javamoney.moneta.Money+
+=== Working with org.javamoney.moneta.Money
 A reference implementation of this JSR has to provide value type classes for monetary amounts, hereby implementing
 +MonetaryAmount+, and registering at least one implementation class with the +MonetaryAmounts+ singleton by
 implementing and registering a corresponding +MonetayAmountFactory+ instance.
@@ -2074,8 +2074,8 @@ implements MonetaryAmount, Comparable<MonetaryAmount>, Serializable {
 
 The +MonetaryContext+ (by default) hereby is defined as follows:
 
-[source]
-.Default +MonetaryContext+ settings
+[listing]
+.Default MonetaryContext settings
 -------------------------------------------------------------------------------
 maxPrecision = 64; // may be extended arbitrarily
 maxScale = -1; // unbounded
@@ -2087,7 +2087,7 @@ attributes: RoundingMode.HALF_EVEN.
 Since a corresponding +MonetaryAmountFactory+ is registered, a new instance can be created using the typed factory:
 
 [source,java]
-.Example Usage
+.Example Usage of MonetaryAmountFactory
 -------------------------------------------------------------------------------
 MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(Money.class);
 Money m = fact.withCurrency("USD").with(200.50).create();
@@ -2140,7 +2140,7 @@ Also the sample above illustrates how algorithmic operations can be chained toge
 mentioned also external functionality can be chained, using instances of +MonetaryOperator+:
 
 [source,java]
-.Example Function Chaining footnote::[+MonetaryFunctions+ is not part of the JSR, its just for illustration purposes.]
+.Example Function Chaining footnote:[+MonetaryFunctions+ is not part of the JSR, its just for illustration purposes.]
 -------------------------------------------------------------------------------
 Money amt = Money.of("CHF", 200);
 amt = amt.multiply(2.12345).with(MonetaryRoundings.of())
@@ -2155,7 +2155,7 @@ of +BigDecimal+. By default instances of Money use +MathContext.DECIMAL64+. But 
 +MonetaryContext+ required can also be passed explicitly, e.g.:
 
 [source,java]
-.Example Passing a +MonetaryContext+ to the static factory method of +Money+
+.Example Passing a MonetaryContext to the static factory method of Money
 -------------------------------------------------------------------------------
 public static Money of(String currencyCode, Number number, 
                            MonetaryContext context);
@@ -2193,7 +2193,7 @@ public final class ToInvalid implements MonetaryOperator{
 }
 -------------------------------------------------------------------------------
 
-=== Working with +org.javamoney.moneta.FastMoney+
+=== Working with org.javamoney.moneta.FastMoney
 This class implements a +MonetaryAmount+ using long as numeric representation, whereas the full amount is interpreted
 as minor units, with a _denumerator_ of +100000+.
 
@@ -2230,7 +2230,7 @@ attributes: RoundingMode.HALF_EVEN
 A total of amounts can be calculated in multiple ways, one way is simply to chain the amounts with +add(MonetaryAmount)+:
 
 [source,java]
-.Usage Example - Calculating a Total
+.Usage Example Calculating a Total
 -------------------------------------------------------------------------------
 MonetaryAmount[] params = new MonetaryAmount[]{
                    Money.of("CHF", 100), Money.of("CHF", 10.20),
@@ -2409,8 +2409,8 @@ CurrencyConversion conv = MonetaryConversions.getConversion("EUR", ctx, "CS", "E
 - [[[JodaMoney]]] http://www.joda.org/joda-money/
 - [[[java.net]]] http://java.net/projects/javamoney/
 - [[[JSR354]]] http://jcp.org/en/jsr/detail?id=354
-- [[[Source]]] Public Source Code Repository on GitHub: GitHub Repository,
-                Branch / Tag matching updated PDR is 0.9
+- [[[source]]] Public Source Code Repository on GitHub: http://github.com/JavaMoney,
+                Branch/Tag matching updated PDR is {version}
 
 === Links
 * http://jcp.org/en/jsr/detail?id=35[JSR 354 on jcp.org]

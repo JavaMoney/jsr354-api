@@ -570,6 +570,9 @@
                     <groupId>org.asciidoctor</groupId>
                     <artifactId>asciidoctor-maven-plugin</artifactId>
                     <version>0.1.4</version>
+                    <configuration>
+                        <imagesDir>src/main/asciidoc/images</imagesDir>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -677,9 +680,10 @@
                             <outputDirectory>target/docs</outputDirectory>
                             <sourceHighlighter>highlightjs</sourceHighlighter> <!-- coderay -->
                             <backend>html</backend>
+                            <embedAssets>true</embedAssets>
                         </configuration>
                     </execution>
-                    <execution>
+                    <!-- execution>
                         <id>output-pdf</id>
                         <phase>generate-resources</phase>
                         <goals>
@@ -687,10 +691,10 @@
                         </goals>
                         <configuration>
                             <outputDirectory>target/docs</outputDirectory>
-                            <sourceHighlighter>highlightjs</sourceHighlighter> <!-- coderay -->
+                            <sourceHighlighter>highlightjs</sourceHighlighter>
                             <backend>pdf</backend>
                         </configuration>
-                    </execution>
+                    </execution -->
                 </executions>
             </plugin>
         </plugins>

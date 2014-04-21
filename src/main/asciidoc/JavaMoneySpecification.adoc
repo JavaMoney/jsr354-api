@@ -1,4 +1,5 @@
-﻿= Java Money Specification
+﻿JSR 354 (Money & Currency) - Specification
+==========================================
 :revnumber: 0.9
 :revremark: Public Final Draft
 :revdate: June 2014
@@ -11,19 +12,20 @@
 :icons:
 :numbered:
 :website: http://javamoney.org/
-
-:numbered!:
+:imagesdir: src\main\asciidoc\images
+:iconsdir: src\main\asciidoc\images/icons
+:data-uri:
 
 '''
+:numbered!:
+[discrete]
+== JSR 354 (Money & Currency) - Specification
 
 [discrete]
-== JSR 354 -- Money & Currency API
+=== Anatole Tresch, Specification Lead, Credit Suisse
 
 [discrete]
-=== {author}
-
-[discrete]
-==== {longversion}
+==== 0.9 (Public Review) June 2014
 
 
 '''
@@ -32,7 +34,7 @@
 :numbered:
 
 [big]#EVALUATION LICENCE#
-[disclaimer]
+{disclaimer}
 ----
 JSR-000354 Money and Currency API 1.0 Public Review
 
@@ -459,8 +461,10 @@ The JSR defines three packages:
 The JSR’s source code repository under [Source] provides several modules:
 
 money-api:: contains the JSR 354 API as described also be this specification.
-moneta:: contains the reference implementation[3]
-money-tck:: contains the technical compatibility kit (TCK)[4]
+moneta:: contains the reference implementation. footnote:[Note that the reference implementation is not a required be
+    part for public review, so it may still change.]
+money-tck:: contains the technical compatibility kit (TCK). footnote:[Note that the TCK is not a required part for
+    public review.]
 javamoney-parent:: is a root “POM” project for all modules under +org.javamoney+. This includes the RI/TCK projects,
   but not jsr354-api.
 javamoney-lib:: contains a financial library (JavaMoney) adding comprehensive support for several extended
@@ -613,7 +617,7 @@ public interface MonetaryAmount{
   // Create an instance as a result of an external monetary operation
   MonetaryAmount with(MonetaryOperator operator);
 
-  // QUery data from an amount
+  // Query data from an amount
   <R> R query(MonetaryQuery<R> query);
 
   // Comparison methods
@@ -667,7 +671,9 @@ Hereby
   +CHF 1.05000+ are considered to be 'equal'.
 * The rest of the methods model common arithmetic operations that are often used in financial applications. Adding
   and subtracting hereby is only possible with amounts that are of the same currency (aka being 'currency compatible'
-  footnote:[5]) that the amount on which the operation is executed. The arithmetic methods should basically behave
+  footnote:[Note that currency conversion is a complex aspect that can not be performed implicitly or automatically.
+  E.g. a conversion rate is dependent from the timestamp, the currencies involved, the provider, the amount ...])
+  that the amount on which the operation is executed. The arithmetic methods should basically behave
   similar to +java.math.BigDecimal+.
 * The specification and interface do not define precisely how the amount is stored. Implementations could use a
   +BigDecimal+, +long+ or something else. The only constraint is that the numeric value can be exposed as +NumberValue+
@@ -814,8 +820,8 @@ So the following statements must also always be apply:
 
 [source,java]
 -------------------------------------------------------------------------------
-<1> +amount.getClass() == amount.multiply(2.5).getClass()+
-<2> +amount.getClass() == amount.getFactory().with(2.5).create().getClass()+
+<1> amount.getClass() == amount.multiply(2.5).getClass()
+<2> amount.getClass() == amount.getFactory().with(2.5).create().getClass()
 -------------------------------------------------------------------------------
 
 NOTE: The operator interface is equivalent to the +UnaryOperator+ interface in JDK 8 which is a functional interface suitable
@@ -945,7 +951,8 @@ MonetaryContext ctx = new MonetaryContext.Builder()
 -------------------------------------------------------------------------------
 
 ==== Creating Monetary Amount Instances
-Basically new instances of +MonetaryAmount+ can be created in different ways. One way footnote:[] will be by using factories,
+Basically new instances of +MonetaryAmount+ can be created in different ways. One way footnote:[Types may also be
+instantiated directly depending on the implementation.] will be by using factories,
 modeled by the interface +javax.money.MonetaryAmountFactory<T>+. Instances can be obtained in different ways
 
 * calling +getFactory()+ on an instance of +MonetaryAmount+, returns an instance that is initialized with the current
@@ -1087,8 +1094,10 @@ javax.money.defaults.amount.class=my.fully.qualified.MonetaryAmountType
 * Finally +queryAmountType(MonetaryContext)+ allow to query the implementation class that best covers the given
   required +MonetaryContext+.
 
-Implementations of this JSR must "at least provide one[7] implementation of +MonetaryAmountFactoryProviderSpi+ with a
-query policy equal to +QueryInclusionPolicy.ALWAYS+*.
+Implementations of this JSR must "at least provide one footnote:[If +MonetaryContext.AmountFlavor+ does not equal
++AmountFlavor.UNDEFINED+, it is recommended to provide also a second amount type, either with the alternate specified
++AmountFlavor+, or with +AmountFlavor.UNDEFINED+, which then is used as default.] implementation of
++MonetaryAmountFactoryProviderSpi+ with a query policy equal to +QueryInclusionPolicy.ALWAYS+*.
 
 ===== Accessing Roundings
 Rounding is modeled by implementations of +MonetaryOperator+. Hereby beside mathematical roundings, also non standard
@@ -1253,7 +1262,7 @@ ExchangeRate rate = conversion.getExchangeRate(amount);
 The +ExchangeRate+ models the details of a conversion applied:
 
 * the base and terminating (target) +CurrencyUnit+.
-* the conversion factor used[8] modeled as NumberValue.
+* the conversion factor used footnote:[Note that the conversion rate can be dependent on the +MonetaryAmount+ passed.] modeled as NumberValue.
 * additional information if the rate is derived, meaning built up the result of rate chain. If a rate is derived
   +getExchangeRateChain()+ returns the rate chain that is used to derive the given (final) exchange rate.
 * a +ConversionContext+, which can contain arbitrary additional information about the provider that issued the rate and
@@ -1267,7 +1276,7 @@ currency conversion is backed up by an +ExchangeRateProvider+. Such a provider a
 
 The API allows additionally to pass a +ConversionContext+, which allow to pass any additional attributes/parameters
 that may be required by a concrete +ExchangeRateProvider+ instance. This allows to support arbitrary complex use cases,
-as an example[9] an implementation require/allow to pass
+as an example foornote:[This example is completely arbitrary.] an implementation require/allow to pass
 
 * the target amount
 * a customer id
@@ -1383,7 +1392,7 @@ only, which covers the following aspects:
 . Similarly amount values can be operated after parsing by applying a +MonetaryOperator+. This is the reciprocal
   operation to the display rounding above.
 . It is possible to define number grouping with flexible group sizes and different grouping characters. as for example
-  needed to format +INR+ footnote::[10].
+  needed to format +INR+ footnote::[+INR 123456000.21+ is formatted as +INR 12,34,56,000.21+].
 . The currency part of an amount can be formatted in different ways:
   .. as currency code, e.g. +USD+
   .. as numeric currency code, if such a code is defined.
@@ -1687,10 +1696,14 @@ Hereby
   *** the implementation is capable to support the required maximal _scale_.
   *** the implementation is capable to support the required maximal _precision_.
 
-If one of the conditions above fails a +MonetaryException+ must be thrown[11].
+If one of the conditions above fails a +MonetaryException+ must be thrown. footnote::[This makes sense, since acquiring
+for a concrete type with invalid capabilities can be seen as a programming error, since the default and maximal
+capabilities of a concrete type are accessible from the according implementation factory.]
+
 * If no concrete type is given (passing the +MonetaryAmount+ interface as type), the following must be checked against
-  each registered +MonetaryAmountFactoryProviderSpi+ that are eligible as a possible result type[12] to be returned
-  from a query:
+  each registered +MonetaryAmountFactoryProviderSpi+ that are eligible as a possible result type footnote::[This is the
+  case, if the the value from +MonetaryAmountFactoryProviderSpi.getInclusionPolicy()+ does not equal to
+  +QueryInclusionPolicy.NEVER+, or  +QueryInclusionPolicy.DIRECT_REF_ONLY+.] to be returned from a query:
   ** is the +MonetaryAmountFactoryProviderSpi+ capable to support the required maximal scale (+required scale <=
      maxScale+).
   ** is the +MonetaryAmountFactoryProviderSpi+ capable to support the required maximal precision (+required precision
@@ -1993,7 +2006,9 @@ representation of the class implementing +MonetaryAmount+. Hereby:
   currency, or in other words rounding should only be done implicitly when required by the internal numeric
   representation to minimize the loss of numeric precision.
 * For calculations that require high scaled results, e.g. financial product calculations, it is recommended to work
-  with relatively high scales, e.g. +64+ or even higher scales, as provided by the +BigDecimal+ class[13]. On the
+  with relatively high scales, e.g. +64+ or even higher scales, as provided by the +BigDecimal+ class footnote::[Therefore
+  the default reference implementation class, +Money+,is based on +BigDecimal+ and allows to explicitly configure
+  its +MathContext+ used on creation.]. On the
   other hand when monetary arithmetics must be fast, e.g. in trading, scale requirements are often reduced in favor
   of fast data manipulation. This contradictory requirements were basically the key reason, why the model for
   +MonetaryAmount+ does not explicitly specify the numeric representation to be used.
@@ -2091,9 +2106,9 @@ Still we can evaluate the amount’s type effectively:
 
 [source,java]
 -------------------------------------------------------------------------------
-        if(Money.class==amt.getClass()){
-           Money m = (Money)amt;
-        }
+if(Money.class==amt.getClass()){
+  Money m = (Money)amt;
+}
 -------------------------------------------------------------------------------
 
 But in fact, we do not need to know the exact implementation in most cases, since we can access a +MonetaryContext+,
@@ -2125,13 +2140,13 @@ Also the sample above illustrates how algorithmic operations can be chained toge
 mentioned also external functionality can be chained, using instances of +MonetaryOperator+:
 
 [source,java]
-.Example Function Chaining
+.Example Function Chaining footnote::[+MonetaryFunctions+ is not part of the JSR, its just for illustration purposes.]
 -------------------------------------------------------------------------------
 Money amt = Money.of("CHF", 200);
 amt = amt.multiply(2.12345).with(MonetaryRoundings.of())
-                                .with(MonetaryFunctions[14].minimal(100)).
+                                .with(MonetaryFunctions.minimal(100)).
                                         .multiply(2.12345).with(MonetaryRoundings.of())
-                                        .with(MonetaryFunctions[15].percent(23));
+                                        .with(MonetaryFunctions.percent(23));
 -------------------------------------------------------------------------------
 
 Numeric Precision and Scale::
@@ -2194,16 +2209,18 @@ just replacing +FastMoney+ with +Money+:
 -------------------------------------------------------------------------------
 FastMoney amt = FastMoney.of("CHF", 200);
 amt = amt.multiply(2.12345).with(MonetaryRoundings.of())
-                                 .with(MonetaryFunctions.min(100)) 
-.multiply(2.12345)
-.with(MonetaryRoundings.of())
-                                 .with(MonetaryFunctions.percent(23));
+                           .with(MonetaryFunctions.min(100))
+                           .multiply(2.12345)
+                           .with(MonetaryRoundings.of())
+                           .with(MonetaryFunctions.percent(23));
 -------------------------------------------------------------------------------
 
-Of course, given all that the +MonetaryContext+ is different than for +Money+:
+Of course, the +MonetaryContext+ is different than for +Money+:
+
+.The MonetaryContext of FastMoney
 -------------------------------------------------------------------------------
-maxPrecision = 18; // hard limit
-maxScale = 5; // fixed scale
+maxPrecision = 18;  // hard limit
+maxScale = 5;       // fixed scale
 numeric class = Long
 flavor = Flavor.PERFORMANT
 attributes: RoundingMode.HALF_EVEN
@@ -2222,12 +2239,12 @@ MonetaryAmount total = params[0];
 for(int i=1; i<params.length;i++){
    total = total.add(params[i]);
 }
-
+-------------------------------------------------------------------------------
 
 As an alternate it is also possible to define a +MonetaryOperator+, which can be passed to all amounts:
 
 [source,java]
-.Example of Total/add method
+.Example of total/add method
 -------------------------------------------------------------------------------
 public class Total implements MonetaryOperator{
    private MonetaryAmount total;
@@ -2380,75 +2397,46 @@ ConversionContext ctx = new ConversionContext().Builder()
 CurrencyConversion conv = MonetaryConversions.getConversion("EUR", ctx, "CS", "EZB", "IMF");
 -------------------------------------------------------------------------------
 
+:numbered!:
 
-APPENDIX
-References
-[Bitcoin]        http://bitcoin.org/en/
-[ICU]                http://site.icu-project.org/
-[ISO-4217]        http://www.iso.org/iso/home/standards/currency_codes.htm
-[ISO-20022]        www.iso20022.org
-[JodaMoney]         http://www.joda.org/joda-money/  and
-                  https://github.com/JavaMoney/javamoney-lib
-[java.net]        http://java.net/projects/javamoney/
-[JSR354]        http://jcp.org/en/jsr/detail?id=354
-[Source]        Public Source Code Repository on GitHub: GitHub Repository, 
-                    Branch / Tag matching updated PDR is 0.8
-Links
-                        * JSR 354 on jcp.org
-                        * JSR 354 on Java.net
-                        * JSR 354 on GitHub
-                        * Java Practices -> Representing Money
-                        * Working with Money in Java
-                        * Java currency by Roedy Green, Canadian Mind Products
-                        * https://github.com/JavaMoney/jsr354-api
-                        * UOMo Business, based on ICU4J and concepts by JScience Economics
-                        * MoneyDance API
-                        * JavaMoney is the Apache 2.0 licensed OSS project that evolved from JSR 354 development. It provides concrete implementations for currency conversion and mapping, advanced formatting, historic data access, regions and a set of financial calculations and formulas.
-                        * Joda Money can be referred to as an inspiration for API and design style. it is based on real-world use cases in an e-commerce application for airlines
-                        * Grails Currencies uses BigDecimal as internal representation, but API only exposes Number in all Money operations like plus(), minus() or similar.
-                        * ICU4J Uses Number for all operations and internal storage in its Money type.
-                        * Why not to use BigDecimal for Money
-                        * M-Pesa-Mobile Money in Africa 
-                        * Currency Internationalization (i18n), Multiple Currencies and Foreign Exchange (FX).
-                        * http://en.wikipedia.org/wiki/Japanese_units_of_measurement#Money: Discussion of internationalization of currencies, rounding, grouping and formatting, separators etc]
-                        * http://speleotrove.com/decimal/
-                        * http://sourceforge.net/projects/oquote/
-                        * Karatsuba Algorithm for Fast Big Decimal Multiplication
+== APPENDIX
+=== Bibliography
+[bibliography]
+- [[[Bitcoin]]] http://bitcoin.org/en/
+- [[[ICU]]] http://site.icu-project.org/
+- [[[ISO-4217]]] http://www.iso.org/iso/home/standards/currency_codes.htm
+- [[[ISO-20022]]] www.iso20022.org
+- [[[JodaMoney]]] http://www.joda.org/joda-money/
+- [[[java.net]]] http://java.net/projects/javamoney/
+- [[[JSR354]]] http://jcp.org/en/jsr/detail?id=354
+- [[[Source]]] Public Source Code Repository on GitHub: GitHub Repository,
+                Branch / Tag matching updated PDR is 0.9
 
+=== Links
+* http://jcp.org/en/jsr/detail?id=35[JSR 354 on jcp.org]
+* http://java.net/projects/javamoney/[JSR 354 on Java.net]
+* JSR 354 on GitHub
+* Java Practices -> Representing Money
+* Working with Money in Java
+* Java currency by Roedy Green, Canadian Mind Products
+* https://github.com/JavaMoney/jsr354-api
+* UOMo Business, based on ICU4J and concepts by JScience Economics
+* MoneyDance API
+* JavaMoney is the Apache 2.0 licensed OSS project that evolved from JSR 354 development. It provides concrete implementations for currency conversion and mapping, advanced formatting, historic data access, regions and a set of financial calculations and formulas.
+* Joda Money can be referred to as an inspiration for API and design style. it is based on real-world use cases in an e-commerce application for airlines
+* Grails Currencies uses BigDecimal as internal representation, but API only exposes Number in all Money operations like plus(), minus() or similar.
+* ICU4J Uses Number for all operations and internal storage in its Money type.
+* Why not to use BigDecimal for Money
+* M-Pesa-Mobile Money in Africa
+* Currency Internationalization (i18n), Multiple Currencies and Foreign Exchange (FX).
+* http://en.wikipedia.org/wiki/Japanese_units_of_measurement#Money: Discussion of internationalization of currencies, rounding, grouping and formatting, separators etc]
+* http://speleotrove.com/decimal/
+* http://sourceforge.net/projects/oquote/
+* Karatsuba Algorithm for Fast Big Decimal Multiplication
 
-
-
-
-
-Related Initiatives
-                        * Eric Evans Time and Money Library
-                        * Bitcoin Java Client
-                        * Java and Monetary Data (PDF)
+=== Related Initiatives
+* Eric Evans Time and Money Library
+* Bitcoin Java Client
+* Java and Monetary Data (PDF)
 
 
-________________
-
-
-0.8 (Public Review 2)        
-________________
-[3] Note that the reference implementation is not a required be part for public review, so it may still change.
-[4] Note that the TCK is not a required part for public review.
-[5] Note that currency conversion is a complex aspect that can not be performed implicitly or automatically. E.g. a conversion rate is dependent from the timestamp, the currencies involved, the provider, the amount ...
-
-[7] If MonetaryContext.AmountFlavor does not equal AmountFlavor.UNDEFINED, it is recommended to provide also a second amount type, either with the alternate specified AmountFlavor, or with AmountFlavor.UNDEFINED, which then is used as default.
-[8] Note that the conversion rate can be dependent on the MonetaryAmount passed.
-[9] This example is completely arbitrary.
-[10] INR 123456000.21 is formatted as INR 12,34,56,000.21
-[11] This makes sense, since acquiring for a concrete type with invalid capabilities can be seen as a programming error, since the default and maximal capabilities of a concrete type are accessible from the according implementation factory.
-[12] This is the case, if the the value from MonetaryAmountFactoryProviderSpi.getInclusionPolicy() does not equal to QueryInclusionPolicy.NEVER, or  QueryInclusionPolicy.DIRECT_REF_ONLY.
-[13] Therefore the default reference implementation class, Money,is based on BigDecimal and allows to explicitly configure its MathContext used on creation.
-[14] MonetaryFunctions is not part of the JSR, its just for illustration purposes.
-[15] MonetaryFunctions is not part of the JSR, its just for illustration purposes.
-[a]if you move MonetaryAmountFactory and MonetaryAmount below MonetaryAmounts then you could make bigger and more readable picture.
-[b]Good point, I will redraw the things using Enterprise Architect after my holidays, These are only some kind of intermediate "placeholders" ;-)
-[c]I have Enterprise Architect and some spare time, I would be happy to help you with redesign these.
-[d]Hi Greg, that would be really great. I will also grant you edit rights on 
-the spec, then you can edit things directly... ;-) 
- 
- 
-2014-02-13 0:04 GMT+01:00 Greg Bakos (Google Docs) <

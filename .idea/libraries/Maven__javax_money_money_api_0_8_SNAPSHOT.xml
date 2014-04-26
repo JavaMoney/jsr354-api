@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Maven: javax.money:money-api:0.8-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/javax/money/money-api/0.8-SNAPSHOT/money-api-0.8-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/money-api-0.8-SNAPSHOT-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/javax/money/money-api/0.8-SNAPSHOT/money-api-0.8-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/money-api-0.8-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/javax/money/money-api/0.8-SNAPSHOT/money-api-0.8-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

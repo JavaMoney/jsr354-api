@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Maven: org.javamoney.lib:javamoney-calc:0.4-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/javamoney/lib/javamoney-calc/0.4-SNAPSHOT/javamoney-calc-0.4-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../javamoney-lib/calc/javamoney-calc-0.4-SNAPSHOT-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/javamoney/lib/javamoney-calc/0.4-SNAPSHOT/javamoney-calc-0.4-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../javamoney-lib/calc/javamoney-calc-0.4-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/javamoney/lib/javamoney-calc/0.4-SNAPSHOT/javamoney-calc-0.4-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

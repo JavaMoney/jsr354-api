@@ -1043,8 +1043,8 @@ Hereby
   +IllegalArgumentException+, the +isCurrencyAvailable()+ methods allow to check if a currency code or +Locale+ is
   defined, before accessing it.
 
-NOTE: One may consider also adding access to historic currencies here. The problem hereby is that the existence of a currency
-is related to multiple attributes:
+NOTE: One may consider also adding access to historic currencies here. The problem hereby is that the existence of a
+currency is related to multiple attributes:
 
 * the target timestamp, when it should be valid, e.g. as UTC timestamp
 * the target country or region, as it was existing at that time
@@ -1835,7 +1835,7 @@ Hereby
 
 * +getSupportedLocales()+ returns the set of locales that are supported by the given implementation.
 * +getAmountFormatSymbols(Locale)+ returns the corresponding +AmountFormatSymbols+ instance.
-  NOTE: Note that the
+  IMPORTANT: Note that the
   +AmountFormatSymbols+ API class, that is relying on this SPI, will not cache any instances. When caching is useful,
   it must be implemented by the SPI.
 
@@ -1864,7 +1864,7 @@ Hereby
 
 * +getSupportedLocales()+ returns the set of locales that are supported by the given implementation.
 * +getAmountStyle(Locale)+ returns the corresponding +AmountStyle+ instance.
-  NOTE: Note that the +AmountStyle+ API class, that is relying on this SPI,  will not cache any instances. When
+  IMPORTANT: Note that the +AmountStyle+ API class, that is relying on this SPI,  will not cache any instances. When
   caching is useful, it must be implemented by the SPI.
 
 Multiple instances of this interface can be registered hereby forming a chain of responsibility, whereas the components
@@ -1889,7 +1889,7 @@ public interface MonetaryAmountFormatProviderSpi {
 
 Hereby
 * +getAmountFormat(AmountStyle)+ returns the corresponding +MonetaryAmountFormat+ instance.
-  NOTE: Note that the +MonetaryFormats+ API class, that is relying on this SPI, will not cache any instances.
+  IMPORTANT: Note that the +MonetaryFormats+ API class, that is relying on this SPI, will not cache any instances.
   When caching is useful, it must be implemented by the SPI.
 
 Multiple instances of this interface can be registered hereby forming a chain of responsibility, whereas the components
@@ -2273,7 +2273,7 @@ public class Total implements MonetaryOperator{
 }
 -------------------------------------------------------------------------------
 
-NOTE: We are well aware of the fact that this implementation still has some severe drawbacks, but we decided for
+CAUTION: We are well aware of the fact that this implementation still has some severe drawbacks, but we decided for
 simplicity to not add the following features:
 
 * the implementation can only handle one currency, a better implementation could also be _multi-currency_ capable.

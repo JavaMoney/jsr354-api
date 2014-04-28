@@ -227,7 +227,7 @@ public final class AmountFormatContext extends AbstractContext implements Serial
          */
         @Override
         public String toString(){
-            return "FormatStyle.Builder [styleId=" + styleId + "]";
+            return "FormatStyle.Builder [styleId=" + styleId + ", monetaryContext=" + monetaryContext + "]";
         }
 
     }

@@ -82,7 +82,7 @@ public interface MonetaryConversionsSpi {
 	 * Get all currently registered provider names.
 	 * 
 	 * @return all currently registered provider names
-	 * @see ProviderContext#getProviderName()
+	 * @see ProviderContext#getProvider()
 	 */
 	Collection<String> getProviderNames();
 

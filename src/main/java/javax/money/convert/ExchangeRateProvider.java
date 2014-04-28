@@ -19,7 +19,7 @@ import javax.money.MonetaryOperator;
  * The provider and its capabilities can be defined in arbitrary detail by the
  * corresponding {@link javax.money.convert.ProviderContext}.
  * Instances of this class must only provide conversion data for exact one provider, identified by
- * {@link ProviderContext#getProviderName()}.
+ * {@link ProviderContext#getProvider()}.
  * <br/>
  * When accessing ExchangeRateProvider instances or {@link javax.money.convert.CurrencyConversion} instances from the
  * {@link MonetaryConversions}

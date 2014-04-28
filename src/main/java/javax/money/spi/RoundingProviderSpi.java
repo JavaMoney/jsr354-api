@@ -15,6 +15,7 @@ import java.util.Set;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryContext;
 import javax.money.MonetaryOperator;
+import javax.money.RoundingContext;
 
 /**
  * This SPI allows to extends/override the roundings available for
@@ -38,85 +39,16 @@ import javax.money.MonetaryOperator;
 public interface RoundingProviderSpi {
 
 	/**
-	 * Access the current valid rounding for the given {@link CurrencyUnit}.
-	 * <p>
-	 * Instances of {@link MonetaryOperator} returned, must be thread safe and
-	 * immutable.
-	 * 
-	 * @param currency
-	 *            the currency for which a rounding operator should be obtained,
-	 *            not {@code null}.
-	 * @return the corresponding rounding instance, or {@code null}.
-	 */
-	MonetaryOperator getRounding(CurrencyUnit currency);
-
-	/**
-	 * Access the rounding for the given {@link CurrencyUnit}, that was valid at
-	 * the given timestamp.
-	 * <p>
-	 * Instances of {@link MonetaryOperator} returned, must be thread safe and
-	 * immutable.
-	 * 
-	 * @param currency
-	 *            the currency for which a rounding operator should be obtained,
-	 *            not {@code null}.
-	 * @param timestamp
-	 *            the target UTC timestamp, when the rounding should be valid.
-	 * @return the corresponding rounding instance, or {@code null}.
-	 */
-	MonetaryOperator getRounding(CurrencyUnit currency, long timestamp);
-
-	/**
-	 * Access the current valid rounding for the given {@link CurrencyUnit}.
-	 * <p>
-	 * Instances of {@link MonetaryOperator} returned, must be thread safe and
-	 * immutable.
-	 * 
-	 * @param currency
-	 *            the currency for which a rounding operator should be obtained,
-	 *            not {@code null}.
-	 * @return the corresponding rounding instance, or {@code null}.
-	 */
-	MonetaryOperator getCashRounding(CurrencyUnit currency);
-
-	/**
-	 * Access the cash rounding for the given {@link CurrencyUnit}, that was
-	 * valid at the given timestamp.
-	 * <p>
-	 * Instances of {@link MonetaryOperator} returned, must be thread safe and
-	 * immutable.
-	 * 
-	 * @param currency
-	 *            the currency for which a rounding operator should be obtained,
-	 *            not {@code null}.
-	 * @param timestamp
-	 *            the target UTC timestamp, when the rounding should be valid.
-	 * @return the corresponding rounding instance, or {@code null}.
-	 */
-	MonetaryOperator getCashRounding(CurrencyUnit currency, long timestamp);
-
-	/**
-	 * Access an {@link MonetaryOperator} for custom rounding
-	 * {@link javax.money.MonetaryAmount} instances.
-	 * 
-	 * @param customRoundingId
-	 *            The customRounding identifier.
-	 * @return the corresponding {@link MonetaryOperator} implementing the
-	 *         rounding, or {@code null}.
-	 */
-	MonetaryOperator getCustomRounding(String customRoundingId);
-
-	/**
 	 * Access a rounding that models the given {@link MonetaryContext}.
 	 * 
-	 * @param monetaryContext
-	 *            The target {@link MonetaryContext}
+	 * @param roundingContext
+	 *            The target {@link RoundingContext}
 	 * @return the corresponding rounding, or {@code null}
 	 */
-	MonetaryOperator getRounding(MonetaryContext monetaryContext);
+	MonetaryOperator getRounding(RoundingContext roundingContext);
 
 	/**
-	 * Access the ids of the custom roundigs defined by this provider.
+	 * Access the ids of the custom roundings defined by this provider.
 	 * 
 	 * @return the ids of the defined custom roundings, never {@code null}.
 	 */

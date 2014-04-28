@@ -50,31 +50,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      */
     public static final MonetaryContext DEFAULT_CONTEXT = new Builder().create();
 
-    /**
-     * Defines the possible flavors of {@link MonetaryAmount} implementations.
-     * This information can be additionally used to determine which
-     * implementation type should be used, additionally to the other properties
-     * and attributes in {@link MonetaryContext}.
-     *
-     * @author Anatole Tresch
-     * @see MonetaryAmounts#queryAmountType(MonetaryContext)
-     */
-    public static enum AmountFlavor{
-        /**
-         * The implementation is optimized for precise results, not primarly for
-         * performance.
-         */
-        PRECISION,
-        /**
-         * The implementation is optimized for fast results, but reduced
-         * precision and scale, may be possible.
-         */
-        PERFORMANCE,
-        /**
-         * The implementation has no defined flavor.
-         */
-        UNDEFINED,
-    }
+
 
     /**
      * The number of digits to be used for an operation. A value of 0 indicates

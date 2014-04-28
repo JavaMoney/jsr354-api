@@ -9,8 +9,6 @@
 package javax.money.convert;
 
 import javax.money.AbstractContext;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -65,33 +63,10 @@ public final class ConversionContext extends AbstractContext{
      */
     public static final ConversionContext OTHER_CONVERSION = new Builder().setRateType(RateType.OTHER).create();
 
-    /**
-     * Common context attributes, using this attributes ensures interoperability
-     * on property key level. Where possible according type safe methods are
-     * also defined on this class.
-     *
-     * @author Anatole Tresch
-     */
-    private static enum ConversionAttribute{
-        /**
-         * The provider serving the conversion data.
-         */
-        PROVIDER,
-        /**
-         * The timestamp of a rate, this may be extended by a valid from/to
-         * range.
-         */
-        TIMESTAMP,
-        /**
-         * The ending range of a rate, when a rate has a constraint validity
-         * period.
-         */
-        VALID_TO,
-        /**
-         * The type of rate requested.
-         */
-        RATE_TYPE,
-    }
+    /** The name of the provider. */
+    private String provider;
+    /** The rate type. */
+    private RateType rateType = RateType.ANY;
 
     /**
      * Private constructor, used by {@link Builder}.
@@ -100,6 +75,8 @@ public final class ConversionContext extends AbstractContext{
      */
     private ConversionContext(Builder builder){
         super(builder);
+        this.provider = builder.provider;
+        this.rateType = builder.rateType;
     }
 
     /**
@@ -108,7 +85,7 @@ public final class ConversionContext extends AbstractContext{
      * @return the deferred flag, or {code null}.
      */
     public RateType getRateType(){
-        return getNamedAttribute( ConversionAttribute.RATE_TYPE, RateType.class,RateType.ANY);
+        return rateType;
     }
 
 
@@ -120,7 +97,7 @@ public final class ConversionContext extends AbstractContext{
      * @return the provider, or {code null}.
      */
     public String getProvider(){
-        return getNamedAttribute(ConversionAttribute.PROVIDER, String.class, null);
+        return provider;
     }
 
     /**
@@ -182,6 +159,14 @@ public final class ConversionContext extends AbstractContext{
         return ANY_CONVERSION;
     }
 
+    @Override
+    public String toString(){
+        return "ConversionContext{" +
+                "rateType=" + rateType +
+                ", provider='" + provider + '\'' +
+                ", " + super.toString() +
+                '}';
+    }
 
     /**
      * Builder class to create {@link ConversionContext} instances. Instances of
@@ -190,6 +175,11 @@ public final class ConversionContext extends AbstractContext{
      * @author Anatole Tresch
      */
     public static final class Builder extends AbstractBuilder<Builder>{
+
+        /** The name of the provider. */
+        private String provider;
+        /** The supported rate types. */
+        private RateType rateType = RateType.ANY;
 
         /**
          * Create a new Builder instance without any provider, e.g. for creating
@@ -218,7 +208,7 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder(ProviderContext context, RateType rateType){
             super(context);
-            setProvider(context.getProviderName());
+            setProvider(context.getProvider());
             setRateType(rateType);
         }
 
@@ -230,7 +220,7 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder setRateType(RateType rateType){
             Objects.requireNonNull(rateType);
-            setAttribute(ConversionAttribute.RATE_TYPE, rateType);
+            this.rateType = rateType;
             return this;
         }
 
@@ -242,7 +232,7 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder setProvider(String provider){
             Objects.requireNonNull(provider);
-            setAttribute(ConversionAttribute.PROVIDER, provider);
+            this.provider = provider;
             return this;
         }
 

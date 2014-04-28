@@ -20,7 +20,13 @@ import java.util.Set;
  */
 public interface MonetaryAmountFormatProviderSpi {
 
-
+    /**
+     * Access the style id this factory is creating instances for. When accessing instances of MonetaryAmountFormat
+     * the styleId passed is matched with this spi's style ids, so correct factories are used for creating new
+     * MonetaryAmountFormat instances.
+     * @return this provider's styleId, not null.
+     */
+    public String getStyleId();
 
 	/**
 	 * Create a new {@link MonetaryAmountFormat} for the given input.

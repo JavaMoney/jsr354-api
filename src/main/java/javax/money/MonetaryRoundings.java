@@ -57,20 +57,20 @@ public final class MonetaryRoundings {
 	/**
 	 * Creates an rounding instance using {@link java.math.RoundingMode#UP} rounding.
 	 * 
-	 * @param monetaryContext
-	 *            The {@link MonetaryContext} defining the required rounding.
+	 * @param roundingContext
+	 *            The {@link RoundingContext} defining the required rounding.
 	 * @return the corresponding {@link MonetaryOperator} implementing the
 	 *         rounding.
 	 * @throws MonetaryException
 	 *             if no such rounding could be evaluated.
 	 */
-	public static MonetaryOperator getRounding(MonetaryContext monetaryContext) {
-		Objects.requireNonNull(monetaryContext, "MonetaryContext required.");
+	public static MonetaryOperator getRounding(RoundingContext roundingContext) {
+		Objects.requireNonNull(roundingContext, "RoundingContext required.");
 		for (RoundingProviderSpi prov : Bootstrap
 				.getServices(
 				RoundingProviderSpi.class)) {
 			try {
-				MonetaryOperator op = prov.getRounding(monetaryContext);
+				MonetaryOperator op = prov.getRounding(roundingContext);
 				if (op != null) {
 					return op;
 				}
@@ -82,144 +82,24 @@ public final class MonetaryRoundings {
 			}
 		}
 		throw new MonetaryException("No Rounding found matching "
-				+ monetaryContext);
+				+ roundingContext);
 	}
 
 	/**
 	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
 	 * instances given a currency.
 	 * 
-	 * @param currency
+	 * @param currencyUnit
 	 *            The currency, which determines the required precision. As
 	 *            {@link java.math.RoundingMode}, by default, {@link java.math.RoundingMode#HALF_UP}
 	 *            is sued.
 	 * @return a new instance {@link MonetaryOperator} implementing the
 	 *         rounding, never {@code null}.
 	 */
-	public static MonetaryOperator getRounding(CurrencyUnit currency) {
-		Objects.requireNonNull(currency, "Currency required.");
-		for (RoundingProviderSpi prov : Bootstrap
-				.getServices(
-				RoundingProviderSpi.class)) {
-			try {
-				MonetaryOperator op = prov.getRounding(currency);
-				if (op != null) {
-					return op;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(MonetaryRoundings.class.getName()).log(
-						Level.SEVERE,
-						"Error loading RoundingProviderSpi from ptovider: "
-								+ prov, e);
-			}
-		}
-		throw new MonetaryException("No Rounding found for currency "
-				+ currency);
+	public static MonetaryOperator getRounding(CurrencyUnit currencyUnit) {
+		return getRounding(RoundingContext.of(currencyUnit));
 	}
 
-	/**
-	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
-	 * instances given a currency.
-	 * 
-	 * @param currency
-	 *            The currency, which determines the required precision. As
-	 *            {@link java.math.RoundingMode}, by default, {@link java.math.RoundingMode#HALF_UP}
-	 *            is sued.
-	 * @return a new instance {@link MonetaryOperator} implementing the
-	 *         rounding, never {@code null}.
-	 */
-	public static MonetaryOperator getCashRounding(CurrencyUnit currency) {
-		Objects.requireNonNull(currency, "Currency required.");
-		for (RoundingProviderSpi prov : Bootstrap
-				.getServices(
-				RoundingProviderSpi.class)) {
-			try {
-				MonetaryOperator op = prov.getCashRounding(currency);
-				if (op != null) {
-					return op;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(MonetaryRoundings.class.getName()).log(
-						Level.SEVERE,
-						"Error loading RoundingProviderSpi from ptovider: "
-								+ prov, e);
-			}
-		}
-		throw new MonetaryException("No Cash Rounding found for currency "
-				+ currency);
-	}
-
-	/**
-	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
-	 * instances given a currency, hereby the rounding must be valid for the
-	 * given timestamp.
-	 * 
-	 * @param currency
-	 *            The currency, which determines the required precision. As
-	 *            {@link java.math.RoundingMode}, by default, {@link java.math.RoundingMode#HALF_UP}
-	 *            is used.
-	 * @param timestamp
-	 *            the UTC timestamp.
-	 * @return a new instance {@link MonetaryOperator} implementing the
-	 *         rounding, or {@code null}.
-	 */
-	public static MonetaryOperator getRounding(CurrencyUnit currency,
-			long timestamp) {
-		Objects.requireNonNull(currency, "Currency required.");
-		for (RoundingProviderSpi prov : Bootstrap
-				.getServices(
-				RoundingProviderSpi.class)) {
-			try {
-				MonetaryOperator op = prov.getRounding(currency, timestamp);
-				if (op != null) {
-					return op;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(MonetaryRoundings.class.getName()).log(
-						Level.SEVERE,
-						"Error loading RoundingProviderSpi from provider: "
-								+ prov, e);
-			}
-		}
-		throw new MonetaryException("No Rounding found for currency "
-				+ currency + ", timestamp=" + timestamp);
-	}
-
-	/**
-	 * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
-	 * instances given a currency, hereby the rounding must be valid for the
-	 * given timestamp.
-	 * 
-	 * @param currency
-	 *            The currency, which determines the required precision. As
-	 *            {@link java.math.RoundingMode}, by default, {@link java.math.RoundingMode#HALF_UP}
-	 *            is sued.
-	 * @param timestamp
-	 *            the UTC timestamp.
-	 * @return a new instance {@link MonetaryOperator} implementing the
-	 *         rounding, or {@code null}.
-	 */
-	public static MonetaryOperator getCashRounding(CurrencyUnit currency,
-			long timestamp) {
-		Objects.requireNonNull(currency, "Currency required.");
-		for (RoundingProviderSpi prov : Bootstrap
-				.getServices(
-				RoundingProviderSpi.class)) {
-			try {
-				MonetaryOperator op = prov.getCashRounding(currency, timestamp);
-				if (op != null) {
-					return op;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(MonetaryRoundings.class.getName()).log(
-						Level.SEVERE,
-						"Error loading RoundingProviderSpi from ptovider: "
-								+ prov, e);
-			}
-		}
-		throw new MonetaryException("No Rounding found for currency "
-				+ currency + ", timestamp=" + timestamp);
-	}
 
 	/**
 	 * Access an {@link MonetaryOperator} for custom rounding
@@ -234,24 +114,7 @@ public final class MonetaryRoundings {
 	 *             {@link RoundingProviderSpi} instance.
 	 */
 	public static MonetaryOperator getRounding(String customRoundingId) {
-		Objects.requireNonNull(customRoundingId, "CustomRoundingId required.");
-		for (RoundingProviderSpi prov : Bootstrap
-				.getServices(
-				RoundingProviderSpi.class)) {
-			try {
-				MonetaryOperator op = prov.getCustomRounding(customRoundingId);
-				if (op != null) {
-					return op;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(MonetaryRoundings.class.getName()).log(
-						Level.SEVERE,
-						"Error loading RoundingProviderSpi from provider: "
-								+ prov, e);
-			}
-		}
-		throw new MonetaryException("No Custom Rounding found with id "
-				+ customRoundingId);
+        return getRounding(RoundingContext.of(customRoundingId));
 	}
 
 	/**

@@ -37,7 +37,7 @@ public final class ProviderContext extends AbstractContext{
     private static final long serialVersionUID = 3536713139786856877L;
 
     /** The name of the provider. */
-    private String providerName;
+    private String provider;
     /** The supported rate types. */
     private Set<RateType> rateTypes = new HashSet<>();
 
@@ -48,9 +48,9 @@ public final class ProviderContext extends AbstractContext{
      */
     private ProviderContext(Builder builder){
         super(builder);
-        Objects.requireNonNull(builder.providerName);
+        Objects.requireNonNull(builder.provider);
         Objects.requireNonNull(builder.rateTypes);
-        this.providerName = builder.providerName;
+        this.provider = builder.provider;
         this.rateTypes.addAll(builder.rateTypes);
     }
 
@@ -61,8 +61,8 @@ public final class ProviderContext extends AbstractContext{
      *
      * @return the provider, or {code null}.
      */
-    public String getProviderName(){
-        return providerName;
+    public String getProvider(){
+        return provider;
     }
 
     /**
@@ -113,17 +113,17 @@ public final class ProviderContext extends AbstractContext{
     public static final class Builder extends AbstractBuilder<Builder>{
 
         /** The name of the provider. */
-        private String providerName;
+        private String provider;
         /** The supported rate types. */
         private Set<RateType> rateTypes = new HashSet<>();
 
         /**
          * Create a new Builder instance.
          *
-         * @param providerName the provider name, not {@code null}.
+         * @param provider the provider name, not {@code null}.
          */
-        public Builder(String providerName){
-            setProviderName(providerName);
+        public Builder(String provider){
+            setProviderName(provider);
         }
 
         /**
@@ -135,19 +135,19 @@ public final class ProviderContext extends AbstractContext{
          */
         public Builder(ProviderContext context){
             super(context);
-            this.providerName = context.providerName;
+            this.provider = context.provider;
             this.rateTypes.addAll(context.rateTypes);
         }
 
         /**
          * Sets the provider name.
          *
-         * @param providerName the new provider name
+         * @param provider the new provider name
          * @return this, for chaining.
          */
-        public Builder setProviderName(String providerName){
-            Objects.requireNonNull(providerName);
-            this.providerName = providerName;
+        public Builder setProviderName(String provider){
+            Objects.requireNonNull(provider);
+            this.provider = provider;
             return this;
         }
 

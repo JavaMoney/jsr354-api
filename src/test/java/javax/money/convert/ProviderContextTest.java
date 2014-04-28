@@ -12,8 +12,6 @@ package javax.money.convert;
 
 import org.junit.Test;
 
-import java.util.Date;
-
 import static org.junit.Assert.*;
 
 /**
@@ -24,7 +22,7 @@ public class ProviderContextTest{
     @Test
     public void testGetRateTypes() throws Exception{
         ProviderContext ctx = new ProviderContext.Builder("myprov").setRateTypes(RateType.DEFERRED, RateType.HISTORIC).create();
-        assertEquals("myprov", ctx.getProviderName());
+        assertEquals("myprov", ctx.getProvider());
     }
 
     @Test
@@ -38,7 +36,7 @@ public class ProviderContextTest{
         ProviderContext ctx = ProviderContext.of("testprov");
         ProviderContext ctx2 = ProviderContext.of("testprov");
         assertEquals(ctx, ctx2);
-        assertEquals("testprov", ctx.getProviderName());
+        assertEquals("testprov", ctx.getProvider());
     }
 
     @Test
@@ -58,6 +56,6 @@ public class ProviderContextTest{
         ProviderContext ctx2 = ProviderContext.from(cc);
         assertEquals(ctx, ctx2);
         assertTrue(ctx.getRateTypes().contains(RateType.REALTIME));
-        assertEquals("Myprov", ctx.getProviderName());
+        assertEquals("Myprov", ctx.getProvider());
     }
 }

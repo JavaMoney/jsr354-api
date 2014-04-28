@@ -9,10 +9,7 @@
 package javax.money.convert;
 
 import javax.money.AbstractContext;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This class describes what kind of {@link javax.money.convert.ExchangeRate}s a {@link javax.money.convert
@@ -39,33 +36,10 @@ public final class ProviderContext extends AbstractContext{
      */
     private static final long serialVersionUID = 3536713139786856877L;
 
-    /**
-     * Common context attributes, using this attributes ensures interoperability
-     * on property key level. Where possible according type safe methods are
-     * also defined on this class.
-     *
-     * @author Anatole Tresch
-     */
-    private static enum ProviderAttribute{
-        /**
-         * The provider serving the conversion data.
-         */
-        PROVIDER,
-        /**
-         * The starting range, where a rate is valid or a converter can deliver
-         * useful results.
-         */
-        VALID_FROM,
-        /**
-         * The ending range, where a rate is valid or a converter can deliver
-         * useful results.
-         */
-        VALID_TO,
-        /**
-         * The type of rates provided or requested.
-         */
-        RATE_TYPES,
-    }
+    /** The name of the provider. */
+    private String providerName;
+    /** The supported rate types. */
+    private Set<RateType> rateTypes = new HashSet<>();
 
     /**
      * Private constructor, used by {@link Builder}.
@@ -74,6 +48,10 @@ public final class ProviderContext extends AbstractContext{
      */
     private ProviderContext(Builder builder){
         super(builder);
+        Objects.requireNonNull(builder.providerName);
+        Objects.requireNonNull(builder.rateTypes);
+        this.providerName = builder.providerName;
+        this.rateTypes.addAll(builder.rateTypes);
     }
 
     /**
@@ -84,7 +62,7 @@ public final class ProviderContext extends AbstractContext{
      * @return the provider, or {code null}.
      */
     public String getProviderName(){
-        return getNamedAttribute(ProviderAttribute.PROVIDER, String.class);
+        return providerName;
     }
 
     /**
@@ -93,114 +71,7 @@ public final class ProviderContext extends AbstractContext{
      * @return the deferred flag, or {code null}.
      */
     public Set<RateType> getRateTypes(){
-        return getNamedAttribute(ProviderAttribute.RATE_TYPES, Set.class);
-    }
-
-    /**
-     * Returns the starting date/time this rate is valid. The result can also be
-     * {@code null}, since it is possible, that an {@link ExchangeRate} does not
-     * have starting validity range. This also can be queried by calling
-     * {@link #hasLowerBound()}.
-     * <p/>
-     * Basically all date time types that are available on a platform must be
-     * supported. On SE this includes Date, Calendar and the new 310 types
-     * introduced in JDK8). Additionally calling this method with
-     * {@code Long.class} returns the POSIX/UTC timestamp in milliseconds.
-     *
-     * @return The starting timestamp of the rate, defining valid from, or
-     * {@code null}, if no starting validity constraint is set.
-     */
-    public <T> T getValidFrom(Class<T> type){
-        return getNamedAttribute(ProviderAttribute.VALID_FROM, type);
-    }
-
-    /**
-     * Returns the UTC timestamp defining from what date/time this rate is
-     * valid.
-     * <p/>
-     * This is modeled as {@link Long} instead of {@code long}, since it is
-     * possible, that an {@link ExchangeRate} does not have starting validity
-     * range. This also can be queried by calling {@link #hasLowerBound()}.
-     *
-     * @return The UTC timestamp of the rate, defining valid from, or
-     * {@code null}, if no starting validity constraint is set.
-     */
-    public Long getValidFromMillis(){
-        return getNamedAttribute(ProviderAttribute.VALID_FROM, Long.class);
-    }
-
-    /**
-     * Returns the ending date/time this rate is valid. The result can also be
-     * {@code null}, since it is possible, that an {@link ExchangeRate} does not
-     * have ending validity range. This also can be queried by calling
-     * {@link #hasUpperBound()}.
-     * <p/>
-     * Basically all date time types that are available on a platform must be
-     * supported. On SE this includes Date, Calendar and the new 310 types
-     * introduced in JDK8). Additionally calling this method with
-     * {@code Long.class} returns the POSIX/UTC timestamp in milliseconds.
-     *
-     * @return The ending timestamp of the rate, defining valid until, or
-     * {@code null}, if no ending validity constraint is set.
-     */
-    public <T> T getValidTo(Class<T> type){
-        return getNamedAttribute(ProviderAttribute.VALID_TO, type);
-    }
-
-    /**
-     * Get the data validity timestamp of this rate in milliseconds. This can be
-     * useful, when a rate in a system only should be used within some specified
-     * time. *
-     * <p/>
-     * This is modelled as {@link Long} instaed of {@code long}, since it is
-     * possible, that an {@link ExchangeRate} does not have ending validity
-     * range. This also can be queried by calling {@link #hasUpperBound()}.
-     *
-     * @return the duration of validity in milliseconds, or {@code null} if no
-     * ending validity constraint is set.
-     */
-    public Long getValidToMillis(){
-        return getNamedAttribute(ProviderAttribute.VALID_TO, Long.class);
-    }
-
-    /**
-     * Method to quickly check if an {@link ExchangeRate} is valid for a given
-     * UTC timestamp.
-     *
-     * @param timestamp the UTC timestamp.
-     * @return {@code true}, if the rate is valid.
-     */
-    public boolean isInScope(long timestamp){
-        Long validTo = getValidTo(Long.class);
-        Long validFrom = getValidFrom(Long.class);
-        if(validTo != null && validTo.longValue() <= timestamp){
-            return false;
-        }
-        if(validFrom != null && validFrom.longValue() > timestamp){
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Method to easily check if the {@link #getValidFromMillis()} is not
-     * {@code null}.
-     *
-     * @return {@code true} if {@link #getValidFromMillis()} is not {@code null}
-     * .
-     */
-    public boolean hasLowerBound(){
-        return getValidFrom(Long.class) != null;
-    }
-
-    /**
-     * Method to easily check if the {@link #getValidToMillis()} is not
-     * {@code null}.
-     *
-     * @return {@code true} if {@link #getValidToMillis()} is not {@code null}.
-     */
-    public boolean hasUpperBound(){
-        return getValidTo(Long.class) != null;
+        return Collections.unmodifiableSet(rateTypes);
     }
 
     /**
@@ -241,6 +112,11 @@ public final class ProviderContext extends AbstractContext{
      */
     public static final class Builder extends AbstractBuilder<Builder>{
 
+        /** The name of the provider. */
+        private String providerName;
+        /** The supported rate types. */
+        private Set<RateType> rateTypes = new HashSet<>();
+
         /**
          * Create a new Builder instance.
          *
@@ -259,6 +135,8 @@ public final class ProviderContext extends AbstractContext{
          */
         public Builder(ProviderContext context){
             super(context);
+            this.providerName = context.providerName;
+            this.rateTypes.addAll(context.rateTypes);
         }
 
         /**
@@ -269,7 +147,7 @@ public final class ProviderContext extends AbstractContext{
          */
         public Builder setProviderName(String providerName){
             Objects.requireNonNull(providerName);
-            setAttribute(ProviderAttribute.PROVIDER, providerName);
+            this.providerName = providerName;
             return this;
         }
 
@@ -281,57 +159,11 @@ public final class ProviderContext extends AbstractContext{
          * @throws IllegalArgumentException when not at least one {@link RateType} is provided.
          */
         public Builder setRateTypes(RateType... rateTypes){
-            Set<RateType> types = new HashSet<>();
             Objects.requireNonNull(rateTypes);
             if(rateTypes.length == 0){
                 throw new IllegalArgumentException("At least one RateType is required.");
             }
-            types.addAll(Arrays.asList(rateTypes));
-            setAttribute(ProviderAttribute.RATE_TYPES, types, Set.class);
-            return this;
-        }
-
-        /**
-         * Set the starting range timestamp value.
-         *
-         * @param timestamp the starting range timestamp value
-         * @return this, for chaining.
-         */
-        public Builder setValidFrom(long timestamp){
-            setAttribute(ProviderAttribute.VALID_FROM, Long.valueOf(timestamp));
-            return this;
-        }
-
-        /**
-         * Set the starting range timestamp value.
-         *
-         * @param dateTime the starting range timestamp value
-         * @return this, for chaining.
-         */
-        public Builder setValidFrom(Object dateTime){
-            setAttribute(ProviderAttribute.VALID_FROM, dateTime);
-            return this;
-        }
-
-        /**
-         * Set the ending range timestamp value.
-         *
-         * @param timestamp the ending range timestamp value
-         * @return this, for chaining.
-         */
-        public Builder setValidTo(long timestamp){
-            setAttribute(ProviderAttribute.VALID_TO, Long.valueOf(timestamp));
-            return this;
-        }
-
-        /**
-         * Set the ending range timestamp value.
-         *
-         * @param dateTime the ending range timestamp value
-         * @return this, for chaining.
-         */
-        public Builder setValidTo(Object dateTime){
-            setAttribute(ProviderAttribute.VALID_TO, dateTime);
+            this.rateTypes.addAll(Arrays.asList(rateTypes));
             return this;
         }
 

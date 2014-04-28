@@ -34,16 +34,16 @@ public class MonetaryFormatsTest{
 
     @Test(expected = MonetaryException.class)
     public void testGetAmountFormatLocale_Invalid(){
-        MonetaryFormats.getAmountFormat(Locale.CHINESE);
+        MonetaryFormats.getAmountFormat(new Locale("foo", "bar"));
     }
 
     @Test
     public void testGetAmountFormatStyle(){
-        AmountStyle s = AmountStyle.of(Locale.ENGLISH);
+        AmountFormatContext s = AmountFormatContext.of(Locale.ENGLISH);
         MonetaryAmountFormat fmt = MonetaryFormats.getAmountFormat(s);
         assertNotNull(fmt);
         assertEquals(fmt.getClass(), TestAmountFormatProvider.TestFormat.class);
-        assertEquals(s, fmt.getAmountStyle());
+        assertEquals(s, fmt.getAmountFormatContext());
     }
 
     @Test

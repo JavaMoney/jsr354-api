@@ -8,8 +8,10 @@
  */
 package javax.money.spi;
 
-import javax.money.format.AmountStyle;
+import javax.money.format.AmountFormatContext;
 import javax.money.format.MonetaryAmountFormat;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * SPI (formatting) providing {@link MonetaryAmountFormat} instances.
@@ -18,15 +20,23 @@ import javax.money.format.MonetaryAmountFormat;
  */
 public interface MonetaryAmountFormatProviderSpi {
 
+
+
 	/**
 	 * Create a new {@link MonetaryAmountFormat} for the given input.
 	 * 
 	 * @param formatStyle
-	 *            The {@link AmountStyle} to be used.
+	 *            The {@link javax.money.format.AmountFormatContext} to be used.
 	 * @return An according {@link MonetaryAmountFormat} instance, or {@code null}, which delegates
 	 *         the request to subsequent {@link MonetaryAmountFormatProviderSpi} instances
 	 *         registered.
 	 */
-	public MonetaryAmountFormat getAmountFormat(AmountStyle formatStyle);
+	public MonetaryAmountFormat getAmountFormat(AmountFormatContext formatStyle);
+
+    /**
+     * Gets a list with available locales for this format provider.
+     * @return list of available locales, never null.
+     */
+    public Set<Locale> getAvailableLocales();
 
 }

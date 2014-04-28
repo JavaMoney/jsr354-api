@@ -28,25 +28,6 @@ public class ProviderContextTest{
     }
 
     @Test
-    public void testGetValidToMillis() throws Exception{
-        ProviderContext ctx = new ProviderContext.Builder("myprov").setValidTo(222L).create();
-        assertEquals(Long.valueOf(222L), ctx.getValidToMillis());
-    }
-
-    @Test
-    public void testGetValidFromMillis() throws Exception{
-        ProviderContext ctx = new ProviderContext.Builder("myprov").setValidFrom(222L).create();
-        assertEquals(Long.valueOf(222L), ctx.getValidFromMillis());
-    }
-
-    @Test
-    public void testGetValidTo1() throws Exception{
-        Date date = new Date();
-        ProviderContext ctx = new ProviderContext.Builder("myprov").setValidTo(date).create();
-        assertEquals(date, ctx.getValidTo(Date.class));
-    }
-
-    @Test
     public void testToBuilder() throws Exception{
         ProviderContext ctx = new ProviderContext.Builder("myprov").create();
         assertEquals(ctx, ctx.toBuilder().create());
@@ -78,42 +59,5 @@ public class ProviderContextTest{
         assertEquals(ctx, ctx2);
         assertTrue(ctx.getRateTypes().contains(RateType.REALTIME));
         assertEquals("Myprov", ctx.getProviderName());
-    }
-
-
-    @Test
-    public void testIsInScope() throws Exception{
-        ProviderContext ctx = new ProviderContext.Builder("myprov").setValidTo(222L).create();
-        assertTrue(ctx.isInScope(221L));
-        assertFalse(ctx.isInScope(222L));
-        assertFalse(ctx.isInScope(225L));
-        ctx = new ProviderContext.Builder("myprov").setValidFrom(222L).create();
-        assertFalse(ctx.isInScope(221L));
-        assertTrue(ctx.isInScope(225L));
-        assertTrue(ctx.isInScope(222L));
-    }
-
-    @Test
-    public void testIsLowerBound() throws Exception{
-        ProviderContext ctx = new ProviderContext.Builder("myprov").setValidTo(222L).create();
-        assertTrue(ctx.hasUpperBound());
-        assertFalse(ctx.hasLowerBound());
-    }
-
-    @Test
-    public void testIsUpperBound() throws Exception{
-        ProviderContext ctx = new ProviderContext.Builder("myprov").setValidFrom(222L).create();
-        assertFalse(ctx.hasUpperBound());
-        assertTrue(ctx.hasLowerBound());
-    }
-
-    @Test
-    public void testIsUpperLowerBound() throws Exception{
-        ProviderContext ctx = new ProviderContext.Builder("myprov").setValidFrom(222L).setValidTo(230L).create();
-        assertTrue(ctx.hasUpperBound());
-        assertTrue(ctx.hasLowerBound());
-        ctx = new ProviderContext.Builder("myprov").create();
-        assertFalse(ctx.hasUpperBound());
-        assertFalse(ctx.hasLowerBound());
     }
 }

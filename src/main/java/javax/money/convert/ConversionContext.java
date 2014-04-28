@@ -111,61 +111,6 @@ public final class ConversionContext extends AbstractContext{
         return getNamedAttribute( ConversionAttribute.RATE_TYPE, RateType.class,RateType.ANY);
     }
 
-    /**
-     * Returns the UTC timestamp of this rate.
-     *
-     * @return The UTC timestamp of the rate, or {@code null}.
-     */
-    public final Long getTimestamp(){
-        return getNamedAttribute(ConversionAttribute.TIMESTAMP, Long.class, null);
-    }
-
-    /**
-     * Returns the timestamp of this rate.
-     *
-     * @param type the date/time type required.
-     * @return The timestamp of the rate, or {@code null}.
-     */
-    public final <T> T getTimestamp(Class<T> type){
-        return getNamedAttribute(ConversionAttribute.TIMESTAMP, type, null);
-    }
-
-    /**
-     * Returns the ending UTC timestamp of this rate, or {@code null}.
-     *
-     * @return The ending UTC timestamp of the rate, or {@code null}.
-     */
-    public final Long getValidTo(){
-        return getNamedAttribute(ConversionAttribute.VALID_TO, Long.class, null);
-    }
-
-    /**
-     * Returns the ending date/time of this rate.
-     *
-     * @param type the date/time type required.
-     * @return The ending date/time of the rate, or {@code null}.
-     */
-    public final <T> T getValidTo(Class<T> type){
-        return getNamedAttribute(ConversionAttribute.VALID_TO, type, null);
-    }
-
-    /**
-     * Method that determines if the rate is valid at the given UTC timestamp.
-     *
-     * @param timestamp the timestamp in milliseconds.
-     * @return true, if the rate is valid.
-     */
-    public boolean isValid(long timestamp){
-        Long ts = getTimestamp();
-        if(ts != null && ts.longValue() > timestamp){
-            return false;
-        }
-        ts = getValidTo();
-        if(ts != null && ts.longValue() < timestamp){
-            return false;
-        }
-        return true;
-    }
 
     /**
      * Get the provider of this rate. The provider of a rate can have different
@@ -237,32 +182,6 @@ public final class ConversionContext extends AbstractContext{
         return ANY_CONVERSION;
     }
 
-    /**
-     * Simple factory method for a {@link ConversionContext} for accessing historic rates. For more
-     * possibilities to initialize a {@link ConversionContext}, please use a
-     * {@link Builder},
-     *
-     * @return a new instance of {@link ConversionContext}
-     */
-    public static ConversionContext of(long timestamp){
-        return new Builder().setTimestamp(timestamp).create();
-    }
-
-    /**
-     * Converts the given {@link ProviderContext} to an according
-     * {@link ConversionContext} using the given {@link RateType}.
-     *
-     * @param rateType  the {@link RateType}, not null
-     * @param timestamp the target timestamp
-     * @return a new {@link ConversionContext}
-     */
-    public static ConversionContext of(String provider, RateType rateType, Long timestamp){
-        if(timestamp == null){
-            return new ConversionContext.Builder().setProvider(provider).setRateType(rateType).create();
-        }
-        return new ConversionContext.Builder().setProvider(provider).setRateType(rateType).setTimestamp(timestamp)
-                .create();
-    }
 
     /**
      * Builder class to create {@link ConversionContext} instances. Instances of
@@ -299,61 +218,8 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder(ProviderContext context, RateType rateType){
             super(context);
+            setProvider(context.getProviderName());
             setRateType(rateType);
-        }
-
-        /**
-         * Set the timestamp value.
-         *
-         * @param timestamp the timestamp value
-         * @return this, for chaining.
-         */
-        public Builder setTimestamp(long timestamp){
-            setAttribute(ConversionAttribute.TIMESTAMP, Long.valueOf(timestamp));
-            return this;
-        }
-
-        /**
-         * Set the timestamp value.
-         *
-         * @param dateTime the timestamp value
-         * @return this, for chaining.
-         */
-        public Builder setTimestamp(Object dateTime){
-            setAttribute(ConversionAttribute.TIMESTAMP, dateTime);
-            if(dateTime instanceof Date){
-                setTimestamp(((Date) dateTime).getTime());
-            }else if(dateTime instanceof Calendar){
-                setTimestamp(((Calendar) dateTime).getTime());
-            }
-            return this;
-        }
-
-        /**
-         * Set the ending period timestamp value.
-         *
-         * @param timestamp the ending period timestamp value
-         * @return this, for chaining.
-         */
-        public Builder setValidTo(long timestamp){
-            setAttribute(ConversionAttribute.VALID_TO, Long.valueOf(timestamp));
-            return this;
-        }
-
-        /**
-         * Set the ending period timestamp value.
-         *
-         * @param dateTime the ending period dateTime value
-         * @return this, for chaining.
-         */
-        public Builder setValidTo(Object dateTime){
-            setAttribute(ConversionAttribute.VALID_TO, dateTime);
-            if(dateTime instanceof Date){
-                setValidTo(((Date) dateTime).getTime());
-            }else if(dateTime instanceof Calendar){
-                setValidTo(((Calendar) dateTime).getTime());
-            }
-            return this;
         }
 
         /**

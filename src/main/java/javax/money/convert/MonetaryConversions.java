@@ -71,11 +71,7 @@ public final class MonetaryConversions {
 	 */
 	public static CurrencyConversion getConversion(CurrencyUnit termCurrency,
 			String... providers) {
-		if (providers.length == 0) {
-			return MONETARY_CONVERSION_SPI.getConversion(termCurrency,
-					ConversionContext.of(),
-					getDefaultProviderChain().toArray(new String[0]));
-		}
+		Objects.requireNonNull(providers);
 		return MONETARY_CONVERSION_SPI.getConversion(termCurrency,
 				ConversionContext.of(), providers);
 	}

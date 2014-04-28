@@ -39,10 +39,16 @@ public final class MonetaryContext extends AbstractContext implements Serializab
     private static final String FIXED_SCALE_KEY = "fixedScale";
     /** Attribute key for precision. */
     private static final String PRECISION_KEY = "precision";
+
     /**
      * serialVersionUID.
      */
     private static final long serialVersionUID = 5579720004786848255L;
+
+    /**
+     * A default instance of a MonetaryContext.
+     */
+    public static final MonetaryContext DEFAULT_CONTEXT = new Builder().create();
 
     /**
      * Defines the possible flavors of {@link MonetaryAmount} implementations.

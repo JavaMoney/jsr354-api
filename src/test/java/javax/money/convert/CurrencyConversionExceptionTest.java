@@ -23,7 +23,7 @@ import org.junit.Test;
 public class CurrencyConversionExceptionTest {
 
 	private static ConversionContext CONTEXT100 = new ConversionContext.Builder()
-			.setProvider("test").setTimestamp(100L).create();
+			.setProvider("test").setAttribute("timestamp", 100L).create();
 
 	@Test
 	public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitContext() {
@@ -66,7 +66,7 @@ public class CurrencyConversionExceptionTest {
 		Assert.assertTrue(toString.contains("term=EUR"));
 		Assert.assertTrue(toString.contains("conversionContext=ConversionContext"));
 		Assert.assertTrue(toString.contains("PROVIDER=test"));
-		Assert.assertTrue(toString.contains("TIMESTAMP=100"));
+		Assert.assertTrue(toString.contains("timestamp=100"));
 		Assert.assertTrue(toString.contains("Cannot convert CHF into EUR"));
 		Assert.assertTrue(toString.contains("blabla"));
 	}

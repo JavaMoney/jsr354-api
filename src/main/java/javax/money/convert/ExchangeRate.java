@@ -105,37 +105,12 @@ public final class ExchangeRate implements Serializable, Comparable<ExchangeRate
      */
     private ExchangeRate[] chain = new ExchangeRate[]{this};
 
-    /**
-     * Evaluate a {@link BigDecimal} from a {@link Number} preserving maximal
-     * information.
-     *
-     * @param num
-     *            the number
-     * @return a BigDecimal representing the number.
-     */
-    //	private BigDecimal getBigDecimal(Number num) {
-    //		if (num instanceof BigDecimal) {
-    //			return (BigDecimal) num;
-    //		}
-    //		if (num instanceof Long) {
-    //			return BigDecimal.valueOf(num.longValue());
-    //		}
-    //		return BigDecimal.valueOf(num.doubleValue());
-    //	}
 
     /**
      * Creates a new instance with a custom chain of exchange rate type, e.g. or
      * creating <i>derived</i> rates.
      *
-     * @param exchangeRateType The conversion type, never {@code null}.
-     * @param base             the base {@link CurrencyUnit}
-     * @param term             the terminating {@link CurrencyUnit}
-     * @param factor           the conversion factor
-     * @param chain            the rate chain, never {@code null}, not empty.
-     * @param validFrom        the UTC timestamp from when this rate is valid from, or
-     *                         {@code null}
-     * @param validUntil       the UTC timestamp until when this rate is valid from, or
-     *                         {@code null}
+     * @param builder The Builder, never {@code null}.
      */
     private ExchangeRate(Builder builder){
         Objects.requireNonNull(builder.base, "base may not be null.");
@@ -416,20 +391,6 @@ public final class ExchangeRate implements Serializable, Comparable<ExchangeRate
             return this;
         }
 
-        /**
-         * Sets the conversion factor, as the factor
-         * {@code base * factor = target}.
-         *
-         * @param factor
-         *            the factor.
-         * @return The builder instance.
-         */
-        //		public Builder setFactor(Number factor) {
-        //			if (factor != null) {
-        //				this.factor = new DefaultNumberValue(factor);
-        //			}
-        //			return this;
-        //		}
 
         /**
          * Sets the conversion factor, as the factor

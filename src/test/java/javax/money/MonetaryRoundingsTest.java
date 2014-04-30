@@ -12,83 +12,53 @@
  */
 package javax.money;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.util.Locale;
 import java.util.Set;
 
-import javax.money.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
-public class MonetaryRoundingsTest {
-
-	@Test
-	public void testMonetaryRoundingsGetCashRoundingCurrencyUnit() {
-		MonetaryOperator op = MonetaryRoundings
-				.getCashRounding(MonetaryCurrencies.getCurrency(new Locale("", "TEST1L")));
-		assertNotNull(op);
-	}
-
-	@Test
-	public void testMonetaryRoundingsGetCashRoundingCurrencyUnitLong() {
-		MonetaryOperator op = MonetaryRoundings.getCashRounding(
-				MonetaryCurrencies.getCurrency(new Locale("", "TEST1L")), 200L);
-		assertNotNull(op);
-	}
-
-    @Test(expected=MonetaryException.class)
-    public void testMonetaryRoundingsGetCashRoundingCurrencyUnit_Error() {
-        MonetaryOperator op = MonetaryRoundings
-                .getCashRounding(MonetaryCurrencies.getCurrency(new Locale("", "TEST_ERROR")));
-        assertNotNull(op);
-    }
-
-	@Test
-	public void testMonetaryRoundingsGetRoundingCurrencyUnit() {
-		MonetaryOperator op = MonetaryRoundings.getRounding(MonetaryCurrencies
-				.getCurrency("test1"));
-		assertNotNull(op);
-	}
-
-	@Test
-	public void testMonetaryRoundingsGetRoundingCurrencyUnitLong() {
-		MonetaryOperator op = MonetaryRoundings.getRounding(
-				MonetaryCurrencies.getCurrency("test1"), 200L);
-		assertNotNull(op);
-	}
-
-    @Test(expected=MonetaryException.class)
-    public void testMonetaryRoundingsGetRoundingCurrencyUnit_Error() {
-        MonetaryOperator op = MonetaryRoundings
-                .getRounding(MonetaryCurrencies.getCurrency(new Locale("", "TEST_ERROR")));
-        assertNotNull(op);
-    }
-
-	@Test
-	public void testMonetaryRoundingsGetRounding() {
-		MonetaryOperator op = MonetaryRoundings.getRounding();
-		assertNotNull(op);
-	}
-
-	@Test
-	public void testMonetaryRoundingsGetRoundingString() {
-		MonetaryOperator op = MonetaryRoundings.getRounding("custom1");
-		assertNotNull(op);
-	}
-
-	@Test
-	public void testMonetaryRoundingsGetRoundingMonetaryContext() {
-		MonetaryOperator op = MonetaryRoundings
-				.getRounding(new MonetaryContext.Builder().create());
-		assertNotNull(op);
-	}
+public class MonetaryRoundingsTest{
 
     @Test
-    public void testMonetaryRoundingsGetCustomRoundingIds() {
-        Set<String> ids = MonetaryRoundings
-                .getCustomRoundingIds();
+    public void testMonetaryRoundingsGetRoundingCurrencyUnit(){
+        MonetaryOperator op = MonetaryRoundings.getRounding(MonetaryCurrencies.getCurrency("test1"));
+        assertNotNull(op);
+    }
+
+    @Test
+    public void testMonetaryRoundingsGetRoundingCurrencyUnitLong(){
+        MonetaryOperator op = MonetaryRoundings.getRounding(
+                new RoundingContext.Builder().setCurrencyUnit(MonetaryCurrencies.getCurrency("test1"))
+                        .setAttribute("timestamp", 200L).create()
+        );
+        assertNotNull(op);
+    }
+
+    @Test(expected = MonetaryException.class)
+    public void testMonetaryRoundingsGetRoundingCurrencyUnit_Error(){
+        MonetaryOperator op =
+                MonetaryRoundings.getRounding(MonetaryCurrencies.getCurrency(new Locale("", "TEST_ERROR")));
+        assertNotNull(op);
+    }
+
+    @Test
+    public void testMonetaryRoundingsGetRounding(){
+        MonetaryOperator op = MonetaryRoundings.getRounding();
+        assertNotNull(op);
+    }
+
+    @Test
+    public void testMonetaryRoundingsGetRoundingString(){
+        MonetaryOperator op = MonetaryRoundings.getRounding("custom1");
+        assertNotNull(op);
+    }
+
+    @Test
+    public void testMonetaryRoundingsGetCustomRoundingIds(){
+        Set<String> ids = MonetaryRoundings.getCustomRoundingIds();
         assertNotNull(ids);
         assertTrue(ids.size() == 2);
     }

@@ -31,15 +31,8 @@ import java.util.*;
  */
 public final class ProviderContext extends AbstractContext{
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 3536713139786856877L;
 
-    /** The name of the provider. */
-    private String provider;
-    /** The supported rate types. */
-    private Set<RateType> rateTypes = new HashSet<>();
 
     /**
      * Private constructor, used by {@link Builder}.
@@ -47,11 +40,11 @@ public final class ProviderContext extends AbstractContext{
      * @param builder the Builder.
      */
     private ProviderContext(Builder builder){
-        super(builder);
-        Objects.requireNonNull(builder.provider);
-        Objects.requireNonNull(builder.rateTypes);
-        this.provider = builder.provider;
-        this.rateTypes.addAll(builder.rateTypes);
+        super(builder);;
+        Set<RateType> rateTypes = getNamedAttribute("rateTypes", Set.class);
+        Set<RateType> newRateTypes = new HashSet<>();
+        newRateTypes.addAll(rateTypes);
+        set("rateTypes", newRateTypes, Set.class);
     }
 
     /**
@@ -62,7 +55,7 @@ public final class ProviderContext extends AbstractContext{
      * @return the provider, or {code null}.
      */
     public String getProvider(){
-        return provider;
+        return getText("provider");
     }
 
     /**
@@ -71,7 +64,7 @@ public final class ProviderContext extends AbstractContext{
      * @return the deferred flag, or {code null}.
      */
     public Set<RateType> getRateTypes(){
-        return Collections.unmodifiableSet(rateTypes);
+        return Collections.unmodifiableSet(getNamedAttribute("rateTypes", Set.class, new HashSet<RateType>()));
     }
 
     /**
@@ -104,6 +97,8 @@ public final class ProviderContext extends AbstractContext{
         return new Builder(provider).setRateTypes(RateType.ANY).create();
     }
 
+
+
     /**
      * Builder class to create {@link ProviderContext} instances. Instances of
      * this class are not thread-safe.
@@ -112,10 +107,6 @@ public final class ProviderContext extends AbstractContext{
      */
     public static final class Builder extends AbstractBuilder<Builder>{
 
-        /** The name of the provider. */
-        private String provider;
-        /** The supported rate types. */
-        private Set<RateType> rateTypes = new HashSet<>();
 
         /**
          * Create a new Builder instance.
@@ -124,6 +115,8 @@ public final class ProviderContext extends AbstractContext{
          */
         public Builder(String provider){
             setProviderName(provider);
+            Set<RateType> rateTypes = new HashSet<>();
+            setAttribute("rateTypes", rateTypes, Set.class);
         }
 
         /**
@@ -135,8 +128,9 @@ public final class ProviderContext extends AbstractContext{
          */
         public Builder(ProviderContext context){
             super(context);
-            this.provider = context.provider;
-            this.rateTypes.addAll(context.rateTypes);
+            Set<RateType> rateTypes = new HashSet<>();
+            rateTypes.addAll(context.getRateTypes());
+            setAttribute("rateTypes", rateTypes, Set.class);
         }
 
         /**
@@ -147,7 +141,7 @@ public final class ProviderContext extends AbstractContext{
          */
         public Builder setProviderName(String provider){
             Objects.requireNonNull(provider);
-            this.provider = provider;
+            setText("provider", provider);
             return this;
         }
 
@@ -159,11 +153,24 @@ public final class ProviderContext extends AbstractContext{
          * @throws IllegalArgumentException when not at least one {@link RateType} is provided.
          */
         public Builder setRateTypes(RateType... rateTypes){
+            return setRateTypes(Arrays.asList(rateTypes));
+        }
+
+        /**
+         * Set the rate types.
+         *
+         * @param rateTypes the rate types, not null and not empty.
+         * @return this, for chaining.
+         * @throws IllegalArgumentException when not at least one {@link RateType} is provided.
+         */
+        public Builder setRateTypes(Collection<RateType> rateTypes){
             Objects.requireNonNull(rateTypes);
-            if(rateTypes.length == 0){
+            if(rateTypes.size() == 0){
                 throw new IllegalArgumentException("At least one RateType is required.");
             }
-            this.rateTypes.addAll(Arrays.asList(rateTypes));
+            Set rtSet = new HashSet<>();
+            rtSet.addAll(rateTypes);
+            setAttribute("rateTypes", rtSet, Set.class);
             return this;
         }
 
@@ -177,11 +184,8 @@ public final class ProviderContext extends AbstractContext{
             return new ProviderContext(this);
         }
 
+
     }
 
-    public static ProviderContext from(ConversionContext conversionContext){
-        return new Builder(conversionContext.getProvider()).setRateTypes(conversionContext.getRateType())
-                .setAll(conversionContext).setProviderName(conversionContext.getProvider()).create();
-    }
 
 }

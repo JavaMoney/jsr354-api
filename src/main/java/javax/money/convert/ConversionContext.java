@@ -15,15 +15,17 @@ import java.util.Objects;
  * This class models a context for which a {@link ExchangeRate} is valid. It allows to define
  * different settings such as
  * <ul>
- *     <li>the required {@link javax.money.convert.RateType}, </li>
- *     <li>the required target timestamp</li>
- *     <li>the required validity duration</li>
- *     <li>additional non standard or extended attributes determined by the implementations participating in the ExchangeRateProvider chain.</li>
+ * <li>the required {@link javax.money.convert.RateType}, </li>
+ * <li>the required target timestamp</li>
+ * <li>the required validity duration</li>
+ * <li>additional non standard or extended attributes determined by the implementations participating in the
+ * ExchangeRateProvider chain.</li>
  * </ul>
  * <p>An instance of this class can be passed
  * <ul>
  * <li>when accessing an ExchangeRate, calling
- * {@link javax.money.convert.ExchangeRateProvider#getExchangeRate(javax.money.CurrencyUnit, javax.money.CurrencyUnit, ConversionContext)} or {@link javax.money.convert
+ * {@link javax.money.convert.ExchangeRateProvider#getExchangeRate(javax.money.CurrencyUnit,
+ * javax.money.CurrencyUnit, ConversionContext)} or {@link javax.money.convert
  * .ExchangeRateProvider#getExchangeRate(String, String, ConversionContext)}</li>
  * <li>when accessing a CurrencyConversion, calling {@link javax.money.convert
  * .ExchangeRateProvider#getCurrencyConversion(javax.money.CurrencyUnit, ConversionContext)} or {@link javax.money
@@ -63,10 +65,6 @@ public final class ConversionContext extends AbstractContext{
      */
     public static final ConversionContext OTHER_CONVERSION = new Builder().setRateType(RateType.OTHER).create();
 
-    /** The name of the provider. */
-    private String provider;
-    /** The rate type. */
-    private RateType rateType = RateType.ANY;
 
     /**
      * Private constructor, used by {@link Builder}.
@@ -75,8 +73,6 @@ public final class ConversionContext extends AbstractContext{
      */
     private ConversionContext(Builder builder){
         super(builder);
-        this.provider = builder.provider;
-        this.rateType = builder.rateType;
     }
 
     /**
@@ -85,7 +81,7 @@ public final class ConversionContext extends AbstractContext{
      * @return the deferred flag, or {code null}.
      */
     public RateType getRateType(){
-        return rateType;
+        return getAttribute(RateType.class);
     }
 
 
@@ -97,7 +93,11 @@ public final class ConversionContext extends AbstractContext{
      * @return the provider, or {code null}.
      */
     public String getProvider(){
-        return provider;
+        return getText("provider");
+    }
+
+    public Long getTimestamp(){
+        return getLong("timestamp");
     }
 
     /**
@@ -123,6 +123,19 @@ public final class ConversionContext extends AbstractContext{
         b.setRateType(rateType);
         b.setProvider(provider);
         return b.create();
+    }
+
+    /**
+     * Creates a new ConversionContext for the given  {@link ProviderContext} and the given {@link RateType}.<br/>
+     * <i>Note:</i> for adding additional attributes use {@link javax.money.convert.ConversionContext.Builder#Builder
+     * (ProviderContext, RateType)}.
+     *
+     * @param providerContext the provider context, not null.
+     * @param rateType        the rate type, not null.
+     * @return a corresponding instance of ConversionContext.
+     */
+    public static ConversionContext from(ProviderContext providerContext, RateType rateType){
+        return new Builder(providerContext, rateType).create();
     }
 
     /**
@@ -159,14 +172,6 @@ public final class ConversionContext extends AbstractContext{
         return ANY_CONVERSION;
     }
 
-    @Override
-    public String toString(){
-        return "ConversionContext{" +
-                "rateType=" + rateType +
-                ", provider='" + provider + '\'' +
-                ", " + super.toString() +
-                '}';
-    }
 
     /**
      * Builder class to create {@link ConversionContext} instances. Instances of
@@ -176,9 +181,13 @@ public final class ConversionContext extends AbstractContext{
      */
     public static final class Builder extends AbstractBuilder<Builder>{
 
-        /** The name of the provider. */
+        /**
+         * The name of the provider.
+         */
         private String provider;
-        /** The supported rate types. */
+        /**
+         * The supported rate types.
+         */
         private RateType rateType = RateType.ANY;
 
         /**
@@ -186,6 +195,7 @@ public final class ConversionContext extends AbstractContext{
          * new {@link ConversionContext} instances for querying.
          */
         public Builder(){
+            setObject(RateType.ANY);
         }
 
         /**
@@ -204,7 +214,8 @@ public final class ConversionContext extends AbstractContext{
          * {@link ConversionContext}'s values as defaults. This allows changing
          * an existing {@link ConversionContext} easily.
          *
-         * @param context the context, not {@code null}
+         * @param context  the provider context, not {@code null}
+         * @param rateType the rate type, not null.
          */
         public Builder(ProviderContext context, RateType rateType){
             super(context);
@@ -220,7 +231,7 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder setRateType(RateType rateType){
             Objects.requireNonNull(rateType);
-            this.rateType = rateType;
+            setObject(rateType);
             return this;
         }
 
@@ -232,7 +243,7 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder setProvider(String provider){
             Objects.requireNonNull(provider);
-            this.provider = provider;
+            setText("provider", provider);
             return this;
         }
 

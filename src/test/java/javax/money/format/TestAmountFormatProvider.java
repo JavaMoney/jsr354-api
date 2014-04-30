@@ -25,7 +25,12 @@ public class TestAmountFormatProvider implements
 		testSet.add(Locale.ENGLISH);
 	}
 
-	@Override
+    @Override
+    public String getStyleId(){
+        return "default";
+    }
+
+    @Override
 	public MonetaryAmountFormat getAmountFormat(
 			AmountFormatContext formatStyle) {
         Locale loc = formatStyle.getAttribute(Locale.class);

@@ -32,15 +32,6 @@ public final class AmountFormatContext extends AbstractContext implements Serial
      * serialVersionUID.
      */
     private static final long serialVersionUID = -7744853434156071725L;
-    /**
-     * The target {@link String} style identifier.
-     */
-    private String styleId;
-    /**
-     * The target {@link javax.money.MonetaryContext} to be used, when amount's are parsed with this instance.
-     */
-    private MonetaryContext monetaryContext;
-
 
     /**
      * Constructor.
@@ -49,8 +40,6 @@ public final class AmountFormatContext extends AbstractContext implements Serial
      */
     private AmountFormatContext(Builder builder){
         super(builder);
-        Objects.requireNonNull(builder.styleId, "styleId required.");
-        this.styleId = builder.styleId;
     }
 
 
@@ -60,7 +49,15 @@ public final class AmountFormatContext extends AbstractContext implements Serial
      * @return the {@link Locale}, never {@code null}.
      */
     public String getStyleId(){
-        return styleId;
+        return getText("styleId");
+    }
+
+    /**
+     * Access the context's Locale.
+     * @return the Locale, or null.
+     */
+    public Locale getLocale(){
+        return getAttribute(Locale.class);
     }
 
     /**
@@ -69,7 +66,7 @@ public final class AmountFormatContext extends AbstractContext implements Serial
      * @return the {@link javax.money.MonetaryContext}, never {@code null}.
      */
     public MonetaryContext getMonetaryContext(){
-        return monetaryContext;
+        return getAttribute(MonetaryContext.class);
     }
 
     /**
@@ -91,65 +88,6 @@ public final class AmountFormatContext extends AbstractContext implements Serial
         return new Builder(locale).create();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode(){
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((styleId == null) ? 0 : styleId.hashCode());
-        result = prime * result + ((monetaryContext == null) ? 0 : monetaryContext.hashCode());
-        return result;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj){
-        if(this == obj){
-            return true;
-        }
-        if(obj == null){
-            return false;
-        }
-        if(getClass() != obj.getClass()){
-            return false;
-        }
-        AmountFormatContext other = (AmountFormatContext) obj;
-        if(!super.equals(obj)){
-            return false;
-        }
-        if(styleId == null){
-            if(other.styleId != null){
-                return false;
-            }
-        }else if(!styleId.equals(other.styleId)){
-            return false;
-        }
-        if(monetaryContext == null){
-            if(other.monetaryContext != null){
-                return false;
-            }
-        }else if(!monetaryContext.equals(other.monetaryContext)){
-            return false;
-        }
-        return true;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString(){
-        return "AmountFormatContext [styleId=" + styleId + ", monetaryContext=" + monetaryContext + ", " +
-                super.toString() + "]";
-    }
-
     /**
      * Builder for creating a new {@link AmountFormatContext}.
      *
@@ -158,22 +96,11 @@ public final class AmountFormatContext extends AbstractContext implements Serial
     public static final class Builder extends AbstractBuilder<Builder>{
 
         /**
-         * The target {@link Locale} to be used.
-         */
-        private String styleId;
-        /**
-         * By default use the default MonetaryContext.
-         */
-        private MonetaryContext monetaryContext = MonetaryContext.DEFAULT_CONTEXT;
-
-        /**
          * Creates a new {@link Builder}.
          *
          * @param style the base {@link AmountFormatContext}, not {@code null}.
          */
         public Builder(AmountFormatContext style){
-            Objects.requireNonNull(style, "style required.");
-            this.styleId = style.styleId;
             this.attributes.putAll(style.attributes);
         }
 
@@ -185,7 +112,7 @@ public final class AmountFormatContext extends AbstractContext implements Serial
          */
         public Builder(String styleId){
             Objects.requireNonNull(styleId, "styleId required.");
-            this.styleId = styleId;
+            setAttribute("styleId", styleId);
         }
 
         /**
@@ -195,8 +122,19 @@ public final class AmountFormatContext extends AbstractContext implements Serial
          */
         public Builder(Locale locale){
             Objects.requireNonNull(locale, "locale required.");
-            this.styleId = DEFAULT_STYLE_ID;
-            setAttribute(locale);
+            setLocale(locale);
+            setAttribute("styleId", DEFAULT_STYLE_ID);
+            setObject(locale);
+        }
+
+        /**
+         * Sets a Locale to be applied.
+         * @param locale the locale, not null.
+         * @return the Builder, for chaining.
+         */
+        public Builder setLocale(Locale locale){
+            setObject(locale);
+            return this;
         }
 
         /**
@@ -207,7 +145,7 @@ public final class AmountFormatContext extends AbstractContext implements Serial
          */
         public Builder setMonetaryContext(MonetaryContext monetaryContext){
             Objects.requireNonNull(monetaryContext);
-            this.monetaryContext = monetaryContext;
+            setObject(monetaryContext);
             return this;
         }
 
@@ -219,15 +157,6 @@ public final class AmountFormatContext extends AbstractContext implements Serial
          */
         public AmountFormatContext create(){
             return new AmountFormatContext(this);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString(){
-            return "FormatStyle.Builder [styleId=" + styleId + ", monetaryContext=" + monetaryContext + "]";
         }
 
     }

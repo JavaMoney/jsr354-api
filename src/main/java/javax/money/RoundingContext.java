@@ -13,11 +13,13 @@ import java.util.Objects;
 
 /**
  * This class models the spec/configuration for a rounding, modelled as {@link javax.money.MonetaryOperator} in a
- * platform independent way. Each RoundingContext instance has at least one of the following attributes set:
- * <ul>
- * <li>the target CurrencyUnit.
- * <li>the (custom) rounding id
- * </ul>
+ * platform independent way. Each RoundingContext instance hereby has a <code>roundingId</code>, which links
+ * to the {@link javax.money.spi.RoundingProviderSpi} that must create the according rounding instance ({@link javax
+ * .money.MonetaryOperator}). The <i>default</i> </i><code>roundingId</code> is <code>default</code>.<br/>
+ * A RoundingContext can take up arbitrary attributes that must be interpreted and validated by a
+ * {@link javax.money.spi.RoundingProviderSpi}. By default additionally a <code>CurrencyUnit</code> can be set
+ * directly using a explicit method.
+ *
  * It is possible that a RoundingContext also has both attributes set. Additionally is is possible to provide
  * additional attribute to configure the rounding as defined by the registered {@link javax.money.spi
  * .RoundingProviderSpi}
@@ -36,15 +38,8 @@ public final class RoundingContext extends AbstractContext implements Serializab
      */
     private static final long serialVersionUID = 5579720004786848255L;
 
-    /**
-     * The name of the {@link javax.money.RoundingContext} built.
-     */
-    private String roundingId;
 
-    /**
-     * The target {@link javax.money.CurrencyUnit} of the {@link javax.money.RoundingContext} built.
-     */
-    private CurrencyUnit currencyUnit;
+    public static final RoundingContext DEFAULT_ROUNDING_CONTEXT = new Builder().create();
 
     /**
      * Constructs a new {@code MonetaryContext} with the specified precision and
@@ -56,8 +51,6 @@ public final class RoundingContext extends AbstractContext implements Serializab
     @SuppressWarnings("rawtypes")
     private RoundingContext(Builder builder){
         super(builder);
-        this.currencyUnit = builder.currencyUnit;
-        this.roundingId = builder.roundingId;
     }
 
     /**
@@ -66,7 +59,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
      * @return the rounding id, or null.
      */
     public String getRoundingId(){
-        return this.roundingId;
+        return getText("roundingId");
     }
 
     /**
@@ -75,7 +68,15 @@ public final class RoundingContext extends AbstractContext implements Serializab
      * @return the target CurrencyUnit, or null.
      */
     public CurrencyUnit getCurrencyUnit(){
-        return this.currencyUnit;
+        return getAttribute(CurrencyUnit.class);
+    }
+
+    public Long getTimestamp(){
+        return getLong("timestamp");
+    }
+
+    public int getScale(){
+        return getInt("scale");
     }
 
     /**
@@ -86,18 +87,18 @@ public final class RoundingContext extends AbstractContext implements Serializab
      * @return the corresponding RoundingContext.
      */
     public static RoundingContext of(String roundingId){
-        return new Builder(roundingId).create();
+        return new Builder().setRoundingId(roundingId).create();
     }
 
     /**
-     * Creates a simple RoundingContext for a default currency rounding.
+     * Creates a default RoundingContext for a fixed currency rounding.
      * For more complex instances use the corresponding RoundingContext.Builder.
      *
      * @param currencyUnit the currencyUnit, not {@code null}.
      * @return the corresponding RoundingContext.
      */
     public static RoundingContext of(CurrencyUnit currencyUnit){
-        return new Builder(currencyUnit).create();
+        return new Builder().setCurrencyUnit(currencyUnit).create();
     }
 
     /*
@@ -110,8 +111,6 @@ public final class RoundingContext extends AbstractContext implements Serializab
         final int prime = 31;
         int result = 1;
         result = prime * result + ((attributes == null) ? 0 : attributes.hashCode());
-        result = prime * result + ((currencyUnit == null) ? 0 : currencyUnit.hashCode());
-        result = prime * result + ((roundingId == null) ? 0 : roundingId.hashCode());
         return result;
     }
 
@@ -139,34 +138,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
         }else if(!attributes.equals(other.attributes)){
             return false;
         }
-        if(roundingId == null){
-            if(other.roundingId != null){
-                return false;
-            }
-        }else if(!roundingId.equals(other.roundingId)){
-            return false;
-        }
-        if(currencyUnit == null){
-            if(other.currencyUnit != null){
-                return false;
-            }
-        }else if(!currencyUnit.equals(other.currencyUnit)){
-            return false;
-        }
         return true;
-    }
-
-
-    @Override
-    public String toString(){
-        if(currencyUnit == null){
-            return "RoundingContext [roundingId=" + roundingId + ", attributes=" + attributes + "]";
-        }else if(roundingId == null){
-            return "RoundingContext [currencyUnit=" + currencyUnit + ", attributes=" + attributes + "]";
-        }else{
-            return "RoundingContext [roundingId=" + roundingId + ", currencyUnit=" + currencyUnit + ", attributes=" +
-                    attributes + "]";
-        }
     }
 
 
@@ -181,23 +153,31 @@ public final class RoundingContext extends AbstractContext implements Serializab
     public static final class Builder extends AbstractBuilder<Builder>{
 
         /**
-         * The name of the {@link javax.money.RoundingContext} built.
+         * Creates a new {@link Builder}.
          */
-        private String roundingId;
-
-        /**
-         * The target {@link javax.money.CurrencyUnit} of the {@link javax.money.RoundingContext} built.
-         */
-        private CurrencyUnit currencyUnit;
+        public Builder(){
+            setText("roundingId", "default");
+        }
 
         /**
          * Creates a new {@link Builder}.
          *
          * @param roundingId the (custom) rounding id, not {@code null}.
          */
-        public Builder(String roundingId){
+        public Builder setRoundingId(String roundingId){
             Objects.requireNonNull(roundingId);
-            this.roundingId = roundingId;
+            setText("roundingId", roundingId);
+            return this;
+        }
+
+        /**
+         * Sets the target scale.
+         *
+         * @param scale the target scale
+         */
+        public Builder setScale(int scale){
+            setInt("scale", scale);
+            return this;
         }
 
         /**
@@ -205,9 +185,15 @@ public final class RoundingContext extends AbstractContext implements Serializab
          *
          * @param currencyUnit the target {@link javax.money.CurrencyUnit} not null.
          */
-        public Builder(CurrencyUnit currencyUnit){
+        public Builder setCurrencyUnit(CurrencyUnit currencyUnit){
             Objects.requireNonNull(currencyUnit);
-            this.currencyUnit = currencyUnit;
+            setAttribute(CurrencyUnit.class, currencyUnit, CurrencyUnit.class);
+            return this;
+        }
+
+        public Builder setTimestamp(long timestamp){
+            setLong("timestamp", timestamp);
+            return this;
         }
 
         /**
@@ -218,8 +204,6 @@ public final class RoundingContext extends AbstractContext implements Serializab
          */
         public Builder(RoundingContext context){
             super(context);
-            this.currencyUnit = context.currencyUnit;
-            this.roundingId = context.roundingId;
         }
 
         /**
@@ -230,23 +214,6 @@ public final class RoundingContext extends AbstractContext implements Serializab
          */
         public RoundingContext create(){
             return new RoundingContext(this);
-        }
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString(){
-            if(currencyUnit == null){
-                return "RoundingContext.Builder [roundingId=" + roundingId + ", attributes=" + attributes + "]";
-            }else if(roundingId == null){
-                return "RoundingContext.Builder [currencyUnit=" + currencyUnit + ", attributes=" + attributes + "]";
-            }else{
-                return "RoundingContext.Builder [roundingId=" + roundingId + ", currencyUnit=" + currencyUnit +
-                        ", attributes=" + attributes + "]";
-            }
         }
 
     }

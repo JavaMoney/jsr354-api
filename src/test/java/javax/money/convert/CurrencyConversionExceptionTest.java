@@ -65,7 +65,7 @@ public class CurrencyConversionExceptionTest {
 		Assert.assertTrue(toString.contains("base=CHF"));
 		Assert.assertTrue(toString.contains("term=EUR"));
 		Assert.assertTrue(toString.contains("conversionContext=ConversionContext"));
-		Assert.assertTrue(toString.contains("PROVIDER=test"));
+		Assert.assertTrue(toString.contains("provider=test"));
 		Assert.assertTrue(toString.contains("timestamp=100"));
 		Assert.assertTrue(toString.contains("Cannot convert CHF into EUR"));
 		Assert.assertTrue(toString.contains("blabla"));

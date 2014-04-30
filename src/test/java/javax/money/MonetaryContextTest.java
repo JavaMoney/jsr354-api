@@ -55,21 +55,21 @@ public class MonetaryContextTest{
     @Test
     public void testGetAmountFlavor() throws Exception{
         MonetaryContext ctx =
-                new MonetaryContext.Builder().setFlavor(MonetaryContext.AmountFlavor.PERFORMANCE).create();
-        assertEquals(MonetaryContext.AmountFlavor.PERFORMANCE, ctx.getAmountFlavor());
-        ctx = new MonetaryContext.Builder().setFlavor(MonetaryContext.AmountFlavor.PRECISION).create();
-        assertEquals(MonetaryContext.AmountFlavor.PRECISION, ctx.getAmountFlavor());
-        ctx = new MonetaryContext.Builder().setFlavor(MonetaryContext.AmountFlavor.UNDEFINED).create();
-        assertEquals(MonetaryContext.AmountFlavor.UNDEFINED, ctx.getAmountFlavor());
+                new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).create();
+        assertEquals(AmountFlavor.PERFORMANCE, ctx.getAmountFlavor());
+        ctx = new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).create();
+        assertEquals(AmountFlavor.PRECISION, ctx.getAmountFlavor());
+        ctx = new MonetaryContext.Builder().setFlavor(AmountFlavor.UNDEFINED).create();
+        assertEquals(AmountFlavor.UNDEFINED, ctx.getAmountFlavor());
         ctx = new MonetaryContext.Builder().create();
-        assertEquals(MonetaryContext.AmountFlavor.UNDEFINED, ctx.getAmountFlavor());
+        assertEquals(AmountFlavor.UNDEFINED, ctx.getAmountFlavor());
     }
 
     @Test
     public void testHashCode() throws Exception{
         List<MonetaryContext> contexts = new ArrayList<>();
-        contexts.add(new MonetaryContext.Builder().setFlavor(MonetaryContext.AmountFlavor.PERFORMANCE).create());
-        contexts.add(new MonetaryContext.Builder().setFlavor(MonetaryContext.AmountFlavor.PRECISION).create());
+        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).create());
+        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).create());
         contexts.add(new MonetaryContext.Builder().setMaxScale(122).create());
         contexts.add(new MonetaryContext.Builder().setPrecision(299).create());
         contexts.add(new MonetaryContext.Builder().setFixedScale(true).create());
@@ -84,8 +84,8 @@ public class MonetaryContextTest{
     @Test
     public void testEquals() throws Exception{
         List<MonetaryContext> contexts = new ArrayList<>();
-        contexts.add(new MonetaryContext.Builder().setFlavor(MonetaryContext.AmountFlavor.PERFORMANCE).create());
-        contexts.add(new MonetaryContext.Builder().setFlavor(MonetaryContext.AmountFlavor.PRECISION).create());
+        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).create());
+        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).create());
         contexts.add(new MonetaryContext.Builder().setMaxScale(122).create());
         contexts.add(new MonetaryContext.Builder().setPrecision(299).create());
         contexts.add(new MonetaryContext.Builder().setFixedScale(true).create());
@@ -101,7 +101,7 @@ public class MonetaryContextTest{
     @Test
     public void testFrom() throws Exception{
         MonetaryContext rootCtx =
-                new MonetaryContext.Builder().setFlavor(MonetaryContext.AmountFlavor.PERFORMANCE).create();
+                new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).create();
         MonetaryContext ctx = MonetaryContext.from(rootCtx, rootCtx.getAmountType());
         assertEquals(ctx, rootCtx);
         abstract class TestAmount implements MonetaryAmount{}
@@ -112,9 +112,9 @@ public class MonetaryContextTest{
     @Test
     public void testToString() throws Exception{
         abstract class TestAmount implements MonetaryAmount{}
-        MonetaryContext ctx = new MonetaryContext.Builder().setFlavor(MonetaryContext.AmountFlavor.PERFORMANCE)
+        MonetaryContext ctx = new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE)
                 .setAmountType(TestAmount.class).setFixedScale(true).setMaxScale(111).setPrecision(200)
-                .setAttribute("myKey", "myValue").setAttribute("TEST").create();
+                .setAttribute("myKey", "myValue").setObject("TEST").create();
         assertNotNull(ctx.toString());
         System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("PERFORMANCE"));

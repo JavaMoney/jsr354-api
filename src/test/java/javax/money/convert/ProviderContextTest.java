@@ -49,13 +49,5 @@ public class ProviderContextTest{
         assertTrue(ctx.getRateTypes().contains(RateType.REALTIME));
     }
 
-    @Test
-    public void testFrom() throws Exception{
-        ConversionContext cc = new ConversionContext.Builder().setProvider("Myprov").setRateType(RateType.REALTIME).create();
-        ProviderContext ctx = ProviderContext.from(cc);
-        ProviderContext ctx2 = ProviderContext.from(cc);
-        assertEquals(ctx, ctx2);
-        assertTrue(ctx.getRateTypes().contains(RateType.REALTIME));
-        assertEquals("Myprov", ctx.getProvider());
-    }
+
 }

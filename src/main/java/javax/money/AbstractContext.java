@@ -207,7 +207,7 @@ public abstract class AbstractContext implements Serializable{
      * @return the value, or default value.
      */
     public Long getLong(Object key, Long defaultValue){
-        return getNamedAttribute(key, Long.class, null);
+        return getNamedAttribute(key, Long.class, defaultValue);
     }
 
 
@@ -229,7 +229,7 @@ public abstract class AbstractContext implements Serializable{
      * @return the value, or default value.
      */
     public Float getFloat(Object key, Float defaultValue){
-        return getNamedAttribute(key, Float.class, null);
+        return getNamedAttribute(key, Float.class, defaultValue);
     }
 
     /**
@@ -250,7 +250,7 @@ public abstract class AbstractContext implements Serializable{
      * @return the value, or default value.
      */
     public Integer getInt(Object key, Integer defaultValue){
-        return getNamedAttribute(key, Integer.class, null);
+        return getNamedAttribute(key, Integer.class, defaultValue);
     }
 
     /**
@@ -271,7 +271,7 @@ public abstract class AbstractContext implements Serializable{
      * @return the value, or default value.
      */
     public Boolean getBoolean(Object key, Boolean defaultValue){
-        return getNamedAttribute(key, Boolean.class, null);
+        return getNamedAttribute(key, Boolean.class, defaultValue);
     }
 
     /**
@@ -292,7 +292,7 @@ public abstract class AbstractContext implements Serializable{
      * @return the value, or default value.
      */
     public Double getDouble(Object key, Double defaultValue){
-        return getNamedAttribute(key, Double.class, null);
+        return getNamedAttribute(key, Double.class, defaultValue);
     }
 
     /**
@@ -313,7 +313,7 @@ public abstract class AbstractContext implements Serializable{
      * @return the value, or default value.
      */
     public String getText(Object key, String defaultValue){
-        return getNamedAttribute(key, String.class, null);
+        return getNamedAttribute(key, String.class, defaultValue);
     }
 
 
@@ -335,7 +335,7 @@ public abstract class AbstractContext implements Serializable{
      * @return the value, or default value.
      */
     public Character getChar(Object key, Character defaultValue){
-        return getNamedAttribute(key, Character.class, null);
+        return getNamedAttribute(key, Character.class, defaultValue);
     }
 
     @Override

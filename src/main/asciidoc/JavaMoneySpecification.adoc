@@ -8,21 +8,19 @@
 :author: Anatole Tresch, Specification Lead, Credit Suisse
 :email: <anatole.tresch@credit-suisse.com>
 :source-highlighter: coderay
-:toc:
-:icons:
 :numbered:
 :website: http://javamoney.org/
-:imagesdir: src\main\asciidoc\images
-:iconsdir: src\main\asciidoc\images/icons
+:imagesdir: src/main/asciidoc/images
+:iconsdir: src/main/asciidoc/images/icons
 :data-uri:
+
+image::title.gif[align=center]
+
+:toc:
+:icons:
 
 '''
 :numbered!:
-[discrete]
-== JSR 354 (Money & Currency) - Specification
-
-[discrete]
-=== Anatole Tresch, Specification Lead, Credit Suisse
 
 [discrete]
 ==== 0.9 (Public Review) June 2014
@@ -516,13 +514,8 @@ Nevertheless for an API to be complete, you need some type of concrete classes a
 designed as a standalone APIs the singleton accessor patterns are a good choice, so also this API provides according
 accessor classes:
 
-image::api.png
+image::api.png[align=center]
 
-....
-INCLUDE IMAGE HERE INCLUDE IMAGE HERE INCLUDE IMAGE HERE INCLUDE IMAGE HEREINCLUDE IMAGE HERE INCLUDE IMAGE HERE INCLUDE
-IMAGE HERE INCLUDE IMAGE HERE INCLUDE IMAGE HERE INCLUDE IMAGE HERE INCLUDE IMAGE HERE INCLUDE IMAGE HERE INCLUDE IMAGE
-HERE INCLUDE IMAGE HERE INCLUDE IMAGE HERE INCLUDE IMAGE HERE INCLUDE IMAGE HERE INCLUDE IMAGE HERE INCLUDE IMAGE HERE
-....
 Basically the diagram above illustrates well the accessors available:
 
 * +MonetaryCurrencies+ provides +CurrencyUnit+ instances.
@@ -1015,6 +1008,13 @@ Hereby
     must throw an +ArithmeticException+.
 
 ==== Accessing Currencies, Amounts and Roundings
+All JSR's main artifacts are accessible by corresponding singleton accessor classes. Hereby to exact behaviour oif the
+singletons are all delegeated to according SPI's so in different environment, it is possible to implement runtime
+dependent behaviour, e.g. use CDI based contextual implementations, instead of the default SE ServiceLoader based
+component lifecycle. The following diagram shows an overview:
+
+image::apisingletons.png[align=center]
+
 ===== Accessing Currencies
 The +javax.money.MonetaryCurrencies+ singleton class implements an accessor for +CurrencyUnit+ instances. By default it
 is backed up by +java.util.Currency+, but allows registration of additional currencies by  implementing an instance of
@@ -1375,11 +1375,11 @@ The formatting aspects modeled by several artifacts. Hereby some similarities wi
 whereas the underlying style and symbols were modeled as immutable value types.
 
 Hereby like to the core APIs of the JSR a +MonetaryFormats+ singleton provides access to the formatter instances:
-  
+
+image::formatting.png[align=center]
 
 The following model illustrates the types involved:
-
-image::formatting.png
+image::formatting2.png[align=center]
 
 The following section describe the relevant artifacts in more detail.
 
@@ -1565,7 +1565,7 @@ JSR 354 defines a complete API and provides a default reference implementation. 
 provide several implementation services, called the SPI, to provide the effective functionality. The following diagram
 illustrate the SPIs in place:
   
-image::spi.png
+image::spi.png[align=center]
 
 These services must be registered to the +Bootstrap+ singleton. The +Bootstrap+ singleton relies, by default, on
 +java.util.ServiceLoader+ to load the implementation services, but this mechanism can be replaced by an alternate
@@ -1904,6 +1904,8 @@ components of the Money API. Hereby also the +Bootstrap+ class delegates the loc
 implementation of a +javax.money.spi.ServiceProvider+, which implements the detailed logic how services are located and
 managed. If no +ServiceProvider+ is configured, a default implementation is used that delegates to
 +java.util.ServiceLoader+:
+
+image::bootstrap.png[align=center]
 
 Hereby the methods on the +ServiceProvider+, reflect the main functionality of the overall +Bootstrap+ class:
 

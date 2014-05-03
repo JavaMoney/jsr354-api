@@ -29,126 +29,144 @@ toc::[]
 ----
 JSR-000354 Money and Currency API 1.0 Public Review
 
-CREDIT SUISSE AG IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE
-TERMS CONTAINED IN THIS LICENSE AGREEMENT ("AGREEMENT"). PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT
-CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THIS AGREEMENT. IF YOU ARE NOT
-WILLING TO BE BOUND BY THEM, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE AND THE DOWNLOADING PROCESS WILL
-NOT CONTINUE.
+CREDIT SUISSE AG IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT
+ALL OF THE TERMS CONTAINED IN THIS LICENSE AGREEMENT ("AGREEMENT"). PLEASE READ THE TERMS AND CONDITIONS
+OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
+THIS AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY THEM, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF
+THIS PAGE AND THE DOWNLOADING PROCESS WILL NOT CONTINUE.
 
 Specification: JSR-354 Money and Currency API ("Specification")
 Version: 0.9
 Status: Public Review 2
-Release: March 2014
+Release: May 2014
 Copyright 2013-2014 Credit Suisse AG
 8070 Zurich, Switzerland
 All rights reserved.
 
 NOTICE
 
-The Specification is protected by copyright and the information described therein may be protected by one or more U.S.
-patents, foreign patents, or pending applications. Except as provided under the following license, no part of the
-Specification may be reproduced in any form by any means without the prior written authorization of Credit Suisse AG
-("the Specification Lead") and its licensors, if any. Any use of the Specification and the information described therein
-will be governed by the terms and conditions of this Agreement.
+The Specification is protected by copyright and the information described therein may be protected by
+one or more U.S. patents, foreign patents, or pending applications. Except as provided under the
+following license, no part of the Specification may be reproduced in any form by any means without the
+prior written authorization of Credit Suisse AG ("the Specification Lead") and its licensors, if any.
+Any use of the Specification and the information described therein will be governed by the terms and
+conditions of this Agreement.
 
-Subject to the terms and conditions of this license, including your compliance with Paragraphs 1 and 2 below, the
-Specification Lead hereby grants you a fully-paid, non-exclusive, non-transferable, limited license (without the right
-to sublicense) under the Specification Lead's intellectual property rights to:
+Subject to the terms and conditions of this license, including your compliance with Paragraphs 1 and 2
+below, the Specification Lead hereby grants you a fully-paid, non-exclusive, non-transferable, limited
+license (without the right to sublicense) under the Specification Lead's intellectual property rights
+to:
 
 1. Review the Specification for the purposes of evaluation. This includes:
 (i)   developing implementations of the Specification for your internal, non-commercial use;
 (ii)  discussing the Specification with any third party; and
-(iii) excerpting brief portions of the Specification in oral or written communications which discuss the Specification
-      provided that such excerpts do not in the aggregate constitute a significant portion of the Technology.
+(iii) excerpting brief portions of the Specification in oral or written communications which discuss the
+      Specification provided that such excerpts do not in the aggregate constitute a significant portion
+      of the Technology.
 
-2. Distribute implementations of the Specification to third parties for their testing and evaluation use, provided that
-any such implementation:
-(a) does not modify, subset, superset or otherwise extend the Licensor Name Space, or include any public or protected
-    packages, classes, Java interfaces, fields or methods within the Licensor Name Space other than those required/
-    authorized by the Specification or Specifications being implemented;
-(b) is clearly and prominently marked with the word "UNTESTED" or "EARLY ACCESS" or "INCOMPATIBLE" or "UNSTABLE" or
-    "BETA" in any list of available builds and in proximity to every link initiating its download, where the list or
-    link is under Licensee's control; and
-(c) includes the following notice: "This is an implementation of an early-draft specification developed under the Java
-    Community Process (JCP) and is made available for testing and evaluation purposes only. The code is not compatible
-    with any specification of the JCP."
-The grant set forth above concerning your distribution of implementations of the specification is contingent upon your
-agreement to terminate development and distribution of your "early draft" implementation as soon as feasible following
-final completion of the specification. If you fail to do so, the foregoing grant shall be considered null and void.
-No provision of this Agreement shall be understood to restrict your ability to make and distribute to third parties
-applications written to the Specification. Other than this limited license, you acquire no right, title or interest in
-or to the Specification or any other intellectual property of the Specification Lead, and the Specification may only be
-used in accordance with the license terms set forth herein. This license will expire on the earlier of: (a) two (2)
-years from the date of Release listed above; (b) the date on which the final version of the Specification is publicly
-released; or (c) the date on which the Java Specification Request (JSR) to which the Specification corresponds is
-withdrawn. In addition, this license will terminate immediately without notice from the Specification Lead if you fail
-to comply with any provision of this license. Upon termination, you must cease use of or destroy the Specification.
-"Licensor Name Space" means the public class or interface declarations whose names begin with "java", "javax",
-"com.oracle" or their equivalents in any subsequent naming convention adopted by Credit Suisse AG through the Java
-Community Process, or any recognized successors or replacements thereof.
+2. Distribute implementations of the Specification to third parties for their testing and evaluation use,
+   provided that any such implementation:
+(a) does not modify, subset, superset or otherwise extend the Licensor Name Space, or include any public
+    or protected packages, classes, Java interfaces, fields or methods within the Licensor Name Space
+    other than those required/authorized by the Specification or Specifications being implemented;
+(b) is clearly and prominently marked with the word "UNTESTED" or "EARLY ACCESS" or "INCOMPATIBLE" or
+    "UNSTABLE" or "BETA" in any list of available builds and in proximity to every link initiating
+    its download, where the list or link is under Licensee's control; and
+(c) includes the following notice: "This is an implementation of an early-draft specification developed
+    under the Java Community Process (JCP) and is made available for testing and evaluation purposes
+    only. The code is not compatible with any specification of the JCP."
+
+The grant set forth above concerning your distribution of implementations of the specification is
+contingent upon your agreement to terminate development and distribution of your "early draft"
+implementation as soon as feasible following final completion of the specification. If you fail to do
+so, the foregoing grant shall be considered null and void. No provision of this Agreement shall be
+understood to restrict your ability to make and distribute to third parties applications written to the
+Specification. Other than this limited license, you acquire no right, title or interest in or to
+the Specification or any other intellectual property of the Specification Lead, and the Specification
+may only be used in accordance with the license terms set forth herein. This license will expire on
+the earlier of: (a) two (2) years from the date of Release listed above; (b) the date on which the final
+version of the Specification is publicly released; or (c) the date on which the Java Specification
+Request (JSR) to which the Specification corresponds is withdrawn. In addition, this license will
+terminate immediately without notice from the Specification Lead if you fail to comply with any
+provision of this license. Upon termination, you must cease use of or destroy the Specification.
+"Licensor Name Space" means the public class or interface declarations whose names begin with "java",
+"javax", "com.oracle" or their equivalents in any subsequent naming convention adopted by Credit
+Suisse AG through the Java Community Process, or any recognized successors or replacements thereof.
 
 TRADEMARKS
 
-No right, title, or interest in or to any trademarks, service marks, or trade names of Credit Suisse AG or
-Credit Suisse AG's licensors is granted hereunder. Oracle, the Oracle logo, Java are trademarks or registered trademarks
-of Oracle USA, Inc. in the U.S. and other countries.
+No right, title, or interest in or to any trademarks, service marks, or trade names of Credit Suisse AG
+or Credit Suisse AG's licensors is granted hereunder. Oracle, the Oracle logo, Java are trademarks or
+registered trademarks of Oracle USA, Inc. in the U.S. and other countries.
 
 
 DISCLAIMER OF WARRANTIES
 
-THE SPECIFICATION IS PROVIDED "AS IS" AND IS EXPERIMENTAL AND MAY CONTAIN DEFECTS OR DEFICIENCIES WHICH CANNOT OR WILL
-NOT BE CORRECTED BY THE SPECIFICATION LEADS. THE SPECIFICATION LEADS MAKE NO REPRESENTATIONS OR WARRANTIES, EITHER
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
-NON-INFRINGEMENT THAT THE CONTENTS OF THE SPECIFICATION ARE SUITABLE FOR ANY PURPOSE OR THAT ANY PRACTICE OR
-IMPLEMENTATION OF SUCH CONTENTS WILL NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADE SECRETS OR OTHER RIGHTS.
-This document does not represent any commitment to release or implement any portion of the Specification in any product.
-THE SPECIFICATION COULD INCLUDE TECHNICAL INACCURACIES OR TYPOGRAPHICAL ERRORS. CHANGES ARE PERIODICALLY ADDED TO THE
-INFORMATION THEREIN; THESE CHANGES WILL BE INCORPORATED INTO NEW VERSIONS OF THE SPECIFICATION, IF ANY. THE
-SPECIFICATION LEADS MAY MAKE IMPROVEMENTS AND/OR CHANGES TO THE PRODUCT(S) AND/OR THE PROGRAM(S) DESCRIBED IN THE
-SPECIFICATION AT ANY TIME. Any use of such changes in the Specification will be governed by the then-current license
-for the applicable version of the Specification.
+THE SPECIFICATION IS PROVIDED "AS IS" AND IS EXPERIMENTAL AND MAY CONTAIN DEFECTS OR DEFICIENCIES WHICH
+CANNOT OR WILL NOT BE CORRECTED BY THE SPECIFICATION LEADS. THE SPECIFICATION LEADS MAKE NO
+REPRESENTATIONS OR WARRANTIES, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO, WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT THAT THE CONTENTS OF THE
+SPECIFICATION ARE SUITABLE FOR ANY PURPOSE OR THAT ANY PRACTICE OR IMPLEMENTATION OF SUCH CONTENTS WILL
+NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADE SECRETS OR OTHER RIGHTS.
+
+This document does not represent any commitment to release or implement any portion of the Specification
+in any product.
+
+THE SPECIFICATION COULD INCLUDE TECHNICAL INACCURACIES OR TYPOGRAPHICAL ERRORS. CHANGES ARE PERIODICALLY
+ADDED TO THE INFORMATION THEREIN; THESE CHANGES WILL BE INCORPORATED INTO NEW VERSIONS OF THE
+SPECIFICATION, IF ANY. THE SPECIFICATION LEADS MAY MAKE IMPROVEMENTS AND/OR CHANGES TO THE PRODUCT(S)
+AND/OR THE PROGRAM(S) DESCRIBED IN THE SPECIFICATION AT ANY TIME.
+
+Any use of such changes in the Specification will be governed by the then-current license for the
+applicable version of the Specification.
 
 LIMITATION OF LIABILITY
 
-TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL THE SPECIFICATION LEADS AND/OR THEIR LICENSORS BE LIABLE FOR ANY
-DAMAGES, INCLUDING WITHOUT LIMITATION, LOST REVENUE, PROFITS OR DATA, OR FOR SPECIAL, INDIRECT, CONSEQUENTIAL,
-INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF OR RELATED TO
-ANY FURNISHING, PRACTICING, MODIFYING OR ANY USE OF THE SPECIFICATION, EVEN IF CREDIT SUISSE AND/OR ITS LICENSORS HAVE
-BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL THE SPECIFICATION LEADS AND/OR THEIR LICENSORS
+BE LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION, LOST REVENUE, PROFITS OR DATA, OR FOR SPECIAL,
+INDIRECT, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND REGARDLESS OF THE THEORY
+OF LIABILITY, ARISING OUT OF OR RELATED TO ANY FURNISHING, PRACTICING, MODIFYING OR ANY USE OF THE
+SPECIFICATION, EVEN IF CREDIT SUISSE AND/OR ITS LICENSORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGES.
 
-You will hold the Specification Lead (and its licensors) harmless from any claims based on your use of the Specification
-for any purposes other than the limited right of evaluation as described above, and from any claims that later versions
-or releases of any Specification furnished to you are incompatible with the Specification provided to you under this
-license.
+You will hold the Specification Lead (and its licensors) harmless from any claims based on your use of
+the Specification for any purposes other than the limited right of evaluation as described above, and
+from any claims that later versions or releases of any Specification furnished to you are incompatible
+with the Specification provided to you under this license.
 
 RESTRICTED RIGHTS LEGEND
 
-If this Software is being acquired by or on behalf of the U.S. Government or by a U.S. Government prime contractor or
-subcontractor (at any tier), then the Government's rights in the Software and accompanying documentation shall be only
-as set forth in this license; this is in accordance with 48 C.F.R. 227.7201 through 227.7202-4 (for Department of
-Defense (DoD) acquisitions) and with 48 C.F.R. 2.101 and 12.212 (for non-DoD acquisitions)
+If this Software is being acquired by or on behalf of the U.S. Government or by a U.S. Government prime
+contractor or subcontractor (at any tier), then the Government's rights in the Software and accompanying
+documentation shall be only as set forth in this license; this is in accordance with 48 C.F.R. 227.7201
+through 227.7202-4 (for Department of Defense (DoD) acquisitions) and with 48 C.F.R. 2.101 and 12.212
+(for non-DoD acquisitions)
 
 REPORT
 
-You may wish to report any ambiguities, inconsistencies or inaccuracies you may find in connection with your evaluation
-of the Specification ("Feedback"). To the extent that you provide the Specification Lead with any Feedback, you hereby:
-(i) agree that such Feedback is provided on a non-proprietary and non-confidential basis, and (ii) grant the
-Specification Lead a perpetual, non-exclusive, worldwide, fully paid-up, irrevocable license, with the right to
-sublicense through multiple levels of sublicensees, to incorporate, disclose, and use without limitation the Feedback
-for any purpose related to the Specification and future versions, implementations, and test suites thereof.
+You may wish to report any ambiguities, inconsistencies or inaccuracies you may find in connection with
+your evaluation of the Specification ("Feedback"). To the extent that you provide the Specification Lead
+with any Feedback, you hereby:
+(i) agree that such Feedback is provided on a non-proprietary and non-confidential basis, and
+(ii) grant the Specification Lead a perpetual, non-exclusive, worldwide, fully paid-up, irrevocable
+     license, with the right to sublicense through multiple levels of sublicensees, to incorporate,
+     disclose, and use without limitation the Feedback for any purpose related to the Specification
+     and future versions, implementations, and test suites thereof.
 
 GENERAL TERMS
 
-Any action related to this Agreement will be governed by California law and controlling U.S. federal law. The U.N.
-Convention for the International Sale of Goods and the choice of law rules of any jurisdiction will not apply. The
-Specification is subject to U.S. export control laws and may be subject to export or import regulations in other
-countries. Licensee agrees to comply strictly with all such laws and regulations and acknowledges that it has the
-responsibility to obtain such licenses to export, re-export or import as may be required after delivery to Licensee.
-This Agreement is the parties' entire a greement relating to its subject matter. It supersedes all prior or
-contemporaneous oral or written communications, proposals, conditions, representations and warranties and prevails over
-any conflicting or additional terms of any quote, order, acknowledgment, or other communication between the parties
-relating to its subject matter during the term of this Agreement. No modification to this Agreement will be binding,
-unless in writing and signed by an authorized representative of each party.
+Any action related to this Agreement will be governed by California law and controlling U.S. federal law.
+The U.N. Convention for the International Sale of Goods and the choice of law rules of any jurisdiction
+will not apply. The Specification is subject to U.S. export control laws and may be subject to export or
+import regulations in other countries. Licensee agrees to comply strictly with all such laws and
+regulations and acknowledges that it has the responsibility to obtain such licenses to export, re-export
+or import as may be required after delivery to Licensee.
+This Agreement is the parties' entire a greement relating to its subject matter. It supersedes all prior
+or contemporaneous oral or written communications, proposals, conditions, representations and warranties
+and prevails over any conflicting or additional terms of any quote, order, acknowledgment, or other
+communication between the parties relating to its subject matter during the term of this Agreement. No
+modification to this Agreement will be binding, unless in writing and signed by an authorized
+representative of each party.
 ----
 
 Introduction
@@ -870,7 +888,7 @@ A monetary context (modeled as +javax.money.MonetaryContext+) is basically used 
   of a concrete amount implementation instance  without having to reference to the concrete implementation class.
 * Similarly a +MonetaryContext+ can be passed to +MonetaryAmounts.queryAmountType(MonetaryContext ctx)+ to evaluate the
   implementation type that is covering a required monetary context best (refer to the section discussing the
-  +MonetaryAmounts+ singleton and the +MonetaryAmountsSpi+ SPI interface for further details on how the selection
+  +MonetaryAmounts+ singleton and the +MonetaryAmountsSingletonSpi+ SPI interface for further details on how the selection
   algorithm is specified). The returned implementation type +M+ (aka _amount type_) then can be used to acquire a
   corresponding +MonetaryAmountFactory<M>+ by calling +MonetaryAmounts.getAmountFactory(Class<M>)+ to create instances
   of the given amount type +M+.
@@ -1066,7 +1084,7 @@ modeled as so called regions.
 ===== Accessing Monetary Amount Factories
 The +javax.money.MonetaryAmounts+ singleton class implements an accessor for +MonetaryAmountFactory+ instances. Hereby
 for not hard-coding the selection algorithm and for enabling contextual behaviour in a EE context, the singleton is
-backed up by a +MonetaryAmountsSpi+, that can be registered using the JSR’s +Bootloader+.
+backed up by a +MonetaryAmountsSingletonSpi+, that can be registered using the JSR’s +Bootloader+.
 
 [source,java]
 .MonetaryAmounts Singleton
@@ -1592,16 +1610,40 @@ component loading mechanism, such as _CDI_ in a EE context.
 
 All SPIs are contained in the package +javax.money.spi+. Summarizing the following SPIs are available:
 
-* +Core SPI+
-* +CurrencyProviderSpi+ (mandatory, multiple service chain) - provides instances of CurrencyUnit, accessible from MonetaryCurrencies singleton.
-* +MonetaryAmountsSpi+ (mandatory, only one instance selected by priority) - manages instances of MonetaryAmountFactoryProviderSpi, which create instances of MonetaryAmountFactory, that are being accessible by MonetaryAmounts, Also this SPI allows to override the behaviour of MonetaryAmounts.queryAmountType(MonetaryContext).
-* +RoundingProviderSpi+ (mandatory, multiple service chain) - provides instances of MonetaryOperator, for being accessible by MonetaryRoundings.
-* +MonetaryLogger+ (optional, only one instance selected by priority), defines the logging backend used by the API implementation skeleton.
-* +Formatting SPI+
-* +AmountFormatSymbolsProviderSpi (mandatory, multiple service chain) - provides  instances of AmountFormatSymbols, for being accessible by AmountFormatSymbols.getInstance.
-* +AmountStyleProviderSpi (mandatory, multiple service chain) - provides instances of AmountStyle, for being accessible by AmountStyle.getInstance.
-* +MonetaryAmountFormatProviderSpi (mandatory, multiple service chain) - provides instances of MonetaryAmountFormat, for being accessible by MonetaryFormats.getAmountFormat.
-* +Bootstrap SPI
+.Core SPI
+
+* +CurrencyProviderSpi+ (mandatory, multiple service chain) - provides instances of +CurrencyUnit+, accessible from
+  +MonetaryCurrencies+ singleton.
+* +MonetaryAmountsSingletonSpi+ (mandatory, only one instance selected by priority) - manages instances of
+  +MonetaryAmountFactoryProviderSpi+, which create instances of +MonetaryAmountFactory+, that are being accessible by
+  +MonetaryAmounts+.
+* +MonetaryAmountFactoryProviderSpi+ (mandatory, multiple service chain) - is responsible for registering and providing
+  instances of +MonetaryAmountFactory+.
+* +MonetaryAmountsSingletonQuerySpi+ (mandatory, only one instance selected by priority) - this SPI allows to
+  override/define the behaviour of +MonetaryAmounts.queryAmountType(MonetaryContext)+.
+* +RoundingProviderSpi+ (mandatory, multiple service chain) - provides instances of +MonetaryOperator+, for being
+  accessible by +MonetaryRoundings+.
+
+
+.Conversion SPI
+
+* +MonetaryConversionSingletonSpi+ (mandatory, only one instance selected by priority) - manages instances of
+  +ExchangeRateProvider+, for being accessible by the +MonetaryCurrencies+ singleton and also is responsible for
+  providing the composite provider instances as to be returned by the conversion API.
+* +ExchangeRateProvider+ (mandatory, multiple instances selected by API) - this class is also part of the API, but also
+  models the huge part of the SPI required for currency conversion.
+
+
+.Formatting SPI
+
+* +MonetaryAmountFormatSingletonSpi+ (mandatory, only one instance selected by priority) - provides the backing bean for
+  the +MonetaryFormats+ singleton, manages instances of +MonetaryAmountFormatProviderSpi+.
+* +MonetaryAmountFormatProviderSpi+ (mandatory, multiple service chain) - provides instances of +MonetaryAmountFormat+,
+  for being accessible by+ MonetaryFormats.getAmountFormat(<?>)+.
+
+
+.Bootstrap SPI
+
 * +ServiceProvider+ (optional, only one instance selected by priority), defines the singleton accessor for loading SPI components used by the Bootstrap class.
 * How the implementations must be registered depends on the +ServiceProvider+ that is loaded by the +Bootstrap+
   implementation. The default mechanism is based on the +java.util.ServiceLoader+ class. By ordering the registered
@@ -1609,8 +1651,9 @@ All SPIs are contained in the package +javax.money.spi+. Summarizing the followi
   aspects, as the first a non null result returned by a provider is taken as result of a call. The prioritization of
   components is implicitly defined by the order of the components returned by the +ServiceProvider+ SPI implementation.
 
+
 ==== Core SPI
-Registering Currencies::
+===== Registering Currencies
 By adding instances of +javax.money.spi.CurrencyProvider+ additional +CurrencyUnit+ instances can be registered into
 the +MonetaryCurrencies+ singleton:
 
@@ -1633,7 +1676,7 @@ Hereby
   as required when running in a Java EE container.
 
 
-Registering Monetary Amount Factories::
+===== Registering Monetary Amount Factories
 The +javax.money.spi.MonetaryAmountFactoryProviderSpi<T>+ interface allows to create new instances of
 +MonetaryAmountFactory<T extends MonetaryAmount>+. The signature looks as follows:
 
@@ -1673,28 +1716,31 @@ Hereby
      operation. This is useful, e.g. for special amount types as decorators, which do not provide their own numeric
      representations.
 
-Backing the MonetaryAmounts Singleton::
-Also the functionality of the +MonetaryAmounts+ accessor singleton is backed up by an SPI interface, called
-+javax.money.spi.MonetaryAmountsSpi+ singleton. An implementation should rely on the +Bootstrap+ class to access the
-available instances of +MonetaryAmountFactory+. Nevertheless being able to register alternate implementations of this
-SPI would allow to support more complex rules for a couple of enterprise related functionality such as:
+===== Backing the MonetaryAmounts Singleton
+Also the functionality of the +MonetaryAmounts+ accessor singleton is backed up by two SPI interfaces, called
++javax.money.spi.MonetaryAmountsSingletonSpi+ and +javax.money.spi.MonetaryAmountsSingletonQuerySpi+. An
+implementation should rely on the +Bootstrap+ class to access the available instances of +MonetaryAmountFactory+.
+Nevertheless being able to register alternate implementations of this
+SPIs would allow to support more complex rules for a couple of enterprise related functionality such as:
 
+.MonetaryAmountsSingletonSpi
 * contextual availability of amount types (and related factories).
 * contextual differences for default amount types, as provided by +MonetaryAmounts.getDefaultAmountType()+.
 * contextual differences for default +MonetaryContext+ instances applied.
+
+.MonetaryAmountsSingletonQuerySpi
 * alternate implementations of the algorithm used within +MonetaryAmounts.queryAmountType(MonetaryContext)+ to determine
   the best matching +MonetaryAmount+ implementation given a +MonetaryContext+ required.
 
-The SPI provides the following methods to adapt the behaviour of the +MonetaryAmounts+ singleton:
+The SPIa provide the following methods to adapt the behaviour of the +MonetaryAmounts+ singleton:
 
 [source,java]
-.Interface MonetaryAmountsSpi
+.Interface MonetaryAmountsSingletonSpi
 -------------------------------------------------------------------------------
-public interface MonetaryAmountsSpi{
+public interface MonetaryAmountsSingletonSpi{
   public <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType);
   public MonetaryAmountFactory<?> getDefaultAmountFactory();
   public Set<Class<? extends MonetaryAmount>> getAmountTypes();
-  public Class<? extends MonetaryAmount> queryAmountType(MonetaryContext requiredContext);
 }
 -------------------------------------------------------------------------------
 
@@ -1708,6 +1754,17 @@ Hereby
 * +getDefaultAmountFactory()+ should return the default +MonetaryAmountFactory+  for the current context. Hereby an
   implementation must never return +null+. If no +MonetaryAmountFactory+ instances are registered, a +MonetaryException+
   should be thrown.
+
+[source,java]
+.Interface MonetaryAmountsSingletonQuerySpi
+-------------------------------------------------------------------------------
+public interface MonetaryAmountsSingletonQuerySpi{
+  public Class<? extends MonetaryAmount> queryAmountType(MonetaryAmountsSingletonSpi amountsSpi, MonetaryContext requiredContext);
+}
+-------------------------------------------------------------------------------
+
+Hereby
+
 * +queryAmountType(MonetaryContext)+ allows to evaluate a +MonetaryAmount+ implementation type that best covers the
   requirements defined by the passed +MonetaryContext+. Implementations should consider the following rules:
   ** if the +MonetaryContext+ passed is explicitly requiring a concrete implementation type, a factory of this type
@@ -1733,7 +1790,7 @@ capabilities of a concrete type are accessible from the according implementation
 * if all of the above is true, the according result of +MonetaryAmountFactoryProviderSpi.getAmountType()+ should be
   returned.
 
-Registering Roundings::
+===== Registering Roundings
 Additional roundings can be added by registering instances of +javax.money.spi.RoundingProviderSpi+. Since a monetary
 rounding is nothing else than a conversion from an unrounded amount to a rounded amount, ist is modeled as
 +MonetaryOperator+. As a consequence the +MonetaryRoundings+ singleton basically is managing an (ordered) collection of
@@ -1769,18 +1826,18 @@ Hereby different types of roundings are supported:
   UTC timestamp given.
 
 
-Backing the MonetaryConversions Singleton::
+===== Backing the MonetaryConversions Singleton
 Currency conversion mechanisms are provided by the +MonetaryConversions+ singleton. This singleton is backed up by an
-implementation of +javax.money.spi. MonetaryConversionsSpi+. This singleton in a SE environment may implemented as a
+implementation of +javax.money.spi. MonetaryConversionsSingletonSpi+. This singleton in a SE environment may implemented as a
 real singleton, sharing the same state and functionality, whereas in a EE context the implementation will likely behave
 contextually (providing different runtime context depending on the current runtime context, e.g. the ear or war
 currently active. So implementing this SPI provides full control about the singleton’s effective behaviour. As a
 consequence the methods basically are similar to the ones provided by the singleton class:
 
 [source,java]
-.Interface MonetaryConversionsSpi
+.Interface MonetaryConversionsSingletonSpi
 -------------------------------------------------------------------------------
-public interface MonetaryConversionsSpi {
+public interface MonetaryConversionsSingletonSpi {
    ExchangeRateProvider getExchangeRateProvider(String... providers);
    CurrencyConversion getConversion(CurrencyUnit termCurrency,
                         ConversionContext conversionContext, String... providers);
@@ -1820,14 +1877,14 @@ Hereby
 * As for other SPIs in this JSR the loading of different +ExchangeRateProvider+ instances should be delegated to the
   +Bootstrap+ implementation.
 
-Adding Currency Conversion Capabilities::
+===== Adding Currency Conversion Capabilities
 Adding additional capabilities for currency conversion equals to implementing and registering classes implementing the
 +ExchangeRateProvider+ interface. The interface itself is part of the API and described in 4.3.3 Exchange Rates and Rate
-Providers. Basically the implementation of the +MonetaryConversionsSpi+ determines how the implementations must be
+Providers. Basically the implementation of the +MonetaryConversionsSingletonSpi+ determines how the implementations must be
 registered. Hereby the registered +ServiceProvider+ implementation is responsible for loading and providing the
 according components. Refer also to 4.5.3 The Bootstrapping Mechanism for more details.
 
-Adapting the Logging Backend::
+===== Adapting the Logging Backend
 By default the JSR API logic uses +java.util.logging+ (JUL) as logging backend. JUL allows to configure additional or
 customized logging Handler instances, so alternate logging backends can be used easily, by registering a forwarding
 +Handler+ implementation for +javax.money+ and configuring the +Logger+ instance to not delegating to its parent loggers.
@@ -1865,7 +1922,7 @@ determines the final result from calling +AmountFormatSymbols.of(Locale)+.
 It is also required that on the platforms were +java.text.DecimalFormatSymbols+ is available, all locales that are
 supported by +java.text.DecimalFormatSymbols+ must be also available/provided by the SPIs registered.
 
-Providing Amount Styles::
+===== Providing Amount Styles
 The +AmountStyle+ class provides factory methods that allow to access instances based on a +Locale+. By registering
 instances of +javax.money.spi.AmountStyleProviderSpi+ additional locales can be supported or adapted. Hereby at least
 one instance of +AmountStyleProviderSpi+ must be registered, which is defined as follows:
@@ -1893,7 +1950,7 @@ determines the final result from calling +AmountStyle.of(Locale)+.
 It is required that on the platforms were +java.text.DecimalFormat+ is available, all locales that are supported by
 +java.text.DecimalFormat+ must be also available/provided by the SPIs registered.
 
-Prodivding Amount Formats::
+===== Prodivding Amount Formats
 The +MonetaryFormats+ singleton delegates creation of +MonetaryAmountFormat+ instances to registered instances of
 +javax.money.spi.MonetaryAmountFormatProviderSpi+. Hereby at least one instance of +AmountStyleProviderSpi+ must be
 registered as +Bootstrap+ component, which is defined as follows:
@@ -1917,7 +1974,7 @@ determines the final result from calling +MonetaryFormats+.
 
 
 ==== The Bootstrapping Mechanism
-Overview::
+===== Overview
 Basically the +Bootstrap+ singleton class is used by all API components to access instances of the different pluggable
 components of the Money API. Hereby also the +Bootstrap+ class delegates the location and loading of services to an
 implementation of a +javax.money.spi.ServiceProvider+, which implements the detailed logic how services are located and

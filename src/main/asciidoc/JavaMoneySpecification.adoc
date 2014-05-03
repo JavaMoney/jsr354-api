@@ -1,7 +1,7 @@
 ﻿JSR 354 (Money & Currency) - Specification
 ==========================================
 :revnumber: 0.9
-:revremark: Public Final Draft
+:revremark: Proposed Final Draft
 :revdate: June 2014
 :longversion: {revnumber} ({revremark}) {revdate}
 :authorinitials: ATR
@@ -231,7 +231,7 @@ group decided to keep the API independent of JDK artifacts that are not supporte
 +java.text+. Nevertheless the reference implementation is free to use existing functionality and the JSR also includes
 requirements (also checkable by the TCK) to ensure a minimal set of functionality on Java SE.
 During the development of the JSR a wide set of features were implemented. Most of these features will not end up within
-the JSR itself, as the JSR now has scope limited to interoperation, enabling feature innovation elsewhere. The
+the JSR itself, as the JSR now has scope limited to interoperability, enabling feature innovation elsewhere. The
 corresponding libraries were published under [JavaMoney] as an Apache 2 licensed open source project. Compared to the
 early draft review the following features are no longer in the scope of the JSR:
 
@@ -256,7 +256,7 @@ there are only a few aspects within the API that would be affected by building e
 Especially the usage of functional interfaces is already part of this specification and will be supported without any
 change, when this JSR is used with Java 8. Another aspect is the usage of JSR 310 date and time types. This JSR does
 not depend on these types in the API, but provides mechanisms to enable usage of these types. One reason is that it has
-shown highly arguable if JSR 310 will be included into the Java ME at a later stage due to several reasons. So the
+shown highly questionable if JSR 310 will ever fit into Java ME at a later stage due to several reasons. So the
 decision was to avoid usage of that types, for wider compatibility of the JSR with different runtime environments.
 
 === How this document is organized
@@ -278,7 +278,7 @@ This section describes some, but not all, of the use cases that should be covere
 One basic scenario that must be covered is a traditional web shop. Hereby products are presented and collected in a shopping cart. Each product can be added once or multiple times to the cart. Some sites also need to represent non integral amounts, such as 1.5kg of a product. Additionally a site may be internationalized handling multiple currencies, perhaps controlled by user settings or address.
 Summarizing this scenario implies the following requirements:
 
--> Prices for each item must be modelled by some monetary amount, representing a numeric amount in a single currency.
+-> Prices for each item must be modeled by some monetary amount, representing a numeric amount in a single currency.
 
 -> The prices for all items in the cart must be calculated, this requires sum up all monetary amounts.
 

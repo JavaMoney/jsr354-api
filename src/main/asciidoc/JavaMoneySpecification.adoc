@@ -13,24 +13,17 @@
 :imagesdir: src/main/asciidoc/images
 :iconsdir: src/main/asciidoc/images/icons
 :data-uri:
+:toc:
+:toc-placement: manual
+:icons:
 
 image::title.gif[align=center]
 
-:toc:
-:icons:
-
 '''
-:numbered!:
-
-[discrete]
-==== 0.9 (Public Review) June 2014
-
-
-'''
+<<<
+toc::[]
 
 <<<
-:numbered:
-
 [big]#EVALUATION LICENCE#
 {disclaimer}
 ----
@@ -510,11 +503,16 @@ in the expert group, some of the aspects considered include:
   us to design it completely platform independent. Though not primarily in focus the JSR 354 API is completely platform
   independent.
 
+The following diagram shows the main type artifacts modeled:
+
+image::api.jpg[align=center]
+
 Nevertheless for an API to be complete, you need some type of concrete classes as entry points. Since the API is
 designed as a standalone APIs the singleton accessor patterns are a good choice, so also this API provides according
 accessor classes:
 
-image::api.png[align=center]
+image::apisingletons.jpg[align=center]
+
 
 Basically the diagram above illustrates well the accessors available:
 

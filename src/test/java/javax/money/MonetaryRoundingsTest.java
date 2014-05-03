@@ -58,7 +58,7 @@ public class MonetaryRoundingsTest{
 
     @Test
     public void testMonetaryRoundingsGetCustomRoundingIds(){
-        Set<String> ids = MonetaryRoundings.getCustomRoundingIds();
+        Set<String> ids = MonetaryRoundings.getRoundingIds();
         assertNotNull(ids);
         assertTrue(ids.size() == 2);
     }

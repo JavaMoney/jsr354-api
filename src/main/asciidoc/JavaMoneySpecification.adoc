@@ -235,11 +235,10 @@ the JSR itself, as the JSR now has scope limited to interoperation, enabling fea
 corresponding libraries were published under [JavaMoney] as an Apache 2 licensed open source project. Compared to the
 early draft review the following features are no longer in the scope of the JSR:
 
-* currency conversion footnote:[Refer also to section Currency Conversion for further details]
 * complex formatting (replaced by a simple formatter for amounts)
 * region API
 * validity API
-* additional financial functions
+* additional financial functions and formulas
 
 Though the features above were removed from the JSR, their development ensured that scope was fully evaluated and that
 the parts best suited to standardization were identified. Where beneficial to the community parts of the JavaMoney
@@ -255,9 +254,9 @@ scenarios for a very long time and would definitely decrease the adoption rate o
 there are only a few aspects within the API that would be affected by building everything right based on Java 8.
 Especially the usage of functional interfaces is already part of this specification and will be supported without any
 change, when this JSR is used with Java 8. Another aspect is the usage of JSR 310 date and time types. This JSR does
-not depend on these types in the API, but provides mechanisms to enable usage of these types. One reason is that it has
-shown highly arguable if JSR 310 will be included into the Java ME at a later stage due to several reasons. So the
-decision was to avoid usage of that types, for wider compatibility of the JSR with different runtime environments.
+not depend on these types in the API, but provides mechanisms to enable usage of these types (attributable contexts).
+The main reason is that JDK 7 is targeted. Generally a wider compatibility of the JSR with different Java version and
+runtime environments was decided to be more important than depending on Java 8 features within this release already.
 
 === How this document is organized
 There are five main section in this document:
@@ -443,15 +442,17 @@ direct references to elements in java.math and java.text which is not supported 
       +from(...)+
    .. parsing is explicitly named, as it is generally special, named +parse(...)+
    .. overall monetary API _feel_ should be similar to +java.math.BigDecimal+.
-. POSIX timestamps (the JSRs relies on millisecond resolution as returned by +System.currentTimeMillis()+) in APIs must
-  be modelled as +long+. SPIs are allowed to model timestamps as +java.lang.Long+, to support +null+, when a timestamp
-  is not defined. As several use cases for this JSR include (business) critical software like real time trading and
-  similar systems, those usually must be independent of local time or system time that could be manipulated. Thus no
-  untrusted time sources like +System.currentTimeMillis(), java.util.Date+ or Java 8 equivalents like +LocalTime+ and
-  similar types are permitted. The JSR is not responsible for providing a reliable time source, but where required the
-  use of UTC time stamps makes it compatible with relevant reliable time sources, e.g. atomic clock servers, etc.
+. There are rare places where POSIX timestamps based on millisecond resolution as returned by
+  +System.currentTimeMillis()+) are used. These timestamps are modelled as +long+. Since this JSR
+  is based on Java 7, the new date and time types introduced with Java 8 are not used as part of this API.
+  Nevertheless the context types that can be passed to different methods allow to use these types as needed.
+  Refer to the example section for according samples.
+. This JSR will be used also for (business) critical software like real time trading and similar systems.
+  These systems and use cases require very specific parameters, which are impossible to model by this JSR and
+  may also very different for each use case, provider and/or company. As a solution attributable context can be
+  passed optionally that can contain any parameters needed.
 . Though performance aspects can not directly targeted by this JSR, it is important that the JSR considers performance
-  aspects, where possible, so provided implementations are able optimizing performance as required by the usage
+  aspects, where possible, so provided implementations are able to optimize performance as required by the usage
   scenarios they are targeting.
 
 Specification
@@ -489,21 +490,23 @@ as supporting types for rounding and the extensions API. Hereby the main artifac
   implementations on functional level. Interoperability on data level is ensured by +getNumber()+ and +getCurrency()+.
   As a consequence amount can be implemented in different ways, focusing on the behavioural and data representation
   requirements implied by the concrete use cases.
-* +NumberValue+ returns the numeric part of an amount, so it can be accessed and externalized in different ways. Its
-  purpose is to ensure maximal interoperability with existing functionalities in the JDK. Therefore it also extends
+* The abstract type +NumberValue+ returns the numeric part of an amount, so it can be accessed and externalized in different ways. Its
+  purpose is to ensure maximal interoperability with existing functionality in the JDK. Therefore it also extends
   +java.lang.Number+.
 * +NumberSupplier+ and +CurrencySupplier+ model functional interfaces as defined by JDK 8.
 * +MonetaryOperator+ and +MonetaryQuery+ model the extension points for monetary logic. They allow to implement external
-  functionalities, either adding operations returning an amount (+MonetaryOperator+), or returning any
+  functionality, either adding operations returning an amount (+MonetaryOperator+), or returning any
   arbitrary other value ( +MonetaryQuery+).
 * the +MonetaryAmountFactory+ finally represents an abstraction for creating new instances of amounts. Besides setting
   an amount currency and number value, it allows also to change the numeric capabilities, if the underlying
   implementation supports doing this. The capabilities available for a concrete factory can be queried by accessing
-  maximal +MonetaryContext+.
-* +MonetaryContext+ defines the numeric capabilities of an instance as an immutable and platform independent type.
+  the 'default' and the 'maximal' +MonetaryContext+.
+* +MonetaryContext+ models the numeric capabilities of an instance as an immutable and platform independent type.
 * +MonetaryException+ is the base exception class for the money API, it extends +java.lang.RuntimeException+.
 
-The overview diagram above shows that the main abstraction is modeled as interfaces. There are people that would argue,
+image::api.jpg[align=center]
+
+The overview diagram above shows that the main abstractions are modeled as interfaces. There are people that would argue,
 that concrete immutable value types should be used to model a monetary amount. This topic was discussed intensively
 in the expert group, some of the aspects considered include:
 
@@ -520,10 +523,6 @@ in the expert group, some of the aspects considered include:
   level and still does not prevent its use in high performance, low latency scenarios. As a side effect it also allowed
   us to design it completely platform independent. Though not primarily in focus the JSR 354 API is completely platform
   independent.
-
-The following diagram shows how a +MonetaryAmount+ is modeled:
-
-image::api.jpg[align=center]
 
 Nevertheless for an API to be complete, you need some type of concrete classes as entry points. Since the API is
 designed as a standalone APIs the singleton accessor patterns are a good choice, so also this API provides according
@@ -602,8 +601,8 @@ by an interface, called +javax.money.MonetaryAmount+. In general the following a
    ** number value, for externalization, modeled as +NumberValue+.
    ** accessing basic numeric state such as _negative, positive_ etc.
    ** Methods for evaluating the numeric capabilities of the concrete type.
-* _Prototyping support_ for creating new amount instances based on the same implementation, modeled by
-  +MonetaryAmountFactory+.
+* _Prototyping support_ for creating new amount instances based on the same implementation, modeled by a
+  +MonetaryAmountFactory+, which is accessible from each instance.
 * _Comparison methods_ for comparing two arbitrary amounts of the same currency, hereby comparing based on the (effective)
   numeric value (e.g. ignoring trailing zeroes).
 * _Basic arithmetic operations_ like addition, subtraction, division, multiplication.
@@ -690,7 +689,7 @@ Hereby
 
 Implementations of +MonetaryAmount<T>+
 
-. must implement equals/hashCode, hereby it is recommended considering
+. must implement +equals/hashCode+, hereby it is recommended considering
    .. its implementation type
    .. its +CurrencyUnit+
    .. its numeric value, with any _non significant trailing zeros truncated_.
@@ -707,9 +706,9 @@ Implementations of +MonetaryAmount<T>+
 . This specification does no
   further constrain the constructor or factory methods to be implemented, or the method signatures to be used.
 
-NOTE: This also means that two different implementations types with the same currency and numeric value are 'NOT equal'. For
-comparing two +MonetaryAmount+ instances during financial calculations the amount’s comparison methods should be used.
-E.g. +isEqualTo(MonetaryAmount)+ must return true, if they have equal currencies and equal numeric values, hereby
+NOTE: This also means that two different implementations types with the same currency and numeric value are 'NOT equal'.
+For comparing two +MonetaryAmount+ instances during financial calculations the amount’s comparison methods should be
+used. E.g. +isEqualTo(MonetaryAmount)+ must return true, if they have equal currencies and equal numeric values, hereby
 ignoring non-significant trailing zeros and different monetary contexts.
 
 The interfaces +MonetaryOperator+ and +MonetaryQuery<R>+ provide a powerful extension mechanism. The two interfaces
@@ -905,11 +904,6 @@ The +MonetaryContext+ is modeled as an immutable type as follows:
 -------------------------------------------------------------------------------
 public final class MonetaryContext 
 implements Serializable{
-  public static enum Flavor{
-    PRECISE,
-    PERFORMANT,
-    UNKNOWN
-  }
 
   ...
 
@@ -917,7 +911,7 @@ implements Serializable{
 
   public int getPrecision();
   public int getMaxScale();
-  public Flavor getAmountFlavor();
+  public AmountFlavor getAmountFlavor();
   public <A> A getAttribute(Class<A> type);
   public <A> A getAttribute(Class<A> type, A defaultValue);
   public Map<Class,Object> getAttributes();
@@ -934,16 +928,38 @@ Hereby
 
       * +getPrecision(), getMaxScale(), isFixedScale()+ define common numeric capabilities.
       * +getAmountType()+ gives access to the amount’s implementation type used.
-      * +getAmountFlavor()+ allows to define a behavioural flavor, one of:
-      ** +AmountFlavor.PERFORMANT+: the implementation is optimized for fast computation. In favour of the performance
+      * +getAmountFlavor()+ allows to define a behavioural flavor, e.g.:
+      ** +PERFORMANT+: the implementation is optimized for fast computation. In favour of the performance
          optimization the precision and/or scale supported may be limited.
-      ** +AmountFlavor.PRECISE+: the implementation is optimized for providing correct result at all possible, but it
+      ** +PRECISE+: the implementation is optimized for providing correct result at all possible, but it
          may not perform as well as performance optimized implementations.
-      ** +AmountFlavor.UNDEFINED+: it is not possible to define a clear flavor, the +MonetaryContext+ is used to
-         determine the amount type that optimally suits the current requirements, but no specific flavor is required.
-         +MonetaryAmountFactory+ instances that are
+      ** Additional AmountFlavor instances can be registered using the corresponding +AmountFlavor+ API or SPI.
       * also a +MonetaryContext+ provides additional attributes, identified by the attribute’s type. This creates a type
         safe interface for adding properties, without duplicating artifacts or creating non portable dependencies.
+
+The +AmountFlavor+ is also modeled as an immutable type as follows:
+
+[source,java]
+.Class AmountFlavor
+-------------------------------------------------------------------------------
+public final class AmountFlavor
+implements Serializable{
+  ...
+  public String getName();
+  public static Set<AmountFlavor> getFlavors();
+  public static AmountFlavor of(String name);
+  public static AmountFlavor define(String name);
+  ...
+}
+-------------------------------------------------------------------------------
+
+Hereby
+
+. the static methods allow to access (+of(String)+) or register additional +AmountFlavor+s (+define(String)+).
+. similarly +getFlavors()+ returns all currently registered flavors.
+. the name of each instance of +AmountFlavor+ is accessible from +getName()+.
+
+The final class itself is modeled as an immutable _value type_.
 
 The example below creates a +MonetaryContext+ matching amount implementations that are performance optimized, that have
 a maximal precision of +12+, with a maximal scale of +2+ and should be rounded up. Interesting hereby is that, though
@@ -958,7 +974,7 @@ MonetaryContext ctx = new MonetaryContext.Builder()
  .setFixedScale(true)
  .setPrecision(12)
  .setAttribute(RoundingMode.UP)
- .setFlavor(AmountFlavor.PERFORMANT)
+ .setFlavor(AmountFlavor.of("PERFORMANT"))
  .build();
 -------------------------------------------------------------------------------
 
@@ -979,7 +995,7 @@ modeled by the interface +javax.money.MonetaryAmountFactory<T>+. Instances can b
 .Usage Example for Creating an Amount
 -------------------------------------------------------------------------------
 MonetaryAmountFactory<MyMoney> fact = MonetaryAmounts.getAmountFactory(MyMoney.class);
-fact.withCurrency("USD").with(10.50);
+fact.setCurrency("USD").setNumber(10.50);
 ...
 MyMoney money = fact.create();
 -------------------------------------------------------------------------------
@@ -1056,6 +1072,7 @@ public final class MonetaryCurrencies{
   public static CurrencyUnit getCurrency(Locale locale){...}
   public static boolean isCurrencyAvailable(String code){...}
   public static boolean isCurrencyAvailable(Locale locale) {...}
+  public static Set<CurrencyUnit> getCurrencies() {...}
 }
 -------------------------------------------------------------------------------
 
@@ -1068,11 +1085,14 @@ Hereby
 * whereas, similar to +java.util.Currency+ accessing a currency that does not exist, throws an
   +IllegalArgumentException+, the +isCurrencyAvailable()+ methods allow to check if a currency code or +Locale+ is
   defined, before accessing it.
+* finally +getCurrencies()+ allows to access all currencies currently known by this singleton (which delegates to
+  the known +MonetaryCurrencyProviderSpi+ instances).
 
 NOTE: One may consider also adding access to historic currencies here. The problem hereby is that the existence of a
 currency is related to multiple attributes:
 
-* the target timestamp, when it should be valid, e.g. as UTC timestamp
+* the target timestamp, when it should be valid, e.g. as UTC timestamp. Or a local date similar to +LocalDate+ in
+  Java 8.
 * the target country or region, as it was existing at that time
 * the time zones of the country or region, to determine the exact time ranges related to the given target timestamp
 * additionally also countries change during history
@@ -1098,6 +1118,8 @@ public final class MonetaryAmounts{
   public static Set<Class<? extends MonetaryAmount>> getAmountTypes();
   public static Class<? extends MonetaryAmount> queryAmountType(
                         MonetaryContext requiredContext);
+  public static MonetaryAmountFactory<?>
+    queryAmountFactory(MonetaryContext requiredContext);
 }
 -------------------------------------------------------------------------------
 
@@ -1118,11 +1140,11 @@ javax.money.defaults.amount.class=my.fully.qualified.MonetaryAmountType
 
 * +getAmountTypes()+ returns all amount implementation classes currently available.
 * Finally +queryAmountType(MonetaryContext)+ allow to query the implementation class that best covers the given
-  required +MonetaryContext+.
+  required +MonetaryContext+. +queryAmountFactory(MonetaryContext)+ adds some convenience to the users of the API
+  but directly providing a corresponding +MonetaryAmountFactory+ instance using the result from
+  +queryAmountType(MonetaryContext)+.
 
-Implementations of this JSR must "at least provide one footnote:[If +MonetaryContext.AmountFlavor+ does not equal
-+AmountFlavor.UNDEFINED+, it is recommended to provide also a second amount type, either with the alternate specified
-+AmountFlavor+, or with +AmountFlavor.UNDEFINED+, which then is used as default.] implementation of
+IMPORTANT: Implementations of this JSR must "at least provide one implementation of
 +MonetaryAmountFactoryProviderSpi+ with a query policy equal to +QueryInclusionPolicy.ALWAYS+*.
 
 ===== Accessing Roundings
@@ -1131,12 +1153,20 @@ variants with arbitrary rules and constraints are quite common in the financial 
 
 This JSR provides several roundings accessible from the +javax.money.MonetaryRoundings+ singleton based on:
 
-. a target +CurrencyUnit+,. By default the rounding is based on the currency’s default fraction units. Additionally also
-  a cash rounding can be accessed, which may be different than the default currency rounding (e.g. for +CHF/Swiss Francs+).
-. a +MonetaryContext+, which defines the maximal precision and scale. Where available the +MonetaryContext+ can have an
-  additional attribute of type +java.math.RoundingMode+, providing a definition of the required mathematical rounding.
-  If not defined +HALF_EVEN+ rounding mode should be used.
-. a name (+String+), for customized roundings.
+. a target +CurrencyUnit+,. By default the rounding is based on the currency’s default fraction units.
+. a +RoundingContext+, which models an parameter context, which can be configured with any kind of attributes. Hereby
+  the +RoundingContext+'s _rounding id_ defines which SPI implementation of +RoundingProviderSpi+ should interpret
+  the context and create an corresponding rounding instance. This mechanism is also capable of modeling any kind
+  of custom roundings needed, including rounding required for technical exchange formats.
+. each implementation should at least enable accessing mathematical roundings, supporting
+.. the maximal _precision_ (+int+)
+.. the target _scale_.
+.. the +java.math.RoundingMode+, providing a definition of the required mathematical rounding.
+   If not defined +HALF_EVEN+ rounding mode should be used.
+
+Additionally also
+. cash rounding, which may be different than the default currency rounding (e.g. for +CHF/Swiss Francs+), can be
+  provided by setting a named attribute +cashRounding+ to +true+.
 
 The following diagram gives an overview of the artifacts involved:
 
@@ -1151,15 +1181,9 @@ public final class MonetaryRoundings{
   private MonetaryRoundings(){}
 
   public static MonetaryOperator getRounding();
-  public static MonetaryOperator getRounding(MonetaryContext context);
+  public static MonetaryOperator getRounding(RoundingContext context);
   public static MonetaryOperator getRounding(CurrencyUnit currency);
-  public static MonetaryOperator getCashRounding(CurrencyUnit currency);
-  public static MonetaryOperator getRounding(CurrencyUnit currency,
-                                                     long timestamp);
-  public static MonetaryOperator getCashRounding(CurrencyUnit currency,
-                                                     long timestamp);
-  public static MonetaryOperator getRounding(String customRoundingId);
-  public static Set<String> getCustomRoundingIds();
+  public static Set<String> getRoundingIds();
 }
 -------------------------------------------------------------------------------
 
@@ -1167,15 +1191,40 @@ Hereby
 
 * +getRounding()+ returns a general rounding instance that is dynamically implementing the default currency rounding,
   as required by the currency passed, when called.
-* +getRounding(CurrencyUnit)+ returns the default rounding for the given +CurrencyUnit+, whereas
-  +getCashRounding(CurrencyUnit)+ returns the cash rounding for the given currency, which may be different from the
-  default rounding. E.g. for +Swiss Francs+ the cash rounding will be in +5+ minor unit steps: +1.00, 1.05, 1.10+ etc..
-* +getRounding(CurrencyUnit, long), getCashRounding(CurrencyUnit, long)+ provide access to currency related rounding
-  and cash rounding for a certain timestamp.
-* +getRounding(int, RoundingMode)+ returns a general mathematical rounding instance.
-* finally +getCustomRounding(String)+ allows to access custom roundings, as defined by the registered
-  +RoundingProviderSpi+ implementations. +getCustomRoundingIds()+ provides access to the names of the currently
-  registered custom roundings.
+* +getRounding(CurrencyUnit)+ returns the default rounding for the given +CurrencyUnit+.
+* finally +getRoundingIds()+ provides access to the names of the currently registered roundings.
+
+As mentioned earlier and also shown in the previous source listing a +RoundingContext+ can be passed for accessing
+a rounding from the +MonetaryRoundings+ singleton. This class is modeled as follows:
+
+[source,java]
+.RoundingContext Value Type
+-------------------------------------------------------------------------------
+public final class RoundingContext extends AbstractContext{
+  private RoundingContext(){}
+
+  public String getRoundingId();
+  public int getScale();
+  public Long getTimestamp();
+  public CurrencyUnit getCurrencyUnit();
+
+  public static final Builder { ... }
+
+}
+-------------------------------------------------------------------------------
+
+By accessing roundings configured with an instance of +RoundingContext+ we can model easily some rather complex use
+cases:
+. Access cash rounding for a +CurrencyUnit+, which may be different from the default rounding.
+  E.g. for +Swiss Francs+ the cash rounding will be in +5+ minor unit steps: +1.00, 1.05, 1.10+ etc. This can be
+  achieved by creating sn instance of +RoundingContext+ with _currency unit_ and _cashRounding=true_ explicitly yet.
+. Access to historic roundings can be achieved by setting +CurrencyUnit+ and the target timestamp. If the
+  provider also supports other time types instead of +long+, they can be set as attributes on the context.
+. by setting the _rounding id_ to a non default value, custom roundings can be implemented, e.g. for support
+  of technical formats.
+
+Instances of this value type can be created using an instance of +RoundingContext.Builder+.
+
 
 ==== Additional Functional Support
 Though this JSR is not targeting JDK 8 for good reasons, functional aspects are already considered in its design. For
@@ -1333,11 +1382,11 @@ can be passed to parametrize the +CurrencyConversion+ or +ExchangeRate+ instance
 -------------------------------------------------------------------------------
 ConversionContext ctx = new ConversionContext.Builder()
        .setRateType(RateType.DEFERRED).
-       .set("customerID", 1234)
-       .set("contractID", "213453-GFDT-02")
-       .set(FallbackStragey.PROVIDER)
-        .set(amount)
-        .create();
+       .setInt("customerID", 1234)
+       .setText("contractID", "213453-GFDT-02")
+       .setObject(FallbackStragey.PROVIDER)
+       .setObject(amount)
+       .create();
 
 // Access a conversion...
 CurrencyConversion conversion = MonetaryConversions.getConversion("CHF", ctx);
@@ -1423,7 +1472,7 @@ The following section describe the relevant artifacts in more detail.
 ==== Formatting of Monetary Amounts
 As defined in 3. Requirements, implementations this JSR must provide a formatter for +MonetaryAmount+ instances.
 Nevertheless formatting is a very complex field the JSR’s expert group has decided to provide a simple formatting API
-only, which covers the following aspects:
+only, which must cover the following aspects:
 
 . Amount values can be rounded for display by applying a +MonetaryOperator+ before formatting/printing.
 . Similarly amount values can be operated after parsing by applying a +MonetaryOperator+. This is the reciprocal
@@ -1435,12 +1484,12 @@ only, which covers the following aspects:
   .. as numeric currency code, if such a code is defined.
   .. as a (localized) currency symbol, e.g. +$+
   .. as a (localized) currency name, e.g. +Schweizer Franken+
-. The overall formatting and parsing pattern can be defined similar to +java.text.DecimalFormat+. As consequence, if
+. The overall formatting and parsing pattern should be defined similar to +java.text.DecimalFormat+. As consequence, if
 defining a pattern without any currency placeholder +‘¤’+ (+‘\u00A4’+), the currency part can also be omitted from the
 output.
 
 In financial applications additional formatting requirements are quite common (see also [JavaMoney]), but these aspects
-will be beyond the scope of this JSR. Nevertheless most of the use cases should be coverable by the implementations of
+will be beyond the scope of this JSR. Nevertheless most of the use cases should be covered by the implementations of
 the +MonetaryAmountFormat+ interface:
 
 [source,java]
@@ -1450,26 +1499,18 @@ public interface MonetaryAmountFormat {
   String format(MonetaryAmount<?> amount);
   void print(Appendable appendable, MonetaryAmount<?> amount) throws IOException;
   MonetaryAmount<?> parse(CharSequence text) throws ParseException;
-
-  AmountStyle getAmountStyle();
-  void setAmountStyle(AmountSTyle amountStyle);
-  MonetaryContext getMonetaryContext();
-  void setMonetaryContext(MonetaryContext monetaryContext);
-  CurrencyUnit getDefaultCurrency();
-  void setDefaultCurrency(CurrencyUnit defaultCurrency);
+  AmountFormatContext getAmountFormatContext();
 }
 -------------------------------------------------------------------------------
 
 Hereby
 
 * an amount can be formatted to a String or an +Appendable+, or parsed from a +String+.
-* The details of the format are managed within an immutable+AmountStyle+ configuration value object.
-* A +MonetaryContext+ defines which type of implementation should be returned as result from a parsing operation.
-* A default +CurrencyUnit+ can be set, that will be used as a currency to create an amount on parsing, when no
-  currency information can be read from the input data.
+* The details of the format are managed within an immutable +AmountFormatContext+ configuration value type.
 
-Similar to the formatters in the JDK implementations of this interface must not be thread-safe. So use of them should
-be synchronized.
+
+In contrary to the formatters in the JDK implementations of this interface must be thread-safe. So use of them should
+be possible from several threads in parallel.
 
 Examples::
 Given the API above, acquiring a +MonetaryAmountFormat+ instance is simple, the most simple usage is just creating one
@@ -1488,14 +1529,14 @@ formatted  = format.format(amount); // result: INR 123.456.789.101.112,12
 -------------------------------------------------------------------------------
 
 For Indian Rupees (+INR+) it would be, of course, better using the Indian number format and different grouping sizes,
-for this we must first create the corresponding +AmountStyle+:
+for this we could define the corresponding +AmountFormatContext+ as illustrated below:
 
 [source,java]
 .Usage Example (continued) Formatting a MonetaryAmount
 -------------------------------------------------------------------------------
-AmountStyle style = new AmountStyle .Builder(new Locale("","INR"))
-                                .withNumberGroupSizes(3,2).build();        
-MonetaryAmountFormat format = MonetaryAmountFormats.getAmountFormat(style);
+AmountFormatContext context = new AmountFormatContext.Builder(new Locale("","INR"))
+                                .withObject("groupSizes", new int[]{3,2]).build();
+MonetaryAmountFormat format = MonetaryAmountFormats.getAmountFormat(context);
 MonetaryAmountFactory<?> f = MonetaryAmounts.getDefaultAmountFactory();
 MonetaryAmount amount =  
           f.setCurrency("INR").setNumber(123456789101112.123456).create();
@@ -1504,56 +1545,35 @@ String formatted = format.format(amount);
 -------------------------------------------------------------------------------
 
 ==== Configuring a Monetary Amount Formatter
-Currency Style::
-The +javax.money.CurrencyStyle+ is modeled as an enum type with the following values:
+As seen in the example above a +MonetaryAmountFormat+ can be configured using an +AmountFormatContext+ with arbitrary
+attributes, so also very complex and historic fomrats can be supported easily:
 
-* +CODE+: render the currency code. Examples: +CHF, USD+
-* +NUMERIC_CODE+: render the numeric code, Examples: +62, 10, -1+
-* +NAME+: render the localized display name, use the currency code as default, if no localized display name is present.
-  Examples: +Swiss Francs, Japanese Yen+
-* +SYMBOL+: render the localized currency symbol, use the currency code as default, if no localized symbol is present.
-  Examples: +$, €, £+
-
-Amount Style::
-The +javax.money.format.AmountStyle+ defines how a +MonetaryAmountFormat+ instance should format and/or parse
-+MonetaryAmount+ instances. Instances of +AmountStyle+ can be created using an +AmountStyle.Builder+.
+AmountFormatContext::
+The +javax.money.format.AmountFormatContext+ defines how a +MonetaryAmountFormat+ instance should format and/or parse
++MonetaryAmount+ instances. Instances of +AmountFormatContext+ can be created using an +AmountFormatContext.Builder+.
 Summarizing the signatures look as follows:
 
 [source,java]
-.Class AmountStyle
+.Class AmountFormatContext
 -------------------------------------------------------------------------------
-public final class AmountStyle implements Serializable{
-  private AmountStyle(...);
+public final class AmountFormatContext extends AbstractContext implements Serializable{
+  private AmountFormatContext(...);
   ...
   public Locale getLocale();
-  public CurrencyStyle getCurrencyStyle();
-  public String getPattern();
-  public String getLocalizedPattern();
-  public AmountFormatSymbols getSymbols();
-  public MonetaryOperator getDisplayConversion();
-  public MonetaryOperator getParseConversion();
-  public int[] getGroupingSizes();
   public Builder toBuilder();
 
   public static final class Builder {
       public Builder(Locale locale);
-      public Builder(AmountStyle amountStyle);
-      public Builder setCurrencyStyle(CurrencyStyle style);
-      public Builder setGroupingSizes(int... groupSizes);
-      public Builder setPattern(String pattern)
-      public Builder setSymbols(AmountFormatSymbols synbols);
-      public Builder setDisplayConversion(MonetaryOperator conversion);
-      public Builder setParseConversion(MonetaryOperator conversion);
+      public Builder(AmountFormatContext amountStyle);
       public AmountStyle build();
       ...
   }
 }
 -------------------------------------------------------------------------------
 
-Hereby the above listing illustrates quite well, what are the properties that define an amount style:
+Hereby the above listing illustrates quite well, what are the minimal properties that define an +AmountFormatContext+:
 
 * a +Locale+
-* a _pattern_, defining the basic number format, similar as defined by +java.text.DecimalFormat+.
 * _grouping sizes_, allowing to set flexible grouping sizes. Hereby the order reflects the grouping starting from the
   decimal point going up the significant digits. the last member of the grouping definition is used for all subsequent
   grouping as a default. This can be easily illustrated by setting the grouping characters to +a,b,c+ and rendering the
@@ -1561,9 +1581,7 @@ Hereby the above listing illustrates quite well, what are the properties that de
   +112’233’445’566’778’899+. With the grouping characters set to +a,b,c+ this will be rendered as
   +112c233c445c566b778a899+. Now applying the same schema for grouping sizes, lets assume +3,2,5,4,1+. This will lead
   in combination with  before to the following output: +1c1c2c2c3344c55667b78a899+.
-* a +CurrencyStyle+, defining the basic currency format  of the currency being rendered.
-* a +MonetaryOperator+ to be applied as display conversion, applied before the amount is formatted or printed.
-* a +MonetaryOperator+ to be applied as parse conversion, after the amount was parsed, e.g. for performing a symmetric reverse conversion to the rounding done during formatting.
+
 
 ==== Accessing Monetary Amount Formats
 The class +javax.money.format.MonetaryFormats+ models a singleton accessor for +MonetaryAmountFormat+ instances as
@@ -1571,7 +1589,7 @@ provided by the +MonetaryAmountFormatProviderSpi+ instances registered. It provi
 instances based on
 
 * a +Locale+, or
-* an +AmountStyle+.
+* an +AmountFormatContext+.
 
 It defines the following access methods:
 
@@ -1582,12 +1600,13 @@ public final class MonetaryFormats{
   private MonetaryFormats(){}
 
   public static MonetaryAmountFormat getAmountFormat(Locale locale);
-  public static MonetaryAmountFormat getAmountFormat(AmountStyle amountStyle);
+  public static MonetaryAmountFormat getAmountFormat(AmountFormatContext context);
   public static Set<Locale> getAvailableLocales();
 }
 -------------------------------------------------------------------------------
 
-As a consequence
+The design chosen ist so flexible that every kind of formatting related to monetary amounts can be easily mapped.
+Additionally
 
 ==== Formatting Exceptions
 javax.money.format.MonetaryParseException::
@@ -1821,7 +1840,7 @@ Hereby different types of roundings are supported:
 * Also it is possible to get a rounding described by a +MonetaryContext+, e.g. you can set a maximal scale of +1+ and
   set the +RoundingMode+ (where available on the target platform) as an additional attribute.
 * It is possible to provide customized roundings by name. The names of the defined custom rounding must be returned,
-  when +getCustomRoundingIds()+ is called.
+  when +getmRoundingIds()+ is called.
 * Finally it is possible to provide default and cash roundings also for _past dates_, hereby considering the additional
   UTC timestamp given.
 
@@ -1892,64 +1911,6 @@ customized logging Handler instances, so alternate logging backends can be used 
 The implementation that implements the API’s SPI may use a different logging approach.
 
 ==== Formatting SPI
-Providing Monetary Amount Format Symbols::
-The +MonetaryAmountFormatSymbols+ class provides factory methods that allow to access instances based on a Locale.
-By registering instances of +javax.money.spi.MonetaryFormatSymbolsProviderSpi+ additional locales can be supported or
-adapted. Hereby at least one instance of +MonetaryFormatSymbolsProviderSpi+ must be registered, which is defined as
-follows:
-
-[source,java]
-.Interface MonetaryFormatSymbolsProviderSpi
--------------------------------------------------------------------------------
-public interface MonetaryFormatSymbolsProviderSpi {
-          AmountFormatSymbols getAmountFormatSymbols(Locale locale);
-          Collection<Locale> getSupportedLocales();
-}
--------------------------------------------------------------------------------
-
-Hereby
-
-* +getSupportedLocales()+ returns the set of locales that are supported by the given implementation.
-* +getAmountFormatSymbols(Locale)+ returns the corresponding +AmountFormatSymbols+ instance.
-  IMPORTANT: Note that the
-  +AmountFormatSymbols+ API class, that is relying on this SPI, will not cache any instances. When caching is useful,
-  it must be implemented by the SPI.
-
-Multiple instances of this interface can be registered hereby forming a chain of responsibility, whereas the components
-priority define the ordering within the chain. The first component in the chain, that returns a non-null result,
-determines the final result from calling +AmountFormatSymbols.of(Locale)+.
-
-It is also required that on the platforms were +java.text.DecimalFormatSymbols+ is available, all locales that are
-supported by +java.text.DecimalFormatSymbols+ must be also available/provided by the SPIs registered.
-
-===== Providing Amount Styles
-The +AmountStyle+ class provides factory methods that allow to access instances based on a +Locale+. By registering
-instances of +javax.money.spi.AmountStyleProviderSpi+ additional locales can be supported or adapted. Hereby at least
-one instance of +AmountStyleProviderSpi+ must be registered, which is defined as follows:
-
-[source,java]
-.Interface AmountStyleProviderSpi
--------------------------------------------------------------------------------
-public interface AmountStyleProviderSpi {
-  AmountStyle getAmountStyle(Locale locale);
-  Collection<Locale> getSupportedLocales();
-}
--------------------------------------------------------------------------------
-
-Hereby
-
-* +getSupportedLocales()+ returns the set of locales that are supported by the given implementation.
-* +getAmountStyle(Locale)+ returns the corresponding +AmountStyle+ instance.
-  IMPORTANT: Note that the +AmountStyle+ API class, that is relying on this SPI,  will not cache any instances. When
-  caching is useful, it must be implemented by the SPI.
-
-Multiple instances of this interface can be registered hereby forming a chain of responsibility, whereas the components
-priority define the ordering within the chain. The first component in the chain, that returns a non-null result,
-determines the final result from calling +AmountStyle.of(Locale)+.
-
-It is required that on the platforms were +java.text.DecimalFormat+ is available, all locales that are supported by
-+java.text.DecimalFormat+ must be also available/provided by the SPIs registered.
-
 ===== Prodivding Amount Formats
 The +MonetaryFormats+ singleton delegates creation of +MonetaryAmountFormat+ instances to registered instances of
 +javax.money.spi.MonetaryAmountFormatProviderSpi+. Hereby at least one instance of +AmountStyleProviderSpi+ must be
@@ -1959,12 +1920,12 @@ registered as +Bootstrap+ component, which is defined as follows:
 .Interface MonetaryAmountFormatProviderSpi
 -------------------------------------------------------------------------------
 public interface MonetaryAmountFormatProviderSpi {
-  MonetaryAmountFormat getAmountFormat(AmountStyle style);
+  MonetaryAmountFormat getAmountFormat(AmountFormatContext context);
 }
 -------------------------------------------------------------------------------
 
 Hereby
-* +getAmountFormat(AmountStyle)+ returns the corresponding +MonetaryAmountFormat+ instance.
+* +getAmountFormat(AmountFormatContext)+ returns the corresponding +MonetaryAmountFormat+ instance.
   IMPORTANT: Note that the +MonetaryFormats+ API class, that is relying on this SPI, will not cache any instances.
   When caching is useful, it must be implemented by the SPI.
 

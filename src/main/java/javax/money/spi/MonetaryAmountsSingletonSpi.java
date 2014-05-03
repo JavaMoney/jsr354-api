@@ -23,7 +23,7 @@ import javax.money.MonetaryException;
  * 
  * @author Anatole Tresch
  */
-public interface MonetaryAmountsSpi {
+public interface MonetaryAmountsSingletonSpi{
 
 	/**
 	 * Access the {@link MonetaryAmountFactory} for the given {@code amountType} .
@@ -55,37 +55,5 @@ public interface MonetaryAmountsSpi {
 	 *         {@code null}.
 	 */
 	public Set<Class<? extends MonetaryAmount>> getAmountTypes();
-
-
-	/**
-	 * Get the {@link MonetaryAmount} implementation class, that best matches to cover the given
-	 * {@link MonetaryContext}.
-	 * <p>
-	 * The evaluation order should consider the following aspects:
-	 * <ul>
-	 * <li>If {@link MonetaryContext#getAmountType()} is defined, it should be considered.
-	 * Nevertheless if precision/scale cannot be met, a {@link javax.money.MonetaryException} should
-	 * be thrown.
-	 * <li>The remaining implementation class candidates must cover the required precision.
-	 * <li>The remaining implementation class candidates must cover the required max scale.
-	 * <li>If max scale is met, but {@code precision==0} (unlimited precision), the
-	 * {@link MonetaryAmount} implementation candidate should be chosen with highest possible
-	 * precision.
-	 * <li>If still multiple implementation candidates qualify, the ones with
-	 * {@code Flavor.PERFORMANCE} are preferred.
-	 * <li>After this point the selection may be arbitrary.
-	 * </ul>
-	 * 
-	 * @param requiredContext
-	 *            the required {@link MonetaryContext}
-	 * @return the {@link MonetaryAmount} implementation class, that best matches to cover the given
-	 *         {@link MonetaryContext}, never {@code null}.
-	 * @throws javax.money.MonetaryException
-	 *             if no {@link MonetaryAmount} implementation class can cover the required
-	 *             {@link MonetaryContext}.
-	 */
-	public Class<? extends MonetaryAmount> queryAmountType(
-			MonetaryContext requiredContext);
-
 
 }

@@ -14,7 +14,7 @@ import javax.money.MonetaryAmounts;
 import javax.money.MonetaryContext;
 
 /**
- * SPI (core): Implementations of this interface are used by the {@link MonetaryAmountsSpi} to evaluate the
+ * SPI (core): Implementations of this interface are used by the {@link MonetaryAmountsSingletonSpi} to evaluate the
  * correct {@link MonetaryAmountFactory} instances.
  * 
  * @param <T>

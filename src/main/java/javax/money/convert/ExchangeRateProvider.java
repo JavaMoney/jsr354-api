@@ -27,7 +27,7 @@ import javax.money.MonetaryOperator;
  * the chain to
  * establish a well defined coordination mechanism for evaluating the correct result. By default the first provider
  * in the chain that returns a non null result determines the final result of a call. Nevertheless adapting the
- * {@link javax.money.spi.MonetaryConversionsSpi} allows
+ * {@link javax.money.spi.MonetaryConversionsSingletonSpi} allows
  * to implement also alternate strategies, e.g. honoring different priorities of providers as well.
  * <p/>
  * Implementations of this interface are required to be thread save.

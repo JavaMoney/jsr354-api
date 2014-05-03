@@ -13,8 +13,7 @@ package javax.money.convert;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.TestCurrency;
-import javax.money.spi.MonetaryConversionsSpi;
-import java.security.Provider;
+import javax.money.spi.MonetaryConversionsSingletonSpi;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,7 +22,7 @@ import java.util.List;
 /**
  * Created by Anatole on 05.03.14.
  */
-public class TestMonetaryConversionsSpi implements MonetaryConversionsSpi{
+public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsSingletonSpi{
 
     private ExchangeRateProvider provider = new DummyRateProvider();
 

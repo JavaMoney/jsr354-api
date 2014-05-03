@@ -17,7 +17,7 @@ import javax.money.CurrencyUnit;
 import javax.money.MonetaryCurrencies;
 import javax.money.MonetaryException;
 import javax.money.spi.Bootstrap;
-import javax.money.spi.MonetaryConversionsSpi;
+import javax.money.spi.MonetaryConversionsSingletonSpi;
 
 /**
  * This singleton defines access to the exchange and currency conversion logic
@@ -30,13 +30,13 @@ import javax.money.spi.MonetaryConversionsSpi;
  * This class is designed to support also contextual behaviour, e.g. in Java EE
  * containers each application may provide its own {@link ExchangeRateProvider}
  * instances, e.g. by registering them as CDI beans. An EE container can
- * register an according {@link MonetaryConversionsSpi} that manages the
+ * register an according {@link javax.money.spi.MonetaryConversionsSingletonSpi} that manages the
  * different application contexts transparently. In a SE environment this class
  * is expected to behave like an ordinary singleton, loading its SPIs e.g. from the
  * JDK {@link ServiceLoader} or an alternate component and service provider.
  * <p>
  * This class is thread-safe. Hereby it is important to know that it delegates
- * to the registered {@link MonetaryConversionsSpi} SPI, which also is required
+ * to the registered {@link javax.money.spi.MonetaryConversionsSingletonSpi} SPI, which also is required
  * to be thread-safe.
  * 
  * @author Anatole Tresch
@@ -48,8 +48,8 @@ public final class MonetaryConversions {
 	 * The SPI currently active, use {@link ServiceLoader} to register an
 	 * alternate implementation.
 	 */
-	private static final MonetaryConversionsSpi MONETARY_CONVERSION_SPI = Bootstrap
-			.getService(MonetaryConversionsSpi.class);
+	private static final MonetaryConversionsSingletonSpi MONETARY_CONVERSION_SPI = Bootstrap
+			.getService(MonetaryConversionsSingletonSpi.class);
 
 	/**
 	 * Private singleton constructor.

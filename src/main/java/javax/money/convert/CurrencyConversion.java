@@ -12,7 +12,6 @@ import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryException;
 import javax.money.MonetaryOperator;
-import javax.money.spi.MonetaryConversionsSpi;
 
 /**
  * This interface defines a {@link CurrencyConversion} that is converting a {@link MonetaryAmount} to another
@@ -22,7 +21,7 @@ import javax.money.spi.MonetaryConversionsSpi;
  * attributes set that are passed to the rate provider (chain).<br/>
  * This interface serves a an API for the clients, but also must be implemented
  * and registered as SPI to the mechanisms required by the
- * {@link MonetaryConversionsSpi} implementation.<br/>
+ * {@link javax.money.spi.MonetaryConversionsSingletonSpi} implementation.<br/>
  * By extending {@link MonetaryOperator} currency conversion can simply be applied on each {@link MonetaryAmount}
  * calling the amount'0s with method:
  * <pre>

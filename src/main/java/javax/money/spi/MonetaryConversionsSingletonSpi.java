@@ -29,7 +29,7 @@ import javax.money.convert.ProviderContext;
  * EE containers each application may provide its own
  * {@link ExchangeRateProvider} instances, e.g. by registering them as CDI
  * beans. An EE container can register an according
- * {@link MonetaryConversionsSpi} that manages the different application
+ * {@link MonetaryConversionsSingletonSpi} that manages the different application
  * contexts transparently. In a SE environment this class is expected to behave
  * like an ordinary singleton, loading its SPIs from the {@link ServiceLoader}.
  * <p>
@@ -42,7 +42,7 @@ import javax.money.convert.ProviderContext;
  * 
  * @author Anatole Tresch
  */
-public interface MonetaryConversionsSpi {
+public interface MonetaryConversionsSingletonSpi{
 
 	/**
 	 * Access an instance of {@link ExchangeRateProvider}.

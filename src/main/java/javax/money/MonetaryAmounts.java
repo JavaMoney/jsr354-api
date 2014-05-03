@@ -10,8 +10,11 @@ package javax.money;
 
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFactoryProviderSpi;
-import javax.money.spi.MonetaryAmountsSpi;
+import javax.money.spi.MonetaryAmountsSingletonQuerySpi;
+import javax.money.spi.MonetaryAmountsSingletonSpi;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Factory singleton for {@link MonetaryAmount} instances as provided by the different registered
@@ -27,14 +30,55 @@ import java.util.Set;
  */
 public final class MonetaryAmounts{
     /**
-     * The used {@link javax.money.spi.MonetaryAmountsSpi} instance.
+     * The used {@link javax.money.spi.MonetaryAmountsSingletonSpi} instance.
      */
-    private static MonetaryAmountsSpi monetaryAmountsSpi = Bootstrap.getService(MonetaryAmountsSpi.class);
+    private static MonetaryAmountsSingletonSpi monetaryAmountsSingletonSpi = loadMonetaryAmountsSingletonSpi();
+
+    /**
+     * The used {@link javax.money.spi.MonetaryAmountsSingletonSpi} instance.
+     */
+    private static MonetaryAmountsSingletonQuerySpi monetaryAmountsSingletonQuerySpi =
+            loadMonetaryAmountsSingletonQuerySpi();
 
     /**
      * Private singleton constructor.
      */
     private MonetaryAmounts(){
+    }
+
+    /**
+     * Loads the SPI backing bean.
+     *
+     * @return
+     */
+    private static MonetaryAmountsSingletonSpi loadMonetaryAmountsSingletonSpi(){
+        try{
+            return Bootstrap.getService(MonetaryAmountsSingletonSpi.class);
+        }
+        catch(Exception e){
+            Logger.getLogger(MonetaryCurrencies.class.getName())
+                    .log(Level.SEVERE, "Failed to load MonetaryAmountsSingletonSpi, using default.", e);
+            return null;
+        }
+    }
+
+    /**
+     * Loads the SPI backing bean.
+     *
+     * @return
+     */
+    private static MonetaryAmountsSingletonQuerySpi loadMonetaryAmountsSingletonQuerySpi(){
+        try{
+            return Bootstrap.getService(MonetaryAmountsSingletonQuerySpi.class);
+        }
+        catch(Exception e){
+            Logger.getLogger(MonetaryCurrencies.class.getName()).log(Level.SEVERE, "Failed to load " +
+                                                                             "MonetaryAmountsSingletonQuerySpi, " +
+                                                                             "query functionality will not be " +
+                                                                             "available.", e
+            );
+            return null;
+        }
     }
 
     /**
@@ -47,9 +91,12 @@ public final class MonetaryAmounts{
      *                           implementation class is registered.
      */
     public static <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType){
-        MonetaryAmountFactory<T> factory = monetaryAmountsSpi.getAmountFactory(amountType);
+        if(monetaryAmountsSingletonSpi == null){
+            throw new MonetaryException("No MonetaryAmountsSingletonSpi loaded.");
+        }
+        MonetaryAmountFactory<T> factory = monetaryAmountsSingletonSpi.getAmountFactory(amountType);
         if(factory == null){
-            throw new MonetaryException("No AmountFactory availablefor type: " + amountType.getName());
+            throw new MonetaryException("No AmountFactory available for type: " + amountType.getName());
         }
         return factory;
     }
@@ -64,7 +111,10 @@ public final class MonetaryAmounts{
      *                           implementation class is registered.
      */
     public static MonetaryAmountFactory<?> getAmountFactory(){
-        MonetaryAmountFactory<?> factory = monetaryAmountsSpi.getAmountFactory(getDefaultAmountType());
+        if(monetaryAmountsSingletonSpi == null){
+            throw new MonetaryException("No MonetaryAmountsSingletonSpi loaded.");
+        }
+        MonetaryAmountFactory<?> factory = monetaryAmountsSingletonSpi.getAmountFactory(getDefaultAmountType());
         if(factory == null){
             throw new MonetaryException("No default AmountFactory available.");
         }
@@ -80,7 +130,10 @@ public final class MonetaryAmounts{
      *                           {@link MonetaryAmount} type.
      */
     public static Class<? extends MonetaryAmount> getDefaultAmountType(){
-        return monetaryAmountsSpi.getDefaultAmountType();
+        if(monetaryAmountsSingletonSpi == null){
+            throw new MonetaryException("No MonetaryAmountsSingletonSpi loaded.");
+        }
+        return monetaryAmountsSingletonSpi.getDefaultAmountType();
     }
 
     /**
@@ -91,7 +144,10 @@ public final class MonetaryAmounts{
      * corresponding {@link MonetaryAmountFactory} instances provided, never {@code null}
      */
     public static Set<Class<? extends MonetaryAmount>> getAmountTypes(){
-        return monetaryAmountsSpi.getAmountTypes();
+        if(monetaryAmountsSingletonSpi == null){
+            throw new MonetaryException("No MonetaryAmountsSingletonSpi loaded.");
+        }
+        return monetaryAmountsSingletonSpi.getAmountTypes();
     }
 
     /**
@@ -106,7 +162,14 @@ public final class MonetaryAmounts{
      *                           {@link MonetaryContext}.
      */
     public static Class<? extends MonetaryAmount> queryAmountType(MonetaryContext requiredContext){
-        return monetaryAmountsSpi.queryAmountType(requiredContext);
+        if(monetaryAmountsSingletonSpi == null){
+            throw new MonetaryException("No MonetaryAmountsSingletonSpi loaded.");
+        }
+        if(monetaryAmountsSingletonQuerySpi == null){
+            throw new MonetaryException(
+                    "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available.");
+        }
+        return monetaryAmountsSingletonQuerySpi.queryAmountType(monetaryAmountsSingletonSpi, requiredContext);
     }
 
     /**

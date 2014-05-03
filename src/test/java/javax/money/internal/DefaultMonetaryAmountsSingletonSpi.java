@@ -19,16 +19,17 @@ import javax.money.MonetaryContext;
 import javax.money.MonetaryException;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFactoryProviderSpi;
-import javax.money.spi.MonetaryAmountsSpi;
+import javax.money.spi.MonetaryAmountsSingletonQuerySpi;
+import javax.money.spi.MonetaryAmountsSingletonSpi;
 
 /**
  * Default implementation of MonetaryAmountsSpi for testing only.
  */
-public class DefaultMonetaryAmountsSpi implements MonetaryAmountsSpi {
+public class DefaultMonetaryAmountsSingletonSpi implements MonetaryAmountsSingletonSpi{
 
 	private Map<Class<? extends MonetaryAmount>, MonetaryAmountFactoryProviderSpi<?>> factories = new ConcurrentHashMap<>();
 
-	public DefaultMonetaryAmountsSpi() {
+	public DefaultMonetaryAmountsSingletonSpi() {
 		for (MonetaryAmountFactoryProviderSpi<?> f : Bootstrap
 				.getServices(MonetaryAmountFactoryProviderSpi.class)) {
 			factories.put(f.getAmountType(), f);
@@ -54,11 +55,6 @@ public class DefaultMonetaryAmountsSpi implements MonetaryAmountsSpi {
 		return factories.keySet();
 	}
 
-	@Override
-	public Class<? extends MonetaryAmount> queryAmountType(
-			MonetaryContext requiredContext) {
-		return DummyAmount.class;
-	}
 
 	@Override
 	public Class<? extends MonetaryAmount> getDefaultAmountType() {

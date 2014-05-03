@@ -8,5 +8,4 @@
 # API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
 # reserved.
 #
-
-javax.money.internal.DefaultMonetaryAmountsSpi
+javax.money.convert.TestMonetaryConversionsSingletonSpi

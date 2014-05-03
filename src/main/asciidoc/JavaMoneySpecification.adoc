@@ -503,7 +503,7 @@ in the expert group, some of the aspects considered include:
   us to design it completely platform independent. Though not primarily in focus the JSR 354 API is completely platform
   independent.
 
-The following diagram shows the main type artifacts modeled:
+The following diagram shows how a +MonetaryAmount+ is modeled:
 
 image::api.jpg[align=center]
 
@@ -514,7 +514,7 @@ accessor classes:
 image::apisingletons.jpg[align=center]
 
 
-Basically the diagram above illustrates well the accessors available:
+Basically the diagram above illustrates well the core accessors available:
 
 * +MonetaryCurrencies+ provides +CurrencyUnit+ instances.
 * +MonetaryAmounts+ provides factories for creating +MonetaryAmount+. To mention is also a query functionality, where
@@ -752,6 +752,9 @@ operations, being applied on amounts. This is modelled by
 * +javax.money.MonetaryOperator+, which models a function +f(M1) -> M2+, that converts an amount to another amount, and
 * +javax.money.MonetaryQuery+, which models a function +f(M1) -> T+, that converts an amount to any type of result.
 
+image:extensionPoints.jpg[align=center]
+
+
 ===== Monetary Operators
 The interface +javax.money.MonetaryOperator+ defines an arbitrary function a function +f(M1) -> M2+, that converts an
 amount to another amount. Examples of such operations are rounding or monetary calculations:
@@ -963,6 +966,10 @@ fact.withCurrency("USD").with(10.50);
 MyMoney money = fact.create();
 -------------------------------------------------------------------------------
 
+The following diagram illustrates the main artifacts involved from a API perspective:
+
+image::creatingAmounts.jpg[align=center]
+
 The signature of +MonetaryAmountFactory+ is modelled as a builder also supporting a fluent programming style:
 
 [source,java]
@@ -1014,9 +1021,12 @@ component lifecycle. The following diagram shows an overview:
 image::apisingletons.png[align=center]
 
 ===== Accessing Currencies
+
+image:accessingCurrencies.jpg[align=center]
+
 The +javax.money.MonetaryCurrencies+ singleton class implements an accessor for +CurrencyUnit+ instances. By default it
 is backed up by +java.util.Currency+, but allows registration of additional currencies by  implementing an instance of
-+CurrencyProviderSpi+ (explained later in this document).
++CurrencyProviderSpi+ (explained later in this document):
 
 [source,java]
 .MonetaryCurrencies Singleton
@@ -1110,6 +1120,10 @@ This JSR provides several roundings accessible from the +javax.money.MonetaryRou
   If not defined +HALF_EVEN+ rounding mode should be used.
 . a name (+String+), for customized roundings.
 
+The following diagram gives an overview of the artifacts involved:
+
+image::rounding.jpg[align=center]
+
 The +MonetaryRoundings+ singleton provides access to all these roundings with a couple of methods:
 
 [source,java]
@@ -1150,6 +1164,9 @@ Though this JSR is not targeting JDK 8 for good reasons, functional aspects are 
 example monetary operators and monetary queries basically are functional interfaces. Additional access the the numeric
 part as well as to the currency of an amount is modeled with corresponding _functional_ interfaces:
 
+image:functionalSupport.jpg[align=center]
+
+
 ===== CurrencySupplier
 The interface +javax.money.CurrencySupplier+ is a functional interface (the +CurrencyUnit+ -producing specialization of
 a +Supplier+ as defined in Java 8), whose functional method is +getCurrency()+:
@@ -1187,6 +1204,11 @@ Hereby
 
 
 ==== Exception Types
+
+The core API defines basically two exception types:
+
+image::coreexceptions.jpg[align=center]
+
 javax.money.MonetaryException::
 +javax.money.MonetaryException+ is a runtime exception, which models the base exception for all other exceptions.
 Any monetary exception added by an implementation must inherit from this class.
@@ -1220,6 +1242,8 @@ related to currency conversion, such as
 * access to providers that offer conversion (exchange) rates.
 * access to conversion operators (+extending MonetaryOperator+), that can be used with any +MonetaryAmount+ instances.
 * access to further information about the providers currently available.
+
+image:conversionapi.jpg[align=center]
 
 The following sections give an overview about the functionality in more detail. Similar to other singletons in this API
 the singleton is backed up by a +MonetaryConversionsSingletonSpi+ SPI to allow customized (contextual) implementation
@@ -1374,10 +1398,7 @@ whereas the underlying style and symbols were modeled as immutable value types.
 
 Hereby like to the core APIs of the JSR a +MonetaryFormats+ singleton provides access to the formatter instances:
 
-image::formatting.png[align=center]
-
-The following model illustrates the types involved:
-image::formatting2.png[align=center]
+image::formatting.jpg[align=center]
 
 The following section describe the relevant artifacts in more detail.
 
@@ -1563,7 +1584,7 @@ JSR 354 defines a complete API and provides a default reference implementation. 
 provide several implementation services, called the SPI, to provide the effective functionality. The following diagram
 illustrate the SPIs in place:
   
-image::spi.png[align=center]
+image::spi.jpg[align=center]
 
 These services must be registered to the +Bootstrap+ singleton. The +Bootstrap+ singleton relies, by default, on
 +java.util.ServiceLoader+ to load the implementation services, but this mechanism can be replaced by an alternate

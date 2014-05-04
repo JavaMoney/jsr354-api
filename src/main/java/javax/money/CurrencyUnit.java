@@ -5,7 +5,7 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * API ("Specification") Copyright (c) 2012-2014, Credit Suisse All rights
  * reserved.
  */
 package javax.money;
@@ -22,19 +22,19 @@ package javax.money;
  * <h4>Implementation specification</h4>
  * Implementation of this class
  * <ul>
- * <li>are required to be implement {@code equals/hashCode} considering the
+ * <li>are required to implement {@code equals/hashCode} considering the
  * concrete implementation type and currency code.
  * <li>are required to be thread-safe
  * <li>are required to be immutable
  * <li>are required to be comparable
- * <li>are required to be serializable.
+ * <li>should be serializable (on platforms providing serialization).
  * </ul>
  * 
  * @author Werner Keil
  * @author Stephen Colebourne
  * @author Anatole Tresch
  * 
- * @version 0.6
+ * @version 0.7
  * 
  * @see <a href="https://en.wikipedia.org/wiki/Currency">Wikipedia: Currency</a>
  */

@@ -571,8 +571,15 @@
                     <artifactId>asciidoctor-maven-plugin</artifactId>
                     <version>0.1.4</version>
                     <configuration>
+                        <embedAssets>true</embedAssets>
+                        <backend>html</backend>
                         <imagesDir>src/main/asciidoc/images</imagesDir>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jboss.maven.plugins</groupId>
+                    <artifactId>maven-jdocbook-plugin</artifactId>
+                    <version>2.3.8</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -668,6 +675,7 @@
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>0.1.4</version>
                 <executions>
                     <execution>
                         <id>output-html</id>
@@ -677,9 +685,23 @@
                         </goals>
                         <configuration>
                             <outputDirectory>target/docs</outputDirectory>
-                            <sourceHighlighter>highlightjs</sourceHighlighter> <!-- coderay -->
+                            <sourceHighlighter>highlightjs</sourceHighlighter>
+                            <!-- coderay -->
                             <backend>html</backend>
                             <embedAssets>true</embedAssets>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>output-docbook</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>docbook</backend>
+                            <doctype>book</doctype>
+                            <outputDirectory>target/generated-docs</outputDirectory>
+                            <embedAssets>false</embedAssets>
                         </configuration>
                     </execution>
                     <!-- execution>
@@ -692,9 +714,62 @@
                             <outputDirectory>target/docs</outputDirectory>
                             <sourceHighlighter>highlightjs</sourceHighlighter>
                             <backend>pdf</backend>
+                            <doctype>book</doctype>
+                            <templateDir>src/main/asciidoc/xsl/fo</templateDir>
                         </configuration>
                     </execution -->
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.agilejava.docbkx</groupId>
+                <artifactId>docbkx-maven-plugin</artifactId>
+                <version>2.0.15</version>
+                <executions>
+                    <execution>
+                        <id>doc</id>
+                        <goals>
+                            <goal>generate-pdf</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sf.xslthl</groupId>
+                        <artifactId>xslthl</artifactId>
+                        <version>2.1.0</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sf.offo</groupId>
+                        <artifactId>fop-hyph</artifactId>
+                        <version>2.0</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <includes>JavaMoneySpecification.xml</includes>
+                    <sourceDirectory>target/generated-docs</sourceDirectory>
+                    <targetDirectory>target/docs</targetDirectory>
+                    <xincludeSupported>true</xincludeSupported>
+                    <useExtensions>1</useExtensions>
+                    <highlightSource>1</highlightSource>
+                    <highlightDefaultLanguage>java</highlightDefaultLanguage>
+                    <calloutsExtension>1</calloutsExtension>
+                    <paperType>A4</paperType>
+                    <fop1Extensions>1</fop1Extensions>
+                    <generateToc>1</generateToc>
+                    <useEmbedForSvg>1</useEmbedForSvg>
+                    <imgSrcPath>src/main/asciidoc/images</imgSrcPath>
+                    <!-- foCustomization>${basedir}/conf/customization-fopdf.xsl</foCustomization -->
+                    <!-- postProcess>
+                        <zip
+                                destfile="${project.build.directory}/${project.artifactId}-${project.version}-docs.zip">
+                            <fileset dir="${project.build.directory}/docs"
+                                     includes="**/*.pdf" />
+                        </zip>
+                    </postProcess -->
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -820,7 +895,7 @@
                 <configuration>
                     <targetJdk>${maven.compile.targetLevel}</targetJdk>
                     <format>xml</format>
-                    <linkXref>true</linkXref>
+                    <linkXRef>true</linkXRef>
                     <aggregate>true</aggregate>
                     <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
                 </configuration>
@@ -847,8 +922,8 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.6.3.201306030806</version>
                 <configuration>
-                    <destfile>${basedir}/target/coverage-reports/jacoco-unit.exec</destfile>
-                    <datafile>${basedir}/target/coverage-reports/jacoco-unit.exec</datafile>
+                    <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+                    <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
                 </configuration>
             </plugin>
 
@@ -864,8 +939,7 @@
                     <failOnError>false</failOnError>
                     <findbugsXmlOutput>true</findbugsXmlOutput>
                     <findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
-                    <srcHtml>xref/</srcHtml>
-                    <srcHtmlType>JXR</srcHtmlType>
+                    <xrefLocation>xref/</xrefLocation>
                 </configuration>
             </plugin>
 

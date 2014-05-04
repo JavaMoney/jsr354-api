@@ -16,6 +16,7 @@
 :toc:
 :toc-placement: manual
 :icons:
+:encoding: UTF-8
 :title: JSR 354 (Money & Currency) - Specification
 :numbered:
 
@@ -29,7 +30,7 @@ toc::[]
 
 <<<
 :numbered!:
-[disclaimer]
+
 .EVALUATION LICENCE
 --------
 JSR-000354 Money and Currency API 1.0 Public Review
@@ -1059,7 +1060,7 @@ singletons are all delegeated to according SPI's so in different environment, it
 dependent behaviour, e.g. use CDI based contextual implementations, instead of the default SE ServiceLoader based
 component lifecycle. The following diagram shows an overview:
 
-image::apisingletons.png[align=center]
+image::apisingletons.jpg[align=center]
 
 ===== Accessing Currencies
 
@@ -1446,7 +1447,7 @@ default provider chain. So the following two statements are equivalent, given th
 [source,java]
 .Equivalent calls when the default provider chain equals "ECB", "IMF", "ECB-HIST"
 -------------------------------------------------------------------------------
-// equivlent calls when the default provider chain equals to 
+// equivlent calls when the default provider chain equals to
 // {"ECB", "IMF", "ECB-HIST"}
 CurrencyConversion conversion = MonetaryConversions.getConversion("CHF", ctx);
 CurrencyConversion conversion = MonetaryConversions.getConversion("CHF", ctx, "ECB", "IMF", "ECB-HIST");
@@ -1528,7 +1529,7 @@ for a given +Locale+:
 -------------------------------------------------------------------------------
 MonetaryAmountFactory<?> f = MonetaryAmounts.getDefaultAmountFactory();
 MonetaryAmount amount = f.setCurrency("CHF").setNumber(12.50).create();
-MonetaryAmountFormat format = 
+MonetaryAmountFormat format =
                         MonetaryAmountFormats.getAmountFormat(Locale.GERMANY);
 String formatted = format.format(amount); // result: CHF 12,50
 amount = f.setCurrency("INR").setNumber(123456789101112.123456).create();
@@ -1545,9 +1546,9 @@ AmountFormatContext context = new AmountFormatContext.Builder(new Locale("","INR
                                 .withObject("groupSizes", new int[]{3,2]).build();
 MonetaryAmountFormat format = MonetaryAmountFormats.getAmountFormat(context);
 MonetaryAmountFactory<?> f = MonetaryAmounts.getDefaultAmountFactory();
-MonetaryAmount amount =  
+MonetaryAmount amount =
           f.setCurrency("INR").setNumber(123456789101112.123456).create();
-String formatted = format.format(amount); 
+String formatted = format.format(amount);
          // result: INR 12,34,56,78,91,01,112.12
 -------------------------------------------------------------------------------
 
@@ -1627,8 +1628,8 @@ successfully. It provides hereby additional info:
 JSR 354 defines a complete API and provides a default reference implementation. An implementation of this API must
 provide several implementation services, called the SPI, to provide the effective functionality. The following diagram
 illustrate the SPIs in place:
-  
-image::spi.jpg[align=center]
+
+image::tiger.png[align=center]
 
 These services must be registered to the +Bootstrap+ singleton. The +Bootstrap+ singleton relies, by default, on
 +java.util.ServiceLoader+ to load the implementation services, but this mechanism can be replaced by an alternate
@@ -2112,7 +2113,7 @@ As an example the reference implementation provides a class +org.javamoney.monet
 [source,java]
 .Class Money
 -------------------------------------------------------------------------------
-public final class Money 
+public final class Money
 implements MonetaryAmount, Comparable<MonetaryAmount>, Serializable {
     ...
 }
@@ -2195,7 +2196,7 @@ amt = amt.multiply(2.12345).with(MonetaryRoundings.of())
                                         .with(MonetaryFunctions.percent(23));
 -------------------------------------------------------------------------------
 
-Numeric Precision and Scale::
+==== Numeric Precision and Scale
 Since the +Money+ class internally uses +java.math.BigDecimal+ the numeric capabilities match exact the capabilities
 of +BigDecimal+. By default instances of Money use +MathContext.DECIMAL64+. But on creation of a new Money instance the
 +MonetaryContext+ required can also be passed explicitly, e.g.:
@@ -2203,11 +2204,11 @@ of +BigDecimal+. By default instances of Money use +MathContext.DECIMAL64+. But 
 [source,java]
 .Example Passing a MonetaryContext to the static factory method of Money
 -------------------------------------------------------------------------------
-public static Money of(String currencyCode, Number number, 
+public static Money of(String currencyCode, Number number,
                            MonetaryContext context);
 -------------------------------------------------------------------------------
 
-Extending the API::
+==== Extending the API
 Now, one last thing to discuss is, how users can add their own functionality, e.g. by writing their own
 +MonetaryOperator+ functions. Basically there are two disctinct usage scenarios:
 
@@ -2311,7 +2312,7 @@ public class Total implements MonetaryOperator{
    public MonetaryAmount getTotal(){
       return total;
    }
-   
+
    public <T extends MonetaryAmount> T getTotal(Class<T> amountType){
       return MonetaryAmounts.getAmountFactory(amountType).with(total).create();
    }
@@ -2344,10 +2345,10 @@ A similar approach can also be used for other multi value calculations as used i
 The present value (abbreviated PV) shows how financial formulas can be implemented based on the JSR 354 API. A PV
 models the current value of a financial in- or outflow in the future, weighted with a calculatory interest rate.
 The PV is defined as follows:
-  
+
 
 Hereby
-  
+
 * the time of the cash flow (in periods)
 * the discount rate (the rate of return that could be earned on an investment in the financial markets with similar risk.); the opportunity cost of capital
 * the net cash flow i.e. cash inflow – cash outflow, at time t . For educational purposes,
@@ -2374,7 +2375,7 @@ public final class PresentValue implements MonetaryOperator{
      private BigDecimal rate;
      private int periods;
      private BigDecimal divisor;
-     
+
   public PresentValue(BigDecimal rate, int periods){
      Objects.requireNotNull(rate);
      this.rate = rate;
@@ -2403,10 +2404,11 @@ calculated as follows:
 .Example Using a Financial Function
 -------------------------------------------------------------------------------
 Money m = Money.of("CHF", 1000);
-// present value for an amount of 100, available in two periods, 
+// present value for an amount of 100, available in two periods,
 // with a rate of 5%.
 Money pv = m.with(new PresentValue(new BigDecimal("0.05"), 2));
 -------------------------------------------------------------------------------
+
 
 === Performing Currency Conversion
 Currency Conversion also is a special case of a +MonetaryOperator+ since it creates a new amount based on another
@@ -2448,6 +2450,7 @@ CurrencyConversion conv = MonetaryConversions.getConversion("EUR", ctx, "CS", "E
 == APPENDIX
 === Bibliography
 [bibliography]
+-------------------------------------------------------------------
 - [[[Bitcoin]]] http://bitcoin.org/en/
 - [[[ICU]]] http://site.icu-project.org/
 - [[[ISO-4217]]] http://www.iso.org/iso/home/standards/currency_codes.htm
@@ -2457,6 +2460,8 @@ CurrencyConversion conv = MonetaryConversions.getConversion("EUR", ctx, "CS", "E
 - [[[JSR354]]] http://jcp.org/en/jsr/detail?id=354
 - [[[source]]] Public Source Code Repository on GitHub: http://github.com/JavaMoney,
                 Branch/Tag matching updated PDR is {version}
+-------------------------------------------------------------------
+
 
 === Links
 * http://jcp.org/en/jsr/detail?id=35[JSR 354 on jcp.org]
@@ -2484,5 +2489,3 @@ CurrencyConversion conv = MonetaryConversions.getConversion("EUR", ctx, "CS", "E
 * Eric Evans Time and Money Library
 * Bitcoin Java Client
 * Java and Monetary Data (PDF)
-
-

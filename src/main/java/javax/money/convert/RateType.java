@@ -9,10 +9,10 @@
 package javax.money.convert;
 
 /**
- * This enumeration defines the different t<pe of rates that can be provided by {@link javax.money.convert
+ * This enumeration defines the different type of rates that can be provided by {@link javax.money.convert
  * .ExchangeRateProvider} implementations. Hereby the rate provider's {@link javax.money.convert.ProviderContext} can
  * contain
- * additional information about the rates provided. Similary, when accessing {@link javax.money.convert
+ * additional information about the rates provided. Similarly, when accessing {@link javax.money.convert
  * .ExchangeRateProvider} or {@link javax.money.convert.CurrencyConversion} instances corresponding attributes can
  * be passed within an (optional) {@link javax.money.convert.ConversionContext}.
  */

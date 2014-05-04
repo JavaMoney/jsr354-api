@@ -27,52 +27,52 @@ import static org.junit.Assert.*;
 public class MonetaryContextTest{
     @Test
     public void testGetPrecision() throws Exception{
-        MonetaryContext ctx = new MonetaryContext.Builder().setPrecision(299).create();
+        MonetaryContext ctx = new MonetaryContext.Builder().setPrecision(299).build();
         assertTrue(ctx.getPrecision() == 299);
     }
 
     @Test
     public void testIsFixedScale() throws Exception{
-        MonetaryContext ctx = new MonetaryContext.Builder().setFixedScale(true).create();
+        MonetaryContext ctx = new MonetaryContext.Builder().setFixedScale(true).build();
         assertTrue(ctx.isFixedScale());
     }
 
     @Test
     public void testGetMaxScale() throws Exception{
-        MonetaryContext ctx = new MonetaryContext.Builder().setMaxScale(122).create();
+        MonetaryContext ctx = new MonetaryContext.Builder().setMaxScale(122).build();
         assertTrue(ctx.getMaxScale() == 122);
     }
 
     @Test
     public void testGetAmountType() throws Exception{
-        MonetaryContext ctx = new MonetaryContext.Builder().setMaxScale(122).create();
+        MonetaryContext ctx = new MonetaryContext.Builder().setMaxScale(122).build();
         assertEquals(ctx.getAmountType(), MonetaryAmount.class);
         abstract class TestAmount implements MonetaryAmount{}
-        ctx = new MonetaryContext.Builder().setAmountType(TestAmount.class).create();
+        ctx = new MonetaryContext.Builder().setAmountType(TestAmount.class).build();
         assertEquals(ctx.getAmountType(), TestAmount.class);
     }
 
     @Test
     public void testGetAmountFlavor() throws Exception{
         MonetaryContext ctx =
-                new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).create();
+                new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).build();
         assertEquals(AmountFlavor.PERFORMANCE, ctx.getAmountFlavor());
-        ctx = new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).create();
+        ctx = new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).build();
         assertEquals(AmountFlavor.PRECISION, ctx.getAmountFlavor());
-        ctx = new MonetaryContext.Builder().setFlavor(AmountFlavor.UNDEFINED).create();
+        ctx = new MonetaryContext.Builder().setFlavor(AmountFlavor.UNDEFINED).build();
         assertEquals(AmountFlavor.UNDEFINED, ctx.getAmountFlavor());
-        ctx = new MonetaryContext.Builder().create();
+        ctx = new MonetaryContext.Builder().build();
         assertEquals(AmountFlavor.UNDEFINED, ctx.getAmountFlavor());
     }
 
     @Test
     public void testHashCode() throws Exception{
         List<MonetaryContext> contexts = new ArrayList<>();
-        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).create());
-        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).create());
-        contexts.add(new MonetaryContext.Builder().setMaxScale(122).create());
-        contexts.add(new MonetaryContext.Builder().setPrecision(299).create());
-        contexts.add(new MonetaryContext.Builder().setFixedScale(true).create());
+        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).build());
+        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).build());
+        contexts.add(new MonetaryContext.Builder().setMaxScale(122).build());
+        contexts.add(new MonetaryContext.Builder().setPrecision(299).build());
+        contexts.add(new MonetaryContext.Builder().setFixedScale(true).build());
         Set<Integer> hashCodes = new HashSet<>();
         for(MonetaryContext ctx : contexts){
             hashCodes.add(ctx.hashCode());
@@ -84,11 +84,11 @@ public class MonetaryContextTest{
     @Test
     public void testEquals() throws Exception{
         List<MonetaryContext> contexts = new ArrayList<>();
-        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).create());
-        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).create());
-        contexts.add(new MonetaryContext.Builder().setMaxScale(122).create());
-        contexts.add(new MonetaryContext.Builder().setPrecision(299).create());
-        contexts.add(new MonetaryContext.Builder().setFixedScale(true).create());
+        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).build());
+        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).build());
+        contexts.add(new MonetaryContext.Builder().setMaxScale(122).build());
+        contexts.add(new MonetaryContext.Builder().setPrecision(299).build());
+        contexts.add(new MonetaryContext.Builder().setFixedScale(true).build());
         Set<MonetaryContext> checkContexts = new HashSet<>();
         for(MonetaryContext ctx : contexts){
             checkContexts.add(ctx);
@@ -101,7 +101,7 @@ public class MonetaryContextTest{
     @Test
     public void testFrom() throws Exception{
         MonetaryContext rootCtx =
-                new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).create();
+                new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).build();
         MonetaryContext ctx = MonetaryContext.from(rootCtx, rootCtx.getAmountType());
         assertEquals(ctx, rootCtx);
         abstract class TestAmount implements MonetaryAmount{}
@@ -114,7 +114,7 @@ public class MonetaryContextTest{
         abstract class TestAmount implements MonetaryAmount{}
         MonetaryContext ctx = new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE)
                 .setAmountType(TestAmount.class).setFixedScale(true).setMaxScale(111).setPrecision(200)
-                .setAttribute("myKey", "myValue").setObject("TEST").create();
+                .setAttribute("myKey", "myValue").setObject("TEST").build();
         assertNotNull(ctx.toString());
         System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("PERFORMANCE"));

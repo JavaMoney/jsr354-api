@@ -23,7 +23,7 @@ import org.junit.Test;
 public class CurrencyConversionExceptionTest {
 
 	private static ConversionContext CONTEXT100 = new ConversionContext.Builder()
-			.setProvider("test").setAttribute("timestamp", 100L).create();
+			.setProvider("test").setAttribute("timestamp", 100L).build();
 
 	@Test
 	public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitContext() {

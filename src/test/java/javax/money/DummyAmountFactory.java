@@ -21,7 +21,7 @@ public final class DummyAmountFactory implements
 	 */
 	static MonetaryContext DUMMY_CONTEXT = new MonetaryContext.Builder()
 			.setFixedScale(true).setMaxScale(0)
-			.setPrecision(0).setAmountType(DummyAmount.class).create();
+			.setPrecision(0).setAmountType(DummyAmount.class).build();
 
 	/*
 	 * (non-Javadoc)

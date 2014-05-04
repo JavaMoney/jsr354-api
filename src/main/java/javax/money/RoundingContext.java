@@ -39,7 +39,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
     private static final long serialVersionUID = 5579720004786848255L;
 
 
-    public static final RoundingContext DEFAULT_ROUNDING_CONTEXT = new Builder().create();
+    public static final RoundingContext DEFAULT_ROUNDING_CONTEXT = new Builder().build();
 
     /**
      * Constructs a new {@code MonetaryContext} with the specified precision and
@@ -87,7 +87,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
      * @return the corresponding RoundingContext.
      */
     public static RoundingContext of(String roundingId){
-        return new Builder().setRoundingId(roundingId).create();
+        return new Builder().setRoundingId(roundingId).build();
     }
 
     /**
@@ -98,7 +98,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
      * @return the corresponding RoundingContext.
      */
     public static RoundingContext of(CurrencyUnit currencyUnit){
-        return new Builder().setCurrencyUnit(currencyUnit).create();
+        return new Builder().setCurrencyUnit(currencyUnit).build();
     }
 
     /*
@@ -212,7 +212,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
          * @return a new instance of {@link javax.money.RoundingContext}, never {@code null}
          * @throws IllegalArgumentException if building of the {@link javax.money.RoundingContext} fails.
          */
-        public RoundingContext create(){
+        public RoundingContext build(){
             return new RoundingContext(this);
         }
 

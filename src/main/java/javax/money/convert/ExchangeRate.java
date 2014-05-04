@@ -312,8 +312,9 @@ public final class ExchangeRate implements Serializable, Comparable<ExchangeRate
      * instances of this class are not thread-safe.
      *
      * @author Anatole Tresch
+     * @author Werner Keil
      */
-    public static class Builder{
+    public static class Builder {
 
         /**
          * The {@link ConversionContext}.
@@ -420,9 +421,9 @@ public final class ExchangeRate implements Serializable, Comparable<ExchangeRate
          * Builds a new instance of {@link ExchangeRate}.
          *
          * @return a new instance of {@link ExchangeRate}.
-         * @throws IllegalArgumentException if the rate could not be create.
+         * @throws IllegalArgumentException if the rate could not be built.
          */
-        public ExchangeRate create(){
+        public ExchangeRate build(){
             return new ExchangeRate(this);
         }
 

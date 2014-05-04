@@ -31,10 +31,10 @@ public class AmountStyleTest{
 
     @Test
     public void testToBuilder() throws Exception{
-        AmountFormatContext style = new AmountFormatContext.Builder(Locale.ENGLISH).create();
+        AmountFormatContext style = new AmountFormatContext.Builder(Locale.ENGLISH).build();
         AmountFormatContext.Builder builder = style.toBuilder();
         assertNotNull(builder);
-        assertEquals(style, builder.create());
+        assertEquals(style, builder.build());
     }
 
     @Test
@@ -46,8 +46,8 @@ public class AmountStyleTest{
             }
         };
         List<AmountFormatContext> contexts = new ArrayList<>();
-        contexts.add(new AmountFormatContext.Builder(Locale.GERMAN).create());
-        contexts.add(new AmountFormatContext.Builder(Locale.ENGLISH).create());
+        contexts.add(new AmountFormatContext.Builder(Locale.GERMAN).build());
+        contexts.add(new AmountFormatContext.Builder(Locale.ENGLISH).build());
         Set<Integer> hashCodes = new HashSet<>();
         for(AmountFormatContext ctx : contexts){
             hashCodes.add(ctx.hashCode());
@@ -65,8 +65,8 @@ public class AmountStyleTest{
             }
         };
         List<AmountFormatContext> contexts = new ArrayList<>();
-        contexts.add(new AmountFormatContext.Builder(Locale.ENGLISH).create());
-        contexts.add(new AmountFormatContext.Builder(Locale.GERMAN).create());
+        contexts.add(new AmountFormatContext.Builder(Locale.ENGLISH).build());
+        contexts.add(new AmountFormatContext.Builder(Locale.GERMAN).build());
         Set<AmountFormatContext> checkContexts = new HashSet<>();
         for(AmountFormatContext ctx : contexts){
             checkContexts.add(ctx);
@@ -78,7 +78,7 @@ public class AmountStyleTest{
     @Test
     public void testToString() throws Exception{
         AmountFormatContext style = new AmountFormatContext.Builder(Locale.GERMAN).setAttribute("groupSizes", new int[]{1, 2, 3, 4})
-                .setAttribute("currencyStyle", "NUMERIC_CODE").setAttribute("pattern", "###").create();
+                .setAttribute("currencyStyle", "NUMERIC_CODE").setAttribute("pattern", "###").build();
         String toString = style.toString();
         assertNotNull(toString);
         assertTrue(toString.contains("DE"));

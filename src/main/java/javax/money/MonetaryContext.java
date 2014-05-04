@@ -48,7 +48,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
     /**
      * A default instance of a MonetaryContext.
      */
-    public static final MonetaryContext DEFAULT_CONTEXT = new Builder().create();
+    public static final MonetaryContext DEFAULT_CONTEXT = new Builder().build();
 
 
 
@@ -226,7 +226,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return the {@link MonetaryContext}, not {@code null}.
      */
     public static MonetaryContext from(MonetaryContext context, Class<? extends MonetaryAmount> amountType){
-        return new MonetaryContext.Builder(context).setAmountType(amountType).create();
+        return new MonetaryContext.Builder(context).setAmountType(amountType).build();
     }
 
     /**
@@ -392,7 +392,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
          * @return a new instance of {@link MonetaryContext}, never {@code null}
          * @throws IllegalArgumentException if building of the {@link MonetaryContext} fails.
          */
-        public MonetaryContext create(){
+        public MonetaryContext build(){
             return new MonetaryContext(this);
         }
 

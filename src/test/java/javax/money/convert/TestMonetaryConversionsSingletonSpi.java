@@ -86,7 +86,7 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         public ExchangeRate getExchangeRate(MonetaryAmount sourceAmount){
             return new ExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
                     .setBase(sourceAmount.getCurrency()).setTerm(termCurrency).setFactor(DefaultNumberValue.of(1))
-                    .create();
+                    .build();
         }
 
         @Override
@@ -133,14 +133,14 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){
             return new ExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
                     .setBase(base).setTerm(term).setFactor(DefaultNumberValue.of(1))
-                    .create();
+                    .build();
         }
 
         @Override
         public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext){
             return new ExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
                     .setBase(base).setTerm(term).setFactor(DefaultNumberValue.of(1))
-                    .create();
+                    .build();
         }
 
         @Override

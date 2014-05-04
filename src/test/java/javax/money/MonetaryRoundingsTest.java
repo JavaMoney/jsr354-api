@@ -32,7 +32,7 @@ public class MonetaryRoundingsTest{
     public void testMonetaryRoundingsGetRoundingCurrencyUnitLong(){
         MonetaryOperator op = MonetaryRoundings.getRounding(
                 new RoundingContext.Builder().setCurrencyUnit(MonetaryCurrencies.getCurrency("test1"))
-                        .setAttribute("timestamp", 200L).create()
+                        .setAttribute("timestamp", 200L).build()
         );
         assertNotNull(op);
     }

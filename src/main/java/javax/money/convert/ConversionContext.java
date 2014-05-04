@@ -47,23 +47,23 @@ public final class ConversionContext extends AbstractContext{
     /**
      * ConversionContext that queries any conversion available.
      */
-    public static final ConversionContext ANY_CONVERSION = new Builder().setRateType(RateType.ANY).create();
+    public static final ConversionContext ANY_CONVERSION = new Builder().setRateType(RateType.ANY).build();
     /**
      * ConversionContext quering for any deferred rates.
      */
-    public static final ConversionContext DEFERRED_CONVERSION = new Builder().setRateType(RateType.DEFERRED).create();
+    public static final ConversionContext DEFERRED_CONVERSION = new Builder().setRateType(RateType.DEFERRED).build();
     /**
      * ConversionContext quering for any historic rates.
      */
-    public static final ConversionContext HISTORIC_CONVERSION = new Builder().setRateType(RateType.HISTORIC).create();
+    public static final ConversionContext HISTORIC_CONVERSION = new Builder().setRateType(RateType.HISTORIC).build();
     /**
      * ConversionContext quering for real-time rates.
      */
-    public static final ConversionContext REALTIME_CONVERSION = new Builder().setRateType(RateType.REALTIME).create();
+    public static final ConversionContext REALTIME_CONVERSION = new Builder().setRateType(RateType.REALTIME).build();
     /**
      * ConversionContext quering for any other rates.
      */
-    public static final ConversionContext OTHER_CONVERSION = new Builder().setRateType(RateType.OTHER).create();
+    public static final ConversionContext OTHER_CONVERSION = new Builder().setRateType(RateType.OTHER).build();
 
 
     /**
@@ -122,7 +122,7 @@ public final class ConversionContext extends AbstractContext{
         Builder b = new Builder();
         b.setRateType(rateType);
         b.setProvider(provider);
-        return b.create();
+        return b.build();
     }
 
     /**
@@ -135,7 +135,7 @@ public final class ConversionContext extends AbstractContext{
      * @return a corresponding instance of ConversionContext.
      */
     public static ConversionContext from(ProviderContext providerContext, RateType rateType){
-        return new Builder(providerContext, rateType).create();
+        return new Builder(providerContext, rateType).build();
     }
 
     /**
@@ -253,7 +253,7 @@ public final class ConversionContext extends AbstractContext{
          *
          * @return a new {@link ConversionContext}. never {@code null}.
          */
-        public ConversionContext create(){
+        public ConversionContext build(){
             return new ConversionContext(this);
         }
 

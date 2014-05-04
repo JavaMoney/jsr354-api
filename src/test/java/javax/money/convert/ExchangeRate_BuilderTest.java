@@ -60,17 +60,17 @@ public class ExchangeRate_BuilderTest {
 		ExchangeRate rate1 = new ExchangeRate.Builder("test",  RateType.DEFERRED)
 				.setBase(base)
 				.setTerm(baseTerm).setFactor(DefaultNumberValue.of(0.8))
-				.create();
+				.build();
 		ExchangeRate rate2 = new ExchangeRate.Builder("test",  RateType.DEFERRED)
 				.setBase(baseTerm)
 				.setTerm(term).setFactor(DefaultNumberValue.of(1.4))
-				.create();
+				.build();
 		ExchangeRate.Builder b = new ExchangeRate.Builder("test",  RateType.DEFERRED).setBase(base)
 				.setTerm(term)
 				.setRateChain(rate1, rate2);
 		ExchangeRate rate = b.setFactor(DefaultNumberValue.of(9))
 				.setContext(ConversionContext.of("test",  RateType.DEFERRED))
-				.create();
+				.build();
 		assertEquals(rate.getFactor().numberValue(BigDecimal.class), BigDecimal.valueOf(9));
 		assertEquals(rate.getExchangeRateChain(),
 				Arrays.asList(new ExchangeRate[] { rate1, rate2 }));
@@ -86,7 +86,7 @@ public class ExchangeRate_BuilderTest {
 		CurrencyUnit term = TestCurrency.of("USD");
 		ExchangeRate rate = b.setBase(base)
 				.setContext(ConversionContext.of("test",  RateType.DEFERRED))
-				.setTerm(term).create();
+				.setTerm(term).build();
 		assertEquals(BigDecimal.valueOf(100L), rate.getFactor().numberValue(BigDecimal.class));
 	}
 
@@ -99,7 +99,7 @@ public class ExchangeRate_BuilderTest {
 		CurrencyUnit term = TestCurrency.of("USD");
 		ExchangeRate rate = b.setBase(base)
 				.setContext(ConversionContext.of("test",  RateType.DEFERRED))
-				.setTerm(term).create();
+				.setTerm(term).build();
 		assertEquals(DefaultNumberValue.of(1.2), rate.getFactor());
 	}
 
@@ -112,18 +112,18 @@ public class ExchangeRate_BuilderTest {
 		ExchangeRate rate1 = new ExchangeRate.Builder("test",  RateType.DEFERRED)
 				.setContext(ConversionContext.of("test",  RateType.DEFERRED))
 				.setBase(base).setTerm(baseTerm)
-				.setFactor(DefaultNumberValue.of(0.8)).create();
+				.setFactor(DefaultNumberValue.of(0.8)).build();
 		ExchangeRate rate2 = new ExchangeRate.Builder("test",  RateType.DEFERRED)
 				.setContext(ConversionContext.of("test",  RateType.DEFERRED))
 				.setBase(baseTerm).setTerm(term)
-				.setFactor(DefaultNumberValue.of(1.4)).create();
+				.setFactor(DefaultNumberValue.of(1.4)).build();
 
 		ExchangeRate.Builder b = new ExchangeRate.Builder("test",  RateType.DEFERRED);
 		b.setContext(ConversionContext.of("bla",  RateType.DEFERRED));
 		b.setBase(base);
 		b.setTerm(term);
 		b.setFactor(DefaultNumberValue.of(2.2));
-		ExchangeRate rate = b.create();
+		ExchangeRate rate = b.build();
 		assertEquals(rate.getConversionContext(), ConversionContext.of("bla",  RateType.DEFERRED));
 		assertEquals(base, rate.getBase());
 		assertEquals(term, rate.getTerm());
@@ -134,7 +134,7 @@ public class ExchangeRate_BuilderTest {
 		b.setTerm(TestCurrency.of("USD"));
 		b.setRateChain(rate1, rate2);
 		b.setFactor(DefaultNumberValue.of(2.0));
-		rate = b.create();
+		rate = b.build();
 		assertEquals(rate.getConversionContext(), ConversionContext.of("test",  RateType.DEFERRED));
 		Assert.assertEquals(TestCurrency.of("CHF"), rate.getBase());
 		Assert.assertEquals(TestCurrency.of("USD"), rate.getTerm());

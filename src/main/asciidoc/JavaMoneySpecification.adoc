@@ -1337,7 +1337,7 @@ ConversionContext ctx = new ConversionContext.Builder()
        .set("contractID", "213453-GFDT-02")
        .set(FallbackStragey.PROVIDER)
         .set(amount)
-        .create();
+        .build();
 
 // Access a conversion...
 CurrencyConversion conversion = MonetaryConversions.getConversion("CHF", ctx);
@@ -2471,7 +2471,7 @@ ConversionContext ctx = new ConversionContext().Builder()
                                  .setRateType(RateType.HISTORIC)
                            .set(StockExchange.NYSE) // custom type
                            .set("contractId", "AA-1234.2")
-                           .create();
+                           .build();
 CurrencyConversion conv = MonetaryConversions.getConversion("EUR", ctx, "CS", "EZB", "IMF");
 -------------------------------------------------------------------------------
 

@@ -1,14 +1,14 @@
-﻿﻿JSR 354 (Money & Currency) - Specification
-==========================================
-:revnumber: 0.9
+﻿JSR 354 Money and Currency -- Specification
+============================================
+:title: JSR 354 (Money & Currency) - Specification
+:revnumber: 0.9-SNAPSHOT
 :revremark: Public Final Draft
 :revdate: June 2014
 :longversion: {revnumber} ({revremark}) {revdate}
 :authorinitials: ATR
-:author: Anatole Tresch, Specification Lead, Credit Suisse
+:author: Anatole Tresch, Credit Suisse
 :email: <anatole.tresch@credit-suisse.com>
 :source-highlighter: coderay
-:numbered:
 :website: http://javamoney.org/
 :imagesdir: src/main/asciidoc/images
 :iconsdir: src/main/asciidoc/images/icons
@@ -16,17 +16,22 @@
 :toc:
 :toc-placement: manual
 :icons:
+:title: JSR 354 (Money & Currency) - Specification
+:numbered:
 
 image::title.gif[align=center]
 
 '''
+
 <<<
+
 toc::[]
 
 <<<
-[big]#EVALUATION LICENCE#
-{disclaimer}
-----
+:numbered!:
+[disclaimer]
+.EVALUATION LICENCE
+--------
 JSR-000354 Money and Currency API 1.0 Public Review
 
 CREDIT SUISSE AG IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT
@@ -167,10 +172,12 @@ and prevails over any conflicting or additional terms of any quote, order, ackno
 communication between the parties relating to its subject matter during the term of this Agreement. No
 modification to this Agreement will be binding, unless in writing and signed by an authorized
 representative of each party.
-----
+--------
 
-Introduction
-------------
+:numbered:
+
+<<<
+== Introduction
 This document is the specification of the Java API for Money and Currency. The technical objective is to provide a money
 and currency API for Java, targeted at all users of currencies and monetary amounts, both simple but also extendible.
 The API will provide support for standard [ISO-4217] and custom currencies, and a model for monetary amounts and

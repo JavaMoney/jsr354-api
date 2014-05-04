@@ -5,7 +5,7 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * API ("Specification") Copyright (c) 2012-2014, Credit Suisse All rights
  * reserved.
  */
 package javax.money.convert;
@@ -24,6 +24,11 @@ import javax.money.convert.RateType;
 
 import org.junit.Test;
 
+/**
+ * @author Anatole Tresch
+ * @author Werner Keil
+ *
+ */
 public class ExchangeRateTest {
 
 	@Test
@@ -31,7 +36,7 @@ public class ExchangeRateTest {
 		CurrencyUnit base = TestCurrency.of("CHF");
 		CurrencyUnit term = TestCurrency.of("EUR");
 		ExchangeRate rate = new ExchangeRate.Builder("myProvider",
-				RateType.DEFERRED).setBase(base).setTerm(term).setFactor(DefaultNumberValue.of(1.5))
+				RateType.DEFERRED).setBase(base).setTerm(term).setFactor(TestNumberValue.of(1.5))
 				.build();
 		assertEquals(base, rate.getBase());
 		assertEquals(term, rate.getTerm());
@@ -47,7 +52,7 @@ public class ExchangeRateTest {
 		CurrencyUnit base = TestCurrency.of("CHF");
 		CurrencyUnit term = TestCurrency.of("EUR");
 		ExchangeRate rate = new ExchangeRate.Builder("test", RateType.DEFERRED)
-				.setBase(base).setTerm(term).setFactor(DefaultNumberValue.of(1.5)).build();
+				.setBase(base).setTerm(term).setFactor(TestNumberValue.of(1.5)).build();
 		assertEquals(base, rate.getBase());
 		assertEquals(term, rate.getTerm());
 		assertTrue(1.5d == rate.getFactor().doubleValue());
@@ -63,13 +68,13 @@ public class ExchangeRateTest {
 		CurrencyUnit baseTerm = TestCurrency.of("EUR");
 		CurrencyUnit term = TestCurrency.of("USD");
 		ExchangeRate rate1 = new ExchangeRate.Builder("test", RateType.DEFERRED)
-				.setBase(base).setTerm(baseTerm).setFactor(DefaultNumberValue.of(0.8)).build();
+				.setBase(base).setTerm(baseTerm).setFactor(TestNumberValue.of(0.8)).build();
 		ExchangeRate rate2 = new ExchangeRate.Builder("test", RateType.DEFERRED)
-				.setBase(baseTerm).setTerm(term).setFactor(DefaultNumberValue.of(1.4)).build();
+				.setBase(baseTerm).setTerm(term).setFactor(TestNumberValue.of(1.4)).build();
 
 		// derived rate
 		ExchangeRate rate = new ExchangeRate.Builder("test", RateType.DEFERRED)
-				.setBase(base).setTerm(term).setFactor(DefaultNumberValue.of(0.8 * 1.4))
+				.setBase(base).setTerm(term).setFactor(TestNumberValue.of(0.8 * 1.4))
 				.setRateChain(rate1, rate2).build();
 
 		assertEquals(base, rate.getBase());
@@ -87,13 +92,13 @@ public class ExchangeRateTest {
 		CurrencyUnit baseTerm = TestCurrency.of("EUR");
 		CurrencyUnit term = TestCurrency.of("USD");
 		ExchangeRate rate1 = new ExchangeRate.Builder("test", RateType.DEFERRED)
-				.setBase(base).setTerm(baseTerm).setFactor(DefaultNumberValue.of(0.8)).build();
+				.setBase(base).setTerm(baseTerm).setFactor(TestNumberValue.of(0.8)).build();
 		ExchangeRate rate2 = new ExchangeRate.Builder("test", RateType.DEFERRED)
-				.setBase(baseTerm).setTerm(term).setFactor(DefaultNumberValue.of(1.4)).build();
+				.setBase(baseTerm).setTerm(term).setFactor(TestNumberValue.of(1.4)).build();
 
 		// derived rate
 		ExchangeRate rate = new ExchangeRate.Builder("test", RateType.DEFERRED)
-				.setBase(base).setTerm(term).setFactor(DefaultNumberValue.of(0.8 * 1.4))
+				.setBase(base).setTerm(term).setFactor(TestNumberValue.of(0.8 * 1.4))
 				.setRateChain(rate1, rate2).build();
 		assertEquals(base, rate.getBase());
 		assertEquals(term, rate.getTerm());
@@ -110,13 +115,13 @@ public class ExchangeRateTest {
 		CurrencyUnit baseTerm = TestCurrency.of("EUR");
 		CurrencyUnit term = TestCurrency.of("USD");
 		ExchangeRate rate1 = new ExchangeRate.Builder("test", RateType.DEFERRED)
-				.setBase(base).setTerm(baseTerm).setFactor(DefaultNumberValue.of(0.8)).build();
+				.setBase(base).setTerm(baseTerm).setFactor(TestNumberValue.of(0.8)).build();
 		ExchangeRate rate2 = new ExchangeRate.Builder("test", RateType.DEFERRED)
-				.setBase(baseTerm).setTerm(term).setFactor(DefaultNumberValue.of(1.4)).build();
+				.setBase(baseTerm).setTerm(term).setFactor(TestNumberValue.of(1.4)).build();
 
 		// derived rate
 		ExchangeRate rate = new ExchangeRate.Builder("test", RateType.DEFERRED)
-				.setBase(base).setTerm(term).setFactor(DefaultNumberValue.of(0.8 * 1.4))
+				.setBase(base).setTerm(term).setFactor(TestNumberValue.of(0.8 * 1.4))
 				.setRateChain(rate1, rate2).build();
 		String toString = rate.toString();
 		assertTrue(toString.contains("ExchangeRate ["));

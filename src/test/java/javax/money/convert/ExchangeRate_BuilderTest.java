@@ -5,7 +5,7 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * API ("Specification") Copyright (c) 2012-2014, Credit Suisse All rights
  * reserved.
  */
 package javax.money.convert;
@@ -14,7 +14,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Arrays;
 
 import javax.money.CurrencyUnit;
@@ -24,9 +23,13 @@ import javax.money.convert.ExchangeRate;
 import javax.money.convert.RateType;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
+/**
+ * @author Anatole Tresch
+ * @author Werner Keil
+ *
+ */
 public class ExchangeRate_BuilderTest {
 
 	@Test
@@ -59,16 +62,16 @@ public class ExchangeRate_BuilderTest {
 		CurrencyUnit term = TestCurrency.of("USD");
 		ExchangeRate rate1 = new ExchangeRate.Builder("test",  RateType.DEFERRED)
 				.setBase(base)
-				.setTerm(baseTerm).setFactor(DefaultNumberValue.of(0.8))
+				.setTerm(baseTerm).setFactor(TestNumberValue.of(0.8))
 				.build();
 		ExchangeRate rate2 = new ExchangeRate.Builder("test",  RateType.DEFERRED)
 				.setBase(baseTerm)
-				.setTerm(term).setFactor(DefaultNumberValue.of(1.4))
+				.setTerm(term).setFactor(TestNumberValue.of(1.4))
 				.build();
 		ExchangeRate.Builder b = new ExchangeRate.Builder("test",  RateType.DEFERRED).setBase(base)
 				.setTerm(term)
 				.setRateChain(rate1, rate2);
-		ExchangeRate rate = b.setFactor(DefaultNumberValue.of(9))
+		ExchangeRate rate = b.setFactor(TestNumberValue.of(9))
 				.setContext(ConversionContext.of("test",  RateType.DEFERRED))
 				.build();
 		assertEquals(rate.getFactor().numberValue(BigDecimal.class), BigDecimal.valueOf(9));
@@ -79,9 +82,9 @@ public class ExchangeRate_BuilderTest {
 	@Test
 	public void testGetSetBaseLeadingFactor() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder("test",  RateType.DEFERRED);
-		ExchangeRate.Builder b2 = b.setFactor(DefaultNumberValue.of(Long.MAX_VALUE));
+		ExchangeRate.Builder b2 = b.setFactor(TestNumberValue.of(Long.MAX_VALUE));
 		assertTrue(b == b2);
-		b.setFactor(DefaultNumberValue.of(100L));
+		b.setFactor(TestNumberValue.of(100L));
 		CurrencyUnit base = TestCurrency.of("CHF");
 		CurrencyUnit term = TestCurrency.of("USD");
 		ExchangeRate rate = b.setBase(base)
@@ -93,14 +96,14 @@ public class ExchangeRate_BuilderTest {
 	@Test
 	public void testGetSetTermLeadingFactorBigDecimal() {
 		ExchangeRate.Builder b = new ExchangeRate.Builder("test",  RateType.DEFERRED);
-		ExchangeRate.Builder b2 = b.setFactor(DefaultNumberValue.of(1.2));
+		ExchangeRate.Builder b2 = b.setFactor(TestNumberValue.of(1.2));
 		assertTrue(b == b2);
 		CurrencyUnit base = TestCurrency.of("CHF");
 		CurrencyUnit term = TestCurrency.of("USD");
 		ExchangeRate rate = b.setBase(base)
 				.setContext(ConversionContext.of("test",  RateType.DEFERRED))
 				.setTerm(term).build();
-		assertEquals(DefaultNumberValue.of(1.2), rate.getFactor());
+		assertEquals(TestNumberValue.of(1.2), rate.getFactor());
 	}
 
 
@@ -112,17 +115,17 @@ public class ExchangeRate_BuilderTest {
 		ExchangeRate rate1 = new ExchangeRate.Builder("test",  RateType.DEFERRED)
 				.setContext(ConversionContext.of("test",  RateType.DEFERRED))
 				.setBase(base).setTerm(baseTerm)
-				.setFactor(DefaultNumberValue.of(0.8)).build();
+				.setFactor(TestNumberValue.of(0.8)).build();
 		ExchangeRate rate2 = new ExchangeRate.Builder("test",  RateType.DEFERRED)
 				.setContext(ConversionContext.of("test",  RateType.DEFERRED))
 				.setBase(baseTerm).setTerm(term)
-				.setFactor(DefaultNumberValue.of(1.4)).build();
+				.setFactor(TestNumberValue.of(1.4)).build();
 
 		ExchangeRate.Builder b = new ExchangeRate.Builder("test",  RateType.DEFERRED);
 		b.setContext(ConversionContext.of("bla",  RateType.DEFERRED));
 		b.setBase(base);
 		b.setTerm(term);
-		b.setFactor(DefaultNumberValue.of(2.2));
+		b.setFactor(TestNumberValue.of(2.2));
 		ExchangeRate rate = b.build();
 		assertEquals(rate.getConversionContext(), ConversionContext.of("bla",  RateType.DEFERRED));
 		assertEquals(base, rate.getBase());
@@ -133,7 +136,7 @@ public class ExchangeRate_BuilderTest {
 		b.setBase(TestCurrency.of("CHF"));
 		b.setTerm(TestCurrency.of("USD"));
 		b.setRateChain(rate1, rate2);
-		b.setFactor(DefaultNumberValue.of(2.0));
+		b.setFactor(TestNumberValue.of(2.0));
 		rate = b.build();
 		assertEquals(rate.getConversionContext(), ConversionContext.of("test",  RateType.DEFERRED));
 		Assert.assertEquals(TestCurrency.of("CHF"), rate.getBase());

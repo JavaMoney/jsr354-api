@@ -24,20 +24,20 @@ import static org.junit.Assert.assertTrue;
 public class ConversionContextTest{
     @Test
     public void testGetRateType() throws Exception{
-        ConversionContext ctx = new ConversionContext.Builder().setRateType(RateType.DEFERRED).create();
+        ConversionContext ctx = new ConversionContext.Builder().setRateType(RateType.DEFERRED).build();
         assertEquals(RateType.DEFERRED, ctx.getRateType());
     }
 
     @Test
     public void testGetProvider() throws Exception{
-        ConversionContext ctx = new ConversionContext.Builder().setProvider("myprov").create();
+        ConversionContext ctx = new ConversionContext.Builder().setProvider("myprov").build();
         assertEquals("myprov", ctx.getProvider());
     }
 
     @Test
     public void testToBuilder() throws Exception{
-        ConversionContext ctx = new ConversionContext.Builder().setProvider("myprov").create();
-        assertEquals(ctx, ctx.toBuilder().create());
+        ConversionContext ctx = new ConversionContext.Builder().setProvider("myprov").build();
+        assertEquals(ctx, ctx.toBuilder().build());
     }
 
     @Test

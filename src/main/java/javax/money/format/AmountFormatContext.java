@@ -85,7 +85,7 @@ public final class AmountFormatContext extends AbstractContext implements Serial
      * @return a new default context instance.
      */
     public static AmountFormatContext of(Locale locale){
-        return new Builder(locale).create();
+        return new Builder(locale).build();
     }
 
     /**
@@ -155,7 +155,7 @@ public final class AmountFormatContext extends AbstractContext implements Serial
          * @return a new {@link AmountFormatContext} instance, never {@code null}.
          * @throws IllegalStateException if no {@link AmountFormatContext} could be created.
          */
-        public AmountFormatContext create(){
+        public AmountFormatContext build(){
             return new AmountFormatContext(this);
         }
 

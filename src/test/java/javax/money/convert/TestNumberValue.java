@@ -5,7 +5,7 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * API ("Specification") Copyright (c) 2012-2014, Credit Suisse All rights
  * reserved.
  */
 package javax.money.convert;
@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-class DefaultNumberValue extends NumberValue {
+class TestNumberValue extends NumberValue {
 
 	/**
 	 * serialVersionUID.
@@ -37,9 +37,9 @@ class DefaultNumberValue extends NumberValue {
      *
      * @since  0.8
      */
-	public static final NumberValue ONE = new DefaultNumberValue(BigDecimal.ONE);
+	public static final NumberValue ONE = new TestNumberValue(BigDecimal.ONE);
 
-	public DefaultNumberValue(Number number) {
+	public TestNumberValue(Number number) {
 		Objects.requireNonNull(number, "Number required");
 		this.number = number;
 	}
@@ -52,7 +52,7 @@ class DefaultNumberValue extends NumberValue {
 	 * @return A new instance of {@link javax.money.NumberValue}.
 	 */
 	public static NumberValue of(Number number) {
-		return new DefaultNumberValue(number);
+		return new TestNumberValue(number);
 	}
 
 	/*
@@ -239,7 +239,7 @@ class DefaultNumberValue extends NumberValue {
             return false;
         }
 
-        DefaultNumberValue that = (DefaultNumberValue) o;
+        TestNumberValue that = (TestNumberValue) o;
 
         if(!number.equals(that.number)){
             return false;

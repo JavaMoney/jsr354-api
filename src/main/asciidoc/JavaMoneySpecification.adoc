@@ -1,4 +1,4 @@
-﻿JSR 354 (Money & Currency) - Specification
+﻿﻿JSR 354 (Money & Currency) - Specification
 ==========================================
 :revnumber: 0.9
 :revremark: Public Final Draft

@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 public class AbstractContextTest{
     @Test
     public void testSet() {
-        TestContext ctx = new TestContext.Builder().setObject("Test").create();
+        TestContext ctx = new TestContext.Builder().setObject("Test").build();
         assertNotNull(ctx.getAttribute(String.class));
         assertEquals(ctx.getAttribute(String.class), "Test");
         assertEquals(ctx.getNamedAttribute(String.class, String.class), "Test");
@@ -34,7 +34,7 @@ public class AbstractContextTest{
 
     @Test
     public void testSetWithKey(){
-        TestContext ctx = new TestContext.Builder().setAttribute("myKey", "Test").create();
+        TestContext ctx = new TestContext.Builder().setAttribute("myKey", "Test").build();
         assertNull(ctx.getAttribute(String.class));
         assertEquals("Test", ctx.getNamedAttribute("myKey", String.class));
         assertEquals(ctx.getNamedAttribute("myKey", String.class), "Test");
@@ -43,14 +43,14 @@ public class AbstractContextTest{
 
     @Test
     public void testSetAll(){
-        TestContext ctx = new TestContext.Builder().setAttribute("myKey", "Test").create();
-        TestContext ctx2 = new TestContext.Builder().setAll(ctx).create();
+        TestContext ctx = new TestContext.Builder().setAttribute("myKey", "Test").build();
+        TestContext ctx2 = new TestContext.Builder().setAll(ctx).build();
         assertEquals(ctx, ctx2);
     }
 
     @Test
     public void testSetWithKeyAndType() {
-        TestContext ctx = new TestContext.Builder().setAttribute("MyNum", Integer.valueOf(2), Number.class).create();
+        TestContext ctx = new TestContext.Builder().setAttribute("MyNum", Integer.valueOf(2), Number.class).build();
         assertNull(ctx.getAttribute(String.class));
         assertEquals("myKey", ctx.getAttribute(String.class, "myKey"));
         assertEquals(ctx.getNamedAttribute("MyNum", Number.class), Integer.valueOf(2));
@@ -59,7 +59,7 @@ public class AbstractContextTest{
 
     @Test
     public void testGetAttribute() {
-        TestContext ctx = new TestContext.Builder().setObject("Test").create();
+        TestContext ctx = new TestContext.Builder().setObject("Test").build();
         assertNotNull(ctx.getAttribute(String.class));
         assertEquals(ctx.getNamedAttribute("Gugus", String.class, "defaultValue"), "defaultValue");
         assertEquals(ctx.getAttribute(Boolean.class, Boolean.TRUE), Boolean.TRUE);
@@ -67,7 +67,7 @@ public class AbstractContextTest{
 
     @Test
     public void testGetAttributeTypes(){
-        TestContext ctx = new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).setObject(Long.valueOf(2)).create();
+        TestContext ctx = new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).setObject(Long.valueOf(2)).build();
         Set<Class<?>> types = ctx.getAttributeTypes();
         assertNotNull(types);
         assertTrue(types.size()==3);
@@ -79,11 +79,11 @@ public class AbstractContextTest{
     @Test
     public void testHashCode() {
         List<TestContext> contexts = new ArrayList<>();
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(1)).setObject(Long.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).setObject(Long.valueOf(1)).create());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Long.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Boolean.TRUE).setObject("Test").create());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(1)).setObject(Long.valueOf(2)).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).setObject(Long.valueOf(1)).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(Long.valueOf(2)).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(Boolean.TRUE).setObject("Test").build());
         Set<Integer> hashCodes = new HashSet<>();
         for(TestContext ctx : contexts){
             hashCodes.add(ctx.hashCode());
@@ -95,11 +95,11 @@ public class AbstractContextTest{
     @Test
     public void testEquals() {
         List<TestContext> contexts = new ArrayList<>();
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(11)).setObject(Long.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).setObject(Long.valueOf(11)).create());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Long.valueOf(2)).create());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Boolean.TRUE).setObject("Test").create());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(11)).setObject(Long.valueOf(2)).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).setObject(Long.valueOf(11)).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(Long.valueOf(2)).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(Boolean.TRUE).setObject("Test").build());
         Set<TestContext> checkContexts = new HashSet<>();
         for(TestContext ctx : contexts){
             checkContexts.add(ctx);
@@ -111,7 +111,7 @@ public class AbstractContextTest{
 
     @Test
     public void testToString() {
-        TestContext ctx = new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(1)).setObject(Long.valueOf(2)).create();
+        TestContext ctx = new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(1)).setObject(Long.valueOf(2)).build();
         assertNotNull(ctx.toString());
         System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("1"));
@@ -136,7 +136,7 @@ public class AbstractContextTest{
 
         private static final class Builder extends AbstractContext.AbstractBuilder<Builder>{
             @Override
-            public TestContext create(){
+            public TestContext build(){
                 return new TestContext(this);
             }
         }

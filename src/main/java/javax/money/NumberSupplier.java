@@ -5,7 +5,7 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * API ("Specification") Copyright (c) 2012-2014, Credit Suisse All rights
  * reserved.
  */
 package javax.money;
@@ -24,8 +24,8 @@ package javax.money;
  * functional method is {@link #getNumber()}.
  * 
  * @author Werner Keil
- * @author Anatol Tresch
- * @version 0.5
+ * @author Anatole Tresch
+ * @version 0.6
  * @since 0.8
  * @see Supplier
  */

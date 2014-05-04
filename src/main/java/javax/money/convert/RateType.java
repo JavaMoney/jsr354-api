@@ -9,12 +9,15 @@
 package javax.money.convert;
 
 /**
- * This enumeration defines the different t<pe of rates that can be provided by {@link javax.money.convert
+ * This enumeration defines the different type of rates that can be provided by {@link javax.money.convert
  * .ExchangeRateProvider} implementations. Hereby the rate provider's {@link javax.money.convert.ProviderContext} can
  * contain
- * additional information about the rates provided. Similary, when accessing {@link javax.money.convert
+ * additional information about the rates provided. Similarly, when accessing {@link javax.money.convert
  * .ExchangeRateProvider} or {@link javax.money.convert.CurrencyConversion} instances corresponding attributes can
  * be passed within an (optional) {@link javax.money.convert.ConversionContext}.
+ * 
+ * @author Anatole Tresch
+ * @author Werner Keil
  */
 public enum RateType{
     /**
@@ -22,11 +25,11 @@ public enum RateType{
      */
     HISTORIC,
     /**
-     * Realtime rates should be as adequate as possible, basically not more than a few milliseconds late.
+     * Real-time rates should be as adequate as possible, basically not more than a few milliseconds late.
      */
     REALTIME,
     /**
-     * Deferred rates are basically also current rates, but have some fixed dely, e.g. 20 minutes.
+     * Deferred rates are basically also current rates, but have some fixed delay, e.g. 20 minutes.
      */
     DEFERRED,
     /**

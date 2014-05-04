@@ -84,7 +84,7 @@ public final class ProviderContext extends AbstractContext{
      * @return a new {@link ProviderContext} instance.
      */
     public static ProviderContext of(String provider, RateType... rateTypes){
-        return new Builder(provider).setRateTypes(rateTypes).create();
+        return new Builder(provider).setRateTypes(rateTypes).build();
     }
 
     /**
@@ -94,7 +94,7 @@ public final class ProviderContext extends AbstractContext{
      * @return a new {@link ProviderContext} instance.
      */
     public static ProviderContext of(String provider){
-        return new Builder(provider).setRateTypes(RateType.ANY).create();
+        return new Builder(provider).setRateTypes(RateType.ANY).build();
     }
 
 
@@ -180,7 +180,7 @@ public final class ProviderContext extends AbstractContext{
          *
          * @return a new {@link ProviderContext}. never {@code null}.
          */
-        public ProviderContext create(){
+        public ProviderContext build(){
             return new ProviderContext(this);
         }
 

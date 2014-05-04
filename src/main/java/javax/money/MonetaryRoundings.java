@@ -122,7 +122,7 @@ public final class MonetaryRoundings {
 	 * 
 	 * @return the set of custom rounding ids, never {@code null}.
 	 */
-	public static Set<String> getCustomRoundingIds() {
+	public static Set<String> getRoundingIds() {
 		Set<String> result = new HashSet<>();
 		for (RoundingProviderSpi prov : Bootstrap
 				.getServices(

@@ -52,24 +52,10 @@ public class MonetaryContextTest{
         assertEquals(ctx.getAmountType(), TestAmount.class);
     }
 
-    @Test
-    public void testGetAmountFlavor() throws Exception{
-        MonetaryContext ctx =
-                new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).build();
-        assertEquals(AmountFlavor.PERFORMANCE, ctx.getAmountFlavor());
-        ctx = new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).build();
-        assertEquals(AmountFlavor.PRECISION, ctx.getAmountFlavor());
-        ctx = new MonetaryContext.Builder().setFlavor(AmountFlavor.UNDEFINED).build();
-        assertEquals(AmountFlavor.UNDEFINED, ctx.getAmountFlavor());
-        ctx = new MonetaryContext.Builder().build();
-        assertEquals(AmountFlavor.UNDEFINED, ctx.getAmountFlavor());
-    }
 
     @Test
     public void testHashCode() throws Exception{
         List<MonetaryContext> contexts = new ArrayList<>();
-        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).build());
-        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).build());
         contexts.add(new MonetaryContext.Builder().setMaxScale(122).build());
         contexts.add(new MonetaryContext.Builder().setPrecision(299).build());
         contexts.add(new MonetaryContext.Builder().setFixedScale(true).build());
@@ -78,14 +64,12 @@ public class MonetaryContextTest{
             hashCodes.add(ctx.hashCode());
         }
         // Check we have 5 distinct hash codes...
-        assertTrue(hashCodes.size() == 5);
+        assertTrue(hashCodes.size() == 3);
     }
 
     @Test
     public void testEquals() throws Exception{
         List<MonetaryContext> contexts = new ArrayList<>();
-        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).build());
-        contexts.add(new MonetaryContext.Builder().setFlavor(AmountFlavor.PRECISION).build());
         contexts.add(new MonetaryContext.Builder().setMaxScale(122).build());
         contexts.add(new MonetaryContext.Builder().setPrecision(299).build());
         contexts.add(new MonetaryContext.Builder().setFixedScale(true).build());
@@ -95,13 +79,13 @@ public class MonetaryContextTest{
             checkContexts.add(ctx);
         }
         // Check we have 5 distinct hash codes...
-        assertTrue(checkContexts.size() == 5);
+        assertTrue(checkContexts.size() == 3);
     }
 
     @Test
     public void testFrom() throws Exception{
         MonetaryContext rootCtx =
-                new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE).build();
+                new MonetaryContext.Builder().build();
         MonetaryContext ctx = MonetaryContext.from(rootCtx, rootCtx.getAmountType());
         assertEquals(ctx, rootCtx);
         abstract class TestAmount implements MonetaryAmount{}
@@ -112,13 +96,11 @@ public class MonetaryContextTest{
     @Test
     public void testToString() throws Exception{
         abstract class TestAmount implements MonetaryAmount{}
-        MonetaryContext ctx = new MonetaryContext.Builder().setFlavor(AmountFlavor.PERFORMANCE)
+        MonetaryContext ctx = new MonetaryContext.Builder()
                 .setAmountType(TestAmount.class).setFixedScale(true).setMaxScale(111).setPrecision(200)
                 .setAttribute("myKey", "myValue").setObject("TEST").build();
         assertNotNull(ctx.toString());
         System.out.println(ctx.toString());
-        assertTrue(ctx.toString().contains("PERFORMANCE"));
-        assertTrue(ctx.toString().contains("flavor"));
         assertTrue(ctx.toString().contains("111"));
         assertTrue(ctx.toString().contains("200"));
         assertTrue(ctx.toString().contains("TEST"));

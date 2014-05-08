@@ -24,16 +24,20 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 
 	@Override
 	public CurrencyUnit getCurrencyUnit(String currencyCode) {
-		if("test1".equals(currencyCode)){
-			return new TestCurrency("test1",1,2);
-		}
-        else if("error".equals(currencyCode)){
-            throw new IllegalArgumentException("error encountered!");
+
+        switch (currencyCode) {
+            case "test1":
+                return new TestCurrency("test1", 1, 2);
+            case "error":
+                throw new IllegalArgumentException("error encountered!");
+            case "invalid":
+                return new TestCurrency("invalid2", 1, 2);
+
+            default:
+                return null;
         }
-        else if("invalid".equals(currencyCode)){
-            return new TestCurrency("invalid2",1,2);
-        }
-		return null;
+
+
 	}
 
 

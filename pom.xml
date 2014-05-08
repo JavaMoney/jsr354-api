@@ -570,16 +570,6 @@
                     <groupId>org.asciidoctor</groupId>
                     <artifactId>asciidoctor-maven-plugin</artifactId>
                     <version>0.1.4</version>
-                    <configuration>
-                        <embedAssets>true</embedAssets>
-                        <backend>html</backend>
-                        <imagesDir>src/main/asciidoc/images</imagesDir>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.jboss.maven.plugins</groupId>
-                    <artifactId>maven-jdocbook-plugin</artifactId>
-                    <version>2.3.8</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -612,7 +602,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <configuration></configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
@@ -676,6 +665,11 @@
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
                 <version>0.1.4</version>
+                <configuration>
+                    <sourceDirectory>src/main/asciidoc</sourceDirectory>
+                    <baseDir>${project.basedir}</baseDir>
+                    <eruby>erubis</eruby>
+                </configuration>
                 <executions>
                     <execution>
                         <id>output-html</id>
@@ -689,6 +683,8 @@
                             <!-- coderay -->
                             <backend>html</backend>
                             <embedAssets>true</embedAssets>
+                            <imagesDir>src/main/asciidoc/images/</imagesDir>
+                            <baseDir>src/main/asciidoc/</baseDir>
                         </configuration>
                     </execution>
                     <execution>
@@ -700,11 +696,13 @@
                         <configuration>
                             <backend>docbook</backend>
                             <doctype>book</doctype>
-                            <outputDirectory>target/generated-docs</outputDirectory>
                             <embedAssets>false</embedAssets>
+                            <outputDirectory>target/generated-docs</outputDirectory>
+                            <imagesDir>src/main/asciidoc/images/</imagesDir>
+                            <baseDir>src/main/asciidoc/</baseDir>
                         </configuration>
                     </execution>
-                    <!-- execution>
+                    <execution>
                         <id>output-pdf</id>
                         <phase>generate-resources</phase>
                         <goals>
@@ -715,9 +713,8 @@
                             <sourceHighlighter>highlightjs</sourceHighlighter>
                             <backend>pdf</backend>
                             <doctype>book</doctype>
-                            <templateDir>src/main/asciidoc/xsl/fo</templateDir>
                         </configuration>
-                    </execution -->
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -729,40 +726,69 @@
                         <id>doc</id>
                         <goals>
                             <goal>generate-pdf</goal>
+                            <goal>generate-xhtml</goal>
                         </goals>
                         <phase>generate-resources</phase>
                     </execution>
                 </executions>
                 <dependencies>
                     <dependency>
+                        <groupId>net.sf.docbook</groupId>
+                        <artifactId>docbook-xml</artifactId>
+                        <version>5.0-all</version>
+                        <classifier>resources</classifier>
+                        <type>zip</type>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
                         <groupId>net.sf.xslthl</groupId>
                         <artifactId>xslthl</artifactId>
-                        <version>2.1.0</version>
+                        <version>2.0.1</version>
                         <scope>runtime</scope>
                     </dependency>
                     <dependency>
                         <groupId>net.sf.offo</groupId>
                         <artifactId>fop-hyph</artifactId>
-                        <version>2.0</version>
+                        <version>1.2</version>
                         <scope>runtime</scope>
                     </dependency>
                 </dependencies>
                 <configuration>
+                    <imgSrcPath>../../</imgSrcPath>
+                    <admonGraphics>1</admonGraphics>
+                    <graphicExtensions>1</graphicExtensions>
+                    <showXslMessages>1</showXslMessages>
+                    <collectXrefTargets>1</collectXrefTargets>
+                    <highlightSource>1</highlightSource>
+                    <hyphenate>true</hyphenate>
+                    <hyphenateVerbatim>true</hyphenateVerbatim>
                     <includes>JavaMoneySpecification.xml</includes>
                     <sourceDirectory>target/generated-docs</sourceDirectory>
                     <targetDirectory>target/docs</targetDirectory>
+                    <generateToc>1</generateToc>
+                    <paperType>A4</paperType>
+                    <admonGraphicsPath>src/main/asciidoc/images/icons/</admonGraphicsPath>
+                    <calloutGraphicsPath>src/main/asciidoc/images/icons/callouts/</calloutGraphicsPath>
+                    <showComments>true</showComments>
                     <xincludeSupported>true</xincludeSupported>
+                    <fop1Extensions>1</fop1Extensions>
+
+                    <!--
+                    <foCustomization>${basedir}/src/main/asciidoc/customization-fopdf.xsl</foCustomization>
+                    <emailMailtoEnabled>true</emailMailtoEnabled>
+                    <generatedSourceDirectory>true</generatedSourceDirectory>
+                    <generateIndex>true</generateIndex>
+                    <useEmbedForSvg>true</useEmbedForSvg>
                     <useExtensions>1</useExtensions>
                     <highlightSource>1</highlightSource>
                     <highlightDefaultLanguage>java</highlightDefaultLanguage>
                     <calloutsExtension>1</calloutsExtension>
-                    <paperType>A4</paperType>
+
                     <fop1Extensions>1</fop1Extensions>
-                    <generateToc>1</generateToc>
                     <useEmbedForSvg>1</useEmbedForSvg>
                     <imgSrcPath>src/main/asciidoc/images</imgSrcPath>
-                    <!-- foCustomization>${basedir}/conf/customization-fopdf.xsl</foCustomization -->
-                    <!-- postProcess>
+
+                    <postProcess>
                         <zip
                                 destfile="${project.build.directory}/${project.artifactId}-${project.version}-docs.zip">
                             <fileset dir="${project.build.directory}/docs"
@@ -771,6 +797,23 @@
                     </postProcess -->
                 </configuration>
             </plugin>
+            <!-- plugin>
+                <groupId>com.agilejava.docbkx</groupId>
+                <artifactId>docbkx-fop-support</artifactId>
+                <version>2.0.15</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <ansi>true</ansi>
+                            <sourceDirectory>src/main/asciidoc</sourceDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin -->
         </plugins>
     </build>
 

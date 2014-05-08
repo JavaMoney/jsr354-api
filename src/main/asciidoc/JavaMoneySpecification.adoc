@@ -10,17 +10,13 @@
 :email: <anatole.tresch@credit-suisse.com>
 :source-highlighter: coderay
 :website: http://javamoney.org/
-:imagesdir: src/main/asciidoc/images
-:iconsdir: src/main/asciidoc/images/icons
-:data-uri:
+:iconsdir: {imagesdir}/icons
 :toc:
 :toc-placement: manual
 :icons:
 :encoding: UTF-8
 :title: JSR 354 (Money & Currency) - Specification
 :numbered:
-
-image::title.gif[align=center]
 
 '''
 
@@ -31,153 +27,212 @@ toc::[]
 <<<
 :numbered!:
 
-.EVALUATION LICENCE
---------
-JSR-000354 Money and Currency API 1.0 Public Review
+image::tiger.png[alt="test",align="center"]
 
-CREDIT SUISSE AG IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT
-ALL OF THE TERMS CONTAINED IN THIS LICENSE AGREEMENT ("AGREEMENT"). PLEASE READ THE TERMS AND CONDITIONS
-OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
-THIS AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY THEM, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF
-THIS PAGE AND THE DOWNLOADING PROCESS WILL NOT CONTINUE.
+image::https://raw.githubusercontent.com/JavaMoney/jsr354-api/master/src/main/asciidoc/images/javamoney_cup.jpg[]
 
-Specification: JSR-354 Money and Currency API ("Specification")
-Version: 0.9
-Status: Public Review 2
-Release: May 2014
-Copyright 2013-2014 Credit Suisse AG
-8070 Zurich, Switzerland
-All rights reserved.
+*EVALUATION LICENCE*
 
-NOTICE
+*JSR-000354 Money and Currency API 1.0 Public Review*
 
-The Specification is protected by copyright and the information described therein may be protected by
-one or more U.S. patents, foreign patents, or pending applications. Except as provided under the
-following license, no part of the Specification may be reproduced in any form by any means without the
-prior written authorization of Credit Suisse AG ("the Specification Lead") and its licensors, if any.
-Any use of the Specification and the information described therein will be governed by the terms and
-conditions of this Agreement.
+CREDIT SUISSE AG IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY
+UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS
+LICENSE AGREEMENT ("AGREEMENT"). PLEASE READ THE TERMS AND CONDITIONS
+OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU
+ACCEPT THE TERMS AND CONDITIONS OF THIS AGREEMENT. IF YOU ARE NOT
+WILLING TO BE BOUND BY THEM, SELECT THE "DECLINE" BUTTON AT THE
+BOTTOM OF THIS PAGE AND THE DOWNLOADING PROCESS WILL NOT CONTINUE.
 
-Subject to the terms and conditions of this license, including your compliance with Paragraphs 1 and 2
-below, the Specification Lead hereby grants you a fully-paid, non-exclusive, non-transferable, limited
-license (without the right to sublicense) under the Specification Lead's intellectual property rights
-to:
 
-1. Review the Specification for the purposes of evaluation. This includes:
-(i)   developing implementations of the Specification for your internal, non-commercial use;
+Specification: JSR-354 Money and Currency API ("Specification")+
+Version: {revnumber}+
+Status: {revremark}+
+Release: {revdate}+
+Copyright 2013-2014 Credit Suisse AG+
+8070 Zurich, Switzerland+
+All rights reserved.+
+
+*NOTICE*
+
+The Specification is protected by copyright and the information
+described therein may be protected by one or more U.S. patents,
+foreign patents, or pending applications. Except as provided under
+the following license, no part of the Specification may be
+reproduced in any form by any means without the prior written
+authorization of Credit Suisse AG ("the Specification Lead") and its
+licensors, if any. Any use of the Specification and the information
+described therein will be governed by the terms and conditions of
+this Agreement.
+
+Subject to the terms and conditions of this license, including your
+compliance with Paragraphs 1 and 2 below, the Specification Lead
+hereby grants you a fully-paid, non-exclusive, non-transferable,
+limited license (without the right to sublicense) under the
+Specification Lead's intellectual property rights to:
+
+1. Review the Specification for the purposes of evaluation. This
+includes:
+(i)   developing implementations of the Specification for your
+      internal, non-commercial use;
 (ii)  discussing the Specification with any third party; and
-(iii) excerpting brief portions of the Specification in oral or written communications which discuss the
-      Specification provided that such excerpts do not in the aggregate constitute a significant portion
-      of the Technology.
+(iii) excerpting brief portions of the Specification in oral or
+      written communications which discuss the Specification
+      provided that such excerpts do not in the aggregate
+      constitute a significant portion of the Technology.
 
-2. Distribute implementations of the Specification to third parties for their testing and evaluation use,
-   provided that any such implementation:
-(a) does not modify, subset, superset or otherwise extend the Licensor Name Space, or include any public
-    or protected packages, classes, Java interfaces, fields or methods within the Licensor Name Space
-    other than those required/authorized by the Specification or Specifications being implemented;
-(b) is clearly and prominently marked with the word "UNTESTED" or "EARLY ACCESS" or "INCOMPATIBLE" or
-    "UNSTABLE" or "BETA" in any list of available builds and in proximity to every link initiating
-    its download, where the list or link is under Licensee's control; and
-(c) includes the following notice: "This is an implementation of an early-draft specification developed
-    under the Java Community Process (JCP) and is made available for testing and evaluation purposes
-    only. The code is not compatible with any specification of the JCP."
+2. Distribute implementations of the Specification to third parties
+   for their testing and evaluation use, provided that any such
+   implementation:
+(a) does not modify, subset, superset or otherwise extend the
+    Licensor Name Space, or include any public or protected packages,
+    classes, Java interfaces, fields or methods within the Licensor
+    Name Space other than those required/authorized by the
+    Specification or Specifications being implemented;
+(b) is clearly and prominently marked with the word "UNTESTED" or
+    "EARLY ACCESS" or "INCOMPATIBLE" or "UNSTABLE" or "BETA" in
+    any list of available builds and in proximity to every link
+    initiating its download, where the list or link is under
+    Licensee's control; and
+(c) includes the following notice: "This is an implementation of
+    an early-draft specification developed under the Java Community
+    Process (JCP) and is made available for testing and evaluation
+    purposes only. The code is not compatible with any specification
+    of the JCP."
 
-The grant set forth above concerning your distribution of implementations of the specification is
-contingent upon your agreement to terminate development and distribution of your "early draft"
-implementation as soon as feasible following final completion of the specification. If you fail to do
-so, the foregoing grant shall be considered null and void. No provision of this Agreement shall be
-understood to restrict your ability to make and distribute to third parties applications written to the
-Specification. Other than this limited license, you acquire no right, title or interest in or to
-the Specification or any other intellectual property of the Specification Lead, and the Specification
-may only be used in accordance with the license terms set forth herein. This license will expire on
-the earlier of: (a) two (2) years from the date of Release listed above; (b) the date on which the final
-version of the Specification is publicly released; or (c) the date on which the Java Specification
-Request (JSR) to which the Specification corresponds is withdrawn. In addition, this license will
-terminate immediately without notice from the Specification Lead if you fail to comply with any
-provision of this license. Upon termination, you must cease use of or destroy the Specification.
-"Licensor Name Space" means the public class or interface declarations whose names begin with "java",
-"javax", "com.oracle" or their equivalents in any subsequent naming convention adopted by Credit
-Suisse AG through the Java Community Process, or any recognized successors or replacements thereof.
+The grant set forth above concerning your distribution of
+implementations of the specification is contingent upon your
+agreement to terminate development and distribution of your
+"early draft" implementation as soon as feasible following final
+completion of the specification. If you fail to do so, the foregoing
+grant shall be considered null and void. No provision of this
+Agreement shall be understood to restrict your ability to make
+and distribute to third parties applications written to the
+Specification. Other than this limited license, you acquire no
+right, title or interest in or to the Specification or any other
+intellectual property of the Specification Lead, and the
+Specification may only be used in accordance with the license terms
+set forth herein. This license will expire on the earlier of:
+(a) two (2) years from the date of Release listed above; (b) the
+date on which the final version of the Specification is publicly
+released; or (c) the date on which the Java Specification Request
+(JSR) to which the Specification corresponds is withdrawn. In
+addition, this license will terminate immediately without notice
+from the Specification Lead if you fail to comply with any provision
+of this license. Upon termination, you must cease use of or destroy
+the Specification.
 
-TRADEMARKS
+"Licensor Name Space" means the public class or interface
+declarations whose names begin with "java", "javax", "com.oracle"
+or their equivalents in any subsequent naming convention adopted
+by Credit Suisse AG through the Java Community Process, or any
+recognized successors or replacements thereof.
 
-No right, title, or interest in or to any trademarks, service marks, or trade names of Credit Suisse AG
-or Credit Suisse AG's licensors is granted hereunder. Oracle, the Oracle logo, Java are trademarks or
-registered trademarks of Oracle USA, Inc. in the U.S. and other countries.
+*TRADEMARKS*
+
+No right, title, or interest in or to any trademarks, service
+marks, or trade names of Credit Suisse AG or Credit Suisse AG's
+licensors is granted hereunder. Oracle, the Oracle logo, Java
+are trademarks or registered trademarks of Oracle USA, Inc. in
+the U.S. and other countries.
 
 
-DISCLAIMER OF WARRANTIES
+*DISCLAIMER OF WARRANTIES*
 
-THE SPECIFICATION IS PROVIDED "AS IS" AND IS EXPERIMENTAL AND MAY CONTAIN DEFECTS OR DEFICIENCIES WHICH
-CANNOT OR WILL NOT BE CORRECTED BY THE SPECIFICATION LEADS. THE SPECIFICATION LEADS MAKE NO
-REPRESENTATIONS OR WARRANTIES, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO, WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT THAT THE CONTENTS OF THE
-SPECIFICATION ARE SUITABLE FOR ANY PURPOSE OR THAT ANY PRACTICE OR IMPLEMENTATION OF SUCH CONTENTS WILL
-NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADE SECRETS OR OTHER RIGHTS.
+THE SPECIFICATION IS PROVIDED "AS IS" AND IS EXPERIMENTAL AND
+MAY CONTAIN DEFECTS OR DEFICIENCIES WHICH CANNOT OR WILL NOT BE
+CORRECTED BY THE SPECIFICATION LEADS. THE SPECIFICATION LEADS MAKE
+NO REPRESENTATIONS OR WARRANTIES, EITHER EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT THAT THE
+CONTENTS OF THE SPECIFICATION ARE SUITABLE FOR ANY PURPOSE OR
+THAT ANY PRACTICE OR IMPLEMENTATION OF SUCH CONTENTS WILL NOT
+INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADE SECRETS OR
+OTHER RIGHTS.
 
-This document does not represent any commitment to release or implement any portion of the Specification
-in any product.
+This document does not represent any commitment to release or
+implement any portion of the Specification in any product.
 
-THE SPECIFICATION COULD INCLUDE TECHNICAL INACCURACIES OR TYPOGRAPHICAL ERRORS. CHANGES ARE PERIODICALLY
-ADDED TO THE INFORMATION THEREIN; THESE CHANGES WILL BE INCORPORATED INTO NEW VERSIONS OF THE
-SPECIFICATION, IF ANY. THE SPECIFICATION LEADS MAY MAKE IMPROVEMENTS AND/OR CHANGES TO THE PRODUCT(S)
-AND/OR THE PROGRAM(S) DESCRIBED IN THE SPECIFICATION AT ANY TIME.
+THE SPECIFICATION COULD INCLUDE TECHNICAL INACCURACIES OR
+TYPOGRAPHICAL ERRORS. CHANGES ARE PERIODICALLY ADDED TO THE
+INFORMATION THEREIN; THESE CHANGES WILL BE INCORPORATED INTO
+NEW VERSIONS OF THE SPECIFICATION, IF ANY. THE SPECIFICATION
+LEADS MAY MAKE IMPROVEMENTS AND/OR CHANGES TO THE PRODUCT(S)
+AND/OR THE PROGRAM(S) DESCRIBED IN THE SPECIFICATION AT ANY
+TIME.
 
-Any use of such changes in the Specification will be governed by the then-current license for the
-applicable version of the Specification.
+Any use of such changes in the Specification will be governed
+by the then-current license for the applicable version of the
+Specification.
 
-LIMITATION OF LIABILITY
+*LIMITATION OF LIABILITY*
 
-TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL THE SPECIFICATION LEADS AND/OR THEIR LICENSORS
-BE LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION, LOST REVENUE, PROFITS OR DATA, OR FOR SPECIAL,
-INDIRECT, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND REGARDLESS OF THE THEORY
-OF LIABILITY, ARISING OUT OF OR RELATED TO ANY FURNISHING, PRACTICING, MODIFYING OR ANY USE OF THE
-SPECIFICATION, EVEN IF CREDIT SUISSE AND/OR ITS LICENSORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH
+TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL THE
+SPECIFICATION LEADS AND/OR THEIR LICENSORS BE LIABLE FOR ANY
+DAMAGES, INCLUDING WITHOUT LIMITATION, LOST REVENUE, PROFITS OR
+DATA, OR FOR SPECIAL, INDIRECT, CONSEQUENTIAL, INCIDENTAL OR
+PUNITIVE DAMAGES, HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF
+LIABILITY, ARISING OUT OF OR RELATED TO ANY FURNISHING, PRACTICING,
+MODIFYING OR ANY USE OF THE SPECIFICATION, EVEN IF CREDIT SUISSE
+AND/OR ITS LICENSORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH
 DAMAGES.
 
-You will hold the Specification Lead (and its licensors) harmless from any claims based on your use of
-the Specification for any purposes other than the limited right of evaluation as described above, and
-from any claims that later versions or releases of any Specification furnished to you are incompatible
-with the Specification provided to you under this license.
+You will hold the Specification Lead (and its licensors) harmless
+from any claims based on your use of the Specification for any
+purposes other than the limited right of evaluation as described
+above, and from any claims that later versions or releases of any
+Specification furnished to you are incompatible with the
+Specification provided to you under this license.
 
-RESTRICTED RIGHTS LEGEND
+*RESTRICTED RIGHTS LEGEND*
 
-If this Software is being acquired by or on behalf of the U.S. Government or by a U.S. Government prime
-contractor or subcontractor (at any tier), then the Government's rights in the Software and accompanying
-documentation shall be only as set forth in this license; this is in accordance with 48 C.F.R. 227.7201
-through 227.7202-4 (for Department of Defense (DoD) acquisitions) and with 48 C.F.R. 2.101 and 12.212
-(for non-DoD acquisitions)
+If this Software is being acquired by or on behalf of the U.S.
+Government or by a U.S. Government prime contractor or subcontractor
+(at any tier), then the Government's rights in the Software and
+accompanying documentation shall be only as set forth in this license;
+this is in accordance with 48 C.F.R. 227.7201 through 227.7202-4 (for
+Department of Defense (DoD) acquisitions) and with 48 C.F.R. 2.101
+and 12.212 (for non-DoD acquisitions)
 
-REPORT
+*REPORT*
 
-You may wish to report any ambiguities, inconsistencies or inaccuracies you may find in connection with
-your evaluation of the Specification ("Feedback"). To the extent that you provide the Specification Lead
-with any Feedback, you hereby:
-(i) agree that such Feedback is provided on a non-proprietary and non-confidential basis, and
-(ii) grant the Specification Lead a perpetual, non-exclusive, worldwide, fully paid-up, irrevocable
-     license, with the right to sublicense through multiple levels of sublicensees, to incorporate,
-     disclose, and use without limitation the Feedback for any purpose related to the Specification
-     and future versions, implementations, and test suites thereof.
+You may wish to report any ambiguities, inconsistencies or
+inaccuracies you may find in connection with your evaluation of
+the Specification ("Feedback"). To the extent that you provide
+the Specification Lead with any Feedback, you hereby:
+(i) agree that such Feedback is provided on a non-proprietary and
+    non-confidential basis, and
+(ii) grant the Specification Lead a perpetual, non-exclusive,
+     worldwide, fully paid-up, irrevocable license, with the right
+     to sublicense through multiple levels of sublicensees, to
+     incorporate, disclose, and use without limitation the
+     Feedback for any purpose related to the Specification and
+     future versions, implementations, and test suites thereof.
 
-GENERAL TERMS
+*GENERAL TERMS*
 
-Any action related to this Agreement will be governed by California law and controlling U.S. federal law.
-The U.N. Convention for the International Sale of Goods and the choice of law rules of any jurisdiction
-will not apply. The Specification is subject to U.S. export control laws and may be subject to export or
-import regulations in other countries. Licensee agrees to comply strictly with all such laws and
-regulations and acknowledges that it has the responsibility to obtain such licenses to export, re-export
-or import as may be required after delivery to Licensee.
-This Agreement is the parties' entire a greement relating to its subject matter. It supersedes all prior
-or contemporaneous oral or written communications, proposals, conditions, representations and warranties
-and prevails over any conflicting or additional terms of any quote, order, acknowledgment, or other
-communication between the parties relating to its subject matter during the term of this Agreement. No
-modification to this Agreement will be binding, unless in writing and signed by an authorized
-representative of each party.
---------
+Any action related to this Agreement will be governed by California
+law and controlling U.S. federal law. The U.N. Convention for the
+International Sale of Goods and the choice of law rules of any
+jurisdiction will not apply. The Specification is subject to U.S.
+export control laws and may be subject to export or import
+regulations in other countries. Licensee agrees to comply strictly
+with all such laws and regulations and acknowledges that it has
+the responsibility to obtain such licenses to export, re-export or
+import as may be required after delivery to Licensee. This Agreement
+is the parties' entire a agreement relating to its subject matter.
+It supersedes all prior or contemporaneous oral or written
+communications, proposals, conditions, representations and
+warranties and prevails over any conflicting or additional terms of
+any quote, order, acknowledgment, or other communication between the
+parties relating to its subject matter during the term of this
+Agreement. No modification to this Agreement will be binding,
+unless in writing and signed by an authorized representative of
+each party.
 
 :numbered:
 
 <<<
+
 == Introduction
 This document is the specification of the Java API for Money and Currency. The technical objective is to provide a money
 and currency API for Java, targeted at all users of currencies and monetary amounts, both simple but also extendible.
@@ -187,7 +242,7 @@ and formulas.
 Additionally, this JSR includes recommendations on interoperability and thread safety.
 
 === Expert group
-This work is being conducted as part of JSR 354 under the Java Community Process Program. This specification is the
+This work is being conducted as part of JSR 354 under the Java Community Process. This specification is the
 result of the collaborative work of the members of the JSR 354 Expert Group and the community at large. The following
 persons have actively contributed to Java Money in alphabetical order:
 
@@ -211,7 +266,7 @@ persons have actively contributed to Java Money in alphabetical order:
 
 === Specification goals
 Monetary values are a key feature of many applications, yet the JDK provides little or no support.
-The existing +java.util.Currency+ class is strictly a structure used for representing current  [ISO-4217] currencies,
+The existing +java.util.Currency+ class is strictly a structure used for representing current [<<ISO-4217>>] currencies,
 but not associated values or custom currencies. The JDK also provides no support for monetary arithmetic or currency
 conversion, nor for a standard value type to represent a monetary amount.
 
@@ -230,10 +285,11 @@ Nevertheless the API was designed to support different implementations of moneta
 several ways. So it should be flexible enough that corresponding implementations can be used transparently to
 accommodate such applications.
 
+[[Scope]]
 === Scope
 JSR 354 targets a standalone scope. Nevertheless it may be included into the JDK later, so its design and scope must
 consider integration into the JDK. Additionally the work on the JSR has shown, that it is possible to define a flexible
-and comprehensive API that is also compatible with most Java ME profiles. Since with the Internet of Things small
+and comprehensive API that is also almost compatible with most Java ME. Since with the Internet of Things small
 devices are getting more important, and there is high probability that monetary aspects must be implemented, the expert
 group decided to keep the API independent of JDK artifacts that are not supported on ME, especially +java.math+ and
 +java.text+. Nevertheless the reference implementation is free to use existing functionality and the JSR also includes
@@ -253,17 +309,20 @@ the parts best suited to standardization were identified. Where beneficial to th
 project may also use Java 8 features like Lambdas when Java 8 goes final,  while the JSR remains backward-compatible
 with Java 7 in first release, see below.
 
+Including this JSR into the JDK at a time later time would be an option that should be discussed within a corresponding
+Java Enhancement Proposal (JEP). For the time being the JSR focuses on the key monetary aspects to be modeled.
+
 === Required Java version
 The specification is based on Java SE 7.0 language features. Implementations may target any suitable Java SE version,
 or given an increasing SE/ME correlation also matching ME versions like CLDC 8.
 Hereby this decision was done with caution. There are many financial applications and products that will require years
 until they were migrated to Java 8. Depending on Java 8 on the API side, would make it impossible to use them in such
 scenarios for a very long time and would definitely decrease the adoption rate of this JSR significantly. Additionally
-there are only a few aspects within the API that would be affected by building everything right based on Java 8.
+there are only a few aspects within the API that would be affected by building the API based on Java 8.
 Especially the usage of functional interfaces is already part of this specification and will be supported without any
 change, when this JSR is used with Java 8. Another aspect is the usage of JSR 310 date and time types. This JSR does
-not depend on these types in the API, but provides mechanisms to enable usage of these types (attributable contexts).
-The main reason is that JDK 7 is targeted. Generally a wider compatibility of the JSR with different Java version and
+not depend on these types in the API, but provides mechanisms to enable usage of these types (by attributable contexts).
+Generally a wider compatibility of the JSR with different Java version and
 runtime environments was decided to be more important than depending on Java 8 features within this release already.
 
 === How this document is organized
@@ -277,6 +336,7 @@ There are five main section in this document:
 
 <<<
 
+[[Use Cases]]
 Use Cases
 ---------
 This section describes some, but not all, of the use cases that should be covered with this JSR. 
@@ -296,15 +356,18 @@ Summarizing this scenario implies the following requirements:
   requires formatting of amounts and currencies according to the user’s Locale.
 
 -> When changing the currency of a shopping cart, the catalog prices must be recalculated in the new target currency.
-  This requires accessing an exchange rate to be used and calculating the item amounts with the new currency, including
-  multiplication and division.
+  This requires accessing an exchange rate to be used and calculating the item amounts with the new currency by
+  performing _currency conversion_.
 
 -> When a customer finally places an order, the total amount must be calculated, which may involve tax calculation.
-  This also requires multiplication of prices and rounding to a bookable amount (depending on the target currency).
+  This also requires multiplication of prices and flexible rounding to a bookable amount (depending on the target
+  currency).
 
 -> Finally the amount to withdrawn from the credit card must be passed to a server system, that handles credit card
-  payment. This includes serialization of the amount.
+  payment. This includes serialization of the amount and/or special formatting of the amount into the format required by
+  the remote server.
 
+[[TrradingScenario]]
 === Scenario Trading Site
 On a financial trading system or a site displaying several financial information such as quotes, additional aspects must
 be considered. Basically, since for real time data must be paid, often data is displayed that is so called deferred.
@@ -332,6 +395,7 @@ Summarizing this scenario implies the following requirements:
 This implies that access to financial data may be restricted based on several not predictable classifications that must
 not match a country or locale.
 
+[[GameScenario]]
 === Scenario Virtual Worlds and Game Portals
 Virtual worlds, e.g. online games, define their own game money (but also Facebook has its own money). User’s may obtain
 such virtual money by paying some real amount, e.g. by credit card. This usage scenario implies the following
@@ -345,6 +409,7 @@ requirements:
 
 -> Since such exchange rates may change during time, historization must also be supported.
 
+[[SocialMarketsScenario]]
 === Scenario Social Markets
 Within social markets things are exchanged using a completely virtual currency, which has no relation to any real
 currency. It is used as an arbitrary measurement of something meaningful only to that social community. This usage
@@ -352,6 +417,7 @@ scenario implies the following requirements:
 
 -> It must be possible to model virtual currencies that are able to completely replace any real currency schemes.
 
+[[FinanceScenario]]
 === Scenario Banking & Financial Applications
 Applications in financial institutes, such as a bank or insurance companies must model monetary information in several
 ways: exchange rates, interest rates, stock quotes, current as well as historic currencies must be supported. Typically
@@ -364,8 +430,10 @@ nevertheless have different banknotes and coins per country. Also there are ambi
 +USD, USS, USN+, which all describe US dollars.
 This usage scenario implies the following requirements:
 
--> Currencies as well as exchange rates must be historic, and define their time validity range. The same may also be
-   +true+ for rounding algorithms.
+-> Currencies as well as exchange rates must be historic, regional, and define their time validity range.
+   Currencies available may depend further from contract, current tenant or other aspects. The same may also be
+   +true+ for rounding algorithms. As a access to these features must be very flexible and capable of behaving
+   different depending on the current runtime context.
 
 -> Customized or legacy system in big financial institutions may define additional, arbitrary currency variants.
 
@@ -374,6 +442,7 @@ This usage scenario implies the following requirements:
 
 -> Currencies of different type, must be mappable to each other.
 
+[[PensionScenario]]
 === Scenario Insurance & Pension
 Complex calculation models are used within insurance and pension solutions, e.g. for scenario simulation and
 forecasting. Different countries, companies or even investment strategies, have rather different models implemented,
@@ -391,6 +460,7 @@ strategy forecasts on an enterprise level. Such systems imply the following requ
 
 <<<
 
+[[Requirements]]
 Requirements
 ------------
 === Core Requirements
@@ -403,7 +473,7 @@ Based on the scope and use cases described above the following core requirements
   define an implementation that is capable of covering all aspects identified. Consequently it must be possible that
   implementations can provide several implementations for monetary amounts.
 . The JSR must specify extension points for adding additional logic, e.g. for extending the arithmetic capabilities,
-  rounding etc.
+  rounding, statistics, filtering etc.
 . The API for monetary amounts must allow to externalize the numeric part of an amount to the most useful representation
   on a runtime platform. Similarly it must be possible to create a new amount instance using an existing amount as a
   template, hereby changing currency and/or numeric part as required. This ensures maximal portability and allows
@@ -412,6 +482,7 @@ Based on the scope and use cases described above the following core requirements
   defined by a monetary context.
 . The JSR must also support arbitrary custom roundings.
 
+[[RequirementsFormatting]]
 === Formatting Requirements
 It must be possible to format and parse monetary amounts. Therefore the JSR defines a +MonetaryAmountFormat+, which:
 
@@ -424,10 +495,13 @@ It must be possible to format and parse monetary amounts. Therefore the JSR defi
   different grouping sizes applied, e.g. +INR 12,34,56,000.21+]
 . supports rounding of amounts for display and reverse rounding during parsing.
 
+[[RequirementsFormattingEE]]
 === EE and ME Support
 . This JSR must avoid restrictions that prevents its use in different runtime environments, such as EE or ME. Thus e.g.
-direct references to elements in java.math and java.text which is not supported by Java ME so far must be avoided.
+direct references to elements in java.math and java.text which is not supported by Java ME so far must be avoided. Refer
+also to the section <<Boostrap>> for more details on possible EE/CDI integration.
 
+[[RequirementsNonFunctional]]
 === Non Functional Requirements
 . Since this JSR may be a good candidate to be included into the JDK later, any possible extensions to the Java platform
   must be fully backward compatible.
@@ -440,7 +514,7 @@ direct references to elements in java.math and java.text which is not supported 
   be necessary normally.
 . The API for monetary amounts must not expose its concrete numeric internal representation during compile time.
 . Where feasible method naming and style for currency modelling should be in alignment with parts of the Java
-  Collection API or +java.time+ / [JodaMoney]:
+  Collection API or +java.time+ / [<<JodaMoney>>]:
    .. same method name prefixes - +of()+ for all factories, unless their inheritance e.g. from +java.lang.Enum+ -
       mandates otherwise, such as +valueOf()+.
    .. basic creational factory methods with little/no conversion are named +of(...)+
@@ -454,29 +528,34 @@ direct references to elements in java.math and java.text which is not supported 
   +System.currentTimeMillis()+) are used. These timestamps are modelled as +long+. Since this JSR
   is based on Java 7, the new date and time types introduced with Java 8 are not used as part of this API.
   Nevertheless the context types that can be passed to different methods allow to use these types as needed.
-  Refer to the example section for according samples.
+  Refer to the <<Examples>> section for according samples.
 . This JSR will be used also for (business) critical software like real time trading and similar systems.
   These systems and use cases require very specific parameters, which are impossible to model by this JSR and
-  may also very different for each use case, provider and/or company. As a solution attributable context can be
-  passed optionally that can contain any parameters needed.
+  may also very different for each use case, provider and/or company. As a solution attributable contexts can be
+  passed optionally that can contain arbitrary parameters needed.
 . Though performance aspects can not directly targeted by this JSR, it is important that the JSR considers performance
   aspects, where possible, so provided implementations are able to optimize performance as required by the usage
   scenarios they are targeting.
 
+[[Specification]]
 Specification
 -------------
 === Package and Project Structure
 ==== Package Overview
 The JSR defines three packages:
 
-+javax.money+:: contains the main artifacts, such as +CurrencyUnit, MonetaryAmount, MonetaryOperator, MonetaryQuery+,
-  accessors for rounding etc.
-+javax.money.format+:: contains the formatting artifacts.
-+javax.money.spi+:: contains the SPI interfaces provided by the JSR 354 API and the bootstrap logic, to support
++javax.money+:: contains the main artifacts, such as +CurrencyUnit, MonetaryAmount, MonetaryContext, MonetaryOperator,
+MonetaryQuery+, and the singleton accessors +MonetaryCurrencies, MonetaryAmounts, MonetaryRoundings+.
+
++javax.money.format+:: contains the formatting artifacts +MonetaryAmountFormat, AmountFormatContext+ and the according
++MonetaryFormats+ accessor singleton.
+
++javax.money.spi+:: contains the <<SPI>> interfaces provided by the JSR 354 API and the bootstrap logic, to support
   different runtime environments and component loading mechanisms.
 
+[[Modules]]
 ==== Module/Repository Overview
-The JSR’s source code repository under [[source]] provides several modules:
+The JSR’s source code repository under [<<source>>] provides several modules:
 
 money-api:: contains the JSR 354 API as described also be this specification.
 moneta:: contains the reference implementation. footnote:[Note that the reference implementation is not a required be
@@ -489,6 +568,7 @@ javamoney-lib:: contains a financial library (JavaMoney) adding comprehensive su
   functionality, built on top of this JSR, but not part of the JSR.
 javamoney-examples:: finally contains the examples and demos, and also is not part of this JSR.
 
+[[CoreAPI]]
 === Money and Currency Core API
 The package +javax.money+ contains the types representing currencies and monetary amounts, the core exceptions as well
 as supporting types for rounding and the extensions API. Hereby the main artifacts are as follows:
@@ -508,21 +588,22 @@ as supporting types for rounding and the extensions API. Hereby the main artifac
 * the +MonetaryAmountFactory+ finally represents an abstraction for creating new instances of amounts. Besides setting
   an amount currency and number value, it allows also to change the numeric capabilities, if the underlying
   implementation supports doing this. The capabilities available for a concrete factory can be queried by accessing
-  the 'default' and the 'maximal' +MonetaryContext+.
+  the 'default' and the 'maximal' +MonetaryContext+ of the underyling amount type.
 * +MonetaryContext+ models the numeric capabilities of an instance as an immutable and platform independent type.
 * +MonetaryException+ is the base exception class for the money API, it extends +java.lang.RuntimeException+.
 
-image::api.jpg[align=center]
+image::api.jpg[align=center,scale=80]
 
-The overview diagram above shows that the main abstractions are modeled as interfaces. There are people that would argue,
-that concrete immutable value types should be used to model a monetary amount. This topic was discussed intensively
-in the expert group, some of the aspects considered include:
+The overview diagram above shows that the main abstractions are modeled as interfaces.
 
-* Using a concrete type as the model for a monetary amount implies a string relation to a numeric representation.
+[NOTE]
+=======================================================================
+There are people that would argue, that concrete immutable value types should be used to model a monetary amount.
+This topic was discussed intensively in the expert group, some of the aspects considered include:
+
+* Using a concrete type as the model for a monetary amount implies a strong coupling to a numeric representation.
   Unfortunately, as seen in the use cases and requirements sections, performance and precision are conflicting
-  requirements. Additionally, though not explicitly in scope, low latency systems may even require amounts to be mutable
-  to able to cover the strong performance requirements. So modelling the amount as a concrete type would effectively
-  prevent the flexibility that is required.
+  requirements. So modelling the amount as a concrete type would effectively prevent the flexibility that is required.
 * Also using self-referencing template parameters was considered. The disadvantage is that you still have to know the
   concrete class. In that case you could also use the concrete class directly, instead of using non trivial generics
   semantics. Additionally in many cases these complex semantics would lead quite probably to broad usage of raw types,
@@ -531,6 +612,7 @@ in the expert group, some of the aspects considered include:
   level and still does not prevent its use in high performance, low latency scenarios. As a side effect it also allowed
   us to design it completely platform independent. Though not primarily in focus the JSR 354 API is completely platform
   independent.
+=======================================================================
 
 Nevertheless for an API to be complete, you need some type of concrete classes as entry points. Since the API is
 designed as a standalone APIs the singleton accessor patterns are a good choice, so also this API provides according
@@ -548,6 +630,7 @@ Basically the diagram above illustrates well the core accessors available:
 
 The following sections will describe these artifacts in more detail.
 
+[[CurrencyModel]]
 ==== Modeling of Currencies
 When thinking of monetary values it is inevitable to think on how a currency must be modeled. Although the JDK already
 provides a +java.util.Currency+ class, this JSR’s expert group discussed, if the existing abstraction is sufficient or
@@ -581,7 +664,11 @@ Hereby
 * the method +getCurrencyCode()+ returns the unique currency code. Nevertheless since +CurrencyUnit+ also models non
   ISO currencies, the semantics for other currency types may be different: For 'ISO' currencies this will the 3-letter
   uppercase ISO code. For non ISO currencies no constraints are defined.
-* the numeric code returned by +getNumericCode()+ is optional. If not defined it must be +-1+.
+* the numeric code returned by +getNumericCode()+ is optional. If not defined it must be +-1+. In case of ISO
+  currencies the code must match the value of the corresponding ISO code. For alternate currency scheme, if
+  useful numeric code is defined for the currency, this code should be reflected accordingly. A numeric code
+  is defined to be unique within an underlying currency scheme, though the JSR dies only support accessing
+  currencies using their (unique) currency code.
 * the default fraction digits define the typical scale of values with a given currency.
 
 Implementations of +CurrencyUnit+
@@ -592,6 +679,7 @@ Implementations of +CurrencyUnit+
 . must be immutable and thread safe.
 . must be serializable.
 
+[[AmountModel]]
 ==== Modeling of Monetary Amounts
 Modeling of monetary amounts agnostic to its concrete numeric representation was one of the key design decisions. The
 final design is intended to provide for implementors to handle very different use cases with distinct requirements.
@@ -608,8 +696,8 @@ by an interface, called +javax.money.MonetaryAmount+. In general the following a
    ** currency modeled as +CurrencyUnit+.
    ** number value, for externalization, modeled as +NumberValue+.
    ** accessing basic numeric state such as _negative, positive_ etc.
-   ** Methods for evaluating the numeric capabilities of the concrete type.
-* _Prototyping support_ for creating new amount instances based on the same implementation, modeled by a
+   ** Methods for evaluating the _numeric capabilities_ of the concrete type.
+* _Prototyping support_ for creating new +MonetaryAmount+ instances based on the same implementation, modeled by a
   +MonetaryAmountFactory+, which is accessible from each instance.
 * _Comparison methods_ for comparing two arbitrary amounts of the same currency, hereby comparing based on the (effective)
   numeric value (e.g. ignoring trailing zeroes).
@@ -723,7 +811,7 @@ The interfaces +MonetaryOperator+ and +MonetaryQuery<R>+ provide a powerful exte
 operate as a form of the strategy pattern, allowing the algorithm of a query or operation to be external to the
 implementation of MonetaryAmount. Their design matches JSR-310 (date & time).
 
-
+[[NumberModel]]
 ==== Externalizing the Numeric Value of an Amount
 In the previous section we have discussed the basic model of a monetary amount. For data interoperability between
 different implementations it is very important that the numeric value of an amount can be effectively be externalized.
@@ -768,7 +856,7 @@ Hereby
   target type. The types supported are similar to +numberValue(Class)+.
 . +getPrecision(), getScale()+ allows to access the current precision and scale of the numeric value.
 
-
+[[ExtensionPointModel]]
 ====  Functional Extension Points: Operators and Queries
 Since the model for monetary amounts only defines a minimal set of algorithmic functions and a prototyping mechanism
 additional extension points are required to allow easily external functionality, e.g. more complex financial
@@ -779,7 +867,7 @@ operations, being applied on amounts. This is modelled by
 
 image:extensionPoints.jpg[align=center]
 
-
+[[OperatorModel]]
 ===== Monetary Operators
 The interface +javax.money.MonetaryOperator+ defines an arbitrary function a function +f(M1) -> M2+, that converts an
 amount to another amount. Examples of such operations are rounding or monetary calculations:
@@ -846,6 +934,7 @@ So the following statements must also always be apply:
 NOTE: The operator interface is equivalent to the +UnaryOperator+ interface in JDK 8 which is a functional interface suitable
 for use with lambdas.
 
+[[QueryModel]]
 ===== Monetary Queries
 The interface +javax.money.MonetaryQuery+ models a function +f(M1) -> T+, that converts an amount to any type of result:
 
@@ -885,6 +974,7 @@ boolean is4eyesPrincipleNeeded = amount.query(check4eyesPrincipleNeeded);
 NOTE: The query interface is equivalent to the +Function+ interface in JDK 8 which is a functional interface suitable for use
 with Lambda expressions.
 
+[[MonetaryContext]]
 ==== The Monetary Context
 This monetary context models the numeric capabilities of an monetary amount (implementation) in a platform independent
 way. Though it is similar to +java.math.MathContext+ for +BigDecimal+ it is far more flexible, since different
@@ -986,6 +1076,7 @@ MonetaryContext ctx = new MonetaryContext.Builder()
  .build();
 -------------------------------------------------------------------------------
 
+[[CreatingAmounts]]
 ==== Creating Monetary Amount Instances
 Basically new instances of +MonetaryAmount+ can be created in different ways. One way footnote:[Types may also be
 instantiated directly depending on the implementation.] will be by using factories,
@@ -1054,6 +1145,7 @@ Hereby
 *** If the current implementation is not able to reflect the numeric value required without doing any truncation, it
     must throw an +ArithmeticException+.
 
+[[SingletonAccessors]]
 ==== Accessing Currencies, Amounts and Roundings
 All JSR's main artifacts are accessible by corresponding singleton accessor classes. Hereby to exact behaviour oif the
 singletons are all delegeated to according SPI's so in different environment, it is possible to implement runtime
@@ -1062,6 +1154,7 @@ component lifecycle. The following diagram shows an overview:
 
 image::apisingletons.jpg[align=center]
 
+[[AccessingCurrencies]]
 ===== Accessing Currencies
 
 image:accessingCurrencies.jpg[align=center]
@@ -1096,7 +1189,9 @@ Hereby
 * finally +getCurrencies()+ allows to access all currencies currently known by this singleton (which delegates to
   the known +MonetaryCurrencyProviderSpi+ instances).
 
-NOTE: One may consider also adding access to historic currencies here. The problem hereby is that the existence of a
+[NOTE]
+=======================================================================
+One may consider also adding access to historic currencies here. The problem hereby is that the existence of a
 currency is related to multiple attributes:
 
 * the target timestamp, when it should be valid, e.g. as UTC timestamp. Or a local date similar to +LocalDate+ in
@@ -1108,7 +1203,9 @@ currency is related to multiple attributes:
 Summarizing adding historic currency support was considered to be not appropriate for being added to a core API.
 Nevertheless in the 'JavaMoney library' historic currencies can be accessed, related to corresponding countries,
 modeled as so called regions.
+=======================================================================
 
+[[AccessingAmountFactories]]
 ===== Accessing Monetary Amount Factories
 The +javax.money.MonetaryAmounts+ singleton class implements an accessor for +MonetaryAmountFactory+ instances. Hereby
 for not hard-coding the selection algorithm and for enabling contextual behaviour in a EE context, the singleton is
@@ -1155,6 +1252,7 @@ javax.money.defaults.amount.class=my.fully.qualified.MonetaryAmountType
 IMPORTANT: Implementations of this JSR must "at least provide one implementation of
 +MonetaryAmountFactoryProviderSpi+ with a query policy equal to +QueryInclusionPolicy.ALWAYS+*.
 
+[[AccessingRoundings]]
 ===== Accessing Roundings
 Rounding is modeled by implementations of +MonetaryOperator+. Hereby beside mathematical roundings, also non standard
 variants with arbitrary rules and constraints are quite common in the financial area.
@@ -1233,7 +1331,7 @@ cases:
 
 Instances of this value type can be created using an instance of +RoundingContext.Builder+.
 
-
+[[FunctionalSupport]]
 ==== Additional Functional Support
 Though this JSR is not targeting JDK 8 for good reasons, functional aspects are already considered in its design. For
 example monetary operators and monetary queries basically are functional interfaces. Additional access the the numeric
@@ -1241,7 +1339,7 @@ part as well as to the currency of an amount is modeled with corresponding _func
 
 image:functionalSupport.jpg[align=center]
 
-
+[[CurrencySupplier]]
 ===== CurrencySupplier
 The interface +javax.money.CurrencySupplier+ is a functional interface (the +CurrencyUnit+ -producing specialization of
 a +Supplier+ as defined in Java 8), whose functional method is +getCurrency()+:
@@ -1259,7 +1357,7 @@ Hereby
 
 * There is no requirement that a distinct result be returned each time the supplier is invoked.
 
-
+[[NumberSupplier]]
 ===== NumberSupplier
 The interface +javax.money.NumberSupplier+ is a functional interface (the +NumberValue+ -producing specialization of a
 +Supplier+ as defined in Java 8), whose functional method is +getNumberValue()+:
@@ -1277,7 +1375,7 @@ Hereby
 
 * There is no requirement that a distinct result be returned each time the supplier is invoked.
 
-
+[[Exceptions]]
 ==== Exception Types
 
 The core API defines basically two exception types:
@@ -1296,6 +1394,7 @@ This runtime exception +extends MonetaryException+ and is thrown whenever
 * a +Locale+ given cannot be resolved into a corresponding +CurrencyUnit+ instance. The unresolvable +Locale+ passed is
   provided as a property on the exception as +public Locale getLocale();+.
 
+[[CurrencyConversion]]
 === Currency Conversion
 Currency conversion is an important aspects when dealing with monetary amounts. Unfortunately currency conversion has
 a great variety of how it is implemented. Whereas a web shop may base its logic on an API provided by a financial
@@ -1310,6 +1409,7 @@ aspects, since
 
 Hereby this list is not complete. Different companies may have further requirements and aspects to be considered.
 
+[[AccessingConversions]]
 ==== Accessing Monetary Conversions
 The API defines a singleton accessor, called +MonetaryConversions+, which provides access to all different aspects
 related to currency conversion, such as
@@ -1355,11 +1455,12 @@ MonetaryAmount amount = ...;
 ExchangeRate rate = conversion.getExchangeRate(amount);
 -------------------------------------------------------------------------------
 
+[[ExchangeRates]]
 ==== Exchange Rates and Rate Providers
 The +ExchangeRate+ models the details of a conversion applied:
 
 * the base and terminating (target) +CurrencyUnit+.
-* the conversion factor used footnote:[Note that the conversion rate can be dependent on the +MonetaryAmount+ passed.] modeled as NumberValue.
+* the conversion factor used footnote:[Note that the conversion rate can be dependent on the +MonetaryAmount+ passed.] modeled as +NumberValue+.
 * additional information if the rate is derived, meaning built up the result of rate chain. If a rate is derived
   +getExchangeRateChain()+ returns the rate chain that is used to derive the given (final) exchange rate.
 * a +ConversionContext+, which can contain arbitrary additional information about the provider that issued the rate and
@@ -1387,7 +1488,7 @@ can be passed to parametrize the +CurrencyConversion+ or +ExchangeRate+ instance
 
 [source,java]
 .Usage Sample Create for Currency Conversion using Customized Parameters
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 ConversionContext ctx = new ConversionContext.Builder()
        .setRateType(RateType.DEFERRED).
        .setInt("customerID", 1234)
@@ -1403,12 +1504,13 @@ CurrencyConversion conversion = MonetaryConversions.getConversion("CHF", ctx);
 ExchangeRateProvider prov = MonetaryConversions.getExchangeRateProvider();
 CurrencyConversion conversion = prov.getCurrencyConversion("CHF", ctx);
 ExchangeRate rate = prov.getExchangeRate();
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 
 Important to understand is that its the responsibility of the used +ExchangeRateProvider+ implementation to interpret
 the attributes passed within a +ConversionContext+,  Unknown parameters should simply be ignored, since a provider can
 be used in a _provider chain_ (explained in the next section).
 
+[[ExchangeRateProviderChains]]
 ==== Provider Chains
 Reading the previous sections one might ask, how multiple providers can be used or how an individual rate provider can
 be accessed. In fact all the examples seen so far rely on the default provider chain that may be accessed by calling
@@ -1425,10 +1527,10 @@ ProviderContext [attributes={class java.lang.String={PROVIDER=Compound: ECB}}]
 
 [source,java]
 .Usage Sample Accessing the default Exchange Rate Provider Chain
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 // Accessing the default provider chain, configurable in javamoney.properties
 List<String> providerIds = MonetaryConversions.getDefaultProviderChain();
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 
 Similar to the +ConversionContext+ the +ProviderContext+ may contain additional data about the rate provider, such as
 the range and type of rates provided etc. Each +ProviderContext+ can also be obtained from the +MonetaryConversions+
@@ -1436,9 +1538,9 @@ singleton, passing the corresponding provider name:
 
 [source,java]
 .Accessing an ExchangeRateProvider's context
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 ProviderContext ctx = MonetaryConversions.getProviderContext("ECB");
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 
 As mentioned accessing a currency conversion or rate provider, without passing the providers required returns the
 default provider chain. So the following two statements are equivalent, given the default chain is +"ECB", "IMF",
@@ -1461,11 +1563,12 @@ available in the current context:
 
 [source,java]
 .Usage Example: Accessing ExchangeRateProvider instances
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 public static Collection<String> getProviderNames();
 public static boolean isProviderAvailable(String providerName);
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 
+[[FormattingAPI]]
 === Money and Currency Formatting API
 The formatting aspects modeled by several artifacts. Hereby some similarities with artifacts from JDK’s
 +java.text+ package are not accidentally. Basically the formatter instance behaves similarly (e.g. is also mutable),
@@ -1526,7 +1629,7 @@ for a given +Locale+:
 
 [source,java]
 .Usage Example Formatting a MonetaryAmount
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 MonetaryAmountFactory<?> f = MonetaryAmounts.getDefaultAmountFactory();
 MonetaryAmount amount = f.setCurrency("CHF").setNumber(12.50).create();
 MonetaryAmountFormat format =
@@ -1534,14 +1637,14 @@ MonetaryAmountFormat format =
 String formatted = format.format(amount); // result: CHF 12,50
 amount = f.setCurrency("INR").setNumber(123456789101112.123456).create();
 formatted  = format.format(amount); // result: INR 123.456.789.101.112,12
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 
 For Indian Rupees (+INR+) it would be, of course, better using the Indian number format and different grouping sizes,
 for this we could define the corresponding +AmountFormatContext+ as illustrated below:
 
 [source,java]
 .Usage Example (continued) Formatting a MonetaryAmount
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 AmountFormatContext context = new AmountFormatContext.Builder(new Locale("","INR"))
                                 .withObject("groupSizes", new int[]{3,2]).build();
 MonetaryAmountFormat format = MonetaryAmountFormats.getAmountFormat(context);
@@ -1550,8 +1653,9 @@ MonetaryAmount amount =
           f.setCurrency("INR").setNumber(123456789101112.123456).create();
 String formatted = format.format(amount);
          // result: INR 12,34,56,78,91,01,112.12
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 
+[[ConfigureFormatting]]
 ==== Configuring a Monetary Amount Formatter
 As seen in the example above a +MonetaryAmountFormat+ can be configured using an +AmountFormatContext+ with arbitrary
 attributes, so also very complex and historic fomrats can be supported easily:
@@ -1590,7 +1694,7 @@ Hereby the above listing illustrates quite well, what are the minimal properties
   +112c233c445c566b778a899+. Now applying the same schema for grouping sizes, lets assume +3,2,5,4,1+. This will lead
   in combination with  before to the following output: +1c1c2c2c3344c55667b78a899+.
 
-
+[[AccessingFormats]]
 ==== Accessing Monetary Amount Formats
 The class +javax.money.format.MonetaryFormats+ models a singleton accessor for +MonetaryAmountFormat+ instances as
 provided by the +MonetaryAmountFormatProviderSpi+ instances registered. It provides access to +MonetaryAmountFormat+
@@ -1624,6 +1728,7 @@ successfully. It provides hereby additional info:
 * the original input +CharSequence+ passed to the +MonetaryAmountFormat+.
 * the error index within the input String, where parsing failed unrecoverable.
 
+[[SPI]]
 === Money and Currency SPI
 JSR 354 defines a complete API and provides a default reference implementation. An implementation of this API must
 provide several implementation services, called the SPI, to provide the effective functionality. The following diagram
@@ -1678,7 +1783,7 @@ All SPIs are contained in the package +javax.money.spi+. Summarizing the followi
   aspects, as the first a non null result returned by a provider is taken as result of a call. The prioritization of
   components is implicitly defined by the order of the components returned by the +ServiceProvider+ SPI implementation.
 
-
+[[CoreSPI]]
 ==== Core SPI
 ===== Registering Currencies
 By adding instances of +javax.money.spi.CurrencyProvider+ additional +CurrencyUnit+ instances can be registered into
@@ -1918,6 +2023,7 @@ customized logging Handler instances, so alternate logging backends can be used 
 
 The implementation that implements the API’s SPI may use a different logging approach.
 
+[[FormattingSPI]]
 ==== Formatting SPI
 ===== Prodivding Amount Formats
 The +MonetaryFormats+ singleton delegates creation of +MonetaryAmountFormat+ instances to registered instances of
@@ -1941,7 +2047,7 @@ Multiple instances of this interface can be registered hereby forming a chain of
 priority define the ordering within the chain. The first component in the chain, that returns a non-null result,
 determines the final result from calling +MonetaryFormats+.
 
-
+[[Bootstrap]]
 ==== The Bootstrapping Mechanism
 ===== Overview
 Basically the +Bootstrap+ singleton class is used by all API components to access instances of the different pluggable
@@ -1999,6 +2105,7 @@ Hereby
   ** the corresponding defaultList should be returned as a schedule (this also includes returning +null+).
   ** If the required numeric capabilities exceed the maximal supported +MonetaryContext+, a +MonetaryException+ must be thrown.
 
+[[Recommendations]]
 == Implementation Recommendations
 === Overview
 There are a couple of best practices in the area of financial applications and frameworks. This JSR does not require
@@ -2031,6 +2138,7 @@ When dealing with monetary amounts the following aspects should be considered:
 * Arithmetic operations should honor the advanced rules how rounding and truncation should be handled. Refer to the
   following sections for further details.
 
+[[NumericPrecision]]
 === Numeric Precision
 For financial applications precision and rounding is a very important aspect. Additionally that an incorrect arithmetic
 obviously has direct financial consequences, also legal aspects require specific precision and rounding to by applied.
@@ -2042,6 +2150,7 @@ The JSR's expert group identified the following important and distinct precision
 
 The following sections will explain things in more detail.
 
+[[InternalPrecision]]
 ==== Internal Precision
 Overview::
 This precision type is the most important one, since it is directly related/determined by the internal numeric
@@ -2085,6 +2194,7 @@ performed. This implies additional constraints:
   operation requires the creation of a new amount instance, as a consequence, all operations that exceed the numeric
   capabilities must throw an +ArithmeticException+ (basically no implicit truncation is allowed).
 
+[[ExternalPrecision]]
 ==== External Precision
 External precision is the precision applied, when the numeric part of a +MonetaryAmount+ is externalized, meaning a
 numeric part of an amount is accessed/converted into another numeric representation (e.g. calling +getNumber(Class),
@@ -2094,6 +2204,7 @@ reduction on externalization should never throw an exception, despite the method
 similar to +BigDecimal.longValueExact()+. The exact methods should then throw an exception, if the externalization
 would result in data loss (some sort of truncation must be performed).
 
+[[DisplayPrecision]]
 ==== Display Precision
 The precision used for displaying of monetary amounts on the screen, a printout or for passing values through technical
 systems, is completely dependent on the use cases. This JSR supports these scenarios with the possibility to apply
@@ -2135,19 +2246,19 @@ Since a corresponding +MonetaryAmountFactory+ is registered, a new instance can 
 
 [source,java]
 .Example Usage of MonetaryAmountFactory
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(Money.class);
 Money m = fact.withCurrency("USD").with(200.50).create();
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 Also a generic +MonetaryAmount+ instance can be accessed using a raw factory:
 
 [source,java]
 .Example Usage MonetaryAmountFactory
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 MonetaryAmount amt = MonetaryAmounts.getDefaultAmountFactory()
                                             .withCurrency("USD").with(200.50).create();
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 Still we can evaluate the amount’s type effectively:
 
@@ -2164,7 +2275,7 @@ additional attributes.
 
 [source,java]
 .Example Usage MonetaryContext
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 MonetaryContext ctx = m.getMonetaryContext();
 if(ctx.getMaxPrecision()==0){
    System.out.println("Unbounded maximal precision.");
@@ -2172,29 +2283,29 @@ if(ctx.getMaxPrecision()==0){
 if(ctx.getMaxScale()>=5){
    System.out.println("Sufficient scale for our use case, go for it.");
 }
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 Finally performing arithmetics in both above scenarios works similar as it is when using +java.math.BigDecimal+:
 
 [source,java]
 .Example Usage MonetaryArithmetics
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 MonetaryAmount amt = ...;
 amt = amt.multiply(2.0).subtract(1.345);
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 Also the sample above illustrates how algorithmic operations can be chained together, similar to builders. As
 mentioned also external functionality can be chained, using instances of +MonetaryOperator+:
 
 [source,java]
 .Example Function Chaining footnote:[+MonetaryFunctions+ is not part of the JSR, its just for illustration purposes.]
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 Money amt = Money.of("CHF", 200);
 amt = amt.multiply(2.12345).with(MonetaryRoundings.of())
                                 .with(MonetaryFunctions.minimal(100)).
                                         .multiply(2.12345).with(MonetaryRoundings.of())
                                         .with(MonetaryFunctions.percent(23));
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 ==== Numeric Precision and Scale
 Since the +Money+ class internally uses +java.math.BigDecimal+ the numeric capabilities match exact the capabilities
@@ -2203,10 +2314,10 @@ of +BigDecimal+. By default instances of Money use +MathContext.DECIMAL64+. But 
 
 [source,java]
 .Example Passing a MonetaryContext to the static factory method of Money
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 public static Money of(String currencyCode, Number number,
                            MonetaryContext context);
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 ==== Extending the API
 Now, one last thing to discuss is, how users can add their own functionality, e.g. by writing their own
@@ -2253,14 +2364,14 @@ just replacing +FastMoney+ with +Money+:
 
 [source,java]
 .Usage Example - FastMoney
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 FastMoney amt = FastMoney.of("CHF", 200);
 amt = amt.multiply(2.12345).with(MonetaryRoundings.of())
                            .with(MonetaryFunctions.min(100))
                            .multiply(2.12345)
                            .with(MonetaryRoundings.of())
                            .with(MonetaryFunctions.percent(23));
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 Of course, the +MonetaryContext+ is different than for +Money+:
 
@@ -2278,7 +2389,7 @@ A total of amounts can be calculated in multiple ways, one way is simply to chai
 
 [source,java]
 .Usage Example Calculating a Total
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 MonetaryAmount[] params = new MonetaryAmount[]{
                    Money.of("CHF", 100), Money.of("CHF", 10.20),
                          Money.of("CHF", 1.15),};
@@ -2286,13 +2397,13 @@ MonetaryAmount total = params[0];
 for(int i=1; i<params.length;i++){
    total = total.add(params[i]);
 }
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 As an alternate it is also possible to define a +MonetaryOperator+, which can be passed to all amounts:
 
 [source,java]
 .Example of total/add method
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 public class Total implements MonetaryOperator{
    private MonetaryAmount total;
 
@@ -2318,25 +2429,28 @@ public class Total implements MonetaryOperator{
    }
 
 }
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
-CAUTION: We are well aware of the fact that this implementation still has some severe drawbacks, but we decided for
+[CAUTION]
+=======================================================================
+We are well aware of the fact that this implementation still has some severe drawbacks, but we decided for
 simplicity to not add the following features:
 
 * the implementation can only handle one currency, a better implementation could also be _multi-currency_ capable.
 * The implementation above is not thread-safe.
+=======================================================================
 
 Now with the +MonetaryOperator+ totalizing looks as follows:
 
 [source,java]
 .Example Using Total/add method
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 Total total = new Total();
 for(int i=1; i<params.length;i++){
   total.with(params[i]);
 }
 System.out.println("TOTAL: " + total.getTotal());
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 A similar approach can also be used for other multi value calculations as used in statistics, e.g. average, median etc.
 
@@ -2357,20 +2471,20 @@ The same financial function now can be implemented for example as follows:
 
 [source,java]
 .Example Using Total/add method
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 public <T extends MonetaryAmount> T presentValue(
                                 T amt, BigDecimal rate, int periods){
     BigDecimal divisor = BigDecimal.ONE.add(rate).pow(periods);
     // cast should be safe for implementations that adhere to this spec
     return (T)amt.divide(divisor);
 }
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 This algorithm can be implemented as +MonetaryOperator+:
 
 [source,java]
 .Example Implementing a MonetaryOperator
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 public final class PresentValue implements MonetaryOperator{
      private BigDecimal rate;
      private int periods;
@@ -2394,7 +2508,7 @@ public final class PresentValue implements MonetaryOperator{
   }
   public String toString(){...}
 }
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 For simplicity we did not add additional feature such as caching of PresentValue instances using a static factory
 method, or precalculation of divisor matrices. Now given the +MonetaryOperator+ a present value can be
@@ -2402,12 +2516,12 @@ calculated as follows:
 
 [source,java]
 .Example Using a Financial Function
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 Money m = Money.of("CHF", 1000);
 // present value for an amount of 100, available in two periods,
 // with a rate of 5%.
 Money pv = m.with(new PresentValue(new BigDecimal("0.05"), 2));
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 
 === Performing Currency Conversion
@@ -2417,11 +2531,11 @@ numeric amount:
 
 [source,java]
 .Example Currency Conversion
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 MonetaryAmount inCHF =...;
 CurrencyConversion conv = MonetaryConversions.getConversion("EUR");
 MonetaryAmount inEUR = inCHF.with(conv);
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 Also we can define the providers to be used for currency conversion by passing the provider names explicitly:
 [source,java]
@@ -2433,7 +2547,7 @@ To cover also more complex usage scenarios we can also pass a +ConversionContext
 conversion, e.g.:
 
 [source,java]
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 MonetaryAmount inCHF =...;
 ConversionContext ctx = new ConversionContext().Builder()
                                  .set(MonetaryAmount.class, MonetaryAmount.class, inCHF)
@@ -2443,7 +2557,7 @@ ConversionContext ctx = new ConversionContext().Builder()
                            .set("contractId", "AA-1234.2")
                            .create();
 CurrencyConversion conv = MonetaryConversions.getConversion("EUR", ctx, "CS", "EZB", "IMF");
--------------------------------------------------------------------------------
+-------------------------------------------------------------------
 
 :numbered!:
 

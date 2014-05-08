@@ -72,11 +72,6 @@ public final class MonetaryContext extends AbstractContext implements Serializab
     private final Class<? extends MonetaryAmount> amountType;
 
     /**
-     * The generic amount bahavioral characteristics.
-     */
-    private final AmountFlavor flavor;
-
-    /**
      * Flag, if the scale is fixed. Fixed scaled numbers will always have a
      * scale of {@link #maxScale}.
      */
@@ -109,7 +104,6 @@ public final class MonetaryContext extends AbstractContext implements Serializab
         this.fixedScale = builder.fixedScale;
         this.maxScale = builder.maxScale;
         this.amountType = builder.amountType;
-        this.flavor = builder.amountFlavor;
     }
 
     /**
@@ -152,15 +146,6 @@ public final class MonetaryContext extends AbstractContext implements Serializab
         return amountType;
     }
 
-    /**
-     * Get the {@link AmountFlavor}.
-     *
-     * @return the {@link MonetaryAmount}s {@link AmountFlavor}.
-     */
-    public AmountFlavor getAmountFlavor(){
-        return flavor;
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -174,7 +159,6 @@ public final class MonetaryContext extends AbstractContext implements Serializab
         result = prime * result + (fixedScale ? 1231 : 1237);
         result = prime * result + maxScale;
         result = prime * result + ((amountType == null) ? 0 : amountType.hashCode());
-        result = prime * result + ((flavor == null) ? 0 : flavor.hashCode());
         result = prime * result + precision;
         return result;
     }
@@ -206,11 +190,6 @@ public final class MonetaryContext extends AbstractContext implements Serializab
             if(other.amountType != null)
                 return false;
         }else if(!amountType.equals(other.amountType))
-            return false;
-        if(flavor == null){
-            if(other.flavor != null)
-                return false;
-        }else if(!flavor.equals(other.flavor))
             return false;
         if(precision != other.precision)
             return false;
@@ -249,7 +228,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
 
     @Override
     public String toString(){
-        return "MonetaryContext [amountType=" + amountType + ", flavor=" + flavor + ", precision=" + precision +
+        return "MonetaryContext [amountType=" + amountType + ", precision=" + precision +
                 ", maxScale=" + maxScale + ", fixedScale=" + fixedScale + ", attributes=" + attributes + "]";
     }
 
@@ -273,11 +252,6 @@ public final class MonetaryContext extends AbstractContext implements Serializab
          * built.
          */
         private Class<? extends MonetaryAmount> amountType;
-        /**
-         * The basic required {@link AmountFlavor} of the {@link MonetaryAmount}
-         * implementation.
-         */
-        private AmountFlavor amountFlavor = AmountFlavor.UNDEFINED;
 
         /**
          * Flag that the scale of the {@link MonetaryContext} built is fixed to #maxScale.
@@ -317,7 +291,6 @@ public final class MonetaryContext extends AbstractContext implements Serializab
             this.maxScale = context.getMaxScale();
             this.fixedScale = context.isFixedScale();
             this.precision = context.getPrecision();
-            this.amountFlavor = context.getAmountFlavor();
         }
 
         /**
@@ -356,19 +329,6 @@ public final class MonetaryContext extends AbstractContext implements Serializab
          */
         public Builder setFixedScale(boolean fixedScale){
             this.fixedScale = fixedScale;
-            return this;
-        }
-
-        /**
-         * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to
-         * {@code fixedScale}.
-         *
-         * @param flavor the {@link AmountFlavor} to be used, not {@code null}.
-         * @return the {@link Builder}, for chaining.
-         */
-        public Builder setFlavor(AmountFlavor flavor){
-            Objects.requireNonNull(flavor);
-            this.amountFlavor = flavor;
             return this;
         }
 

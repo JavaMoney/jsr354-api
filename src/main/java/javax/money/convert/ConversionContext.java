@@ -9,6 +9,8 @@
 package javax.money.convert;
 
 import javax.money.AbstractContext;
+import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAccessor;
 import java.util.Objects;
 
 /**
@@ -96,8 +98,12 @@ public final class ConversionContext extends AbstractContext{
         return getText("provider");
     }
 
-    public Long getTimestamp(){
+    public Long getTimestampMillis(){
         return getLong("timestamp");
+    }
+
+    public TemporalAccessor getTimestamp(){
+        return getNamedAttribute("timestamp", TemporalAccessor.class, null);
     }
 
     /**
@@ -244,6 +250,28 @@ public final class ConversionContext extends AbstractContext{
         public Builder setProvider(String provider){
             Objects.requireNonNull(provider);
             setText("provider", provider);
+            return this;
+        }
+
+        /**
+         * Set the historic value.
+         *
+         * @param timestamp the rate's timestamp
+         * @return this, for chaining.
+         */
+        public Builder setTimestampMillis(long timestamp){
+            setAttribute("timestamp", Long.valueOf(timestamp));
+            return this;
+        }
+
+        /**
+         * Set the historic value.
+         *
+         * @param temporalAccessor the rate's timestamp, as TemporalAccessor.
+         * @return this, for chaining.
+         */
+        public Builder setTimestamp(TemporalAccessor temporalAccessor){
+            setAttribute("timestamp", temporalAccessor, TemporalAccessor.class);
             return this;
         }
 

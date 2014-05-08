@@ -55,13 +55,13 @@ package javax.money;
  * 
  * @version 0.8.3
  */
-public interface MonetaryOperator { // extends
-									// java.util.function.UnaryOperator<MonetaryAmount>
-									// for Java 8/9
+@FunctionalInterface
+public interface MonetaryOperator{
+
 	/**
 	 * Apply a function to the input argument T, returning the operated instance
 	 * of T.
-	 * 
+	 *
 	 * @param value
 	 *            the input value
 	 * @return the result of the function

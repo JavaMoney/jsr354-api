@@ -31,7 +31,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <jdkVersion>1.7</jdkVersion>
+        <jdkVersion>1.8</jdkVersion>
         <maven.compile.targetLevel>${jdkVersion}</maven.compile.targetLevel>
         <maven.compile.sourceLevel>${jdkVersion}</maven.compile.sourceLevel>
         <basedir>.</basedir>
@@ -702,7 +702,7 @@
                             <baseDir>src/main/asciidoc/</baseDir>
                         </configuration>
                     </execution>
-                    <execution>
+                    <!-- execution>
                         <id>output-pdf</id>
                         <phase>generate-resources</phase>
                         <goals>
@@ -714,7 +714,7 @@
                             <backend>pdf</backend>
                             <doctype>book</doctype>
                         </configuration>
-                    </execution>
+                    </execution -->
                 </executions>
             </plugin>
             <plugin>

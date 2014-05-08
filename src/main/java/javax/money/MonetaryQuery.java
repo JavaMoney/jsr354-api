@@ -44,8 +44,8 @@ package javax.money;
  * @author Werner Keil
  * @version 0.8
  */
-// @FunctionalInterface for Java 9
-public interface MonetaryQuery<R> {
+@FunctionalInterface
+public interface MonetaryQuery<R>{
 
 	/**
 	 * Queries the specified monetary amount.

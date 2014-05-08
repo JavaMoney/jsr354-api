@@ -9,6 +9,7 @@
 package javax.money;
 
 import java.io.Serializable;
+import java.time.temporal.TemporalAccessor;
 import java.util.Objects;
 
 /**
@@ -71,8 +72,12 @@ public final class RoundingContext extends AbstractContext implements Serializab
         return getAttribute(CurrencyUnit.class);
     }
 
-    public Long getTimestamp(){
-        return getLong("timestamp");
+    public Long getTimestampMillis(){
+        return getLong("timestampMillis");
+    }
+
+    public TemporalAccessor getTimestamp(){
+        return getNamedAttribute("timestamp", TemporalAccessor.class, null);
     }
 
     public int getScale(){
@@ -191,8 +196,13 @@ public final class RoundingContext extends AbstractContext implements Serializab
             return this;
         }
 
-        public Builder setTimestamp(long timestamp){
-            setLong("timestamp", timestamp);
+        public Builder setTimestampMillis(long timestamp){
+            setLong("timestampMillis", timestamp);
+            return this;
+        }
+
+        public Builder setTimestamp(TemporalAccessor temporalAccessor){
+            setAttribute("timestamp", temporalAccessor, TemporalAccessor.class);
             return this;
         }
 

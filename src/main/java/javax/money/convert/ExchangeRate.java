@@ -135,7 +135,7 @@ public final class ExchangeRate implements Serializable, Comparable<ExchangeRate
             this.chain = new ExchangeRate[]{this};
         }else{
             for (ExchangeRate aChain : chain) {
-                if (Objects.isNull(aChain)) {
+                if (chain==null) {
                     throw new IllegalArgumentException("Chain element can not be null.");
                 }
             }

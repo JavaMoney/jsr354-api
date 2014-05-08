@@ -8,7 +8,6 @@
  */
 package javax.money;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,13 +20,14 @@ import java.util.Set;
  * Instances of this class should be immutable and thread-safe.
  *
  * @author Anatole Tresch
+ * @author Werner Keil
  */
-public abstract class AbstractContext implements Serializable{
+public abstract class AbstractContext {
 
     /**
      * serialVersionUID.
      */
-    private static final long serialVersionUID = 5579720004786348255L;
+//    private static final long serialVersionUID = 5579720004786348255L;
 
     /**
      * Map with the attributes of this context.

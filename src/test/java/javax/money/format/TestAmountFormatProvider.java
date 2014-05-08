@@ -19,7 +19,7 @@ import javax.money.spi.MonetaryAmountFormatProviderSpi;
 public class TestAmountFormatProvider implements
 		MonetaryAmountFormatProviderSpi {
 
-	private Set<Locale> testSet = new HashSet<Locale>();
+	private Set<Locale> testSet = new HashSet<>();
 
 	public TestAmountFormatProvider() {
 		testSet.add(Locale.ENGLISH);

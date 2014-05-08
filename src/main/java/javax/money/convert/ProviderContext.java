@@ -40,7 +40,7 @@ public final class ProviderContext extends AbstractContext{
      * @param builder the Builder.
      */
     private ProviderContext(Builder builder){
-        super(builder);;
+        super(builder);
         Set<RateType> rateTypes = getNamedAttribute("rateTypes", Set.class);
         Set<RateType> newRateTypes = new HashSet<>();
         newRateTypes.addAll(rateTypes);

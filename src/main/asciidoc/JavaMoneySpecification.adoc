@@ -777,8 +777,8 @@ Hereby
   and subtracting hereby is only possible with amounts that are of the same currency (aka being 'currency compatible'
   footnote:[Note that currency conversion is a complex aspect that can not be performed implicitly or automatically.
   E.g. a conversion rate is dependent from the timestamp, the currencies involved, the provider, the amount ...])
-  that the amount on which the operation is executed. The arithmetic methods should basically behave
-  similar to +java.math.BigDecimal+.
+  with the amount, on which the operation is executed. The arithmetic methods should basically behave
+  similar to +java.math.BigDecimal+, always returning amounts with the same +CurrencyUnit+.
 * The specification and interface do not define precisely how the amount is stored. Implementations could use a
   +BigDecimal+, +long+ or something else. The only constraint is that the numeric value can be exposed as +NumberValue+
   and that the +MonetaryContext+ returned reflects the numeric capabilities accordingly.
@@ -793,8 +793,6 @@ Implementations of +MonetaryAmount<T>+
 . must be comparable.
 . must be serializable.
 . should be immutable and thread safe.
-. To enable interoperability a method +public static T from(MonetaryAmount amount)+ is recommended to be implemented on
-  the concrete type, that allows conversion of a +MonetaryAmount+ to a concrete type +T+.
 . Finally implementations should not implement a method +getAmount()+. This method is reserved for future integration
   into the JDK.
 . If the numeric representation allows to model +-0+, this value is also considered to be +isZero()==true+, and
@@ -802,9 +800,14 @@ Implementations of +MonetaryAmount<T>+
 . This specification does no
   further constrain the constructor or factory methods to be implemented, or the method signatures to be used.
 
+//////////////////////////////////////////
+. To enable interoperability a method +public static T from(MonetaryAmount amount)+ is recommended to be implemented on
+  the concrete type, that allows conversion of a +MonetaryAmount+ to a concrete type +T+.
+//////////////////////////////////////////
+
 NOTE: This also means that two different implementations types with the same currency and numeric value are 'NOT equal'.
 For comparing two +MonetaryAmount+ instances during financial calculations the amount’s comparison methods should be
-used. E.g. +isEqualTo(MonetaryAmount)+ must return true, if they have equal currencies and equal numeric values, hereby
+used. E.g. +isEqualTo(MonetaryAmount)+ must return +true+, if they have equal currencies and equal numeric values, hereby
 ignoring non-significant trailing zeros and different monetary contexts.
 
 The interfaces +MonetaryOperator+ and +MonetaryQuery<R>+ provide a powerful extension mechanism. The two interfaces
@@ -815,12 +818,13 @@ implementation of MonetaryAmount. Their design matches JSR-310 (date & time).
 ==== Externalizing the Numeric Value of an Amount
 In the previous section we have discussed the basic model of a monetary amount. For data interoperability between
 different implementations it is very important that the numeric value of an amount can be effectively be externalized.
+This can be achieved by calling +NumberValue getNumber();+ on a +MonetaryAmount+.
 Hereby the API was aimed to be platform independent, which disallows the usage of +java.math.BigDecimal+.
 
-Nevertheless simply returning java.lang.Number, is also not desired, since conversion to known types may imply rounding
-errors or truncation. So the solution was to extend +java.lang.Number+, since it is the basic type used in the JDK, but
-adding additional methods that help users to better identify the risks of different externalization operations and
-provide functionality for effective access to the numeric data:
+Nevertheless simply returning +java.lang.Number+, is also not desired, since conversion to known types may imply
+rounding errors or truncation. So the solution was to extend +java.lang.Number+, since it is the basic type used in
+the JDK, but adding additional methods that help users to better identify the risks of different externalization
+operations and provide functionality for effective access to the numeric data:
 
 [source,java]
 .Abstract Class NumberValue

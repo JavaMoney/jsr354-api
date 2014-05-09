@@ -9,7 +9,8 @@
 package javax.money.convert;
 
 import javax.money.AbstractContext;
-import java.time.ZonedDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.Objects;
 
@@ -98,12 +99,37 @@ public final class ConversionContext extends AbstractContext{
         return getText("provider");
     }
 
+    /**
+     * Get the current timestamp of the ConversionContext in UTC milliseconds.  If not set it tries to create an
+     * UTC timestamp from #getTimestamp().
+     *
+     * @return the timestamp in millis, or null.
+     */
     public Long getTimestampMillis(){
-        return getLong("timestamp");
+        Long value = getLong("timestamp", null);
+        if(value == null){
+            TemporalAccessor acc = getTimestamp();
+            if(acc != null){
+                return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
+            }
+        }
+        return null;
     }
 
+    /**
+     * Get the current timestamp. If not set it tries to create an Instant from #getTimestampMillis().
+     *
+     * @return the current timestamp, or null.
+     */
     public TemporalAccessor getTimestamp(){
-        return getNamedAttribute("timestamp", TemporalAccessor.class, null);
+        TemporalAccessor acc = getNamedAttribute("timestamp", TemporalAccessor.class, null);
+        if(acc == null){
+            Long value = getLong("timestamp", null);
+            if(value != null){
+                acc = Instant.ofEpochMilli(value);
+            }
+        }
+        return acc;
     }
 
     /**

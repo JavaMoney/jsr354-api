@@ -2,6 +2,7 @@
 /.classpath
 /.project
 /.idea
+/*.iml
 /jdk-stub/bin
 /target
 /javamoney-api/core/bin

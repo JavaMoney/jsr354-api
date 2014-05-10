@@ -108,7 +108,7 @@ public class BootstrapTest{
     @Test
     public void testGetService1() throws Exception{
         Bootstrap.init(new TestServiceProvider());
-        Long num = Bootstrap.getService(Long.class, Long.valueOf(111L));
+        Long num = Bootstrap.getService(Long.class, 111L);
         assertNotNull(num);
         assertTrue(num.equals(111L));
     }
@@ -121,10 +121,10 @@ public class BootstrapTest{
                 return List.class.cast(Arrays.asList(new String[]{"service1", "service2"}));
             }
             else if(Integer.class.equals(serviceType)){
-                return List.class.cast(Arrays.asList(new Integer[]{Integer.valueOf(5)}));
+                return List.class.cast(Arrays.asList(new Integer[]{5}));
             }
             else if(Long.class.equals(serviceType)){
-                return List.class.cast(Arrays.asList(new Long[]{Long.valueOf(111)}));
+                return List.class.cast(Arrays.asList(new Long[]{(long) 111}));
             }
             return Collections.emptyList();
         }
@@ -135,10 +135,10 @@ public class BootstrapTest{
                 return List.class.cast(Arrays.asList(new String[]{"service1", "service2"}));
             }
             else if(Integer.class.equals(serviceType)){
-                return List.class.cast(Arrays.asList(new Integer[]{Integer.valueOf(5)}));
+                return List.class.cast(Arrays.asList(new Integer[]{5}));
             }
             else if(Long.class.equals(serviceType)){
-                return List.class.cast(Arrays.asList(new Long[]{Long.valueOf(111)}));
+                return List.class.cast(Arrays.asList(new Long[]{(long) 111}));
             }
             return defaultList;
         }

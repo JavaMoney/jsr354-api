@@ -15,8 +15,8 @@ package javax.money;
 import java.util.function.UnaryOperator;
 
 /**
- * Represents an operation on a single {@link MonetaryAmount} that produces a result of type
- * {@link MonetaryAmount}.
+ * Represents an operation on a single {@link MonetaryAmount} that produces a
+ * result of type {@link MonetaryAmount}.
  * <p>
  * Examples might be an operator that rounds the amount to the nearest 1000, or
  * one that performs currency conversion.
@@ -61,8 +61,8 @@ import java.util.function.UnaryOperator;
 public interface MonetaryOperator extends UnaryOperator<MonetaryAmount> {
 
 	/**
-	 * Apply a function to the input argument T, returning the operated instance
-	 * of T.
+	 * Apply a function to the <type>MonetaryAmount</type> argument,
+	 * returning a <type>MonetaryAmount</type> result.
 	 *
 	 * @param value
 	 *            the input value

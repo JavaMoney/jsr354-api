@@ -53,7 +53,7 @@ package javax.money;
  * @author Anatole Tresch
  * @author Stephen Colebourne
  * 
- * @version 0.8.3
+ * @version 0.8.4
  */
 public interface MonetaryOperator { // extends
 									// java.util.function.UnaryOperator<MonetaryAmount>
@@ -66,6 +66,6 @@ public interface MonetaryOperator { // extends
 	 *            the input value
 	 * @return the result of the function
 	 */
-	public <T extends MonetaryAmount> T apply(T value);
+	public MonetaryAmount apply(MonetaryAmount value);
 
 }

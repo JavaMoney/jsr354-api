@@ -97,7 +97,7 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         }
 
         @Override
-        public <T extends MonetaryAmount> T apply(T value){
+        public MonetaryAmount apply(MonetaryAmount value){
             return value;
         }
     }

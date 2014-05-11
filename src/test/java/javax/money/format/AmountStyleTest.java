@@ -41,8 +41,8 @@ public class AmountStyleTest{
     public void testHashCode(){
         MonetaryOperator op = new MonetaryOperator(){
             @Override
-            public <T extends MonetaryAmount> T apply(T value){
-                return (T) value.multiply(2.0d);
+            public MonetaryAmount apply(MonetaryAmount value){
+                return value.multiply(2.0d);
             }
         };
         List<AmountFormatContext> contexts = new ArrayList<>();
@@ -60,8 +60,8 @@ public class AmountStyleTest{
     public void testEquals(){
         MonetaryOperator op = new MonetaryOperator(){
             @Override
-            public <T extends MonetaryAmount> T apply(T value){
-                return (T) value.multiply(2.0d);
+            public MonetaryAmount apply(MonetaryAmount value){
+                return value.multiply(2.0d);
             }
         };
         List<AmountFormatContext> contexts = new ArrayList<>();

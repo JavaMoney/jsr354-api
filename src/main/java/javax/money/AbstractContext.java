@@ -45,7 +45,8 @@ public abstract class AbstractContext implements Serializable{
      *
      * @param builder the Builder.
      */
-    protected AbstractContext(AbstractBuilder builder){
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	protected AbstractContext(AbstractBuilder builder){
         this.attributes.putAll(builder.attributes);
     }
 
@@ -90,8 +91,6 @@ public abstract class AbstractContext implements Serializable{
      * @param key  the attribute's key, not {@code null}
      * @return the attribute value, or {@code null}.
      */
-    // Type safe cast
-    @SuppressWarnings("unchecked")
     public <T> T getNamedAttribute(Object key, Class<T> type){
         return getNamedAttribute(key, type, null);
     }
@@ -122,8 +121,6 @@ public abstract class AbstractContext implements Serializable{
      * @param type the attribute's type, not {@code null}
      * @return the attribute value, or {@code null}.
      */
-    // safe cast
-    @SuppressWarnings("unchecked")
     public <T> T getAttribute(Class<T> type){
         return getNamedAttribute(type, type);
     }
@@ -150,7 +147,6 @@ public abstract class AbstractContext implements Serializable{
      * @return the types of the attributes of this {@link MonetaryContext},
      * never {@code null}.
      */
-    @SuppressWarnings("rawtypes")
     public Set<Class<?>> getAttributeTypes(){
         return this.attributes.keySet();
     }

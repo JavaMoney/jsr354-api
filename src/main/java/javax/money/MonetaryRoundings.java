@@ -148,7 +148,7 @@ public final class MonetaryRoundings {
 	private static final class DefaultCurrencyRounding implements
 			MonetaryOperator {
 		@Override
-		public <T extends MonetaryAmount> T apply(T amount) {
+		public MonetaryAmount apply(MonetaryAmount amount) {
 			MonetaryOperator r = MonetaryRoundings.getRounding(amount
 					.getCurrency());
 			return r.apply(amount);

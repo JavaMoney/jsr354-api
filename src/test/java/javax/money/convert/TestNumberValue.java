@@ -136,6 +136,16 @@ class TestNumberValue extends NumberValue {
 		return this.number.doubleValue();
 	}
 
+    @Override
+    public long getAmountFractionNumerator(){
+        return 0;
+    }
+
+    @Override
+    public long getAmountFractionDenominator(){
+        return 0;
+    }
+
 	/*
 	 * (non-Javadoc)
 	 * @see javax.money.NumberBinding#getDoubleValueExact()
@@ -229,6 +239,7 @@ class TestNumberValue extends NumberValue {
 		throw new IllegalArgumentException("Unsupported numeric type: "
 				+ numberType);
 	}
+
 
     @Override
     public boolean equals(Object o){

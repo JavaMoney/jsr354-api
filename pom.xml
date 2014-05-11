@@ -796,6 +796,159 @@
 					</execution>
 				</executions>
 			</plugin>
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>0.1.4</version>
+                <configuration>
+                    <sourceDirectory>src/main/asciidoc</sourceDirectory>
+                    <baseDir>${project.basedir}</baseDir>
+                    <eruby>erubis</eruby>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>output-html</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/docs</outputDirectory>
+                            <sourceHighlighter>highlightjs</sourceHighlighter>
+                            <!-- coderay -->
+                            <backend>html</backend>
+                            <embedAssets>true</embedAssets>
+                            <imagesDir>src/main/asciidoc/images/</imagesDir>
+                            <baseDir>src/main/asciidoc/</baseDir>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>output-docbook</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>docbook</backend>
+                            <doctype>book</doctype>
+                            <embedAssets>false</embedAssets>
+                            <outputDirectory>target/generated-docs</outputDirectory>
+                            <imagesDir>src/main/asciidoc/images/</imagesDir>
+                            <baseDir>src/main/asciidoc/</baseDir>
+                        </configuration>
+                    </execution>
+                    <!-- execution>
+                        <id>output-pdf</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/docs</outputDirectory>
+                            <sourceHighlighter>highlightjs</sourceHighlighter>
+                            <backend>pdf</backend>
+                            <doctype>book</doctype>
+                        </configuration>
+                    </execution -->
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.agilejava.docbkx</groupId>
+                <artifactId>docbkx-maven-plugin</artifactId>
+                <version>2.0.15</version>
+                <executions>
+                    <execution>
+                        <id>doc</id>
+                        <goals>
+                            <goal>generate-pdf</goal>
+                            <goal>generate-xhtml</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sf.docbook</groupId>
+                        <artifactId>docbook-xml</artifactId>
+                        <version>5.0-all</version>
+                        <classifier>resources</classifier>
+                        <type>zip</type>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sf.xslthl</groupId>
+                        <artifactId>xslthl</artifactId>
+                        <version>2.0.1</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sf.offo</groupId>
+                        <artifactId>fop-hyph</artifactId>
+                        <version>1.2</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <imgSrcPath>../../</imgSrcPath>
+                    <admonGraphics>1</admonGraphics>
+                    <graphicExtensions>1</graphicExtensions>
+                    <showXslMessages>1</showXslMessages>
+                    <collectXrefTargets>1</collectXrefTargets>
+                    <highlightSource>1</highlightSource>
+                    <hyphenate>true</hyphenate>
+                    <hyphenateVerbatim>true</hyphenateVerbatim>
+                    <includes>JavaMoneySpecification.xml</includes>
+                    <sourceDirectory>target/generated-docs</sourceDirectory>
+                    <targetDirectory>target/docs</targetDirectory>
+                    <generateToc>1</generateToc>
+                    <paperType>A4</paperType>
+                    <admonGraphicsPath>src/main/asciidoc/images/icons/</admonGraphicsPath>
+                    <calloutGraphicsPath>src/main/asciidoc/images/icons/callouts/</calloutGraphicsPath>
+                    <showComments>true</showComments>
+                    <xincludeSupported>true</xincludeSupported>
+                    <fop1Extensions>1</fop1Extensions>
+
+                    <!--
+                    <foCustomization>${basedir}/src/main/asciidoc/customization-fopdf.xsl</foCustomization>
+                    <emailMailtoEnabled>true</emailMailtoEnabled>
+                    <generatedSourceDirectory>true</generatedSourceDirectory>
+                    <generateIndex>true</generateIndex>
+                    <useEmbedForSvg>true</useEmbedForSvg>
+                    <useExtensions>1</useExtensions>
+                    <highlightSource>1</highlightSource>
+                    <highlightDefaultLanguage>java</highlightDefaultLanguage>
+                    <calloutsExtension>1</calloutsExtension>
+
+                    <fop1Extensions>1</fop1Extensions>
+                    <useEmbedForSvg>1</useEmbedForSvg>
+                    <imgSrcPath>src/main/asciidoc/images</imgSrcPath>
+
+                    <postProcess>
+                        <zip
+                                destfile="${project.build.directory}/${project.artifactId}-${project.version}-docs.zip">
+                            <fileset dir="${project.build.directory}/docs"
+                                     includes="**/*.pdf" />
+                        </zip>
+                    </postProcess -->
+                </configuration>
+            </plugin>
+            <!-- plugin>
+                <groupId>com.agilejava.docbkx</groupId>
+                <artifactId>docbkx-fop-support</artifactId>
+                <version>2.0.15</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <ansi>true</ansi>
+                            <sourceDirectory>src/main/asciidoc</sourceDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin -->
 		</plugins>
 	</build>
 

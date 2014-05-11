@@ -67,7 +67,7 @@ public class AbstractContextTest{
 
     @Test
     public void testGetAttributeTypes(){
-        TestContext ctx = new TestContext.Builder().setObject("Test").setObject(2).setObject((long) 2).build();
+        TestContext ctx = new TestContext.Builder().setObject("Test").setObject(2).setObject(2L).build();
         Set<Class<?>> types = ctx.getAttributeTypes();
         assertNotNull(types);
         assertTrue(types.size()==3);

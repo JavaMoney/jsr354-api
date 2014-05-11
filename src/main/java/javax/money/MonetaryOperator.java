@@ -8,13 +8,15 @@
  * 
  * Specification: JSR-354 Money and Currency API ("Specification")
  * 
- * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
+ * Copyright (c) 2012-2014, Credit Suisse All rights reserved.
  */
 package javax.money;
 
+import java.util.function.UnaryOperator;
+
 /**
- * Represents an operation on a single {@link MonetaryAmount} that produces a result of type
- * {@link MonetaryAmount}.
+ * Represents an operation on a single {@link MonetaryAmount} that produces a
+ * result of type {@link MonetaryAmount}.
  * <p>
  * Examples might be an operator that rounds the amount to the nearest 1000, or
  * one that performs currency conversion.
@@ -55,17 +57,7 @@ package javax.money;
  * 
  * @version 0.8.4
  */
-public interface MonetaryOperator { // extends
-									// java.util.function.UnaryOperator<MonetaryAmount>
-									// for Java 8/9
-	/**
-	 * Apply a function to the input argument T, returning the operated instance
-	 * of T.
-	 * 
-	 * @param value
-	 *            the input value
-	 * @return the result of the function
-	 */
-	public <T extends MonetaryAmount> T apply(T value);
+@FunctionalInterface
+public interface MonetaryOperator extends UnaryOperator<MonetaryAmount> {
 
 }

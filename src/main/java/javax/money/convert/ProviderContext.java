@@ -9,6 +9,7 @@
 package javax.money.convert;
 
 import javax.money.AbstractContext;
+
 import java.util.*;
 
 /**
@@ -39,7 +40,8 @@ public final class ProviderContext extends AbstractContext{
      *
      * @param builder the Builder.
      */
-    private ProviderContext(Builder builder){
+    @SuppressWarnings("unchecked")
+	private ProviderContext(Builder builder){
         super(builder);
         Set<RateType> rateTypes = getNamedAttribute("rateTypes", Set.class);
         Set<RateType> newRateTypes = new HashSet<>();
@@ -64,7 +66,7 @@ public final class ProviderContext extends AbstractContext{
      * @return the deferred flag, or {code null}.
      */
     public Set<RateType> getRateTypes(){
-        return Collections.unmodifiableSet(getNamedAttribute("rateTypes", Set.class, new HashSet<RateType>()));
+        return Collections.unmodifiableSet(getNamedAttribute("rateTypes", Set.class, new HashSet<>()));
     }
 
     /**

@@ -41,6 +41,16 @@ public final class DummyAmount implements
 			}
 
 			@Override
+            public long getAmountFractionNumerator(){
+                return 0;
+            }
+
+            @Override
+            public long getAmountFractionDenominator(){
+                return 0;
+            }
+
+			@Override
 			public int getScale() {
 
 				return 0;

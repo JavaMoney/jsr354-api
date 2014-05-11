@@ -121,4 +121,40 @@ public abstract class NumberValue extends Number{
      */
     public abstract <T extends Number> T numberValueExact(Class<T> numberType);
 
+    /**
+     * This method allows to extract the numerator part of the current fraction, hereby given
+     * <code>
+     * w = longValue()
+     * n = getFractionNominator()
+     * d = getFractionDenominator()
+     * </code><br/>
+     * the following must be always true:<br/>
+     * <code>
+     * !(w<0 && n>0)  and
+     * !(w>0 && n<0)  and
+     * d>0            and
+     * |n| < d        // || = absolute value
+     * </code>.
+     * @return the amount's fraction numerator..
+     */
+    public abstract long getAmountFractionNumerator();
+
+    /**
+     * This method allows to extract the denominator part of the current fraction, hereby given
+     * <code>
+     * w = longValue()
+     * n = getFractionNominator()
+     * d = getFractionDenominator()
+     * </code><br/>
+     * the following must be always true:<br/>
+     * <code>
+     * !(w<0 && n>0)  and
+     * !(w>0 && n<0)  and
+     * d>0            and
+     * |n| < d        // || = absolute value
+     * </code>.
+     * @return the amount's fraction denominator.
+     */
+    public abstract long getAmountFractionDenominator();
+
 }

@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author Anatole
  * @author Werner
- * @version 0.2 on 04.05.14.
+ * @version 0.3 on 11.05.14.
  */
 public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsSingletonSpi{
 
@@ -86,7 +86,7 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
 
         @Override
         public ExchangeRate getExchangeRate(MonetaryAmount sourceAmount){
-            return new ExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
+            return new DefaultExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
                     .setBase(sourceAmount.getCurrency()).setTerm(termCurrency).setFactor(TestNumberValue.of(1))
                     .build();
         }
@@ -133,14 +133,14 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
 
         @Override
         public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){
-            return new ExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
+            return new DefaultExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
                     .setBase(base).setTerm(term).setFactor(TestNumberValue.of(1))
                     .build();
         }
 
         @Override
         public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext){
-            return new ExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
+            return new DefaultExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
                     .setBase(base).setTerm(term).setFactor(TestNumberValue.of(1))
                     .build();
         }

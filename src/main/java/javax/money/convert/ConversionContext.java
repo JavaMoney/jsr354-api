@@ -9,6 +9,9 @@
 package javax.money.convert;
 
 import javax.money.AbstractContext;
+import java.time.Instant;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.Objects;
 
 /**
@@ -96,8 +99,37 @@ public final class ConversionContext extends AbstractContext{
         return getText("provider");
     }
 
-    public Long getTimestamp(){
-        return getLong("timestamp");
+    /**
+     * Get the current timestamp of the ConversionContext in UTC milliseconds.  If not set it tries to create an
+     * UTC timestamp from #getTimestamp().
+     *
+     * @return the timestamp in millis, or null.
+     */
+    public Long getTimestampMillis(){
+        Long value = getLong("timestamp", null);
+        if(value == null){
+            TemporalAccessor acc = getTimestamp();
+            if(acc != null){
+                return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the current timestamp. If not set it tries to create an Instant from #getTimestampMillis().
+     *
+     * @return the current timestamp, or null.
+     */
+    public TemporalAccessor getTimestamp(){
+        TemporalAccessor acc = getNamedAttribute("timestamp", TemporalAccessor.class, null);
+        if(acc == null){
+            Long value = getLong("timestamp", null);
+            if(value != null){
+                acc = Instant.ofEpochMilli(value);
+            }
+        }
+        return acc;
     }
 
     /**
@@ -244,6 +276,28 @@ public final class ConversionContext extends AbstractContext{
         public Builder setProvider(String provider){
             Objects.requireNonNull(provider);
             setText("provider", provider);
+            return this;
+        }
+
+        /**
+         * Set the historic value.
+         *
+         * @param timestamp the rate's timestamp
+         * @return this, for chaining.
+         */
+        public Builder setTimestampMillis(long timestamp){
+            setAttribute("timestamp", Long.valueOf(timestamp));
+            return this;
+        }
+
+        /**
+         * Set the historic value.
+         *
+         * @param temporalAccessor the rate's timestamp, as TemporalAccessor.
+         * @return this, for chaining.
+         */
+        public Builder setTimestamp(TemporalAccessor temporalAccessor){
+            setAttribute("timestamp", temporalAccessor, TemporalAccessor.class);
             return this;
         }
 

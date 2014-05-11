@@ -183,84 +183,10 @@ public final class MonetaryAmounts{
      * @throws MonetaryException if no {@link MonetaryAmount} implementation class can cover the required
      *                           {@link MonetaryContext}.
      */
-    public static MonetaryAmountFactory<?> getAmountFactory(MonetaryContext requiredContext){
+    public static MonetaryAmountFactory<?> queryAmountFactory(MonetaryContext requiredContext){
         Class<? extends MonetaryAmount> type = queryAmountType(requiredContext);
         return getAmountFactory(type);
     }
 
-    /**
-     * Create a new {@ink MonetaryAmount} using the default {@ink MonetaryAmountFactory}.
-     *
-     * @param currencyCode the currency code
-     * @param number       the amount's numeric value.
-     * @return the corresponding MonetaryAmount instance.
-     * @see javax.money.MonetaryCurrencies#getCurrency(String)
-     */
-    public static MonetaryAmount of(Number number, String currencyCode){
-        return getAmountFactory().setNumber(number).setCurrency(currencyCode).create();
-    }
-
-    /**
-     * Create a new {@ink MonetaryAmount} using the default {@ink MonetaryAmountFactory}.
-     *
-     * @param currencyCode    the currency code, not null.
-     * @param number          the amount's numeric value, not null.
-     * @param requiredContext the required {@link javax.money.MonetaryContext}, not null.
-     * @return the corresponding MonetaryAmount instance.
-     * @see javax.money.MonetaryCurrencies#getCurrency(String)
-     */
-    public static MonetaryAmount of(Number number, String currencyCode, MonetaryContext requiredContext){
-        return getAmountFactory(requiredContext).setNumber(number).setCurrency(currencyCode).create();
-    }
-
-    /**
-     * Create a new {@ink MonetaryAmount} using the default {@ink MonetaryAmountFactory}.
-     *
-     * @param currencyCode the currency code, not null.
-     * @param number       the amount's numeric value.
-     * @return the corresponding MonetaryAmount instance.
-     * @see javax.money.MonetaryCurrencies#getCurrency(String)
-     */
-    public static MonetaryAmount of(long number, String currencyCode){
-        return getAmountFactory().setNumber(number).setCurrency(currencyCode).create();
-    }
-
-    /**
-     * Create a new {@ink MonetaryAmount} using the default {@ink MonetaryAmountFactory}.
-     *
-     * @param currencyCode    the currency code, not null.
-     * @param number          the amount's numeric value.
-     * @param requiredContext the required {@link javax.money.MonetaryContext}, not null.
-     * @return the corresponding MonetaryAmount instance.
-     * @see javax.money.MonetaryCurrencies#getCurrency(String)
-     */
-    public static MonetaryAmount of(long number, String currencyCode, MonetaryContext requiredContext){
-        return getAmountFactory(requiredContext).setNumber(number).setCurrency(currencyCode).create();
-    }
-
-    /**
-     * Create a new {@ink MonetaryAmount} using the default {@ink MonetaryAmountFactory}.
-     *
-     * @param currencyCode the currency code, not null.
-     * @param number       the amount's numeric value.
-     * @return the corresponding MonetaryAmount instance.
-     * @see javax.money.MonetaryCurrencies#getCurrency(String)
-     */
-    public static MonetaryAmount of(double number, String currencyCode){
-        return getAmountFactory().setNumber(number).setCurrency(currencyCode).create();
-    }
-
-    /**
-     * Create a new {@ink MonetaryAmount} using the default {@ink MonetaryAmountFactory}.
-     *
-     * @param currencyCode    the currency code, not null.
-     * @param number          the amount's numeric value.
-     * @param requiredContext the required {@link javax.money.MonetaryContext}, not null.
-     * @return the corresponding MonetaryAmount instance.
-     * @see javax.money.MonetaryCurrencies#getCurrency(String)
-     */
-    public static MonetaryAmount of(double number, String currencyCode, MonetaryContext requiredContext){
-        return getAmountFactory(requiredContext).setNumber(number).setCurrency(currencyCode).create();
-    }
 
 }

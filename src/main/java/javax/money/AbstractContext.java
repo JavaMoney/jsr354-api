@@ -8,6 +8,7 @@
  */
 package javax.money;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -22,17 +23,22 @@ import java.util.Set;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public abstract class AbstractContext {
+public abstract class AbstractContext implements Serializable{
 
     /**
      * serialVersionUID.
      */
-//    private static final long serialVersionUID = 5579720004786348255L;
+    private static final long serialVersionUID = 5579720004786348255L;
 
     /**
      * Map with the attributes of this context.
      */
     protected final Map<Class<?>,Map<Object,Object>> attributes = new HashMap<>();
+
+    /**
+     * Private constructor, used by deserialization.
+     */
+    protected AbstractContext(){}
 
     /**
      * Private constructor, used by {@link AbstractBuilder}.
@@ -84,8 +90,6 @@ public abstract class AbstractContext {
      * @param key  the attribute's key, not {@code null}
      * @return the attribute value, or {@code null}.
      */
-    // Type safe cast
-    @SuppressWarnings("unchecked")
     public <T> T getNamedAttribute(Object key, Class<T> type){
         return getNamedAttribute(key, type, null);
     }
@@ -116,8 +120,6 @@ public abstract class AbstractContext {
      * @param type the attribute's type, not {@code null}
      * @return the attribute value, or {@code null}.
      */
-    // safe cast
-    @SuppressWarnings("unchecked")
     public <T> T getAttribute(Class<T> type){
         return getNamedAttribute(type, type);
     }
@@ -144,7 +146,6 @@ public abstract class AbstractContext {
      * @return the types of the attributes of this {@link MonetaryContext},
      * never {@code null}.
      */
-    @SuppressWarnings("rawtypes")
     public Set<Class<?>> getAttributeTypes(){
         return this.attributes.keySet();
     }

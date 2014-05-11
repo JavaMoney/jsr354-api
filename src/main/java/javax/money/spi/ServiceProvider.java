@@ -22,31 +22,6 @@ import java.util.List;
  */
 public interface ServiceProvider {
 
-//	/**
-//	 * Access a service, given its type. If multiple instances are registered
-//	 * some priority mechanism must be implemented to determine which
-//	 * implementation should be used.
-//	 * 
-//	 * @param serviceType
-//	 *            the service type.
-//	 * @return The instance to be used, never {@code null}
-//	 */
-//	public <T> T getService(Class<T> serviceType);
-//
-//	/**
-//	 * Access a service, given its type. If multiple instances are registered
-//	 * some priority mechanism must be implemented to determine which
-//	 * implementation should be used.
-//	 * 
-//	 * @param serviceType
-//	 *            the service type.
-//	 * @param defaultInstance
-//	 *            returned if not such service is registered.
-//	 * @return The instance to be used, also {@code null}, if no instance is
-//	 *         registered and {@code defaultInstance == null}.
-//	 */
-//	public <T> T getService(Class<T> serviceType, T defaultInstance);
-
 	/**
 	 * Access a list of services, given its type. The bootstrap mechanism should
 	 * order the instance for precedence, hereby the most significant should be

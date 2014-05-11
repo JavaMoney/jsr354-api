@@ -27,9 +27,9 @@ package javax.money;
  * @author Anatole Tresch
  * @version 0.6
  * @since 0.8
- * @see Supplier
+ * @see java.util.function.Supplier
  */
-// @FunctionalInterface
+@FunctionalInterface
 public interface NumberSupplier {
 
 	/**

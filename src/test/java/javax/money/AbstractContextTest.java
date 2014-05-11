@@ -50,10 +50,10 @@ public class AbstractContextTest{
 
     @Test
     public void testSetWithKeyAndType() {
-        TestContext ctx = new TestContext.Builder().setAttribute("MyNum", Integer.valueOf(2), Number.class).build();
+        TestContext ctx = new TestContext.Builder().setAttribute("MyNum", 2, Number.class).build();
         assertNull(ctx.getAttribute(String.class));
         assertEquals("myKey", ctx.getAttribute(String.class, "myKey"));
-        assertEquals(ctx.getNamedAttribute("MyNum", Number.class), Integer.valueOf(2));
+        assertEquals(ctx.getNamedAttribute("MyNum", Number.class), 2);
         assertEquals(ctx.getNamedAttribute("MyNum", Integer.class), null);
     }
 
@@ -67,7 +67,7 @@ public class AbstractContextTest{
 
     @Test
     public void testGetAttributeTypes(){
-        TestContext ctx = new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).setObject(Long.valueOf(2)).build();
+        TestContext ctx = new TestContext.Builder().setObject("Test").setObject(2).setObject((long) 2).build();
         Set<Class<?>> types = ctx.getAttributeTypes();
         assertNotNull(types);
         assertTrue(types.size()==3);
@@ -79,10 +79,10 @@ public class AbstractContextTest{
     @Test
     public void testHashCode() {
         List<TestContext> contexts = new ArrayList<>();
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(1)).setObject(Long.valueOf(2)).build());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).setObject(Long.valueOf(1)).build());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).build());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Long.valueOf(2)).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(1).setObject((long) 2).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(2).setObject((long) 1).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(2).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject((long) 2).build());
         contexts.add(new TestContext.Builder().setObject("Test").setObject(Boolean.TRUE).setObject("Test").build());
         Set<Integer> hashCodes = new HashSet<>();
         for(TestContext ctx : contexts){
@@ -95,10 +95,10 @@ public class AbstractContextTest{
     @Test
     public void testEquals() {
         List<TestContext> contexts = new ArrayList<>();
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(11)).setObject(Long.valueOf(2)).build());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).setObject(Long.valueOf(11)).build());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(2)).build());
-        contexts.add(new TestContext.Builder().setObject("Test").setObject(Long.valueOf(2)).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(11).setObject((long) 2).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(2).setObject((long) 11).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject(2).build());
+        contexts.add(new TestContext.Builder().setObject("Test").setObject((long) 2).build());
         contexts.add(new TestContext.Builder().setObject("Test").setObject(Boolean.TRUE).setObject("Test").build());
         Set<TestContext> checkContexts = new HashSet<>();
         for(TestContext ctx : contexts){
@@ -111,7 +111,7 @@ public class AbstractContextTest{
 
     @Test
     public void testToString() {
-        TestContext ctx = new TestContext.Builder().setObject("Test").setObject(Integer.valueOf(1)).setObject(Long.valueOf(2)).build();
+        TestContext ctx = new TestContext.Builder().setObject("Test").setObject(1).setObject((long) 2).build();
         assertNotNull(ctx.toString());
         System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("1"));

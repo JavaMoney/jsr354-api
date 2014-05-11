@@ -45,7 +45,8 @@ public abstract class AbstractContext implements Serializable{
      *
      * @param builder the Builder.
      */
-    protected AbstractContext(AbstractBuilder builder){
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	protected AbstractContext(AbstractBuilder builder){
         this.attributes.putAll(builder.attributes);
     }
 

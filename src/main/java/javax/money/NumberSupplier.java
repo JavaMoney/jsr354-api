@@ -34,7 +34,7 @@ public interface NumberSupplier {
 
 	/**
 	 * Gets the corresponding {@link javax.money.NumberValue}.
-	 * 
+	 *
 	 * @return the corresponding {@link javax.money.NumberValue}, not null.
 	 */
 	NumberValue getNumber();

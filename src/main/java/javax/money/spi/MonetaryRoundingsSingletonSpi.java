@@ -38,7 +38,7 @@ public interface MonetaryRoundingsSingletonSpi{
 	 * @return the (shared) default rounding instance.
 	 */
 	default MonetaryOperator getDefaultRounding(){
-        MonetaryOperator op = getRounding(RoundingContext.of("default"));
+        MonetaryOperator op = getRounding(RoundingContext.DEFAULT_ROUNDING_CONTEXT);
         if(op==null){
             throw new IllegalStateException("No default rounding provided.");
         }

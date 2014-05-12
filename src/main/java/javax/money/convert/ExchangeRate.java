@@ -95,28 +95,28 @@ public interface ExchangeRate{
      *
      * @return the conversion context, never null.
      */
-    public ConversionContext getConversionContext();
+    ConversionContext getConversionContext();
 
     /**
      * Get the base (source) {@link CurrencyUnit}.
      *
      * @return the base {@link CurrencyUnit}.
      */
-    public CurrencyUnit getBase();
+    CurrencyUnit getBase();
 
     /**
      * Get the term (target) {@link CurrencyUnit}.
      *
      * @return the term {@link CurrencyUnit}.
      */
-    public CurrencyUnit getTerm();
+    CurrencyUnit getTerm();
 
     /**
      * Access the rate's bid factor.
      *
      * @return the bid factor for this exchange rate, or {@code null}.
      */
-    public NumberValue getFactor();
+    NumberValue getFactor();
 
     /**
      * Access the chain of exchange rates.
@@ -125,7 +125,7 @@ public interface ExchangeRate{
      * several instances. For a direct exchange rate, this equals to
      * <code>new ExchangeRate[]{this}</code>.
      */
-    public List<ExchangeRate> getExchangeRateChain();
+    List<ExchangeRate> getExchangeRateChain();
 
     /**
      * Allows to evaluate if this exchange rate is a derived exchange rate.
@@ -138,6 +138,8 @@ public interface ExchangeRate{
      *
      * @return true, if the exchange rate is derived.
      */
-    public boolean isDerived();
+    default boolean isDerived(){
+        return getExchangeRateChain().size()>1;
+    }
 
 }

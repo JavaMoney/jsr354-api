@@ -133,7 +133,9 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *            the query to invoke, not null
 	 * @return the query result, null may be returned (defined by the query)
 	 */
-	public <R> R query(MonetaryQuery<R> query);
+	default <R> R query(MonetaryQuery<R> query){
+        return query.queryFrom(this);
+    }
 
 	/**
 	 * Returns an operated object <b>of the same type</b> as this object with the operation made.
@@ -186,7 +188,9 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *            the operator to use, not null
 	 * @return an object of the same type with the specified conversion made, not null
 	 */
-	public MonetaryAmount with(MonetaryOperator operator);
+	public default MonetaryAmount with(MonetaryOperator operator){
+        return operator.apply(this);
+    }
 
 	/**
 	 * Creates a new {@code MonetaryAmountFactory}, returning the same implementation type Hereby
@@ -266,35 +270,45 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * 
 	 * @return {@code true} if {@link #signum()} < 0.
 	 */
-	public boolean isNegative();
+	public default boolean isNegative(){
+        return signum() < 0;
+    }
 
 	/**
 	 * Checks if a {@code MonetaryAmount} is negative or zero.
 	 * 
 	 * @return {@code true} if {@link #signum()} <= 0.
 	 */
-	public boolean isNegativeOrZero();
+	public default boolean isNegativeOrZero(){
+        return signum() <= 0;
+    }
 
 	/**
 	 * Checks if a {@code MonetaryAmount} is positive.
 	 * 
 	 * @return {@code true} if {@link #signum()} > 0.
 	 */
-	public boolean isPositive();
+	public default boolean isPositive(){
+        return signum() > 0;
+    }
 
 	/**
 	 * Checks if a {@code MonetaryAmount} is positive or zero.
 	 * 
 	 * @return {@code true} if {@link #signum()} >= 0.
 	 */
-	public boolean isPositiveOrZero();
+	public default boolean isPositiveOrZero(){
+        return signum() >= 0;
+    }
 
 	/**
 	 * Checks if an {@code MonetaryAmount} is zero.
 	 * 
 	 * @return {@code true} if {@link #signum()} == 0.
 	 */
-	public boolean isZero();
+	public default boolean isZero(){
+        return signum() == 0;
+    }
 
 	/**
 	 * Returns the signum function of this {@code MonetaryAmount}.

@@ -57,7 +57,7 @@ public final class MonetaryAmounts{
         }
         catch(Exception e){
             Logger.getLogger(MonetaryCurrencies.class.getName())
-                    .log(Level.SEVERE, "Failed to load MonetaryAmountsSingletonSpi, using default.", e);
+                    .log(Level.SEVERE, "Failed to load MonetaryAmountsSingletonSpi.", e);
             return null;
         }
     }

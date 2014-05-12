@@ -22,14 +22,12 @@
 
 <<<
 
+image::https://raw.githubusercontent.com/JavaMoney/jsr354-api/master/src/main/asciidoc/images/javamoney_cup.jpg[]
+
 toc::[]
 
 <<<
 :numbered!:
-
-image::tiger.png[alt="test",align="center"]
-
-image::https://raw.githubusercontent.com/JavaMoney/jsr354-api/master/src/main/asciidoc/images/javamoney_cup.jpg[]
 
 *EVALUATION LICENCE*
 
@@ -235,9 +233,9 @@ each party.
 
 == Introduction
 This document is the specification of the Java API for Money and Currency. The technical objective is to provide a money
-and currency API for Java, targeted at all users of currencies and monetary amounts, both simple but also extendible.
+and currency API for Java, targeted at all users of currencies and monetary amounts, both simple but also expendable.
 The API will provide support for standard [ISO-4217] and custom currencies, and a model for monetary amounts and
-roundings. It will have extension points for adding additional features like currency exchange. financial calculations
+rounding. It will have extension points for adding additional features like currency exchange. financial calculations
 and formulas.
 Additionally, this JSR includes recommendations on interoperability and thread safety.
 
@@ -289,11 +287,12 @@ accommodate such applications.
 === Scope
 JSR 354 targets a standalone scope. Nevertheless it may be included into the JDK later, so its design and scope must
 consider integration into the JDK. Additionally the work on the JSR has shown, that it is possible to define a flexible
-and comprehensive API that is also almost compatible with most Java ME. Since with the Internet of Things small
+and comprehensive API that is also almost compatible with Java ME. Since with the Internet of Things small
 devices are getting more important, and there is high probability that monetary aspects must be implemented, the expert
-group decided to keep the API independent of JDK artifacts that are not supported on ME, especially +java.math+ and
-+java.text+. Nevertheless the reference implementation is free to use existing functionality and the JSR also includes
-requirements (also checkable by the TCK) to ensure a minimal set of functionality on Java SE.
+group decided to keep the API independent of JDK artifacts that are not supported on ME, where easily possible.
+Basically this affects usage of +java.math+ and +java.text+. Nevertheless the reference implementation is free to use
+existing functionality and the JSR also includes requirements (also checkable by the TCK) to ensure a minimal set of
+functionality on Java SE.
 During the development of the JSR a wide set of features were implemented. Most of these features will not end up within
 the JSR itself, as the JSR now has scope limited to interoperation, enabling feature innovation elsewhere. The
 corresponding libraries were published under [JavaMoney] as an Apache 2 licensed open source project. Compared to the
@@ -313,17 +312,13 @@ Including this JSR into the JDK at a time later time would be an option that sho
 Java Enhancement Proposal (JEP). For the time being the JSR focuses on the key monetary aspects to be modeled.
 
 === Required Java version
-The specification is based on Java SE 7.0 language features. Implementations may target any suitable Java SE version,
-or given an increasing SE/ME correlation also matching ME versions like CLDC 8.
-Hereby this decision was done with caution. There are many financial applications and products that will require years
-until they were migrated to Java 8. Depending on Java 8 on the API side, would make it impossible to use them in such
-scenarios for a very long time and would definitely decrease the adoption rate of this JSR significantly. Additionally
-there are only a few aspects within the API that would be affected by building the API based on Java 8.
-Especially the usage of functional interfaces is already part of this specification and will be supported without any
-change, when this JSR is used with Java 8. Another aspect is the usage of JSR 310 date and time types. This JSR does
-not depend on these types in the API, but provides mechanisms to enable usage of these types (by attributable contexts).
-Generally a wider compatibility of the JSR with different Java version and
-runtime environments was decided to be more important than depending on Java 8 features within this release already.
+The specification is based on Java SE 8.0 language features. Implementations may target any suitable Java SE version,
+or given an increasing SE/ME correlation also matching ME versions. For users of JDK 7 a forward compatible backport of
+the API will be provided. This allows to design an API, which will easily fit into Java 9, but still supporting
+older releases, since there are many financial applications and products that will require years
+until they were migrated to Java 8. In general there are only a few aspects within the API that would be affected by
+building the API based on Java 8, but there are many benefits, especially _default methods_ and _the functional features_.
+
 
 === How this document is organized
 There are five main section in this document:
@@ -731,9 +726,9 @@ public interface MonetaryAmount{
   boolean isLessThanOrEqualsTo(MonetaryAmount amount);
   ...
   boolean isEqualTo(MonetaryAmount amount);
-  boolean isNegative();
-  boolean isPositive();
-  boolean isZero();
+  default boolean isNegative(){...}  // delegates to signum
+  default boolean isPositive(){...}  // delegates to signum
+  default boolean isZero(){...}      // delegates to signum
   int signum();
 
   // Algorithmic functions and calculations
@@ -878,7 +873,7 @@ operations, being applied on amounts. This is modelled by
 
 image:extensionPoints.jpg[align=center]
 
-[[OperatorModel]]
+[[MonetaryOperator]]
 ===== Monetary Operators
 The interface +javax.money.MonetaryOperator+ defines an arbitrary function a function +f(M1) -> M2+, that converts an
 amount to another amount. Examples of such operations are rounding or monetary calculations:
@@ -886,6 +881,7 @@ amount to another amount. Examples of such operations are rounding or monetary c
 [source,java]
 .Interface MonetaryOperator
 -------------------------------------------------------------------------------
+@FunctionalInterface
 public interface MonetaryOperator extends UnaryOperator<MonetaryAmount>{
 }
 -------------------------------------------------------------------------------
@@ -951,6 +947,7 @@ The interface +javax.money.MonetaryQuery+ models a function +f(M1) -> T+, that c
 [source,java]
 .Interface MonetaryQuery
 -------------------------------------------------------------------------------
+@FunctionalInterface
 public interface MonetaryQuery<R> {
   R queryFrom(MonetaryAmount<?> amount);
 }
@@ -1130,15 +1127,15 @@ The signature of +MonetaryAmountFactory+ is modelled as a builder also supportin
 public interface MonetaryAmountFactory<T extends MonetaryAmount> {
   Class<T> getAmountType();
   MonetaryContext getDefaultMonetaryContext();
-  MonetaryContext geMaximalMonetaryContext();
+  default MonetaryContext geMaximalMonetaryContext(){...} // by default == getDefaultMonetaryContext()
 
   MonetaryAmountFactory<T> setCurrency(CurrencyUnit currency);
-  MonetaryAmountFactory<T> setCurrency(String code);
   MonetaryAmountFactory<T> setNumber(double number);
   MonetaryAmountFactory<T> setNumber(long number);
   MonetaryAmountFactory<T> setNumber(Number number);
   MonetaryAmountFactory<T> setContext(MonetaryContext ctx);
-  MonetaryAmountFactory<T> setAmount(MonetaryAmount amount);
+  default MonetaryAmountFactory<T> setCurrency(String code){...}
+  default MonetaryAmountFactory<T> setAmount(MonetaryAmount amount){...}
 
   T create();
 }
@@ -1397,7 +1394,7 @@ The interface +javax.money.NumberSupplier+ is a functional interface (the +Numbe
 [source,java]
 .Interface NumberSupplier
 -------------------------------------------------------------------------------
-// @FunctionalInterface
+@FunctionalInterface
 public interface NumberSupplier {
   NumberValue getNumber();
 }
@@ -1513,25 +1510,7 @@ public interface ExchangeRate{
     NumberValue getFactor();
     // Support for chained rates
     List<ExchangeRate> getExchangeRateChain();
-    boolean isDerived();
-
-    Builder toBuilder();
-
-    ...
-
-    public static interface Builder {
-        ...
-        Builder(String provider, RateType rateType);
-        Builder(ConversionContext context);
-        Builder setBase(CurrencyUnit base);
-        Builder setTerm(CurrencyUnit term);
-        Builder setRateChain(ExchangeRate... exchangeRates);
-        Builder setFactor(NumberValue factor);
-        Builder setContext(ConversionContext conversionContext);
-        ExchangeRate build();
-        Builder setRate(ExchangeRate rate);
-    }
-
+    default boolean isDerived(){...}
 }
 -------------------------------------------------------------------------------
 
@@ -1558,6 +1537,7 @@ Implementations of +ExchangeRate+
 . must be comparable.
 . must be serializable.
 . should be immutable and thread safe.
+. should be implemented as value types, with a fluent Builder pattern.
 
 ===== Exchange Rate Providers
 We have seen in the previous section that an +ExchangeRate+ can be obtained from a +CurrencyConversion+. Hereby a
@@ -1573,19 +1553,20 @@ Summarizing an +ExchangeRate+ is modelled as follows:
 -------------------------------------------------------------------------------
 public interface ExchangeRateProvider{
     ProviderContext getProviderContext();
-    boolean isAvailable(CurrencyUnit base, CurrencyUnit term);
     boolean isAvailable(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
-    default boolean isAvailable(String baseCode, String termCode);
-    default boolean isAvailable(String baseCode, String termCode, ConversionContext conversionContext);
-    ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term);
     ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
-    default ExchangeRate getExchangeRate(String baseCode, String termCode);
-    default ExchangeRate getExchangeRate(String baseCode, String termCode, ConversionContext conversionContext);
-    default ExchangeRate getReversed(ExchangeRate rate);
-    CurrencyConversion getCurrencyConversion(CurrencyUnit term);
     CurrencyConversion getCurrencyConversion(CurrencyUnit term, ConversionContext conversionContext);
-    default CurrencyConversion getCurrencyConversion(String termCode);
-    default CurrencyConversion getCurrencyConversion(String termCode, ConversionContext conversionContext);
+
+    default boolean isAvailable(CurrencyUnit base, CurrencyUnit term){...}
+    default boolean isAvailable(String baseCode, String termCode){...}
+    default boolean isAvailable(String baseCode, String termCode, ConversionContext conversionContext){...}
+    default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){...}
+    default ExchangeRate getExchangeRate(String baseCode, String termCode){...}
+    default ExchangeRate getExchangeRate(String baseCode, String termCode, ConversionContext conversionContext){...}
+    default ExchangeRate getReversed(ExchangeRate rate){...}
+    default CurrencyConversion getCurrencyConversion(CurrencyUnit term){...}
+    default CurrencyConversion getCurrencyConversion(String termCode){...}
+    default CurrencyConversion getCurrencyConversion(String termCode, ConversionContext conversionContext){...}
 }
 -------------------------------------------------------------------------------
 
@@ -1834,7 +1815,7 @@ Hereby the above listing illustrates quite well, what are the minimal properties
 * a style identifier, by default +"default"+.
 * a +Locale+
 * of course, additional parameters can be added as needed, such as output and input patterns, color or style settings,
-  +MonetaryAmountFactories+ to be used for creating amounts on parsing etc.
+  +MonetaryAmountFactory+ instance to be used for creating amounts on parsing etc.
 
 [[AccessingFormats]]
 ==== Accessing Monetary Amount Formats
@@ -1854,9 +1835,9 @@ based on
 .Interface MonetaryFormatsSingletonSpi
 -------------------------------------------------------------------------------
 public interface MonetaryFormatsSingletonSpi{
-    MonetaryAmountFormat getAmountFormat(AmountFormatContext style); <1>
-    Set<Locale> getAvailableLocales();                               <1>
-    default MonetaryAmountFormat getAmountFormat(Locale locale);     <2>
+  MonetaryAmountFormat getAmountFormat(AmountFormatContext style); <1>
+  Set<Locale> getAvailableLocales();                               <1>
+  default MonetaryAmountFormat getAmountFormat(Locale locale);     <2>
 }
 -------------------------------------------------------------------------------
 <1> Methods to be implemented by clients.
@@ -1912,7 +1893,7 @@ JSR 354 defines a complete API and provides a default reference implementation. 
 provide several implementation services, called the SPI, to provide the effective functionality. The following diagram
 illustrate the SPIs in place:
 
-image::tiger.png[align=center]
+image::spi.jng[align=center]
 
 These services must be registered to the +Bootstrap+ singleton. The +Bootstrap+ singleton relies, by default, on
 +java.util.ServiceLoader+ to load the implementation services, but this mechanism can be replaced by an alternate
@@ -1973,8 +1954,9 @@ the +MonetaryCurrencies+ singleton:
 .Interface CurrencyProviderSpi
 -------------------------------------------------------------------------------
 public interface CurrencyProviderSpi {
-         public CurrencyUnit getCurrencyUnit(String currencyCode);
-         public CurrencyUnit getCurrencyUnit(Locale locale);
+  CurrencyUnit getCurrencyUnit(String currencyCode);
+  CurrencyUnit getCurrencyUnit(Locale locale);
+  Collection<CurrencyUnit> getCurrencies();
 }
 -------------------------------------------------------------------------------
 
@@ -2001,12 +1983,13 @@ public interface MonetaryAmountFactoryProviderSpi<T extends MonetaryAmount> {
     DIRECT_REFERENCE_ONLY,
     NEVER
   }
-  QueryInclusionPolicy getQueryInclusionPolicy();
   Class<T> getAmountType();
   MonetaryContext getDefaultMonetaryContext();
-  MonetaryContext geMaximalMonetaryContext();
 
   MonetaryAmountFactory<T> createAmountFactory();
+
+  default QueryInclusionPolicy getQueryInclusionPolicy(){...} // QueryInclusionPolicy.ALWAYS
+  default MonetaryContext geMaximalMonetaryContext(){...}     // equals to getDefaultMonetaryContext()
 }
 -------------------------------------------------------------------------------
 
@@ -2104,8 +2087,8 @@ capabilities of a concrete type are accessible from the according implementation
 
 [[MonetaryRoundingsSingletonSpi]]
 ===== Registering Roundings
-Since a monetary rounding is nothing else than a conversion from an unrounded amount to a rounded amount, ist is modeled
-as +MonetaryOperator+. The +MonetaryRoundings+ singleton hereby allows to access different roundings. Similar to other
+Since a monetary rounding is nothing else than a conversion from an unrounded amount to a rounded amount, it is modeled
+as +<<MonetaryOperator>>+. The +MonetaryRoundings+ singleton hereby allows to access different roundings. Similar to other
 singletons in this JSR the "MonetaryRoundings+ singleton is backed up by an instance of
 +MonetaryRoundingsSingletonSpi+, which allows to override the exact logic, how the registered
 +javax.money.spi.RoundingProviderSpi+ are managed:
@@ -2114,15 +2097,15 @@ singletons in this JSR the "MonetaryRoundings+ singleton is backed up by an inst
 .Interface MonetaryRoundingsSingletonSpi
 -------------------------------------------------------------------------------
 public interface MonetaryRoundingsSingletonSpi {
-    MonetaryOperator getRounding(RoundingContext roundingContext);    <1>
-  	Set<String> getRoundingIds();                                     <1>
-  	default MonetaryOperator getDefaultRounding();                    <2>
-  	default MonetaryOperator getRounding(CurrencyUnit currencyUnit);  <2>
-  	default MonetaryOperator getRounding(String roundingId);          <2>
+  MonetaryOperator getRounding(RoundingContext roundingContext);        <1>
+  Set<String> getRoundingIds();                                         <1>
+  default MonetaryOperator getDefaultRounding(){...}                    <2>
+  default MonetaryOperator getRounding(CurrencyUnit currencyUnit){...}  <2>
+  default MonetaryOperator getRounding(String roundingId){...}          <2>
 }
 -------------------------------------------------------------------------------
 <1> Methods to be overriden.
-<2> Default methods that optionally can be overridden.
+<2> Default methods that optionally can be overridden, by default delegating to +getRounding(RoundingContext)+.
 
 
 The corresponding +RoundingProviderSpi+ is also relatively simple, since complex parameters can be stored as part
@@ -2132,8 +2115,8 @@ of the +<<RoundingContext>>+ passed:
 .Interface RoundingProviderSpi
 -------------------------------------------------------------------------------
 public interface RoundingProviderSpi {
-    MonetaryOperator getRounding(RoundingContext roundingContext);
-  	Set<String> getRoundingIds();
+  MonetaryOperator getRounding(RoundingContext roundingContext);
+  Set<String> getRoundingIds();
 }
 -------------------------------------------------------------------------------
 
@@ -2171,18 +2154,13 @@ consequence the methods basically are similar to the ones provided by the single
 -------------------------------------------------------------------------------
 public interface MonetaryConversionsSingletonSpi {
    ExchangeRateProvider getExchangeRateProvider(String... providers);
-   CurrencyConversion getConversion(CurrencyUnit termCurrency,
-                        ConversionContext conversionContext, String... providers);
-   CurrencyConversion getConversion(CurrencyUnit termCurrency,
-                        String... providers);
-   default CurrencyConversion getConversion(String termCurrencyCode,
-                        ConversionContext conversionContext, String... providers);
-   default CurrencyConversion getConversion(String termCurrencyCode,
-                        String... providers);
    Collection<String> getProviderNames();
-   default boolean isProviderAvailable(String provider);
-   ProviderContext getProviderContext(String provider);
    List<String> getDefaultProviderChain();
+
+   default boolean isProviderAvailable(String provider){...}
+   default ProviderContext getProviderContext(String provider);
+   default CurrencyConversion getConversion(CurrencyUnit termCurrency,
+                           ConversionContext conversionContext, String... providers);
 }
 -------------------------------------------------------------------------------
 
@@ -2202,10 +2180,6 @@ Hereby
   +ExchangeRateProvider+ interface API documentation.
   Additionally if no explicit provider names are passed, the provider names and ordering as defined by
   +getDefaultProviderChain()+ have to be used.
-* +getConversion(String…)+ models the same concept as above, but for +CurrencyConversion+ instances. Whereas the
-  +ExchangeRateprovider+ interface allows to pass a target +ConversionContext+ explicitly, when accessing +ExchangeRate+
-  instances, a +ConversionContext+ can be passed optionally to further configure the +CurrencyConversion+ instance
-  required.
 * As for other SPIs in this JSR the loading of different +ExchangeRateProvider+ instances should be delegated to the
   +Bootstrap+ implementation.
 
@@ -2213,7 +2187,7 @@ Hereby
 Adding additional capabilities for currency conversion equals to implementing and registering classes implementing the
 +ExchangeRateProvider+ interface. The interface itself is part of the API and described in +<<ExchangeRate>>+ and
 +<<ExchangeRateProvider>>+.
-Providers. Basically the implementation of the +MonetaryConversionsSingletonSpi+ determines how the implementations must be
+Basically the implementation of the +MonetaryConversionsSingletonSpi+ determines how the implementations must be
 registered. Hereby the registered +ServiceProvider+ implementation is responsible for loading and providing the
 according components. Refer also to <<Bootstrap>> Mechanism for more details.
 
@@ -2226,7 +2200,7 @@ The implementation that implements the API’s SPI may use a different logging a
 
 [[FormattingSPI]]
 ==== Formatting SPI
-===== Prodivding Amount Formats
+===== Providing Amount Formats
 The +MonetaryFormats+ singleton delegates creation of +MonetaryAmountFormat+ instances to registered instances of
 +javax.money.spi.MonetaryAmountFormatProviderSpi+. Hereby at least one instance of +AmountStyleProviderSpi+ must be
 registered as +Bootstrap+ component, which is defined as follows:
@@ -2241,8 +2215,9 @@ public interface MonetaryAmountFormatProviderSpi {
 
 Hereby
 * +getAmountFormat(AmountFormatContext)+ returns the corresponding +MonetaryAmountFormat+ instance.
-  IMPORTANT: Note that the +MonetaryFormats+ API class, that is relying on this SPI, will not cache any instances.
-  When caching is useful, it must be implemented by the SPI.
+
+IMPORTANT: Note that the +MonetaryFormats+ API class, that is relying on this SPI, will not cache any instances.
+When caching is useful, it must be implemented by the SPI.
 
 Multiple instances of this interface can be registered hereby forming a chain of responsibility, whereas the components
 priority define the ordering within the chain. The first component in the chain, that returns a non-null result,
@@ -2283,6 +2258,7 @@ Summarizing the +Bootstrap+ singleton
   by the JSR 354 API. The implementation of +ServiceLoader+ hereby can also implement a contextual service registry.
 * if _multiple_ implementations are registered, the implementation is not defined, Hereby a warning is logged.
 
+===== Service Provider
 To use an alternate implementation of +javax.money.spi.ServiceProvider+ an alternate implementation must be registered
 using the +java.util.ServiceLoader+. If no instance is registered, an instance of +DefaultServiceProvider+ is loaded,
 that relies on the +java.util.ServiceLoader+.
@@ -2294,17 +2270,126 @@ singleton class:
 .Interface ServiceProvider
 -------------------------------------------------------------------------------
 public interface ServiceProvider {
-  <T> Collection<T> getServices(Class<T> serviceType);
   <T> Collection<T> getServices(Class<T> serviceType,
                         Collection<T> defaultList);
+  default <T> Collection<T> getServices(Class<T> serviceType){...}
 }
 -------------------------------------------------------------------------------
 
 Hereby
 
 * if a required service type can not be satisfied,
-  ** the corresponding defaultList should be returned as a schedule (this also includes returning +null+).
-  ** If the required numeric capabilities exceed the maximal supported +MonetaryContext+, a +MonetaryException+ must be thrown.
+  ** the corresponding +defaultList+ should be returned as a schedule (this also includes returning +null+).
+  ** If the required numeric capabilities exceed the maximal supported +MonetaryContext+, a +MonetaryException+ must be
+     thrown, refer also to <<MonetaryAmount>> for further details.
+
+===== Support for EE / CDI
+We have seen that all the singleton accessors defined by this API can be replaced by customized implementations. This
+allows also to adapt the behaviour in case your application runs in a EE/CDI context. Basically CDI can be integrated
+in multiple ways:
+
+* you can override the singleton SPIs (+MonetaryAmountsSinlgetonSpi, MonetarFormatsSingletonSpi, MonetaryRoundingsSpi,
+MonetaryConversionsSingletonSpi+ and reimplement the mechanism how the different components are located within the
+current runtime environment. Additionally you can filter or adapt the components accessible, e.g. based on tenant
+or other contextual information. Overriding the singletons gives you full control and basically also allows you to mix
+different component containers (e.g. SE and CDI). Nevertheless overriding the SPIs requires more knowledge about the
+specification. Basically you are recommended to execute the TCK to identify locations, where your implementation may
+not be compliant with this spec.
+* Far more easy is to reuse the default singleton implementations, but exchange the +ServiceProvider+ used. This is
+  basically quite easy:
+  ** Implement an alternative instance of +ServiceProvider+.
+  ** Register the instance using the JDK's +ServiceLoader+: add a file with the following content to your (system)
+     classpath under +/META-INF/services/javax.money.spi.ServiceProvider+:
+
+[listing]
+.Register alternate ServiceLoader
+-------------------------------------------------------------------------------
+foo.bar.MyFooServiceProvider
+-------------------------------------------------------------------------------
+
+This will delegate all requests for SPIs to your +foo.bar.MyFooServiceProvider+ implementation. Within this
+implementation you must:
+* fall back on SE mechanism, when EE/CDI is not available, or through a +IllegalStateException+.
+* locate the components as required
+* enable component precendence by ordering the instances found, e.g. you can base your ordering on +@Priority+
+  annotations on the classes loaded. Hereby the components with higher priorites must be returned first. They
+  either have precendence in command chains or are selected as final components to be used, e.g. for backing singleton
+  beans.
+
+An according example is implemented within the <<JavaMoney>> library, basically it looks similar to the following code:
+
+[source,java]
+.Outline of a CDI based ServiceLoader
+-------------------------------------------------------------------------------
+@ServicePriority(ServicePriority.NORM_PRIORITY + 1)
+public class CDIServices implements ServiceProvider {
+
+	@Override
+	public <T> List<T> getServices(Class<T> serviceType) {
+		List<T> instances = new ArrayList<T>();
+		for (T t : CDIContainer  // backed up by CDI.current().getBeanManager();
+				.getInstances(serviceType)) {
+			instances.add(t);
+		}
+		return instances;
+	}
+
+	@Override
+	public <T> List<T> getServices(Class<T> serviceType,
+			List<T> defaultList) {
+		Instance<T> found = CDIContainer // backed up by CDI.current().getBeanManager();
+				.getInstances(serviceType);
+		if (found.isUnsatisfied()) {
+			return defaultList;
+		}
+		List<T> instances = new ArrayList<T>();
+		for (T t : found) {
+			instances.add(t);
+		}
+		return instances;
+	}
+
+}
+
+-------------------------------------------------------------------------------
+
+As a side effect you may add additional functionality to your setup:
+
+* For example you may write a CDI portable extension to add the service that are registered using the JDK
+  +ServiceLoader+ to your CDI runtime context.
+* With CDI you can, of course, register your SPI implementations simply by implementing them as CDI managed
+  beans:
+
+[source,java]
+.Example writing a CurrencyProvider with CDI
+-------------------------------------------------------------------------------
+@ServicePriority(ServicePriority.NORM_PRIORITY + 1)
+@Singleton
+public class MyCurrencyProvider implements CurrencyProvider {
+
+     private final Map<String, MyCurrency> currencies = new HashMap<>();
+
+     public MyCurrencyProvider(){
+        this.currencies.put("MSCU", new MyCurrency());
+     }
+
+	 @Override
+     public CurrencyUnit getCurrencyUnit(String currencyCode){
+        return this.currencies.get(currencyCode);
+     }
+
+
+     @Override
+     public CurrencyUnit getCurrencyUnit(Locale locale){
+        return null;
+     }
+
+     @Override
+     public Collection<CurrencyUnit> getCurrencies(){
+        return this.currencies.values();
+     }
+}
+-------------------------------------------------------------------------------
 
 [[Recommendations]]
 == Implementation Recommendations
@@ -2312,7 +2397,7 @@ Hereby
 There are a couple of best practices in the area of financial applications and frameworks. This JSR does not require
 most of them for the following reasons:
 
-* The overall API design is similar to the Date/Time API introduced with JDK 8 (JSR-310) where appropriate.
+* The overall API design is similar to the Date/Time API introduced with JDK 8 (JSR-310), where appropriate.
   E.g. +TemporalAdjuster+ and +MonetaryOperator+ model a similar concept for temporal and for monetary amounts.
   Therefore the corresponding models in this JSR define similar implementation constraints.
 * More complex constraints would be difficult or impossible to ensure by a TCK, so they are defined as recommendations.
@@ -2458,7 +2543,7 @@ Also a generic +MonetaryAmount+ instance can be accessed using a raw factory:
 .Example Usage MonetaryAmountFactory
 -------------------------------------------------------------------
 MonetaryAmount amt = MonetaryAmounts.getDefaultAmountFactory()
-                                            .withCurrency("USD").with(200.50).create();
+                       .withCurrency("USD").with(200.50).create();
 -------------------------------------------------------------------
 
 Still we can evaluate the amount’s type effectively:
@@ -2472,7 +2557,7 @@ if(Money.class==amt.getClass()){
 
 But in fact, we do not need to know the exact implementation in most cases, since we can access a +MonetaryContext+,
 which provides detailed information, such as maximal precision, maximal scale, the basic implementation flavor and
-additional attributes.
+additional attributes. Refer to <<MonetaryContext>> for more details.
 
 [source,java]
 .Example Usage MonetaryContext
@@ -2503,9 +2588,9 @@ mentioned also external functionality can be chained, using instances of +Moneta
 -------------------------------------------------------------------
 Money amt = Money.of("CHF", 200);
 amt = amt.multiply(2.12345).with(MonetaryRoundings.of())
-                                .with(MonetaryFunctions.minimal(100)).
-                                        .multiply(2.12345).with(MonetaryRoundings.of())
-                                        .with(MonetaryFunctions.percent(23));
+        .with(MonetaryFunctions.minimal(100)).
+        .multiply(2.12345).with(MonetaryRoundings.of())
+        .with(MonetaryFunctions.percent(23));
 -------------------------------------------------------------------
 
 ==== Numeric Precision and Scale
@@ -2516,8 +2601,7 @@ of +BigDecimal+. By default instances of Money use +MathContext.DECIMAL64+. But 
 [source,java]
 .Example Passing a MonetaryContext to the static factory method of Money
 -------------------------------------------------------------------
-public static Money of(String currencyCode, Number number,
-                           MonetaryContext context);
+public static Money of(String currencyCode, Number number, MonetaryContext context);
 -------------------------------------------------------------------
 
 ==== Extending the API
@@ -2632,10 +2716,10 @@ public class Total implements MonetaryOperator{
 }
 -------------------------------------------------------------------
 
-[CAUTION]
+[IMPORTANT]
 =======================================================================
 We are well aware of the fact that this implementation still has some severe drawbacks, but we decided for
-simplicity to not add the following features:
+simplicity to not add the following features to this example:
 
 * the implementation can only handle one currency, a better implementation could also be _multi-currency_ capable.
 * The implementation above is not thread-safe.
@@ -2677,7 +2761,7 @@ public <T extends MonetaryAmount> T presentValue(
                                 T amt, BigDecimal rate, int periods){
     BigDecimal divisor = BigDecimal.ONE.add(rate).pow(periods);
     // cast should be safe for implementations that adhere to this spec
-    return (T)amt.divide(divisor);
+    return amt.divide(divisor);
 }
 -------------------------------------------------------------------
 

@@ -109,7 +109,7 @@ public interface MonetaryConversionsSingletonSpi{
      */
     default CurrencyConversion getConversion(CurrencyUnit termCurrency, ConversionContext conversionContext,
                                      String... providers){
-        return getExchangeRateProvider(providers).getCurrencyConversion(termCurrency);
+        return getExchangeRateProvider(providers).getCurrencyConversion(termCurrency, conversionContext);
     }
 
 }

@@ -158,19 +158,6 @@ public final class MonetaryRoundings {
      */
     private static final class DefaultMonetaryRoundingsSingletonSpi implements MonetaryRoundingsSingletonSpi{
 
-
-        /**
-         * Creates a rounding that can be added as {@link javax.money.MonetaryOperator} to
-         * chained calculations. The instance will lookup the concrete
-         * {@link javax.money.MonetaryOperator} instance from the {@link javax.money.spi.MonetaryRoundingsSingletonSpi}
-         * based on the input {@link javax.money.MonetaryAmount}'s {@link javax.money.CurrencyUnit}.
-         *
-         * @return the (shared) default rounding instance.
-         */
-        public MonetaryOperator getRounding(){
-            return DEFAULT_ROUNDING;
-        }
-
         /**
          * Creates an rounding instance using {@link java.math.RoundingMode#UP} rounding.
          *
@@ -184,6 +171,7 @@ public final class MonetaryRoundings {
             if(RoundingContext.DEFAULT_ROUNDING_CONTEXT.equals(roundingContext)){
                 return DEFAULT_ROUNDING;
             }
+
             for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){
                 try{
                     MonetaryOperator op = prov.getRounding(roundingContext);

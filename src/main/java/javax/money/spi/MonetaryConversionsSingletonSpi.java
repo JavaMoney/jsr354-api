@@ -9,16 +9,11 @@
  */
 package javax.money.spi;
 
+import javax.money.CurrencyUnit;
+import javax.money.convert.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.ServiceLoader;
-
-import javax.money.CurrencyUnit;
-import javax.money.convert.ConversionContext;
-import javax.money.convert.CurrencyConversion;
-import javax.money.convert.ExchangeRateProvider;
-import javax.money.convert.MonetaryConversions;
-import javax.money.convert.ProviderContext;
 
 /**
  * SPI (conversoin) that implements the functionalities provided by the
@@ -39,83 +34,82 @@ import javax.money.convert.ProviderContext;
  * Only one instance can be registered using the {@link ServiceLoader}. When
  * registering multiple instances the {@link MonetaryConversions} accessor will
  * not work.
- * 
+ *
  * @author Anatole Tresch
  */
 public interface MonetaryConversionsSingletonSpi{
 
-	/**
-	 * Access an instance of {@link ExchangeRateProvider}.
-	 * 
-	 * @param providers
-	 *            The providers to be used, in order of precedence, for building
-	 *            a provider chain. At least one provider must be passed.
-	 * @return an {@link ExchangeRateProvider} built up with the given sub
-	 *         providers, never {@code null}
-	 * @see #isProviderAvailable(String)
-	 * @throws IllegalArgumentException
-	 *             if a provider could not be found or not at least one provider
-	 *             name is passed.
-	 */
-	ExchangeRateProvider getExchangeRateProvider(String... providers);
+    /**
+     * Access an instance of {@link ExchangeRateProvider}.
+     *
+     * @param providers The providers to be used, in order of precedence, for building
+     *                  a provider chain. At least one provider must be passed.
+     * @return an {@link ExchangeRateProvider} built up with the given sub
+     * providers, never {@code null}
+     * @throws IllegalArgumentException if a provider could not be found or not at least one provider
+     *                                  name is passed.
+     * @see #isProviderAvailable(String)
+     */
+    ExchangeRateProvider getExchangeRateProvider(String... providers);
 
-	/**
-	 * Access an instance of {@link CurrencyConversion}.
-	 * 
-	 * @param termCurrency
-	 *            the terminating or target currency, not {@code null}
-	 * @param conversionContext
-	 *            The {@link ConversionContext} required, not {@code null}
-	 * @param providers
-	 *            The providers to be used, in order of precedence, for building
-	 *            a provider chain. At least one provider must be passed.
-	 * @return the provider, if it is a registered rate type, never null.
-	 * @see #isProviderAvailable(String)
-	 * @throws IllegalArgumentException
-	 *             if a provider could not be found or not at least one provider
-	 *             name is passed.
-	 */
-	CurrencyConversion getConversion(CurrencyUnit termCurrency,
-			ConversionContext conversionContext, String... providers);
+    /**
+     * Get all currently registered provider names.
+     *
+     * @return all currently registered provider names
+     * @see ProviderContext#getProvider()
+     */
+    Collection<String> getProviderNames();
 
-	/**
-	 * Get all currently registered provider names.
-	 * 
-	 * @return all currently registered provider names
-	 * @see ProviderContext#getProvider()
-	 */
-	Collection<String> getProviderNames();
 
-	/**
-	 * Allows to quickly check, if a {@link ProviderContext} is supported.
-	 * 
-	 * @param provider
-	 *            The provider required, not {@code null}
-	 * @return {@code true}, if the rate is supported, meaning an according
-	 *         {@link ExchangeRateProvider} or {@link CurrencyConversion} can be
-	 *         loaded.
-	 * @see #getConversion(CurrencyUnit, ConversionContext, String...)
-	 * @see #getExchangeRateProvider(String...)
-	 */
-	boolean isProviderAvailable(String provider);
+    /**
+     * Get the default provider chain used. The ordering of the items is the
+     * access order/precedence of the providers.
+     *
+     * @return the default provider chain, not {@code null} and not empty.
+     */
+    List<String> getDefaultProviderChain();
 
-	/**
-	 * Get the {@link ProviderContext} for a provider.
-	 * 
-	 * @param provider
-	 *            the provider name, not {@code null}.
-	 * @return the corresponding {@link ProviderContext}, not {@code null}.
-	 * @throws IllegalArgumentException
-	 *             if no such provider is registered.
-	 */
-	ProviderContext getProviderContext(String provider);
+    /**
+     * Allows to quickly check, if a {@link ProviderContext} is supported.
+     *
+     * @param provider The provider required, not {@code null}
+     * @return {@code true}, if the rate is supported, meaning an according
+     * {@link ExchangeRateProvider} or {@link CurrencyConversion} can be
+     * loaded.
+     * @see #getConversion(CurrencyUnit, ConversionContext, String...)
+     * @see #getExchangeRateProvider(String...)
+     */
+    default boolean isProviderAvailable(String provider){
+        return getProviderNames().contains(provider);
+    }
 
-	/**
-	 * Get the default provider chain used. The ordering of the items is the
-	 * access order/precedence of the providers.
-	 * 
-	 * @return the default provider chain, not {@code null} and not empty.
-	 */
-	List<String> getDefaultProviderChain();
+
+    /**
+     * Get the {@link ProviderContext} for a provider.
+     *
+     * @param provider the provider name, not {@code null}.
+     * @return the corresponding {@link ProviderContext}, not {@code null}.
+     * @throws IllegalArgumentException if no such provider is registered.
+     */
+    default ProviderContext getProviderContext(String provider){
+        return getExchangeRateProvider(provider).getProviderContext();
+    }
+
+    /**
+     * Access an instance of {@link CurrencyConversion}.
+     *
+     * @param termCurrency      the terminating or target currency, not {@code null}
+     * @param conversionContext The {@link ConversionContext} required, not {@code null}
+     * @param providers         The providers to be used, in order of precedence, for building
+     *                          a provider chain. At least one provider must be passed.
+     * @return the provider, if it is a registered rate type, never null.
+     * @throws IllegalArgumentException if a provider could not be found or not at least one provider
+     *                                  name is passed.
+     * @see #isProviderAvailable(String)
+     */
+    default CurrencyConversion getConversion(CurrencyUnit termCurrency, ConversionContext conversionContext,
+                                     String... providers){
+        return getExchangeRateProvider(providers).getCurrencyConversion(termCurrency);
+    }
 
 }

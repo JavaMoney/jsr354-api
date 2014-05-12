@@ -37,7 +37,7 @@ public interface MonetaryCurrenciesSingletonSpi{
 	 * @throws javax.money.UnknownCurrencyException
 	 *             if no such currency exists.
 	 */
-	public CurrencyUnit getCurrency(String currencyCode);
+	CurrencyUnit getCurrency(String currencyCode);
 
 	/**
 	 * Access a new instance based on the {@link java.util.Locale}. Currencies are
@@ -51,7 +51,7 @@ public interface MonetaryCurrenciesSingletonSpi{
 	 * @throws javax.money.UnknownCurrencyException
 	 *             if no such currency exists.
 	 */
-	public CurrencyUnit getCurrency(Locale locale);
+	CurrencyUnit getCurrency(Locale locale);
 
 	/**
 	 * Allows to check if a {@link javax.money.CurrencyUnit} instance is defined, i.e.
@@ -62,22 +62,23 @@ public interface MonetaryCurrenciesSingletonSpi{
 	 * @return {@code true} if {@link javax.money.spi.MonetaryCurrenciesSingletonSpi#getCurrency(String)}
 	 *         would return a result for the given code.
 	 */
-	public boolean isCurrencyAvailable(String code);
+	boolean isCurrencyAvailable(String code);
 
-	/**
-	 * Allows to check if a {@link javax.money.CurrencyUnit} instance is
-	 * defined, i.e. accessible from {@link #getCurrency(String)}.
-	 *
-	 * @param locale
-	 *            the target {@link java.util.Locale}, not {@code null}.
-	 * @return {@code true} if {@link #getCurrency(java.util.Locale)} would return a
-	 *         result for the given code.
-	 */
-	public boolean isCurrencyAvailable(Locale locale);
+    /**
+     * Allows to check if a {@link javax.money.CurrencyUnit} instance is
+     * defined, i.e. accessible from {@link #getCurrency(String)}.
+     *
+     * @param locale the target {@link java.util.Locale}, not {@code null}.
+     * @return {@code true} if {@link #getCurrency(java.util.Locale)} would return a
+     * result for the given code.
+     */
+    default boolean isCurrencyAvailable(Locale locale){
+        return false;
+    }
 
     /**
      * Provide access to all currently known currencies.
      * @return a collection of all known currencies, never null.
      */
-    public Collection<CurrencyUnit> getCurrencies();
+    Collection<CurrencyUnit> getCurrencies();
 }

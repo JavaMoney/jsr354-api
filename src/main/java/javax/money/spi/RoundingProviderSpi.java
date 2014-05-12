@@ -52,6 +52,6 @@ public interface RoundingProviderSpi {
 	 * 
 	 * @return the ids of the defined custom roundings, never {@code null}.
 	 */
-	Set<String> getCustomRoundingIds();
+	Set<String> getRoundingIds();
 
 }

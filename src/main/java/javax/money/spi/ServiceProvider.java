@@ -11,6 +11,7 @@
 package javax.money.spi;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,7 +32,9 @@ public interface ServiceProvider {
 	 *            the service type.
 	 * @return The instance to be used, never {@code null}
 	 */
-	public <T> List<T> getServices(Class<T> serviceType);
+	public default <T> List<T> getServices(Class<T> serviceType){
+          return getServices(serviceType, (List<T>) Collections.emptyList());
+    }
 
 	/**
 	 * Access a list of services, given its type. The bootstrap mechanism should

@@ -8,6 +8,8 @@
  */
 package javax.money;
 
+import java.math.BigDecimal;
+
 /**
  * Factory for {@link MonetaryAmount} instances for a given type. It can be accessed, by
  * <ul>
@@ -69,7 +71,9 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 *             if the {@code currencyCode} is not resolvable.
 	 * @return This factory instance, for chaining.
 	 */
-	MonetaryAmountFactory<T> setCurrency(String currencyCode);
+	default MonetaryAmountFactory<T> setCurrency(String currencyCode){
+        return setCurrency(MonetaryCurrencies.getCurrency(currencyCode));
+    }
 
 	/**
 	 * Sets the {@link CurrencyUnit} to be used.
@@ -136,7 +140,12 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 *             exceeds the capabilities supported by this factory type.
 	 * @return this factory instance, for chaining.
 	 */
-	MonetaryAmountFactory<T> setAmount(MonetaryAmount amount);
+	default MonetaryAmountFactory<T> setAmount(MonetaryAmount amount){
+        setCurrency(amount.getCurrency());
+        setNumber(amount.getNumber());
+        setContext(amount.getMonetaryContext());
+        return this;
+    }
 
 	/**
 	 * Creates a new instance of {@link MonetaryAmount}, using the current data set on this factory.
@@ -164,6 +173,8 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 * 
 	 * @return the maximal {@link MonetaryContext} supported, never {@code null}
 	 */
-	MonetaryContext getMaximalMonetaryContext();
+	default MonetaryContext getMaximalMonetaryContext(){
+        return getDefaultMonetaryContext();
+    }
 
 }

@@ -56,7 +56,9 @@ public interface MonetaryAmountFactoryProviderSpi<T extends MonetaryAmount> {
 	 * @see MonetaryAmounts#queryAmountType(MonetaryContext)
 	 * @return {@code true} to include this factory into the evaluation.
 	 */
-	QueryInclusionPolicy getQueryInclusionPolicy();
+	default QueryInclusionPolicy getQueryInclusionPolicy(){
+        return QueryInclusionPolicy.ALWAYS;
+    }
 	
 	/**
 	 * Get the concrete amount type created by {@link MonetaryAmountFactory} instances provided.
@@ -90,6 +92,8 @@ public interface MonetaryAmountFactoryProviderSpi<T extends MonetaryAmount> {
 	 * 
 	 * @return the maximal {@link MonetaryContext} supported, never {@code null}
 	 */
-	MonetaryContext getMaximalMonetaryContext();
+	default MonetaryContext getMaximalMonetaryContext(){
+        return getDefaultMonetaryContext();
+    }
 
 }

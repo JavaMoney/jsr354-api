@@ -17,6 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.money.spi.Bootstrap;
+import javax.money.spi.MonetaryCurrenciesSingletonSpi;
+import javax.money.spi.MonetaryRoundingsSingletonSpi;
 import javax.money.spi.RoundingProviderSpi;
 
 /**
@@ -29,11 +31,17 @@ import javax.money.spi.RoundingProviderSpi;
  * @author Werner Keil
  */
 public final class MonetaryRoundings {
-	/**
-	 * An adaptive rounding instance that transparently looks up the correct
-	 * rounding.
-	 */
-	private static final MonetaryOperator DEFAULT_ROUNDING = new DefaultCurrencyRounding();
+
+    /**
+     * An adaptive rounding instance that transparently looks up the correct
+     * rounding.
+     */
+    private static final MonetaryOperator DEFAULT_ROUNDING = new DefaultCurrencyRounding();
+
+    /**
+     * The used {@link javax.money.spi.MonetaryCurrenciesSingletonSpi} instance.
+     */
+    private static final MonetaryRoundingsSingletonSpi monetaryRoundingsSpi = loadMonetaryRoundingsSingletonSpi();
 
 	/**
 	 * Private singleton constructor.
@@ -41,6 +49,20 @@ public final class MonetaryRoundings {
 	private MonetaryRoundings() {
 		// Singleton
 	}
+
+    /**
+     * Loads the SPI backing bean.
+     * @return an instance of MonetaryRoundingsSingletonSpi.
+     */
+    private static MonetaryRoundingsSingletonSpi loadMonetaryRoundingsSingletonSpi(){
+        try{
+            return Bootstrap.getService(MonetaryRoundingsSingletonSpi.class, new DefaultMonetaryRoundingsSingletonSpi());
+        }
+        catch(Exception e){
+            Logger.getLogger(MonetaryCurrencies.class.getName()).log(Level.SEVERE, "Failed to load MonetaryCurrenciesSingletonSpi, using default.", e);
+            return new DefaultMonetaryRoundingsSingletonSpi();
+        }
+    }
 
 	/**
 	 * Creates a rounding that can be added as {@link MonetaryOperator} to
@@ -51,7 +73,7 @@ public final class MonetaryRoundings {
 	 * @return the (shared) default rounding instance.
 	 */
 	public static MonetaryOperator getRounding() {
-		return DEFAULT_ROUNDING;
+		return monetaryRoundingsSpi.getDefaultRounding();
 	}
 
 	/**
@@ -65,24 +87,7 @@ public final class MonetaryRoundings {
 	 *             if no such rounding could be evaluated.
 	 */
 	public static MonetaryOperator getRounding(RoundingContext roundingContext) {
-		Objects.requireNonNull(roundingContext, "RoundingContext required.");
-		for (RoundingProviderSpi prov : Bootstrap
-				.getServices(
-				RoundingProviderSpi.class)) {
-			try {
-				MonetaryOperator op = prov.getRounding(roundingContext);
-				if (op != null) {
-					return op;
-				}
-			} catch (Exception e) {
-				Logger.getLogger(MonetaryRoundings.class.getName()).log(
-						Level.SEVERE,
-						"Error loading RoundingProviderSpi from ptovider: "
-								+ prov, e);
-			}
-		}
-		throw new MonetaryException("No Rounding found matching "
-				+ roundingContext);
+        return monetaryRoundingsSpi.getRounding(roundingContext);
 	}
 
 	/**
@@ -97,7 +102,7 @@ public final class MonetaryRoundings {
 	 *         rounding, never {@code null}.
 	 */
 	public static MonetaryOperator getRounding(CurrencyUnit currencyUnit) {
-		return getRounding(RoundingContext.of(currencyUnit));
+		return monetaryRoundingsSpi.getRounding(currencyUnit);
 	}
 
 
@@ -105,16 +110,16 @@ public final class MonetaryRoundings {
 	 * Access an {@link MonetaryOperator} for custom rounding
 	 * {@link MonetaryAmount} instances.
 	 * 
-	 * @param customRoundingId
-	 *            The customRounding identifier.
+	 * @param roundingId
+	 *            The rounding identifier.
 	 * @return the corresponding {@link MonetaryOperator} implementing the
 	 *         rounding, never {@code null}.
 	 * @throws IllegalArgumentException
 	 *             if no such rounding is registered using a
 	 *             {@link RoundingProviderSpi} instance.
 	 */
-	public static MonetaryOperator getRounding(String customRoundingId) {
-        return getRounding(RoundingContext.of(customRoundingId));
+	public static MonetaryOperator getRounding(String roundingId) {
+        return monetaryRoundingsSpi.getRounding(roundingId);
 	}
 
 	/**
@@ -123,20 +128,7 @@ public final class MonetaryRoundings {
 	 * @return the set of custom rounding ids, never {@code null}.
 	 */
 	public static Set<String> getRoundingIds() {
-		Set<String> result = new HashSet<>();
-		for (RoundingProviderSpi prov : Bootstrap
-				.getServices(
-				RoundingProviderSpi.class)) {
-			try {
-				result.addAll(prov.getCustomRoundingIds());
-			} catch (Exception e) {
-				Logger.getLogger(MonetaryRoundings.class.getName()).log(
-						Level.SEVERE,
-						"Error loading RoundingProviderSpi from provider: "
-								+ prov, e);
-			}
-		}
-		return result;
+		return monetaryRoundingsSpi.getRoundingIds();
 	}
 
 	/**
@@ -154,4 +146,79 @@ public final class MonetaryRoundings {
 			return r.apply(amount);
 		}
 	}
+
+    /**
+     * This class models the accessor for rounding instances, modeled as
+     * {@link MonetaryOperator}.
+     * <p>
+     * This class is thread-safe.
+     *
+     * @author Anatole Tresch
+     * @author Werner Keil
+     */
+    private static final class DefaultMonetaryRoundingsSingletonSpi implements MonetaryRoundingsSingletonSpi{
+
+
+        /**
+         * Creates a rounding that can be added as {@link javax.money.MonetaryOperator} to
+         * chained calculations. The instance will lookup the concrete
+         * {@link javax.money.MonetaryOperator} instance from the {@link javax.money.spi.MonetaryRoundingsSingletonSpi}
+         * based on the input {@link javax.money.MonetaryAmount}'s {@link javax.money.CurrencyUnit}.
+         *
+         * @return the (shared) default rounding instance.
+         */
+        public MonetaryOperator getRounding(){
+            return DEFAULT_ROUNDING;
+        }
+
+        /**
+         * Creates an rounding instance using {@link java.math.RoundingMode#UP} rounding.
+         *
+         * @param roundingContext The {@link javax.money.RoundingContext} defining the required rounding.
+         * @return the corresponding {@link javax.money.MonetaryOperator} implementing the
+         * rounding.
+         * @throws javax.money.MonetaryException if no such rounding could be evaluated.
+         */
+        public MonetaryOperator getRounding(RoundingContext roundingContext){
+            Objects.requireNonNull(roundingContext, "RoundingContext required.");
+            if(RoundingContext.DEFAULT_ROUNDING_CONTEXT.equals(roundingContext)){
+                return DEFAULT_ROUNDING;
+            }
+            for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){
+                try{
+                    MonetaryOperator op = prov.getRounding(roundingContext);
+                    if(op != null){
+                        return op;
+                    }
+                }
+                catch(Exception e){
+                    Logger.getLogger(DefaultMonetaryRoundingsSingletonSpi.class.getName())
+                            .log(Level.SEVERE, "Error loading RoundingProviderSpi from ptovider: " + prov, e
+                            );
+                }
+            }
+            throw new MonetaryException("No Rounding found matching " + roundingContext);
+        }
+
+        /**
+         * Allows to access the identifiers of the current defined custom roundings.
+         *
+         * @return the set of custom rounding ids, never {@code null}.
+         */
+        public Set<String> getRoundingIds(){
+            Set<String> result = new HashSet<>();
+            for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){
+                try{
+                    result.addAll(prov.getRoundingIds());
+                }
+                catch(Exception e){
+                    Logger.getLogger(DefaultMonetaryRoundingsSingletonSpi.class.getName())
+                            .log(Level.SEVERE, "Error loading RoundingProviderSpi from provider: " + prov, e
+                            );
+                }
+            }
+            return result;
+        }
+    }
+
 }

@@ -29,20 +29,6 @@ public class DefaultServiceProvider implements ServiceProvider {
 	@SuppressWarnings("rawtypes")
 	private Map<Class, List<Object>> servicesLoaded = new ConcurrentHashMap<>();
 
-	/**
-	 * Access all services available by type.
-	 * 
-	 * @param serviceType
-	 *            the service type.
-	 * @param <T>
-	 *            the concrete type.
-	 * @return all services available, never {@code null}.
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> List<T> getServices(Class<T> serviceType) {
-		return getServices(serviceType, (List<T>) Collections.emptyList());
-	}
 
 	/**
 	 * Access all services available by type.

@@ -10,6 +10,7 @@ package javax.money.convert;
 
 import javax.money.AbstractContext;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**

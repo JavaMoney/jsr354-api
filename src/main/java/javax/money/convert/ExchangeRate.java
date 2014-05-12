@@ -71,7 +71,17 @@ import java.util.Objects;
  * <li>The {@link ConversionContext}
  * <li>The rate chain
  * </ul>
- *
+ * <p/>
+ * <h3>Implementation Specification</h3>
+ * <p>Implementations of this interface
+ * <ul>
+ *     <li>must be Comparable(with {@code ExchangeRate})</li>
+ *     <li>must implement equals/hashCode considering #getBase, #getTerm, #getFactor and #getConversionContext.</li>
+ *     <li>should be thread-safe</li>
+ *     <li>should be serializable</li>
+ *     <li>should provide a fluent builder API for constructing new rate instances easily.</li>
+ * </ul>
+ * </ul></p>
  * @author Werner Keil
  * @author Anatole Tresch
  * @see <a

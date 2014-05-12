@@ -47,6 +47,9 @@ import java.util.Objects;
  * @author Anatole Tresch
  */
 public final class ConversionContext extends AbstractContext{
+
+    private static final long serialVersionUID = 2386546659786888877L;
+
     /**
      * ConversionContext that queries any conversion available.
      */

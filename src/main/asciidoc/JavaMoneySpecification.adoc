@@ -1503,14 +1503,14 @@ Summarizing an +ExchangeRate+ is modelled as follows:
 .Interface ExchangeRate
 -------------------------------------------------------------------------------
 public interface ExchangeRate{
-    ...
-    ConversionContext getConversionContext();
-    CurrencyUnit getBase();
-    CurrencyUnit getTerm();
-    NumberValue getFactor();
-    // Support for chained rates
-    List<ExchangeRate> getExchangeRateChain();
-    default boolean isDerived(){...}
+  ...
+  ConversionContext getConversionContext();
+  CurrencyUnit getBase();
+  CurrencyUnit getTerm();
+  NumberValue getFactor();
+  // Support for chained rates
+  List<ExchangeRate> getExchangeRateChain();
+  default boolean isDerived(){...}
 }
 -------------------------------------------------------------------------------
 
@@ -1552,21 +1552,21 @@ Summarizing an +ExchangeRate+ is modelled as follows:
 .Interface ExchangeRateProvider
 -------------------------------------------------------------------------------
 public interface ExchangeRateProvider{
-    ProviderContext getProviderContext();
-    boolean isAvailable(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
-    ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
-    CurrencyConversion getCurrencyConversion(CurrencyUnit term, ConversionContext conversionContext);
+  ProviderContext getProviderContext();
+  boolean isAvailable(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
+  ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
+  CurrencyConversion getCurrencyConversion(CurrencyUnit term, ConversionContext conversionContext);
 
-    default boolean isAvailable(CurrencyUnit base, CurrencyUnit term){...}
-    default boolean isAvailable(String baseCode, String termCode){...}
-    default boolean isAvailable(String baseCode, String termCode, ConversionContext conversionContext){...}
-    default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){...}
-    default ExchangeRate getExchangeRate(String baseCode, String termCode){...}
-    default ExchangeRate getExchangeRate(String baseCode, String termCode, ConversionContext conversionContext){...}
-    default ExchangeRate getReversed(ExchangeRate rate){...}
-    default CurrencyConversion getCurrencyConversion(CurrencyUnit term){...}
-    default CurrencyConversion getCurrencyConversion(String termCode){...}
-    default CurrencyConversion getCurrencyConversion(String termCode, ConversionContext conversionContext){...}
+  default boolean isAvailable(CurrencyUnit base, CurrencyUnit term){...}
+  default boolean isAvailable(String baseCode, String termCode){...}
+  default boolean isAvailable(String baseCode, String termCode, ConversionContext conversionContext){...}
+  default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){...}
+  default ExchangeRate getExchangeRate(String baseCode, String termCode){...}
+  default ExchangeRate getExchangeRate(String baseCode, String termCode, ConversionContext conversionContext){...}
+  default ExchangeRate getReversed(ExchangeRate rate){...}
+  default CurrencyConversion getCurrencyConversion(CurrencyUnit term){...}
+  default CurrencyConversion getCurrencyConversion(String termCode){...}
+  default CurrencyConversion getCurrencyConversion(String termCode, ConversionContext conversionContext){...}
 }
 -------------------------------------------------------------------------------
 
@@ -1801,11 +1801,11 @@ public final class AmountFormatContext extends AbstractContext implements Serial
   public Builder toBuilder();
 
   public static final class Builder {
-      public Builder(String formatName);
-      public Builder(Locale locale);
-      public Builder(AmountFormatContext amountStyle);
-      public AmountFormatContext build();
-      ...
+    public Builder(String formatName);
+    public Builder(Locale locale);
+    public Builder(AmountFormatContext amountStyle);
+    public AmountFormatContext build();
+    ...
   }
 }
 -------------------------------------------------------------------------------
@@ -2153,14 +2153,14 @@ consequence the methods basically are similar to the ones provided by the single
 .Interface MonetaryConversionsSingletonSpi
 -------------------------------------------------------------------------------
 public interface MonetaryConversionsSingletonSpi {
-   ExchangeRateProvider getExchangeRateProvider(String... providers);
-   Collection<String> getProviderNames();
-   List<String> getDefaultProviderChain();
+  ExchangeRateProvider getExchangeRateProvider(String... providers);
+  Collection<String> getProviderNames();
+  List<String> getDefaultProviderChain();
 
-   default boolean isProviderAvailable(String provider){...}
-   default ProviderContext getProviderContext(String provider);
-   default CurrencyConversion getConversion(CurrencyUnit termCurrency,
-                           ConversionContext conversionContext, String... providers);
+  default boolean isProviderAvailable(String provider){...}
+  default ProviderContext getProviderContext(String provider);
+  default CurrencyConversion getConversion(CurrencyUnit termCurrency,
+                          ConversionContext conversionContext, String... providers);
 }
 -------------------------------------------------------------------------------
 
@@ -2324,31 +2324,29 @@ An according example is implemented within the <<JavaMoney>> library, basically 
 @ServicePriority(ServicePriority.NORM_PRIORITY + 1)
 public class CDIServices implements ServiceProvider {
 
-	@Override
-	public <T> List<T> getServices(Class<T> serviceType) {
-		List<T> instances = new ArrayList<T>();
-		for (T t : CDIContainer  // backed up by CDI.current().getBeanManager();
+  @Override
+  public <T> List<T> getServices(Class<T> serviceType) {
+    List<T> instances = new ArrayList<T>();
+	for (T t : CDIContainer  // backed up by CDI.current().getBeanManager();
 				.getInstances(serviceType)) {
-			instances.add(t);
-		}
-		return instances;
+	  instances.add(t);
 	}
+	return instances;
+  }
 
-	@Override
-	public <T> List<T> getServices(Class<T> serviceType,
-			List<T> defaultList) {
-		Instance<T> found = CDIContainer // backed up by CDI.current().getBeanManager();
-				.getInstances(serviceType);
-		if (found.isUnsatisfied()) {
-			return defaultList;
-		}
-		List<T> instances = new ArrayList<T>();
-		for (T t : found) {
-			instances.add(t);
-		}
-		return instances;
+  @Override
+  public <T> List<T> getServices(Class<T> serviceType, List<T> defaultList) {
+    // backed up by CDI.current().getBeanManager();
+    Instance<T> found = CDIContainer.getInstances(serviceType);
+	if (found.isUnsatisfied()) {
+	  return defaultList;
 	}
-
+	List<T> instances = new ArrayList<T>();
+	for (T t : found) {
+	  instances.add(t);
+	}
+	return instances;
+  }
 }
 
 -------------------------------------------------------------------------------
@@ -2367,27 +2365,27 @@ As a side effect you may add additional functionality to your setup:
 @Singleton
 public class MyCurrencyProvider implements CurrencyProvider {
 
-     private final Map<String, MyCurrency> currencies = new HashMap<>();
+  private final Map<String, MyCurrency> currencies = new HashMap<>();
 
-     public MyCurrencyProvider(){
-        this.currencies.put("MSCU", new MyCurrency());
-     }
+  public MyCurrencyProvider(){
+    this.currencies.put("MSCU", new MyCurrency());
+  }
 
-	 @Override
-     public CurrencyUnit getCurrencyUnit(String currencyCode){
-        return this.currencies.get(currencyCode);
-     }
+  @Override
+  public CurrencyUnit getCurrencyUnit(String currencyCode){
+    return this.currencies.get(currencyCode);
+  }
 
 
-     @Override
-     public CurrencyUnit getCurrencyUnit(Locale locale){
-        return null;
-     }
+  @Override
+  public CurrencyUnit getCurrencyUnit(Locale locale){
+    return null;
+  }
 
-     @Override
-     public Collection<CurrencyUnit> getCurrencies(){
-        return this.currencies.values();
-     }
+  @Override
+  public Collection<CurrencyUnit> getCurrencies(){
+    return this.currencies.values();
+  }
 }
 -------------------------------------------------------------------------------
 
@@ -2512,7 +2510,7 @@ As an example the reference implementation provides a class +org.javamoney.monet
 -------------------------------------------------------------------------------
 public final class Money
 implements MonetaryAmount, Comparable<MonetaryAmount>, Serializable {
-    ...
+  ...
 }
 -------------------------------------------------------------------------------
 
@@ -2614,9 +2612,9 @@ Now, one last thing to discuss is, how users can add their own functionality, e.
 [source,java]
 -------------------------------------------------------------------------------
 public final class DuplicateOp implements MonetaryOperator{
- public <T extends MonetaryAmount> T apply(T amount){
-   return (T) amount.multiply(2);
- }
+  public <T extends MonetaryAmount> T apply(T amount){
+    return (T) amount.multiply(2);
+  }
 }
 -------------------------------------------------------------------------------
 
@@ -2630,9 +2628,9 @@ public final class DuplicateOp implements MonetaryOperator{
 [source,java]
 -------------------------------------------------------------------------------
 public final class ToInvalid implements MonetaryOperator{
- public <T extends MonetaryAmount> T apply(T amount){
-   return (T)amount.getFactory().with("XXX").with(0).create();
- }
+  public <T extends MonetaryAmount> T apply(T amount){
+    return (T)amount.getFactory().with("XXX").with(0).create();
+  }
 }
 -------------------------------------------------------------------------------
 
@@ -2759,9 +2757,9 @@ The same financial function now can be implemented for example as follows:
 -------------------------------------------------------------------
 public <T extends MonetaryAmount> T presentValue(
                                 T amt, BigDecimal rate, int periods){
-    BigDecimal divisor = BigDecimal.ONE.add(rate).pow(periods);
-    // cast should be safe for implementations that adhere to this spec
-    return amt.divide(divisor);
+  BigDecimal divisor = BigDecimal.ONE.add(rate).pow(periods);
+  // cast should be safe for implementations that adhere to this spec
+  return amt.divide(divisor);
 }
 -------------------------------------------------------------------
 
@@ -2771,26 +2769,26 @@ This algorithm can be implemented as +MonetaryOperator+:
 .Example Implementing a MonetaryOperator
 -------------------------------------------------------------------
 public final class PresentValue implements MonetaryOperator{
-     private BigDecimal rate;
-     private int periods;
-     private BigDecimal divisor;
+  private BigDecimal rate;
+  private int periods;
+  private BigDecimal divisor;
 
   public PresentValue(BigDecimal rate, int periods){
-     Objects.requireNotNull(rate);
-     this.rate = rate;
-     this.periods = periods;
-     this.divisor = BigDecimal.ONE.add(periods).power(periods);
+    Objects.requireNotNull(rate);
+    this.rate = rate;
+    this.periods = periods;
+    this.divisor = BigDecimal.ONE.add(periods).power(periods);
   }
-  public int getPeriods(){
-     return periods;
-  }
-  public BigDecimal getRate(){
-    return rate;
-  }
+
+  public int getPeriods(){ return periods; }
+
+  public BigDecimal getRate(){ return rate; }
+
   public <T extends MonetaryAmount> T apply(T amount){
      // cast should be safe for implementations that adhere to this spec
      return (T)amount.divide(divisor);
   }
+
   public String toString(){...}
 }
 -------------------------------------------------------------------
@@ -2864,27 +2862,27 @@ CurrencyConversion conv = MonetaryConversions.getConversion("EUR", ctx, "CS", "E
 
 === Links
 * http://jcp.org/en/jsr/detail?id=35[JSR 354 on jcp.org]
-* http://java.net/projects/javamoney/[JSR 354 on Java.net]
-* JSR 354 on GitHub
-* Java Practices -> Representing Money
-* Working with Money in Java
+* http://java.net/projects/javamoney/[JavaMoney on Java.net]
+** https://github.com/JavaMoney[JSR 354 API]
+** https://github.com/JavaMoney/jsr354-ro[Moneta RI]
+* http://www.javapractices.com/topic/TopicAction.do?Id=13[Java Practices -> Representing Money]
+* http://blog.eisele.net/2011/08/working-with-money-in-java.html[Working with Money in Java]
 * Java currency by Roedy Green, Canadian Mind Products
-* https://github.com/JavaMoney/jsr354-api
-* UOMo Business, based on ICU4J and concepts by JScience Economics
-* MoneyDance API
-* JavaMoney is the Apache 2.0 licensed OSS project that evolved from JSR 354 development. It provides concrete implementations for currency conversion and mapping, advanced formatting, historic data access, regions and a set of financial calculations and formulas.
-* Joda Money can be referred to as an inspiration for API and design style. it is based on real-world use cases in an e-commerce application for airlines
-* Grails Currencies uses BigDecimal as internal representation, but API only exposes Number in all Money operations like plus(), minus() or similar.
-* ICU4J Uses Number for all operations and internal storage in its Money type.
-* Why not to use BigDecimal for Money
-* M-Pesa-Mobile Money in Africa
+
+* http://www.eclipse.org/uomo/[UOMo Business], based on ICU4J and concepts by JScience Economics]
+* http://moneydance.com/dev/apidoc/[MoneyDance API]
+* http://javamoney.org[JavaMoney] is the Apache 2.0 licensed OSS project that evolved from JSR 354 development. It provides concrete implementations for currency conversion and mapping, advanced formatting, historic data access, regions and a set of financial calculations and formulas.
+* http://www.joda.org/joda-money[Joda Money] can be referred to as an inspiration for API and design style. it is based on real-world use cases in an e-commerce application for airlines
+* http://grails.org/plugin/currencies[Grails Currencies] uses BigDecimal as internal representation, but API only exposes Number in all Money operations like plus(), minus() or similar.
+* site.icu-project.org/[ICU4J] Uses Number for all operations and internal storage in its Money type.
+* http://lemnik.wordpress.com/2011/03/25/bigdecimal-and-your-money/[Why not to use BigDecimal for Money]
+* http://de.wikipedia.org/wiki/M-Pesa[M-Pesa-Mobile Money] in Africa
 * Currency Internationalization (i18n), Multiple Currencies and Foreign Exchange (FX).
 * http://en.wikipedia.org/wiki/Japanese_units_of_measurement#Money: Discussion of internationalization of currencies, rounding, grouping and formatting, separators etc]
 * http://speleotrove.com/decimal/
 * http://sourceforge.net/projects/oquote/
-* Karatsuba Algorithm for Fast Big Decimal Multiplication
+* http://en.wikipedia.org/wiki/Karatsuba_algorithm[Karatsuba Algorithm] for Fast Big Decimal Multiplication
 
 === Related Initiatives
-* Eric Evans Time and Money Library
-* Bitcoin Java Client
-* Java and Monetary Data (PDF)
+* timeandmoney.sourceforge.net/[Eric Evans Time and Money Library]
+* http://bitcoinj.github.io/[Bitcoin Java Client]

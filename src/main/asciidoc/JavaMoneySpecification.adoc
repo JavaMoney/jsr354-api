@@ -886,8 +886,7 @@ amount to another amount. Examples of such operations are rounding or monetary c
 [source,java]
 .Interface MonetaryOperator
 -------------------------------------------------------------------------------
-public interface MonetaryOperator{
-   <T extends MonetaryAmount> T apply(T amount);
+public interface MonetaryOperator extends UnaryOperator<MonetaryAmount>{
 }
 -------------------------------------------------------------------------------
 
@@ -1352,11 +1351,18 @@ cash rounding, which may be different than the default currency rounding (e.g. f
 [source,java]
 .Example how a cash rounding could be accessed
 -------------------------------------------------------------------------------
-MonetaryOperator rounding = MonetaryRoundings.getRounding(new RoundingContext.Builder()
-              .setRoundingId("cashRounding")
-              .setCurrencyUnit("USD")
-              .create());
+MonetaryOperator rounding = MonetaryRoundings.getRounding(
+              new RoundingContext.Builder()                           <1>
+                .setRoundingId("cashRounding")                        <2>
+                .setCurrencyUnit("USD")                               <3>
+                .setText("timestamp", temporalAccessor)               <4>
+                .create());                                           <5>
 -------------------------------------------------------------------------------
+<1> Access a rounding by passing a +RoundingContext+
+<2> Acquire a specific _named_ rounding.
+<3> Set the target currency unit (predefined attribute).
+<4> Access a rounding valid for the given timestamp.
+<5> Create the new +RoundingContext+
 
 [[FunctionalSupport]]
 ==== Additional Functional Support
@@ -1569,17 +1575,17 @@ public interface ExchangeRateProvider{
     ProviderContext getProviderContext();
     boolean isAvailable(CurrencyUnit base, CurrencyUnit term);
     boolean isAvailable(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
-    boolean isAvailable(String baseCode, String termCode);
-    boolean isAvailable(String baseCode, String termCode, ConversionContext conversionContext);
+    default boolean isAvailable(String baseCode, String termCode);
+    default boolean isAvailable(String baseCode, String termCode, ConversionContext conversionContext);
     ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term);
     ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
-    ExchangeRate getExchangeRate(String baseCode, String termCode);
-    ExchangeRate getExchangeRate(String baseCode, String termCode, ConversionContext conversionContext);
-    ExchangeRate getReversed(ExchangeRate rate);
+    default ExchangeRate getExchangeRate(String baseCode, String termCode);
+    default ExchangeRate getExchangeRate(String baseCode, String termCode, ConversionContext conversionContext);
+    default ExchangeRate getReversed(ExchangeRate rate);
     CurrencyConversion getCurrencyConversion(CurrencyUnit term);
     CurrencyConversion getCurrencyConversion(CurrencyUnit term, ConversionContext conversionContext);
-    CurrencyConversion getCurrencyConversion(String termCode);
-    CurrencyConversion getCurrencyConversion(String termCode, ConversionContext conversionContext);
+    default CurrencyConversion getCurrencyConversion(String termCode);
+    default CurrencyConversion getCurrencyConversion(String termCode, ConversionContext conversionContext);
 }
 -------------------------------------------------------------------------------
 
@@ -1844,7 +1850,20 @@ based on
 * a +Locale+, or
 * an +AmountFormatContext+.
 
-The +MonetaryFOrmats+ singleton finally defines the following access methods:
+[source,java]
+.Interface MonetaryFormatsSingletonSpi
+-------------------------------------------------------------------------------
+public interface MonetaryFormatsSingletonSpi{
+    MonetaryAmountFormat getAmountFormat(AmountFormatContext style); <1>
+    Set<Locale> getAvailableLocales();                               <1>
+    default MonetaryAmountFormat getAmountFormat(Locale locale);     <2>
+}
+-------------------------------------------------------------------------------
+<1> Methods to be implemented by clients.
+<2> Default methods.
+
+
+The +MonetaryFormats+ singleton finally defines the following access methods:
 
 [source,java]
 .MonetaryFormats Singleton
@@ -1859,9 +1878,25 @@ public final class MonetaryFormats{
 -------------------------------------------------------------------------------
 
 The design chosen ist so flexible that every kind of formatting related to monetary amounts can be easily mapped.
-Additionally
+THe code below illustrates a more complex example:
 
-TODO
+[source,java]
+.Advanced setup of a AmountFormatContext
+-------------------------------------------------------------------------------
+AmountFormatContext ctx = new AmountFormatContext.Builder("htmlFormat")  <1>
+                          .setText("title", "MyTitle")                   <2>
+                          .setText("negativeStyle", ".negNumber")        <3>
+                          .setText("positiveStyle", ".posNumber+)        <3>
+                          .setText("styleClass", "styledAmount")         <4>
+                          .create();                                     <5>
+-------------------------------------------------------------------------------
+<1> Access a format with name +htmlFormat+
+<2> Sets the format's display name
+<3> Sets the CSS style classes to be used for positive and negative values.
+<4> Sets the overall default style class.
+<5> Creates a new instance.
+
+NOTE: The example above is arbitrarily chosen. This specification does not require this behaviour to be available.
 
 ==== Formatting Exceptions
 javax.money.format.MonetaryParseException::
@@ -1898,6 +1933,7 @@ All SPIs are contained in the package +javax.money.spi+. Summarizing the followi
   override/define the behaviour of +MonetaryAmounts.queryAmountType(MonetaryContext)+.
 * +RoundingProviderSpi+ (mandatory, multiple service chain) - provides instances of +MonetaryOperator+, for being
   accessible by +MonetaryRoundings+.
+* +MonetaryRoundingsSingletonSpi+ controls the loading of +RoundingProviderSpi+ instances.
 
 
 .Conversion SPI
@@ -1919,11 +1955,12 @@ All SPIs are contained in the package +javax.money.spi+. Summarizing the followi
 
 .Bootstrap SPI
 
-* +ServiceProvider+ (optional, only one instance selected by priority), defines the singleton accessor for loading SPI components used by the Bootstrap class.
+* +ServiceProvider+ (optional, only one instance selected by priority), defines the singleton accessor for loading SPI
+  components used by the +Bootstrap+ class.
 * How the implementations must be registered depends on the +ServiceProvider+ that is loaded by the +Bootstrap+
   implementation. The default mechanism is based on the +java.util.ServiceLoader+ class. By ordering the registered
   instances of some type along the priority (the most significant first), it is also possible to override partial
-  aspects, as the first a non null result returned by a provider is taken as result of a call. The prioritization of
+  aspects, as the first a _non null_ result returned by a provider is taken as result of a call. The prioritization of
   components is implicitly defined by the order of the components returned by the +ServiceProvider+ SPI implementation.
 
 [[CoreSPI]]
@@ -2065,40 +2102,60 @@ capabilities of a concrete type are accessible from the according implementation
 * if all of the above is true, the according result of +MonetaryAmountFactoryProviderSpi.getAmountType()+ should be
   returned.
 
+[[MonetaryRoundingsSingletonSpi]]
 ===== Registering Roundings
-Additional roundings can be added by registering instances of +javax.money.spi.RoundingProviderSpi+. Since a monetary
-rounding is nothing else than a conversion from an unrounded amount to a rounded amount, ist is modeled as
-+MonetaryOperator+. As a consequence the +MonetaryRoundings+ singleton basically is managing an (ordered) collection of
-+MonetaryOperator+ factories defined as follows:
+Since a monetary rounding is nothing else than a conversion from an unrounded amount to a rounded amount, ist is modeled
+as +MonetaryOperator+. The +MonetaryRoundings+ singleton hereby allows to access different roundings. Similar to other
+singletons in this JSR the "MonetaryRoundings+ singleton is backed up by an instance of
++MonetaryRoundingsSingletonSpi+, which allows to override the exact logic, how the registered
++javax.money.spi.RoundingProviderSpi+ are managed:
+
+[source,java]
+.Interface MonetaryRoundingsSingletonSpi
+-------------------------------------------------------------------------------
+public interface MonetaryRoundingsSingletonSpi {
+    MonetaryOperator getRounding(RoundingContext roundingContext);    <1>
+  	Set<String> getRoundingIds();                                     <1>
+  	default MonetaryOperator getDefaultRounding();                    <2>
+  	default MonetaryOperator getRounding(CurrencyUnit currencyUnit);  <2>
+  	default MonetaryOperator getRounding(String roundingId);          <2>
+}
+-------------------------------------------------------------------------------
+<1> Methods to be overriden.
+<2> Default methods that optionally can be overridden.
+
+
+The corresponding +RoundingProviderSpi+ is also relatively simple, since complex parameters can be stored as part
+of the +<<RoundingContext>>+ passed:
 
 [source,java]
 .Interface RoundingProviderSpi
 -------------------------------------------------------------------------------
 public interface RoundingProviderSpi {
-  MonetaryOperator getRounding(CurrencyUnit currency);
-  MonetaryOperator getRounding(CurrencyUnit currency, long timestamp);
-  MonetaryOperator getCashRounding(CurrencyUnit currency);
-  MonetaryOperator getCashRounding(CurrencyUnit currency, long timestamp);
-  MonetaryOperator getCustomRounding(String customRoundingId);
-  MonetaryOperator getRounding(MonetaryContext monetaryContext);
-  Set<String> getCustomRoundingIds();
+    MonetaryOperator getRounding(RoundingContext roundingContext);
+  	Set<String> getRoundingIds();
 }
 -------------------------------------------------------------------------------
 
-Hereby different types of roundings are supported:
+Hereby:
 
-* based on the target +CurrencyUnit+. _By default_ the digits returned from +CurrencyUnit.getDefaultFractionDigits()+
+* if a provider cannot provide the requested rounding, it should simply return +null+.
+* a provider only should return the rounding ids, which a provider would also create rounding instances for. Its
+  the responsibility of the implementation of +MonetaryRoundingsSingletonSpi+ to collect all names contributed by providers
+  to built the full list of rounding names.
+* the default rounding name is defined as "default". An implementation must provide a rounding for every +CurrencyUnit+
+  known to the system. This comprises all JDK currencies as well as any additionally registered currency instances.
+* _By default_ the digits returned from +CurrencyUnit.getDefaultFractionDigits()+
   are used, but implementations can provide alternate (e.g. non standard) implementations.
-* based on the target +CurrencyUnit+, but explicitly querying for a _cache rounding_, which may be different to the
-  default rounding.
-  Example: in Switzerland default rounding is done for a scale of +2+, whereas when paying in cash, the minor units must
-  be divisible by +5+, since +5+ is the smallest coin possible.
-* Also it is possible to get a rounding described by a +MonetaryContext+, e.g. you can set a maximal scale of +1+ and
-  set the +RoundingMode+ (where available on the target platform) as an additional attribute.
+* Under SE (or where available) reference implementations should also provide _default_ arithmetic rounding instances,
+  e.g. you can set a maximal scale of +1+ and a +RoundingMode+ (where available on the target platform) as an additional
+  attribute.
+* Implementations should also support cash rounding. E.g. in Switzerland default rounding is done for a scale of +2+,
+  whereas when paying in cash, the minor units must be divisible by +5+, since +5+ is the smallest coin possible.
 * It is possible to provide customized roundings by name. The names of the defined custom rounding must be returned,
-  when +getmRoundingIds()+ is called.
-* Finally it is possible to provide default and cash roundings also for _past dates_, hereby considering the additional
-  UTC timestamp given.
+  when +getRoundingIds()+ is called.
+* Finally it is possible to provide roundings also for _past dates_, hereby considering an additional
+  timestamp given.
 
 
 ===== Backing the MonetaryConversions Singleton
@@ -2118,12 +2175,12 @@ public interface MonetaryConversionsSingletonSpi {
                         ConversionContext conversionContext, String... providers);
    CurrencyConversion getConversion(CurrencyUnit termCurrency,
                         String... providers);
-   CurrencyConversion getConversion(String termCurrencyCode,
+   default CurrencyConversion getConversion(String termCurrencyCode,
                         ConversionContext conversionContext, String... providers);
-   CurrencyConversion getConversion(String termCurrencyCode,
+   default CurrencyConversion getConversion(String termCurrencyCode,
                         String... providers);
    Collection<String> getProviderNames();
-   boolean isProviderAvailable(String provider);
+   default boolean isProviderAvailable(String provider);
    ProviderContext getProviderContext(String provider);
    List<String> getDefaultProviderChain();
 }
@@ -2138,8 +2195,8 @@ Hereby
 * +getExchangeRateProvider(String…)+ allows to pass an ordered array of provider names. The names identify the
   providers to be used allow to define a _composite_ +ExchangeRateProvider+ instance (modeling a provider chain),
   that is able to answer requests based on multiple rate providers. As an example calling +ExchangeRateProvider prov =
-  getExchangeRateProvider(“EZB”, “IMF”)+ should return a _composite_ +ExchangeRateProvider+ instance, that internally
-  first tries to resolve an +ExchangeRate+ requested, using the provider named "EZB". On success the "EZB" rate should
+  getExchangeRateProvider(“ECB”, “IMF”)+ should return a _composite_ +ExchangeRateProvider+ instance, that internally
+  first tries to resolve an +ExchangeRate+ requested, using the provider named "ECB". On success the "ECB" rate should
   be returned. If this fails, to whatever reason, the provider with name "IMF" should be tried. If no provider is able
   to return a valid result, a +CurrencyConversionException+ must be thrown as defined in the corresponding
   +ExchangeRateProvider+ interface API documentation.
@@ -2154,10 +2211,11 @@ Hereby
 
 ===== Adding Currency Conversion Capabilities
 Adding additional capabilities for currency conversion equals to implementing and registering classes implementing the
-+ExchangeRateProvider+ interface. The interface itself is part of the API and described in 4.3.3 Exchange Rates and Rate
++ExchangeRateProvider+ interface. The interface itself is part of the API and described in +<<ExchangeRate>>+ and
++<<ExchangeRateProvider>>+.
 Providers. Basically the implementation of the +MonetaryConversionsSingletonSpi+ determines how the implementations must be
 registered. Hereby the registered +ServiceProvider+ implementation is responsible for loading and providing the
-according components. Refer also to 4.5.3 The Bootstrapping Mechanism for more details.
+according components. Refer also to <<Bootstrap>> Mechanism for more details.
 
 ===== Adapting the Logging Backend
 By default the JSR API logic uses +java.util.logging+ (JUL) as logging backend. JUL allows to configure additional or
@@ -2466,7 +2524,7 @@ public static Money of(String currencyCode, Number number,
 Now, one last thing to discuss is, how users can add their own functionality, e.g. by writing their own
 +MonetaryOperator+ functions. Basically there are two disctinct usage scenarios:
 
-* When the basic arithmetics defined on each +MonetaryAmount+ are sufficient, it should be easy to implement such
+* When the basic arithmetic defined on each +MonetaryAmount+ are sufficient, it should be easy to implement such
   functionality, since its behaving like any other type, e.g.
 
 [source,java]

@@ -12,17 +12,9 @@
  */
 package javax.money;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmount;
-import javax.money.MonetaryContext;
-import javax.money.MonetaryOperator;
-import javax.money.spi.CurrencyProviderSpi;
 import javax.money.spi.RoundingProviderSpi;
+import java.util.HashSet;
+import java.util.Set;
 
 public final class TestRoundingProvider implements RoundingProviderSpi {
 

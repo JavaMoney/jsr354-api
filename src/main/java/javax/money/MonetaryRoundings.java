@@ -10,16 +10,14 @@
  */
 package javax.money;
 
+import javax.money.spi.Bootstrap;
+import javax.money.spi.MonetaryRoundingsSingletonSpi;
+import javax.money.spi.RoundingProviderSpi;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.money.spi.Bootstrap;
-import javax.money.spi.MonetaryCurrenciesSingletonSpi;
-import javax.money.spi.MonetaryRoundingsSingletonSpi;
-import javax.money.spi.RoundingProviderSpi;
 
 /**
  * This class models the accessor for rounding instances, modeled as

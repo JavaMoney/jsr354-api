@@ -13,7 +13,8 @@
 package javax.money.spi;
 
 import javax.money.CurrencyUnit;
-import java.util.*;
+import java.util.Collection;
+import java.util.Locale;
 
 /**
  * Factory singleton backing interface for {@link javax.money.MonetaryCurrencies} that provides access to

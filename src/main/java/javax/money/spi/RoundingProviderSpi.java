@@ -10,11 +10,12 @@
  */
 package javax.money.spi;
 
+import java.util.Set;
+
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryContext;
 import javax.money.MonetaryOperator;
 import javax.money.RoundingContext;
-import java.util.Set;
 
 /**
  * This SPI allows to extends/override the roundings available for

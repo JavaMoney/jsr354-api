@@ -8,12 +8,13 @@
  */
 package javax.money.format;
 
+import java.io.IOException;
+import java.util.*;
+
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryContext;
 import javax.money.spi.MonetaryAmountFormatProviderSpi;
-import java.io.IOException;
-import java.util.*;
 
 public class TestAmountFormatProvider implements
 		MonetaryAmountFormatProviderSpi {

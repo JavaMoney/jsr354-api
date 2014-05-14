@@ -10,13 +10,14 @@
  */
 package javax.money.convert;
 
+import java.util.*;
+import java.util.logging.Logger;
+
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryCurrencies;
 import javax.money.MonetaryException;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryConversionsSingletonSpi;
-import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * This singleton defines access to the exchange and currency conversion logic

@@ -12,12 +12,13 @@
  */
 package javax.money;
 
-import javax.money.spi.Bootstrap;
-import javax.money.spi.CurrencyProviderSpi;
-import javax.money.spi.MonetaryCurrenciesSingletonSpi;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.money.spi.Bootstrap;
+import javax.money.spi.CurrencyProviderSpi;
+import javax.money.spi.MonetaryCurrenciesSingletonSpi;
 
 /**
  * Factory singleton for {@link CurrencyUnit} instances as provided by the

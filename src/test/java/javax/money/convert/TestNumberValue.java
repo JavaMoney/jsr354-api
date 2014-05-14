@@ -252,10 +252,7 @@ class TestNumberValue extends NumberValue {
 
         TestNumberValue that = (TestNumberValue) o;
 
-        if(!number.equals(that.number)){
-            return false;
-        }
-        return true;
+        return number.equals(that.number);
     }
 
     @Override

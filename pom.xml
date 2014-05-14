@@ -758,7 +758,7 @@
                     <imgSrcPath>../../</imgSrcPath>
                     <admonGraphics>1</admonGraphics>
                     <graphicExtensions>1</graphicExtensions>
-                    <showXslMessages>1</showXslMessages>
+                    <showXslMessages>true</showXslMessages>
                     <collectXrefTargets>1</collectXrefTargets>
                     <highlightSource>1</highlightSource>
                     <hyphenate>true</hyphenate>

@@ -115,9 +115,10 @@ public final class MonetaryConversions {
 	public static CurrencyConversion getConversion(CurrencyUnit termCurrency,
 			ConversionContext conversionContext, String... providers) {
 		if (providers.length == 0) {
-			return MONETARY_CONVERSION_SPI.getConversion(termCurrency,
+            List<String> var = getDefaultProviderChain();
+            return MONETARY_CONVERSION_SPI.getConversion(termCurrency,
 					conversionContext,
-					getDefaultProviderChain().toArray(new String[0]));
+                    var.toArray(new String[var.size()]));
 		}
 		return MONETARY_CONVERSION_SPI.getConversion(termCurrency,
 				ConversionContext.of(), providers);
@@ -158,9 +159,9 @@ public final class MonetaryConversions {
 	public static ExchangeRateProvider getExchangeRateProvider(
 			String... providers) {
 		if (providers.length == 0) {
-			return MONETARY_CONVERSION_SPI
-					.getExchangeRateProvider(getDefaultProviderChain().toArray(
-							new String[0]));
+            List<String> defaultProviderChain = getDefaultProviderChain();
+            return MONETARY_CONVERSION_SPI
+					.getExchangeRateProvider(defaultProviderChain.toArray(new String[defaultProviderChain.size()]));
 		}
         ExchangeRateProvider provider = MONETARY_CONVERSION_SPI.getExchangeRateProvider(providers);
         if(provider==null){

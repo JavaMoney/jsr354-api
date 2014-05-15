@@ -12,13 +12,11 @@
  */
 package javax.money;
 
+import javax.money.spi.CurrencyProviderSpi;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-
-import javax.money.CurrencyUnit;
-import javax.money.spi.CurrencyProviderSpi;
 
 public final class TestCurrencyProvider implements CurrencyProviderSpi{
 

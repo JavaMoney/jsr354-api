@@ -8,7 +8,9 @@
  */
 package javax.money.format;
 
-import javax.money.*;
+import javax.money.MonetaryAmount;
+import javax.money.MonetaryContext;
+import javax.money.MonetaryQuery;
 import java.io.IOException;
 
 /**

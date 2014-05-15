@@ -10,12 +10,10 @@
  */
 package javax.money.spi;
 
-import javax.money.*;
-import java.util.HashSet;
-import java.util.Objects;
+import javax.money.CurrencyUnit;
+import javax.money.MonetaryOperator;
+import javax.money.RoundingContext;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class models the accessor for rounding instances, modeled as

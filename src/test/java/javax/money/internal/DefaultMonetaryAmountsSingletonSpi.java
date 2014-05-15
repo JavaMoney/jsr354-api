@@ -8,19 +8,16 @@
  */
 package javax.money.internal;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import javax.money.DummyAmount;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmountFactory;
-import javax.money.MonetaryContext;
 import javax.money.MonetaryException;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFactoryProviderSpi;
-import javax.money.spi.MonetaryAmountsSingletonQuerySpi;
 import javax.money.spi.MonetaryAmountsSingletonSpi;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Default implementation of MonetaryAmountsSpi for testing only.

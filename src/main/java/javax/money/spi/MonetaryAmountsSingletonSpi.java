@@ -8,13 +8,11 @@
  */
 package javax.money.spi;
 
-import java.util.Set;
-
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmounts;
-import javax.money.MonetaryContext;
 import javax.money.MonetaryException;
+import java.util.Set;
 
 /**
  * SPI (core) for the backing implementation of the {@link javax.money.MonetaryAmounts} singleton. It

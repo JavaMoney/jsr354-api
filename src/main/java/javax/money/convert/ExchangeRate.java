@@ -13,9 +13,7 @@ package javax.money.convert;
 import javax.money.CurrencyUnit;
 import javax.money.NumberValue;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This class models an exchange rate, which defines the factor the numeric value of a base amount in some currency

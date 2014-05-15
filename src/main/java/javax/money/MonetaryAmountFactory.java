@@ -8,8 +8,6 @@
  */
 package javax.money;
 
-import java.math.BigDecimal;
-
 /**
  * Factory for {@link MonetaryAmount} instances for a given type. It can be accessed, by
  * <ul>

@@ -1,5 +1,5 @@
 ﻿JSR 354 Money and Currency -- Specification
-============================================
+===========================================
 :title: JSR 354 (Money & Currency) - Specification
 :revnumber: 0.9-SNAPSHOT
 :revremark: Public Final Draft
@@ -1803,7 +1803,7 @@ public final class AmountFormatContext extends AbstractContext implements Serial
   public static final class Builder {
     public Builder(String formatName);
     public Builder(Locale locale);
-    public Builder(AmountFormatContext amountStyle);
+    public Builder(AmountFormatContext formatContext);
     public AmountFormatContext build();
     ...
   }
@@ -2079,7 +2079,6 @@ capabilities of a concrete type are accessible from the according implementation
      maxScale+).
   ** is the +MonetaryAmountFactoryProviderSpi+ capable to support the required maximal precision (+required precision
      <= maxPrecision, or precision==0/unlimited+).
-  ** is the +MonetaryAmountFactoryProviderSpi+ supporting the required +AmountFlavor+ (+PERFORMANCE, PRECISION or UNDEFINED+)
 * Additional attributes to consider may be provided with the +MonetaryContext+ required, though this specification does
   not define any further aspects in detail.
 * if all of the above is true, the according result of +MonetaryAmountFactoryProviderSpi.getAmountType()+ should be
@@ -2202,7 +2201,7 @@ The implementation that implements the API’s SPI may use a different logging a
 ==== Formatting SPI
 ===== Providing Amount Formats
 The +MonetaryFormats+ singleton delegates creation of +MonetaryAmountFormat+ instances to registered instances of
-+javax.money.spi.MonetaryAmountFormatProviderSpi+. Hereby at least one instance of +AmountStyleProviderSpi+ must be
++javax.money.spi.MonetaryAmountFormatProviderSpi+. Hereby at least one instance of +MonetaryAmountFormatProviderSpi+ must be
 registered as +Bootstrap+ component, which is defined as follows:
 
 [source,java]

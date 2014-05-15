@@ -289,7 +289,7 @@ public final class ConversionContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setTimestampMillis(long timestamp){
-            setAttribute("timestamp", Long.valueOf(timestamp));
+            setAttribute("timestamp", timestamp);
             return this;
         }
 

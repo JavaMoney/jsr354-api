@@ -540,6 +540,7 @@
                         <detectLinks>true</detectLinks>
                         <!-- excludePackageNames>blabla</excludePackageNames -->
                         <keywords>true</keywords>
+                        <failOnError>false</failOnError>
                         <linksource>true</linksource>
                         <!-- overview>${basedir}/overview.html</overview -->
                         <source>${maven.compile.sourceLevel}</source>

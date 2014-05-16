@@ -9,6 +9,7 @@
 package javax.money.convert;
 
 import javax.money.AbstractContext;
+import javax.money.MonetaryException;
 import java.util.*;
 
 /**
@@ -48,6 +49,7 @@ public final class ProviderContext extends AbstractContext{
         set("rateTypes", newRateTypes, Set.class);
     }
 
+
     /**
      * Get the provider of this rate. The provider of a rate can have different
      * contexts in different usage scenarios, such as the service type or the
@@ -84,8 +86,8 @@ public final class ProviderContext extends AbstractContext{
      * @param rateTypes the required {@link RateType}s, not null
      * @return a new {@link ProviderContext} instance.
      */
-    public static ProviderContext of(String provider, RateType... rateTypes){
-        return new Builder(provider).setRateTypes(rateTypes).build();
+    public static ProviderContext of(String provider, RateType rateType, RateType... rateTypes){
+        return new Builder(provider, rateType, rateTypes).build();
     }
 
     /**
@@ -95,7 +97,7 @@ public final class ProviderContext extends AbstractContext{
      * @return a new {@link ProviderContext} instance.
      */
     public static ProviderContext of(String provider){
-        return new Builder(provider).setRateTypes(RateType.ANY).build();
+        return new Builder(provider, RateType.ANY).build();
     }
 
 
@@ -114,10 +116,16 @@ public final class ProviderContext extends AbstractContext{
          *
          * @param provider the provider name, not {@code null}.
          */
-        public Builder(String provider){
+        public Builder(String provider, RateType rateType, RateType... rateTypes){
+            Objects.requireNonNull(rateType, "At least one RateType is required.");
+            Objects.requireNonNull(rateTypes);
             setProviderName(provider);
-            Set<RateType> rateTypes = new HashSet<>();
-            setAttribute("rateTypes", rateTypes, Set.class);
+            Set<RateType> rts = new HashSet<>();
+            rts.add(rateType);
+            for(RateType rt: rateTypes){
+                rts.add(rt);
+            }
+            setAttribute("rateTypes", rts, Set.class);
         }
 
         /**
@@ -129,9 +137,9 @@ public final class ProviderContext extends AbstractContext{
          */
         public Builder(ProviderContext context){
             super(context);
-            Set<RateType> rateTypes = new HashSet<>();
-            rateTypes.addAll(context.getRateTypes());
-            setAttribute("rateTypes", rateTypes, Set.class);
+            Set<RateType> rts = new HashSet<>();
+            rts.addAll(context.getRateTypes());
+            setAttribute("rateTypes", rts, Set.class);
         }
 
         /**

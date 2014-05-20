@@ -9,7 +9,6 @@
 package javax.money.spi;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +48,7 @@ public class DefaultServiceProvider implements ServiceProvider {
 		if (found != null) {
 			return found;
 		}
-		return loadServices(serviceType, defaultList);
+		return loadServices(serviceType);
 	}
 
 	/**
@@ -57,15 +56,10 @@ public class DefaultServiceProvider implements ServiceProvider {
 	 * 
 	 * @param serviceType
 	 *            The service type.
-	 * @param <T>
-	 *            the concrete type.
-	 * @param defaultList
-	 *            the list of items returned, if no services were found.
 	 * @return the items found, never {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
-	private <T> List<T> loadServices(Class<T> serviceType,
-			List<T> defaultList) {
+	private <T> List<T> loadServices(Class<T> serviceType) {
 		List<T> found = null;
 		synchronized (servicesLoaded) {
 			found = (List<T>) servicesLoaded.get(serviceType);

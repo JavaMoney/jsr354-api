@@ -9,7 +9,6 @@
 package javax.money.convert;
 
 import javax.money.AbstractContext;
-import javax.money.MonetaryException;
 import java.util.*;
 
 /**
@@ -24,7 +23,7 @@ import java.util.*;
  * </ul>
  * Additionally a instance of ProviderContext can have arbitrary additional attributes describing more precisely
  * the capabilities of a concrete {@link }ExchangeRateProvider} implementation.
- * <p/>
+ * <p>
  * Instances of this class are immutable and thread-safe.
  *
  * @author Anatole Tresch
@@ -33,6 +32,8 @@ import java.util.*;
 public final class ProviderContext extends AbstractContext{
 
     private static final long serialVersionUID = 3536713139786856877L;
+    public static final String RATE_TYPES = "rateTypes";
+    public static final String PROVIDER = "provider";
 
 
     /**
@@ -41,12 +42,12 @@ public final class ProviderContext extends AbstractContext{
      * @param builder the Builder.
      */
     @SuppressWarnings("unchecked")
-	private ProviderContext(Builder builder){
+    private ProviderContext(Builder builder){
         super(builder);
-        Set<RateType> rateTypes = getNamedAttribute("rateTypes", Set.class);
+        Set<RateType> rateTypes = getNamedAttribute(RATE_TYPES, Set.class);
         Set<RateType> newRateTypes = new HashSet<>();
         newRateTypes.addAll(rateTypes);
-        set("rateTypes", newRateTypes, Set.class);
+        set(RATE_TYPES, newRateTypes, Set.class);
     }
 
 
@@ -58,7 +59,7 @@ public final class ProviderContext extends AbstractContext{
      * @return the provider, or {code null}.
      */
     public String getProvider(){
-        return getText("provider");
+        return getText(PROVIDER);
     }
 
     /**
@@ -67,7 +68,7 @@ public final class ProviderContext extends AbstractContext{
      * @return the deferred flag, or {code null}.
      */
     public Set<RateType> getRateTypes(){
-        return Collections.unmodifiableSet(getNamedAttribute("rateTypes", Set.class, new HashSet<>()));
+        return Collections.unmodifiableSet(getNamedAttribute(RATE_TYPES, Set.class, new HashSet<>()));
     }
 
     /**
@@ -101,7 +102,6 @@ public final class ProviderContext extends AbstractContext{
     }
 
 
-
     /**
      * Builder class to create {@link ProviderContext} instances. Instances of
      * this class are not thread-safe.
@@ -115,6 +115,7 @@ public final class ProviderContext extends AbstractContext{
          * Create a new Builder instance.
          *
          * @param provider the provider name, not {@code null}.
+         * @param rateTypes the rate types, not null and not empty.
          */
         public Builder(String provider, RateType rateType, RateType... rateTypes){
             Objects.requireNonNull(rateType, "At least one RateType is required.");
@@ -122,9 +123,26 @@ public final class ProviderContext extends AbstractContext{
             setProviderName(provider);
             Set<RateType> rts = new HashSet<>();
             rts.add(rateType);
-            for(RateType rt: rateTypes){
+            for(RateType rt : rateTypes){
                 rts.add(rt);
             }
+            setAttribute(RATE_TYPES, rts, Set.class);
+        }
+
+        /**
+         * Create a new Builder instance.
+         *
+         * @param provider  the provider name, not {@code null}.
+         * @param rateTypes the rate types, not null and not empty.
+         */
+        public Builder(String provider, Collection<RateType> rateTypes){
+            Objects.requireNonNull(rateTypes);
+            if(rateTypes.isEmpty()){
+                throw new IllegalArgumentException("At least one RateType is required.");
+            }
+            setProviderName(provider);
+            Set<RateType> rts = new HashSet<>();
+            rts.addAll(rateTypes);
             setAttribute("rateTypes", rts, Set.class);
         }
 
@@ -150,7 +168,7 @@ public final class ProviderContext extends AbstractContext{
          */
         public Builder setProviderName(String provider){
             Objects.requireNonNull(provider);
-            setText("provider", provider);
+            setText(PROVIDER, provider);
             return this;
         }
 
@@ -179,7 +197,7 @@ public final class ProviderContext extends AbstractContext{
             }
             Set rtSet = new HashSet<>();
             rtSet.addAll(rateTypes);
-            setAttribute("rateTypes", rtSet, Set.class);
+            setAttribute(RATE_TYPES, rtSet, Set.class);
             return this;
         }
 

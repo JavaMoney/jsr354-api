@@ -70,6 +70,8 @@ public final class ConversionContext extends AbstractContext{
      * ConversionContext quering for any other rates.
      */
     public static final ConversionContext OTHER_CONVERSION = new Builder().setRateType(RateType.OTHER).build();
+    public static final String PROVIDER = "provider";
+    public static final String TIMESTAMP = "timestamp";
 
 
     /**
@@ -99,7 +101,7 @@ public final class ConversionContext extends AbstractContext{
      * @return the provider, or {code null}.
      */
     public String getProvider(){
-        return getText("provider");
+        return getText(PROVIDER);
     }
 
     /**
@@ -109,7 +111,7 @@ public final class ConversionContext extends AbstractContext{
      * @return the timestamp in millis, or null.
      */
     public Long getTimestampMillis(){
-        Long value = getLong("timestamp", null);
+        Long value = getLong(TIMESTAMP, null);
         if(value == null){
             TemporalAccessor acc = getTimestamp();
             if(acc != null){
@@ -125,9 +127,9 @@ public final class ConversionContext extends AbstractContext{
      * @return the current timestamp, or null.
      */
     public TemporalAccessor getTimestamp(){
-        TemporalAccessor acc = getNamedAttribute("timestamp", TemporalAccessor.class, null);
+        TemporalAccessor acc = getNamedAttribute(TIMESTAMP, TemporalAccessor.class, null);
         if(acc == null){
-            Long value = getLong("timestamp", null);
+            Long value = getLong(TIMESTAMP, null);
             if(value != null){
                 acc = Instant.ofEpochMilli(value);
             }
@@ -215,11 +217,6 @@ public final class ConversionContext extends AbstractContext{
      * @author Anatole Tresch
      */
     public static final class Builder extends AbstractBuilder<Builder>{
-
-        /**
-         * The name of the provider.
-         */
-        private String provider;
         /**
          * The supported rate types.
          */
@@ -242,6 +239,7 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder(ConversionContext context){
             super(context);
+            setProvider(context.getProvider());
         }
 
         /**
@@ -278,7 +276,7 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder setProvider(String provider){
             Objects.requireNonNull(provider);
-            setText("provider", provider);
+            setText(PROVIDER, provider);
             return this;
         }
 
@@ -289,7 +287,7 @@ public final class ConversionContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setTimestampMillis(long timestamp){
-            setAttribute("timestamp", timestamp);
+            setAttribute(TIMESTAMP, timestamp);
             return this;
         }
 
@@ -300,7 +298,7 @@ public final class ConversionContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setTimestamp(TemporalAccessor temporalAccessor){
-            setAttribute("timestamp", temporalAccessor, TemporalAccessor.class);
+            setAttribute(TIMESTAMP, temporalAccessor, TemporalAccessor.class);
             return this;
         }
 

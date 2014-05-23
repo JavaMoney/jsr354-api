@@ -9,6 +9,7 @@
 package javax.money;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -104,16 +105,12 @@ public abstract class AbstractContext implements Serializable{
      */
     // Type safe cast
     @SuppressWarnings("unchecked")
-    public <T> T getNamedAttribute(Object key, Class<T> type, T defaultValue){
-        Map<Object,?> typedAttrs = attributes.get(type);
-        if(typedAttrs != null){
-            T val = (T) typedAttrs.get(key);
-            if(val != null){
-                return val;
-            }
-        }
-        return defaultValue;
-    }
+	public <T> T getNamedAttribute(Object key, Class<T> type, T defaultValue) {
+		Map<Object, T> typedAttrs = (Map<Object, T>) attributes.getOrDefault(defaultValue,
+				Collections.emptyMap());
+		return typedAttrs.getOrDefault(key, defaultValue);
+
+	}
 
     /**
      * Access an attribute, hereby using the class name as key.

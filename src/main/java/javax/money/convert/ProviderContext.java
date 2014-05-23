@@ -127,9 +127,7 @@ public final class ProviderContext extends AbstractContext{
             setProviderName(provider);
             Set<RateType> rts = new HashSet<>();
             rts.add(rateType);
-            for(RateType rt : rateTypes){
-                rts.add(rt);
-            }
+            Collections.addAll(rts, rateTypes);
             setAttribute(RATE_TYPES, rts, Set.class);
         }
 

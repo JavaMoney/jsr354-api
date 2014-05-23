@@ -9,6 +9,7 @@
 package javax.money.convert;
 
 import javax.money.AbstractContext;
+
 import java.util.*;
 
 /**
@@ -67,9 +68,12 @@ public final class ProviderContext extends AbstractContext{
      *
      * @return the deferred flag, or {code null}.
      */
-    public Set<RateType> getRateTypes(){
-        return Collections.unmodifiableSet(getNamedAttribute(RATE_TYPES, Set.class, new HashSet<>()));
-    }
+	public Set<RateType> getRateTypes() {
+		@SuppressWarnings("unchecked")
+		Set<RateType> rateSet = getNamedAttribute(RATE_TYPES, Set.class,
+				new HashSet<>());
+		return Collections.unmodifiableSet(rateSet);
+	}
 
     /**
      * Creates a {@link Builder} initialized with this instance's data.

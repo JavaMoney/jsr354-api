@@ -23,37 +23,17 @@ public final class TestRoundingProvider implements RoundingProviderSpi {
         if(roundingContext.getRoundingId()!=null){
             return getCustomRounding(roundingContext.getRoundingId());
         }
-        return new MonetaryOperator() {
-            @Override
-            public MonetaryAmount apply(MonetaryAmount value) {
-                return value;
-            }
-        };
+        return value -> value;
 	}
 
 	public MonetaryOperator getCustomRounding(String customRoundingId) {
         switch (customRoundingId) {
             case "custom1":
-                return new MonetaryOperator() {
-                    @Override
-                    public MonetaryAmount apply(MonetaryAmount value) {
-                        return value.multiply(2);
-                    }
-                };
+                return value -> value.multiply(2);
             case "custom2":
-                return new MonetaryOperator() {
-                    @Override
-                    public MonetaryAmount apply(MonetaryAmount value) {
-                        return value.multiply(3);
-                    }
-                };
+                return value -> value.multiply(3);
             default:
-                return new MonetaryOperator() {
-                    @Override
-                    public MonetaryAmount apply(MonetaryAmount value) {
-                        return value;
-                    }
-                };
+                return value -> value;
         }
     }
 

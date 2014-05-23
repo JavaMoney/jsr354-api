@@ -59,9 +59,7 @@ public class MonetaryContextTest{
         contexts.add(new MonetaryContext.Builder().setPrecision(299).build());
         contexts.add(new MonetaryContext.Builder().setFixedScale(true).build());
         Set<Integer> hashCodes = new HashSet<>();
-        for(MonetaryContext ctx : contexts){
-            hashCodes.add(ctx.hashCode());
-        }
+        contexts.forEach(ctx -> hashCodes.add(ctx.hashCode()));
         // Check we have 5 distinct hash codes...
         assertTrue(hashCodes.size() == 3);
     }

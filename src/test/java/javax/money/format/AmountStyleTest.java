@@ -10,7 +10,6 @@ package javax.money.format;
 
 import org.junit.Test;
 
-import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -39,38 +38,24 @@ public class AmountStyleTest{
 
     @Test
     public void testHashCode(){
-        MonetaryOperator op = new MonetaryOperator(){
-            @Override
-            public MonetaryAmount apply(MonetaryAmount value){
-                return value.multiply(2.0d);
-            }
-        };
+        MonetaryOperator op = value -> value.multiply(2.0d);
         List<AmountFormatContext> contexts = new ArrayList<>();
         contexts.add(new AmountFormatContext.Builder(Locale.GERMAN).build());
         contexts.add(new AmountFormatContext.Builder(Locale.ENGLISH).build());
         Set<Integer> hashCodes = new HashSet<>();
-        for(AmountFormatContext ctx : contexts){
-            hashCodes.add(ctx.hashCode());
-        }
+        contexts.forEach(amountFormatContext -> hashCodes.add(amountFormatContext.hashCode()));
         // Check we have 5 distinct hash codes...
         assertTrue(hashCodes.size() == 2);
     }
 
     @Test
     public void testEquals(){
-        MonetaryOperator op = new MonetaryOperator(){
-            @Override
-            public MonetaryAmount apply(MonetaryAmount value){
-                return value.multiply(2.0d);
-            }
-        };
+        MonetaryOperator op = value -> value.multiply(2.0d);
         List<AmountFormatContext> contexts = new ArrayList<>();
         contexts.add(new AmountFormatContext.Builder(Locale.ENGLISH).build());
         contexts.add(new AmountFormatContext.Builder(Locale.GERMAN).build());
         Set<AmountFormatContext> checkContexts = new HashSet<>();
-        for(AmountFormatContext ctx : contexts){
-            checkContexts.add(ctx);
-        }
+        contexts.forEach(checkContexts::add);
         // Check we have 5 distinct hash codes...
         assertTrue(checkContexts.size() == 2);
     }

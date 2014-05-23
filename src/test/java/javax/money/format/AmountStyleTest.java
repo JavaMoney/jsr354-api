@@ -10,7 +10,6 @@ package javax.money.format;
 
 import org.junit.Test;
 
-import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
 import java.text.DecimalFormat;
 import java.util.*;

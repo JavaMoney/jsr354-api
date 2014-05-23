@@ -85,9 +85,7 @@ public class AbstractContextTest{
         contexts.add(new TestContext.Builder().setObject("Test").setObject((long) 2).build());
         contexts.add(new TestContext.Builder().setObject("Test").setObject(Boolean.TRUE).setObject("Test").build());
         Set<Integer> hashCodes = new HashSet<>();
-        for(TestContext ctx : contexts){
-            hashCodes.add(ctx.hashCode());
-        }
+        contexts.forEach(ctx -> hashCodes.add(ctx.hashCode()));
         // Check we have 5 distinct hash codes...
         assertTrue(hashCodes.size() > 2);
     }

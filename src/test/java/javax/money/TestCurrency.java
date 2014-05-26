@@ -98,7 +98,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 		CurrencyUnit cu = CACHED.get(currencyCode);
 		if (Objects.isNull(cu)) {
 			Currency cur = Currency.getInstance(currencyCode);
-			if(cur!=null){
+			if (Objects.nonNull(cur)) {
 				return of(cur);
 			}
 		}

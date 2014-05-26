@@ -175,7 +175,7 @@ public abstract class AbstractContext implements Serializable{
         }
         AbstractContext other = (AbstractContext) obj;
         if (Objects.isNull(attributes)){
-            if(other.attributes != null){
+            if (Objects.nonNull(other.attributes)) {
                 return false;
             }
         }else if(!attributes.equals(other.attributes)){
@@ -518,7 +518,7 @@ public abstract class AbstractContext implements Serializable{
          */
         public B removeAttribute(Object key, Class type){
             Map<Object,Object> typedAttrs = attributes.get(type);
-            if(typedAttrs != null){
+            if (Objects.nonNull(typedAttrs)) {
                 attributes.remove(key);
             }
             return (B) this;

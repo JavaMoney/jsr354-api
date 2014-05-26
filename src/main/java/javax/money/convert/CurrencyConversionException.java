@@ -10,6 +10,8 @@
  */
 package javax.money.convert;
 
+import java.util.Objects;
+
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryException;
 
@@ -98,7 +100,7 @@ public class CurrencyConversionException extends MonetaryException {
 			ConversionContext conversionContext, String message, Throwable cause) {
 		super("Cannot convert " + String.valueOf(base) + " into "
 				+ String.valueOf(term)
-				+ (message != null ? ": " + message : ""), cause);
+				+ (Objects.nonNull(message) ? ": " + message : ""), cause);
 		this.base = base;
 		this.term = term;
 		this.conversionContext = conversionContext;

@@ -273,7 +273,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
         }
         DefaultExchangeRate other = (DefaultExchangeRate) obj;
         if (Objects.isNull(base)) {
-            if(other.base != null){
+            if (Objects.nonNull(other.base)) {
                 return false;
             }
         }else if(!base.equals(other.base)){
@@ -283,21 +283,21 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
             return false;
         }
         if (Objects.isNull(conversionContext)) {
-            if(other.conversionContext != null){
+            if (Objects.nonNull(other.conversionContext)) {
                 return false;
             }
         }else if(!conversionContext.equals(other.conversionContext)){
             return false;
         }
         if (Objects.isNull(factor)) {
-            if(other.factor != null){
+            if (Objects.nonNull(other.factor)) {
                 return false;
             }
         }else if(!factor.equals(other.factor)){
             return false;
         }
         if (Objects.isNull(term)) {
-            if(other.term != null){
+            if (Objects.nonNull(other.term)) {
                 return false;
             }
         }else if(!term.equals(other.term)){
@@ -384,7 +384,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
          */
         public Builder setRateChain(ExchangeRate... exchangeRates){
             this.rateChain.clear();
-            if(exchangeRates != null){
+            if (Objects.nonNull(exchangeRates)) {
                 this.rateChain.addAll(Arrays.asList(exchangeRates.clone()));
             }
             return this;
@@ -398,7 +398,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
          */
         public Builder setRateChain(List<ExchangeRate> exchangeRates){
             this.rateChain.clear();
-            if(exchangeRates != null){
+            if (Objects.nonNull(exchangeRates)) {
                 this.rateChain.addAll(exchangeRates);
             }
             return this;

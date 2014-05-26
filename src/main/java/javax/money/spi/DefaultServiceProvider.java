@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -45,7 +46,7 @@ public class DefaultServiceProvider implements ServiceProvider {
 			List<T> defaultList) {
 		@SuppressWarnings("unchecked")
 		List<T> found = (List<T>) servicesLoaded.get(serviceType);
-		if (found != null) {
+		if (Objects.nonNull(found)) {
 			return found;
 		}
 		return loadServices(serviceType);
@@ -63,7 +64,7 @@ public class DefaultServiceProvider implements ServiceProvider {
 		List<T> found = null;
 		synchronized (servicesLoaded) {
 			found = (List<T>) servicesLoaded.get(serviceType);
-			if (found != null) {
+			if (Objects.nonNull(found)) {
 				return found;
 			}
 			found = new ArrayList<>();

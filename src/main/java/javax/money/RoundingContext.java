@@ -137,7 +137,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
         }
         RoundingContext other = (RoundingContext) obj;
         if (Objects.isNull(attributes)) {
-            if(other.attributes != null){
+            if (Objects.nonNull(other.attributes)) {
                 return false;
             }
         }else if(!attributes.equals(other.attributes)){

@@ -115,7 +115,7 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 				return false;
 			TestCurrency other = (TestCurrency) obj;
 			if (Objects.isNull(code)) {
-				if (other.code != null)
+				if (Objects.nonNull(other.code))
 					return false;
 			} else if (!code.equals(other.code))
 				return false;

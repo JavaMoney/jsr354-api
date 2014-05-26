@@ -114,7 +114,7 @@ public final class ConversionContext extends AbstractContext{
         Long value = getLong(TIMESTAMP, null);
         if (Objects.isNull(value)) {
             TemporalAccessor acc = getTimestamp();
-            if(acc != null){
+            if (Objects.nonNull(acc)) {
                 return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
             }
         }
@@ -130,7 +130,7 @@ public final class ConversionContext extends AbstractContext{
         TemporalAccessor acc = getNamedAttribute(TIMESTAMP, TemporalAccessor.class, null);
         if (Objects.isNull(acc)) {
             Long value = getLong(TIMESTAMP, null);
-            if(value != null){
+            if (Objects.nonNull(value)) {
                 acc = Instant.ofEpochMilli(value);
             }
         }

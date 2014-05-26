@@ -178,7 +178,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
             return false;
         MonetaryContext other = (MonetaryContext) obj;
         if (Objects.isNull(attributes)) {
-            if(other.attributes != null)
+            if (Objects.nonNull(other.attributes))
                 return false;
         }else if(!attributes.equals(other.attributes))
             return false;
@@ -187,7 +187,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
         if(maxScale != other.maxScale)
             return false;
         if (Objects.isNull(amountType)) {
-            if(other.amountType != null)
+            if (Objects.nonNull(other.amountType))
                 return false;
         }else if(!amountType.equals(other.amountType))
             return false;

@@ -173,7 +173,7 @@ public final class MonetaryRoundings {
             for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){
                 try{
                     MonetaryOperator op = prov.getRounding(roundingContext);
-                    if(op != null){
+                    if(Objects.nonNull(op)){
                         return op;
                     }
                 }

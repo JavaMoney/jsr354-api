@@ -15,7 +15,9 @@ import javax.money.MonetaryException;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFactoryProviderSpi;
 import javax.money.spi.MonetaryAmountsSingletonSpi;
+
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,7 +41,7 @@ public class DefaultMonetaryAmountsSingletonSpi implements MonetaryAmountsSingle
 			Class<T> amountType) {
 		MonetaryAmountFactoryProviderSpi<T> f = MonetaryAmountFactoryProviderSpi.class
 				.cast(factories.get(amountType));
-		if (f != null) {
+		if (Objects.nonNull(f)) {
 			return f.createMonetaryAmountFactory();
 		}
 		throw new MonetaryException(

@@ -168,7 +168,7 @@ public final class MonetaryCurrencies {
                             CurrencyProviderSpi.class)) {
                 try {
                     cu = spi.getCurrencyUnit(currencyCode);
-                    if (cu != null) {
+                    if (Objects.nonNull(cu)) {
                         if (!currencyCode.equals(cu.getCurrencyCode())) {
                             throw new IllegalStateException(
                                     "Provider("
@@ -208,7 +208,7 @@ public final class MonetaryCurrencies {
             for (CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)) {
                 try {
                     cu = spi.getCurrencyUnit(locale);
-                    if (cu != null) {
+                    if (Objects.nonNull(cu)) {
                         return cu;
                     }
                 } catch (Exception e) {
@@ -265,7 +265,7 @@ public final class MonetaryCurrencies {
             for (CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)) {
                 try {
                     Collection<CurrencyUnit> cus = spi.getCurrencies();
-                    if (cus != null) {
+                    if (Objects.nonNull(cus)) {
                         result.addAll(cus);
                     }
                 } catch (Exception e) {

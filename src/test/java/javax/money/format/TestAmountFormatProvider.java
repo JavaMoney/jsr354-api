@@ -34,7 +34,7 @@ public class TestAmountFormatProvider implements
 	public MonetaryAmountFormat getAmountFormat(
 			AmountFormatContext formatStyle) {
         Locale loc = formatStyle.getAttribute(Locale.class);
-        if(loc != null && "BAR".equals(loc.getCountry()) && "foo".equals(loc.getLanguage())){
+        if (Objects.nonNull(loc) && "BAR".equals(loc.getCountry()) && "foo".equals(loc.getLanguage())){
             return null;
         }
 		return new TestFormat(formatStyle);

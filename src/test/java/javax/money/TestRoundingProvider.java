@@ -13,14 +13,16 @@
 package javax.money;
 
 import javax.money.spi.RoundingProviderSpi;
+
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public final class TestRoundingProvider implements RoundingProviderSpi {
 
 	@Override
 	public MonetaryOperator getRounding(RoundingContext roundingContext){
-        if(roundingContext.getRoundingId()!=null){
+        if (Objects.nonNull(roundingContext.getRoundingId())) {
             return getCustomRounding(roundingContext.getRoundingId());
         }
         return value -> value;

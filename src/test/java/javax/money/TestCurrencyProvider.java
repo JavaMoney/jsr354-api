@@ -13,10 +13,12 @@
 package javax.money;
 
 import javax.money.spi.CurrencyProviderSpi;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public final class TestCurrencyProvider implements CurrencyProviderSpi{
 
@@ -96,7 +98,7 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((code == null) ? 0 : code.hashCode());
+			result = prime * result + ((Objects.isNull(code)) ? 0 : code.hashCode());
 			return result;
 		}
 
@@ -107,13 +109,13 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 		public boolean equals(Object obj) {
 			if (this == obj)
 				return true;
-			if (obj == null)
+			if (Objects.isNull(obj))
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
 			TestCurrency other = (TestCurrency) obj;
-			if (code == null) {
-				if (other.code != null)
+			if (Objects.isNull(code)) {
+				if (Objects.nonNull(other.code))
 					return false;
 			} else if (!code.equals(other.code))
 				return false;

@@ -109,7 +109,7 @@ public final class MonetaryFormats{
             Objects.requireNonNull(style, "AmountFormatContext required");
             for(MonetaryAmountFormatProviderSpi spi : Bootstrap.getServices(MonetaryAmountFormatProviderSpi.class)){
                 MonetaryAmountFormat f = spi.getAmountFormat(style);
-                if(f != null){
+                if (Objects.nonNull(f)) {
                     return f;
                 }
             }

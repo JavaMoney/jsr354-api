@@ -12,6 +12,9 @@ import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFactoryProviderSpi;
 import javax.money.spi.MonetaryAmountsSingletonQuerySpi;
 import javax.money.spi.MonetaryAmountsSingletonSpi;
+
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,14 +94,14 @@ public final class MonetaryAmounts{
      *                           implementation class is registered.
      */
     public static <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType){
-        if(monetaryAmountsSingletonSpi == null){
-            throw new MonetaryException("No MonetaryAmountsSingletonSpi loaded.");
-        }
+		Optional.ofNullable(monetaryAmountsSingletonSpi).orElseThrow(
+				() -> new MonetaryException(
+						"No MonetaryAmountsSingletonSpi loaded."));
+        
         MonetaryAmountFactory<T> factory = monetaryAmountsSingletonSpi.getAmountFactory(amountType);
-        if(factory == null){
-            throw new MonetaryException("No AmountFactory available for type: " + amountType.getName());
-        }
-        return factory;
+        return Optional.ofNullable(factory).orElseThrow(() -> 
+        new MonetaryException("No AmountFactory available for type: " + amountType.getName())); 
+        
     }
 
     /**
@@ -111,14 +114,13 @@ public final class MonetaryAmounts{
      *                           implementation class is registered.
      */
     public static MonetaryAmountFactory<?> getAmountFactory(){
-        if(monetaryAmountsSingletonSpi == null){
-            throw new MonetaryException("No MonetaryAmountsSingletonSpi loaded.");
-        }
+    	
+    	Optional.ofNullable(monetaryAmountsSingletonSpi)
+    	.orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."));
+    	
         MonetaryAmountFactory<?> factory = monetaryAmountsSingletonSpi.getAmountFactory(getDefaultAmountType());
-        if(factory == null){
-            throw new MonetaryException("No default AmountFactory available.");
-        }
-        return factory;
+        return Optional.ofNullable(factory).orElseThrow(
+        		() -> new MonetaryException("No default AmountFactory available."));
     }
 
     /**
@@ -130,10 +132,12 @@ public final class MonetaryAmounts{
      *                           {@link MonetaryAmount} type.
      */
     public static Class<? extends MonetaryAmount> getDefaultAmountType(){
-        if(monetaryAmountsSingletonSpi == null){
-            throw new MonetaryException("No MonetaryAmountsSingletonSpi loaded.");
-        }
-        return monetaryAmountsSingletonSpi.getDefaultAmountType();
+		return Optional
+				.ofNullable(monetaryAmountsSingletonSpi)
+				.orElseThrow(
+						() -> new MonetaryException(
+								"No MonetaryAmountsSingletonSpi loaded."))
+				.getDefaultAmountType();
     }
 
     /**
@@ -144,10 +148,10 @@ public final class MonetaryAmounts{
      * corresponding {@link MonetaryAmountFactory} instances provided, never {@code null}
      */
     public static Set<Class<? extends MonetaryAmount>> getAmountTypes(){
-        if(monetaryAmountsSingletonSpi == null){
-            throw new MonetaryException("No MonetaryAmountsSingletonSpi loaded.");
-        }
-        return monetaryAmountsSingletonSpi.getAmountTypes();
+		return Optional
+				.ofNullable(monetaryAmountsSingletonSpi)
+				.orElseThrow(
+						() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded.")).getAmountTypes();
     }
 
     /**
@@ -162,14 +166,16 @@ public final class MonetaryAmounts{
      *                           {@link MonetaryContext}.
      */
     public static Class<? extends MonetaryAmount> queryAmountType(MonetaryContext requiredContext){
-        if(monetaryAmountsSingletonSpi == null){
+        if (Objects.isNull(monetaryAmountsSingletonSpi)) {
             throw new MonetaryException("No MonetaryAmountsSingletonSpi loaded.");
         }
-        if(monetaryAmountsSingletonQuerySpi == null){
-            throw new MonetaryException(
-                    "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available.");
-        }
-        return monetaryAmountsSingletonQuerySpi.queryAmountType(monetaryAmountsSingletonSpi, requiredContext);
+		return Optional
+				.ofNullable(monetaryAmountsSingletonQuerySpi)
+				.orElseThrow(
+						() -> new MonetaryException(
+								"No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available."))
+				.queryAmountType(monetaryAmountsSingletonSpi, requiredContext);
+
     }
 
     /**

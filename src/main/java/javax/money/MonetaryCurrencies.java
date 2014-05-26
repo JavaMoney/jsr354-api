@@ -67,10 +67,13 @@ public final class MonetaryCurrencies {
 	 *             if no such currency exists.
 	 */
 	public static CurrencyUnit getCurrency(String currencyCode) {
-        if(monetaryCurrenciesSpi==null){
-            throw new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup.");
-        }
-        return monetaryCurrenciesSpi.getCurrency(currencyCode);
+		
+		return Optional
+				.ofNullable(monetaryCurrenciesSpi)
+				.orElseThrow(
+						() -> new MonetaryException(
+								"No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
+				.getCurrency(currencyCode);
 	}
 
 	/**
@@ -86,10 +89,13 @@ public final class MonetaryCurrencies {
 	 *             if no such currency exists.
 	 */
 	public static CurrencyUnit getCurrency(Locale locale) {
-        if(monetaryCurrenciesSpi==null){
-            throw new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup.");
-        }
-        return monetaryCurrenciesSpi.getCurrency(locale);
+		
+		return Optional
+				.ofNullable(monetaryCurrenciesSpi)
+				.orElseThrow(
+						() -> new MonetaryException(
+								"No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
+				.getCurrency(locale);
 	}
 
 	/**
@@ -102,7 +108,7 @@ public final class MonetaryCurrencies {
 	 *         would return a result for the given code.
 	 */
 	public static boolean isCurrencyAvailable(String code) {
-        if(monetaryCurrenciesSpi==null){
+        if (Objects.isNull(monetaryCurrenciesSpi)) {
             return false;
         }
         return monetaryCurrenciesSpi.isCurrencyAvailable(code);
@@ -118,14 +124,14 @@ public final class MonetaryCurrencies {
 	 *         result for the given code.
 	 */
 	public static boolean isCurrencyAvailable(Locale locale) {
-        if(monetaryCurrenciesSpi==null){
+        if (Objects.isNull(monetaryCurrenciesSpi)){
             return false;
         }
         return monetaryCurrenciesSpi.isCurrencyAvailable(locale);
 	}
 
     public static Collection<CurrencyUnit> getCurrencies(){
-        if(monetaryCurrenciesSpi==null){
+        if (Objects.isNull(monetaryCurrenciesSpi)) {
             return Collections.emptySet();
         }
         return monetaryCurrenciesSpi.getCurrencies();
@@ -162,7 +168,7 @@ public final class MonetaryCurrencies {
                             CurrencyProviderSpi.class)) {
                 try {
                     cu = spi.getCurrencyUnit(currencyCode);
-                    if (cu != null) {
+                    if (Objects.nonNull(cu)) {
                         if (!currencyCode.equals(cu.getCurrencyCode())) {
                             throw new IllegalStateException(
                                     "Provider("
@@ -181,10 +187,7 @@ public final class MonetaryCurrencies {
                                     + spi.getClass().getName(), e);
                 }
             }
-            if (cu == null) {
-                throw new UnknownCurrencyException(currencyCode);
-            }
-            return cu;
+            return Optional.ofNullable(cu).orElseThrow(() -> new UnknownCurrencyException(currencyCode));
         }
 
         /**
@@ -205,7 +208,7 @@ public final class MonetaryCurrencies {
             for (CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)) {
                 try {
                     cu = spi.getCurrencyUnit(locale);
-                    if (cu != null) {
+                    if (Objects.nonNull(cu)) {
                         return cu;
                     }
                 } catch (Exception e) {
@@ -262,7 +265,7 @@ public final class MonetaryCurrencies {
             for (CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)) {
                 try {
                     Collection<CurrencyUnit> cus = spi.getCurrencies();
-                    if (cus != null) {
+                    if (Objects.nonNull(cus)) {
                         result.addAll(cus);
                     }
                 } catch (Exception e) {

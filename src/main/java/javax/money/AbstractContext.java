@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -63,12 +64,10 @@ public abstract class AbstractContext implements Serializable{
     // type safe cast
     @SuppressWarnings("unchecked")
     protected final <T> T set(T attribute, Object key, Class<? extends T> type){
-        Map<Object,Object> typedAttrs = attributes.get(type);
-        if(typedAttrs == null){
-            typedAttrs = new HashMap<>();
-            attributes.put(type, typedAttrs);
-        }
-        return (T) typedAttrs.put(key, attribute);
+		Map<Object, Object> typedAttrs = attributes.getOrDefault(type,
+				new HashMap<>());
+		attributes.putIfAbsent(type, typedAttrs);
+		return (T) typedAttrs.put(key, attribute);
     }
 
     /**
@@ -131,11 +130,7 @@ public abstract class AbstractContext implements Serializable{
      * such attribute is present.
      */
     public <T> T getAttribute(Class<T> type, T defaultValue){
-        T t = getAttribute(type);
-        if(t == null){
-            return defaultValue;
-        }
-        return t;
+		return Optional.ofNullable(getAttribute(type)).orElse(defaultValue);
     }
 
     /**
@@ -157,7 +152,8 @@ public abstract class AbstractContext implements Serializable{
     public int hashCode(){
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((attributes == null) ? 0 : attributes.hashCode());
+        
+        result = prime * result + ((Objects.isNull(attributes)) ? 0 : attributes.hashCode());
         return result;
     }
 
@@ -171,15 +167,15 @@ public abstract class AbstractContext implements Serializable{
         if(this == obj){
             return true;
         }
-        if(obj == null){
+        if (Objects.isNull(null)) {
             return false;
         }
         if(getClass() != obj.getClass()){
             return false;
         }
         AbstractContext other = (AbstractContext) obj;
-        if(attributes == null){
-            if(other.attributes != null){
+        if (Objects.isNull(attributes)){
+            if (Objects.nonNull(other.attributes)) {
                 return false;
             }
         }else if(!attributes.equals(other.attributes)){
@@ -522,7 +518,7 @@ public abstract class AbstractContext implements Serializable{
          */
         public B removeAttribute(Object key, Class type){
             Map<Object,Object> typedAttrs = attributes.get(type);
-            if(typedAttrs != null){
+            if (Objects.nonNull(typedAttrs)) {
                 attributes.remove(key);
             }
             return (B) this;
@@ -538,11 +534,8 @@ public abstract class AbstractContext implements Serializable{
          * @return this Builder, for chaining
          */
         public <T> B setAttribute(Object key, T attribute, Class<? extends T> type){
-            Map<Object,Object> typedAttrs = attributes.get(type);
-            if(typedAttrs == null){
-                typedAttrs = new HashMap<>();
-                attributes.put(type, typedAttrs);
-            }
+            Map<Object,Object> typedAttrs = attributes.getOrDefault(type, new HashMap<>());
+            attributes.putIfAbsent(type, typedAttrs);
             typedAttrs.put(key, attribute);
             return (B) this;
         }

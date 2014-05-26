@@ -13,6 +13,8 @@ package javax.money.spi;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryOperator;
 import javax.money.RoundingContext;
+
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -37,10 +39,10 @@ public interface MonetaryRoundingsSingletonSpi{
 	 */
 	default MonetaryOperator getDefaultRounding(){
         MonetaryOperator op = getRounding(RoundingContext.DEFAULT_ROUNDING_CONTEXT);
-        if(op==null){
-            throw new IllegalStateException("No default rounding provided.");
-        }
-        return op;
+		return Optional.ofNullable(op)
+				.orElseThrow(
+						() -> new IllegalStateException(
+								"No default rounding provided."));
     }
 
 	/**
@@ -68,10 +70,10 @@ public interface MonetaryRoundingsSingletonSpi{
 	 */
 	default MonetaryOperator getRounding(CurrencyUnit currencyUnit){
         MonetaryOperator op = getRounding(RoundingContext.of(currencyUnit));
-        if(op==null){
-            throw new IllegalStateException("No rounding provided for CurrencyUnit: " + currencyUnit.getCurrencyCode());
-        }
-        return op;
+		return Optional.ofNullable(op).orElseThrow(
+				() -> new IllegalStateException(
+						"No rounding provided for CurrencyUnit: "
+								+ currencyUnit.getCurrencyCode()));
     }
 
 
@@ -89,10 +91,11 @@ public interface MonetaryRoundingsSingletonSpi{
 	 */
 	default MonetaryOperator getRounding(String roundingId){
         MonetaryOperator op = getRounding(RoundingContext.of(roundingId));
-        if(op==null){
-            throw new IllegalStateException("No rounding provided with rounding id: " + roundingId);
-        }
-        return op;
+		return Optional.ofNullable(op)
+				.orElseThrow(() ->
+						new IllegalStateException(
+								"No rounding provided with rounding id: "
+										+ roundingId));
     }
 
 	/**

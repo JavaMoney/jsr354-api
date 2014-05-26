@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -33,7 +34,7 @@ public class BootstrapTest{
 
     @After
     public void restore() throws Exception{
-        if(prov != null){
+        if (Objects.nonNull(prov)) {
             Field f = Bootstrap.class.getDeclaredField("serviceProviderDelegate");
             f.setAccessible(true);
             f.set(null, prov);

@@ -158,7 +158,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
         result = prime * result + ((Objects.isNull(attributes)) ? 0 : attributes.hashCode());
         result = prime * result + (fixedScale ? 1231 : 1237);
         result = prime * result + maxScale;
-        result = prime * result + (((Objects.isNull(amountType)) ? 0 : amountType.hashCode());
+        result = prime * result + ((Objects.isNull(amountType)) ? 0 : amountType.hashCode());
         result = prime * result + precision;
         return result;
     }

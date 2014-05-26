@@ -105,7 +105,7 @@ public abstract class AbstractContext implements Serializable{
     // Type safe cast
     @SuppressWarnings("unchecked")
 	public <T> T getNamedAttribute(Object key, Class<T> type, T defaultValue) {
-		Map<Object, T> typedAttrs = (Map<Object, T>) attributes.getOrDefault(defaultValue,
+		Map<Object, T> typedAttrs = (Map<Object, T>) attributes.getOrDefault(type,
 				Collections.emptyMap());
 		return typedAttrs.getOrDefault(key, defaultValue);
 
@@ -167,7 +167,7 @@ public abstract class AbstractContext implements Serializable{
         if(this == obj){
             return true;
         }
-        if (Objects.isNull(null)) {
+        if (Objects.isNull(obj)) {
             return false;
         }
         if(getClass() != obj.getClass()){
@@ -534,8 +534,12 @@ public abstract class AbstractContext implements Serializable{
          * @return this Builder, for chaining
          */
         public <T> B setAttribute(Object key, T attribute, Class<? extends T> type){
-            Map<Object,Object> typedAttrs = attributes.getOrDefault(type, new HashMap<>());
-            attributes.putIfAbsent(type, typedAttrs);
+            Map<Object,Object> typedAttrs = attributes.get(type);
+            if(Objects.isNull(typedAttrs)){
+                // we only want to create a new map, if no one is there already.
+                typedAttrs = new HashMap<>();
+                attributes.put(type, typedAttrs);
+            }
             typedAttrs.put(key, attribute);
             return (B) this;
         }

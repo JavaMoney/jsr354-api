@@ -155,10 +155,10 @@ public final class MonetaryContext extends AbstractContext implements Serializab
     public int hashCode(){
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((attributes == null) ? 0 : attributes.hashCode());
+        result = prime * result + ((Objects.isNull(attributes)) ? 0 : attributes.hashCode());
         result = prime * result + (fixedScale ? 1231 : 1237);
         result = prime * result + maxScale;
-        result = prime * result + ((amountType == null) ? 0 : amountType.hashCode());
+        result = prime * result + (((Objects.isNull(amountType)) ? 0 : amountType.hashCode());
         result = prime * result + precision;
         return result;
     }
@@ -172,12 +172,12 @@ public final class MonetaryContext extends AbstractContext implements Serializab
     public boolean equals(Object obj){
         if(this == obj)
             return true;
-        if(obj == null)
+        if(Objects.isNull(obj))
             return false;
-        if(getClass() != obj.getClass())
+        if (getClass() != obj.getClass())
             return false;
         MonetaryContext other = (MonetaryContext) obj;
-        if(attributes == null){
+        if (Objects.isNull(attributes)) {
             if(other.attributes != null)
                 return false;
         }else if(!attributes.equals(other.attributes))
@@ -186,7 +186,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
             return false;
         if(maxScale != other.maxScale)
             return false;
-        if(amountType == null){
+        if (Objects.isNull(amountType)) {
             if(other.amountType != null)
                 return false;
         }else if(!amountType.equals(other.amountType))

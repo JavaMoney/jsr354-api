@@ -165,10 +165,10 @@ public final class MonetaryConversions {
 					.getExchangeRateProvider(defaultProviderChain.toArray(new String[defaultProviderChain.size()]));
 		}
         ExchangeRateProvider provider = MONETARY_CONVERSION_SPI.getExchangeRateProvider(providers);
-        if(provider==null){
-            throw new MonetaryException("No such rate provider: " + Arrays.toString(providers));
-        }
-        return provider;
+		return Optional.ofNullable(provider).orElseThrow(
+				() -> new MonetaryException("No such rate provider: "
+						+ Arrays.toString(providers)));
+        
 	}
 
 	/**
@@ -181,7 +181,7 @@ public final class MonetaryConversions {
 	public static Collection<String> getProviderNames() {
 		Collection<String> providers = MONETARY_CONVERSION_SPI
 				.getProviderNames();
-		if (providers == null) {
+		if (Objects.isNull(providers)) {
 			Logger.getLogger(MonetaryConversions.class.getName()).warning(
 					"No supported rate/conversion providers returned by SPI: "
 							+ MONETARY_CONVERSION_SPI.getClass().getName());
@@ -201,10 +201,10 @@ public final class MonetaryConversions {
 	 */
 	public static ProviderContext getProviderContext(String provider) {
         ProviderContext ctx = MONETARY_CONVERSION_SPI.getProviderContext(provider);
-        if(ctx==null){
-            throw new MonetaryException("No such rate provider: " + provider);
-        }
-        return ctx;
+		return Optional.ofNullable(ctx).orElseThrow(
+				() -> new MonetaryException("No such rate provider: "
+						+ provider));
+        
 	}
 
 	/**

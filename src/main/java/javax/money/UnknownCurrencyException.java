@@ -9,6 +9,7 @@
 package javax.money;
 
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Exception thrown when a currency code cannot be resolved into a {@link CurrencyUnit}.
@@ -81,7 +82,7 @@ public class UnknownCurrencyException extends MonetaryException {
 	 */
 	@Override
 	public String toString() {
-        if(locale==null){
+        if (Objects.isNull(locale)) {
 		    return "UnknownCurrencyException [currencyCode=" + currencyCode + "]";
         }
         else{

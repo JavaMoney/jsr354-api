@@ -10,6 +10,8 @@
  */
 package javax.money.format;
 
+import java.util.Objects;
+
 import javax.money.MonetaryException;
 
 /**
@@ -92,8 +94,10 @@ public class MonetaryParseException extends MonetaryException {
 	 *         input.
 	 */
 	public String getInput() {
-		if (data == null)
+		
+		if (Objects.isNull(data)) {
 			return null;
+		}
 		return data.toString();
 	}
 

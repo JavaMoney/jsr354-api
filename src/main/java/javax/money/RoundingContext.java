@@ -115,7 +115,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
     public int hashCode(){
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((attributes == null) ? 0 : attributes.hashCode());
+        result = prime * result + ((Objects.isNull(attributes)) ? 0 : attributes.hashCode());
         return result;
     }
 
@@ -129,14 +129,14 @@ public final class RoundingContext extends AbstractContext implements Serializab
         if(this == obj){
             return true;
         }
-        if(obj == null){
+        if (Objects.isNull(obj)) {
             return false;
         }
         if(getClass() != obj.getClass()){
             return false;
         }
         RoundingContext other = (RoundingContext) obj;
-        if(attributes == null){
+        if (Objects.isNull(attributes)) {
             if(other.attributes != null){
                 return false;
             }

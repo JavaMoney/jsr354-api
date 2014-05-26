@@ -8,12 +8,13 @@
  */
 package javax.money.spi;
 
-import javax.money.MonetaryException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
+
+import javax.money.MonetaryException;
 
 /**
  * This singleton provides access to the services available in the current runtime environment and context. The
@@ -63,11 +64,11 @@ public final class Bootstrap{
     public static void init(ServiceProvider serviceProvider){
         Objects.requireNonNull(serviceProvider);
         synchronized(LOCK){
-            if(Bootstrap.serviceProviderDelegate == null){
+            if (Objects.isNull(Bootstrap.serviceProviderDelegate)) {
                 Bootstrap.serviceProviderDelegate = serviceProvider;
                 Logger.getLogger(Bootstrap.class.getName())
                         .info("Money Bootstrap: new ServiceProvider set: " + serviceProvider.getClass().getName());
-            }else{
+            } else {
                 throw new IllegalStateException("Services are already initialized.");
             }
         }
@@ -79,9 +80,9 @@ public final class Bootstrap{
      * @return the {@link ServiceProvider} used.
      */
     static ServiceProvider getServiceProvider(){
-        if(serviceProviderDelegate == null){
+        if (Objects.isNull(serviceProviderDelegate)) {
             synchronized(LOCK){
-                if(serviceProviderDelegate == null){
+                if (Objects.isNull(serviceProviderDelegate)) {
                     serviceProviderDelegate = loadDefaultServiceProvider();
                 }
             }

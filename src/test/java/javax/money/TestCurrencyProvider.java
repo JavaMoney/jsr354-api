@@ -104,6 +104,9 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 		 */
 		@Override
 		public boolean equals(Object obj) {
+			if (obj == this) {
+	            return true;
+	        }
 			if (obj instanceof TestCurrency) {
 				TestCurrency other = (TestCurrency) obj;
 				return Objects.equals(code, other.code);

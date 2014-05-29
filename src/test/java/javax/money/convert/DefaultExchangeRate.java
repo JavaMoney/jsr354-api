@@ -256,7 +256,9 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      */
 	@Override
 	public boolean equals(Object obj) {
-
+		if (obj == this) {
+            return true;
+        }
 		if (obj instanceof DefaultExchangeRate) {
 			DefaultExchangeRate other = (DefaultExchangeRate) obj;
 			return Objects.equals(base, other.base)

@@ -123,7 +123,9 @@ public final class RoundingContext extends AbstractContext implements Serializab
      */
     @Override
 	public boolean equals(Object obj) {
-
+    	if (obj == this) {
+            return true;
+        } 
 		if (obj instanceof RoundingContext) {
 			RoundingContext other = (RoundingContext) obj;
 			return Objects.equals(attributes, other.attributes);

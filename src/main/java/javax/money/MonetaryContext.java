@@ -163,7 +163,9 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      */
     @Override
 	public boolean equals(Object obj) {
-
+    	if (obj == this) {
+            return true;
+        }
 		if (obj instanceof MonetaryContext) {
 			MonetaryContext other = (MonetaryContext) obj;
 			return Objects.equals(attributes, other.attributes)

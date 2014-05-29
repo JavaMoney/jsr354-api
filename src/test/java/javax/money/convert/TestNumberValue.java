@@ -244,6 +244,9 @@ class TestNumberValue extends NumberValue {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (obj == this) {
+            return true;
+        }
 		if (obj instanceof TestNumberValue) {
 			TestNumberValue other = (TestNumberValue) obj;
 			return Objects.equals(number, other.number);

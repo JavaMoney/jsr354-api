@@ -160,6 +160,9 @@ public abstract class AbstractContext implements Serializable{
      */
     @Override
 	public boolean equals(Object obj) {
+    	if (obj == this) {
+            return true;
+        }
 		if (obj instanceof AbstractContext) {
 			AbstractContext other = (AbstractContext) obj;
 			return Objects.equals(attributes, other.attributes);

@@ -104,21 +104,12 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 		 */
 		@Override
 		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (Objects.isNull(obj))
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			TestCurrency other = (TestCurrency) obj;
-			if (Objects.isNull(code)) {
-				if (Objects.nonNull(other.code))
-					return false;
-			} else if (!code.equals(other.code))
-				return false;
-			return true;
+			if (obj instanceof TestCurrency) {
+				TestCurrency other = (TestCurrency) obj;
+				return Objects.equals(code, other.code);
+			}
+			return false;
 		}
-
         @Override
         public int compareTo(CurrencyUnit o){
             return getCurrencyCode().compareTo(o.getCurrencyCode());

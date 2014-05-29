@@ -159,26 +159,13 @@ public abstract class AbstractContext implements Serializable{
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj){
-        if(this == obj){
-            return true;
-        }
-        if (Objects.isNull(obj)) {
-            return false;
-        }
-        if(getClass() != obj.getClass()){
-            return false;
-        }
-        AbstractContext other = (AbstractContext) obj;
-        if (Objects.isNull(attributes)){
-            if (Objects.nonNull(other.attributes)) {
-                return false;
-            }
-        }else if(!attributes.equals(other.attributes)){
-            return false;
-        }
-        return true;
-    }
+	public boolean equals(Object obj) {
+		if (obj instanceof AbstractContext) {
+			AbstractContext other = (AbstractContext) obj;
+			return Objects.equals(attributes, other.attributes);
+		}
+		return false;
+	}
 
     /**
      * Access an Long attribute.

@@ -12,6 +12,7 @@ package javax.money.convert;
 
 import javax.money.CurrencyUnit;
 import javax.money.NumberValue;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -253,51 +254,20 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    @Override
-    public boolean equals(Object obj){
-        if(this == obj){
-            return true;
-        }
-        if (Objects.isNull(obj)) {
-            return false;
-        }
-        if(getClass() != obj.getClass()){
-            return false;
-        }
-        DefaultExchangeRate other = (DefaultExchangeRate) obj;
-        if (Objects.isNull(base)) {
-            if (Objects.nonNull(other.base)) {
-                return false;
-            }
-        }else if(!base.equals(other.base)){
-            return false;
-        }
-        if(!chain.equals(other.getExchangeRateChain())){
-            return false;
-        }
-        if (Objects.isNull(conversionContext)) {
-            if (Objects.nonNull(other.conversionContext)) {
-                return false;
-            }
-        }else if(!conversionContext.equals(other.conversionContext)){
-            return false;
-        }
-        if (Objects.isNull(factor)) {
-            if (Objects.nonNull(other.factor)) {
-                return false;
-            }
-        }else if(!factor.equals(other.factor)){
-            return false;
-        }
-        if (Objects.isNull(term)) {
-            if (Objects.nonNull(other.term)) {
-                return false;
-            }
-        }else if(!term.equals(other.term)){
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+
+		if (obj instanceof DefaultExchangeRate) {
+			DefaultExchangeRate other = (DefaultExchangeRate) obj;
+			return Objects.equals(base, other.base)
+					&& Objects.equals(conversionContext,
+							other.conversionContext)
+					&& Objects.equals(chain, other.chain)
+					&& Objects.equals(factor, other.factor)
+					&& Objects.equals(term, other.term);
+		}
+		return false;
+	}
 
     /**
      * Builder for creating new instances of {@link ExchangeRate}. Note that

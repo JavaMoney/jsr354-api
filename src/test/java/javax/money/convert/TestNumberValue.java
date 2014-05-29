@@ -257,7 +257,7 @@ class TestNumberValue extends NumberValue {
 
     @Override
     public int hashCode(){
-        return number.hashCode();
+        return Objects.hashCode(number);
     }
 
     /*

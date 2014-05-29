@@ -96,10 +96,7 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 		 */
 		@Override
 		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((Objects.isNull(code)) ? 0 : code.hashCode());
-			return result;
+			return Objects.hashCode(code);
 		}
 
 		/* (non-Javadoc)

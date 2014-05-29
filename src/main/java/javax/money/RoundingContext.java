@@ -113,10 +113,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
      */
     @Override
     public int hashCode(){
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((Objects.isNull(attributes)) ? 0 : attributes.hashCode());
-        return result;
+        return Objects.hashCode(attributes);
     }
 
     /*

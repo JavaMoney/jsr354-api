@@ -8,6 +8,8 @@
  */
 package javax.money;
 
+import java.util.Objects;
+
 /**
  * Amount pseudo (non functional) implementation, for testing only.
  * 
@@ -322,6 +324,7 @@ public final class DummyAmount implements
 
     @Override
     public int compareTo(MonetaryAmount o){
+    	Objects.requireNonNull(o);
         return 0;
     }
 }

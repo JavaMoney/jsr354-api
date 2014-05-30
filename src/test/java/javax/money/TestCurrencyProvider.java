@@ -115,6 +115,7 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 		}
         @Override
         public int compareTo(CurrencyUnit o){
+        	Objects.requireNonNull(o);
             return getCurrencyCode().compareTo(o.getCurrencyCode());
         }
     }

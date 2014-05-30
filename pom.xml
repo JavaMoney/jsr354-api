@@ -36,7 +36,7 @@
         <maven.compile.sourceLevel>${jdkVersion}</maven.compile.sourceLevel>
         <basedir>.</basedir>
         <!-- Dependency versions -->
-        <junit.version>4.8.2</junit.version>
+        <testng.version>6.8.5</testng.version>
 
         <license.licenseName>jcp_spec</license.licenseName>
         <license.licenseResolver>src/license</license.licenseResolver>
@@ -394,7 +394,7 @@
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
-                <version>6.8.5</version>
+                <version>${testng.version}</version>
                 <scope>test</scope>
             </dependency>
             <!-- dependency>
@@ -486,7 +486,7 @@
                         <skipTests>false</skipTests>
                         <trimStackTrace>false</trimStackTrace>
                         <forkMode>once</forkMode>
-                        <useSystemClassLoader>false</useSystemClassLoader>
+                        <useSystemClassLoader>true</useSystemClassLoader>
                         <includes>
                             <include>**/*Test.java</include>
                         </includes>
@@ -685,13 +685,12 @@
                 <executions>
                     <execution>
                         <id>output-html</id>
-                        <phase>generate-resources</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>process-asciidoc</goal>
                         </goals>
                         <configuration>
                             <outputDirectory>target/docs</outputDirectory>
-                            <!-- sourceHighlighter>highlightjs</sourceHighlighter -->
                             <sourceHighlighter>coderay</sourceHighlighter>
                             <backend>html</backend>
                             <embedAssets>true</embedAssets>
@@ -699,9 +698,9 @@
                             <baseDir>src/main/asciidoc/</baseDir>
                         </configuration>
                     </execution>
-                    <!-- execution>
+                    <!--execution>
                         <id>output-pdf</id>
-                        <phase>generate-resources</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>process-asciidoc</goal>
                         </goals>
@@ -712,10 +711,10 @@
                             <backend>pdf</backend>
                             <doctype>book</doctype>
                         </configuration>
-                    </execution -->
+                    </execution-->
                     <execution>
                         <id>output-docbook</id>
-                        <phase>generate-resources</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>process-asciidoc</goal>
                         </goals>
@@ -741,7 +740,7 @@
                             <goal>generate-pdf</goal>
                             <goal>generate-xhtml</goal>
                         </goals>
-                        <phase>generate-resources</phase>
+                        <phase>prepare-package</phase>
                     </execution>
                 </executions>
                 <dependencies>

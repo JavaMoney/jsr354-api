@@ -35,12 +35,12 @@ public final class MonetaryAmounts{
     /**
      * The used {@link javax.money.spi.MonetaryAmountsSingletonSpi} instance.
      */
-    private static MonetaryAmountsSingletonSpi monetaryAmountsSingletonSpi = loadMonetaryAmountsSingletonSpi();
+    private static final MonetaryAmountsSingletonSpi monetaryAmountsSingletonSpi = loadMonetaryAmountsSingletonSpi();
 
     /**
      * The used {@link javax.money.spi.MonetaryAmountsSingletonSpi} instance.
      */
-    private static MonetaryAmountsSingletonQuerySpi monetaryAmountsSingletonQuerySpi =
+    private static final MonetaryAmountsSingletonQuerySpi monetaryAmountsSingletonQuerySpi =
             loadMonetaryAmountsSingletonQuerySpi();
 
     /**

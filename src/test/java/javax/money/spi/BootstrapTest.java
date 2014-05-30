@@ -2,7 +2,9 @@ package javax.money.spi;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -16,33 +18,11 @@ import static org.junit.Assert.*;
 /**
  * Created by Anatole on 04.03.14.
  */
+@Test
 public class BootstrapTest{
 
-    private ServiceProvider prov;
 
-    @Before
-    public void initBootstrap() throws Exception{
-        Field f = Bootstrap.class.getDeclaredField("serviceProviderDelegate");
-        f.setAccessible(true);
-        prov = (ServiceProvider) f.get(null);
-        f.set(null, null);
-    }
-
-    private ServiceProvider removeServiceProvider(){
-        return null;
-    }
-
-    @After
-    public void restore() throws Exception{
-        if (Objects.nonNull(prov)) {
-            Field f = Bootstrap.class.getDeclaredField("serviceProviderDelegate");
-            f.setAccessible(true);
-            f.set(null, prov);
-            prov = null;
-        }
-    }
-
-    @Test(expected=IllegalStateException.class)
+    @Test(expectedExceptions=IllegalStateException.class)
     public void testInit_InitTwice() throws Exception{
         Bootstrap.init(new TestServiceProvider());
         Bootstrap.init(new TestServiceProvider());
@@ -50,7 +30,6 @@ public class BootstrapTest{
 
     @Test
     public void testInit() throws Exception{
-        Bootstrap.init(new TestServiceProvider());
         Collection<Object> services = Collection.class.cast(Bootstrap.getServices(String.class));
         assertNotNull(services);
         assertFalse(services.isEmpty());
@@ -63,14 +42,12 @@ public class BootstrapTest{
 
     @Test
     public void testGetServiceProvider() throws Exception{
-        Bootstrap.init(new TestServiceProvider());
         assertNotNull(Bootstrap.getServiceProvider());
         assertEquals(Bootstrap.getServiceProvider().getClass(), TestServiceProvider.class);
     }
 
     @Test
     public void testGetServices() throws Exception{
-        Bootstrap.init(new TestServiceProvider());
         Collection<Object> services = Collection.class.cast(Bootstrap.getServices(String.class));
         assertNotNull(services);
         assertFalse(services.isEmpty());
@@ -83,7 +60,6 @@ public class BootstrapTest{
 
     @Test
     public void testGetServicesWithDefault() throws Exception{
-        Bootstrap.init(new TestServiceProvider());
         Collection<Object> services = Collection.class
                 .cast(Bootstrap.getServices(Boolean.class, Arrays.asList(new Boolean[]{Boolean.FALSE, Boolean.TRUE})));
         assertNotNull(services);
@@ -100,7 +76,6 @@ public class BootstrapTest{
 
     @Test
     public void testGetService() throws Exception{
-        Bootstrap.init(new TestServiceProvider());
         Integer num = Bootstrap.getService(Integer.class);
         assertNotNull(num);
         assertTrue(num.equals(5));
@@ -108,13 +83,13 @@ public class BootstrapTest{
 
     @Test
     public void testGetService1() throws Exception{
-        Bootstrap.init(new TestServiceProvider());
         Long num = Bootstrap.getService(Long.class, 111L);
         assertNotNull(num);
         assertTrue(num.equals(111L));
     }
 
-    private final static class TestServiceProvider implements ServiceProvider{
+    public final static class TestServiceProvider extends DefaultServiceProvider
+            implements ServiceProvider{
 
         @Override
         public <T> List<T> getServices(Class<T> serviceType){
@@ -127,7 +102,7 @@ public class BootstrapTest{
             else if(Long.class.equals(serviceType)){
                 return List.class.cast(Arrays.asList(new Long[]{(long) 111}));
             }
-            return Collections.emptyList();
+            return super.getServices(serviceType);
         }
 
         @Override
@@ -141,7 +116,7 @@ public class BootstrapTest{
             else if(Long.class.equals(serviceType)){
                 return List.class.cast(Arrays.asList(new Long[]{(long) 111}));
             }
-            return defaultList;
+            return super.getServices(serviceType, defaultList);
         }
     }
 }

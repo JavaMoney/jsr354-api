@@ -12,7 +12,7 @@
  */
 package javax.money;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.util.Locale;
 
@@ -47,7 +47,7 @@ public class MonetaryCurrenciesTest{
         assertTrue(MonetaryCurrencies.isCurrencyAvailable(new Locale("", "TEST1L")));
     }
 
-    @Test(expected = UnknownCurrencyException.class)
+    @Test(expectedExceptions = UnknownCurrencyException.class)
     public void testgetCurrencyString_NA(){
         MonetaryCurrencies.getCurrency("testGetInstanceCurrency_NA");
     }
@@ -61,13 +61,13 @@ public class MonetaryCurrenciesTest{
         assertEquals(cur.getDefaultFractionDigits(), 2);
     }
 
-    @Test(expected=UnknownCurrencyException.class)
+    @Test(expectedExceptions=UnknownCurrencyException.class)
     public void testgetCurrencyLocale_Error(){
         CurrencyUnit cur = MonetaryCurrencies.getCurrency(Locale.CHINA);
         assertNull(cur);
     }
 
-    @Test(expected=UnknownCurrencyException.class)
+    @Test(expectedExceptions=UnknownCurrencyException.class)
     public void testgetCurrencyString_Error(){
         CurrencyUnit cur = MonetaryCurrencies.getCurrency("error");
         assertNull(cur);
@@ -75,7 +75,7 @@ public class MonetaryCurrenciesTest{
         assertNull(cur);
     }
 
-    @Test(expected = UnknownCurrencyException.class)
+    @Test(expectedExceptions = UnknownCurrencyException.class)
     public void testgetCurrencyLocale_NA(){
         MonetaryCurrencies.getCurrency(new Locale("", "sdsdsd"));
     }

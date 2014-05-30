@@ -12,7 +12,7 @@
  */
 package javax.money;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.util.Locale;
 import java.util.Set;
@@ -37,7 +37,7 @@ public class MonetaryRoundingsTest{
         assertNotNull(op);
     }
 
-    @Test(expected = MonetaryException.class)
+    @Test(expectedExceptions = MonetaryException.class)
     public void testMonetaryRoundingsGetRoundingCurrencyUnit_Error(){
         MonetaryOperator op =
                 MonetaryRoundings.getRounding(MonetaryCurrencies.getCurrency(new Locale("", "TEST_ERROR")));

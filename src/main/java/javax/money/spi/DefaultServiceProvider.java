@@ -49,7 +49,11 @@ public class DefaultServiceProvider implements ServiceProvider {
 		if (Objects.nonNull(found)) {
 			return found;
 		}
-		return loadServices(serviceType);
+        found = loadServices(serviceType);
+        if(found.isEmpty()){
+            return defaultList;
+        }
+        return found;
 	}
 
 	/**

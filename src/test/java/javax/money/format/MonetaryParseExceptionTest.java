@@ -9,7 +9,7 @@
 package javax.money.format;
 
 import junit.framework.Assert;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 /**
  * Created by Anatole on 05.03.14.
@@ -33,12 +33,12 @@ public class MonetaryParseExceptionTest{
         Assert.assertEquals(e.getMessage(),"message");
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expectedExceptions=IllegalArgumentException.class)
     public void testCreateIllegalInput(){
         MonetaryParseException e = new MonetaryParseException("testInput", 500);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expectedExceptions=IllegalArgumentException.class)
     public void testCreateIllegalInputWithMessage(){
         MonetaryParseException e = new MonetaryParseException("message", "testInput", 500);
     }

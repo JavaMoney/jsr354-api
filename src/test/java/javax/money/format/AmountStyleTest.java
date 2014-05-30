@@ -8,7 +8,7 @@
  */
 package javax.money.format;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import javax.money.MonetaryOperator;
 import java.text.DecimalFormat;

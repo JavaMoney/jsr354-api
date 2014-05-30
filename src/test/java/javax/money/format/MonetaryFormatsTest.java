@@ -8,7 +8,7 @@
  */
 package javax.money.format;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import javax.money.MonetaryException;
 import java.util.Locale;
@@ -30,7 +30,7 @@ public class MonetaryFormatsTest{
         assertEquals(fmt.getClass(), TestAmountFormatProvider.TestFormat.class);
     }
 
-    @Test(expected = MonetaryException.class)
+    @Test(expectedExceptions = MonetaryException.class)
     public void testGetAmountFormatLocale_Invalid(){
         MonetaryFormats.getAmountFormat(new Locale("foo", "bar"));
     }

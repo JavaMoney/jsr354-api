@@ -11,6 +11,7 @@
 package javax.money.convert;
 
 import javax.money.NumberValue;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Objects;
@@ -241,19 +242,17 @@ class TestNumberValue extends NumberValue {
 	}
 
 
-    @Override
-    public boolean equals(Object o){
-        if(this == o){
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
             return true;
         }
-        if (Objects.isNull(o) || getClass() != o.getClass()) {
-            return false;
-        }
-
-        TestNumberValue that = (TestNumberValue) o;
-
-        return number.equals(that.number);
-    }
+		if (obj instanceof TestNumberValue) {
+			TestNumberValue other = (TestNumberValue) obj;
+			return Objects.equals(number, other.number);
+		}
+		return false;
+	}
 
     @Override
     public int hashCode(){

@@ -162,32 +162,20 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj){
-        if(this == obj)
+	public boolean equals(Object obj) {
+    	if (obj == this) {
             return true;
-        if(Objects.isNull(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        MonetaryContext other = (MonetaryContext) obj;
-        if (Objects.isNull(attributes)) {
-            if (Objects.nonNull(other.attributes))
-                return false;
-        }else if(!attributes.equals(other.attributes))
-            return false;
-        if(fixedScale != other.fixedScale)
-            return false;
-        if(maxScale != other.maxScale)
-            return false;
-        if (Objects.isNull(amountType)) {
-            if (Objects.nonNull(other.amountType))
-                return false;
-        }else if(!amountType.equals(other.amountType))
-            return false;
-        if(precision != other.precision)
-            return false;
-        return true;
-    }
+        }
+		if (obj instanceof MonetaryContext) {
+			MonetaryContext other = (MonetaryContext) obj;
+			return Objects.equals(attributes, other.attributes)
+					&& Objects.equals(fixedScale, other.fixedScale)
+					&& Objects.equals(maxScale, other.maxScale)
+					&& Objects.equals(amountType, other.amountType)
+					&& Objects.equals(precision, other.precision);
+		}
+		return false;
+	}
 
     /**
      * Creates a new {@link MonetaryContext} targeting the the given amount

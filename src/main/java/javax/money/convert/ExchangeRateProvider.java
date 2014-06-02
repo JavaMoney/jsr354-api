@@ -88,7 +88,9 @@ public interface ExchangeRateProvider{
      * @return the matching reversed {@link ExchangeRate}, or {@code null}, if
      * the rate cannot be reversed.
      */
-    ExchangeRate getReversed(ExchangeRate rate);
+    default ExchangeRate getReversed(ExchangeRate rate){
+        return null;
+    }
 
     /**
      * Access a {@link CurrencyConversion} that can be applied as a

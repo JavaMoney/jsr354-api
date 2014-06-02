@@ -118,7 +118,7 @@ public final class ConversionContext extends AbstractContext{
                 return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
             }
         }
-        return null;
+        return value;
     }
 
     /**
@@ -287,7 +287,7 @@ public final class ConversionContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setTimestampMillis(long timestamp){
-            setAttribute(TIMESTAMP, timestamp);
+            setLong(TIMESTAMP, timestamp);
             return this;
         }
 

@@ -9,17 +9,12 @@
 package javax.money;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This class models an abstract context that allows to define extendible and
  * portable contexts with any kind of attributes in a type safe way.
- * <p/>
+ * <p>
  * Instances of this class should be immutable and thread-safe.
  *
  * @author Anatole Tresch
@@ -40,15 +35,16 @@ public abstract class AbstractContext implements Serializable{
     /**
      * Private constructor, used by deserialization.
      */
-    protected AbstractContext(){}
+    protected AbstractContext(){
+    }
 
     /**
      * Private constructor, used by {@link AbstractBuilder}.
      *
      * @param builder the Builder.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-	protected AbstractContext(AbstractBuilder builder){
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    protected AbstractContext(AbstractBuilder builder){
         this.attributes.putAll(builder.attributes);
     }
 
@@ -64,10 +60,9 @@ public abstract class AbstractContext implements Serializable{
     // type safe cast
     @SuppressWarnings("unchecked")
     protected final <T> T set(T attribute, Object key, Class<? extends T> type){
-		Map<Object, Object> typedAttrs = attributes.getOrDefault(type,
-				new HashMap<>());
-		attributes.putIfAbsent(type, typedAttrs);
-		return (T) typedAttrs.put(key, attribute);
+        Map<Object,Object> typedAttrs = attributes.getOrDefault(type, new HashMap<>());
+        attributes.putIfAbsent(type, typedAttrs);
+        return (T) typedAttrs.put(key, attribute);
     }
 
     /**
@@ -104,12 +99,11 @@ public abstract class AbstractContext implements Serializable{
      */
     // Type safe cast
     @SuppressWarnings("unchecked")
-	public <T> T getNamedAttribute(Object key, Class<T> type, T defaultValue) {
-		Map<Object, T> typedAttrs = (Map<Object, T>) attributes.getOrDefault(type,
-				Collections.emptyMap());
-		return typedAttrs.getOrDefault(key, defaultValue);
+    public <T> T getNamedAttribute(Object key, Class<T> type, T defaultValue){
+        Map<Object,T> typedAttrs = (Map<Object,T>) attributes.getOrDefault(type, Collections.emptyMap());
+        return typedAttrs.getOrDefault(key, defaultValue);
 
-	}
+    }
 
     /**
      * Access an attribute, hereby using the class name as key.
@@ -130,7 +124,7 @@ public abstract class AbstractContext implements Serializable{
      * such attribute is present.
      */
     public <T> T getAttribute(Class<T> type, T defaultValue){
-		return Optional.ofNullable(getAttribute(type)).orElse(defaultValue);
+        return Optional.ofNullable(getAttribute(type)).orElse(defaultValue);
     }
 
     /**
@@ -159,16 +153,16 @@ public abstract class AbstractContext implements Serializable{
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-	public boolean equals(Object obj) {
-    	if (obj == this) {
+    public boolean equals(Object obj){
+        if(obj == this){
             return true;
         }
-		if (obj instanceof AbstractContext) {
-			AbstractContext other = (AbstractContext) obj;
-			return Objects.equals(attributes, other.attributes);
-		}
-		return false;
-	}
+        if(obj instanceof AbstractContext){
+            AbstractContext other = (AbstractContext) obj;
+            return Objects.equals(attributes, other.attributes);
+        }
+        return false;
+    }
 
     /**
      * Access an Long attribute.
@@ -392,6 +386,7 @@ public abstract class AbstractContext implements Serializable{
          * @return the Builder, for chaining.
          */
         public B setInt(Object key, Integer value){
+            Objects.requireNonNull(value);
             return setAttribute(key, value, Integer.class);
         }
 
@@ -404,6 +399,7 @@ public abstract class AbstractContext implements Serializable{
          * @return the Builder, for chaining.
          */
         public B setBoolean(Object key, Boolean value){
+            Objects.requireNonNull(value);
             return setAttribute(key, value, Boolean.class);
         }
 
@@ -416,7 +412,8 @@ public abstract class AbstractContext implements Serializable{
          * @return the Builder, for chaining.
          */
         public B setLong(Object key, Long value){
-            return setAttribute(key, value, Boolean.class);
+            Objects.requireNonNull(value);
+            return setAttribute(key, value, Long.class);
         }
 
 
@@ -429,7 +426,7 @@ public abstract class AbstractContext implements Serializable{
          */
         public B setFloat(Object key, Float value){
             Objects.requireNonNull(value);
-            return setAttribute(key, value, Boolean.class);
+            return setAttribute(key, value, Float.class);
         }
 
         /**
@@ -454,7 +451,7 @@ public abstract class AbstractContext implements Serializable{
          */
         public B setChar(Object key, Character value){
             Objects.requireNonNull(value);
-            return setAttribute(key, value, Double.class);
+            return setAttribute(key, value, Character.class);
         }
 
         /**
@@ -504,7 +501,7 @@ public abstract class AbstractContext implements Serializable{
          */
         public B removeAttribute(Object key, Class type){
             Map<Object,Object> typedAttrs = attributes.get(type);
-            if (Objects.nonNull(typedAttrs)) {
+            if(Objects.nonNull(typedAttrs)){
                 attributes.remove(key);
             }
             return (B) this;

@@ -104,10 +104,20 @@ public final class DummyAmountFactory implements
 		return this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#setContext(javax.money.MonetaryContext)
-	 */
+    @Override
+    public NumberValue getMaxNumber(){
+        return null;
+    }
+
+    @Override
+    public NumberValue getMinNumber(){
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#setContext(javax.money.MonetaryContext)
+     */
 	@Override
 	public DummyAmountFactory setContext(MonetaryContext monetaryContext) {
 		return this;

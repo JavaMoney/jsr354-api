@@ -109,6 +109,20 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 	 */
 	MonetaryAmountFactory<T> setNumber(Number number);
 
+    /**
+     * Get the maximum possible number that this type can represent. If the numeric model has no limitations on the
+     * numeric range, null should be returned.
+     * @return the maximum possible number, or null.
+     */
+    NumberValue getMaxNumber();
+
+    /**
+     * Get the minimum possible number that this type can represent. If the numeric model has no limitations on the
+     * numeric range, null should be returned.
+     * @return the minimum possible number, or null.
+     */
+    NumberValue getMinNumber();
+
 	/**
 	 * Sets the {@link MonetaryContext} to be used.
 	 * 

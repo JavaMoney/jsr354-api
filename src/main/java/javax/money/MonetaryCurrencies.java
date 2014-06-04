@@ -108,11 +108,8 @@ public final class MonetaryCurrencies {
 	 *         would return a result for the given code.
 	 */
 	public static boolean isCurrencyAvailable(String code) {
-        if (Objects.isNull(monetaryCurrenciesSpi)) {
-            return false;
-        }
-        return monetaryCurrenciesSpi.isCurrencyAvailable(code);
-	}
+        return !Objects.isNull(monetaryCurrenciesSpi) && monetaryCurrenciesSpi.isCurrencyAvailable(code);
+    }
 
 	/**
 	 * Allows to check if a {@link javax.money.CurrencyUnit} instance is
@@ -124,11 +121,8 @@ public final class MonetaryCurrencies {
 	 *         result for the given code.
 	 */
 	public static boolean isCurrencyAvailable(Locale locale) {
-        if (Objects.isNull(monetaryCurrenciesSpi)){
-            return false;
-        }
-        return monetaryCurrenciesSpi.isCurrencyAvailable(locale);
-	}
+        return !Objects.isNull(monetaryCurrenciesSpi) && monetaryCurrenciesSpi.isCurrencyAvailable(locale);
+    }
 
     public static Collection<CurrencyUnit> getCurrencies(){
         if (Objects.isNull(monetaryCurrenciesSpi)) {

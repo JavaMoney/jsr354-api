@@ -16,8 +16,7 @@ import org.testng.annotations.Test;
 
 import java.util.Locale;
 
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.*;
+import static org.testng.Assert.*;
 
 /**
  * Tests for the {@link MonetaryCurrencies} class.

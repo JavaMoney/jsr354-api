@@ -10,9 +10,10 @@
  */
 package javax.money.convert;
 
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.testng.Assert.*;
+
+import org.testng.annotations.Test;
 
 /**
  * Created by Anatole on 05.03.14.

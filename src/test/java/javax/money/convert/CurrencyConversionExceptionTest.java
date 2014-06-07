@@ -10,11 +10,11 @@
  */
 package javax.money.convert;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import javax.money.CurrencyUnit;
 import javax.money.TestCurrency;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 public class CurrencyConversionExceptionTest {
 

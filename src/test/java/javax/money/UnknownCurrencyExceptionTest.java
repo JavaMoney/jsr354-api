@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 
 import java.util.Locale;
 
-import static org.junit.Assert.*;
+import static org.testng.Assert.*;
 
 /**
  * Created by Anatole on 05.03.14.

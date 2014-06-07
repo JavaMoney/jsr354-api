@@ -17,8 +17,8 @@ import org.testng.annotations.Test;
 import java.util.Locale;
 import java.util.Set;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 public class MonetaryRoundingsTest{
 

@@ -14,7 +14,7 @@ import javax.money.MonetaryException;
 import java.util.Locale;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.testng.Assert.*;
 
 /**
  * Tests for {@link MonetaryFormats}.

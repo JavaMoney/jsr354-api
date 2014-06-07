@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.testng.Assert.*;
 
 /**
  * Created by Anatole on 05.03.14.
@@ -123,12 +123,14 @@ public class AbstractContextTest{
 
     private static class TestContext extends AbstractContext{
 
-        /**
+		private static final long serialVersionUID = 1L;
+
+		/**
          * Private constructor, used by {@link javax.money.AbstractContext.AbstractBuilder}.
          *
          * @param builder the Builder.
          */
-        protected TestContext(AbstractBuilder builder){
+        protected TestContext(@SuppressWarnings("rawtypes") AbstractBuilder builder){
             super(builder);
         }
 

@@ -14,7 +14,7 @@ import javax.money.MonetaryOperator;
 import java.text.DecimalFormat;
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.testng.Assert.*;
 
 /**
  * Created by Anatole on 05.03.14.
@@ -25,6 +25,7 @@ public class AmountStyleTest{
         AmountFormatContext style = AmountFormatContext.of(Locale.ENGLISH);
         assertNotNull(style);
         DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(Locale.ENGLISH);
+        assertNotNull(df);
     }
 
 
@@ -39,6 +40,7 @@ public class AmountStyleTest{
     @Test
     public void testHashCode(){
         MonetaryOperator op = value -> value.multiply(2.0d);
+        assertNotNull(op);
         List<AmountFormatContext> contexts = new ArrayList<>();
         contexts.add(new AmountFormatContext.Builder(Locale.GERMAN).build());
         contexts.add(new AmountFormatContext.Builder(Locale.ENGLISH).build());
@@ -51,6 +53,7 @@ public class AmountStyleTest{
     @Test
     public void testEquals(){
         MonetaryOperator op = value -> value.multiply(2.0d);
+        assertNotNull(op);
         List<AmountFormatContext> contexts = new ArrayList<>();
         contexts.add(new AmountFormatContext.Builder(Locale.ENGLISH).build());
         contexts.add(new AmountFormatContext.Builder(Locale.GERMAN).build());

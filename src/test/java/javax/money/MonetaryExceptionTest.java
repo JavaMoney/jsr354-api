@@ -14,7 +14,7 @@ package javax.money;
 
 import org.testng.annotations.Test;
 
-import static org.junit.Assert.*;
+import static org.testng.Assert.*;
 
 /**
  * Created by Anatole on 05.03.14.

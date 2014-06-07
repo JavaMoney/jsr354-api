@@ -1,23 +1,20 @@
 package javax.money.spi;
 
-import org.junit.After;
-import org.junit.Before;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
 
 /**
  * Created by Anatole on 04.03.14.
  */
+@SuppressWarnings("unchecked")
 @Test
 public class BootstrapTest{
 
@@ -28,7 +25,8 @@ public class BootstrapTest{
         Bootstrap.init(new TestServiceProvider());
     }
 
-    @Test
+    
+	@Test
     public void testInit() throws Exception{
         Collection<Object> services = Collection.class.cast(Bootstrap.getServices(String.class));
         assertNotNull(services);

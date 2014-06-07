@@ -138,8 +138,8 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
         if(Objects.isNull(chain) || chain.isEmpty()){
             this.chain.add(this);
         }else{
-            for (ExchangeRate aChain : chain) {
-                if (Objects.isNull(chain)) {
+            for (ExchangeRate rate : chain) {
+                if (Objects.isNull(rate)) {
                     throw new IllegalArgumentException("Chain element can not be null.");
                 }
             }

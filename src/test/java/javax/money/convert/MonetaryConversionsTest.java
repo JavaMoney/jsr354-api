@@ -10,12 +10,13 @@
  */
 package javax.money.convert;
 
-import org.junit.Test;
 
 import javax.money.MonetaryException;
 import javax.money.TestCurrency;
 
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+
+import static org.testng.Assert.*;
 
 /**
  * Created by Anatole on 05.03.14.
@@ -46,7 +47,7 @@ public class MonetaryConversionsTest{
         assertNotNull(MonetaryConversions.getExchangeRateProvider("test"));
     }
 
-    @Test(expected= MonetaryException.class)
+    @Test(expectedExceptions = MonetaryException.class)
     public void testGetExchangeRateProvider_Invalid() throws Exception{
         MonetaryConversions.getExchangeRateProvider("gguseli");
     }
@@ -63,7 +64,7 @@ public class MonetaryConversionsTest{
         assertNotNull(MonetaryConversions.getProviderContext("test"));
     }
 
-    @Test(expected= MonetaryException.class)
+    @Test(expectedExceptions = MonetaryException.class)
     public void testGetProviderContext_Invalid() throws Exception{
         MonetaryConversions.getProviderContext("guguseli");
     }

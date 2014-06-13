@@ -502,7 +502,7 @@
                     <configuration>
                         <debug>true</debug>
                         <optimize>true</optimize>
-                        <verbose>true</verbose>
+                        <verbose>false</verbose>
                         <source>${maven.compile.sourceLevel}</source>
                         <target>${maven.compile.targetLevel}</target>
                         <compilerArgument>-g</compilerArgument>
@@ -738,7 +738,6 @@
                         <id>doc</id>
                         <goals>
                             <goal>generate-pdf</goal>
-                            <goal>generate-xhtml</goal>
                         </goals>
                         <phase>prepare-package</phase>
                     </execution>

@@ -173,6 +173,13 @@
                 <role>Expert Group Member</role>
             </roles>
         </developer>
+        <developer>
+            <id>-</id>
+            <name>Otavio Santana</name>
+            <roles>
+                <role>Expert Group Member</role>
+            </roles>
+        </developer>
     </developers>
 
     <ciManagement>

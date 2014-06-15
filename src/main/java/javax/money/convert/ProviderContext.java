@@ -192,7 +192,8 @@ public final class ProviderContext extends AbstractContext{
          * @return this, for chaining.
          * @throws IllegalArgumentException when not at least one {@link RateType} is provided.
          */
-        public Builder setRateTypes(Collection<RateType> rateTypes){
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+		public Builder setRateTypes(Collection<RateType> rateTypes){
             Objects.requireNonNull(rateTypes);
             if(rateTypes.size() == 0){
                 throw new IllegalArgumentException("At least one RateType is required.");

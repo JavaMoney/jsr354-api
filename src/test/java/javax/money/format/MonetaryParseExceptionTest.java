@@ -35,11 +35,11 @@ public class MonetaryParseExceptionTest{
 
     @Test(expectedExceptions=IllegalArgumentException.class)
     public void testCreateIllegalInput(){
-        MonetaryParseException e = new MonetaryParseException("testInput", 500);
+        new MonetaryParseException("testInput", 500);
     }
 
     @Test(expectedExceptions=IllegalArgumentException.class)
     public void testCreateIllegalInputWithMessage(){
-        MonetaryParseException e = new MonetaryParseException("message", "testInput", 500);
+        new MonetaryParseException("message", "testInput", 500);
     }
 }

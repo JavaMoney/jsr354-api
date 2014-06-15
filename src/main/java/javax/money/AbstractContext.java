@@ -475,7 +475,7 @@ public abstract class AbstractContext implements Serializable{
          * @param type the attribute's type, not {@code null}
          * @return this Builder, for chaining
          */
-        public B removeAttribute(Class type){
+        public B removeAttribute(Class<?> type){
             return removeAttribute(type, type);
         }
 
@@ -499,7 +499,8 @@ public abstract class AbstractContext implements Serializable{
          * @param key  the attribute's key, not {@code null}
          * @return this Builder, for chaining
          */
-        public B removeAttribute(Object key, Class type){
+        @SuppressWarnings("unchecked")
+		public B removeAttribute(Object key, Class<?> type){
             Map<Object,Object> typedAttrs = attributes.get(type);
             if(Objects.nonNull(typedAttrs)){
                 attributes.remove(key);
@@ -516,7 +517,8 @@ public abstract class AbstractContext implements Serializable{
          * @param type      the attribute's type
          * @return this Builder, for chaining
          */
-        public <T> B setAttribute(Object key, T attribute, Class<? extends T> type){
+        @SuppressWarnings("unchecked")
+		public <T> B setAttribute(Object key, T attribute, Class<? extends T> type){
             Map<Object,Object> typedAttrs = attributes.get(type);
             if(Objects.isNull(typedAttrs)){
                 // we only want to create a new map, if no one is there already.
@@ -534,7 +536,8 @@ public abstract class AbstractContext implements Serializable{
          * @param context the context to be applied, not null.
          * @return this Builder, for chaining
          */
-        public B setAll(AbstractContext context){
+        @SuppressWarnings("unchecked")
+		public B setAll(AbstractContext context){
             this.attributes.putAll(context.attributes);
             return (B) this;
         }

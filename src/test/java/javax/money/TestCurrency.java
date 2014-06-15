@@ -31,11 +31,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Currency;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
  * Adapter that implements the new {@link javax.money.CurrencyUnit} interface using the
@@ -67,10 +65,6 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 	private final int defaultFractionDigits;
 
 	private static final Map<String, CurrencyUnit> CACHED = new ConcurrentHashMap<>();
-
-	private static final Logger LOGGER = Logger.getLogger(TestCurrency.class
-			.getName());
-
 	/**
 	 * Private constructor.
 	 *
@@ -253,14 +247,6 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 			this.currency = currency;
 		}
 
-		// public Long getValidFrom() {
-		// return null;
-		// }
-		//
-		// public Long getValidUntil() {
-		// return null;
-		// }
-
 		public int compareTo(CurrencyUnit currency) {
 			Objects.requireNonNull(currency);
 			int compare = getCurrencyCode().compareTo(
@@ -288,22 +274,6 @@ public final class TestCurrency implements CurrencyUnit, Serializable,
 			return this.currency.toString();
 		}
 
-		public String getDisplayName(Locale locale) {
-			return this.currency.getDisplayName(locale);
-		}
-
-		public int getCashRounding() {
-			throw new UnsupportedOperationException("Not supported yet."); // To
-			// change
-			// body
-			// of
-			// generated
-			// methods,
-			// choose
-			// Tools
-			// |
-			// Templates.
-		}
 	}
 
 	// it be used and if so,

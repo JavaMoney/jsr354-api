@@ -11,9 +11,7 @@ package javax.money.format;
 import java.io.IOException;
 import java.util.*;
 
-import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryContext;
 import javax.money.spi.MonetaryAmountFormatProviderSpi;
 
 public class TestAmountFormatProvider implements
@@ -48,9 +46,6 @@ public class TestAmountFormatProvider implements
     public static final class TestFormat implements MonetaryAmountFormat {
 
 		private AmountFormatContext formatStyle;
-		private MonetaryContext monetaryContext;
-		private CurrencyUnit defaultCurrency;
-
 		TestFormat(AmountFormatContext formatStyle) {
 			Objects.requireNonNull(formatStyle);
 			this.formatStyle = formatStyle;

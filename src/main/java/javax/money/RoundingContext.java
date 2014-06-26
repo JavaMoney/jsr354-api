@@ -49,7 +49,6 @@ public final class RoundingContext extends AbstractContext implements Serializab
      * @param builder The {@link Builder} with data to be used.
      * @throws IllegalArgumentException if the {@code setPrecision} parameter is less than zero.
      */
-    @SuppressWarnings("rawtypes")
     private RoundingContext(Builder builder){
         super(builder);
     }

@@ -31,6 +31,7 @@ public interface ServiceProvider {
 	 *            the service type.
 	 * @return The instance to be used, never {@code null}
 	 */
+	@SuppressWarnings("unchecked")
 	public default <T> List<T> getServices(Class<T> serviceType){
           return getServices(serviceType, (List<T>) Collections.emptyList());
     }

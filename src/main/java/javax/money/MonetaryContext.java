@@ -29,16 +29,6 @@ import java.util.Objects;
  * @author Anatole Tresch
  */
 public final class MonetaryContext extends AbstractContext implements Serializable{
-    /** Attribute key for amount flavor. */
-    private static final String AMOUNT_FLAVOR_KEY = "amountFlavor";
-    /** Attribute key for amount type. */
-    private static final String AMOUNT_TYPE_KEY = "amountType";
-    /** Attribute key for maxScale. */
-    private static final String MAX_SCALE_KEY = "maxScale";
-    /** Attribute key for fixedScale. */
-    private static final String FIXED_SCALE_KEY = "fixedScale";
-    /** Attribute key for precision. */
-    private static final String PRECISION_KEY = "precision";
 
     /**
      * serialVersionUID.
@@ -91,7 +81,6 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @param builder The {@link Builder} with data to be used.
      * @throws IllegalArgumentException if the {@code setPrecision} parameter is less than zero.
      */
-    @SuppressWarnings("rawtypes")
     private MonetaryContext(Builder builder){
         super(builder);
         if(builder.precision < 0){

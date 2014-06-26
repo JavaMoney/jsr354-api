@@ -218,11 +218,6 @@ public final class ConversionContext extends AbstractContext{
      */
     public static final class Builder extends AbstractBuilder<Builder>{
         /**
-         * The supported rate types.
-         */
-        private RateType rateType = RateType.ANY;
-
-        /**
          * Create a new Builder instance without any provider, e.g. for creating
          * new {@link ConversionContext} instances for querying.
          */

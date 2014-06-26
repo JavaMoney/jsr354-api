@@ -18,7 +18,22 @@ public final class DummyAmount implements
 
 	@Override
 	public CurrencyUnit getCurrency() {
-		return null;
+        return new CurrencyUnit() {
+            @Override
+            public String getCurrencyCode() {
+                return "DMY";
+            }
+
+            @Override
+            public int getNumericCode() {
+                return 0;
+            }
+
+            @Override
+            public int getDefaultFractionDigits() {
+                return 2;
+            }
+        };
 	}
 
 	@Override
@@ -106,8 +121,7 @@ public final class DummyAmount implements
 
 	@Override
 	public DummyAmount with(MonetaryOperator operator) {
-
-		return new DummyAmount();
+        return operator.apply(this);
 	}
 
 	@Override

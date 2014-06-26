@@ -9,10 +9,8 @@
 package javax.money.spi;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -21,83 +19,75 @@ import java.util.logging.Logger;
 /**
  * This class implements the (default) {@link ServiceProvider} interface and hereby uses the JDK
  * {@link ServiceLoader} to load the services required.
- * 
+ *
  * @author Anatole Tresch
  */
 public class DefaultServiceProvider implements ServiceProvider {
-	/** List of services loaded, per class. */
-	@SuppressWarnings("rawtypes")
-	private Map<Class, List<Object>> servicesLoaded = new ConcurrentHashMap<>();
+    /** List of services loaded, per class. */
+    private final ConcurrentHashMap<Class, List<Object>> servicesLoaded = new ConcurrentHashMap<>();
 
+    /**
+     * Access all services available by type.
+     *
+     * @param serviceType
+     *            the service type.
+     * @param <T>
+     *            the concrete type.
+     * @return all services available, never {@code null}.
+     */
+    @Override
+    public <T> List<T> getServices(Class<T> serviceType) {
+        return getServices(serviceType, Collections.<T>emptyList());
+    }
 
-	/**
-	 * Access all services available by type.
-	 * 
-	 * @param serviceType
-	 *            the service type.
-	 * @param <T>
-	 *            the concrete type.
-	 * @param defaultList
-	 *            the list of items returned, if no services were found.
-	 * @return all services available, never {@code defaultList}.
-	 */
-	@Override
-	public <T> List<T> getServices(Class<T> serviceType,
-			List<T> defaultList) {
-		@SuppressWarnings("unchecked")
-		List<T> found = (List<T>) servicesLoaded.get(serviceType);
-		if (Objects.nonNull(found)) {
-			return found;
-		}
-        found = loadServices(serviceType);
-        if(found.isEmpty()){
+    /**
+     * Loads and registers services.
+     *
+     * @param serviceType
+     *            The service type.
+     * @param <T>
+     *            the concrete type.
+     * @param defaultList
+     *            the list of items returned, if no services were found.
+     * @return the items found, never {@code null}.
+     */
+    @Override
+    public <T> List<T> getServices(final Class<T> serviceType, final List<T> defaultList) {
+        @SuppressWarnings("unchecked")
+        List<T> found = (List<T>) servicesLoaded.get(serviceType);
+        if (found != null) {
+            return found;
+        }
+
+        return loadServices(serviceType, defaultList);
+    }
+
+    /**
+     * Loads and registers services.
+     *
+     * @param   serviceType  The service type.
+     * @param   <T>          the concrete type.
+     * @param   defaultList  the list of items returned, if no services were found.
+     *
+     * @return  the items found, never {@code null}.
+     */
+    private <T> List<T> loadServices(final Class<T> serviceType, final List<T> defaultList) {
+        try {
+            List<T> services = new ArrayList<>();
+            for (T t : ServiceLoader.load(serviceType)) {
+                services.add(t);
+            }
+            if(services.isEmpty()){
+                services.addAll(defaultList);
+            }
+            @SuppressWarnings("unchecked")
+            final List<T> previousServices = (List<T>) servicesLoaded.putIfAbsent(serviceType, (List<Object>) services);
+            return Collections.unmodifiableList(previousServices != null ? previousServices : services);
+        } catch (Exception e) {
+            Logger.getLogger(DefaultServiceProvider.class.getName()).log(Level.WARNING,
+                                                                         "Error loading services of type " + serviceType, e);
             return defaultList;
         }
-        return found;
-	}
-
-	/**
-	 * Loads and registers services.
-	 * 
-	 * @param serviceType
-	 *            The service type.
-	 * @return the items found, never {@code null}.
-	 */
-	@SuppressWarnings("unchecked")
-	private <T> List<T> loadServices(Class<T> serviceType) {
-		List<T> found = null;
-		synchronized (servicesLoaded) {
-			found = (List<T>) servicesLoaded.get(serviceType);
-			if (Objects.nonNull(found)) {
-				return found;
-			}
-			found = new ArrayList<>();
-			servicesLoaded.put(serviceType, (List<Object>) found);
-		}
-		try {
-			for (T t : ServiceLoader.load(serviceType)) {
-				found.add(t);
-			}
-		} catch (Exception e) {
-			Logger.getLogger(DefaultServiceProvider.class.getName()).log(
-					Level.WARNING,
-					"Error loading services of type " + serviceType, e);
-		}
-		return found;
-	}
-
-	/**
-	 * Comparator used for ordering the services provided.
-	 * 
-	 * @author Anatole Tresch
-	 */
-	public static final class ProviderComparator implements
-			Comparator<Object> {
-		@Override
-		public int compare(Object p1, Object p2) {
-			return p1.getClass().getSimpleName()
-					.compareTo(p2.getClass().getSimpleName());
-		}
-	}
+    }
 
 }

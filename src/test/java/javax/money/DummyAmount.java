@@ -18,10 +18,30 @@ import java.util.Objects;
 public final class DummyAmount implements
 		MonetaryAmount {
 
-	@Override
-	public CurrencyUnit getCurrency() {
-		return null;
-	}
+    @Override
+    public CurrencyUnit getCurrency() {
+        return new CurrencyUnit() {
+            @Override
+            public String getCurrencyCode() {
+                return "DMY";
+            }
+
+            @Override
+            public int getNumericCode() {
+                return 0;
+            }
+
+            @Override
+            public int getDefaultFractionDigits() {
+                return 2;
+            }
+
+            @Override
+            public int compareTo(CurrencyUnit o){
+                return 0;
+            }
+        };
+    }
 
 	@Override
 	public MonetaryContext getMonetaryContext() {

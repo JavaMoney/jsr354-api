@@ -8,22 +8,68 @@
  */
 package javax.money.spi;
 
+import javax.money.MonetaryException;
+import javax.money.format.AmountFormatQuery;
+import javax.money.format.MonetaryAmountFormat;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.money.MonetaryException;
-import javax.money.format.AmountFormatContext;
-import javax.money.format.MonetaryAmountFormat;
-
 /**
  * This interface models the singleton functionality of {@link javax.money.format.MonetaryFormats}.
- * <p/>
+ * <p>
  * Implementations of this interface must be thread-safe.
  *
  * @author Anatole Tresch
  * @author Werner Keil
  */
 public interface MonetaryFormatsSingletonSpi{
+
+    /**
+     * Get all available locales. This equals to {@link MonetaryAmountFormatProviderSpi#getAvailableLocales()}.
+     *
+     * @param providers The (optional) providers to be used, oredered correspondingly.
+     * @return all available locales, never {@code null}.
+     */
+    Set<Locale> getAvailableLocales(String... providers);
+
+    /**
+     * Access all {@link javax.money.format.MonetaryAmountFormat} instances matching the given {@link javax.money.format
+     * .AmountFormatQuery}.
+     *
+     * @param formatQuery The format query defining the requirements of the formatters.
+     * @return the corresponding {@link javax.money.format.MonetaryAmountFormat} instances, never null
+     */
+    Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery);
+
+    /**
+     * Access an {@link javax.money.format.MonetaryAmountFormat} given a {@link javax.money.format
+     * .AmountFormatQuery}.
+     *
+     * @param formatQuery The format query defining the requirements of the formatter.
+     * @return the corresponding {@link javax.money.format.MonetaryAmountFormat}
+     * @throws javax.money.MonetaryException if no registered {@link javax.money.spi
+     *                                       .MonetaryAmountFormatProviderSpi} can provide a
+     *                                       corresponding {@link javax.money.format.MonetaryAmountFormat} instance.
+     */
+    default MonetaryAmountFormat getAmountFormat(AmountFormatQuery formatQuery){
+        Collection<MonetaryAmountFormat> formats = getAmountFormats(formatQuery);
+        if(formats.isEmpty()){
+            throw new MonetaryException("No MonetaryAmountFormat for AmountFormatQuery " + formatQuery);
+        }
+        return formats.iterator().next();
+    }
+
+    /**
+     * Checks if a {@link javax.money.format.MonetaryAmountFormat} is available given a {@link javax.money.format
+     * .AmountFormatQuery}.
+     *
+     * @param formatQuery The format query defining the requirements of the formatter.
+     * @return true, if a t least one {@link javax.money.format.MonetaryAmountFormat} is matching the query.
+     */
+    default boolean isAvailable(AmountFormatQuery formatQuery){
+        return !getAmountFormats(formatQuery).isEmpty();
+    }
 
     /**
      * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
@@ -33,25 +79,22 @@ public interface MonetaryFormatsSingletonSpi{
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
-    public default MonetaryAmountFormat getAmountFormat(Locale locale){
-        return getAmountFormat(AmountFormatContext.of(locale));
+    default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){
+        return getAmountFormat(new AmountFormatQuery.AmountFormatQueryBuilder(locale).setProviders(providers).build());
     }
 
     /**
-     * Access an {@link MonetaryAmountFormat} given a {@link AmountFormatContext}.
+     * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
      *
-     * @param style the target {@link AmountFormatContext}, not {@code null}.
-     * @return the corresponding {@link MonetaryAmountFormat}
+     * @param styleId   the target styleId, not {@code null}.
+     * @param providers The (optional) providers to be used, oredered correspondingly.
+     * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
-    public MonetaryAmountFormat getAmountFormat(AmountFormatContext style);
-    
-    /**
-     * Get all available locales. This equals to {@link MonetaryAmountFormatProviderSpi#getAvailableLocales()}.
-     *
-     * @return all available locales, never {@code null}.
-     */
-    public Set<Locale> getAvailableLocales();
+    default MonetaryAmountFormat getAmountFormat(String styleId, String... providers){
+        return getAmountFormat(new AmountFormatQuery.AmountFormatQueryBuilder(styleId).setProviders(providers).build());
+    }
+
 
 }

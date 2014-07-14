@@ -8,9 +8,7 @@
  */
 package javax.money;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * This class models the numeric capabilities of a {@link MonetaryAmount} in a
@@ -23,76 +21,22 @@ import java.util.Objects;
  * <li>any other attributes, identified by the attribute type, e.g.
  * {@link java.math.RoundingMode}.
  * </ul>
- * <p/>
- * This class is serializable and thread-safe.
+ * <p>
+ * This class is immutable, serializable and thread-safe.
  *
  * @author Anatole Tresch
  */
 public final class MonetaryContext extends AbstractContext implements Serializable{
 
-    /**
-     * serialVersionUID.
-     */
-    private static final long serialVersionUID = 5579720004786848255L;
+    public static final String AMOUNT_TYPE = "amountType";
 
     /**
-     * A default instance of a MonetaryContext.
-     */
-    public static final MonetaryContext DEFAULT_CONTEXT = new Builder().build();
-
-
-
-    /**
-     * The number of digits to be used for an operation. A value of 0 indicates
-     * that unlimited precision (as many digits as are required) will be used.
-     * Note that leading zeros (in the coefficient of a number) are never
-     * significant.
-     * <p/>
-     * {@code precision} will always be non-negative.
-     */
-    private final int precision;
-
-    /**
-     * The numeric representation type of the amount implementation. In most
-     * cases the representation type equals also the numeric implementation type
-     * used, whereas this is not required. Though only instances of this
-     * representation type can be accessed from from
-     * {@link MonetaryAmount#getNumber()}.
-     */
-    private final Class<? extends MonetaryAmount> amountType;
-
-    /**
-     * Flag, if the scale is fixed. Fixed scaled numbers will always have a
-     * scale of {@link #maxScale}.
-     */
-    private final boolean fixedScale;
-
-    /**
-     * The maximal scale supported, always >= -1. Fixed scaled numbers a fixed
-     * value for {@link #maxScale}. -1 declares the maximal scale to be
-     * unlimited.
-     */
-    private final int maxScale;
-
-    /**
-     * Constructs a new {@code MonetaryContext} with the specified precision and
-     * rounding mode.
+     * Constructor, used from the Builder.
      *
-     * @param builder The {@link Builder} with data to be used.
-     * @throws IllegalArgumentException if the {@code setPrecision} parameter is less than zero.
+     * @param builder the corresponding builder, not null.
      */
     private MonetaryContext(Builder builder){
         super(builder);
-        if(builder.precision < 0){
-            throw new IllegalArgumentException("precision < 0");
-        }
-        if(builder.maxScale < -1){
-            throw new IllegalArgumentException("maxScale < -1");
-        }
-        this.precision = builder.precision;
-        this.fixedScale = builder.fixedScale;
-        this.maxScale = builder.maxScale;
-        this.amountType = builder.amountType;
     }
 
     /**
@@ -102,7 +46,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * setting
      */
     public int getPrecision(){
-        return precision;
+        return getInt("precision", 0);
     }
 
     /**
@@ -111,7 +55,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return {@code true} if {@code minScale == maxScale}.
      */
     public boolean isFixedScale(){
-        return fixedScale;
+        return getBoolean("fixedScale", false);
     }
 
     /**
@@ -122,221 +66,98 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return the maximal scale supported, always {@code >= -1}
      */
     public int getMaxScale(){
-        return maxScale;
+        return getInt("maxScale", 0);
     }
 
     /**
-     * Access the amount implementation type for the {@link MonetaryAmount}
-     * implementation.
-     *
-     * @return the amount representation type, never {@code null}.
+     * Get the MonetaryAmount implementation class.
+     * @return the implementation class of the containing amount instance, never null.
+     * @see MonetaryAmount#getMonetaryContext()
      */
     public Class<? extends MonetaryAmount> getAmountType(){
-        return amountType;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode(){
-		return Objects.hash(attributes, fixedScale, amountType, precision);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-	public boolean equals(Object obj) {
-    	if (obj == this) {
-            return true;
-        }
-		if (obj instanceof MonetaryContext) {
-			MonetaryContext other = (MonetaryContext) obj;
-			return Objects.equals(attributes, other.attributes)
-					&& Objects.equals(fixedScale, other.fixedScale)
-					&& Objects.equals(maxScale, other.maxScale)
-					&& Objects.equals(amountType, other.amountType)
-					&& Objects.equals(precision, other.precision);
-		}
-		return false;
-	}
-
-    /**
-     * Creates a new {@link MonetaryContext} targeting the the given amount
-     * type, using the given {@link MonetaryContext} (so converting it).
-     *
-     * @param context    the {@link MonetaryContext} to be used.
-     * @param amountType the target amount type.
-     * @return the {@link MonetaryContext}, not {@code null}.
-     */
-    public static MonetaryContext from(MonetaryContext context, Class<? extends MonetaryAmount> amountType){
-        return new MonetaryContext.Builder(context).setAmountType(amountType).build();
+        return getAny(AMOUNT_TYPE, Class.class);
     }
 
     /**
-     * Reconstitute the {@code MonetaryContext} instance from a stream (that is,
-     * deserialize it).
+     * Builder class for creating new instances of {@link javax.money.MonetaryContext} adding detailed information
+     * about a {@link javax.money.MonetaryAmount} instance.
+     * <p>
+     * Note this class is NOT thread-safe.
      *
-     * @param s the stream being read.
-     * @throws ClassNotFoundException
-     * @throws IOException
+     * @see MonetaryAmount#getMonetaryContext()
      */
-    private void readObject(java.io.ObjectInputStream s) throws java.io.IOException, ClassNotFoundException{
-        s.defaultReadObject(); // read in all fields
-        // validate possibly bad fields
-        if(precision < 0){
-            String message = "NumericContext: invalid digits in stream";
-            throw new java.io.StreamCorruptedException(message);
-        }
-    }
-
-
-    @Override
-    public String toString(){
-        return "MonetaryContext [amountType=" + amountType + ", precision=" + precision +
-                ", maxScale=" + maxScale + ", fixedScale=" + fixedScale + ", attributes=" + attributes + "]";
-    }
-
-
-    /**
-     * This class allows to create and create instances of
-     * {@link MonetaryContext} using a fluent API.
-     * <p/>
-     * This class is not serializable and not thread-safe.
-     *
-     * @author Anatole Tresch
-     */
-    public static final class Builder extends AbstractBuilder<Builder>{
+    public static final class Builder extends AbstractContextBuilder<Builder,MonetaryContext>{
 
         /**
-         * The maximal precision of the {@link MonetaryContext} built.
-         */
-        private int precision = 0;
-        /**
-         * The amount's implementationType type for the {@link MonetaryContext}
-         * built.
-         */
-        private Class<? extends MonetaryAmount> amountType;
-
-        /**
-         * Flag that the scale of the {@link MonetaryContext} built is fixed to #maxScale.
-         */
-        private boolean fixedScale;
-        /**
-         * Any maximal scale of the {@link MonetaryContext} built.
-         */
-        private int maxScale = -1;
-
-        /**
-         * Creates a new {@link Builder}.
+         * Creates a new builder, hereby the target implementation type is required. This can be used to explicitly
+         * acquire a specific amount type and additionally configure the amount factory with the attributes in this
+         * query.
          *
-         * @param amountType the numeric representation type, not {@code null}.
+         * @param amountType the target amount type, not null.
+         * @return this builder for chaining.
          */
         public Builder(Class<? extends MonetaryAmount> amountType){
-            Objects.requireNonNull(amountType);
-            this.amountType = amountType;
+            set(AMOUNT_TYPE, amountType, Class.class);
         }
 
         /**
-         * Creates a new {@link Builder}.
+         * Apply all entries from the given context,  but keep the amount type.
+         * @param context the context to be applied, not null.
+         * @return this Builder for chaining.
          */
-        public Builder(){
-            this.amountType = MonetaryAmount.class; // unspecified
+        public Builder setAll(AbstractContext context){
+            Class amountType = context.getAny(AMOUNT_TYPE, Class.class);
+            super.setAll(context);
+            return set(AMOUNT_TYPE, amountType, Class.class);
         }
 
         /**
-         * Creates a new {@link Builder} and uses the given context to
-         * initialize this instance.
+         * Set the maximal scale to be supported.
          *
-         * @param context the base {@link MonetaryContext} to be used.
-         */
-        public Builder(MonetaryContext context){
-            super(context);
-            this.amountType = context.getAmountType();
-            this.maxScale = context.getMaxScale();
-            this.fixedScale = context.isFixedScale();
-            this.precision = context.getPrecision();
-        }
-
-        /**
-         * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to
-         * {@code fixedScale}.
-         *
-         * @param amountType the amount type to be used, not {@code null}.
-         * @return the {@link Builder}, for chaining.
-         */
-        public Builder setAmountType(Class<? extends MonetaryAmount> amountType){
-            Objects.requireNonNull(amountType);
-            this.amountType = amountType;
-            return this;
-        }
-
-        /**
-         * Sets the maximal precision supported.
-         *
-         * @param precision the maximal precision, aleays {@code >=0}, whereas 0
-         *                  declares unlimited precision.
-         * @return the {@link Builder}, for chaining.
-         */
-        public Builder setPrecision(int precision){
-            if(precision < 0)
-                throw new IllegalArgumentException("precision < -1");
-            this.precision = precision;
-            return this;
-        }
-
-        /**
-         * Sets a fixed scale, hereby setting both {@code minScale, maxScale} to
-         * {@code fixedScale}.
-         *
-         * @param fixedScale the min/max scale to be used, which must be {@code >=0}.
-         * @return the {@link Builder}, for chaining.
-         */
-        public Builder setFixedScale(boolean fixedScale){
-            this.fixedScale = fixedScale;
-            return this;
-        }
-
-        /**
-         * Sets a maximal scale.
-         *
-         * @param maxScale the maximal scale to be used, which must be {@code >=-1}.
-         *                 {@code -1} means unlimited maximal scale.
-         * @return the {@link Builder}, for chaining.
+         * @param maxScale the max scale, >= 0.
+         * @return this builder for chaining.
          */
         public Builder setMaxScale(int maxScale){
-            if(maxScale < -1)
-                throw new IllegalArgumentException("maxScale < -1");
-            this.maxScale = maxScale;
-            return this;
+            return set("maxScale", maxScale);
         }
 
         /**
-         * Builds a new instance of {@link MonetaryContext}.
+         * Set the required precision.
          *
-         * @return a new instance of {@link MonetaryContext}, never {@code null}
-         * @throws IllegalArgumentException if building of the {@link MonetaryContext} fails.
+         * @param precision the precision, >= 0, 0 meaning unlimited.
+         * @return this builder for chaining.
+         */
+        public Builder setPrecision(int precision){
+            return set("precision", precision);
+        }
+
+        /**
+         * Set the flag if the scale should fixed.
+         *
+         * @param fixedScale the fixed scale flag.
+         * @return this builder for chaining.
+         */
+        public Builder setFixedScale(boolean fixedScale){
+            return set("fixedScale", fixedScale);
+        }
+
+        /**
+         * Get the MonetaryAmount implementation class.
+         * @return the implementation class of the containing amount instance, never null.
+         * @see MonetaryAmount#getMonetaryContext()
+         */
+        public Builder setAmountType(Class<? extends MonetaryAmount> amountType){
+            return set(AMOUNT_TYPE, amountType, Class.class);
+        }
+
+        /**
+         * Creates a new instance of {@link MonetaryAmountFactoryQuery}.
+         *
+         * @return a new {@link MonetaryAmountFactoryQuery} instance.
          */
         public MonetaryContext build(){
             return new MonetaryContext(this);
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString(){
-            return "MonetaryContext.Builder [amountType=" + amountType + ", precision=" + precision + ", maxScale=" +
-                    maxScale + ", fixedScale=" + fixedScale + ", attributes=" + attributes + "]";
-        }
-
     }
-
 }

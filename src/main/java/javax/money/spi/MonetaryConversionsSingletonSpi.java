@@ -9,10 +9,11 @@
  */
 package javax.money.spi;
 
-import javax.money.CurrencyUnit;
+import javax.money.MonetaryException;
 import javax.money.convert.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.ServiceLoader;
 
 /**
@@ -40,19 +41,6 @@ import java.util.ServiceLoader;
 public interface MonetaryConversionsSingletonSpi{
 
     /**
-     * Access an instance of {@link ExchangeRateProvider}.
-     *
-     * @param providers The providers to be used, in order of precedence, for building
-     *                  a provider chain. At least one provider must be passed.
-     * @return an {@link ExchangeRateProvider} built up with the given sub
-     * providers, never {@code null}
-     * @throws IllegalArgumentException if a provider could not be found or not at least one provider
-     *                                  name is passed.
-     * @see #isProviderAvailable(String)
-     */
-    ExchangeRateProvider getExchangeRateProvider(String... providers);
-
-    /**
      * Get all currently registered provider names.
      *
      * @return all currently registered provider names
@@ -70,19 +58,63 @@ public interface MonetaryConversionsSingletonSpi{
     List<String> getDefaultProviderChain();
 
     /**
+     * Access all matching instances of {@link ExchangeRateProvider} given a query.
+     *
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
+     *                        required, not null.
+     * @return an {@link ExchangeRateProvider} built up with the given sub
+     * providers, never {@code null}
+     * @throws IllegalArgumentException if a provider could not be found or not at least one provider
+     *                                  name is passed.
+     * @see #isProviderAvailable(String)
+     */
+    Collection<ExchangeRateProvider> getExchangeRateProviders(ConversionQuery conversionQuery);
+
+    /**
      * Allows to quickly check, if a {@link ProviderContext} is supported.
      *
      * @param provider The provider required, not {@code null}
      * @return {@code true}, if the rate is supported, meaning an according
      * {@link ExchangeRateProvider} or {@link CurrencyConversion} can be
      * loaded.
-     * @see #getConversion(CurrencyUnit, ConversionContext, String...)
-     * @see #getExchangeRateProvider(String...)
+     * @see #getExchangeRateProvider(javax.money.convert.ConversionQuery)
+     * @see #getProviderNames()
      */
     default boolean isProviderAvailable(String provider){
         return getProviderNames().contains(provider);
     }
 
+    /**
+     * Allows to quickly check, if a {@link ProviderContext} is supported.
+     *
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion                        required, not null.
+     * @return {@code true}, if such a conversion is supported, meaning an according
+     * {@link ExchangeRateProvider} or {@link CurrencyConversion} can be
+     * accessed.
+     * @see #getExchangeRateProvider(ConversionQuery)
+     * @see #getConversion(javax.money.convert.ConversionQuery)
+     */
+    default boolean isAvailable(ConversionQuery conversionQuery){
+        return !getExchangeRateProviders(conversionQuery).isEmpty();
+    }
+
+    /**
+     * Access an instance of {@link ExchangeRateProvider}.
+     *
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
+     *                        required, not null.
+     * @return an {@link ExchangeRateProvider} built up with the given sub
+     * providers, never {@code null}
+     * @throws MonetaryException if a provider could not be found.
+     * @see #isProviderAvailable(String)
+     */
+    default ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery){
+        Collection<ExchangeRateProvider> providers = getExchangeRateProviders(conversionQuery);
+        if(providers.isEmpty()){
+            throw new MonetaryException("No matching ExchangeRateProvider found for ConversionQuery: " + conversionQuery);
+        }
+        return providers.iterator().next();
+    }
 
     /**
      * Get the {@link ProviderContext} for a provider.
@@ -92,24 +124,21 @@ public interface MonetaryConversionsSingletonSpi{
      * @throws IllegalArgumentException if no such provider is registered.
      */
     default ProviderContext getProviderContext(String provider){
-        return getExchangeRateProvider(provider).getProviderContext();
+        return getExchangeRateProvider(new ConversionQuery.ConversionQueryBuilder().setProviders(provider).build()).getProviderContext();
     }
 
     /**
      * Access an instance of {@link CurrencyConversion}.
      *
-     * @param termCurrency      the terminating or target currency, not {@code null}
-     * @param conversionContext The {@link ConversionContext} required, not {@code null}
-     * @param providers         The providers to be used, in order of precedence, for building
-     *                          a provider chain. At least one provider must be passed.
-     * @return the provider, if it is a registered rate type, never null.
-     * @throws IllegalArgumentException if a provider could not be found or not at least one provider
-     *                                  name is passed.
-     * @see #isProviderAvailable(String)
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
+     *                        required, not null.
+     * @return the correspöonding conversion, not null.
+     * @throws javax.money.MonetaryException if no matching conversion could be found.
+     * @see #isAvailable(ConversionQuery)
      */
-    default CurrencyConversion getConversion(CurrencyUnit termCurrency, ConversionContext conversionContext,
-                                     String... providers){
-        return getExchangeRateProvider(providers).getCurrencyConversion(termCurrency, conversionContext);
+    default CurrencyConversion getConversion(ConversionQuery conversionQuery){
+        Objects.requireNonNull(conversionQuery.getTermCurrency(), "Terminating Currency is required.");
+        return getExchangeRateProvider(conversionQuery).getCurrencyConversion(conversionQuery.getTermCurrency());
     }
 
 }

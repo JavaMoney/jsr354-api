@@ -9,7 +9,9 @@
 package javax.money.spi;
 
 import javax.money.format.AmountFormatContext;
+import javax.money.format.AmountFormatQuery;
 import javax.money.format.MonetaryAmountFormat;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Set;
 
@@ -21,28 +23,34 @@ import java.util.Set;
 public interface MonetaryAmountFormatProviderSpi {
 
     /**
-     * Access the style id this factory is creating instances for. When accessing instances of MonetaryAmountFormat
-     * the styleId passed is matched with this spi's style ids, so correct factories are used for creating new
-     * MonetaryAmountFormat instances.
-     * @return this provider's styleId, not null.
+     * Access the provider's name.
+     * @return this provider's name, not null.
      */
-    public String getStyleId();
+    default String getProviderName(){
+        return getClass().getSimpleName();
+    }
 
 	/**
 	 * Create a new {@link MonetaryAmountFormat} for the given input.
 	 * 
-	 * @param formatStyle
+	 * @param formatQuery
 	 *            The {@link javax.money.format.AmountFormatContext} to be used.
 	 * @return An according {@link MonetaryAmountFormat} instance, or {@code null}, which delegates
 	 *         the request to subsequent {@link MonetaryAmountFormatProviderSpi} instances
 	 *         registered.
 	 */
-	public MonetaryAmountFormat getAmountFormat(AmountFormatContext formatStyle);
+    Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery);
 
     /**
      * Gets a list with available locales for this format provider.
      * @return list of available locales, never null.
      */
-    public Set<Locale> getAvailableLocales();
+    Set<Locale> getAvailableLocales();
+
+    /**
+     * Gets a list with available styles for this format provider.
+     * @return list of available styles, never null.
+     */
+    Set<String> getAvailableStyles();
 
 }

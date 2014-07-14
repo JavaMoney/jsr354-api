@@ -24,25 +24,7 @@ import java.util.Objects;
  * <li>additional non standard or extended attributes determined by the implementations participating in the
  * ExchangeRateProvider chain.</li>
  * </ul>
- * <p>An instance of this class can be passed
- * <ul>
- * <li>when accessing an ExchangeRate, calling
- * {@link javax.money.convert.ExchangeRateProvider#getExchangeRate(javax.money.CurrencyUnit,
- * javax.money.CurrencyUnit, ConversionContext)} or {@link javax.money.convert
- * .ExchangeRateProvider#getExchangeRate(String, String, ConversionContext)}</li>
- * <li>when accessing a CurrencyConversion, calling {@link javax.money.convert
- * .ExchangeRateProvider#getCurrencyConversion(javax.money.CurrencyUnit, ConversionContext)} or {@link javax.money
- * .convert.ExchangeRateProvider#getCurrencyConversion(String, ConversionContext)}</li>
- * <li>when accessing {@link javax.money.convert.MonetaryConversions#getConversion(javax.money.CurrencyUnit,
- * ConversionContext, String...)} or {@link javax.money.convert.MonetaryConversions#getConversion(String,
- * ConversionContext, String...)}</li>
- * </ul>
- * <p/>
- * <p>If multiple ExchangeRateProvider are participating in a provider chain, the ConversionContext is passed to each
- * provider in the chain. As a consequence the context can have additional parameters that may be read by different
- * rate providers within the chain.
- * </p>
- * Instances of this class are immutable and thread-safe.
+ * This class is immutable, thread-safe and serializable.
  *
  * @author Anatole Tresch
  */
@@ -70,8 +52,10 @@ public final class ConversionContext extends AbstractContext{
      * ConversionContext quering for any other rates.
      */
     public static final ConversionContext OTHER_CONVERSION = new Builder().setRateType(RateType.OTHER).build();
-    public static final String PROVIDER = "provider";
-    public static final String TIMESTAMP = "timestamp";
+
+    private static final String PROVIDER = "provider";
+
+    private static final String TIMESTAMP = "timestamp";
 
 
     /**
@@ -89,7 +73,7 @@ public final class ConversionContext extends AbstractContext{
      * @return the deferred flag, or {code null}.
      */
     public RateType getRateType(){
-        return getAttribute(RateType.class);
+        return get(RateType.class);
     }
 
 
@@ -101,7 +85,7 @@ public final class ConversionContext extends AbstractContext{
      * @return the provider, or {code null}.
      */
     public String getProvider(){
-        return getText(PROVIDER);
+        return getText("provider");
     }
 
     /**
@@ -111,7 +95,7 @@ public final class ConversionContext extends AbstractContext{
      * @return the timestamp in millis, or null.
      */
     public Long getTimestampMillis(){
-        Long value = getLong(TIMESTAMP, null);
+        Long value = getLong("timestamp", null);
         if (Objects.isNull(value)) {
             TemporalAccessor acc = getTimestamp();
             if (Objects.nonNull(acc)) {
@@ -127,9 +111,9 @@ public final class ConversionContext extends AbstractContext{
      * @return the current timestamp, or null.
      */
     public TemporalAccessor getTimestamp(){
-        TemporalAccessor acc = getNamedAttribute(TIMESTAMP, TemporalAccessor.class, null);
+        TemporalAccessor acc = getAny("timestamp", TemporalAccessor.class, null);
         if (Objects.isNull(acc)) {
-            Long value = getLong(TIMESTAMP, null);
+            Long value = getLong("timestamp", null);
             if (Objects.nonNull(value)) {
                 acc = Instant.ofEpochMilli(value);
             }
@@ -216,13 +200,13 @@ public final class ConversionContext extends AbstractContext{
      *
      * @author Anatole Tresch
      */
-    public static final class Builder extends AbstractBuilder<Builder>{
+    public static final class Builder extends AbstractContextBuilder<Builder, ConversionContext>{
         /**
          * Create a new Builder instance without any provider, e.g. for creating
          * new {@link ConversionContext} instances for querying.
          */
         public Builder(){
-            setObject(RateType.ANY);
+            set(RateType.ANY);
         }
 
         /**
@@ -233,8 +217,7 @@ public final class ConversionContext extends AbstractContext{
          * @param context the context, not {@code null}
          */
         public Builder(ConversionContext context){
-            super(context);
-            setProvider(context.getProvider());
+            setAll(context);
         }
 
         /**
@@ -246,8 +229,7 @@ public final class ConversionContext extends AbstractContext{
          * @param rateType the rate type, not null.
          */
         public Builder(ProviderContext context, RateType rateType){
-            super(context);
-            setProvider(context.getProvider());
+            setAll(context);
             setRateType(rateType);
         }
 
@@ -259,7 +241,7 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder setRateType(RateType rateType){
             Objects.requireNonNull(rateType);
-            setObject(rateType);
+            set(rateType);
             return this;
         }
 
@@ -271,7 +253,7 @@ public final class ConversionContext extends AbstractContext{
          */
         public Builder setProvider(String provider){
             Objects.requireNonNull(provider);
-            setText(PROVIDER, provider);
+            set(PROVIDER, provider);
             return this;
         }
 
@@ -282,7 +264,7 @@ public final class ConversionContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setTimestampMillis(long timestamp){
-            setLong(TIMESTAMP, timestamp);
+            set(TIMESTAMP, timestamp);
             return this;
         }
 
@@ -293,7 +275,7 @@ public final class ConversionContext extends AbstractContext{
          * @return this, for chaining.
          */
         public Builder setTimestamp(TemporalAccessor temporalAccessor){
-            setAttribute(TIMESTAMP, temporalAccessor, TemporalAccessor.class);
+            set(TIMESTAMP, temporalAccessor, TemporalAccessor.class);
             return this;
         }
 

@@ -12,16 +12,13 @@ import javax.money.MonetaryException;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFormatProviderSpi;
 import javax.money.spi.MonetaryFormatsSingletonSpi;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * This class models the singleton accessor for {@link MonetaryAmountFormat} instances.
- * <p/>
+ * <p>
  * This class is thread-safe.
  *
  * @author Anatole Tresch
@@ -63,19 +60,43 @@ public final class MonetaryFormats{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     public static MonetaryAmountFormat getAmountFormat(Locale locale){
-        return monetaryFormatsSingletonSpi.getAmountFormat(locale);
+        return getAmountFormat(new AmountFormatQuery.AmountFormatQueryBuilder(locale).setLocale(locale).build());
     }
 
     /**
-     * Access an {@link MonetaryAmountFormat} given a {@link AmountFormatContext}.
+     * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
      *
-     * @param style the target {@link AmountFormatContext}, not {@code null}.
-     * @return the corresponding {@link MonetaryAmountFormat}
+     * @param formatQuery the required {@link AmountFormatQuery}, not {@code null}.
+     * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
-    public static MonetaryAmountFormat getAmountFormat(AmountFormatContext style){
-        return monetaryFormatsSingletonSpi.getAmountFormat(style);
+    public static MonetaryAmountFormat getAmountFormat(AmountFormatQuery formatQuery){
+        return monetaryFormatsSingletonSpi.getAmountFormat(formatQuery);
+    }
+
+    /**
+     * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
+     *
+     * @param formatQuery the required {@link AmountFormatQuery}, not {@code null}.
+     * @return the matching {@link MonetaryAmountFormat}
+     * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
+     *                           corresponding {@link MonetaryAmountFormat} instance.
+     */
+    public static Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery){
+        return monetaryFormatsSingletonSpi.getAmountFormats(formatQuery);
+    }
+
+    /**
+     * Access the a {@link MonetaryAmountFormat} given its styleId.
+     *
+     * @param styleId the target styleId, not {@code null}.
+     * @return the matching {@link MonetaryAmountFormat}
+     * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
+     *                           corresponding {@link MonetaryAmountFormat} instance.
+     */
+    public static MonetaryAmountFormat getAmountFormat(String styleId){
+        return getAmountFormat(new AmountFormatQuery.AmountFormatQueryBuilder(styleId).setStyleId(styleId).build());
     }
 
     /**
@@ -89,7 +110,7 @@ public final class MonetaryFormats{
 
     /**
      * This class models the singleton accessor for {@link javax.money.format.MonetaryAmountFormat} instances.
-     * <p/>
+     * <p>
      * This class is thread-safe.
      *
      * @author Anatole Tresch
@@ -98,30 +119,34 @@ public final class MonetaryFormats{
     public static final class DefaultMonetaryFormatsSingletonSpi implements MonetaryFormatsSingletonSpi{
 
         /**
-         * Access an {@link javax.money.format.MonetaryAmountFormat} given a {@link javax.money.format.AmountFormatContext}.
+         * Access an {@link javax.money.format.MonetaryAmountFormat} given a {@link javax.money.format
+         * .AmountFormatContext}.
          *
-         * @param style the target {@link javax.money.format.AmountFormatContext}, not {@code null}.
+         * @param formatQuery The format query defining the requirements of the formatter.
          * @return the corresponding {@link javax.money.format.MonetaryAmountFormat}
-         * @throws javax.money.MonetaryException if no registered {@link javax.money.spi.MonetaryAmountFormatProviderSpi} can provide a
-         *                           corresponding {@link javax.money.format.MonetaryAmountFormat} instance.
+         * @throws javax.money.MonetaryException if no registered {@link javax.money.spi
+         *                                       .MonetaryAmountFormatProviderSpi} can provide a
+         *                                       corresponding {@link javax.money.format.MonetaryAmountFormat} instance.
          */
-        public MonetaryAmountFormat getAmountFormat(AmountFormatContext style){
-            Objects.requireNonNull(style, "AmountFormatContext required");
+        public Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery){
+            Collection<MonetaryAmountFormat> result = new ArrayList<>();
             for(MonetaryAmountFormatProviderSpi spi : Bootstrap.getServices(MonetaryAmountFormatProviderSpi.class)){
-                MonetaryAmountFormat f = spi.getAmountFormat(style);
-                if (Objects.nonNull(f)) {
-                    return f;
+                Collection<MonetaryAmountFormat> formats = spi.getAmountFormats(formatQuery);
+                if(Objects.nonNull(formats)){
+                    result.addAll(formats);
                 }
             }
-            throw new MonetaryException("No MonetaryAmountFormat for style " + style);
+            return result;
         }
 
+
         /**
-         * Get all available locales. This equals to {@link javax.money.spi.MonetaryAmountFormatProviderSpi#getAvailableLocales()}.
+         * Get all available locales. This equals to {@link javax.money.spi
+         * .MonetaryAmountFormatProviderSpi#getAvailableLocales()}.
          *
          * @return all available locales, never {@code null}.
          */
-        public Set<Locale> getAvailableLocales(){
+        public Set<Locale> getAvailableLocales(String... providerNames){
             Set<Locale> locales = new HashSet<>();
             for(MonetaryAmountFormatProviderSpi spi : Bootstrap.getServices(MonetaryAmountFormatProviderSpi.class)){
                 locales.addAll(spi.getAvailableLocales());

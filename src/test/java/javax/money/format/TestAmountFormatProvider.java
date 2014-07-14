@@ -24,18 +24,15 @@ public class TestAmountFormatProvider implements
 	}
 
     @Override
-    public String getStyleId(){
-        return "default";
-    }
-
-    @Override
-	public MonetaryAmountFormat getAmountFormat(
-			AmountFormatContext formatStyle) {
-        Locale loc = formatStyle.getAttribute(Locale.class);
+	public Collection<MonetaryAmountFormat> getAmountFormats(
+			AmountFormatQuery formatStyle) {
+        Locale loc = formatStyle.getLocale();
         if (Objects.nonNull(loc) && "BAR".equals(loc.getCountry()) && "foo".equals(loc.getLanguage())){
-            return null;
+            return Collections.emptySet();
         }
-		return new TestFormat(formatStyle);
+        List result = new ArrayList<>();
+        result.add(new TestFormat(formatStyle));
+        return result;
 	}
 
     @Override
@@ -43,12 +40,17 @@ public class TestAmountFormatProvider implements
         return Collections.unmodifiableSet(testSet);
     }
 
+    @Override
+    public Set<String> getAvailableStyles(){
+        return Collections.emptySet();
+    }
+
     public static final class TestFormat implements MonetaryAmountFormat {
 
 		private AmountFormatContext formatStyle;
-		TestFormat(AmountFormatContext formatStyle) {
+		TestFormat(AmountFormatQuery formatStyle) {
 			Objects.requireNonNull(formatStyle);
-			this.formatStyle = formatStyle;
+			this.formatStyle = new AmountFormatContext.Builder(formatStyle).build();
 		}
 
 		@Override

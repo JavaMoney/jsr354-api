@@ -9,45 +9,33 @@
 package javax.money;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.Objects;
 
 /**
- * This class models the spec/configuration for a rounding, modelled as {@link javax.money.MonetaryOperator} in a
+ * This class models the spec/configuration for a rounding, modelled as {@link javax.money.MonetaryRounding} in a
  * platform independent way. Each RoundingContext instance hereby has a <code>roundingId</code>, which links
- * to the {@link javax.money.spi.RoundingProviderSpi} that must create the according rounding instance ({@link javax
- * .money.MonetaryOperator}). The <i>default</i> </i><code>roundingId</code> is <code>default</code>.<br/>
- * A RoundingContext can take up arbitrary attributes that must be interpreted and validated by a
- * {@link javax.money.spi.RoundingProviderSpi}. By default additionally a <code>CurrencyUnit</code> can be set
- * directly using a explicit method.
- *
- * It is possible that a RoundingContext also has both attributes set. Additionally is is possible to provide
- * additional attribute to configure the rounding as defined by the registered {@link javax.money.spi
- * .RoundingProviderSpi}
- * instance that is creating the final rounding operator instance, e.g.
- * {@link java.math.RoundingMode}.
- * <ul>
- * <p/>
- * This class is serializable and thread-safe.
+ * to the {@link javax.money.spi.RoundingProviderSpi} that must create the according rounding instance. The
+ * <i>default</i> </i><code>roundingId</code> is <code>default</code>.<br/>
+ * A RoundingContext can take up arbitrary attributes that must be documented by the
+ * {@link javax.money.spi.RoundingProviderSpi} implementations.
+ * <p>
+ * Examples for such additional attributes are
+ * {@link java.math.RoundingMode}, {@link java.math.MathContext}, additional regional information,
+ * e.g. if a given rounding is targeting cash rounding.
+ * <p>
+ * This class is immutable, serializable, thread-safe.
  *
  * @author Anatole Tresch
  */
 public final class RoundingContext extends AbstractContext implements Serializable{
 
     /**
-     * serialVersionUID.
-     */
-    private static final long serialVersionUID = 5579720004786848255L;
-
-
-    public static final RoundingContext DEFAULT_ROUNDING_CONTEXT = new Builder().build();
-
-    /**
-     * Constructs a new {@code MonetaryContext} with the specified precision and
-     * rounding mode.
+     * Constructor, used from the {@link javax.money.RoundingContext.Builder}.
      *
-     * @param builder The {@link Builder} with data to be used.
-     * @throws IllegalArgumentException if the {@code setPrecision} parameter is less than zero.
+     * @param builder the corresponding builder, not null.
      */
     private RoundingContext(Builder builder){
         super(builder);
@@ -63,155 +51,122 @@ public final class RoundingContext extends AbstractContext implements Serializab
     }
 
     /**
-     * Get the target CurrencyUnit-
+     * Get the basic {@link javax.money.CurrencyUnit}, which is based for this rounding type.
      *
      * @return the target CurrencyUnit, or null.
      */
     public CurrencyUnit getCurrencyUnit(){
-        return getAttribute(CurrencyUnit.class);
+        return get(CurrencyUnit.class, (CurrencyUnit) null);
     }
 
+    /**
+     * Get the current timestamp of the context in UTC milliseconds.  If not set it tries to create an
+     * UTC timestamp from #getTimestamp().
+     *
+     * @return the timestamp in millis, or null.
+     */
     public Long getTimestampMillis(){
-        return getLong("timestampMillis");
+        Long value = getLong("timestamp", null);
+        if(Objects.isNull(value)){
+            TemporalAccessor acc = getTimestamp();
+            if(Objects.nonNull(acc)){
+                return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
+            }
+        }
+        return value;
     }
 
+    /**
+     * Get the current timestamp. If not set it tries to create an Instant from #getTimestampMillis().
+     *
+     * @return the current timestamp, or null.
+     */
     public TemporalAccessor getTimestamp(){
-        return getNamedAttribute("timestamp", TemporalAccessor.class, null);
-    }
-
-    public int getScale(){
-        return getInt("scale");
-    }
-
-    /**
-     * Creates a simple RoundingContext for a named custom rounding.
-     * For more complex instances use the corresponding RoundingContext.Builder.
-     *
-     * @param roundingId the (custom) rounding id, not {@code null}.
-     * @return the corresponding RoundingContext.
-     */
-    public static RoundingContext of(String roundingId){
-        return new Builder().setRoundingId(roundingId).build();
+        TemporalAccessor acc = getAny("timestamp", TemporalAccessor.class, null);
+        if(Objects.isNull(acc)){
+            Long value = getLong("timestamp", null);
+            if(Objects.nonNull(value)){
+                acc = Instant.ofEpochMilli(value);
+            }
+        }
+        return acc;
     }
 
     /**
-     * Creates a default RoundingContext for a fixed currency rounding.
-     * For more complex instances use the corresponding RoundingContext.Builder.
+     * Get the rounding's scale.
      *
-     * @param currencyUnit the currencyUnit, not {@code null}.
-     * @return the corresponding RoundingContext.
+     * @return the scale, if set, or null.
      */
-    public static RoundingContext of(CurrencyUnit currencyUnit){
-        return new Builder().setCurrencyUnit(currencyUnit).build();
+    public Integer getScale(){
+        return getInt("scale", null);
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode(){
-        return Objects.hashCode(attributes);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-	public boolean equals(Object obj) {
-    	if (obj == this) {
-            return true;
-        } 
-		if (obj instanceof RoundingContext) {
-			RoundingContext other = (RoundingContext) obj;
-			return Objects.equals(attributes, other.attributes);
-		}
-		return false;
-	}
-
 
     /**
-     * This class allows to create and create instances of
-     * {@link javax.money.RoundingContext} using a fluent API.
+     * Builder class for creating new instances of {@link javax.money.RoundingContext} adding detailed information
+     * about a {@link javax.money.MonetaryRounding} instance.
      * <p/>
-     * This class is not serializable and not thread-safe.
+     * Note this class is NOT thread-safe.
      *
-     * @author Anatole Tresch
+     * @see MonetaryRounding#getRoundingContext() ()
      */
-    public static final class Builder extends AbstractBuilder<Builder>{
+    public static final class Builder extends AbstractContextBuilder<Builder,RoundingContext>{
 
         /**
-         * Creates a new {@link Builder}.
-         */
-        public Builder(){
-            setText("roundingId", "default");
-        }
-
-        /**
-         * Creates a new {@link Builder}.
+         * Creates a new builder.
          *
-         * @param roundingId the (custom) rounding id, not {@code null}.
+         * @param provider   the provider name, creating the corresponding {@link javax.money.MonetaryRounding}
+         *                   containing, not null.
+         *                   the final {@link javax.money.RoundingContext} created by this builder, not null.
+         * @param roundingId The name of the rounding, not null.
          */
-        public Builder setRoundingId(String roundingId){
+        public Builder(String provider, String roundingId){
+            Objects.requireNonNull(provider);
+            set("provider", provider);
             Objects.requireNonNull(roundingId);
-            setText("roundingId", roundingId);
-            return this;
+            set("roundingId", roundingId);
         }
 
         /**
-         * Sets the target scale.
+         * Get the basic {@link javax.money.CurrencyUnit}, which is based for this rounding type.
          *
-         * @param scale the target scale
-         */
-        public Builder setScale(int scale){
-            setInt("scale", scale);
-            return this;
-        }
-
-        /**
-         * Creates a new {@link Builder}.
-         *
-         * @param currencyUnit the target {@link javax.money.CurrencyUnit} not null.
+         * @return the target CurrencyUnit, or null.
          */
         public Builder setCurrencyUnit(CurrencyUnit currencyUnit){
             Objects.requireNonNull(currencyUnit);
-            setAttribute(CurrencyUnit.class, currencyUnit, CurrencyUnit.class);
-            return this;
+            return set(currencyUnit, CurrencyUnit.class);
         }
 
-        public Builder setTimestampMillis(long timestamp){
-            setLong("timestampMillis", timestamp);
-            return this;
-        }
-
-        public Builder setTimestamp(TemporalAccessor temporalAccessor){
-            setAttribute("timestamp", temporalAccessor, TemporalAccessor.class);
+        /**
+         * Sets the currency's timestamp, using UTC milliseconds.
+         *
+         * @param timestamp the timestamp.
+         * @return the builder for chaining
+         */
+        public Builder setTimestamp(long timestamp){
+            set("timestamp", timestamp);
             return this;
         }
 
         /**
-         * Creates a new {@link Builder} and uses the given context to
-         * initialize this instance.
+         * Sets the currency's timestamp.
          *
-         * @param context the base {@link javax.money.RoundingContext} to be used.
+         * @param timestamp the timestamp, not null.
+         * @return the builder for chaining
          */
-        public Builder(RoundingContext context){
-            super(context);
+        public Builder setTimestamp(TemporalAccessor timestamp){
+            set("timestamp", timestamp, TemporalAccessor.class);
+            return this;
         }
 
         /**
-         * Builds a new instance of {@link javax.money.RoundingContext}.
+         * Creates a new instance of {@link RoundingContext}.
          *
-         * @return a new instance of {@link javax.money.RoundingContext}, never {@code null}
-         * @throws IllegalArgumentException if building of the {@link javax.money.RoundingContext} fails.
+         * @return a new {@link RoundingContext} instance.
          */
+        @Override
         public RoundingContext build(){
             return new RoundingContext(this);
         }
 
     }
-
 }

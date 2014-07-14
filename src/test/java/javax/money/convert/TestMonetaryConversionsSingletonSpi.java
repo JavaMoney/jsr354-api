@@ -12,12 +12,9 @@ package javax.money.convert;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
-import javax.money.TestCurrency;
+import javax.money.MonetaryException;
 import javax.money.spi.MonetaryConversionsSingletonSpi;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Anatole
@@ -27,19 +24,31 @@ import java.util.List;
 public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsSingletonSpi{
 
     private ExchangeRateProvider provider = new DummyRateProvider();
+    private List<ExchangeRateProvider> providers = new ArrayList<>();
 
-    @Override
-    public ExchangeRateProvider getExchangeRateProvider(String... providers){
-        if(providers.length==1 && providers[0].equals("test")){
-            return provider;
-        }
-        return null;
+    public TestMonetaryConversionsSingletonSpi(){
+        providers.add(provider);
     }
 
     @Override
-    public CurrencyConversion getConversion(CurrencyUnit termCurrency, ConversionContext conversionContext,
-                                            String... providers){
-        return provider.getCurrencyConversion(termCurrency);
+    public ExchangeRateProvider getExchangeRateProvider(ConversionQuery query){
+        if(query.getProviders().isEmpty()){
+            // when the default should be used, our provider will be part of.
+            return provider;
+        }
+        if(query.getProviders().contains("test")){
+            return provider;
+        }
+        throw new MonetaryException(
+                "Only 'test' provider supported by 'test' provider (TestMonetaryConversionsSingletonSpi).");
+    }
+
+    @Override
+    public Collection<ExchangeRateProvider> getExchangeRateProviders(ConversionQuery query){
+        if(query.getProviders().contains("test")){
+            return providers;
+        }
+        return Collections.emptySet();
     }
 
     @Override
@@ -57,12 +66,13 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         if("test".equals(provider)){
             return ProviderContext.of(provider);
         }
-        return null;
+        throw new MonetaryException(
+                "Only 'test' provider supported by 'test' provider (TestMonetaryConversionsSingletonSpi).");
     }
 
     @Override
     public List<String> getDefaultProviderChain(){
-        return Collections.emptyList();
+        return new ArrayList(getProviderNames());
     }
 
     private static final class DummyConversion implements CurrencyConversion{
@@ -87,8 +97,7 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         @Override
         public ExchangeRate getExchangeRate(MonetaryAmount sourceAmount){
             return new DefaultExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
-                    .setBase(sourceAmount.getCurrency()).setTerm(termCurrency).setFactor(TestNumberValue.of(1))
-                    .build();
+                    .setBase(sourceAmount.getCurrency()).setTerm(termCurrency).setFactor(TestNumberValue.of(1)).build();
         }
 
         @Override
@@ -117,67 +126,26 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         }
 
         @Override
-        public boolean isAvailable(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext){
+        public boolean isAvailable(ConversionQuery conversionContext){
             return false;
         }
 
         @Override
-        public boolean isAvailable(String baseCode, String termCode){
-            return false;
-        }
-
-        @Override
-        public boolean isAvailable(String baseCode, String termCode, ConversionContext conversionContext){
-            return false;
-        }
-
-        @Override
-        public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){
+        public ExchangeRate getExchangeRate(ConversionQuery query){
             return new DefaultExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
-                    .setBase(base).setTerm(term).setFactor(TestNumberValue.of(1))
+                    .setBase(query.getBaseCurrency()).setTerm(query.getTermCurrency()).setFactor(TestNumberValue.of(1))
                     .build();
-        }
-
-        @Override
-        public ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext){
-            return new DefaultExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
-                    .setBase(base).setTerm(term).setFactor(TestNumberValue.of(1))
-                    .build();
-        }
-
-        @Override
-        public ExchangeRate getExchangeRate(String baseCode, String termCode){
-            return getExchangeRate(TestCurrency.of(baseCode),TestCurrency.of(termCode));
-        }
-
-        @Override
-        public ExchangeRate getExchangeRate(String baseCode, String termCode, ConversionContext conversionContext){
-            return getExchangeRate(TestCurrency.of(baseCode),TestCurrency.of(termCode));
         }
 
         @Override
         public ExchangeRate getReversed(ExchangeRate rate){
-            return getExchangeRate(rate.getTerm(),rate.getBase());
+            return getExchangeRate(rate.getTerm(), rate.getBase());
         }
 
         @Override
-        public CurrencyConversion getCurrencyConversion(CurrencyUnit term){
-            return new DummyConversion(term);
+        public CurrencyConversion getCurrencyConversion(ConversionQuery query){
+            return new DummyConversion(query.getTermCurrency());
         }
 
-        @Override
-        public CurrencyConversion getCurrencyConversion(CurrencyUnit term, ConversionContext conversionContext){
-            return new DummyConversion(term);
-        }
-
-        @Override
-        public CurrencyConversion getCurrencyConversion(String termCode){
-            return new DummyConversion(TestCurrency.of(termCode));
-        }
-
-        @Override
-        public CurrencyConversion getCurrencyConversion(String termCode, ConversionContext conversionContext){
-            return new DummyConversion(TestCurrency.of(termCode));
-        }
     }
 }

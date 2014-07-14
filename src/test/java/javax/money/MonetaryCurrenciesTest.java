@@ -14,9 +14,11 @@ package javax.money;
 
 import org.testng.annotations.Test;
 
+import java.util.Collection;
 import java.util.Locale;
 
 import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
 
 /**
  * Tests for the {@link MonetaryCurrencies} class.
@@ -53,17 +55,23 @@ public class MonetaryCurrenciesTest{
 
     @Test
     public void testgetCurrencyLocale(){
-        CurrencyUnit cur = MonetaryCurrencies.getCurrency(new Locale("", "TEST1L"));
-        assertNotNull(cur);
+        Collection<CurrencyUnit> curs = MonetaryCurrencies.getCurrencies(new Locale("", "TEST1L"));
+        assertNotNull(curs);
+        assertEquals(curs.size(),1);
+        CurrencyUnit cur = curs.iterator().next();
         assertEquals(cur.getCurrencyCode(), "TEST1L");
         assertEquals(cur.getNumericCode(), 1);
         assertEquals(cur.getDefaultFractionDigits(), 2);
     }
 
-    @Test(expectedExceptions=UnknownCurrencyException.class)
-    public void testgetCurrencyLocale_Error(){
-        CurrencyUnit cur = MonetaryCurrencies.getCurrency(Locale.CHINA);
-        assertNull(cur);
+    @Test
+    public void testgetCurrencyLocale_Empty(){
+        Collection<CurrencyUnit> curs = MonetaryCurrencies.getCurrencies(Locale.CHINA);
+        assertNotNull(curs);
+        assertTrue(curs.isEmpty());
+        curs = MonetaryCurrencies.getCurrencies(new Locale("", "sdsdsd"));
+        assertNotNull(curs);
+        assertTrue(curs.isEmpty());
     }
 
     @Test(expectedExceptions=UnknownCurrencyException.class)
@@ -74,9 +82,5 @@ public class MonetaryCurrenciesTest{
         assertNull(cur);
     }
 
-    @Test(expectedExceptions = UnknownCurrencyException.class)
-    public void testgetCurrencyLocale_NA(){
-        MonetaryCurrencies.getCurrency(new Locale("", "sdsdsd"));
-    }
 
 }

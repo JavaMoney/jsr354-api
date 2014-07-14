@@ -14,9 +14,10 @@ package javax.money;
 
 import org.testng.annotations.Test;
 
-import java.util.Locale;
+import java.util.Collection;
 import java.util.Set;
 
+import static org.junit.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
@@ -29,37 +30,45 @@ public class MonetaryRoundingsTest{
     }
 
     @Test
-    public void testMonetaryRoundingsGetRoundingCurrencyUnitLong(){
+    public void testMonetaryRoundingsGetRoundingQueryWithLongTS(){
         MonetaryOperator op = MonetaryRoundings.getRounding(
-                new RoundingContext.Builder().setCurrencyUnit(MonetaryCurrencies.getCurrency("test1"))
-                        .setAttribute("timestamp", 200L).build()
+                new RoundingQuery.Builder().setCurrencyUnit(MonetaryCurrencies.getCurrency("test1"))
+                        .set("timestamp", 200L).build()
         );
         assertNotNull(op);
     }
 
-    @Test(expectedExceptions = MonetaryException.class)
-    public void testMonetaryRoundingsGetRoundingCurrencyUnit_Error(){
-        MonetaryOperator op =
-                MonetaryRoundings.getRounding(MonetaryCurrencies.getCurrency(new Locale("", "TEST_ERROR")));
+    @Test
+    public void testMonetaryRoundingsGetRoundingQueryAny(){
+        Collection<MonetaryRounding> roundings = MonetaryRoundings.getRoundings(
+                new RoundingQuery.Builder().build());
+        assertNotNull(roundings);
+        assertFalse(roundings.isEmpty());
+    }
+
+    @Test
+    public void testMonetaryRoundingsGetDefaultRounding(){
+        MonetaryOperator op = MonetaryRoundings.getDefaultRounding();
         assertNotNull(op);
     }
 
     @Test
-    public void testMonetaryRoundingsGetRounding(){
-        MonetaryOperator op = MonetaryRoundings.getRounding();
-        assertNotNull(op);
-    }
-
-    @Test
-    public void testMonetaryRoundingsGetRoundingString(){
+    public void testMonetaryRoundingsGetRoundingWithId(){
         MonetaryOperator op = MonetaryRoundings.getRounding("custom1");
         assertNotNull(op);
     }
 
     @Test
     public void testMonetaryRoundingsGetCustomRoundingIds(){
-        Set<String> ids = MonetaryRoundings.getRoundingIds();
+        Set<String> ids = MonetaryRoundings.getRoundingNames();
         assertNotNull(ids);
         assertTrue(ids.size() == 2);
+    }
+
+    @Test
+    public void testMonetaryRoundingsGetProviderNames(){
+        Set<String> names = MonetaryRoundings.getProviderNames();
+        assertNotNull(names);
+        assertTrue(names.size() == 1);
     }
 }

@@ -12,9 +12,14 @@
  */
 package javax.money.spi;
 
+import javax.money.CurrencyQuery;
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryException;
+import javax.money.UnknownCurrencyException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Factory singleton backing interface for {@link javax.money.MonetaryCurrencies} that provides access to
@@ -22,64 +27,137 @@ import java.util.Locale;
  * <p>
  * Implementations of this interface must be thread safe.
  *
- * @version 0.8
  * @author Anatole Tresch
+ * @version 0.8
  */
 public interface MonetaryCurrenciesSingletonSpi{
 
-	/**
-	 * Access a new instance based on the currency code. Currencies are
-	 * available as provided by {@link javax.money.spi.CurrencyProviderSpi} instances registered
-	 * with the {@link Bootstrap}.
-	 *
-	 * @param currencyCode
-	 *            the ISO currency code, not {@code null}.
-	 * @return the corresponding {@link javax.money.CurrencyUnit} instance.
-	 * @throws javax.money.UnknownCurrencyException
-	 *             if no such currency exists.
-	 */
-	CurrencyUnit getCurrency(String currencyCode);
-
-	/**
-	 * Access a new instance based on the {@link java.util.Locale}. Currencies are
-	 * available as provided by {@link javax.money.spi.CurrencyProviderSpi} instances registered
-	 * with the {@link Bootstrap}.
-	 *
-	 * @param locale
-	 *            the target {@link java.util.Locale}, typically representing an ISO
-	 *            country, not {@code null}.
-	 * @return the corresponding {@link javax.money.CurrencyUnit} instance.
-	 * @throws javax.money.UnknownCurrencyException
-	 *             if no such currency exists.
-	 */
-	CurrencyUnit getCurrency(Locale locale);
-
-	/**
-	 * Allows to check if a {@link javax.money.CurrencyUnit} instance is defined, i.e.
-	 * accessible from {@link javax.money.spi.MonetaryCurrenciesSingletonSpi#getCurrency(String)}.
-	 *
-	 * @param code
-	 *            the currency code, not {@code null}.
-	 * @return {@code true} if {@link javax.money.spi.MonetaryCurrenciesSingletonSpi#getCurrency(String)}
-	 *         would return a result for the given code.
-	 */
-	boolean isCurrencyAvailable(String code);
+    /**
+     * Access a list of the currently registered default providers. The default providers are used, when
+     * no provider names are passed by the caller.
+     *
+     * @return the currencies returned by the given provider chain. If not provider names are provided
+     * the default provider chain configured in {@code javamoney.properties} is used.
+     * @see #getCurrencies(String...)
+     * @see CurrencyQuery.CurrencyQueryBuilder
+     */
+    List<String> getDefaultProviderNames();
 
     /**
-     * Allows to check if a {@link javax.money.CurrencyUnit} instance is
-     * defined, i.e. accessible from {@link #getCurrency(String)}.
+     * Access a list of the currently registered providers. Th names can be used to
+     * access subsets of the overall currency range by calling {@link #getCurrencies(String...)}.
      *
-     * @param locale the target {@link java.util.Locale}, not {@code null}.
-     * @return {@code true} if {@link #getCurrency(java.util.Locale)} would return a
-     * result for the given code.
+     * @return the currencies returned by the given provider chain. If not provider names are provided
+     * the default provider chain configured in {@code javamoney.properties} is used.
      */
-    default boolean isCurrencyAvailable(Locale locale){
-        return false;
+    Set<String> getProviderNames();
+
+    /**
+     * Access all currencies matching the given query.
+     *
+     * @param query The currency query, not null.
+     * @return a set of all currencies found, never null.
+     */
+    Set<CurrencyUnit> getCurrencies(CurrencyQuery query);
+
+
+    /**
+     * Access a new instance based on the currency code. Currencies are
+     * available as provided by {@link javax.money.spi.CurrencyProviderSpi} instances registered
+     * with the {@link Bootstrap}.
+     *
+     * @param currencyCode the ISO currency code, not {@code null}.
+     * @param providers    the (optional) specification of providers to consider.
+     * @return the corresponding {@link javax.money.CurrencyUnit} instance.
+     * @throws javax.money.UnknownCurrencyException if no such currency exists.
+     */
+    default CurrencyUnit getCurrency(String currencyCode, String... providers){
+        Collection<CurrencyUnit> found = getCurrencies(
+                new CurrencyQuery.CurrencyQueryBuilder().setCurrencyCodes(currencyCode).setProviders(providers).build()
+        );
+        if(found.isEmpty()){
+            throw new UnknownCurrencyException(currencyCode);
+        }
+        if(found.size() > 1){
+            throw new MonetaryException("Ambiguous CurrencyUnit for code: " + currencyCode + ": " + found);
+        }
+        return found.iterator().next();
+    }
+
+    /**
+     * Access a new instance based on the currency code. Currencies are
+     * available as provided by {@link javax.money.spi.CurrencyProviderSpi} instances registered
+     * with the {@link Bootstrap}.
+     *
+     * @param country the ISO currency's country, not {@code null}.
+     * @param providers    the (optional) specification of providers to consider.
+     * @return the corresponding {@link javax.money.CurrencyUnit} instance.
+     * @throws javax.money.UnknownCurrencyException if no such currency exists.
+     */
+    default CurrencyUnit getCurrency(Locale country, String... providers){
+        Collection<CurrencyUnit> found = getCurrencies(
+                new CurrencyQuery.CurrencyQueryBuilder().setCountries(country).setProviders(providers).build()
+        );
+        if(found.isEmpty()){
+            throw new MonetaryException("No currency unit found for locale: " + country);
+        }
+        if(found.size() > 1){
+            throw new MonetaryException("Ambiguous CurrencyUnit for locale: " + country + ": " + found);
+        }
+        return found.iterator().next();
     }
 
     /**
      * Provide access to all currently known currencies.
+     *
+     * @param locale    the target {@link java.util.Locale}, typically representing an ISO country,
+     *                  not {@code null}.
+     * @param providers the (optional) specification of providers to consider.
      * @return a collection of all known currencies, never null.
      */
-    Collection<CurrencyUnit> getCurrencies();
+    default Set<CurrencyUnit> getCurrencies(Locale locale, String... providers){
+        return getCurrencies(
+                new CurrencyQuery.CurrencyQueryBuilder().setCountries(locale).setProviders(providers).build());
+    }
+
+    /**
+     * Allows to check if a {@link javax.money.CurrencyUnit} instance is defined, i.e.
+     * accessible from {@link javax.money.spi.MonetaryCurrenciesSingletonSpi#getCurrency(String, String...)}.
+     *
+     * @param code      the currency code, not {@code null}.
+     * @param providers the (optional) specification of providers to consider.
+     * @return {@code true} if {@link javax.money.spi.MonetaryCurrenciesSingletonSpi#getCurrency(String, String...)}
+     * would return a result for the given code.
+     */
+    default boolean isCurrencyAvailable(String code, String... providers){
+        return !getCurrencies(
+                new CurrencyQuery.CurrencyQueryBuilder().setCurrencyCodes(code).setProviders(providers).build())
+                .isEmpty();
+    }
+
+    /**
+     * Allows to check if a {@link javax.money.CurrencyUnit} instance is
+     * defined, i.e. accessible from {@link #getCurrency(String, String...)}.
+     *
+     * @param locale    the target {@link java.util.Locale}, not {@code null}.
+     * @param providers the (optional) specification of providers to consider.
+     * @return {@code true} if {@link #getCurrencies(java.util.Locale, String...)} would return a
+     * non empty result for the given code.
+     */
+    default boolean isCurrencyAvailable(Locale locale, String... providers){
+        return !getCurrencies(
+                new CurrencyQuery.CurrencyQueryBuilder().setCountries(locale).setProviders(providers).build())
+                .isEmpty();
+    }
+
+    /**
+     * Provide access to all currently known currencies.
+     *
+     * @param providers the (optional) specification of providers to consider.
+     * @return a collection of all known currencies, never null.
+     */
+    default Set<CurrencyUnit> getCurrencies(String... providers){
+        return getCurrencies(new CurrencyQuery.CurrencyQueryBuilder().setProviders(providers).build());
+    }
+
 }

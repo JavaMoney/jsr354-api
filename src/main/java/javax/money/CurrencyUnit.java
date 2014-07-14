@@ -89,4 +89,12 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit>{
 	 */
 	public int getDefaultFractionDigits();
 
+
+    /**
+     * Returns the {@link javax.money.CurrencyContext} of a a currency. This context contains additional information
+     * on the type of the currency, its provider and more.
+     * @return the currency's context, never null.
+     */
+    public CurrencyContext getCurrencyContext();
+
 }

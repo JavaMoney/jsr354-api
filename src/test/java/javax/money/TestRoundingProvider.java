@@ -14,29 +14,45 @@ package javax.money;
 
 import javax.money.spi.RoundingProviderSpi;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public final class TestRoundingProvider implements RoundingProviderSpi {
 
 	@Override
-	public MonetaryOperator getRounding(RoundingContext roundingContext){
-        if (Objects.nonNull(roundingContext.getRoundingId())) {
-            return getCustomRounding(roundingContext.getRoundingId());
+	public Collection<MonetaryRounding> getRoundings(RoundingQuery roundingQuery){
+        List<MonetaryRounding> result = new ArrayList<>();
+        for(String name: roundingQuery.getRoundingNames()){
+            result.add(getCustomRounding(name));
         }
-        return value -> value;
+        if(roundingQuery.getCurrencyUnit()!=null){
+            result.add(getCustomRounding(roundingQuery.getCurrencyUnit().getCurrencyCode()));
+        }
+        result.add(getCustomRounding("test"));
+        return result;
 	}
 
-	public MonetaryOperator getCustomRounding(String customRoundingId) {
-        switch (customRoundingId) {
-            case "custom1":
-                return value -> value.multiply(2);
-            case "custom2":
-                return value -> value.multiply(3);
-            default:
-                return value -> value;
-        }
+	private MonetaryRounding getCustomRounding(final String customRoundingId) {
+        return new MonetaryRounding(){
+
+            private final RoundingContext CTX = new RoundingContext.Builder("TestRoundingProvider", customRoundingId).build();
+
+            @Override
+            public RoundingContext getRoundingContext(){
+                return CTX;
+            }
+
+            @Override
+            public MonetaryAmount apply(MonetaryAmount monetaryAmount){
+                switch (customRoundingId) {
+                    case "custom1":
+                        return monetaryAmount.multiply(2);
+                    case "custom2":
+                        return monetaryAmount.multiply(3);
+                    default:
+                        return monetaryAmount;
+                }
+            }
+        };
     }
 
 

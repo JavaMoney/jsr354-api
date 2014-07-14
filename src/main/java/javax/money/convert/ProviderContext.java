@@ -33,6 +33,7 @@ import java.util.*;
 public final class ProviderContext extends AbstractContext{
 
     private static final long serialVersionUID = 3536713139786856877L;
+
     public static final String RATE_TYPES = "rateTypes";
     public static final String PROVIDER = "provider";
 
@@ -45,10 +46,6 @@ public final class ProviderContext extends AbstractContext{
     @SuppressWarnings("unchecked")
     private ProviderContext(Builder builder){
         super(builder);
-        Set<RateType> rateTypes = getNamedAttribute(RATE_TYPES, Set.class);
-        Set<RateType> newRateTypes = new HashSet<>();
-        newRateTypes.addAll(rateTypes);
-        set(RATE_TYPES, newRateTypes, Set.class);
     }
 
 
@@ -60,7 +57,7 @@ public final class ProviderContext extends AbstractContext{
      * @return the provider, or {code null}.
      */
     public String getProvider(){
-        return getText(PROVIDER);
+        return getText("provider");
     }
 
     /**
@@ -68,10 +65,10 @@ public final class ProviderContext extends AbstractContext{
      *
      * @return the deferred flag, or {code null}.
      */
-	public Set<RateType> getRateTypes() {
+    public Set<RateType> getRateTypes() {
 		@SuppressWarnings("unchecked")
-		Set<RateType> rateSet = getNamedAttribute(RATE_TYPES, Set.class,
-				new HashSet<>());
+		Set<RateType> rateSet = getSet("rateTypes",
+				Collections.emptySet());
 		return Collections.unmodifiableSet(rateSet);
 	}
 
@@ -112,8 +109,7 @@ public final class ProviderContext extends AbstractContext{
      *
      * @author Anatole Tresch
      */
-    public static final class Builder extends AbstractBuilder<Builder>{
-
+    public static final class Builder extends AbstractContextBuilder<Builder, ProviderContext>{
 
         /**
          * Create a new Builder instance.
@@ -128,7 +124,7 @@ public final class ProviderContext extends AbstractContext{
             Set<RateType> rts = new HashSet<>();
             rts.add(rateType);
             Collections.addAll(rts, rateTypes);
-            setAttribute(RATE_TYPES, rts, Set.class);
+            setSet(RATE_TYPES, rts);
         }
 
         /**
@@ -145,7 +141,7 @@ public final class ProviderContext extends AbstractContext{
             setProviderName(provider);
             Set<RateType> rts = new HashSet<>();
             rts.addAll(rateTypes);
-            setAttribute("rateTypes", rts, Set.class);
+            setSet("rateTypes", rts);
         }
 
         /**
@@ -156,10 +152,10 @@ public final class ProviderContext extends AbstractContext{
          * @param context the context, not {@code null}
          */
         public Builder(ProviderContext context){
-            super(context);
+            setAll(context);
             Set<RateType> rts = new HashSet<>();
             rts.addAll(context.getRateTypes());
-            setAttribute("rateTypes", rts, Set.class);
+            setSet("rateTypes", rts);
         }
 
         /**
@@ -170,7 +166,7 @@ public final class ProviderContext extends AbstractContext{
          */
         public Builder setProviderName(String provider){
             Objects.requireNonNull(provider);
-            setText(PROVIDER, provider);
+            set(PROVIDER, provider);
             return this;
         }
 
@@ -200,7 +196,7 @@ public final class ProviderContext extends AbstractContext{
             }
             Set rtSet = new HashSet<>();
             rtSet.addAll(rateTypes);
-            setAttribute(RATE_TYPES, rtSet, Set.class);
+            setSet(RATE_TYPES, rtSet);
             return this;
         }
 

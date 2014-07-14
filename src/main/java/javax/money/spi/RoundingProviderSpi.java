@@ -10,12 +10,10 @@
  */
 package javax.money.spi;
 
+import java.util.Collection;
 import java.util.Set;
 
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryContext;
-import javax.money.MonetaryOperator;
-import javax.money.RoundingContext;
+import javax.money.*;
 
 /**
  * This SPI allows to extends/override the roundings available for
@@ -38,20 +36,26 @@ import javax.money.RoundingContext;
  */
 public interface RoundingProviderSpi {
 
-	/**
-	 * Access a rounding that models the given {@link MonetaryContext}.
-	 * 
-	 * @param roundingContext
-	 *            The target {@link RoundingContext}
-	 * @return the corresponding rounding, or {@code null}
-	 */
-	MonetaryOperator getRounding(RoundingContext roundingContext);
+    /**
+     * Evaluate the rounding that match the given query.
+     *
+     * @return the (shared) default rounding instances matching, never null.
+     */
+    Collection<MonetaryRounding> getRoundings(RoundingQuery query);
 
 	/**
-	 * Access the ids of the custom roundings defined by this provider.
+	 * Access the ids of the roundings defined by this provider.
 	 * 
-	 * @return the ids of the defined custom roundings, never {@code null}.
+	 * @return the ids of the defined roundings, never {@code null}.
 	 */
 	Set<String> getRoundingIds();
+
+    /**
+     * Get the provider's unique name.
+     * @return the provider's unique name, not null.
+     */
+    default String getProviderName(){
+        return getClass().getSimpleName();
+    }
 
 }

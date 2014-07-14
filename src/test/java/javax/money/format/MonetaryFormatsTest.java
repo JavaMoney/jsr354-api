@@ -37,7 +37,7 @@ public class MonetaryFormatsTest{
 
     @Test
     public void testGetAmountFormatStyle(){
-        AmountFormatContext s = AmountFormatContext.of(Locale.ENGLISH);
+        AmountFormatQuery s = AmountFormatQuery.of(Locale.ENGLISH);
         MonetaryAmountFormat fmt = MonetaryFormats.getAmountFormat(s);
         assertNotNull(fmt);
         assertEquals(fmt.getClass(), TestAmountFormatProvider.TestFormat.class);

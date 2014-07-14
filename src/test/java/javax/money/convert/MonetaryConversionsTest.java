@@ -11,10 +11,10 @@
 package javax.money.convert;
 
 
+import org.testng.annotations.Test;
+
 import javax.money.MonetaryException;
 import javax.money.TestCurrency;
-
-import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
 
@@ -29,12 +29,15 @@ public class MonetaryConversionsTest{
 
     @Test
     public void testGetConversion1() throws Exception{
-        assertNotNull(MonetaryConversions.getConversion(TestCurrency.of("CHF"), ConversionContext.of()));
+        assertNotNull(MonetaryConversions.getConversion(
+                new ConversionQuery.ConversionQueryBuilder().setTermCurrency(TestCurrency.of("CHF")).build()));
     }
 
     @Test
     public void testGetConversion2() throws Exception{
-        assertNotNull(MonetaryConversions.getConversion(TestCurrency.of("CHF"), ConversionContext.of(), "test"));
+        assertNotNull(MonetaryConversions.getConversion(
+                new ConversionQuery.ConversionQueryBuilder().setTermCurrency(TestCurrency.of("CHF"))
+                        .setProviders("test").build()));
     }
 
     @Test
@@ -56,7 +59,7 @@ public class MonetaryConversionsTest{
     public void testGetProviderNames() throws Exception{
         assertNotNull(MonetaryConversions.getProviderNames());
         assertTrue(MonetaryConversions.getProviderNames().contains("test"));
-        assertTrue(MonetaryConversions.getProviderNames().size()==1);
+        assertTrue(MonetaryConversions.getProviderNames().size() == 1);
     }
 
     @Test
@@ -78,6 +81,7 @@ public class MonetaryConversionsTest{
     @Test
     public void testGetDefaultProviderChain() throws Exception{
         assertNotNull(MonetaryConversions.getDefaultProviderChain());
-        assertTrue(MonetaryConversions.getDefaultProviderChain().isEmpty());
+        assertFalse(MonetaryConversions.getDefaultProviderChain().isEmpty());
+        assertEquals(1, MonetaryConversions.getDefaultProviderChain().size());
     }
 }

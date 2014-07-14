@@ -35,7 +35,7 @@ public class ConcurrentInitializationTest {
 
         @Override
         public void run() {
-            MonetaryRoundings.getRounding().apply(amount);
+            MonetaryRoundings.getDefaultRounding().apply(amount);
         }
     }
 

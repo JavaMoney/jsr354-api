@@ -8,7 +8,9 @@
  */
 package javax.money;
 
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Amount pseudo (non functional) implementation, for testing only.
@@ -17,6 +19,8 @@ import java.util.Objects;
  */
 public final class DummyAmount implements
 		MonetaryAmount {
+
+    private static final CurrencyContext DUMMY_CURRENCYCONTEXT = new CurrencyContext.Builder("dummy").build();
 
     @Override
     public CurrencyUnit getCurrency() {
@@ -34,6 +38,11 @@ public final class DummyAmount implements
             @Override
             public int getDefaultFractionDigits() {
                 return 2;
+            }
+
+            @Override
+            public CurrencyContext getCurrencyContext(){
+                return DUMMY_CURRENCYCONTEXT;
             }
 
             @Override

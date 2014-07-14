@@ -8,101 +8,101 @@
  */
 package javax.money;
 
+import java.util.Collections;
+import java.util.Set;
+
 /**
  * Dummy amount factory only used for testing of the {@link MonetaryAmounts} singleton's delegation
  * logic.
- * 
+ *
  * @author Anatole Tresch
  */
-public final class DummyAmountFactory implements
-		MonetaryAmountFactory<DummyAmount> {
-	/**
-	 * The {@link MonetaryContext} used.
-	 */
-	static MonetaryContext DUMMY_CONTEXT = new MonetaryContext.Builder()
-			.setFixedScale(true).setMaxScale(0)
-			.setPrecision(0).setAmountType(DummyAmount.class).build();
+public final class DummyAmountFactory implements MonetaryAmountFactory<DummyAmount>{
+    /**
+     * The {@link MonetaryContext} used.
+     */
+    static MonetaryContext DUMMY_CONTEXT = new MonetaryContext.Builder(MonetaryAmount.class).set("dummy", true).build();
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#getAmountType()
-	 */
-	@Override
-	public Class<DummyAmount> getAmountType() {
-		return DummyAmount.class;
-	}
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#getAmountType()
+     */
+    @Override
+    public Class<DummyAmount> getAmountType(){
+        return DummyAmount.class;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#getDefaultMonetaryContext()
-	 */
-	@Override
-	public MonetaryContext getDefaultMonetaryContext() {
-		return DUMMY_CONTEXT;
-	}
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#getDefaultMonetaryContext()
+     */
+    @Override
+    public MonetaryContext getDefaultMonetaryContext(){
+        return DUMMY_CONTEXT;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#getMaximalMonetaryContext()
-	 */
-	@Override
-	public MonetaryContext getMaximalMonetaryContext() {
-		return DUMMY_CONTEXT;
-	}
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#getMaximalMonetaryContext()
+     */
+    @Override
+    public MonetaryContext getMaximalMonetaryContext(){
+        return DUMMY_CONTEXT;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#setCurrency(java.lang.String)
-	 */
-	@Override
-	public DummyAmountFactory setCurrency(String currencyCode) {
-		return this;
-	}
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#setCurrency(java.lang.String)
+     */
+    @Override
+    public DummyAmountFactory setCurrency(String currencyCode){
+        return this;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#setCurrency(javax.money.CurrencyUnit)
-	 */
-	@Override
-	public DummyAmountFactory setCurrency(CurrencyUnit currency) {
-		return this;
-	}
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#setCurrency(javax.money.CurrencyUnit)
+     */
+    @Override
+    public DummyAmountFactory setCurrency(CurrencyUnit currency){
+        return this;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#create()
-	 */
-	@Override
-	public DummyAmount create() {
-		return new DummyAmount();
-	}
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#create()
+     */
+    @Override
+    public DummyAmount create(){
+        return new DummyAmount();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#setNumber(double)
-	 */
-	@Override
-	public DummyAmountFactory setNumber(double number) {
-		return this;
-	}
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#setNumber(double)
+     */
+    @Override
+    public DummyAmountFactory setNumber(double number){
+        return this;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#setNumber(long)
-	 */
-	@Override
-	public DummyAmountFactory setNumber(long number) {
-		return this;
-	}
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#setNumber(long)
+     */
+    @Override
+    public DummyAmountFactory setNumber(long number){
+        return this;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#setNumber(java.lang.Number)
-	 */
-	@Override
-	public DummyAmountFactory setNumber(Number number) {
-		return this;
-	}
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#setNumber(java.lang.Number)
+     */
+    @Override
+    public DummyAmountFactory setNumber(Number number){
+        return this;
+    }
 
     @Override
     public NumberValue getMaxNumber(){
@@ -118,18 +118,18 @@ public final class DummyAmountFactory implements
      * (non-Javadoc)
      * @see javax.money.MonetaryAmountFactory#setContext(javax.money.MonetaryContext)
      */
-	@Override
-	public DummyAmountFactory setContext(MonetaryContext monetaryContext) {
-		return this;
-	}
+    @Override
+    public DummyAmountFactory setContext(MonetaryContext monetaryContext){
+        return this;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#setAmount(javax.money.MonetaryAmount)
-	 */
-	@Override
-	public DummyAmountFactory setAmount(MonetaryAmount amount) {
-		return this;
-	}
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#setAmount(javax.money.MonetaryAmount)
+     */
+    @Override
+    public DummyAmountFactory setAmount(MonetaryAmount amount){
+        return this;
+    }
 
 }

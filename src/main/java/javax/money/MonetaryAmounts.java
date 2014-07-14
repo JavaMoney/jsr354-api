@@ -9,20 +9,17 @@
 package javax.money;
 
 import javax.money.spi.Bootstrap;
-import javax.money.spi.MonetaryAmountFactoryProviderSpi;
 import javax.money.spi.MonetaryAmountsSingletonQuerySpi;
 import javax.money.spi.MonetaryAmountsSingletonSpi;
-
-import java.util.Objects;
+import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Factory singleton for {@link MonetaryAmount} instances as provided by the different registered
  * {@link MonetaryAmountFactory} instances.
- * <p/>
+ * <p>
  * This singleton allows to get {@link MonetaryAmountFactory} instances for the registered
  * {@link MonetaryAmount} implementation classes or depending on the precision and scale
  * requirements.
@@ -52,7 +49,7 @@ public final class MonetaryAmounts{
     /**
      * Loads the SPI backing bean.
      *
-     * @return
+     * @return the MonetaryAmountsSingletonSpi bean from the bootstrapping logic.
      */
     private static MonetaryAmountsSingletonSpi loadMonetaryAmountsSingletonSpi(){
         try{
@@ -68,7 +65,7 @@ public final class MonetaryAmounts{
     /**
      * Loads the SPI backing bean.
      *
-     * @return
+     * @return the MonetaryAmountsSingletonQuerySpi bean from the bootstrapping logic.
      */
     private static MonetaryAmountsSingletonQuerySpi loadMonetaryAmountsSingletonQuerySpi(){
         try{
@@ -94,50 +91,28 @@ public final class MonetaryAmounts{
      *                           implementation class is registered.
      */
     public static <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType){
-		Optional.ofNullable(monetaryAmountsSingletonSpi).orElseThrow(
-				() -> new MonetaryException(
-						"No MonetaryAmountsSingletonSpi loaded."));
-        
+        Optional.ofNullable(monetaryAmountsSingletonSpi)
+                .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."));
+
         MonetaryAmountFactory<T> factory = monetaryAmountsSingletonSpi.getAmountFactory(amountType);
-        return Optional.ofNullable(factory).orElseThrow(() -> 
-        new MonetaryException("No AmountFactory available for type: " + amountType.getName())); 
-        
+        return Optional.ofNullable(factory).orElseThrow(
+                () -> new MonetaryException("No AmountFactory available for type: " + amountType.getName()));
+
     }
 
     /**
      * Access the default {@link MonetaryAmountFactory} as defined by
-     * {@link #getDefaultAmountType()}.
+     * {@link javax.money.spi.MonetaryAmountsSingletonSpi#getDefaultAmountFactory()}.
      *
-     * @return the {@link MonetaryAmountFactory} corresponding to {@link #getDefaultAmountType()},
+     * @return the {@link MonetaryAmountFactory} corresponding to default amount type,
      * never {@code null}.
-     * @throws MonetaryException if no {@link MonetaryAmountFactory} targeting the {@link #getDefaultAmountType()}
+     * @throws MonetaryException if no {@link MonetaryAmountFactory} targeting the default amount type
      *                           implementation class is registered.
      */
-    public static MonetaryAmountFactory<?> getAmountFactory(){
-    	
-    	Optional.ofNullable(monetaryAmountsSingletonSpi)
-    	.orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."));
-    	
-        MonetaryAmountFactory<?> factory = monetaryAmountsSingletonSpi.getAmountFactory(getDefaultAmountType());
-        return Optional.ofNullable(factory).orElseThrow(
-        		() -> new MonetaryException("No default AmountFactory available."));
-    }
-
-    /**
-     * Access the default {@link MonetaryAmount} type.
-     *
-     * @return a the default {@link MonetaryAmount} type corresponding, never {@code null}.
-     * @throws MonetaryException if no {@link MonetaryAmountFactoryProviderSpi} is available, or no
-     *                           {@link MonetaryAmountFactoryProviderSpi} targeting the configured default
-     *                           {@link MonetaryAmount} type.
-     */
-    public static Class<? extends MonetaryAmount> getDefaultAmountType(){
-		return Optional
-				.ofNullable(monetaryAmountsSingletonSpi)
-				.orElseThrow(
-						() -> new MonetaryException(
-								"No MonetaryAmountsSingletonSpi loaded."))
-				.getDefaultAmountType();
+    public static MonetaryAmountFactory<?> getDefaultAmountFactory(){
+        return Optional.ofNullable(monetaryAmountsSingletonSpi)
+                .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."))
+                .getDefaultAmountFactory();
     }
 
     /**
@@ -147,52 +122,73 @@ public final class MonetaryAmounts{
      * @return all currently available {@link MonetaryAmount} implementation classes that have
      * corresponding {@link MonetaryAmountFactory} instances provided, never {@code null}
      */
-    public static Set<Class<? extends MonetaryAmount>> getAmountTypes(){
-		return Optional
-				.ofNullable(monetaryAmountsSingletonSpi)
-				.orElseThrow(
-						() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded.")).getAmountTypes();
+    public static Collection<MonetaryAmountFactory<?>> getAmountFactories(){
+        return Optional.ofNullable(monetaryAmountsSingletonSpi)
+                .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."))
+                .getAmountFactories();
     }
 
     /**
-     * Get the {@link MonetaryAmount} implementation class, that best matches to cover the given
-     * {@link MonetaryContext}.
+     * Access all currently available {@link MonetaryAmount} implementation classes that are
+     * accessible from this {@link MonetaryAmount} singleton.
      *
-     * @param requiredContext the {@link MonetaryContext} to be queried for a matching {@link MonetaryAmount}
-     *                        implementation, not{@code null}.
-     * @return the {@link MonetaryAmount} implementation class, that best matches to cover the given
-     * {@link MonetaryContext}, never {@code null}.
-     * @throws MonetaryException if no {@link MonetaryAmount} implementation class can cover the required
-     *                           {@link MonetaryContext}.
+     * @return all currently available {@link MonetaryAmount} implementation classes that have
+     * corresponding {@link MonetaryAmountFactory} instances provided, never {@code null}
      */
-    public static Class<? extends MonetaryAmount> queryAmountType(MonetaryContext requiredContext){
-        if (Objects.isNull(monetaryAmountsSingletonSpi)) {
-            throw new MonetaryException("No MonetaryAmountsSingletonSpi loaded.");
-        }
-		return Optional
-				.ofNullable(monetaryAmountsSingletonQuerySpi)
-				.orElseThrow(
-						() -> new MonetaryException(
-								"No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available."))
-				.queryAmountType(monetaryAmountsSingletonSpi, requiredContext);
-
+    public static Collection<Class<? extends MonetaryAmount>> getAmountTypes(){
+        return Optional.ofNullable(monetaryAmountsSingletonSpi)
+                .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."))
+                .getAmountTypes();
     }
 
     /**
-     * Get the {@link javax.money.MonetaryAmountFactory} implementation, that best matches to cover the given
-     * {@link MonetaryContext}.
+     * Access the default {@link MonetaryAmount} implementation class that is
+     * accessible from this {@link MonetaryAmount} singleton.
      *
-     * @param requiredContext the {@link MonetaryContext} to be queried for a matching {@link MonetaryAmount}
-     *                        implementation, not{@code null}.
-     * @return the {@link javax.money.MonetaryAmountFactory} implementation, that best matches to cover the given
-     * {@link MonetaryContext}, never {@code null}.
-     * @throws MonetaryException if no {@link MonetaryAmount} implementation class can cover the required
-     *                           {@link MonetaryContext}.
+     * @return all current default {@link MonetaryAmount} implementation class, never {@code null}
      */
-    public static MonetaryAmountFactory<?> queryAmountFactory(MonetaryContext requiredContext){
-        Class<? extends MonetaryAmount> type = queryAmountType(requiredContext);
-        return getAmountFactory(type);
+    public static Class<? extends MonetaryAmount> getDefaultAmountType(){
+        return Optional.ofNullable(monetaryAmountsSingletonSpi)
+                .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."))
+                .getDefaultAmountType();
     }
 
+    /**
+     * Executes the query and returns the factory found, if there is only one factory.
+     * If multiple factories match the query, one is selected.
+     *
+     * @param query the factory query, not null.
+     * @return the factory found, or null.
+     */
+    public static MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query){
+        return Optional.ofNullable(monetaryAmountsSingletonQuerySpi).orElseThrow(() -> new MonetaryException(
+                                                                                         "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available.")
+        ).getAmountFactory(query);
+    }
+
+    /**
+     * Returns all factory instances that match the query.
+     *
+     * @param query the factory query, not null.
+     * @return the instances found, never null.
+     */
+    public static Collection<MonetaryAmountFactory<?>> getAmountFactories(MonetaryAmountFactoryQuery query){
+        return Optional.ofNullable(monetaryAmountsSingletonQuerySpi).orElseThrow(() -> new MonetaryException(
+                                                                                         "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available.")
+        ).getAmountFactories(query);
+    }
+
+    /**
+     * Allows to check if any of the <i>get</i>XXX methods return non empty/non null results of {@link javax.money
+     * .MonetaryAmountFactory}.
+     *
+     * @param query the factory query, not null.
+     * @return true, if at least one {@link javax.money.MonetaryAmountFactory} matches the query.
+     */
+    public static boolean isAvailable(MonetaryAmountFactoryQuery query){
+        return Optional.ofNullable(monetaryAmountsSingletonQuerySpi).orElseThrow(() -> new MonetaryException(
+                                                                                         "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available.")
+        ).isAvailable(query);
+    }
 
 }

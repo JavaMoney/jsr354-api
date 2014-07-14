@@ -8,13 +8,13 @@
  * 
  * Specification: JSR-354 Money and Currency API ("Specification")
  * 
- * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
+ * Copyright (c) 2012-2014, Credit Suisse All rights reserved.
  */
 package javax.money.spi;
 
+import javax.money.CurrencyQuery;
 import javax.money.CurrencyUnit;
-import java.util.Collection;
-import java.util.Locale;
+import java.util.Set;
 
 /**
  * SPI (core) to be registered using the {@link javax.money.spi.Bootstrap}, which allows to
@@ -26,29 +26,35 @@ import java.util.Locale;
  */
 public interface CurrencyProviderSpi{
 
-    /**
-     * Return a (current) {@link CurrencyUnit} matching the given currency code.
-     *
-     * @param currencyCode the currency code. not null.
-     * @return the corresponding {@link CurrencyUnit}, or null, if no such unit
-     * is provided by this provider.
-     */
-    public CurrencyUnit getCurrencyUnit(String currencyCode);
 
     /**
-     * Return a (current) {@link CurrencyUnit} matching the given (country)
-     * {@link Locale}.
-     *
-     * @param locale the country {@link Locale}. not null.
-     * @return the corresponding {@link CurrencyUnit}, or null, if no such unit
-     * is provided by this provider.
+     * The unique name of this currency provider instance.
+     * @return hte unique provider id, never null or empty.
      */
-    public CurrencyUnit getCurrencyUnit(Locale locale);
+    default String getProviderName(){
+        return getClass().getSimpleName();
+    }
 
     /**
-     * Access a collection of all currencies known by this provider.
+     * CHecks if a {@link CurrencyUnit} instances matching the given
+     * {@link javax.money.CurrencyContext} is available from this provider.
      *
-     * @return a Collection of known currncies, never null.
+     * @param query the {@link javax.money.CurrencyQuery} containing the parameters determining the query. not null.
+     * @return false, if no such unit is provided by this provider.
      */
-    public Collection<CurrencyUnit> getCurrencies();
+    default boolean isCurrencyAvailable(CurrencyQuery query){
+        return !getCurrencies(query).isEmpty();
+    }
+
+    /**
+     * Return a {@link CurrencyUnit} instances matching the given
+     * {@link javax.money.CurrencyContext}.
+     *
+     * @param query the {@link javax.money.CurrencyQuery} containing the parameters determining the query. not null.
+     * @return the corresponding {@link CurrencyUnit}s matching, never null.
+     */
+    Set<CurrencyUnit> getCurrencies(CurrencyQuery query);
+
+
+
 }

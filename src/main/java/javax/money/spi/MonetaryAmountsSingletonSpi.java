@@ -12,46 +12,74 @@ import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmounts;
 import javax.money.MonetaryException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
  * SPI (core) for the backing implementation of the {@link javax.money.MonetaryAmounts} singleton. It
  * should load and manage (including contextual behavior), if needed) the different registered
  * {@link MonetaryAmountFactory} instances.
- * 
+ *
  * @author Anatole Tresch
  */
 public interface MonetaryAmountsSingletonSpi{
 
-	/**
-	 * Access the {@link MonetaryAmountFactory} for the given {@code amountType} .
-	 * 
-	 * @param amountType
-	 *            the {@link MonetaryAmount} implementation type, targeted by the factory.
-	 * @return the {@link MonetaryAmountFactory}, or {@code null}, if no such
-	 *         {@link MonetaryAmountFactory} is available in the current context.
-	 */
-	public <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(
-			Class<T> amountType);
+    /**
+     * Access the {@link MonetaryAmountFactory} for the given {@code amountType} .
+     *
+     * @param amountType the {@link MonetaryAmount} implementation type, targeted by the factory.
+     * @return the {@link MonetaryAmountFactory}, or {@code null}, if no such
+     * {@link MonetaryAmountFactory} is available in the current context.
+     */
+    <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType);
 
-	/**
-	 * Access the default {@link MonetaryAmount} type.
-	 * 
-	 * @see MonetaryAmounts#getDefaultAmountType()
-	 * @return a the default {@link MonetaryAmount} type corresponding, never {@code null}.
-	 * @throws MonetaryException
-	 *             if no {@link MonetaryAmountFactoryProviderSpi} is available, or no
-	 *             {@link MonetaryAmountFactoryProviderSpi} targeting the configured default
-	 *             {@link MonetaryAmount} type.
-	 */
-	public Class<? extends MonetaryAmount> getDefaultAmountType();
-	
-	/**
-	 * Get the currently registered {@link MonetaryAmount} implementation types.
-	 * 
-	 * @return the {@link Set} if registered {@link MonetaryAmount} implementation types, never
-	 *         {@code null}.
-	 */
-	public Set<Class<? extends MonetaryAmount>> getAmountTypes();
+    /**
+     * Access the default {@link MonetaryAmount} implementation type.
+     *
+     * @return a the default {@link MonetaryAmount} type corresponding, never {@code null}.
+     * @throws MonetaryException if no {@link MonetaryAmountFactoryProviderSpi} is available, or no
+     *                           {@link MonetaryAmountFactoryProviderSpi} targeting the configured default
+     *                           {@link MonetaryAmount} type.
+     * @see MonetaryAmounts#getDefaultAmountType()
+     */
+    Class<? extends MonetaryAmount> getDefaultAmountType();
+
+    /**
+     * Get the currently registered {@link MonetaryAmount} implementation types.
+     *
+     * @return the {@link Set} if registered {@link MonetaryAmount} implementations, never
+     * {@code null}.
+     */
+    Collection<Class<? extends MonetaryAmount>> getAmountTypes();
+
+
+    /**
+     * Access the default {@link MonetaryAmountFactory}.
+     *
+     * @return a the default {@link MonetaryAmount} type corresponding, never {@code null}.
+     * @throws MonetaryException if no {@link MonetaryAmountFactoryProviderSpi} is available, or no
+     *                           {@link MonetaryAmountFactoryProviderSpi} targeting the configured default
+     *                           {@link MonetaryAmount} type.
+     * @see MonetaryAmounts#getDefaultAmountType()
+     */
+    default MonetaryAmountFactory<?> getDefaultAmountFactory(){
+        return getAmountFactory(getDefaultAmountType());
+    }
+
+    /**
+     * Get the currently registered {@link MonetaryAmount} implementation classes.
+     *
+     * @return the {@link Set} if registered {@link MonetaryAmount} implementations, never
+     * {@code null}.
+     */
+    default Collection<MonetaryAmountFactory<?>> getAmountFactories(){
+        List<MonetaryAmountFactory<?>> factories = new ArrayList<>();
+        for(Class<? extends MonetaryAmount> type: getAmountTypes()){
+            factories.add(getAmountFactory(type));
+        }
+        return factories;
+    }
 
 }

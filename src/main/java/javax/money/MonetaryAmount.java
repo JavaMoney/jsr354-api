@@ -60,16 +60,20 @@ package javax.money;
  * </blockquote></li>
  * </ul>
  * <h4>Implementation specification</h4>
+ * Implementations of this interface must be
+ * <ul>
+ * <li>thread-safe</li>
+ * </ul>
  * Implementations of this interface should be
  * <ul>
- * <li>immutable</li>
- * <li>thread-safe</li>
- * <li>final</li>
- * <li>serializable, hereby writing the numeric value, the {@link MonetaryContext} and a serialized
+ *     <li>final</li>
+ *     <li>serializable, hereby writing the numeric value, the {@link MonetaryContext} and a serialized
  * {@link CurrencyUnit}.</li>
  * </ul>
  * Implementations of this interface must be
  * <ul>
+ * <li>thread-safe</li>
+ * <li>immutable</li>
  * <li>comparable</li>
  * <li>must implement {@code equals/hashCode}, hereby considering
  * <ul>

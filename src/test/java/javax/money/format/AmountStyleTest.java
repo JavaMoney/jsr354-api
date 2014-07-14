@@ -22,17 +22,16 @@ import static org.testng.Assert.*;
 public class AmountStyleTest{
     @Test
     public void testOf() throws Exception{
-        AmountFormatContext style = AmountFormatContext.of(Locale.ENGLISH);
+        AmountFormatQuery style = AmountFormatQuery.of(Locale.ENGLISH);
         assertNotNull(style);
         DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(Locale.ENGLISH);
         assertNotNull(df);
     }
 
-
     @Test
     public void testToBuilder() throws Exception{
-        AmountFormatContext style = new AmountFormatContext.Builder(Locale.ENGLISH).build();
-        AmountFormatContext.Builder builder = style.toBuilder();
+        AmountFormatQuery style = new AmountFormatQuery.AmountFormatQueryBuilder(Locale.ENGLISH).build();
+        AmountFormatQuery.AmountFormatQueryBuilder builder = style.toBuilder();
         assertNotNull(builder);
         assertEquals(style, builder.build());
     }
@@ -65,8 +64,8 @@ public class AmountStyleTest{
 
     @Test
     public void testToString() throws Exception{
-        AmountFormatContext style = new AmountFormatContext.Builder(Locale.GERMAN).setAttribute("groupSizes", new int[]{1, 2, 3, 4})
-                .setAttribute("currencyStyle", "NUMERIC_CODE").setAttribute("pattern", "###").build();
+        AmountFormatContext style = new AmountFormatContext.Builder(Locale.GERMAN).set("groupSizes", new int[]{1, 2, 3, 4})
+                .set("currencyStyle", "NUMERIC_CODE").set("pattern", "###").build();
         String toString = style.toString();
         assertNotNull(toString);
         assertTrue(toString.contains("DE"));

@@ -9,39 +9,30 @@
 package javax.money.format;
 
 import javax.money.AbstractContext;
+import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryContext;
-import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
 
 
 /**
- * The {@link AmountFormatContext} defines how a {@link javax.money.MonetaryAmount} should be formatted and
- * is used within a {@link MonetaryAmountFormat}.
- *
+ * The {@link AmountFormatContext} provides details about a {@link javax.money.format.MonetaryAmountFormat}.
+ * @see MonetaryAmountFormat#getAmountFormatContext()
  * @author Anatole Tresch
- * @see MonetaryAmountFormat
  */
-public final class AmountFormatContext extends AbstractContext implements Serializable{
-    /**
-     * Style id for default formats.
-     */
-    public static final String DEFAULT_STYLE_ID = "default";
+public final class AmountFormatContext extends AbstractContext{
+
+    private static final String DEFAULT_STYLE_ID = "default";
+    private static final String STYLE_ID = "styleId";
 
     /**
-     * serialVersionUID.
-     */
-    private static final long serialVersionUID = -7744853434156071725L;
-
-    /**
-     * Constructor.
+     * Creates a new instance of {@link javax.money.format.AmountFormatContext}.
      *
-     * @param builder the {@link Builder} providing the data required.
+     * @param builder the corresponding builder.
      */
     private AmountFormatContext(Builder builder){
         super(builder);
     }
-
 
     /**
      * Access the style's {@link Locale}.
@@ -49,61 +40,46 @@ public final class AmountFormatContext extends AbstractContext implements Serial
      * @return the {@link Locale}, never {@code null}.
      */
     public String getStyleId(){
-        return getText("styleId");
+        return getText(STYLE_ID);
     }
 
     /**
      * Access the context's Locale.
+     *
      * @return the Locale, or null.
      */
     public Locale getLocale(){
-        return getAttribute(Locale.class);
+        return get(Locale.class);
     }
 
     /**
-     * Access the style's {@link javax.money.MonetaryContext}.
+     * Access the format's {@link javax.money.MonetaryAmountFactory} that is used to create new amounts during
+     * parsing. If not set explicitly, the default {@link javax.money.MonetaryAmountFactory} is used.
      *
-     * @return the {@link javax.money.MonetaryContext}, never {@code null}.
+     * @return the {@link javax.money.MonetaryAmountFactory}, never {@code null}.
      */
-    public MonetaryContext getMonetaryContext(){
-        return getAttribute(MonetaryContext.class);
+    public MonetaryAmountFactory<?> getParseFactory(){
+        return get(MonetaryAmountFactory.class);
     }
 
     /**
-     * Creates a Builder initialized with the settings of this format instance.
+     * Builder class for creating new instances of {@link javax.money.format.AmountFormatContext} adding detailed information
+     * about a {@link javax.money.format.MonetaryAmountFormat} instance.
+     * <p/>
+     * Note this class is NOT thread-safe.
      *
-     * @return a new Builder instance, never {@code null}.
+     * @see MonetaryAmountFormat#getAmountFormatContext()
      */
-    public Builder toBuilder(){
-        return new Builder(this);
-    }
-
-    /**
-     * Creates a default instance baed on the given locale settings.
-     *
-     * @param locale the target locale, not mull.
-     * @return a new default context instance.
-     */
-    public static AmountFormatContext of(Locale locale){
-        return new Builder(locale).build();
-    }
-
-    /**
-     * Builder for creating a new {@link AmountFormatContext}.
-     *
-     * @author Anatole Tresch
-     */
-    public static final class Builder extends AbstractBuilder<Builder>{
+    public static final class Builder extends AbstractContext.AbstractContextBuilder<Builder,AmountFormatContext>{
 
         /**
          * Creates a new {@link Builder}.
          *
          * @param style the base {@link AmountFormatContext}, not {@code null}.
          */
-        public Builder(AmountFormatContext style){
-            this.attributes.putAll(style.attributes);
+        public Builder(AmountFormatQuery style){
+            setAll(style);
         }
-
 
         /**
          * Creates a new {@link Builder}.
@@ -112,29 +88,40 @@ public final class AmountFormatContext extends AbstractContext implements Serial
          */
         public Builder(String styleId){
             Objects.requireNonNull(styleId, "styleId required.");
-            setAttribute("styleId", styleId);
+            set(STYLE_ID, styleId);
         }
 
         /**
-         * Creates a new default {@link Builder} for a formatter based on the locale specific defaults.
+         * Creates a new default {@link Builder} for a formatter based on the locale specific
+         * defaults.
          *
          * @param locale the target {@link java.util.Locale}, not {@code null}.
          */
         public Builder(Locale locale){
             Objects.requireNonNull(locale, "locale required.");
             setLocale(locale);
-            setAttribute("styleId", DEFAULT_STYLE_ID);
-            setObject(locale);
+            set(STYLE_ID, DEFAULT_STYLE_ID);
+            set(locale);
+        }
+
+        /**
+         * Sets a style's id.
+         *
+         * @param styleId the styleId, not null.
+         * @return the Builder, for chaining.
+         */
+        public Builder setStyleId(String styleId){
+            return set(STYLE_ID, styleId);
         }
 
         /**
          * Sets a Locale to be applied.
+         *
          * @param locale the locale, not null.
          * @return the Builder, for chaining.
          */
         public Builder setLocale(Locale locale){
-            setObject(locale);
-            return this;
+            return set(locale);
         }
 
         /**
@@ -145,20 +132,21 @@ public final class AmountFormatContext extends AbstractContext implements Serial
          */
         public Builder setMonetaryContext(MonetaryContext monetaryContext){
             Objects.requireNonNull(monetaryContext);
-            setObject(monetaryContext);
-            return this;
+            return set(monetaryContext);
         }
 
         /**
-         * Creates a new {@link AmountFormatContext}.
+         * Creates a new instance of {@link AmountFormatContext} that configures a {@link javax.money.format
+         * .MonetaryAmountFormat}.
          *
-         * @return a new {@link AmountFormatContext} instance, never {@code null}.
-         * @throws IllegalStateException if no {@link AmountFormatContext} could be created.
+         * @return a new {@link AmountFormatContext} instance.
          */
+        @Override
         public AmountFormatContext build(){
             return new AmountFormatContext(this);
         }
 
     }
-
 }
+
+

@@ -53,16 +53,13 @@ public interface ExchangeRateProvider{
     /**
      * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
      * available from this provider. This method should check, if a given rate
-     * is <i>currently</i> defined. It should be the same as
-     * {@code isAvailable(base, term, System.currentTimeMillis())}.
+     * is <i>currently</i> defined.
      *
-     * @param base              the base {@link CurrencyUnit}
-     * @param term              the term {@link CurrencyUnit}
-     * @param conversionContext the required {@link ConversionContext}, not {@code null}
+     * @param conversionQuery the required {@link ConversionQuery}, not {@code null}
      * @return {@code true}, if such an {@link ExchangeRate} is currently
      * defined.
      */
-    boolean isAvailable(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
+    boolean isAvailable(ConversionQuery conversionQuery);
 
     /**
      * Access a {@link ExchangeRate} using the given currencies. The
@@ -71,43 +68,58 @@ public interface ExchangeRateProvider{
      * valid. It should be the same as
      * {@code getExchangeRate(base, term, System.currentTimeMillis())}.
      *
-     * @param base              base {@link CurrencyUnit}, not {@code null}
-     * @param term              term {@link CurrencyUnit}, not {@code null}
-     * @param conversionContext the required {@link ConversionContext}, not {@code null}
+     * @param conversionQuery the required {@link ConversionQuery}, not {@code null}
      * @return the matching {@link ExchangeRate}.
      * @throws CurrencyConversionException If no such rate is available.
+     * @throws MonetaryException           if one of the currency codes passed is not valid.
+     * @see ConversionQuery.ConversionQueryBuilder
      */
-    ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
+    ExchangeRate getExchangeRate(ConversionQuery conversionQuery);
 
     /**
-     * The method reverses the {@link ExchangeRate} to a rate mapping from term
-     * to base {@link CurrencyUnit}. Hereby the factor must <b>not</b> be
-     * recalculated as {@code 1/oldFactor}, since typically reverse rates are
-     * not symmetric in most cases.
+     * Access a {@link CurrencyConversion} that can be applied as a
+     * {@link MonetaryOperator} to an amount.
      *
-     * @return the matching reversed {@link ExchangeRate}, or {@code null}, if
-     * the rate cannot be reversed.
+     * @param conversionQuery the required {@link ConversionQuery}, not {@code null}
+     * @return a new instance of a corresponding {@link CurrencyConversion},
+     * never {@code null}.
+     * @throws MonetaryException if one of the currency codes passed is not valid.
+     * @see ConversionQuery.ConversionQueryBuilder
      */
-    default ExchangeRate getReversed(ExchangeRate rate){
-        return null;
+    CurrencyConversion getCurrencyConversion(ConversionQuery conversionQuery);
+
+
+    /**
+     * Access a {@link ExchangeRate} using the given currencies. The
+     * {@link ExchangeRate} may be, depending on the data provider, eal-time or
+     * deferred. This method should return the rate that is <i>currently</i>
+     * valid.
+     *
+     * @param base base {@link CurrencyUnit}, not {@code null}
+     * @param term term {@link CurrencyUnit}, not {@code null}
+     * @throws CurrencyConversionException If no such rate is available.
+     */
+    default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){
+        return getExchangeRate(
+                new ConversionQuery.ConversionQueryBuilder().setBaseCurrency(base).setTermCurrency(term).build());
     }
 
     /**
      * Access a {@link CurrencyConversion} that can be applied as a
      * {@link MonetaryOperator} to an amount.
      *
-     * @param term              term {@link CurrencyUnit}, not {@code null}
-     * @param conversionContext the required {@link ConversionContext}, not {@code null}
+     * @param term term {@link CurrencyUnit}, not {@code null}
      * @return a new instance of a corresponding {@link CurrencyConversion},
      * never {@code null}.
      */
-    CurrencyConversion getCurrencyConversion(CurrencyUnit term, ConversionContext conversionContext);
+    default CurrencyConversion getCurrencyConversion(CurrencyUnit term){
+        return getCurrencyConversion(new ConversionQuery.ConversionQueryBuilder().setTermCurrency(term).build());
+    }
 
     /**
      * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
      * available from this provider. This method should check, if a given rate
-     * is <i>currently</i> defined. It should be the same as
-     * {@code isAvailable(base, term, System.currentTimeMillis())}.
+     * is <i>currently</i> defined.
      *
      * @param base the base {@link CurrencyUnit}
      * @param term the term {@link CurrencyUnit}
@@ -115,8 +127,10 @@ public interface ExchangeRateProvider{
      * defined.
      */
     default boolean isAvailable(CurrencyUnit base, CurrencyUnit term){
-        return isAvailable(base, term, ConversionContext.ANY_CONVERSION);
+        return isAvailable(
+                new ConversionQuery.ConversionQueryBuilder().setBaseCurrency(base).setTermCurrency(term).build());
     }
+
 
     /**
      * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
@@ -132,40 +146,6 @@ public interface ExchangeRateProvider{
      */
     default boolean isAvailable(String baseCode, String termCode){
         return isAvailable(MonetaryCurrencies.getCurrency(baseCode), MonetaryCurrencies.getCurrency(termCode));
-    }
-
-    /**
-     * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
-     * available from this provider. This method should check, if a given rate
-     * is <i>currently</i> defined. It should be the same as
-     * {@code isAvailable(base, term, System.currentTimeMillis())}.
-     *
-     * @param baseCode          the base currency code
-     * @param termCode          the terminal/target currency code
-     * @param conversionContext the required {@link ConversionContext}, not {@code null}
-     * @return {@code true}, if such an {@link ExchangeRate} is currently
-     * defined.
-     * @throws MonetaryException if one of the currency codes passed is not valid.
-     */
-    default boolean isAvailable(String baseCode, String termCode, ConversionContext conversionContext){
-        return isAvailable(MonetaryCurrencies.getCurrency(baseCode), MonetaryCurrencies.getCurrency(termCode),
-                           conversionContext);
-    }
-
-    /**
-     * Access a {@link ExchangeRate} using the given currencies. The
-     * {@link ExchangeRate} may be, depending on the data provider, eal-time or
-     * deferred. This method should return the rate that is <i>currently</i>
-     * valid. It should be the same as
-     * {@code getExchangeRate(base, term, System.currentTimeMillis())}.
-     *
-     * @param base base {@link CurrencyUnit}, not {@code null}
-     * @param term term {@link CurrencyUnit}, not {@code null}
-     * @return the matching {@link ExchangeRate}.
-     * @throws CurrencyConversionException If no such rate is available.
-     */
-    default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){
-        return getExchangeRate(base, term, ConversionContext.ANY_CONVERSION);
     }
 
 
@@ -186,36 +166,18 @@ public interface ExchangeRateProvider{
         return getExchangeRate(MonetaryCurrencies.getCurrency(baseCode), MonetaryCurrencies.getCurrency(termCode));
     }
 
-    /**
-     * Access a {@link ExchangeRate} using the given currencies. The
-     * {@link ExchangeRate} may be, depending on the data provider, eal-time or
-     * deferred. This method should return the rate that is <i>currently</i>
-     * valid. It should be the same as
-     * {@code getExchangeRate(base, term, System.currentTimeMillis())}.
-     *
-     * @param baseCode          base currency code, not {@code null}
-     * @param termCode          term/target currency code, not {@code null}
-     * @param conversionContext the required {@link ConversionContext}, not {@code null}
-     * @return the matching {@link ExchangeRate}.
-     * @throws CurrencyConversionException If no such rate is available.
-     * @throws MonetaryException           if one of the currency codes passed is not valid.
-     */
-    default ExchangeRate getExchangeRate(String baseCode, String termCode, ConversionContext conversionContext){
-        return getExchangeRate(MonetaryCurrencies.getCurrency(baseCode), MonetaryCurrencies.getCurrency(termCode),
-                               conversionContext);
-    }
-
 
     /**
-     * Access a {@link CurrencyConversion} that can be applied as a
-     * {@link MonetaryOperator} to an amount.
+     * The method reverses the {@link ExchangeRate} to a rate mapping from term
+     * to base {@link CurrencyUnit}. Hereby the factor must <b>not</b> be
+     * recalculated as {@code 1/oldFactor}, since typically reverse rates are
+     * not symmetric in most cases.
      *
-     * @param term term {@link CurrencyUnit}, not {@code null}
-     * @return a new instance of a corresponding {@link CurrencyConversion},
-     * never {@code null}.
+     * @return the matching reversed {@link ExchangeRate}, or {@code null}, if
+     * the rate cannot be reversed.
      */
-    default CurrencyConversion getCurrencyConversion(CurrencyUnit term){
-        return getCurrencyConversion(term, ConversionContext.ANY_CONVERSION);
+    default ExchangeRate getReversed(ExchangeRate rate){
+        return null;
     }
 
 
@@ -232,17 +194,4 @@ public interface ExchangeRateProvider{
         return getCurrencyConversion(MonetaryCurrencies.getCurrency(termCode));
     }
 
-    /**
-     * Access a {@link CurrencyConversion} that can be applied as a
-     * {@link MonetaryOperator} to an amount.
-     *
-     * @param termCode          terminal/target currency code, not {@code null}
-     * @param conversionContext the required {@link ConversionContext}, not {@code null}
-     * @return a new instance of a corresponding {@link CurrencyConversion},
-     * never {@code null}.
-     * @throws MonetaryException if one of the currency codes passed is not valid.
-     */
-    default CurrencyConversion getCurrencyConversion(String termCode, ConversionContext conversionContext){
-        return getCurrencyConversion(MonetaryCurrencies.getCurrency(termCode), conversionContext);
-    }
 }

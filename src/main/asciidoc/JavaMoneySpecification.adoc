@@ -785,9 +785,10 @@ Implementations of +MonetaryAmount<T>+
    .. its +CurrencyUnit+
    .. its numeric value, with any _non significant trailing zeros truncated_.
    .. +MonetaryContext+
+. must be thread safe and immutable.
 . must be comparable.
-. must be serializable.
-. should be immutable and thread safe.
+. should be serializable.
+. should be final.
 . Finally implementations should not implement a method +getAmount()+. This method is reserved for future integration
   into the JDK.
 . If the numeric representation allows to model +-0+, this value is also considered to be +isZero()==true+, and

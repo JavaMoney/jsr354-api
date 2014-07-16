@@ -44,7 +44,7 @@ public class AbstractContextTest{
     @Test
     public void testSetAll(){
         TestContext ctx = new TestContext.Builder().set("myKey", "Test").build();
-        TestContext ctx2 = new TestContext.Builder().setAll(ctx).build();
+        TestContext ctx2 = new TestContext.Builder().importContext(ctx).build();
         assertEquals(ctx, ctx2);
     }
 

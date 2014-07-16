@@ -71,6 +71,18 @@ public interface MonetaryConversionsSingletonSpi{
     Collection<ExchangeRateProvider> getExchangeRateProviders(ConversionQuery conversionQuery);
 
     /**
+     * Access an instance of {@link ExchangeRateProvider}.
+     *
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
+     *                        required, not null.
+     * @return an {@link ExchangeRateProvider} built up with the given sub
+     * providers, never {@code null}
+     * @throws MonetaryException if a provider could not be found.
+     * @see #isProviderAvailable(String)
+     */
+    ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery);
+
+    /**
      * Allows to quickly check, if a {@link ProviderContext} is supported.
      *
      * @param provider The provider required, not {@code null}
@@ -96,35 +108,6 @@ public interface MonetaryConversionsSingletonSpi{
      */
     default boolean isAvailable(ConversionQuery conversionQuery){
         return !getExchangeRateProviders(conversionQuery).isEmpty();
-    }
-
-    /**
-     * Access an instance of {@link ExchangeRateProvider}.
-     *
-     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
-     *                        required, not null.
-     * @return an {@link ExchangeRateProvider} built up with the given sub
-     * providers, never {@code null}
-     * @throws MonetaryException if a provider could not be found.
-     * @see #isProviderAvailable(String)
-     */
-    default ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery){
-        Collection<ExchangeRateProvider> providers = getExchangeRateProviders(conversionQuery);
-        if(providers.isEmpty()){
-            throw new MonetaryException("No matching ExchangeRateProvider found for ConversionQuery: " + conversionQuery);
-        }
-        return providers.iterator().next();
-    }
-
-    /**
-     * Get the {@link ProviderContext} for a provider.
-     *
-     * @param provider the provider name, not {@code null}.
-     * @return the corresponding {@link ProviderContext}, not {@code null}.
-     * @throws IllegalArgumentException if no such provider is registered.
-     */
-    default ProviderContext getProviderContext(String provider){
-        return getExchangeRateProvider(new ConversionQuery.ConversionQueryBuilder().setProviders(provider).build()).getProviderContext();
     }
 
     /**

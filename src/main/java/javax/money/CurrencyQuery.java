@@ -30,6 +30,8 @@ import java.util.*;
  */
 public final class CurrencyQuery  extends AbstractContext implements Serializable{
 
+    public static final CurrencyQuery ANY_QUERY = new CurrencyQueryBuilder().build();
+
     /**
      * Constructor, used from the Builder.
      * @param builder the corresponding {@link javax.money.CurrencyQuery.CurrencyQueryBuilder}, not null.

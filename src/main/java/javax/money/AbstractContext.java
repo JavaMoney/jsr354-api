@@ -419,19 +419,38 @@ public abstract class AbstractContext implements Serializable{
         private final Map<Class<?>,Map<Object,Object>> data = new HashMap<>();
 
         /**
-         * Apply all attributes on the given context.
+         * Apply all attributes on the given context, hereby existing entries are preserved.
          *
          * @param context the context to be applied, not null.
          * @return this Builder, for chaining
+         * @see #importContext(AbstractContext, boolean)
          */
         @SuppressWarnings("unchecked")
-        public B setAll(AbstractContext context){
+        public B importContext(AbstractContext context){
+            return importContext(context, false);
+        }
+
+        /**
+         * Apply all attributes on the given context.
+         *
+         * @param context             the context to be applied, not null.
+         * @param overwriteDuplicates flag, if existing entries should be overwritten.
+         * @return this Builder, for chaining
+         */
+        @SuppressWarnings("unchecked")
+        public B importContext(AbstractContext context, boolean overwriteDuplicates){
             for(Map.Entry<Class<?>,Map<Object,Object>> en : context.data.entrySet()){
                 Map<Object,Object> presentMap = this.data.get(en.getKey());
                 if(presentMap == null){
                     this.data.put(en.getKey(), new HashMap<>(en.getValue()));
                 }else{
-                    presentMap.putAll(en.getValue());
+                    if(overwriteDuplicates){
+                        presentMap.putAll(en.getValue());
+                    }else{
+                        for(Map.Entry<Object,Object> newEntry : en.getValue().entrySet()){
+                            presentMap.putIfAbsent(newEntry.getKey(), newEntry.getValue());
+                        }
+                    }
                 }
             }
             return (B) this;

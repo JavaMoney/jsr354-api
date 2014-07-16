@@ -51,17 +51,6 @@ public interface ExchangeRateProvider{
     ProviderContext getProviderContext();
 
     /**
-     * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
-     * available from this provider. This method should check, if a given rate
-     * is <i>currently</i> defined.
-     *
-     * @param conversionQuery the required {@link ConversionQuery}, not {@code null}
-     * @return {@code true}, if such an {@link ExchangeRate} is currently
-     * defined.
-     */
-    boolean isAvailable(ConversionQuery conversionQuery);
-
-    /**
      * Access a {@link ExchangeRate} using the given currencies. The
      * {@link ExchangeRate} may be, depending on the data provider, eal-time or
      * deferred. This method should return the rate that is <i>currently</i>
@@ -87,6 +76,26 @@ public interface ExchangeRateProvider{
      * @see ConversionQuery.ConversionQueryBuilder
      */
     CurrencyConversion getCurrencyConversion(ConversionQuery conversionQuery);
+
+
+    /**
+     * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
+     * available from this provider. This method should check, if a given rate
+     * is <i>currently</i> defined.
+     *
+     * @param conversionQuery the required {@link ConversionQuery}, not {@code null}
+     * @return {@code true}, if such an {@link ExchangeRate} is currently
+     * defined.
+     */
+    default boolean isAvailable(ConversionQuery conversionQuery){
+        try{
+            getExchangeRate(conversionQuery);
+            return true;
+        }
+        catch(Exception e){
+            return false;
+        }
+    }
 
 
     /**
@@ -177,6 +186,11 @@ public interface ExchangeRateProvider{
      * the rate cannot be reversed.
      */
     default ExchangeRate getReversed(ExchangeRate rate){
+        ConversionQuery reverseQuery = rate.getConversionContext().toQueryBuilder().setBaseCurrency(rate.getTerm())
+                .setTermCurrency(rate.getBase()).build();
+        if(isAvailable(reverseQuery)){
+            return getExchangeRate(reverseQuery);
+        }
         return null;
     }
 

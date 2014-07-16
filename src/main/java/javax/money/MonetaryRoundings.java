@@ -72,7 +72,9 @@ public final class MonetaryRoundings{
      * @return the (shared) default rounding instance.
      */
     public static MonetaryRounding getDefaultRounding(){
-        return monetaryRoundingsSpi.getDefaultRounding();
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                                                                                         "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).getDefaultRounding();
     }
 
 
@@ -89,7 +91,9 @@ public final class MonetaryRoundings{
      * rounding, never {@code null}.
      */
     public static MonetaryRounding getRounding(CurrencyUnit currencyUnit, String... providers){
-        return monetaryRoundingsSpi.getRounding(currencyUnit, providers);
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                                                                             "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).getRounding(currencyUnit, providers);
     }
 
     /**
@@ -105,7 +109,9 @@ public final class MonetaryRoundings{
      *                                  {@link RoundingProviderSpi} instance.
      */
     public static MonetaryRounding getRounding(String roundingId, String... providers){
-        return monetaryRoundingsSpi.getRounding(roundingId, providers);
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                                                                             "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).getRounding(roundingId, providers);
     }
 
     /**
@@ -117,7 +123,9 @@ public final class MonetaryRoundings{
      *                                  {@link RoundingProviderSpi} instance.
      */
     public static MonetaryRounding getRounding(RoundingQuery roundingQuery){
-        return monetaryRoundingsSpi.getRounding(roundingQuery);
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                                                                             "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).getRounding(roundingQuery);
     }
 
     /**
@@ -127,7 +135,9 @@ public final class MonetaryRoundings{
      * @return all {@link javax.money.MonetaryRounding} instances macthing the query, never {@code null}.
      */
     public static Collection<MonetaryRounding> getRoundings(RoundingQuery roundingQuery){
-        return monetaryRoundingsSpi.getRoundings(roundingQuery);
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                                                                             "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).getRoundings(roundingQuery);
     }
 
 
@@ -139,7 +149,9 @@ public final class MonetaryRoundings{
      * @return the set of custom rounding ids, never {@code null}.
      */
     public static Set<String> getRoundingNames(String... providers){
-        return monetaryRoundingsSpi.getRoundingNames(providers);
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                                                                             "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).getRoundingNames(providers);
     }
 
     /**
@@ -148,7 +160,9 @@ public final class MonetaryRoundings{
      * @return the set of provider names, never {@code null}.
      */
     public static Set<String> getProviderNames(){
-        return monetaryRoundingsSpi.getProviderNames();
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                                                                             "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).getProviderNames();
     }
 
     /**
@@ -191,7 +205,7 @@ public final class MonetaryRoundings{
          * @throws javax.money.MonetaryException if no such rounding could be evaluated.
          */
         public RoundingQuery.Builder createRoundingQueryBuilder(){
-            throw new IllegalStateException("No monetaryRoundingsSpi registered.");
+            throw new IllegalStateException("No MonetaryRoundingsSingletonSpi registered.");
         }
 
         /**

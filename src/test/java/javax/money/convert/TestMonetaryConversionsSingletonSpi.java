@@ -62,15 +62,6 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
     }
 
     @Override
-    public ProviderContext getProviderContext(String provider){
-        if("test".equals(provider)){
-            return ProviderContext.of(provider);
-        }
-        throw new MonetaryException(
-                "Only 'test' provider supported by 'test' provider (TestMonetaryConversionsSingletonSpi).");
-    }
-
-    @Override
     public List<String> getDefaultProviderChain(){
         return new ArrayList(getProviderNames());
     }

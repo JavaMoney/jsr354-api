@@ -41,7 +41,8 @@ public class MonetaryFormatsTest{
         MonetaryAmountFormat fmt = MonetaryFormats.getAmountFormat(s);
         assertNotNull(fmt);
         assertEquals(fmt.getClass(), TestAmountFormatProvider.TestFormat.class);
-        assertEquals(s, fmt.getAmountFormatContext());
+        AmountFormatContext ctx = new AmountFormatContext.Builder(Locale.ENGLISH).importContext(s).build();
+        assertEquals(ctx, fmt.getAmountFormatContext());
     }
 
     @Test

@@ -30,8 +30,8 @@ public class AmountStyleTest{
 
     @Test
     public void testToBuilder() throws Exception{
-        AmountFormatQuery style = new AmountFormatQuery.AmountFormatQueryBuilder(Locale.ENGLISH).build();
-        AmountFormatQuery.AmountFormatQueryBuilder builder = style.toBuilder();
+        AmountFormatQuery style = new AmountFormatQuery.Builder(Locale.ENGLISH).build();
+        AmountFormatQuery.Builder builder = style.toBuilder();
         assertNotNull(builder);
         assertEquals(style, builder.build());
     }
@@ -64,7 +64,8 @@ public class AmountStyleTest{
 
     @Test
     public void testToString() throws Exception{
-        AmountFormatContext style = new AmountFormatContext.Builder(Locale.GERMAN).set("groupSizes", new int[]{1, 2, 3, 4})
+        AmountFormatContext style = new AmountFormatContext.Builder(Locale.GERMAN).set("groupSizes",
+                                                                                       new int[]{1, 2, 3, 4})
                 .set("currencyStyle", "NUMERIC_CODE").set("pattern", "###").build();
         String toString = style.toString();
         assertNotNull(toString);

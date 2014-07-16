@@ -9,6 +9,8 @@
 package javax.money.format;
 
 import javax.money.AbstractContext;
+import javax.money.MonetaryAmountFactory;
+import javax.money.MonetaryAmounts;
 import javax.money.MonetaryContext;
 import java.util.*;
 
@@ -32,9 +34,9 @@ public final class AmountFormatQuery extends AbstractContext{
     /**
      * Constructor, used from the Builder.
      *
-     * @param builder the corresponding {@link javax.money.format.AmountFormatQuery.AmountFormatQueryBuilder}, not null.
+     * @param builder the corresponding {@link javax.money.format.AmountFormatQuery.Builder}, not null.
      */
-    private AmountFormatQuery(AmountFormatQueryBuilder builder){
+    private AmountFormatQuery(Builder builder){
         super(builder);
     }
 
@@ -57,12 +59,13 @@ public final class AmountFormatQuery extends AbstractContext{
     }
 
     /**
-     * Gets the {@link javax.money.MonetaryContext} to be used, when amount's are parsed.
+     * Gets the {@link javax.money.MonetaryAmountFactoryQuery} to be used for accessing {@link  javax.money
+     * .MonetaryAmountFactory}, when amount's are parsed.
      *
      * @return the monetary context, or {@code null}.
      */
-    public MonetaryContext getMonetaryContext(){
-        return get(MonetaryContext.class);
+    public MonetaryAmountFactory getMonetaryAmopuntFactory(){
+        return get(MonetaryAmountFactory.class, MonetaryAmounts.getDefaultAmountFactory());
     }
 
     /**
@@ -81,15 +84,16 @@ public final class AmountFormatQuery extends AbstractContext{
      * @param locale the target locale, not null.
      */
     public static AmountFormatQuery of(Locale locale){
-        return new AmountFormatQueryBuilder(locale).build();
+        return new Builder(locale).build();
     }
 
     /**
-     * Get a {@link AmountFormatQueryBuilder} preinitialized with this context instance.
+     * Get a {@link javax.money.format.AmountFormatQuery.Builder} preinitialized with this context instance.
+     *
      * @return a new preinitialized builder, never null.
      */
-    public AmountFormatQueryBuilder toBuilder(){
-        return new AmountFormatQueryBuilder(this);
+    public Builder toBuilder(){
+        return new Builder(this);
     }
 
 
@@ -98,35 +102,35 @@ public final class AmountFormatQuery extends AbstractContext{
      * <p>
      * Note this class is NOT thread-safe.
      */
-    public static final class AmountFormatQueryBuilder
-            extends AbstractContext.AbstractContextBuilder<AmountFormatQueryBuilder,AmountFormatQuery>{
+    public static final class Builder extends AbstractContext.AbstractContextBuilder<Builder,AmountFormatQuery>{
 
         /**
-         * Creates a new {@link AmountFormatQueryBuilder}.
+         * Creates a new {@link javax.money.format.AmountFormatQuery.Builder}.
          *
          * @param style the base {@link AmountFormatContext}, not {@code null}.
          */
-        public AmountFormatQueryBuilder(AmountFormatQuery style){
-            setAll(style);
+        public Builder(AmountFormatQuery style){
+            importContext(style);
         }
 
         /**
-         * Creates a new {@link AmountFormatQueryBuilder}.
+         * Creates a new {@link javax.money.format.AmountFormatQuery.Builder}.
          *
          * @param styleId the target styleId {@link String}, not {@code null}.
          */
-        public AmountFormatQueryBuilder(String styleId){
+        public Builder(String styleId){
             Objects.requireNonNull(styleId, "styleId required.");
             set(STYLE_ID, styleId);
         }
 
         /**
-         * Creates a new default {@link AmountFormatQueryBuilder} for a formatter based on the locale specific
+         * Creates a new default {@link javax.money.format.AmountFormatQuery.Builder} for a formatter based on the
+         * locale specific
          * defaults.
          *
          * @param locale the target {@link java.util.Locale}, not {@code null}.
          */
-        public AmountFormatQueryBuilder(Locale locale){
+        public Builder(Locale locale){
             Objects.requireNonNull(locale, "locale required.");
             setLocale(locale);
             set(STYLE_ID, DEFAULT_STYLE_ID);
@@ -139,7 +143,7 @@ public final class AmountFormatQuery extends AbstractContext{
          * @param styleId the styleId, not null.
          * @return the Builder, for chaining.
          */
-        public AmountFormatQueryBuilder setStyleId(String styleId){
+        public Builder setStyleId(String styleId){
             return set(STYLE_ID, styleId);
         }
 
@@ -149,7 +153,7 @@ public final class AmountFormatQuery extends AbstractContext{
          * @param locale the locale, not null.
          * @return the Builder, for chaining.
          */
-        public AmountFormatQueryBuilder setLocale(Locale locale){
+        public Builder setLocale(Locale locale){
             return set(locale);
         }
 
@@ -158,7 +162,7 @@ public final class AmountFormatQuery extends AbstractContext{
          *
          * @return the ordered providers, never null.
          */
-        public AmountFormatQueryBuilder setProviders(Collection<String> providers){
+        public Builder setProviders(Collection<String> providers){
             return setCollection("providers", providers);
         }
 
@@ -167,7 +171,7 @@ public final class AmountFormatQuery extends AbstractContext{
          *
          * @return the ordered providers, never null.
          */
-        public AmountFormatQueryBuilder setProviders(String... providers){
+        public Builder setProviders(String... providers){
             return setCollection("providers", Arrays.asList(providers));
         }
 
@@ -178,7 +182,7 @@ public final class AmountFormatQuery extends AbstractContext{
          * @param monetaryContext the monetary context, not {@code null}.
          * @return this builder for chaining.
          */
-        public AmountFormatQueryBuilder setMonetaryContext(MonetaryContext monetaryContext){
+        public Builder setMonetaryContext(MonetaryContext monetaryContext){
             Objects.requireNonNull(monetaryContext);
             return set(monetaryContext);
         }

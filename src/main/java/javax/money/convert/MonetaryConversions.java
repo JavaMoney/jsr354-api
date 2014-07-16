@@ -102,7 +102,9 @@ public final class MonetaryConversions{
      * @throws IllegalArgumentException if the query defines {@link ExchangeRateProvider}s that are not available.
      */
     public static CurrencyConversion getConversion(ConversionQuery conversionQuery){
-        return MONETARY_CONVERSION_SPI.getConversion(conversionQuery);
+        return Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
+                                                                                "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available.")
+        ).getConversion(conversionQuery);
     }
 
     /**
@@ -136,7 +138,9 @@ public final class MonetaryConversions{
      * @return all supported provider ids, never {@code null}.
      */
     public static Collection<String> getProviderNames(){
-        Collection<String> providers = MONETARY_CONVERSION_SPI.getProviderNames();
+        Collection<String> providers = Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
+                                                                                                                 "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available.")
+        ).getProviderNames();
         if(Objects.isNull(providers)){
             Logger.getLogger(MonetaryConversions.class.getName()).warning(
                     "No supported rate/conversion providers returned by SPI: " +
@@ -145,19 +149,6 @@ public final class MonetaryConversions{
             return Collections.emptySet();
         }
         return providers;
-    }
-
-    /**
-     * Get the {@link ProviderContext} for a provider.
-     *
-     * @param provider the provider name, not {@code null}.
-     * @return the corresponding {@link ProviderContext}, not {@code null}.
-     * @throws IllegalArgumentException if no such provider is registered.
-     */
-    public static ProviderContext getProviderContext(String provider){
-        ProviderContext ctx = MONETARY_CONVERSION_SPI.getProviderContext(provider);
-        return Optional.ofNullable(ctx).orElseThrow(() -> new MonetaryException("No such rate provider: " + provider));
-
     }
 
     /**
@@ -170,7 +161,9 @@ public final class MonetaryConversions{
      * obtained from the {@link MonetaryConversions} instance.
      */
     public static boolean isProviderAvailable(String provider){
-        return MONETARY_CONVERSION_SPI.isProviderAvailable(provider);
+        return Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
+                                                                                "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available.")
+        ).isProviderAvailable(provider);
     }
 
     /**
@@ -179,7 +172,9 @@ public final class MonetaryConversions{
      * @return the default provider, never {@code null}.
      */
     public static List<String> getDefaultProviderChain(){
-        List<String> defaultChain = MONETARY_CONVERSION_SPI.getDefaultProviderChain();
+        List<String> defaultChain = Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
+                                                                                                     "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available.")
+        ).getDefaultProviderChain();
         Objects.requireNonNull(defaultChain, "No default provider chain provided by SPI: " +
                                        MONETARY_CONVERSION_SPI.getClass().getName());
         return defaultChain;

@@ -78,6 +78,14 @@ public final class MonetaryContext extends AbstractContext implements Serializab
         return getAny(AMOUNT_TYPE, Class.class);
     }
 
+    public static MonetaryContext from(MonetaryAmountFactoryQuery monetaryQuery, Class<? extends MonetaryAmount> moneyClass){
+        return new Builder(moneyClass).importContext(monetaryQuery).build();
+    }
+
+    public static MonetaryContext from(MonetaryContext monetaryContext, Class<? extends MonetaryAmount> moneyClass){
+        return new Builder(moneyClass).importContext(monetaryContext).build();
+    }
+
     /**
      * Builder class for creating new instances of {@link javax.money.MonetaryContext} adding detailed information
      * about a {@link javax.money.MonetaryAmount} instance.
@@ -105,9 +113,9 @@ public final class MonetaryContext extends AbstractContext implements Serializab
          * @param context the context to be applied, not null.
          * @return this Builder for chaining.
          */
-        public Builder setAll(AbstractContext context){
+        public Builder importContext(AbstractContext context){
             Class amountType = context.getAny(AMOUNT_TYPE, Class.class);
-            super.setAll(context);
+            super.importContext(context);
             return set(AMOUNT_TYPE, amountType, Class.class);
         }
 

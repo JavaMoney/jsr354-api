@@ -16,10 +16,10 @@ import java.io.Serializable;
 public final class MonetaryAmountFactoryQuery extends AbstractContext implements Serializable{
 
     /**
-     * Constructor, used from the {@link javax.money.MonetaryAmountFactoryQuery.MonetaryAmountFactoryQueryBuilder}.
+     * Constructor, used from the {@link javax.money.MonetaryAmountFactoryQuery.Builder}.
      * @param builder the corresponding builder, not null.
      */
-    private MonetaryAmountFactoryQuery(MonetaryAmountFactoryQueryBuilder builder){
+    private MonetaryAmountFactoryQuery(Builder builder){
         super(builder);
     }
 
@@ -46,8 +46,8 @@ public final class MonetaryAmountFactoryQuery extends AbstractContext implements
      *
      * @return the maximal precision, or null, if this attribute must not be considered.
      */
-    public Class<? extends MonetaryAmount> getTargetType(){
-        return getAny("targetType", Class.class, null);
+    public Class<? extends MonetaryAmount> getAmountType(){
+        return getAny("amountType", Class.class, null);
     }
 
     /**
@@ -67,8 +67,8 @@ public final class MonetaryAmountFactoryQuery extends AbstractContext implements
      * <p/>
      * Note this class is NOT thread-safe.
      */
-    public static final class MonetaryAmountFactoryQueryBuilder
-            extends AbstractContextBuilder<MonetaryAmountFactoryQueryBuilder,MonetaryAmountFactoryQuery>{
+    public static final class Builder
+            extends AbstractContextBuilder<Builder,MonetaryAmountFactoryQuery>{
 
         /**
          * Set the maximal scale to be supported.
@@ -76,7 +76,7 @@ public final class MonetaryAmountFactoryQuery extends AbstractContext implements
          * @param maxScale the max scale, >= 0.
          * @return this builder for chaining.
          */
-        public MonetaryAmountFactoryQueryBuilder setMaxScale(int maxScale){
+        public Builder setMaxScale(int maxScale){
             return set("maxScale", maxScale);
         }
 
@@ -86,7 +86,7 @@ public final class MonetaryAmountFactoryQuery extends AbstractContext implements
          * @param precision the precision, >= 0, 0 meaning unlimited.
          * @return this builder for chaining.
          */
-        public MonetaryAmountFactoryQueryBuilder setPrecision(int precision){
+        public Builder setPrecision(int precision){
             return set("precision", precision);
         }
 
@@ -96,7 +96,7 @@ public final class MonetaryAmountFactoryQuery extends AbstractContext implements
          * @param fixedScale the fixed scale flag.
          * @return this builder for chaining.
          */
-        public MonetaryAmountFactoryQueryBuilder setFixedScale(boolean fixedScale){
+        public Builder setFixedScale(boolean fixedScale){
             return set("fixedScale", fixedScale);
         }
 
@@ -107,8 +107,8 @@ public final class MonetaryAmountFactoryQuery extends AbstractContext implements
          * @param amountType the target amount type, not null.
          * @return this builder for chaining.
          */
-        public MonetaryAmountFactoryQueryBuilder setTargetType(Class<? extends MonetaryAmount> amountType){
-            set("targetType", amountType, Class.class);
+        public Builder setTargetType(Class<? extends MonetaryAmount> amountType){
+            set("amountType", amountType, Class.class);
             return this;
         }
 

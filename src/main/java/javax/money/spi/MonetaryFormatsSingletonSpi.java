@@ -80,7 +80,7 @@ public interface MonetaryFormatsSingletonSpi{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){
-        return getAmountFormat(new AmountFormatQuery.AmountFormatQueryBuilder(locale).setProviders(providers).build());
+        return getAmountFormat(new AmountFormatQuery.Builder(locale).setProviders(providers).build());
     }
 
     /**
@@ -93,7 +93,7 @@ public interface MonetaryFormatsSingletonSpi{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     default MonetaryAmountFormat getAmountFormat(String styleId, String... providers){
-        return getAmountFormat(new AmountFormatQuery.AmountFormatQueryBuilder(styleId).setProviders(providers).build());
+        return getAmountFormat(new AmountFormatQuery.Builder(styleId).setProviders(providers).build());
     }
 
 

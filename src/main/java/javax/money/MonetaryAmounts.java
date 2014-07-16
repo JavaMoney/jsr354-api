@@ -97,7 +97,6 @@ public final class MonetaryAmounts{
         MonetaryAmountFactory<T> factory = monetaryAmountsSingletonSpi.getAmountFactory(amountType);
         return Optional.ofNullable(factory).orElseThrow(
                 () -> new MonetaryException("No AmountFactory available for type: " + amountType.getName()));
-
     }
 
     /**

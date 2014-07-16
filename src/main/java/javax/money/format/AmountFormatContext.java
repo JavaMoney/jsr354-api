@@ -78,7 +78,7 @@ public final class AmountFormatContext extends AbstractContext{
          * @param style the base {@link AmountFormatContext}, not {@code null}.
          */
         public Builder(AmountFormatQuery style){
-            setAll(style);
+            importContext(style);
         }
 
         /**
@@ -101,7 +101,6 @@ public final class AmountFormatContext extends AbstractContext{
             Objects.requireNonNull(locale, "locale required.");
             setLocale(locale);
             set(STYLE_ID, DEFAULT_STYLE_ID);
-            set(locale);
         }
 
         /**
@@ -127,12 +126,12 @@ public final class AmountFormatContext extends AbstractContext{
         /**
          * Sets the {@link javax.money.MonetaryContext} to be used, when amount's are parsed.
          *
-         * @param monetaryContext the monetary context, not {@code null}.
+         * @param monetaryAmountFactory the monetary amount factory, not {@code null}.
          * @return this builder for chaining.
          */
-        public Builder setMonetaryContext(MonetaryContext monetaryContext){
-            Objects.requireNonNull(monetaryContext);
-            return set(monetaryContext);
+        public Builder setMonetaryAmountFactory(MonetaryAmountFactory monetaryAmountFactory){
+            Objects.requireNonNull(monetaryAmountFactory);
+            return set(monetaryAmountFactory, MonetaryAmountFactory.class);
         }
 
         /**

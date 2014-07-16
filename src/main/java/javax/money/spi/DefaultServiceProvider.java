@@ -27,20 +27,6 @@ public class DefaultServiceProvider implements ServiceProvider {
     private final ConcurrentHashMap<Class, List<Object>> servicesLoaded = new ConcurrentHashMap<>();
 
     /**
-     * Access all services available by type.
-     *
-     * @param serviceType
-     *            the service type.
-     * @param <T>
-     *            the concrete type.
-     * @return all services available, never {@code null}.
-     */
-    @Override
-    public <T> List<T> getServices(Class<T> serviceType) {
-        return getServices(serviceType, Collections.<T>emptyList());
-    }
-
-    /**
      * Loads and registers services.
      *
      * @param serviceType

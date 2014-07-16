@@ -13,10 +13,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalUnit;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Query for accessing {@link javax.money.convert.CurrencyConversion} instances. If not properties are set the query
@@ -38,12 +35,12 @@ public final class ConversionQuery extends AbstractContext{
 
     /**
      * Get the providers to be queried. If set, only the providers listed are queried. By default, or if this
-     * method returns an empty or null array, all providers are queried in random order.
+     * method returns an empty list, all providers are queried in random order.
      *
      * @return the providers and provider ordering to be considered, or an empty array, but never null.
      */
-    public Collection<String> getProviders(){
-        return getCollection("providers", Collections.emptySet());
+    public List<String> getProviders(){
+        return getList("providers", Collections.emptyList());
     }
 
     /**
@@ -51,8 +48,8 @@ public final class ConversionQuery extends AbstractContext{
      *
      * @return the rate types set, or an empty array, but never null.
      */
-    public Collection<RateType> getRateTypes(){
-        return getCollection("rateTypes", Collections.emptySet());
+    public Set<RateType> getRateTypes(){
+        return getSet("rateTypes", Collections.emptySet());
     }
 
     /**
@@ -114,14 +111,12 @@ public final class ConversionQuery extends AbstractContext{
     }
 
     /**
-     * Create a query instance that selects only the given providers.
-     * @param providers the providers to be used, not null.
-     * @return the corresponding query instance.
+     * Creates a new Builder preinitialized with values from this instance.
+     * @return a new Builder, never null.
      */
-    public static ConversionQuery of(String... providers){
-        return new ConversionQueryBuilder().setProviders(providers).build();
+    public ConversionQueryBuilder toBuilder(){
+        return new ConversionQueryBuilder().importContext(this);
     }
-
 
     /**
      * Builder class for creating new instances of {@link javax.money.convert.ConversionQuery} adding detailed
@@ -141,7 +136,7 @@ public final class ConversionQuery extends AbstractContext{
          * @return the query for chaining.
          */
         public ConversionQueryBuilder setProviders(String... providers){
-            return setCollection("providers", Arrays.asList(providers));
+            return setList("providers", Arrays.asList(providers));
         }
 
         /**
@@ -151,8 +146,8 @@ public final class ConversionQuery extends AbstractContext{
          * @param providers the providers to use, not null.
          * @return the query for chaining.
          */
-        public ConversionQueryBuilder setProviders(Collection<String> providers){
-            return setCollection("providers", providers);
+        public ConversionQueryBuilder setProviders(List<String> providers){
+            return setList("providers", providers);
         }
 
         /**
@@ -163,7 +158,7 @@ public final class ConversionQuery extends AbstractContext{
          * @return the query for chaining.
          */
         public ConversionQueryBuilder setRateTypes(RateType... rateTypes){
-            return setCollection("rateTypes", Arrays.asList(rateTypes));
+            return setSet("rateTypes", new HashSet<>(Arrays.asList(rateTypes)));
         }
 
         /**
@@ -173,8 +168,8 @@ public final class ConversionQuery extends AbstractContext{
          * @param rateTypes the rate types to use, not null.
          * @return the query for chaining.
          */
-        public ConversionQueryBuilder setRateTypes(Collection<RateType> rateTypes){
-            return setCollection("rateTypes", rateTypes);
+        public ConversionQueryBuilder setRateTypes(Set<RateType> rateTypes){
+            return setSet("rateTypes", rateTypes);
         }
 
         /**

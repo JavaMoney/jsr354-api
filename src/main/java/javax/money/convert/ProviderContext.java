@@ -152,7 +152,7 @@ public final class ProviderContext extends AbstractContext{
          * @param context the context, not {@code null}
          */
         public Builder(ProviderContext context){
-            setAll(context);
+            importContext(context);
             Set<RateType> rts = new HashSet<>();
             rts.addAll(context.getRateTypes());
             setSet("rateTypes", rts);

@@ -63,16 +63,6 @@ public class MonetaryConversionsTest{
     }
 
     @Test
-    public void testGetProviderContext() throws Exception{
-        assertNotNull(MonetaryConversions.getProviderContext("test"));
-    }
-
-    @Test(expectedExceptions = MonetaryException.class)
-    public void testGetProviderContext_Invalid() throws Exception{
-        MonetaryConversions.getProviderContext("guguseli");
-    }
-
-    @Test
     public void testIsProviderAvailable() throws Exception{
         assertFalse(MonetaryConversions.isProviderAvailable("khskjshksjh"));
         assertTrue(MonetaryConversions.isProviderAvailable("test"));

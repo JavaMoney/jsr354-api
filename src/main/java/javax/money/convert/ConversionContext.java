@@ -96,9 +96,9 @@ public final class ConversionContext extends AbstractContext{
      */
     public Long getTimestampMillis(){
         Long value = getLong("timestamp", null);
-        if (Objects.isNull(value)) {
+        if(Objects.isNull(value)){
             TemporalAccessor acc = getTimestamp();
-            if (Objects.nonNull(acc)) {
+            if(Objects.nonNull(acc)){
                 return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
             }
         }
@@ -112,9 +112,9 @@ public final class ConversionContext extends AbstractContext{
      */
     public TemporalAccessor getTimestamp(){
         TemporalAccessor acc = getAny("timestamp", TemporalAccessor.class, null);
-        if (Objects.isNull(acc)) {
+        if(Objects.isNull(acc)){
             Long value = getLong("timestamp", null);
-            if (Objects.nonNull(value)) {
+            if(Objects.nonNull(value)){
                 acc = Instant.ofEpochMilli(value);
             }
         }
@@ -193,6 +193,14 @@ public final class ConversionContext extends AbstractContext{
         return ANY_CONVERSION;
     }
 
+    /**
+     * Creates a conversion query builder with the context data from this context instance.
+     * @return a corresponding conversion query builder instance, never null.
+     */
+    public ConversionQuery.ConversionQueryBuilder toQueryBuilder(){
+        return new ConversionQuery.ConversionQueryBuilder().importContext(this).setProviders(getProvider())
+                .setRateTypes(getRateType());
+    }
 
     /**
      * Builder class to create {@link ConversionContext} instances. Instances of
@@ -200,7 +208,7 @@ public final class ConversionContext extends AbstractContext{
      *
      * @author Anatole Tresch
      */
-    public static final class Builder extends AbstractContextBuilder<Builder, ConversionContext>{
+    public static final class Builder extends AbstractContextBuilder<Builder,ConversionContext>{
         /**
          * Create a new Builder instance without any provider, e.g. for creating
          * new {@link ConversionContext} instances for querying.
@@ -217,7 +225,7 @@ public final class ConversionContext extends AbstractContext{
          * @param context the context, not {@code null}
          */
         public Builder(ConversionContext context){
-            setAll(context);
+            importContext(context);
         }
 
         /**
@@ -229,7 +237,7 @@ public final class ConversionContext extends AbstractContext{
          * @param rateType the rate type, not null.
          */
         public Builder(ProviderContext context, RateType rateType){
-            setAll(context);
+            importContext(context);
             setRateType(rateType);
         }
 

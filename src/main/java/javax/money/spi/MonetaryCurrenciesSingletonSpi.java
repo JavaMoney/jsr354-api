@@ -16,10 +16,7 @@ import javax.money.CurrencyQuery;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryException;
 import javax.money.UnknownCurrencyException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Factory singleton backing interface for {@link javax.money.MonetaryCurrencies} that provides access to
@@ -72,6 +69,7 @@ public interface MonetaryCurrenciesSingletonSpi{
      * @throws javax.money.UnknownCurrencyException if no such currency exists.
      */
     default CurrencyUnit getCurrency(String currencyCode, String... providers){
+        Objects.requireNonNull(currencyCode, "Currency Code may not be null");
         Collection<CurrencyUnit> found = getCurrencies(
                 new CurrencyQuery.CurrencyQueryBuilder().setCurrencyCodes(currencyCode).setProviders(providers).build()
         );

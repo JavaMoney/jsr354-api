@@ -9,6 +9,7 @@ package javax.money.convert;
 
 import javax.money.AbstractContext;
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryCurrencies;
 import java.time.Instant;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
@@ -22,14 +23,14 @@ import java.util.*;
  */
 public final class ConversionQuery extends AbstractContext{
 
-    public static final ConversionQuery ANY_CONVERSION = new ConversionQueryBuilder().build();
+    public static final ConversionQuery ANY_CONVERSION = new Builder().build();
 
     /**
      * Constructor, used from the ConversionQueryBuilder.
      *
      * @param builder the corresponding builder, not null.
      */
-    private ConversionQuery(ConversionQueryBuilder builder){
+    private ConversionQuery(Builder builder){
         super(builder);
     }
 
@@ -112,10 +113,11 @@ public final class ConversionQuery extends AbstractContext{
 
     /**
      * Creates a new Builder preinitialized with values from this instance.
+     *
      * @return a new Builder, never null.
      */
-    public ConversionQueryBuilder toBuilder(){
-        return new ConversionQueryBuilder().importContext(this);
+    public Builder toBuilder(){
+        return new Builder().importContext(this);
     }
 
     /**
@@ -126,8 +128,7 @@ public final class ConversionQuery extends AbstractContext{
      *
      * @see javax.money.convert.MonetaryConversions#getConversion(ConversionQuery)
      */
-    public static final class ConversionQueryBuilder
-            extends AbstractContext.AbstractContextBuilder<ConversionQueryBuilder,ConversionQuery>{
+    public static final class Builder extends AbstractContext.AbstractContextBuilder<Builder,ConversionQuery>{
         /**
          * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
          * returned by {@link java.util.Currency} is used.
@@ -135,7 +136,7 @@ public final class ConversionQuery extends AbstractContext{
          * @param providers the providers to use, not null.
          * @return the query for chaining.
          */
-        public ConversionQueryBuilder setProviders(String... providers){
+        public Builder setProviders(String... providers){
             return setList("providers", Arrays.asList(providers));
         }
 
@@ -146,7 +147,7 @@ public final class ConversionQuery extends AbstractContext{
          * @param providers the providers to use, not null.
          * @return the query for chaining.
          */
-        public ConversionQueryBuilder setProviders(List<String> providers){
+        public Builder setProviders(List<String> providers){
             return setList("providers", providers);
         }
 
@@ -157,7 +158,7 @@ public final class ConversionQuery extends AbstractContext{
          * @param rateTypes the rate types to use, not null.
          * @return the query for chaining.
          */
-        public ConversionQueryBuilder setRateTypes(RateType... rateTypes){
+        public Builder setRateTypes(RateType... rateTypes){
             return setSet("rateTypes", new HashSet<>(Arrays.asList(rateTypes)));
         }
 
@@ -168,7 +169,7 @@ public final class ConversionQuery extends AbstractContext{
          * @param rateTypes the rate types to use, not null.
          * @return the query for chaining.
          */
-        public ConversionQueryBuilder setRateTypes(Set<RateType> rateTypes){
+        public Builder setRateTypes(Set<RateType> rateTypes){
             return setSet("rateTypes", rateTypes);
         }
 
@@ -178,7 +179,7 @@ public final class ConversionQuery extends AbstractContext{
          * @param timestamp the target timestamp
          * @return the query for chaining.
          */
-        public ConversionQueryBuilder setTimestampMillis(long timestamp){
+        public Builder setTimestampMillis(long timestamp){
             return set("timestamp", timestamp);
         }
 
@@ -188,28 +189,50 @@ public final class ConversionQuery extends AbstractContext{
          * @param timestamp the target timestamp
          * @return the query for chaining.
          */
-        public ConversionQueryBuilder setTimestamp(TemporalUnit timestamp){
+        public Builder setTimestamp(TemporalUnit timestamp){
             return set("timestamp", timestamp, TemporalUnit.class);
         }
 
         /**
-         * Sets the target base currency.
+         * Sets the base currency.
          *
          * @param currency the base currency
          * @return the query for chaining.
          */
-        public ConversionQueryBuilder setBaseCurrency(CurrencyUnit currency){
+        public Builder setBaseCurrency(CurrencyUnit currency){
             return set("baseCurrency", currency, CurrencyUnit.class);
         }
 
         /**
-         * Sets the target term currency.
+         * Sets the base currency.
+         *
+         * @param currencyCode the currency code, resolvable through {@link javax.money
+         * .MonetaryCurrencies#getCurrency(String, String...)}, not null.
+         * @return the query for chaining.
+         */
+        public Builder setBaseCurrency(String currencyCode){
+            return setBaseCurrency(MonetaryCurrencies.getCurrency(currencyCode));
+        }
+
+        /**
+         * Sets the term currency.
          *
          * @param currency the base currency
          * @return the query for chaining.
          */
-        public ConversionQueryBuilder setTermCurrency(CurrencyUnit currency){
+        public Builder setTermCurrency(CurrencyUnit currency){
             return set("termCurrency", currency, CurrencyUnit.class);
+        }
+
+        /**
+         * Sets the term currency.
+         *
+         * @param currencyCode the currency code, resolvable through {@link javax.money
+         * .MonetaryCurrencies#getCurrency(String, String...)}, not null.
+         * @return the query for chaining.
+         */
+        public Builder setTermCurrency(String currencyCode){
+            return setTermCurrency(MonetaryCurrencies.getCurrency(currencyCode));
         }
 
         /**

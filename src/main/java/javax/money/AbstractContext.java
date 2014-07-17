@@ -393,7 +393,36 @@ public abstract class AbstractContext implements Serializable{
 
     @Override
     public String toString(){
-        return getClass().getSimpleName() + " [attributes=" + data + "]";
+        StringBuilder attrsBuilder = new StringBuilder();
+        for(Map.Entry<Class<?>,Map<Object,Object>> en: this.data.entrySet()){
+            Map<Object,Object> sortedMap = new TreeMap<>(new Comparator<Object>(){
+                @Override
+                public int compare(Object o1, Object o2){
+                    return o1.toString().compareTo(o2.toString());
+                }
+            });
+            sortedMap.putAll(en.getValue());
+            for(Map.Entry<Object,Object> entry: sortedMap.entrySet()){
+                Object key = entry.getKey();
+                attrsBuilder.append("  ");
+                if(key.getClass()==Class.class){
+                    attrsBuilder.append(((Class)key).getName());
+                }
+                else{
+                    attrsBuilder.append(key);
+                }
+                attrsBuilder.append('[');
+                if(en.getKey().getName().startsWith("java.lang.")){
+                    attrsBuilder.append(en.getKey().getName().substring("java.lang.".length()));
+                }
+                else{
+                    attrsBuilder.append(en.getKey().getName());
+                }
+                attrsBuilder.append("]=");
+                attrsBuilder.append(entry.getValue()).append('\n');
+            }
+        }
+        return getClass().getSimpleName() + " (\n" + attrsBuilder.toString() + ')';
     }
 
 
@@ -691,7 +720,39 @@ public abstract class AbstractContext implements Serializable{
 
         @Override
         public String toString(){
-            return getClass().getSimpleName() + " [attributes=" + data + "]";
+            StringBuilder attrsBuilder = new StringBuilder();
+            for(Map.Entry<Class<?>,Map<Object,Object>> en: this.data.entrySet()){
+                Map<Object,Object> sortedMap = new TreeMap<>(new Comparator<Object>(){
+                    @Override
+                    public int compare(Object o1, Object o2){
+                        return o1.toString().compareTo(o2.toString());
+                    }
+                });
+                sortedMap.putAll(en.getValue());
+                for(Map.Entry<Object,Object> entry: sortedMap.entrySet()){
+                    Object key = entry.getKey();
+                    attrsBuilder.append("  ");
+                    if(key.getClass()==Class.class){
+                        String className = ((Class)key).getName();
+                        if(className.startsWith("java.lang.")){
+                            className = className.substring("java.lang.".length());
+                        }
+                        attrsBuilder.append(className);
+                    }
+                    else{
+                        attrsBuilder.append(key);
+                    }
+                    attrsBuilder.append('[');
+                    String typeName = en.getKey().getName();
+                    if(typeName.startsWith("java.lang.")){
+                        typeName = typeName.substring("java.lang.".length());
+                    }
+                    attrsBuilder.append(typeName);
+                    attrsBuilder.append("]=");
+                    attrsBuilder.append(entry.getValue()).append('\n');
+                }
+            }
+            return getClass().getSimpleName() + " [attributes:\n" + attrsBuilder.toString() + ']';
         }
     }
 

@@ -86,6 +86,10 @@ public final class MonetaryContext extends AbstractContext implements Serializab
         return new Builder(moneyClass).importContext(monetaryContext).build();
     }
 
+    public MonetaryContext.Builder toBuilder(){
+        return new Builder(getAmountType()).importContext(this);
+    }
+
     /**
      * Builder class for creating new instances of {@link javax.money.MonetaryContext} adding detailed information
      * about a {@link javax.money.MonetaryAmount} instance.

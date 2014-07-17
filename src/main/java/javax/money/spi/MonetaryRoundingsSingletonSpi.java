@@ -11,6 +11,7 @@
 package javax.money.spi;
 
 import javax.money.CurrencyUnit;
+import javax.money.MonetaryException;
 import javax.money.MonetaryRounding;
 import javax.money.RoundingQuery;
 import java.util.Collection;
@@ -105,10 +106,10 @@ public interface MonetaryRoundingsSingletonSpi{
      */
     default MonetaryRounding getRounding(String roundingName, String... providers){
         MonetaryRounding op = getRounding(
-                new RoundingQuery.Builder().setProviders(providers).setRoundingNames(roundingName).build()
+                new RoundingQuery.Builder().setProviders(providers).setRoundingName(roundingName).build()
         );
         return Optional.ofNullable(op).orElseThrow(
-                () -> new IllegalStateException("No rounding provided with rounding name: " + roundingName));
+                () -> new MonetaryException("No rounding provided with rounding name: " + roundingName));
     }
 
 

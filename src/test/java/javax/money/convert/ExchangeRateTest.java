@@ -123,8 +123,9 @@ public class ExchangeRateTest {
 		String toString = rate.toString();
 		assertTrue(toString.contains("ExchangeRate ["));
 		assertTrue(toString.contains("base=CHF, factor=1.1199999999999999, conversionContext="));
-		assertTrue(toString.contains("RateType=DEFERRED"));
-		assertTrue(toString.contains("provider=test"));
+		assertTrue(toString.contains("RateType"));
+        assertTrue(toString.contains("=DEFERRED"));
+		assertTrue(toString.contains("provider[String]=test"));
 	}
 
 }

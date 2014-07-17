@@ -18,6 +18,10 @@ package javax.money;
  *     <li>immutable</li>
  *     <li>thread-safe</li>
  * </ul>
+ * Implementations of this interface should be
+ * <ul>
+ *     <li>serializable</li>
+ * </ul>
  */
 public interface MonetaryRounding extends MonetaryOperator{
 

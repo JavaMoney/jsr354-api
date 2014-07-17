@@ -14,6 +14,7 @@ import javax.money.CurrencyUnit;
 import javax.money.MonetaryCurrencies;
 import javax.money.MonetaryException;
 import javax.money.MonetaryOperator;
+import java.util.Objects;
 
 /**
  * This interface defines access to the exchange rates provided by a provider.
@@ -61,7 +62,7 @@ public interface ExchangeRateProvider{
      * @return the matching {@link ExchangeRate}.
      * @throws CurrencyConversionException If no such rate is available.
      * @throws MonetaryException           if one of the currency codes passed is not valid.
-     * @see ConversionQuery.ConversionQueryBuilder
+     * @see javax.money.convert.ConversionQuery.Builder
      */
     ExchangeRate getExchangeRate(ConversionQuery conversionQuery);
 
@@ -73,7 +74,7 @@ public interface ExchangeRateProvider{
      * @return a new instance of a corresponding {@link CurrencyConversion},
      * never {@code null}.
      * @throws MonetaryException if one of the currency codes passed is not valid.
-     * @see ConversionQuery.ConversionQueryBuilder
+     * @see javax.money.convert.ConversionQuery.Builder
      */
     CurrencyConversion getCurrencyConversion(ConversionQuery conversionQuery);
 
@@ -109,8 +110,10 @@ public interface ExchangeRateProvider{
      * @throws CurrencyConversionException If no such rate is available.
      */
     default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){
+        Objects.requireNonNull(base, "Base Currency is null");
+        Objects.requireNonNull(term, "Term Currency is null");
         return getExchangeRate(
-                new ConversionQuery.ConversionQueryBuilder().setBaseCurrency(base).setTermCurrency(term).build());
+                new ConversionQuery.Builder().setBaseCurrency(base).setTermCurrency(term).build());
     }
 
     /**
@@ -122,7 +125,7 @@ public interface ExchangeRateProvider{
      * never {@code null}.
      */
     default CurrencyConversion getCurrencyConversion(CurrencyUnit term){
-        return getCurrencyConversion(new ConversionQuery.ConversionQueryBuilder().setTermCurrency(term).build());
+        return getCurrencyConversion(new ConversionQuery.Builder().setTermCurrency(term).build());
     }
 
     /**
@@ -137,7 +140,7 @@ public interface ExchangeRateProvider{
      */
     default boolean isAvailable(CurrencyUnit base, CurrencyUnit term){
         return isAvailable(
-                new ConversionQuery.ConversionQueryBuilder().setBaseCurrency(base).setTermCurrency(term).build());
+                new ConversionQuery.Builder().setBaseCurrency(base).setTermCurrency(term).build());
     }
 
 

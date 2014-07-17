@@ -58,7 +58,7 @@ public final class MonetaryConversions{
 
     /**
      * Access an instance of {@link CurrencyConversion} for the given providers.
-     * Use {@link #isProviderAvailable(String)} to check, which are available.
+     * Use {@link #getProviderNames()} to check, which are available.
      *
      * @param termCurrency the terminating or target currency, not {@code null}
      * @param providers    Additional providers, for building a provider chain
@@ -68,34 +68,34 @@ public final class MonetaryConversions{
     public static CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers){
         Objects.requireNonNull(providers);
         Objects.requireNonNull(termCurrency);
-        if(providers.length==0){
+        if(providers.length == 0){
             return MONETARY_CONVERSION_SPI.getConversion(
-                    new ConversionQuery.ConversionQueryBuilder().setTermCurrency(termCurrency).setProviders(getDefaultProviderChain())
-                            .build());
+                    new ConversionQuery.Builder().setTermCurrency(termCurrency).setProviders(getDefaultProviderChain())
+                            .build()
+            );
         }
         return MONETARY_CONVERSION_SPI.getConversion(
-                new ConversionQuery.ConversionQueryBuilder().setTermCurrency(termCurrency).setProviders(providers)
-                        .build());
+                new ConversionQuery.Builder().setTermCurrency(termCurrency).setProviders(providers).build());
     }
 
     /**
      * Access an instance of {@link CurrencyConversion} for the given providers.
-     * Use {@link #isProviderAvailable(String)} to check, which are available.
+     * Use {@link #getProviderNames()}} to check, which are available.
      *
      * @param termCurrencyCode the terminating or target currency code, not {@code null}
      * @param providers        Additional providers, for building a provider chain
      * @return the exchange rate type if this instance.
-     * @throws IllegalArgumentException if no such {@link ExchangeRateProvider} is available.
-     * @throws MonetaryException        if no {@link CurrencyUnit} was matching the given currency
-     *                                  code.
+     * @throws MonetaryException if no such {@link ExchangeRateProvider} is available or if no {@link CurrencyUnit} was
+     *                           matching the given currency code.
      */
     public static CurrencyConversion getConversion(String termCurrencyCode, String... providers){
+        Objects.requireNonNull(termCurrencyCode, "Term currency code may not be null");
         return getConversion(MonetaryCurrencies.getCurrency(termCurrencyCode), providers);
     }
 
     /**
      * Access an instance of {@link CurrencyConversion} for the given providers.
-     * Use {@link #isProviderAvailable(String)} to check, which are available.
+     * Use {@link #getProviderNames()}} to check, which are available.
      *
      * @param conversionQuery The {@link ConversionQuery} required, not {@code null}
      * @return the {@link CurrencyConversion}  instance matching.
@@ -103,13 +103,61 @@ public final class MonetaryConversions{
      */
     public static CurrencyConversion getConversion(ConversionQuery conversionQuery){
         return Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
-                                                                                "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available.")
+                                                                                "No MonetaryConveresionsSingletonSpi " +
+                                                                                        "loaded, " +
+                                                                                        "query functionality is not " +
+                                                                                        "available.")
         ).getConversion(conversionQuery);
     }
 
     /**
+     * Checks if a {@link javax.money.convert.CurrencyConversion} is available for the given parameters.
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery}, not null.
+     * @return true, if a conversion is accessible from {@link #getConversion(ConversionQuery)}.
+     */
+    public static boolean isConversionAvailable(ConversionQuery conversionQuery){
+        return Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
+                                                                                "No MonetaryConveresionsSingletonSpi " +
+                                                                                        "loaded, " +
+                                                                                        "query functionality is not " +
+                                                                                        "available.")
+        ).isConversionAvailable(conversionQuery);
+    }
+
+    /**
+     * Checks if a {@link javax.money.convert.CurrencyConversion} is available for the given parameters.
+     * @param currencyCode The currencoy code, resolbable by {@link javax.money.MonetaryCurrencies#getCurrency
+     * (String, String...)}
+     * @param providers    Additional providers, for building a provider chain
+     * @return true, if a conversion is accessible from {@link #getConversion(String, String...)}.
+     */
+    public static boolean isConversionAvailable(String currencyCode, String... providers){
+        return Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
+                                                                                "No MonetaryConveresionsSingletonSpi " +
+                                                                                        "loaded, " +
+                                                                                        "query functionality is not " +
+                                                                                        "available.")
+        ).isConversionAvailable(MonetaryCurrencies.getCurrency(currencyCode), providers);
+    }
+
+    /**
+     * Checks if a {@link javax.money.convert.CurrencyConversion} is available for the given parameters.
+     * @param termCurrency the terminating or target currency, not {@code null}
+     * @param providers    Additional providers, for building a provider chain
+     * @return true, if a conversion is accessible from {@link #getConversion(String, String...)}.
+     */
+    public static boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers){
+        return Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
+                                                                                "No MonetaryConveresionsSingletonSpi " +
+                                                                                        "loaded, " +
+                                                                                        "query functionality is not " +
+                                                                                        "available.")
+        ).isConversionAvailable(termCurrency, providers);
+    }
+
+    /**
      * Access an instance of {@link CurrencyConversion} using the given
-     * providers as a provider chain. Use {@link #isProviderAvailable(String)}
+     * providers as a provider chain. Use {@link #getProviderNames()}s
      * to check, which are available.
      *
      * @return the exchange rate provider.
@@ -118,15 +166,43 @@ public final class MonetaryConversions{
     public static ExchangeRateProvider getExchangeRateProvider(String... providers){
         if(providers.length == 0){
             List<String> defaultProviderChain = getDefaultProviderChain();
-            return MONETARY_CONVERSION_SPI.getExchangeRateProvider(new ConversionQuery.ConversionQueryBuilder()
-                                                                           .setProviders(defaultProviderChain.toArray(
-                                                                                   new String[defaultProviderChain
-                                                                                           .size()])).build());
+            return MONETARY_CONVERSION_SPI.getExchangeRateProvider(new ConversionQuery.Builder().setProviders(
+                    defaultProviderChain.toArray(new String[defaultProviderChain.size()]
+                    )).build());
         }
         ExchangeRateProvider provider = MONETARY_CONVERSION_SPI
-                .getExchangeRateProvider(new ConversionQuery.ConversionQueryBuilder().setProviders(providers).build());
+                .getExchangeRateProvider(new ConversionQuery.Builder().setProviders(providers).build());
         return Optional.ofNullable(provider)
                 .orElseThrow(() -> new MonetaryException("No such rate provider: " + Arrays.toString(providers)));
+    }
+
+
+    /**
+     * Access an instance of {@link CurrencyConversion} using the given
+     * providers as a provider chain. Use {@link #getProviderNames()}
+     * to check, which are available.
+     *
+     * @return the exchange rate provider.
+     * @throws IllegalArgumentException if no such {@link ExchangeRateProvider} is available.
+     */
+    public static ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery){
+        return Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
+                "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available."))
+                .getExchangeRateProvider(conversionQuery);
+    }
+
+    /**
+     * Checks if a {@link javax.money.convert.ExchangeRateProvider} is available for the given parameters.
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery}, not null.
+     * @return true, if a rate provider is accessible from {@link #getExchangeRateProvider(ConversionQuery)}}.
+     */
+    public static boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery){
+        return Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
+                                                                                "No MonetaryConveresionsSingletonSpi " +
+                                                                                        "loaded, " +
+                                                                                        "query functionality is not " +
+                                                                                        "available.")
+        ).isExchangeRateProviderAvailable(conversionQuery);
     }
 
 
@@ -138,8 +214,9 @@ public final class MonetaryConversions{
      * @return all supported provider ids, never {@code null}.
      */
     public static Collection<String> getProviderNames(){
-        Collection<String> providers = Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
-                                                                                                                 "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available.")
+        Collection<String> providers = Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(
+                () -> new MonetaryException(
+                        "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available.")
         ).getProviderNames();
         if(Objects.isNull(providers)){
             Logger.getLogger(MonetaryConversions.class.getName()).warning(
@@ -152,31 +229,17 @@ public final class MonetaryConversions{
     }
 
     /**
-     * Checks if a provider is available in the current context.
-     *
-     * @param provider the provider name, not {@code null}
-     * @return true, if the rate/conversion provider with the given name is
-     * available, so {@link CurrencyConversion} or
-     * {@link ExchangeRateProvider} with this provider name can be
-     * obtained from the {@link MonetaryConversions} instance.
-     */
-    public static boolean isProviderAvailable(String provider){
-        return Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
-                                                                                "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available.")
-        ).isProviderAvailable(provider);
-    }
-
-    /**
      * Get the default provider used.
      *
      * @return the default provider, never {@code null}.
      */
     public static List<String> getDefaultProviderChain(){
-        List<String> defaultChain = Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
-                                                                                                     "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available.")
+        List<String> defaultChain = Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(
+                () -> new MonetaryException(
+                        "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available.")
         ).getDefaultProviderChain();
         Objects.requireNonNull(defaultChain, "No default provider chain provided by SPI: " +
-                                       MONETARY_CONVERSION_SPI.getClass().getName());
+                MONETARY_CONVERSION_SPI.getClass().getName());
         return defaultChain;
     }
 

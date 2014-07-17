@@ -52,8 +52,8 @@ public final class RoundingQuery extends AbstractContext{
      *
      * @return the rounding id  or null.
      */
-    public Collection<String> getRoundingNames(){
-        return getCollection("roundingNames", Collections.emptySet());
+    public String getRoundingName(){
+        return getText("roundingName", null);
     }
 
     /**
@@ -140,12 +140,12 @@ public final class RoundingQuery extends AbstractContext{
          * with such a name exists, the value passed is interpreted as a regular
          * expression to lookup roundings.
          *
-         * @param roundingNames the (custom) rounding name expressions, not {@code null}.
+         * @param roundingName the (custom) rounding name expression, not {@code null}.
          * @return this instance for chaining
          */
-        public Builder setRoundingNames(String... roundingNames){
-            Objects.requireNonNull(roundingNames);
-            setCollection("roundingNames", Arrays.asList(roundingNames));
+        public Builder setRoundingName(String roundingName){
+            Objects.requireNonNull(roundingName);
+            set("roundingName", roundingName);
             return this;
         }
 

@@ -26,7 +26,7 @@ import javax.money.MonetaryOperator;
  * calling the amount'0s with method:
  * <pre>
  *     MonetaryAmount amount = ...;
- *     CurrencyConversion conversion = MonetaryConversions.getCurrencyConversion("CHF");
+ *     CurrencyConversion conversion = MonetaryConversions.getConversion("CHF");
  *     MonetaryAmount amountInCHF = amount.with(conversion);
  * </pre>
  * <p>
@@ -64,17 +64,5 @@ public interface CurrencyConversion extends MonetaryOperator {
 	 *             if the amount can not be converted.
 	 */
 	public ExchangeRate getExchangeRate(MonetaryAmount sourceAmount);
-
-	/**
-	 * Get a new {@link CurrencyConversion}using the given
-	 * {@link ConversionContext} with additional attributes.
-	 * 
-	 * @param conversionContext
-	 *            the {@link ConversionContext} to be applied, not {@code null}
-	 * @return a new instance of {@link CurrencyConversion}, based on this
-	 *         instance, but with a changed {@link ConversionContext} to be
-	 *         applied. if the amount can not be converted.
-	 */
-	public CurrencyConversion with(ConversionContext conversionContext);
 
 }

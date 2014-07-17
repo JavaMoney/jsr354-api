@@ -59,7 +59,7 @@ public final class ConversionContext extends AbstractContext{
 
 
     /**
-     * Private constructor, used by {@link Builder}.
+     * Private constructor, used by {@link javax.money.convert.ConversionContext.Builder}.
      *
      * @param builder the Builder.
      */
@@ -122,9 +122,9 @@ public final class ConversionContext extends AbstractContext{
     }
 
     /**
-     * Creates a {@link Builder} initialized with this instance's data.
+     * Creates a {@link javax.money.convert.ConversionContext.Builder} initialized with this instance's data.
      *
-     * @return a new {@link Builder}, not {@code null}.
+     * @return a new {@link javax.money.convert.ConversionContext.Builder}, not {@code null}.
      */
     public Builder toBuilder(){
         return new Builder(this);
@@ -133,7 +133,7 @@ public final class ConversionContext extends AbstractContext{
     /**
      * Simple factory method for {@link ConversionContext}. For more
      * possibilities to initialize a {@link ConversionContext}, please use a
-     * {@link Builder},
+     * {@link javax.money.convert.ConversionContext.Builder},
      *
      * @param provider the provider name, not {@code null}
      * @param rateType the required rate type.
@@ -185,7 +185,7 @@ public final class ConversionContext extends AbstractContext{
     /**
      * Simple factory method for {@link ConversionContext}. For more
      * possibilities to initialize a {@link ConversionContext}, please use a
-     * {@link Builder},
+     * {@link javax.money.convert.ConversionContext.Builder},
      *
      * @return a new instance of {@link ConversionContext}
      */
@@ -197,8 +197,8 @@ public final class ConversionContext extends AbstractContext{
      * Creates a conversion query builder with the context data from this context instance.
      * @return a corresponding conversion query builder instance, never null.
      */
-    public ConversionQuery.ConversionQueryBuilder toQueryBuilder(){
-        return new ConversionQuery.ConversionQueryBuilder().importContext(this).setProviders(getProvider())
+    public ConversionQuery.Builder toQueryBuilder(){
+        return new ConversionQuery.Builder().importContext(this).setProviders(getProvider())
                 .setRateTypes(getRateType());
     }
 

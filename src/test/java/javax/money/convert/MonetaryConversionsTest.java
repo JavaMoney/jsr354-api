@@ -30,13 +30,13 @@ public class MonetaryConversionsTest{
     @Test
     public void testGetConversion1() throws Exception{
         assertNotNull(MonetaryConversions.getConversion(
-                new ConversionQuery.ConversionQueryBuilder().setTermCurrency(TestCurrency.of("CHF")).build()));
+                new ConversionQuery.Builder().setTermCurrency(TestCurrency.of("CHF")).build()));
     }
 
     @Test
     public void testGetConversion2() throws Exception{
         assertNotNull(MonetaryConversions.getConversion(
-                new ConversionQuery.ConversionQueryBuilder().setTermCurrency(TestCurrency.of("CHF"))
+                new ConversionQuery.Builder().setTermCurrency(TestCurrency.of("CHF"))
                         .setProviders("test").build()));
     }
 
@@ -60,12 +60,6 @@ public class MonetaryConversionsTest{
         assertNotNull(MonetaryConversions.getProviderNames());
         assertTrue(MonetaryConversions.getProviderNames().contains("test"));
         assertTrue(MonetaryConversions.getProviderNames().size() == 1);
-    }
-
-    @Test
-    public void testIsProviderAvailable() throws Exception{
-        assertFalse(MonetaryConversions.isProviderAvailable("khskjshksjh"));
-        assertTrue(MonetaryConversions.isProviderAvailable("test"));
     }
 
     @Test

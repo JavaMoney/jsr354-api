@@ -9,6 +9,7 @@
  */
 package javax.money.spi;
 
+import javax.money.CurrencyUnit;
 import javax.money.MonetaryException;
 import javax.money.convert.*;
 import java.util.Collection;
@@ -58,56 +59,84 @@ public interface MonetaryConversionsSingletonSpi{
     List<String> getDefaultProviderChain();
 
     /**
-     * Access all matching instances of {@link ExchangeRateProvider} given a query.
-     *
-     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
-     *                        required, not null.
-     * @return an {@link ExchangeRateProvider} built up with the given sub
-     * providers, never {@code null}
-     * @throws IllegalArgumentException if a provider could not be found or not at least one provider
-     *                                  name is passed.
-     * @see #isProviderAvailable(String)
-     */
-    Collection<ExchangeRateProvider> getExchangeRateProviders(ConversionQuery conversionQuery);
-
-    /**
-     * Access an instance of {@link ExchangeRateProvider}.
+     * Access an instance of {@link ExchangeRateProvider}. By setting {@link javax.money.convert
+     * .ConversionQuery#getProviders()} multiple providers can be selected,
+     * that will be included into a <i>compound</i> instance, with the same order as returned by the {@link javax
+     * .money.convert.ConversionQuery}.
      *
      * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
      *                        required, not null.
      * @return an {@link ExchangeRateProvider} built up with the given sub
      * providers, never {@code null}
      * @throws MonetaryException if a provider could not be found.
-     * @see #isProviderAvailable(String)
+     * @see #isExchangeRateProviderAvailable(javax.money.convert.ConversionQuery)
      */
     ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery);
 
     /**
-     * Allows to quickly check, if a {@link ProviderContext} is supported.
+     * Allows to quickly check, if a {@link javax.money.convert.ExchangeRateProvider} is accessible for the given
+     * {@link javax.money.convert.ConversionQuery}.
      *
-     * @param provider The provider required, not {@code null}
-     * @return {@code true}, if the rate is supported, meaning an according
-     * {@link ExchangeRateProvider} or {@link CurrencyConversion} can be
-     * loaded.
-     * @see #getExchangeRateProvider(javax.money.convert.ConversionQuery)
-     * @see #getProviderNames()
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
+     *                        required, not null.
+     * @return {@code true}, if such a conversion is supported, meaning an according
+     * {@link ExchangeRateProvider} can be
+     * accessed.
+     * @see #getExchangeRateProvider(ConversionQuery)
+     * @see #getExchangeRateProvider(String...)}
      */
-    default boolean isProviderAvailable(String provider){
-        return getProviderNames().contains(provider);
+    boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery);
+
+    /**
+     * Allows to quickly check, if a {@link javax.money.convert.CurrencyConversion} is accessible for the given
+     * {@link javax.money.convert.ConversionQuery}.
+     *
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
+     *                        required, not null.
+     * @return {@code true}, if such a conversion is supported, meaning an according
+     * {@link CurrencyConversion} can be
+     * accessed.
+     * @see #getConversion(javax.money.convert.ConversionQuery)
+     * @see #getConversion(CurrencyUnit, String...)}
+     */
+    boolean isConversionAvailable(ConversionQuery conversionQuery);
+
+    /**
+     * Allows to quickly check, if a {@link javax.money.convert.CurrencyConversion} is accessible for the given
+     * {@link javax.money.convert.ConversionQuery}.
+     *
+     * @param termCurrency the terminating/target currency unit, not null.
+     * @param providers    the provider names defines a corresponding
+     *                     prpovider chain that must be encapsulated by the resulting {@link javax
+     *                     .money.convert.CurrencyConversion}. By default the provider
+     *                     chain as defined by #getDefaultProviderChain will be used.
+     * @return {@code true}, if such a conversion is supported, meaning an according
+     * {@link CurrencyConversion} can be
+     * accessed.
+     * @see #getConversion(javax.money.convert.ConversionQuery)
+     * @see #getConversion(CurrencyUnit, String...)}
+     */
+    default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers){
+        return isConversionAvailable(
+                new ConversionQuery.Builder().setTermCurrency(termCurrency).setProviders(providers).build());
     }
 
     /**
-     * Allows to quickly check, if a {@link ProviderContext} is supported.
+     * Access a compound instance of an {@link ExchangeRateProvider} based on the given provider chain.
      *
-     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion                        required, not null.
-     * @return {@code true}, if such a conversion is supported, meaning an according
-     * {@link ExchangeRateProvider} or {@link CurrencyConversion} can be
-     * accessed.
-     * @see #getExchangeRateProvider(ConversionQuery)
-     * @see #getConversion(javax.money.convert.ConversionQuery)
+     * @param providers the {@link javax.money.convert.ConversionQuery} provider names defines a corresponding
+     *                  prpovider chain that must be
+     *                  encapsulated by the resulting {@link javax.money.convert.ExchangeRateProvider}. By default
+     *                  the default
+     *                  provider changes as defined in #getDefaultProviderChain will be used.
+     * @return an {@link ExchangeRateProvider} built up with the given sub
+     * providers, never {@code null}.
+     * @throws MonetaryException if a provider listed could not be found.
+     * @see #getProviderNames()
+     * @see #isExchangeRateProviderAvailable(javax.money.convert.ConversionQuery)
      */
-    default boolean isAvailable(ConversionQuery conversionQuery){
-        return !getExchangeRateProviders(conversionQuery).isEmpty();
+    default ExchangeRateProvider getExchangeRateProvider(String... providers){
+        return getExchangeRateProvider(new ConversionQuery.Builder().setProviders(providers).build());
     }
 
     /**
@@ -117,11 +146,27 @@ public interface MonetaryConversionsSingletonSpi{
      *                        required, not null.
      * @return the correspöonding conversion, not null.
      * @throws javax.money.MonetaryException if no matching conversion could be found.
-     * @see #isAvailable(ConversionQuery)
+     * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */
     default CurrencyConversion getConversion(ConversionQuery conversionQuery){
         Objects.requireNonNull(conversionQuery.getTermCurrency(), "Terminating Currency is required.");
         return getExchangeRateProvider(conversionQuery).getCurrencyConversion(conversionQuery.getTermCurrency());
     }
 
+    /**
+     * Access an instance of {@link CurrencyConversion}.
+     *
+     * @param termCurrency the terminating/target currency unit, not null.
+     * @param providers    the {@link javax.money.convert.ConversionQuery} provider names defines a corresponding
+     *                     prpovider chain that must be encapsulated by the resulting {@link javax
+     *                     .money.convert.CurrencyConversion}. By default the default
+     *                     provider chain as defined by #getDefaultProviderChain will be used.
+     * @return the correspöonding conversion, not null.
+     * @throws javax.money.MonetaryException if no matching conversion could be found.
+     * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
+     */
+    default CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers){
+        return getConversion(
+                new ConversionQuery.Builder().setTermCurrency(termCurrency).setProviders(providers).build());
+    }
 }

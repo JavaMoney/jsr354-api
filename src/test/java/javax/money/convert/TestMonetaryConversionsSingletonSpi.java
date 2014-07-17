@@ -14,51 +14,44 @@ import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryException;
 import javax.money.spi.MonetaryConversionsSingletonSpi;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
- * @author Anatole
+ * @author Anatole Tresch
  * @author Werner
  * @version 0.3 on 11.05.14.
  */
 public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsSingletonSpi{
 
     private ExchangeRateProvider provider = new DummyRateProvider();
-    private List<ExchangeRateProvider> providers = new ArrayList<>();
 
-    public TestMonetaryConversionsSingletonSpi(){
-        providers.add(provider);
+
+    @Override
+    public ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery){
+        Collection<ExchangeRateProvider> providers = null;
+
+        if(conversionQuery.getProviders().isEmpty() || conversionQuery.getProviders().contains("test")){
+            return provider;
+        }
+        throw new MonetaryException("No such rate provider(s): " + conversionQuery.getProviders());
     }
 
     @Override
-    public ExchangeRateProvider getExchangeRateProvider(ConversionQuery query){
-        if(query.getProviders().isEmpty()){
-            // when the default should be used, our provider will be part of.
-            return provider;
-        }
-        if(query.getProviders().contains("test")){
-            return provider;
-        }
-        throw new MonetaryException(
-                "Only 'test' provider supported by 'test' provider (TestMonetaryConversionsSingletonSpi).");
+    public boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery){
+        return conversionQuery.getProviders().isEmpty() || conversionQuery.getProviders().contains("test");
     }
 
     @Override
-    public Collection<ExchangeRateProvider> getExchangeRateProviders(ConversionQuery query){
-        if(query.getProviders().contains("test")){
-            return providers;
-        }
-        return Collections.emptySet();
+    public boolean isConversionAvailable(ConversionQuery conversionQuery){
+        return conversionQuery.getProviders().isEmpty() || conversionQuery.getProviders().contains("test");
     }
 
     @Override
     public Collection<String> getProviderNames(){
         return Arrays.asList(new String[]{"test"});
-    }
-
-    @Override
-    public boolean isProviderAvailable(String provider){
-        return "test".equals(provider);
     }
 
     @Override
@@ -89,11 +82,6 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         public ExchangeRate getExchangeRate(MonetaryAmount sourceAmount){
             return new DefaultExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
                     .setBase(sourceAmount.getCurrency()).setTerm(termCurrency).setFactor(TestNumberValue.of(1)).build();
-        }
-
-        @Override
-        public CurrencyConversion with(ConversionContext conversionContext){
-            return new DummyConversion(termCurrency);
         }
 
         @Override

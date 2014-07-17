@@ -19,16 +19,15 @@ import java.util.*;
 public final class TestRoundingProvider implements RoundingProviderSpi {
 
 	@Override
-	public Collection<MonetaryRounding> getRoundings(RoundingQuery roundingQuery){
+	public MonetaryRounding getRounding(RoundingQuery roundingQuery){
         List<MonetaryRounding> result = new ArrayList<>();
-        for(String name: roundingQuery.getRoundingNames()){
-            result.add(getCustomRounding(name));
+        if(roundingQuery.getRoundingName()!=null){
+            return getCustomRounding(roundingQuery.getRoundingName());
         }
         if(roundingQuery.getCurrencyUnit()!=null){
-            result.add(getCustomRounding(roundingQuery.getCurrencyUnit().getCurrencyCode()));
+            return getCustomRounding(roundingQuery.getCurrencyUnit().getCurrencyCode());
         }
-        result.add(getCustomRounding("test"));
-        return result;
+        return getCustomRounding("test");
 	}
 
 	private MonetaryRounding getCustomRounding(final String customRoundingId) {

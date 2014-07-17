@@ -39,9 +39,9 @@ public interface RoundingProviderSpi {
     /**
      * Evaluate the rounding that match the given query.
      *
-     * @return the (shared) default rounding instances matching, never null.
+     * @return the matching rounding instance, or {@code null}.
      */
-    Collection<MonetaryRounding> getRoundings(RoundingQuery query);
+    MonetaryRounding getRounding(RoundingQuery query);
 
 	/**
 	 * Access the ids of the roundings defined by this provider.
@@ -52,7 +52,7 @@ public interface RoundingProviderSpi {
 
     /**
      * Get the provider's unique name.
-     * @return the provider's unique name, not null.
+     * @return the provider's unique name, not {@code null}.
      */
     default String getProviderName(){
         return getClass().getSimpleName();

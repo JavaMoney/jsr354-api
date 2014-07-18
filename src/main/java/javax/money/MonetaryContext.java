@@ -105,6 +105,17 @@ public final class MonetaryContext extends AbstractContext implements Serializab
          * acquire a specific amount type and additionally configure the amount factory with the attributes in this
          * query.
          *
+         * @return this builder for chaining.
+         */
+        public Builder(){
+            this(MonetaryAmount.class);
+        }
+
+        /**
+         * Creates a new builder, hereby the target implementation type is required. This can be used to explicitly
+         * acquire a specific amount type and additionally configure the amount factory with the attributes in this
+         * query.
+         *
          * @param amountType the target amount type, not null.
          * @return this builder for chaining.
          */

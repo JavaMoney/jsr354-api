@@ -11,7 +11,7 @@ package javax.money;
 import java.io.Serializable;
 
 /**
- * This class models the numeric capabilities of a {@link MonetaryAmount} in a
+ * This class models the meta data (mostly the numeric capabilities) of a {@link MonetaryAmount} in a
  * platform independent way. It provides information about
  * <ul>
  * <li>the maximal precision supported (0, for unlimited precision).
@@ -28,7 +28,25 @@ import java.io.Serializable;
  */
 public final class MonetaryContext extends AbstractContext implements Serializable{
 
-    public static final String AMOUNT_TYPE = "amountType";
+    /**
+     * Constant that defines under which key the amount type is stored in the context map.
+     */
+    private static final String AMOUNT_TYPE = "amountType";
+
+    /**
+     * Key name for the context.
+     */
+    private static final String PRECISION = "precision";
+
+    /**
+     * Key name for the currency provider.
+     */
+    private static final String FIXED_SCALE = "fixedScale";
+
+    /**
+     * Key name for the max scale.
+     */
+    private static final String MAX_SCALE = "maxScale";
 
     /**
      * Constructor, used from the Builder.
@@ -46,7 +64,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * setting
      */
     public int getPrecision(){
-        return getInt("precision", 0);
+        return getInt(PRECISION, 0);
     }
 
     /**
@@ -55,7 +73,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return {@code true} if {@code minScale == maxScale}.
      */
     public boolean isFixedScale(){
-        return getBoolean("fixedScale", false);
+        return getBoolean(FIXED_SCALE, false);
     }
 
     /**
@@ -66,11 +84,12 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return the maximal scale supported, always {@code >= -1}
      */
     public int getMaxScale(){
-        return getInt("maxScale", 0);
+        return getInt(MAX_SCALE, 0);
     }
 
     /**
      * Get the MonetaryAmount implementation class.
+     *
      * @return the implementation class of the containing amount instance, never null.
      * @see MonetaryAmount#getMonetaryContext()
      */
@@ -78,14 +97,36 @@ public final class MonetaryContext extends AbstractContext implements Serializab
         return getAny(AMOUNT_TYPE, Class.class);
     }
 
-    public static MonetaryContext from(MonetaryAmountFactoryQuery monetaryQuery, Class<? extends MonetaryAmount> moneyClass){
-        return new Builder(moneyClass).importContext(monetaryQuery).build();
+    /**
+     * This method allows to easily create a new MonetaryContext instance from a given {@link javax.money
+     * .MonetaryAmountFactoryQuery}.
+     *
+     * @param monetaryAmountFactoryQuery the monetary amount factory query, not null.
+     * @param amountClass                the targeted implementation type.
+     * @return a new corresponding MonetaryContext instance.
+     */
+    public static MonetaryContext from(MonetaryAmountFactoryQuery monetaryAmountFactoryQuery,
+                                       Class<? extends MonetaryAmount> amountClass){
+        return new Builder(amountClass).importContext(monetaryAmountFactoryQuery).build();
     }
 
-    public static MonetaryContext from(MonetaryContext monetaryContext, Class<? extends MonetaryAmount> moneyClass){
-        return new Builder(moneyClass).importContext(monetaryContext).build();
+    /**
+     * Creates a new {@link }MonetaryContext).
+     *
+     * @param monetaryContext the base context, not null.
+     * @param amountClass     the targt amount class.
+     * @return a new corresponding MonetaryContext instance.
+     */
+    public static MonetaryContext from(MonetaryContext monetaryContext, Class<? extends MonetaryAmount> amountClass){
+        return new Builder(amountClass).importContext(monetaryContext).build();
     }
 
+    /**
+     * Allows to convert a instance into the corresponding {@link javax.money.MonetaryContext.Builder}, which allows
+     * to change the values and create another {@link MonetaryContext} instance.
+     *
+     * @return a new Builder instance, preinitialized with the values from this instance.
+     */
     public MonetaryContext.Builder toBuilder(){
         return new Builder(getAmountType()).importContext(this);
     }
@@ -125,6 +166,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
 
         /**
          * Apply all entries from the given context,  but keep the amount type.
+         *
          * @param context the context to be applied, not null.
          * @return this Builder for chaining.
          */
@@ -166,6 +208,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
 
         /**
          * Get the MonetaryAmount implementation class.
+         *
          * @return the implementation class of the containing amount instance, never null.
          * @see MonetaryAmount#getMonetaryContext()
          */

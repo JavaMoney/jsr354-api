@@ -140,10 +140,9 @@ public final class MonetaryCurrencies{
      * @return the list of known currencies, never null.
      */
     public static Collection<CurrencyUnit> getCurrencies(String... providers){
-        if(Objects.isNull(monetaryCurrenciesSpi)){
-            return Collections.emptySet();
-        }
-        return monetaryCurrenciesSpi.getCurrencies(providers);
+        return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
+                () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
+                .getCurrencies(providers);
     }
 
     /**
@@ -153,10 +152,9 @@ public final class MonetaryCurrencies{
      * @return the list of known currencies, never null.
      */
     public static Collection<CurrencyUnit> getCurrencies(CurrencyQuery query){
-        if(Objects.isNull(monetaryCurrenciesSpi)){
-            return Collections.emptySet();
-        }
-        return monetaryCurrenciesSpi.getCurrencies(query);
+        return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
+                () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
+                .getCurrencies(query);
     }
 
     /**
@@ -165,10 +163,21 @@ public final class MonetaryCurrencies{
      * @return the list of known currencies, never null.
      */
     public static Set<String> getProviderNames(){
-        if(Objects.isNull(monetaryCurrenciesSpi)){
-            return Collections.emptySet();
-        }
-        return monetaryCurrenciesSpi.getProviderNames();
+        return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
+                () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
+                .getProviderNames();
+    }
+
+    /**
+     * Query the list and ordering of provider names modelling the default provider chain to be used, if no provider
+     * chain was explicitly set..
+     *
+     * @return the orderend list provider names, modelling the default provider chain used, never null.
+     */
+    public static List<String> getDefaultProviderNames(){
+        return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
+                () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
+                .getDefaultProviderNames();
     }
 
     /**

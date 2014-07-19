@@ -10,7 +10,11 @@
  */
 package javax.money;
 
+import javax.money.iface.Context;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 
 /**
@@ -20,6 +24,12 @@ import java.util.*;
  * Superclasses of this class must be final, immutable, serializable and thread-safe.
  */
 public abstract class AbstractContext implements Serializable{
+
+    /** Key for storing the target providers to be queried */
+    public static final String PROVIDER = "provider";
+
+    /** Key name for the timestamp attribute. */
+    public static final String TIMESTAMP = "timestamp";
 
     /**
      * The data map containing all values.
@@ -33,7 +43,7 @@ public abstract class AbstractContext implements Serializable{
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected AbstractContext(AbstractContextBuilder<?,?> builder){
-        for(Map.Entry<Class<?>,Map<Object,Object>> en : builder.data.entrySet()){
+        for(Map.Entry<Class,Map<Object,Object>> en : ((Map<Class,Map<Object,Object>>) builder.data).entrySet()){
             Map<Object,Object> presentMap = (Map<Object,Object>) this.data.get(en.getKey());
             if(presentMap == null){
                 presentMap = new HashMap<>(en.getValue());
@@ -97,15 +107,6 @@ public abstract class AbstractContext implements Serializable{
      */
     public <T> T getAny(Object key, Class<T> type){
         return getAny(key, type, null);
-    }
-
-    /**
-     * Checks if the current instance has no attributes set. This is often the cases, when used in default cases.
-     *
-     * @return true, if no attributes are set.
-     */
-    public boolean isEmpty(){
-        return this.data.isEmpty();
     }
 
     /**
@@ -364,6 +365,62 @@ public abstract class AbstractContext implements Serializable{
         return getAny(key, Map.class, defaultValue);
     }
 
+    /**
+     * Get the provider name of this context.
+     *
+     * @return the provider name, or null.
+     */
+    public String getProvider(){
+        return getText(PROVIDER, null);
+    }
+
+    /**
+     * Get the current target timestamp of the query in UTC milliseconds.  If not set it tries to create an
+     * UTC timestamp from #getTimestamp(). This allows to select historical roundings that were valid in the
+     * past. Its implementation specific, to what extend historical roundings are available. By default if this
+     * property is not set always current {@link  javax.money.MonetaryRounding} instances are provided.
+     *
+     * @return the timestamp in millis, or null.
+     */
+    public Long getTimestampMillis(){
+        Long value = getAny(TIMESTAMP, Long.class, null);
+        if(Objects.isNull(value)){
+            TemporalAccessor acc = getTimestamp();
+            if(Objects.nonNull(acc)){
+                return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
+            }
+        }
+        return value;
+    }
+
+    /**
+     * Get the current target timestamp of the query. If not set it tries to create an Instant from
+     * #getTimestampMillis(). This allows to select historical roundings that were valid in the
+     * past. Its implementation specific, to what extend historical roundings are available. By default if this
+     * property is not set always current {@link  javax.money.MonetaryRounding} instances are provided.
+     *
+     * @return the current timestamp, or null.
+     */
+    public TemporalAccessor getTimestamp(){
+        TemporalAccessor acc = getAny(TIMESTAMP, TemporalAccessor.class, null);
+        if(Objects.isNull(acc)){
+            Long value = getAny(TIMESTAMP, Long.class, null);
+            if(Objects.nonNull(value)){
+                acc = Instant.ofEpochMilli(value);
+            }
+        }
+        return acc;
+    }
+
+    /**
+     * Checks if the current instance has no attributes set. This is often the cases, when used in default cases.
+     *
+     * @return true, if no attributes are set.
+     */
+    public boolean isEmpty(){
+        return this.data.isEmpty();
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -372,6 +429,15 @@ public abstract class AbstractContext implements Serializable{
     @Override
     public int hashCode(){
         return Objects.hash(data);
+    }
+
+    /**
+     * Access all the values present.
+     * @param type the type used.
+     * @return
+     */
+    public Map<Object,Object> getValues(Class type){
+        return this.data.get(type);
     }
 
     /*
@@ -391,10 +457,15 @@ public abstract class AbstractContext implements Serializable{
         return false;
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see Object#toString()
+     */
     @Override
     public String toString(){
         StringBuilder attrsBuilder = new StringBuilder();
-        for(Map.Entry<Class<?>,Map<Object,Object>> en: this.data.entrySet()){
+        for(Map.Entry<Class<?>,Map<Object,Object>> en : this.data.entrySet()){
             Map<Object,Object> sortedMap = new TreeMap<>(new Comparator<Object>(){
                 @Override
                 public int compare(Object o1, Object o2){
@@ -402,20 +473,18 @@ public abstract class AbstractContext implements Serializable{
                 }
             });
             sortedMap.putAll(en.getValue());
-            for(Map.Entry<Object,Object> entry: sortedMap.entrySet()){
+            for(Map.Entry<Object,Object> entry : sortedMap.entrySet()){
                 Object key = entry.getKey();
                 attrsBuilder.append("  ");
-                if(key.getClass()==Class.class){
-                    attrsBuilder.append(((Class)key).getName());
-                }
-                else{
+                if(key.getClass() == Class.class){
+                    attrsBuilder.append(((Class) key).getName());
+                }else{
                     attrsBuilder.append(key);
                 }
                 attrsBuilder.append('[');
                 if(en.getKey().getName().startsWith("java.lang.")){
                     attrsBuilder.append(en.getKey().getName().substring("java.lang.".length()));
-                }
-                else{
+                }else{
                     attrsBuilder.append(en.getKey().getName());
                 }
                 attrsBuilder.append("]=");
@@ -445,19 +514,7 @@ public abstract class AbstractContext implements Serializable{
         /**
          * The data map containing all values.
          */
-        private final Map<Class<?>,Map<Object,Object>> data = new HashMap<>();
-
-        /**
-         * Apply all attributes on the given context, hereby existing entries are preserved.
-         *
-         * @param context the context to be applied, not null.
-         * @return this Builder, for chaining
-         * @see #importContext(AbstractContext, boolean)
-         */
-        @SuppressWarnings("unchecked")
-        public B importContext(AbstractContext context){
-            return importContext(context, false);
-        }
+        private final Map<Class,Map<Object,Object>> data = new HashMap<>();
 
         /**
          * Apply all attributes on the given context.
@@ -468,21 +525,34 @@ public abstract class AbstractContext implements Serializable{
          */
         @SuppressWarnings("unchecked")
         public B importContext(AbstractContext context, boolean overwriteDuplicates){
-            for(Map.Entry<Class<?>,Map<Object,Object>> en : context.data.entrySet()){
-                Map<Object,Object> presentMap = this.data.get(en.getKey());
+            for(Class<?> type : context.getTypes()){
+                Map<Object,Object> values = context.getValues(type);
+                Map<Object,Object> presentMap = this.data.get(type);
                 if(presentMap == null){
-                    this.data.put(en.getKey(), new HashMap<>(en.getValue()));
+                    this.data.put(type, new HashMap<>(values));
                 }else{
                     if(overwriteDuplicates){
-                        presentMap.putAll(en.getValue());
+                        presentMap.putAll(values);
                     }else{
-                        for(Map.Entry<Object,Object> newEntry : en.getValue().entrySet()){
-                            presentMap.putIfAbsent(newEntry.getKey(), newEntry.getValue());
+                        for(Map.Entry<Object,Object> en : values.entrySet()){
+                            presentMap.putIfAbsent(en.getKey(), en.getValue());
                         }
                     }
                 }
             }
             return (B) this;
+        }
+
+        /**
+         * Apply all attributes on the given context, hereby existing entries are preserved.
+         *
+         * @param context the context to be applied, not null.
+         * @return this Builder, for chaining
+         * @see #importContext(AbstractContext, boolean)
+         */
+        public B importContext(AbstractContext context){
+            Objects.requireNonNull(context);
+            return importContext(context, false);
         }
 
         /**
@@ -660,6 +730,48 @@ public abstract class AbstractContext implements Serializable{
         }
 
         /**
+         * Sets the provider.
+         *
+         * @param provider the provider, not null.
+         * @return the Builder for chaining
+         */
+        public B setProvider(String provider){
+            Objects.requireNonNull(provider);
+            set(PROVIDER, provider);
+            return (B) this;
+        }
+
+        /**
+         * Set the target timestamp in UTC millis. This allows to select historical roundings that were valid in the
+         * past. Its implementation specific, to what extend historical roundings are available. By default if this
+         * property is not set always current {@link  javax.money.MonetaryRounding} instances are provided.
+         *
+         * @param timestamp the target timestamp
+         * @return this instance for chaining
+         * @see #setTimestamp(java.time.temporal.TemporalAccessor)
+         */
+        public B setTimestampMillis(long timestamp){
+            set(TIMESTAMP, timestamp);
+            return (B)this;
+        }
+
+        /**
+         * Set the target timestamp as {@link java.time.temporal.TemporalAccessor}. This allows to select historical
+         * roundings that were valid in the past. Its implementation specific, to what extend historical roundings
+         * are available. By default if this property is not set always current {@link  javax.money.MonetaryRounding}
+         * instances are provided.
+         *
+         * @param timestamp the target timestamp
+         * @return this instance for chaining
+         * @see #setTimestampMillis(long)
+         */
+        public B setTimestamp(TemporalAccessor timestamp){
+            Objects.requireNonNull(timestamp);
+            set(TIMESTAMP, timestamp, TemporalAccessor.class);
+            return (B)this;
+        }
+
+        /**
          * Removes an entry of a certain type. This can be useful, when a context is initialized with another
          * existing context, but only subset of the entries should be visible. FOr example {@code removeAttributes
          * (String.class, "a", "b", "c")} removes all textual attributes named 'a','b' and 'c'.
@@ -710,18 +822,25 @@ public abstract class AbstractContext implements Serializable{
             return (B) this;
         }
 
+
+
         /**
-         * Creates a new {@link javax.money.AbstractContext} with the data from this Builder
+         * Creates a new {@link AbstractContext} with the data from this Builder
          * instance.
          *
-         * @return a new {@link javax.money.AbstractContext}. never {@code null}.
+         * @return a new {@link AbstractContext}. never {@code null}.
          */
         public abstract C build();
 
+        /*
+         * (non-Javadoc)
+         *
+         * @see Object#toString()
+         */
         @Override
         public String toString(){
             StringBuilder attrsBuilder = new StringBuilder();
-            for(Map.Entry<Class<?>,Map<Object,Object>> en: this.data.entrySet()){
+            for(Map.Entry<Class,Map<Object,Object>> en : ((Map<Class,Map<Object,Object>>) this.data).entrySet()){
                 Map<Object,Object> sortedMap = new TreeMap<>(new Comparator<Object>(){
                     @Override
                     public int compare(Object o1, Object o2){
@@ -729,17 +848,16 @@ public abstract class AbstractContext implements Serializable{
                     }
                 });
                 sortedMap.putAll(en.getValue());
-                for(Map.Entry<Object,Object> entry: sortedMap.entrySet()){
+                for(Map.Entry<Object,Object> entry : sortedMap.entrySet()){
                     Object key = entry.getKey();
                     attrsBuilder.append("  ");
-                    if(key.getClass()==Class.class){
-                        String className = ((Class)key).getName();
+                    if(key.getClass() == Class.class){
+                        String className = ((Class) key).getName();
                         if(className.startsWith("java.lang.")){
                             className = className.substring("java.lang.".length());
                         }
                         attrsBuilder.append(className);
-                    }
-                    else{
+                    }else{
                         attrsBuilder.append(key);
                     }
                     attrsBuilder.append('[');

@@ -9,91 +9,55 @@
 package javax.money;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
+import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class models the attributable context of a {@link javax.money.CurrencyUnit} instances. It
+ * This class models the attributable context of {@link javax.money.CurrencyUnit} instances. It
  * provides information about
  * <ul>
- * <li>the provider that provided the instance
+ * <li>the provider that provided the instance (required)
  * <li>the target timestamp / temporal unit
  * <li>any other attributes, identified by the attribute type, e.g. regions, tenants etc.
  * </ul>
+ * <p>Instances of this class must be created using the {@link javax.money.CurrencyContext.Builder}. Typically the
+ * contexts are created and assigned by the classes that implement the {@link javax.money.spi.CurrencyProviderSpi}.
+ * The according implementation classes should document, which attributes are available.</p>
  * <p>
  * This class is immutable, serializable and thread-safe.
  *
  * @author Anatole Tresch
  */
-public final class CurrencyContext extends AbstractContext implements Serializable{
-
-    /**
-     * Key name for the currency provider.
-     */
-    private static final String PROVIDER = "provider";
-    /**
-     * Key name for the timestamp attribute.
-     */
-    private static final String TIMESTAMP = "timestamp";
+public final class CurrencyContext extends AbstractContext
+        implements Serializable{
 
     /**
      * Constructor, used from the {@link javax.money.CurrencyContext.Builder}.
+     *
      * @param builder the corresponding builder, not null.
      */
     private CurrencyContext(Builder builder){
         super(builder);
     }
 
-    /**
-     * Returns the {@code precision} setting. This value is always non-negative.
-     *
-     * @return an {@code int} which is the value of the {@code precision}
-     * setting
-     */
-    public String getProvider(){
-        return getText(PROVIDER, null);
-    }
 
     /**
-     * Get the current timestamp of the context in UTC milliseconds.  If not set it tries to create an
-     * UTC timestamp from #getTimestamp().
+     * Allows to convert a instance into the corresponding {@link javax.money.CurrencyContext.Builder}, which allows
+     * to change the values and create another {@link javax.money.CurrencyContext} instance.
      *
-     * @return the timestamp in millis, or null.
+     * @return a new Builder instance, preinitialized with the values from this instance.
      */
-    public Long getTimestampMillis(){
-        Long value = getLong(TIMESTAMP, null);
-        if(Objects.isNull(value)){
-            TemporalAccessor acc = getTimestamp();
-            if(Objects.nonNull(acc)){
-                return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
-            }
-        }
-        return value;
-    }
-
-    /**
-     * Get the current timestamp. If not set it tries to create an Instant from #getTimestampMillis().
-     *
-     * @return the current timestamp, or null.
-     */
-    public TemporalAccessor getTimestamp(){
-        TemporalAccessor acc = getAny(TIMESTAMP, TemporalAccessor.class, null);
-        if(Objects.isNull(acc)){
-            Long value = getLong(TIMESTAMP, null);
-            if(Objects.nonNull(value)){
-                acc = Instant.ofEpochMilli(value);
-            }
-        }
-        return acc;
+    public CurrencyContext.Builder toBuilder(){
+        return new Builder(getProvider()).importContext(this);
     }
 
 
     /**
      * Builder class for creating new instances of {@link javax.money.CurrencyContext} adding detailed information
-     * about a {@link javax.money.CurrencyUnit} instance.
-     * <p/>
+     * about a {@link javax.money.CurrencyUnit} instance. Typically the
+     * contexts are created and assigned by the classes that implement the {@link javax.money.spi.CurrencyProviderSpi}.
+     * The according implementation classes should document, which attributes are available.
+     * <p>
      * Note this class is NOT thread-safe.
      *
      * @see CurrencyUnit#getCurrencyContext()
@@ -108,29 +72,7 @@ public final class CurrencyContext extends AbstractContext implements Serializab
          */
         public Builder(String provider){
             Objects.requireNonNull(provider);
-            set("provider", provider);
-        }
-
-        /**
-         * Sets the currency's timestamp, using UTC milliseconds.
-         *
-         * @param timestamp the timestamp.
-         * @return the builder for chaining
-         */
-        public Builder setTimestamp(long timestamp){
-            set("timestamp", timestamp);
-            return this;
-        }
-
-        /**
-         * Sets the currency's timestamp.
-         *
-         * @param timestamp the timestamp, not null.
-         * @return the builder for chaining
-         */
-        public Builder setTimestamp(TemporalAccessor timestamp){
-            set("timestamp", timestamp, TemporalAccessor.class);
-            return this;
+            setProvider(provider);
         }
 
         /**

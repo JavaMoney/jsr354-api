@@ -32,6 +32,7 @@ import java.util.Objects;
  */
 public final class RoundingContext extends AbstractContext implements Serializable{
 
+
     /**
      * Constructor, used from the {@link javax.money.RoundingContext.Builder}.
      *
@@ -99,6 +100,27 @@ public final class RoundingContext extends AbstractContext implements Serializab
      */
     public Integer getScale(){
         return getInt("scale", null);
+    }
+
+    /**
+     * Returns the {@code precision} setting. This value is always non-negative.
+     *
+     * @return an {@code int} which is the value of the {@code precision}
+     * setting
+     */
+    public String getProvider(){
+        return getText(PROVIDER);
+    }
+
+
+    /**
+     * Allows to convert a instance into the corresponding {@link javax.money.CurrencyContext.Builder}, which allows
+     * to change the values and create another {@link javax.money.CurrencyContext} instance.
+     *
+     * @return a new Builder instance, preinitialized with the values from this instance.
+     */
+    public RoundingContext.Builder toBuilder(){
+        return new Builder(getProvider(), getRoundingId()).importContext(this);
     }
 
     /**

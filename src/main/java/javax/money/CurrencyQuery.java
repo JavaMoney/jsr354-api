@@ -9,44 +9,46 @@
 package javax.money;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
 
 /**
- * This class models the attributable context of a {@link CurrencyUnit} instances. It
- * provides information about
+ * This class models a query for accessing instances of {@link CurrencyUnit}. It
+ * provides information such as
  * <ul>
- * <li>the provider that provided the instance
- * <li>the target timestamp / temporal unit
+ * <li>the providers that may provide {@link CurrencyUnit} instances
+ * <li>a target timestamp / temporal unit, when the {@link CurrencyUnit} instances should be valid
  * <li>any other attributes, identified by the attribute type, e.g. regions, tenants etc.
  * </ul>
+ * The effective attributes supported are only determined by the implementations of {@link javax.money.spi
+ * .CurrencyProviderSpi}.
  * <p>
  * This class is immutable, serializable and thread-safe.
  *
  * @author Anatole Tresch
  */
-public final class CurrencyQuery  extends AbstractContext implements Serializable{
+public final class CurrencyQuery extends AbstractQuery implements Serializable{
 
-    public static final CurrencyQuery ANY_QUERY = new CurrencyQueryBuilder().build();
+    /** Key for storing a countries to be queried. */
+    protected static final String COUNTRIES = "Query.countries";
+
+    /** Key for storing a target literal currency codes to be queried. */
+    protected static final String CURRENCY_CODES = "Query.currencyCodes";
+
+    /** Key for storing a target numeric currency codes to be queried. */
+    protected static final String NUMERIC_CODES = "Query.numericCodes";
+
+    /**
+     * An instance, which basically modely a query that allows any type of currencies to be returned.
+     */
+    public static final CurrencyQuery ANY_QUERY = new Builder().build();
 
     /**
      * Constructor, used from the Builder.
-     * @param builder the corresponding {@link javax.money.CurrencyQuery.CurrencyQueryBuilder}, not null.
-     */
-    private CurrencyQuery(CurrencyQueryBuilder builder){
-        super(builder);
-    }
-
-    /**
-     * Returns the providers and ordering to be used.
      *
-     * @return the ordered providers, never null.
+     * @param builder the corresponding {@link javax.money.CurrencyQuery.Builder}, not null.
      */
-    public Collection<String> getProviders(){
-        return getCollection("providers", Collections.emptySet());
+    private CurrencyQuery(Builder builder){
+        super(builder);
     }
 
     /**
@@ -55,124 +57,72 @@ public final class CurrencyQuery  extends AbstractContext implements Serializabl
      * @return the otarget locales, never null.
      */
     public Collection<Locale> getCountries(){
-        return getCollection("countries", Collections.emptySet());
+        return getCollection(COUNTRIES, Collections.emptySet());
     }
 
     /**
      * Gets the currency codes, or the regular expression to select codes.
+     *
      * @return the query for chaining.
      */
     public Collection<String> getCurrencyCodes(){
-        return getCollection("currencyCodes", Collections.emptySet());
+        return getCollection(CURRENCY_CODES, Collections.emptySet());
     }
 
     /**
      * Gets the numeric codes. Setting it to -1 search for currencies that have no numeric code.
+     *
      * @return the query for chaining.
      */
     public Collection<Integer> getNumericCodes(){
-        return getCollection("numericCodes", Collections.emptySet());
-    }
-
-    /**
-     * Get the current timestamp of the context in UTC milliseconds.  If not set it tries to create an
-     * UTC timestamp from #getTimestamp().
-     *
-     * @return the timestamp in millis, or null.
-     */
-    public Long getTimestampMillis(){
-        Long value = getLong("timestamp", null);
-        if(Objects.isNull(value)){
-            TemporalAccessor acc = getTimestamp();
-            if(Objects.nonNull(acc)){
-                return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
-            }
-        }
-        return value;
-    }
-
-    /**
-     * Get the current timestamp. If not set it tries to create an Instant from #getTimestampMillis().
-     *
-     * @return the current timestamp, or null.
-     */
-    public TemporalAccessor getTimestamp(){
-        TemporalAccessor acc = getAny("timestamp", TemporalAccessor.class, null);
-        if(Objects.isNull(acc)){
-            Long value = getLong("timestamp", null);
-            if(Objects.nonNull(value)){
-                acc = Instant.ofEpochMilli(value);
-            }
-        }
-        return acc;
+        return getCollection(NUMERIC_CODES, Collections.emptySet());
     }
 
 
+
     /**
-     * Builder for queries for accessing {@link CurrencyUnit} instances. If not properties are set the query should returns
+     * Builder for queries for accessing {@link CurrencyUnit} instances. If not properties are set the query should
+     * returns
      * the <i>default</i> currencies. Similarly if no provider is set explicitly the <i>default</i> ISO currencies as
      * returned by {@link java.util.Currency} should be returned.
-     * <p/>
+     * <p>
      * Note this class is NOT thread-safe.
      */
-    public static final class CurrencyQueryBuilder extends AbstractContextBuilder<CurrencyQueryBuilder,CurrencyQuery>{
-        /**
-         * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
-         * returned by {@link java.util.Currency} is used.
-         * @param providers the providers to use, not null.
-         * @return the query for chaining.
-         */
-        public CurrencyQueryBuilder setProviders(String... providers){
-            return set("providers", providers);
-        }
+    public static final class Builder extends AbstractQueryBuilder<Builder,CurrencyQuery>{
 
         /**
          * Sets the country for which currencies whould be requested.
+         *
          * @param countries The ISO countries.
          * @return the query for chaining.
          */
-        public CurrencyQueryBuilder setCountries(Locale... countries){
-            return setCollection("countries", Arrays.asList(countries));
+        public Builder setCountries(Locale... countries){
+            return setCollection(COUNTRIES, Arrays.asList(countries));
         }
 
         /**
          * Sets the currency code, or the regular expression to select codes.
+         *
          * @param codes sthe currency codes or code expressions, not null.
          * @return the query for chaining.
          */
-        public CurrencyQueryBuilder setCurrencyCodes(String... codes){
-            return setCollection("currencyCodes", Arrays.asList(codes));
+        public Builder setCurrencyCodes(String... codes){
+            return setCollection(CURRENCY_CODES, Arrays.asList(codes));
         }
 
         /**
          * Set the numeric code. Setting it to -1 search for currencies that have no numeric code.
+         *
          * @param codes the numeric codes.
          * @return the query for chaining.
          */
-        public CurrencyQueryBuilder setNumericCodes(int... codes){
-            return setCollection("numericCodes", Arrays.asList(codes));
-        }
-
-        /**
-         * Sets the target timestamp as UTC millisesonds.
-         * @param timestamp the target timestamp
-         * @return the query for chaining.
-         */
-        public CurrencyQueryBuilder setTimestampMillis(long timestamp){
-            return set("timestamp", timestamp);
-        }
-
-        /**
-         * Sets the target timestamp as {@link java.time.temporal.TemporalUnit}.
-         * @param timestamp the target timestamp
-         * @return the query for chaining.
-         */
-        public CurrencyQueryBuilder setTimestamp(TemporalUnit timestamp){
-            return set("timestamp", timestamp, TemporalUnit.class);
+        public Builder setNumericCodes(int... codes){
+            return setCollection(NUMERIC_CODES, Arrays.asList(codes));
         }
 
         /**
          * Creates a new instance of {@link CurrencyQuery}.
+         *
          * @return a new {@link CurrencyQuery} instance.
          */
         public CurrencyQuery build(){

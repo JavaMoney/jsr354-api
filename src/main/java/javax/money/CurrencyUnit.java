@@ -92,7 +92,7 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit>{
 
     /**
      * Returns the {@link javax.money.CurrencyContext} of a a currency. This context contains additional information
-     * on the type of the currency, its provider and more.
+     * on the type and capabilities of a CurrencyUnit, e.g. its provider and more.
      * @return the currency's context, never null.
      */
     public CurrencyContext getCurrencyContext();

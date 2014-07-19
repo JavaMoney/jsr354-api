@@ -15,7 +15,7 @@ package javax.money;
  * creating amounts of the same implementation type, which also provided the factory instance.</li>
  * <li>calling {@link MonetaryAmounts#getAmountFactory(Class)} accessing a
  * {@link MonetaryAmountFactory} for a concrete type <code>Class<T></code>.</li>
- * <li>calling {@link MonetaryAmounts#getAmountFactory()} accessing a default
+ * <li>calling {@link MonetaryAmounts#getDefaultAmountFactory()} accessing a default
  * {@link MonetaryAmountFactory}.
  * </ul>
  * <p>
@@ -64,7 +64,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount>{
      * Sets the {@link CurrencyUnit} to be used.
      *
      * @param currencyCode the currencyCode of the currency to be used, not {@code null}. The currency code
-     *                     will be resolved using {@link MonetaryCurrencies#getCurrency(String)}.
+     *                     will be resolved using {@link MonetaryCurrencies#getCurrency(String, String...)}.
      * @return This factory instance, for chaining.
      * @throws UnknownCurrencyException if the {@code currencyCode} is not resolvable.
      */

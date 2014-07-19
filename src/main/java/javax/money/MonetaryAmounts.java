@@ -17,12 +17,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Factory singleton for {@link MonetaryAmount} instances as provided by the different registered
+ * Singleton class for accessing {@link MonetaryAmount} instances as provided by the different registered
  * {@link MonetaryAmountFactory} instances.
  * <p>
- * This singleton allows to get {@link MonetaryAmountFactory} instances for the registered
- * {@link MonetaryAmount} implementation classes or depending on the precision and scale
- * requirements.
+ * This singleton allows to access {@link MonetaryAmountFactory} instances for the registered
+ * {@link MonetaryAmount} implementation classes or using a flexible {@link javax.money.MonetaryAmountFactoryQuery}
+ * instance, determining the selection attributes arbitrarely.
  *
  * @author Anatole Tresch
  * @author Werner Keil
@@ -136,8 +136,7 @@ public final class MonetaryAmounts{
      */
     public static Collection<Class<? extends MonetaryAmount>> getAmountTypes(){
         return Optional.ofNullable(monetaryAmountsSingletonSpi)
-                .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."))
-                .getAmountTypes();
+                .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded.")).getAmountTypes();
     }
 
     /**

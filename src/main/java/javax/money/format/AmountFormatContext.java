@@ -10,7 +10,6 @@ package javax.money.format;
 
 import javax.money.AbstractContext;
 import javax.money.MonetaryAmountFactory;
-import javax.money.MonetaryContext;
 import java.util.Locale;
 import java.util.Objects;
 

@@ -84,7 +84,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return the maximal scale supported, always {@code >= -1}
      */
     public int getMaxScale(){
-        return getInt(MAX_SCALE, 0);
+        return getInt(MAX_SCALE, -1);
     }
 
     /**
@@ -165,18 +165,6 @@ public final class MonetaryContext extends AbstractContext implements Serializab
         }
 
         /**
-         * Apply all entries from the given context,  but keep the amount type.
-         *
-         * @param context the context to be applied, not null.
-         * @return this Builder for chaining.
-         */
-        public Builder importContext(AbstractContext context){
-            Class amountType = context.getAny(AMOUNT_TYPE, Class.class);
-            super.importContext(context);
-            return set(AMOUNT_TYPE, amountType, Class.class);
-        }
-
-        /**
          * Set the maximal scale to be supported.
          *
          * @param maxScale the max scale, >= 0.
@@ -207,7 +195,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
         }
 
         /**
-         * Get the MonetaryAmount implementation class.
+         * Set the MonetaryAmount implementation class.
          *
          * @return the implementation class of the containing amount instance, never null.
          * @see MonetaryAmount#getMonetaryContext()

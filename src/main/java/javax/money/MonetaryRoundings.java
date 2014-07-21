@@ -13,6 +13,7 @@ package javax.money;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryRoundingsSingletonSpi;
 import javax.money.spi.RoundingProviderSpi;
+import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -171,7 +172,7 @@ public final class MonetaryRoundings{
      *
      * @author Anatole Tresch
      */
-    private static final class DefaultCurrencyRounding implements MonetaryRounding{
+    private static final class DefaultCurrencyRounding implements MonetaryRounding, Serializable{
 
         private static final RoundingContext ROUNDING_CONTEXT = new RoundingContext.Builder("default", "default").build();
         @Override

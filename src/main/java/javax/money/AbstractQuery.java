@@ -54,6 +54,16 @@ public abstract class AbstractQuery extends AbstractContext{
     }
 
     /**
+     * Gets the target implementation type required. This can be used to explicitly acquire a specific implementation
+     * type and use a query to configure the instance or factory to be returned.
+     *
+     * @return this Builder for chaining.
+     */
+    public Class<?> getTargetType(){
+        return getAny(TARGET_TYPE, Class.class, null);
+    }
+
+    /**
      * Get the current timestamp of the context in UTC milliseconds.  If not set it tries to create an
      * UTC timestamp from #getTimestamp().
      *

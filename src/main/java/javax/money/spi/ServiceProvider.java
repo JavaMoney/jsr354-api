@@ -33,7 +33,7 @@ public interface ServiceProvider {
 	 */
 	@SuppressWarnings("unchecked")
 	public default <T> List<T> getServices(Class<T> serviceType){
-          return getServices(serviceType, (List<T>) Collections.emptyList());
+          return getServices(serviceType, Collections.emptyList());
     }
 
 	/**

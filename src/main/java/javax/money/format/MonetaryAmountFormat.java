@@ -35,7 +35,7 @@ import java.io.IOException;
  * <p/>
  * <pre>
  * MonetaryAmountFormat f = MonetaryFormats.getInstance(loc);
- * f.setStyle(f.getStyle().toBuilder().setPattern(&quot;###.##;(###.##)&quot;).create());
+ * f.setStyle(f.getStyle().toBuilder().setPattern(&quot;###.##;(###.##)&quot;).build());
  * </pre>
  * <p/>
  * </blockquote>

@@ -49,13 +49,8 @@ public class ConcurrentInitializationTest {
         final DummyAmount amount = new DummyAmount();
 
         final List<Thread> threads = new ArrayList<>(THREAD_COUNT);
-        final List<Throwable> throwables = Collections.synchronizedList(new ArrayList<Throwable>());
-        final Thread.UncaughtExceptionHandler uncaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(final Thread t, final Throwable e) {
-                throwables.add(e);
-            }
-        };
+        final List<Throwable> throwables = Collections.synchronizedList(new ArrayList<>());
+        final Thread.UncaughtExceptionHandler uncaughtExceptionHandler = (t, e) -> throwables.add(e);
 
         for (int i = 0; i < THREAD_COUNT; i++) {
             final Thread thread = new Thread(new Round(amount));

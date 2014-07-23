@@ -10,7 +10,6 @@
  */
 package javax.money;
 
-import javax.money.iface.Context;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.temporal.ChronoField;

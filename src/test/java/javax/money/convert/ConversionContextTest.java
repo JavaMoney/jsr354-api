@@ -21,19 +21,19 @@ import org.testng.annotations.Test;
 public class ConversionContextTest{
     @Test
     public void testGetRateType() throws Exception{
-        ConversionContext ctx = new ConversionContext.Builder().setRateType(RateType.DEFERRED).build();
+        ConversionContext ctx = ConvertionContextBuilder.create().setRateType(RateType.DEFERRED).build();
         assertEquals(RateType.DEFERRED, ctx.getRateType());
     }
 
     @Test
     public void testGetProvider() throws Exception{
-        ConversionContext ctx = new ConversionContext.Builder().setProvider("myprov").build();
+        ConversionContext ctx = ConvertionContextBuilder.create().setProvider("myprov").build();
         assertEquals("myprov", ctx.getProvider());
     }
 
     @Test
     public void testToBuilder() throws Exception{
-        ConversionContext ctx = new ConversionContext.Builder().setProvider("myprov").build();
+        ConversionContext ctx = ConvertionContextBuilder.create().setProvider("myprov").build();
         assertEquals(ctx, ctx.toBuilder().build());
     }
 

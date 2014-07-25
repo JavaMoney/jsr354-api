@@ -9,11 +9,9 @@ package javax.money.convert;
 
 import javax.money.AbstractContext;
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryCurrencies;
 import java.time.Instant;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
 
 /**
@@ -21,16 +19,18 @@ import java.util.*;
  * should returns the <i>default</i> currencies.<p/>
  * This class is immutable, serializable and thread-safe.
  */
-public final class ConversionQuery extends AbstractContext{
+public final class ConversionQuery extends AbstractContext {
 
-    public static final ConversionQuery ANY_CONVERSION = new Builder().build();
+	private static final long serialVersionUID = -9147265628185601586L;
+
+	public static final ConversionQuery ANY_CONVERSION = ConversiontQueryBuilder.create().build();
 
     /**
      * Constructor, used from the ConversionQueryBuilder.
      *
      * @param builder the corresponding builder, not null.
      */
-    private ConversionQuery(Builder builder){
+    ConversionQuery(ConversiontQueryBuilder builder){
         super(builder);
     }
 
@@ -116,134 +116,8 @@ public final class ConversionQuery extends AbstractContext{
      *
      * @return a new Builder, never null.
      */
-    public Builder toBuilder(){
-        return new Builder().importContext(this);
+    public ConversiontQueryBuilder toBuilder(){
+        return ConversiontQueryBuilder.create().importContext(this);
     }
-
-    /**
-     * Builder class for creating new instances of {@link javax.money.convert.ConversionQuery} adding detailed
-     * information about a {@link javax.money.convert.CurrencyConversion} instance.
-     * <p>
-     * Note this class is NOT thread-safe.
-     *
-     * @see javax.money.convert.MonetaryConversions#getConversion(ConversionQuery)
-     */
-    public static final class Builder extends AbstractContext.AbstractContextBuilder<Builder,ConversionQuery>{
-        /**
-         * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
-         * returned by {@link java.util.Currency} is used.
-         *
-         * @param providers the providers to use, not null.
-         * @return the query for chaining.
-         */
-        public Builder setProviders(String... providers){
-            return setList("providers", Arrays.asList(providers));
-        }
-
-        /**
-         * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
-         * returned by {@link java.util.Currency} is used.
-         *
-         * @param providers the providers to use, not null.
-         * @return the query for chaining.
-         */
-        public Builder setProviders(List<String> providers){
-            return setList("providers", providers);
-        }
-
-        /**
-         * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
-         * returned by {@link java.util.Currency} is used.
-         *
-         * @param rateTypes the rate types to use, not null.
-         * @return the query for chaining.
-         */
-        public Builder setRateTypes(RateType... rateTypes){
-            return setSet("rateTypes", new HashSet<>(Arrays.asList(rateTypes)));
-        }
-
-        /**
-         * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
-         * returned by {@link java.util.Currency} is used.
-         *
-         * @param rateTypes the rate types to use, not null.
-         * @return the query for chaining.
-         */
-        public Builder setRateTypes(Set<RateType> rateTypes){
-            return setSet("rateTypes", rateTypes);
-        }
-
-        /**
-         * Sets the target timestamp as UTC millisesonds.
-         *
-         * @param timestamp the target timestamp
-         * @return the query for chaining.
-         */
-        public Builder setTimestampMillis(long timestamp){
-            return set("timestamp", timestamp);
-        }
-
-        /**
-         * Sets the target timestamp as {@link java.time.temporal.TemporalUnit}.
-         *
-         * @param timestamp the target timestamp
-         * @return the query for chaining.
-         */
-        public Builder setTimestamp(TemporalUnit timestamp){
-            return set("timestamp", timestamp, TemporalUnit.class);
-        }
-
-        /**
-         * Sets the base currency.
-         *
-         * @param currency the base currency
-         * @return the query for chaining.
-         */
-        public Builder setBaseCurrency(CurrencyUnit currency){
-            return set("baseCurrency", currency, CurrencyUnit.class);
-        }
-
-        /**
-         * Sets the base currency.
-         *
-         * @param currencyCode the currency code, resolvable through {@link javax.money
-         * .MonetaryCurrencies#getCurrency(String, String...)}, not null.
-         * @return the query for chaining.
-         */
-        public Builder setBaseCurrency(String currencyCode){
-            return setBaseCurrency(MonetaryCurrencies.getCurrency(currencyCode));
-        }
-
-        /**
-         * Sets the term currency.
-         *
-         * @param currency the base currency
-         * @return the query for chaining.
-         */
-        public Builder setTermCurrency(CurrencyUnit currency){
-            return set("termCurrency", currency, CurrencyUnit.class);
-        }
-
-        /**
-         * Sets the term currency.
-         *
-         * @param currencyCode the currency code, resolvable through {@link javax.money
-         * .MonetaryCurrencies#getCurrency(String, String...)}, not null.
-         * @return the query for chaining.
-         */
-        public Builder setTermCurrency(String currencyCode){
-            return setTermCurrency(MonetaryCurrencies.getCurrency(currencyCode));
-        }
-
-        /**
-         * Creates a new instance of {@link ConversionQuery}.
-         *
-         * @return a new {@link ConversionQuery} instance.
-         */
-        @Override
-        public ConversionQuery build(){
-            return new ConversionQuery(this);
-        }
-    }
+ 
 }
-

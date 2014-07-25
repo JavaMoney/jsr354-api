@@ -30,8 +30,8 @@ public class AmountStyleTest{
 
     @Test
     public void testToBuilder() throws Exception{
-        AmountFormatQuery style = new AmountFormatQuery.Builder(Locale.ENGLISH).build();
-        AmountFormatQuery.Builder builder = style.toBuilder();
+        AmountFormatQuery style = new AmountFormartQueryBuilder(Locale.ENGLISH).build();
+        AmountFormartQueryBuilder builder = style.toBuilder();
         assertNotNull(builder);
         assertEquals(style, builder.build());
     }
@@ -41,8 +41,8 @@ public class AmountStyleTest{
         MonetaryOperator op = value -> value.multiply(2.0d);
         assertNotNull(op);
         List<AmountFormatContext> contexts = new ArrayList<>();
-        contexts.add(new AmountFormatContext.Builder(Locale.GERMAN).build());
-        contexts.add(new AmountFormatContext.Builder(Locale.ENGLISH).build());
+        contexts.add(new AmountFormatContextBuilder(Locale.GERMAN).build());
+        contexts.add(new AmountFormatContextBuilder(Locale.ENGLISH).build());
         Set<Integer> hashCodes = new HashSet<>();
         contexts.forEach(amountFormatContext -> hashCodes.add(amountFormatContext.hashCode()));
         // Check we have 5 distinct hash codes...
@@ -54,8 +54,8 @@ public class AmountStyleTest{
         MonetaryOperator op = value -> value.multiply(2.0d);
         assertNotNull(op);
         List<AmountFormatContext> contexts = new ArrayList<>();
-        contexts.add(new AmountFormatContext.Builder(Locale.ENGLISH).build());
-        contexts.add(new AmountFormatContext.Builder(Locale.GERMAN).build());
+        contexts.add(new AmountFormatContextBuilder(Locale.ENGLISH).build());
+        contexts.add(new AmountFormatContextBuilder(Locale.GERMAN).build());
         Set<AmountFormatContext> checkContexts = new HashSet<>();
         contexts.forEach(checkContexts::add);
         // Check we have 5 distinct hash codes...
@@ -64,7 +64,7 @@ public class AmountStyleTest{
 
     @Test
     public void testToString() throws Exception{
-        AmountFormatContext style = new AmountFormatContext.Builder(Locale.GERMAN).set("groupSizes",
+        AmountFormatContext style = new AmountFormatContextBuilder(Locale.GERMAN).set("groupSizes",
                                                                                        new int[]{1, 2, 3, 4})
                 .set("currencyStyle", "NUMERIC_CODE").set("pattern", "###").build();
         String toString = style.toString();

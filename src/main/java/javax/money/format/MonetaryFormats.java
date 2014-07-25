@@ -60,7 +60,7 @@ public final class MonetaryFormats{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     public static MonetaryAmountFormat getAmountFormat(Locale locale){
-        return getAmountFormat(new AmountFormatQuery.Builder(locale).setLocale(locale).build());
+        return getAmountFormat(new AmountFormartQueryBuilder(locale).setLocale(locale).build());
     }
 
     /**
@@ -96,7 +96,7 @@ public final class MonetaryFormats{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     public static MonetaryAmountFormat getAmountFormat(String styleId){
-        return getAmountFormat(new AmountFormatQuery.Builder(styleId).setStyleId(styleId).build());
+        return getAmountFormat(new AmountFormartQueryBuilder(styleId).setStyleId(styleId).build());
     }
 
     /**

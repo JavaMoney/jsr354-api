@@ -8,11 +8,17 @@
  */
 package javax.money.format;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Objects;
+
 import javax.money.AbstractContext;
+import javax.money.AbstractContextBuilder;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmounts;
 import javax.money.MonetaryContext;
-import java.util.*;
 
 /**
  * Query for accessing instances of {@link javax.money.format.MonetaryAmountFormat}. In general it is determined by the
@@ -26,17 +32,16 @@ import java.util.*;
  * <p>
  * This class is immutable, thread-safe and serializable.
  */
-public final class AmountFormatQuery extends AbstractContext{
+public final class AmountFormatQuery extends AbstractContext {
 
-    private static final String DEFAULT_STYLE_ID = "default";
-    private static final String STYLE_ID = "styleId";
+    static final String STYLE_ID = "styleId";
 
     /**
      * Constructor, used from the Builder.
      *
-     * @param builder the corresponding {@link javax.money.format.AmountFormatQuery.Builder}, not null.
+     * @param builder the corresponding {@link javax.money.format.AmountFormatQuery.AmountFormartQueryBuilder}, not null.
      */
-    private AmountFormatQuery(Builder builder){
+    AmountFormatQuery(AmountFormartQueryBuilder builder){
         super(builder);
     }
 
@@ -84,112 +89,15 @@ public final class AmountFormatQuery extends AbstractContext{
      * @param locale the target locale, not null.
      */
     public static AmountFormatQuery of(Locale locale){
-        return new Builder(locale).build();
+        return new AmountFormartQueryBuilder(locale).build();
     }
 
     /**
-     * Get a {@link javax.money.format.AmountFormatQuery.Builder} preinitialized with this context instance.
+     * Get a {@link javax.money.format.AmountFormatQuery.AmountFormartQueryBuilder} preinitialized with this context instance.
      *
      * @return a new preinitialized builder, never null.
      */
-    public Builder toBuilder(){
-        return new Builder(this);
-    }
-
-
-    /**
-     * Builder for queries for accessing/configuring {@link javax.money.format.MonetaryAmountFormat} instances.
-     * <p>
-     * Note this class is NOT thread-safe.
-     */
-    public static final class Builder extends AbstractContext.AbstractContextBuilder<Builder,AmountFormatQuery>{
-
-        /**
-         * Creates a new {@link javax.money.format.AmountFormatQuery.Builder}.
-         *
-         * @param style the base {@link AmountFormatContext}, not {@code null}.
-         */
-        public Builder(AmountFormatQuery style){
-            importContext(style);
-        }
-
-        /**
-         * Creates a new {@link javax.money.format.AmountFormatQuery.Builder}.
-         *
-         * @param styleId the target styleId {@link String}, not {@code null}.
-         */
-        public Builder(String styleId){
-            Objects.requireNonNull(styleId, "styleId required.");
-            set(STYLE_ID, styleId);
-        }
-
-        /**
-         * Creates a new default {@link javax.money.format.AmountFormatQuery.Builder} for a formatter based on the
-         * locale specific
-         * defaults.
-         *
-         * @param locale the target {@link java.util.Locale}, not {@code null}.
-         */
-        public Builder(Locale locale){
-            Objects.requireNonNull(locale, "locale required.");
-            setLocale(locale);
-            set(STYLE_ID, DEFAULT_STYLE_ID);
-            set(locale);
-        }
-
-        /**
-         * Sets a style's id.
-         *
-         * @param styleId the styleId, not null.
-         * @return the Builder, for chaining.
-         */
-        public Builder setStyleId(String styleId){
-            return set(STYLE_ID, styleId);
-        }
-
-        /**
-         * Sets a Locale to be applied.
-         *
-         * @param locale the locale, not null.
-         * @return the Builder, for chaining.
-         */
-        public Builder setLocale(Locale locale){
-            return set(locale);
-        }
-
-        /**
-         * Returns the providers and ordering to be used.
-         *
-         * @return the ordered providers, never null.
-         */
-        public Builder setProviders(Collection<String> providers){
-            return setCollection("providers", providers);
-        }
-
-        /**
-         * Returns the providers and ordering to be used.
-         *
-         * @return the ordered providers, never null.
-         */
-        public Builder setProviders(String... providers){
-            return setCollection("providers", Arrays.asList(providers));
-        }
-
-
-        /**
-         * Sets the {@link javax.money.MonetaryContext} to be used, when amount's are parsed.
-         *
-         * @param monetaryContext the monetary context, not {@code null}.
-         * @return this builder for chaining.
-         */
-        public Builder setMonetaryContext(MonetaryContext monetaryContext){
-            Objects.requireNonNull(monetaryContext);
-            return set(monetaryContext);
-        }
-
-        public AmountFormatQuery build(){
-            return new AmountFormatQuery(this);
-        }
-
+    public AmountFormartQueryBuilder toBuilder(){
+        return new AmountFormartQueryBuilder(this);
     }
 }

@@ -11,7 +11,7 @@ import javax.money.AbstractContextBuilder;
  *
  * @author Anatole Tresch
  */
-public class ConvertionContextBuilder extends AbstractContextBuilder<ConvertionContextBuilder,ConversionContext> {
+public class ConversionContextBuilder extends AbstractContextBuilder<ConversionContextBuilder,ConversionContext> {
 	
 	private static final String PROVIDER = "provider";
 
@@ -24,7 +24,7 @@ public class ConvertionContextBuilder extends AbstractContextBuilder<ConvertionC
      *
      * @param context the context, not {@code null}
      */
-    public ConvertionContextBuilder(ConversionContext context){
+    public ConversionContextBuilder(ConversionContext context){
         importContext(context);
     }
 
@@ -36,7 +36,7 @@ public class ConvertionContextBuilder extends AbstractContextBuilder<ConvertionC
      * @param context  the provider context, not {@code null}
      * @param rateType the rate type, not null.
      */
-    public ConvertionContextBuilder(ProviderContext context, RateType rateType){
+    public ConversionContextBuilder(ProviderContext context, RateType rateType){
         importContext(context);
         setRateType(rateType);
     }
@@ -47,7 +47,7 @@ public class ConvertionContextBuilder extends AbstractContextBuilder<ConvertionC
      * @param rateType the rate type
      * @return this, for chaining.
      */
-    public ConvertionContextBuilder setRateType(RateType rateType){
+    public ConversionContextBuilder setRateType(RateType rateType){
         Objects.requireNonNull(rateType);
         set(rateType);
         return this;
@@ -59,7 +59,7 @@ public class ConvertionContextBuilder extends AbstractContextBuilder<ConvertionC
      * @param provider the provider, not null.
      * @return this builder, for chaining.
      */
-    public ConvertionContextBuilder setProvider(String provider){
+    public ConversionContextBuilder setProvider(String provider){
         Objects.requireNonNull(provider);
         set(PROVIDER, provider);
         return this;
@@ -71,7 +71,7 @@ public class ConvertionContextBuilder extends AbstractContextBuilder<ConvertionC
      * @param timestamp the rate's timestamp
      * @return this, for chaining.
      */
-    public ConvertionContextBuilder setTimestampMillis(long timestamp){
+    public ConversionContextBuilder setTimestampMillis(long timestamp){
         set(TIMESTAMP, timestamp);
         return this;
     }
@@ -82,7 +82,7 @@ public class ConvertionContextBuilder extends AbstractContextBuilder<ConvertionC
      * @param temporalAccessor the rate's timestamp, as TemporalAccessor.
      * @return this, for chaining.
      */
-    public ConvertionContextBuilder setTimestamp(TemporalAccessor temporalAccessor){
+    public ConversionContextBuilder setTimestamp(TemporalAccessor temporalAccessor){
         set(TIMESTAMP, temporalAccessor, TemporalAccessor.class);
         return this;
     }
@@ -101,11 +101,11 @@ public class ConvertionContextBuilder extends AbstractContextBuilder<ConvertionC
      * Create a new Builder instance without any provider, e.g. for creating
      * new {@link ConversionContext} instances for querying.
      */
-    public ConvertionContextBuilder() {
+    public ConversionContextBuilder() {
     	set(RateType.ANY);
     }
   
-    public static ConvertionContextBuilder create() {
-    	return new ConvertionContextBuilder();
+    public static ConversionContextBuilder create() {
+    	return new ConversionContextBuilder();
     }
 }

@@ -8,9 +8,10 @@
  */
 package javax.money.convert;
 
-import javax.money.AbstractContext;
+import java.util.Collections;
+import java.util.Set;
 
-import java.util.*;
+import javax.money.AbstractContext;
 
 /**
  * This class describes what kind of {@link javax.money.convert.ExchangeRate}s a {@link javax.money.convert
@@ -39,12 +40,11 @@ public final class ProviderContext extends AbstractContext{
 
 
     /**
-     * Private constructor, used by {@link Builder}.
+     * Private constructor, used by {@link ProviderContextBuilder}.
      *
      * @param builder the Builder.
      */
-    @SuppressWarnings("unchecked")
-    private ProviderContext(Builder builder){
+    ProviderContext(ProviderContextBuilder builder){
         super(builder);
     }
 
@@ -57,7 +57,7 @@ public final class ProviderContext extends AbstractContext{
      * @return the provider, or {code null}.
      */
     public String getProvider(){
-        return getText("provider");
+        return getText(PROVIDER);
     }
 
     /**
@@ -66,19 +66,18 @@ public final class ProviderContext extends AbstractContext{
      * @return the deferred flag, or {code null}.
      */
     public Set<RateType> getRateTypes() {
-		@SuppressWarnings("unchecked")
-		Set<RateType> rateSet = getSet("rateTypes",
+		Set<RateType> rateSet = getSet(RATE_TYPES,
 				Collections.emptySet());
 		return Collections.unmodifiableSet(rateSet);
 	}
 
     /**
-     * Creates a {@link Builder} initialized with this instance's data.
+     * Creates a {@link ProviderContextBuilder} initialized with this instance's data.
      *
-     * @return a new {@link Builder}, not {@code null}.
+     * @return a new {@link ProviderContextBuilder}, not {@code null}.
      */
-    public Builder toBuilder(){
-        return new Builder(this);
+    public ProviderContextBuilder toBuilder(){
+        return new ProviderContextBuilder(this);
     }
 
     /**
@@ -89,7 +88,7 @@ public final class ProviderContext extends AbstractContext{
      * @return a new {@link ProviderContext} instance.
      */
     public static ProviderContext of(String provider, RateType rateType, RateType... rateTypes){
-        return new Builder(provider, rateType, rateTypes).build();
+        return new ProviderContextBuilder(provider, rateType, rateTypes).build();
     }
 
     /**
@@ -99,119 +98,7 @@ public final class ProviderContext extends AbstractContext{
      * @return a new {@link ProviderContext} instance.
      */
     public static ProviderContext of(String provider){
-        return new Builder(provider, RateType.ANY).build();
+        return new ProviderContextBuilder(provider, RateType.ANY).build();
     }
-
-
-    /**
-     * Builder class to create {@link ProviderContext} instances. Instances of
-     * this class are not thread-safe.
-     *
-     * @author Anatole Tresch
-     */
-    public static final class Builder extends AbstractContextBuilder<Builder, ProviderContext>{
-
-        /**
-         * Create a new Builder instance.
-         *
-         * @param provider the provider name, not {@code null}.
-         * @param rateTypes the rate types, not null and not empty.
-         */
-        public Builder(String provider, RateType rateType, RateType... rateTypes){
-            Objects.requireNonNull(rateType, "At least one RateType is required.");
-            Objects.requireNonNull(rateTypes);
-            setProviderName(provider);
-            Set<RateType> rts = new HashSet<>();
-            rts.add(rateType);
-            Collections.addAll(rts, rateTypes);
-            setSet(RATE_TYPES, rts);
-        }
-
-        /**
-         * Create a new Builder instance.
-         *
-         * @param provider  the provider name, not {@code null}.
-         * @param rateTypes the rate types, not null and not empty.
-         */
-        public Builder(String provider, Collection<RateType> rateTypes){
-            Objects.requireNonNull(rateTypes);
-            if(rateTypes.isEmpty()){
-                throw new IllegalArgumentException("At least one RateType is required.");
-            }
-            setProviderName(provider);
-            Set<RateType> rts = new HashSet<>();
-            rts.addAll(rateTypes);
-            setSet("rateTypes", rts);
-        }
-
-        /**
-         * Create a new Builder, hereby using the given {@link ProviderContext}
-         * 's values as defaults. This allows changing an existing
-         * {@link ProviderContext} easily.
-         *
-         * @param context the context, not {@code null}
-         */
-        public Builder(ProviderContext context){
-            importContext(context);
-            Set<RateType> rts = new HashSet<>();
-            rts.addAll(context.getRateTypes());
-            setSet("rateTypes", rts);
-        }
-
-        /**
-         * Sets the provider name.
-         *
-         * @param provider the new provider name
-         * @return this, for chaining.
-         */
-        public Builder setProviderName(String provider){
-            Objects.requireNonNull(provider);
-            set(PROVIDER, provider);
-            return this;
-        }
-
-        /**
-         * Set the rate types.
-         *
-         * @param rateTypes the rate types, not null and not empty.
-         * @return this, for chaining.
-         * @throws IllegalArgumentException when not at least one {@link RateType} is provided.
-         */
-        public Builder setRateTypes(RateType... rateTypes){
-            return setRateTypes(Arrays.asList(rateTypes));
-        }
-
-        /**
-         * Set the rate types.
-         *
-         * @param rateTypes the rate types, not null and not empty.
-         * @return this, for chaining.
-         * @throws IllegalArgumentException when not at least one {@link RateType} is provided.
-         */
-        @SuppressWarnings({ "unchecked", "rawtypes" })
-		public Builder setRateTypes(Collection<RateType> rateTypes){
-            Objects.requireNonNull(rateTypes);
-            if(rateTypes.size() == 0){
-                throw new IllegalArgumentException("At least one RateType is required.");
-            }
-            Set rtSet = new HashSet<>();
-            rtSet.addAll(rateTypes);
-            setSet(RATE_TYPES, rtSet);
-            return this;
-        }
-
-        /**
-         * Creates a new {@link ProviderContext} with the data from this Builder
-         * instance.
-         *
-         * @return a new {@link ProviderContext}. never {@code null}.
-         */
-        public ProviderContext build(){
-            return new ProviderContext(this);
-        }
-
-
-    }
-
 
 }

@@ -117,7 +117,7 @@ public final class MonetaryCurrencies{
      * would return a result for the given code.
      */
     public static boolean isCurrencyAvailable(String code, String... providers){
-        return !Objects.isNull(monetaryCurrenciesSpi) && monetaryCurrenciesSpi.isCurrencyAvailable(code, providers);
+        return Objects.nonNull(monetaryCurrenciesSpi) && monetaryCurrenciesSpi.isCurrencyAvailable(code, providers);
     }
 
     /**
@@ -130,7 +130,7 @@ public final class MonetaryCurrencies{
      * result containing a currency with the given code.
      */
     public static boolean isCurrencyAvailable(Locale locale, String... providers){
-        return !Objects.isNull(monetaryCurrenciesSpi) && monetaryCurrenciesSpi.isCurrencyAvailable(locale, providers);
+        return Objects.nonNull(monetaryCurrenciesSpi) && monetaryCurrenciesSpi.isCurrencyAvailable(locale, providers);
     }
 
     /**
@@ -214,7 +214,7 @@ public final class MonetaryCurrencies{
          */
         @Override
         public List<String> getDefaultProviderNames(){
-            List<String> list = new ArrayList();
+            List<String> list = new ArrayList<>();
             list.addAll(getProviderNames());
             Collections.sort(list);
             return list;
@@ -228,7 +228,6 @@ public final class MonetaryCurrencies{
         @Override
         public Set<String> getProviderNames(){
             Set<String> result = new HashSet<>();
-            CurrencyUnit cu = null;
             for(CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)){
                 try{
                     result.add(spi.getProviderName());

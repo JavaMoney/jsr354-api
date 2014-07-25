@@ -8,12 +8,14 @@
  */
 package javax.money.spi;
 
-import javax.money.MonetaryException;
-import javax.money.format.AmountFormatQuery;
-import javax.money.format.MonetaryAmountFormat;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Set;
+
+import javax.money.MonetaryException;
+import javax.money.format.AmountFormartQueryBuilder;
+import javax.money.format.AmountFormatQuery;
+import javax.money.format.MonetaryAmountFormat;
 
 /**
  * This interface models the singleton functionality of {@link javax.money.format.MonetaryFormats}.
@@ -80,7 +82,7 @@ public interface MonetaryFormatsSingletonSpi{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){
-        return getAmountFormat(new AmountFormatQuery.Builder(locale).setProviders(providers).build());
+        return getAmountFormat(new AmountFormartQueryBuilder(locale).setProviders(providers).build());
     }
 
     /**
@@ -93,7 +95,7 @@ public interface MonetaryFormatsSingletonSpi{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     default MonetaryAmountFormat getAmountFormat(String styleId, String... providers){
-        return getAmountFormat(new AmountFormatQuery.Builder(styleId).setProviders(providers).build());
+        return getAmountFormat(new AmountFormartQueryBuilder(styleId).setProviders(providers).build());
     }
 
 

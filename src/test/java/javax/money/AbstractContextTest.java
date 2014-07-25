@@ -134,7 +134,7 @@ public class AbstractContextTest{
             super(builder);
         }
 
-        private static final class Builder extends AbstractContext.AbstractContextBuilder<Builder, TestContext>{
+        private static final class Builder extends AbstractContextBuilder<Builder, TestContext>{
             @Override
             public TestContext build(){
                 return new TestContext(this);

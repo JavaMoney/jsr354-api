@@ -9,13 +9,19 @@
  */
 package javax.money.spi;
 
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryException;
-import javax.money.convert.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.ServiceLoader;
+
+import javax.money.CurrencyUnit;
+import javax.money.MonetaryException;
+import javax.money.convert.ConversionQuery;
+import javax.money.convert.ConversiontQueryBuilder;
+import javax.money.convert.CurrencyConversion;
+import javax.money.convert.ExchangeRateProvider;
+import javax.money.convert.MonetaryConversions;
+import javax.money.convert.ProviderContext;
 
 /**
  * SPI (conversoin) that implements the functionalities provided by the
@@ -117,8 +123,7 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #getConversion(CurrencyUnit, String...)}
      */
     default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers){
-        return isConversionAvailable(
-                new ConversionQuery.Builder().setTermCurrency(termCurrency).setProviders(providers).build());
+        return isConversionAvailable(ConversiontQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
     }
 
     /**
@@ -136,7 +141,7 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #isExchangeRateProviderAvailable(javax.money.convert.ConversionQuery)
      */
     default ExchangeRateProvider getExchangeRateProvider(String... providers){
-        return getExchangeRateProvider(new ConversionQuery.Builder().setProviders(providers).build());
+        return getExchangeRateProvider(ConversiontQueryBuilder.create().setProviders(providers).build());
     }
 
     /**
@@ -166,7 +171,6 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */
     default CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers){
-        return getConversion(
-                new ConversionQuery.Builder().setTermCurrency(termCurrency).setProviders(providers).build());
+        return getConversion(ConversiontQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
     }
 }

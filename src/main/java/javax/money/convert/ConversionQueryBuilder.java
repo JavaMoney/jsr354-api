@@ -9,6 +9,7 @@
 package javax.money.convert;
 
 import javax.money.AbstractContextBuilder;
+import javax.money.AbstractQueryBuilder;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryCurrencies;
 import java.time.temporal.TemporalUnit;
@@ -25,31 +26,9 @@ import java.util.Set;
  *
  * @see javax.money.convert.MonetaryConversions#getConversion(ConversionQuery)
  */
-public final class ConversionQueryBuilder extends AbstractContextBuilder<ConversionQueryBuilder,ConversionQuery>{
+public final class ConversionQueryBuilder extends AbstractQueryBuilder<ConversionQueryBuilder,ConversionQuery>{
 
     private ConversionQueryBuilder(){
-    }
-
-    /**
-     * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
-     * returned by {@link java.util.Currency} is used.
-     *
-     * @param providers the providers to use, not null.
-     * @return the query for chaining.
-     */
-    public ConversionQueryBuilder setProviders(String... providers){
-        return setList("providers", Arrays.asList(providers));
-    }
-
-    /**
-     * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
-     * returned by {@link java.util.Currency} is used.
-     *
-     * @param providers the providers to use, not null.
-     * @return the query for chaining.
-     */
-    public ConversionQueryBuilder setProviders(List<String> providers){
-        return setList("providers", providers);
     }
 
     /**
@@ -72,26 +51,6 @@ public final class ConversionQueryBuilder extends AbstractContextBuilder<Convers
      */
     public ConversionQueryBuilder setRateTypes(Set<RateType> rateTypes){
         return setSet("rateTypes", rateTypes);
-    }
-
-    /**
-     * Sets the target timestamp as UTC millisesonds.
-     *
-     * @param timestamp the target timestamp
-     * @return the query for chaining.
-     */
-    public ConversionQueryBuilder setTimestampMillis(long timestamp){
-        return set("timestamp", timestamp);
-    }
-
-    /**
-     * Sets the target timestamp as {@link java.time.temporal.TemporalUnit}.
-     *
-     * @param timestamp the target timestamp
-     * @return the query for chaining.
-     */
-    public ConversionQueryBuilder setTimestamp(TemporalUnit timestamp){
-        return set("timestamp", timestamp, TemporalUnit.class);
     }
 
     /**

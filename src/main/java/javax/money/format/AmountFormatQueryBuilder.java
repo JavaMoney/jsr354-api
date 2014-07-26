@@ -9,6 +9,7 @@
 package javax.money.format;
 
 import javax.money.AbstractContextBuilder;
+import javax.money.AbstractQueryBuilder;
 import javax.money.MonetaryContext;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,7 +21,7 @@ import java.util.Objects;
  * <p>
  * Note this class is NOT thread-safe.
  */
-public final class AmountFormatQueryBuilder extends AbstractContextBuilder<AmountFormatQueryBuilder,AmountFormatQuery>{
+public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountFormatQueryBuilder,AmountFormatQuery>{
 
     private static final String DEFAULT_STYLE_ID = "default";
 
@@ -76,25 +77,6 @@ public final class AmountFormatQueryBuilder extends AbstractContextBuilder<Amoun
     public AmountFormatQueryBuilder setLocale(Locale locale){
         return set(locale);
     }
-
-    /**
-     * Returns the providers and ordering to be used.
-     *
-     * @return the ordered providers, never null.
-     */
-    public AmountFormatQueryBuilder setProviders(Collection<String> providers){
-        return setCollection("providers", providers);
-    }
-
-    /**
-     * Returns the providers and ordering to be used.
-     *
-     * @return the ordered providers, never null.
-     */
-    public AmountFormatQueryBuilder setProviders(String... providers){
-        return setCollection("providers", Arrays.asList(providers));
-    }
-
 
     /**
      * Sets the {@link javax.money.MonetaryContext} to be used, when amount's are parsed.

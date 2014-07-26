@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Locale;
 
 import javax.money.AbstractContext;
+import javax.money.AbstractQuery;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmounts;
 
@@ -28,7 +29,7 @@ import javax.money.MonetaryAmounts;
  * <p>
  * This class is immutable, thread-safe and serializable.
  */
-public final class AmountFormatQuery extends AbstractContext {
+public final class AmountFormatQuery extends AbstractQuery{
 
     static final String STYLE_ID = "styleId";
 
@@ -67,15 +68,6 @@ public final class AmountFormatQuery extends AbstractContext {
      */
     public MonetaryAmountFactory getMonetaryAmopuntFactory(){
         return get(MonetaryAmountFactory.class, MonetaryAmounts.getDefaultAmountFactory());
-    }
-
-    /**
-     * Returns the providers and ordering to be used.
-     *
-     * @return the ordered providers, never null.
-     */
-    public Collection<String> getProviders(){
-        return getCollection("providers", Collections.emptySet());
     }
 
     /**

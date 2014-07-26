@@ -52,7 +52,7 @@ public class MonetaryConversionsTest{
 
     @Test(expectedExceptions = MonetaryException.class)
     public void testGetExchangeRateProvider_Invalid() throws Exception{
-        MonetaryConversions.getExchangeRateProvider("gguseli");
+        MonetaryConversions.getExchangeRateProvider("fooBarAnyBla");
     }
 
     @Test

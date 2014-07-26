@@ -50,18 +50,6 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
         return this;
     }
 
-    /**
-     * Set the providers and the provider ordering. If set, only the providers listed are queried in the given
-     * order.
-     * By default, all providers are queried as defined by the default providers configured in {@code javamoney
-     * .properties}.
-     *
-     * @return the providers and provider ordering to be considered, or an empty array, but never null.
-     */
-    public RoundingQueryBuilder setProviders(String... providers){
-        Objects.requireNonNull(providers);
-        return setCollection("providers", Arrays.asList(providers));
-    }
 
     /**
      * Sets the target scale. This allows to define the scale required. If not specified as additional
@@ -88,35 +76,6 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
     public RoundingQueryBuilder setCurrencyUnit(CurrencyUnit currencyUnit){
         Objects.requireNonNull(currencyUnit);
         set(CurrencyUnit.class, currencyUnit, CurrencyUnit.class);
-        return this;
-    }
-
-    /**
-     * Set the target timestamp in UTC millis. This allows to select historical roundings that were valid in the
-     * past. Its implementation specific, to what extend historical roundings are available. By default if this
-     * property is not set always current {@link  MonetaryRounding} instances are provided.
-     *
-     * @param timestamp the target timestamp
-     * @return this instance for chaining
-     * @see #setTimestamp(java.time.temporal.TemporalAccessor)
-     */
-    public RoundingQueryBuilder setTimestampMillis(long timestamp){
-        set("timestamp", timestamp);
-        return this;
-    }
-
-    /**
-     * Set the target timestamp as {@link java.time.temporal.TemporalAccessor}. This allows to select historical
-     * roundings that were valid in the past. Its implementation specific, to what extend historical roundings
-     * are available. By default if this property is not set always current {@link  MonetaryRounding}
-     * instances are provided.
-     *
-     * @param timestamp the target timestamp
-     * @return this instance for chaining
-     * @see #setTimestampMillis(long)
-     */
-    public RoundingQueryBuilder setTimestamp(TemporalAccessor timestamp){
-        set("timestamp", timestamp, TemporalAccessor.class);
         return this;
     }
 

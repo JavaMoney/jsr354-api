@@ -8,6 +8,7 @@
 package javax.money.convert;
 
 import javax.money.AbstractContext;
+import javax.money.AbstractQuery;
 import javax.money.CurrencyUnit;
 import java.time.Instant;
 import java.time.temporal.ChronoField;
@@ -19,7 +20,7 @@ import java.util.*;
  * should returns the <i>default</i> currencies.<p/>
  * This class is immutable, serializable and thread-safe.
  */
-public final class ConversionQuery extends AbstractContext {
+public final class ConversionQuery extends AbstractQuery{
 
 	private static final long serialVersionUID = -9147265628185601586L;
 
@@ -32,16 +33,6 @@ public final class ConversionQuery extends AbstractContext {
      */
     ConversionQuery(ConversionQueryBuilder builder){
         super(builder);
-    }
-
-    /**
-     * Get the providers to be queried. If set, only the providers listed are queried. By default, or if this
-     * method returns an empty list, all providers are queried in random order.
-     *
-     * @return the providers and provider ordering to be considered, or an empty array, but never null.
-     */
-    public List<String> getProviders(){
-        return getList("providers", Collections.emptyList());
     }
 
     /**

@@ -10,6 +10,7 @@ package javax.money;
 
 import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -29,7 +30,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * returned by {@link java.util.Currency} is used.
      *
      * @param providers the providers to use, not null.
-     * @return the query for chaining.
+     * @return the query builder for chaining.
      */
     public B setProviders(String... providers){
         Objects.requireNonNull(providers);
@@ -37,10 +38,21 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
     }
 
     /**
+     * Set the providers to be considered. If not set explicitly the <i>default</i> providers and the corresponding
+     * default ordering are used.
+     *
+     * @param providers the providers in order to use, not null.
+     * @return the query builder for chaining.
+     */
+    public B setProviders(List<String> providers){
+        return setList("providers", providers);
+    }
+
+    /**
      * Sets the target timestamp as UTC millisesonds.
      *
      * @param timestamp the target timestamp
-     * @return the query for chaining.
+     * @return the query builder for chaining.
      */
     public B setTimestampMillis(long timestamp){
         return set(AbstractQuery.QUERY_TIMESTAMP, timestamp);
@@ -50,7 +62,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * Sets the target timestamp as {@link java.time.temporal.TemporalUnit}.
      *
      * @param timestamp the target timestamp
-     * @return the query for chaining.
+     * @return the query builder for chaining.
      */
     public B setTimestamp(TemporalUnit timestamp){
         return set(AbstractQuery.QUERY_TIMESTAMP, timestamp, TemporalUnit.class);
@@ -62,7 +74,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * type and use a query to configure the instance or factory to be returned.
      *
      * @param type the target implementation type, not null.
-     * @return this Builder for chaining.
+     * @return this query builder for chaining.
      */
     public B setTargetType(Class<?> type){
         Objects.requireNonNull(type);

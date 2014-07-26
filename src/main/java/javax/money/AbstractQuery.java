@@ -13,8 +13,9 @@ package javax.money;
 import java.time.Instant;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalUnit;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a general context of data targeting an item of type {@code Q}. Contexts are used to add arbitrary
@@ -24,17 +25,24 @@ import java.util.*;
  */
 public abstract class AbstractQuery extends AbstractContext{
 
-    /** Key for storing the target providers to be queried */
+    /**
+     * Key for storing the target providers to be queried
+     */
     public static final String QUERY_PROVIDERS = "Query.providers";
 
-    /** Key name for the timestamp attribute. */
+    /**
+     * Key name for the timestamp attribute.
+     */
     public static final String QUERY_TIMESTAMP = "Query.timestamp";
 
-    /** Key name for the target type attribute. */
+    /**
+     * Key name for the target type attribute.
+     */
     public static final String TARGET_TYPE = "Query.targetType";
 
     /**
      * Constructor, using a builder.
+     *
      * @param builder the builder, not null.
      */
     protected AbstractQuery(AbstractContextBuilder builder){
@@ -51,6 +59,19 @@ public abstract class AbstractQuery extends AbstractContext{
      */
     public List<String> getProviders(){
         return getList(QUERY_PROVIDERS, Collections.emptyList());
+    }
+
+    /**
+     * Gets the query type of a query. This type allows to distinguish different types of queries, e.g. a query for
+     * mapping currencies, queries for accessing historic currencies and queries on the currencies available
+     * for a concrete tenant. Without this type, providers must distinguish different use cases only based on the
+     * input, which is very limited, cumbersome and also has some implicit risk of intersection and errors. As a
+     * consequence it is highly recommended to set and consider this property.
+     *
+     * @return the query type, or null.
+     */
+    public QueryType getQueryType(){
+        return get(QueryType.class, null);
     }
 
     /**
@@ -96,5 +117,16 @@ public abstract class AbstractQuery extends AbstractContext{
         return acc;
     }
 
+    /**
+     * This interface is used to identify classes that can be used as a query type. a query type allows to
+     * distinguish different types of queries, e.g. a query for
+     * mapping currencies, queries for accessing historic currencies and queries on the currencies available
+     * for a concrete tenant. Without this type, providers must distinguish different use cases only based on the
+     * input, which is very limited, cumbersome and also has some implicit risk of intersection and errors. As a
+     * consequence it is highly recommended to set and consider this property.
+     *
+     * @see #getQueryType()
+     */
+    public static interface QueryType{}
 
 }

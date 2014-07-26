@@ -26,6 +26,19 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
         extends AbstractContextBuilder<B,C>{
 
     /**
+     * Set the {@link javax.money.AbstractQuery.QueryType} to be used. If not set explicitly the <i>default</i>
+     * {@code QueryType.UNKNOWN} is used.
+     *
+     * @param queryType the query tyoe to use, not null.
+     * @return the query builder for chaining.
+     */
+    public B setQueryType(AbstractQuery.QueryType queryType){
+        Objects.requireNonNull(queryType);
+        return set(queryType, AbstractQuery.QueryType.class);
+    }
+
+
+    /**
      * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
      * returned by {@link java.util.Currency} is used.
      *

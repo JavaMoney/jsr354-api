@@ -1,13 +1,15 @@
+/*
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU
+ * ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS
+ * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
+ * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
+ * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
+ * (c) 2012-2014, Credit Suisse All rights reserved.
+ */
 package javax.money.convert;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
 import javax.money.AbstractContextBuilder;
+import java.util.*;
 
 /**
  * Builder class to create {@link ProviderContext} instances. Instances of
@@ -15,15 +17,15 @@ import javax.money.AbstractContextBuilder;
  *
  * @author Anatole Tresch
  */
-public final class ProviderContextBuilder extends AbstractContextBuilder<ProviderContextBuilder, ProviderContext>{
+public final class ProviderContextBuilder extends AbstractContextBuilder<ProviderContextBuilder,ProviderContext>{
 
     /**
      * Create a new Builder instance.
      *
-     * @param provider the provider name, not {@code null}.
+     * @param provider  the provider name, not {@code null}.
      * @param rateTypes the rate types, not null and not empty.
      */
-    public ProviderContextBuilder(String provider, RateType rateType, RateType... rateTypes){
+    private ProviderContextBuilder(String provider, RateType rateType, RateType... rateTypes){
         Objects.requireNonNull(rateType, "At least one RateType is required.");
         Objects.requireNonNull(rateTypes);
         setProviderName(provider);
@@ -39,7 +41,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @param provider  the provider name, not {@code null}.
      * @param rateTypes the rate types, not null and not empty.
      */
-    public ProviderContextBuilder(String provider, Collection<RateType> rateTypes){
+    private ProviderContextBuilder(String provider, Collection<RateType> rateTypes){
         Objects.requireNonNull(rateTypes);
         if(rateTypes.isEmpty()){
             throw new IllegalArgumentException("At least one RateType is required.");
@@ -57,7 +59,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      *
      * @param context the context, not {@code null}
      */
-    public ProviderContextBuilder(ProviderContext context){
+    private ProviderContextBuilder(ProviderContext context){
         importContext(context);
         Set<RateType> rts = new HashSet<>();
         rts.addAll(context.getRateTypes());
@@ -94,8 +96,8 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @return this, for chaining.
      * @throws IllegalArgumentException when not at least one {@link RateType} is provided.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-	public ProviderContextBuilder setRateTypes(Collection<RateType> rateTypes){
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public ProviderContextBuilder setRateTypes(Collection<RateType> rateTypes){
         Objects.requireNonNull(rateTypes);
         if(rateTypes.size() == 0){
             throw new IllegalArgumentException("At least one RateType is required.");
@@ -116,5 +118,38 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
         return new ProviderContext(this);
     }
 
+    /**
+     * Create a new ProviderContextBuilder, hereby using the given {@link ProviderContext}
+     * 's values as defaults. This allows changing an existing
+     * {@link ProviderContext} easily.
+     *
+     * @param context the context, not {@code null}
+     * @return a new {@link javax.money.convert.ProviderContextBuilder} instance, never null.
+     */
+    public static ProviderContextBuilder create(ProviderContext context){
+        return new ProviderContextBuilder(context);
+    }
+
+    /**
+     * Create a new ProviderContextBuilder instance.
+     *
+     * @param provider  the provider name, not {@code null}.
+     * @param rateTypes the rate types, not null and not empty.
+     * @return a new {@link javax.money.convert.ProviderContextBuilder} instance, never null.
+     */
+    public static ProviderContextBuilder create(String provider, RateType rateType, RateType... rateTypes){
+        return new ProviderContextBuilder(provider, rateType, rateTypes);
+    }
+
+    /**
+     * Create a new ProviderContextBuilder instance.
+     *
+     * @param provider  the provider name, not {@code null}.
+     * @param rateTypes the rate types, not null and not empty.
+     * @return a new {@link javax.money.convert.ProviderContextBuilder} instance, never null.
+     */
+    public static ProviderContextBuilder create(String provider, Collection<RateType> rateTypes){
+        return new ProviderContextBuilder(provider, rateTypes);
+    }
 
 }

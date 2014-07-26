@@ -62,7 +62,7 @@ public interface ExchangeRateProvider{
      * @return the matching {@link ExchangeRate}.
      * @throws CurrencyConversionException If no such rate is available.
      * @throws MonetaryException           if one of the currency codes passed is not valid.
-     * @see javax.money.convert.ConversionQuery.ConversiontQueryBuilder
+     * @see javax.money.convert.ConversionQueryBuilder
      */
     ExchangeRate getExchangeRate(ConversionQuery conversionQuery);
 
@@ -74,7 +74,7 @@ public interface ExchangeRateProvider{
      * @return a new instance of a corresponding {@link CurrencyConversion},
      * never {@code null}.
      * @throws MonetaryException if one of the currency codes passed is not valid.
-     * @see javax.money.convert.ConversionQuery.ConversiontQueryBuilder
+     * @see javax.money.convert.ConversionQueryBuilder
      */
     CurrencyConversion getCurrencyConversion(ConversionQuery conversionQuery);
 
@@ -112,7 +112,7 @@ public interface ExchangeRateProvider{
     default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){
         Objects.requireNonNull(base, "Base Currency is null");
         Objects.requireNonNull(term, "Term Currency is null");
-        return getExchangeRate(ConversiontQueryBuilder.create().setBaseCurrency(base).setTermCurrency(term).build());
+        return getExchangeRate(ConversionQueryBuilder.create().setBaseCurrency(base).setTermCurrency(term).build());
     }
 
     /**
@@ -124,7 +124,7 @@ public interface ExchangeRateProvider{
      * never {@code null}.
      */
     default CurrencyConversion getCurrencyConversion(CurrencyUnit term){
-        return getCurrencyConversion(ConversiontQueryBuilder.create().setTermCurrency(term).build());
+        return getCurrencyConversion(ConversionQueryBuilder.create().setTermCurrency(term).build());
     }
 
     /**
@@ -138,7 +138,7 @@ public interface ExchangeRateProvider{
      * defined.
      */
     default boolean isAvailable(CurrencyUnit base, CurrencyUnit term){
-        return isAvailable(ConversiontQueryBuilder.create().setBaseCurrency(base).setTermCurrency(term).build());
+        return isAvailable(ConversionQueryBuilder.create().setBaseCurrency(base).setTermCurrency(term).build());
     }
 
 

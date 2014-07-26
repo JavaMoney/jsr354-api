@@ -25,9 +25,9 @@ public interface MonetaryAmountFactoryProviderSpi<T extends MonetaryAmount> {
 
 	/**
 	 * Determines how the factory should be considered when querying for matching implementation
-	 * types calling {@link MonetaryAmounts#queryAmountType(MonetaryContext)}.
+	 * types calling {@link MonetaryAmounts#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)} .
 	 * 
-	 * @see MonetaryAmounts#queryAmountType(MonetaryContext)
+	 * @see MonetaryAmounts#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)
 	 */
 	public static enum QueryInclusionPolicy {
 		/**
@@ -51,9 +51,9 @@ public interface MonetaryAmountFactoryProviderSpi<T extends MonetaryAmount> {
 	/**
 	 * Method that determines if this factory should be considered for general evaluation of
 	 * matching {@link MonetaryAmount} implementation types when calling
-	 * {@link MonetaryAmounts#queryAmountType(MonetaryContext)}.
+	 * {@link MonetaryAmounts#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)}.
 	 * 
-	 * @see MonetaryAmounts#queryAmountType(MonetaryContext)
+	 * @see MonetaryAmounts#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)
 	 * @return {@code true} to include this factory into the evaluation.
 	 */
 	default QueryInclusionPolicy getQueryInclusionPolicy(){

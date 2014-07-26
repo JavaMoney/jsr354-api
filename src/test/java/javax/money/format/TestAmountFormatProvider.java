@@ -50,7 +50,7 @@ public class TestAmountFormatProvider implements
 		private AmountFormatContext formatStyle;
 		TestFormat(AmountFormatQuery formatStyle) {
 			Objects.requireNonNull(formatStyle);
-			this.formatStyle = new AmountFormatContextBuilder(formatStyle).build();
+			this.formatStyle = AmountFormatContextBuilder.create(formatStyle).build();
 		}
 
 		@Override

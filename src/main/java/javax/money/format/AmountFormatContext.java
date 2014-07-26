@@ -60,5 +60,14 @@ public final class AmountFormatContext extends AbstractContext{
     public MonetaryAmountFactory<?> getParseFactory(){
         return get(MonetaryAmountFactory.class);
     }
+
+    /**
+     * Creates a new builder instances, initialized with the data from this one.
+     *
+     * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
+     */
+    public AmountFormatContextBuilder toBuilder(){
+        return AmountFormatContextBuilder.create(this);
+    }
    
 }

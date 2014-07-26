@@ -70,12 +70,12 @@ public final class MonetaryConversions{
         Objects.requireNonNull(termCurrency);
         if(providers.length == 0){
             return MONETARY_CONVERSION_SPI.getConversion(
-                    ConversiontQueryBuilder.create().setTermCurrency(termCurrency).setProviders(getDefaultProviderChain())
+                    ConversionQueryBuilder.create().setTermCurrency(termCurrency).setProviders(getDefaultProviderChain())
                             .build()
             );
         }
         return MONETARY_CONVERSION_SPI.getConversion(
-        		ConversiontQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
+                ConversionQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
     }
 
     /**
@@ -166,12 +166,11 @@ public final class MonetaryConversions{
     public static ExchangeRateProvider getExchangeRateProvider(String... providers){
         if(providers.length == 0){
             List<String> defaultProviderChain = getDefaultProviderChain();
-            return MONETARY_CONVERSION_SPI.getExchangeRateProvider(ConversiontQueryBuilder.create().setProviders(
-                    defaultProviderChain.toArray(new String[defaultProviderChain.size()]
-                    )).build());
+            return MONETARY_CONVERSION_SPI.getExchangeRateProvider(ConversionQueryBuilder.create().setProviders(
+                    defaultProviderChain.toArray(new String[defaultProviderChain.size()])).build());
         }
         ExchangeRateProvider provider = MONETARY_CONVERSION_SPI
-                .getExchangeRateProvider(ConversiontQueryBuilder.create().setProviders(providers).build());
+                .getExchangeRateProvider(ConversionQueryBuilder.create().setProviders(providers).build());
         return Optional.ofNullable(provider)
                 .orElseThrow(() -> new MonetaryException("No such rate provider: " + Arrays.toString(providers)));
     }

@@ -30,13 +30,13 @@ public class MonetaryConversionsTest{
     @Test
     public void testGetConversion1() throws Exception{
         assertNotNull(MonetaryConversions.getConversion(
-                ConversiontQueryBuilder.create().setTermCurrency(TestCurrency.of("CHF")).build()));
+                ConversionQueryBuilder.create().setTermCurrency(TestCurrency.of("CHF")).build()));
     }
 
     @Test
     public void testGetConversion2() throws Exception{
         assertNotNull(MonetaryConversions.getConversion(
-        		ConversiontQueryBuilder.create().setTermCurrency(TestCurrency.of("CHF"))
+        		ConversionQueryBuilder.create().setTermCurrency(TestCurrency.of("CHF"))
                         .setProviders("test").build()));
     }
 

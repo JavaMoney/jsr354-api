@@ -1,9 +1,15 @@
+/*
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU
+ * ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS
+ * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
+ * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
+ * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
+ * (c) 2012-2014, Credit Suisse All rights reserved.
+ */
 package javax.money.convert;
 
-import java.time.temporal.TemporalAccessor;
-import java.util.Objects;
-
 import javax.money.AbstractContextBuilder;
+import java.util.Objects;
 
 /**
  * Builder class to create {@link ConversionContext} instances. Instances of
@@ -11,11 +17,11 @@ import javax.money.AbstractContextBuilder;
  *
  * @author Anatole Tresch
  */
-public class ConversionContextBuilder extends AbstractContextBuilder<ConversionContextBuilder,ConversionContext> {
-	
-	private static final String PROVIDER = "provider";
-
-	private static final String TIMESTAMP = "timestamp";
+public final class ConversionContextBuilder extends AbstractContextBuilder<ConversionContextBuilder,ConversionContext>{
+    //	/** Map key used for the provider attribute. */
+    //	private static final String PROVIDER = "provider";
+    //    /** Map key used for the timestamp attribute. */
+    //	private static final String TIMESTAMP = "timestamp";
 
     /**
      * Create a new Builder, hereby using the given
@@ -24,7 +30,7 @@ public class ConversionContextBuilder extends AbstractContextBuilder<ConversionC
      *
      * @param context the context, not {@code null}
      */
-    public ConversionContextBuilder(ConversionContext context){
+    private ConversionContextBuilder(ConversionContext context){
         importContext(context);
     }
 
@@ -36,7 +42,7 @@ public class ConversionContextBuilder extends AbstractContextBuilder<ConversionC
      * @param context  the provider context, not {@code null}
      * @param rateType the rate type, not null.
      */
-    public ConversionContextBuilder(ProviderContext context, RateType rateType){
+    private ConversionContextBuilder(ProviderContext context, RateType rateType){
         importContext(context);
         setRateType(rateType);
     }
@@ -53,39 +59,39 @@ public class ConversionContextBuilder extends AbstractContextBuilder<ConversionC
         return this;
     }
 
-    /**
-     * Sets the converion's provider.
-     *
-     * @param provider the provider, not null.
-     * @return this builder, for chaining.
-     */
-    public ConversionContextBuilder setProvider(String provider){
-        Objects.requireNonNull(provider);
-        set(PROVIDER, provider);
-        return this;
-    }
-
-    /**
-     * Set the historic value.
-     *
-     * @param timestamp the rate's timestamp
-     * @return this, for chaining.
-     */
-    public ConversionContextBuilder setTimestampMillis(long timestamp){
-        set(TIMESTAMP, timestamp);
-        return this;
-    }
-
-    /**
-     * Set the historic value.
-     *
-     * @param temporalAccessor the rate's timestamp, as TemporalAccessor.
-     * @return this, for chaining.
-     */
-    public ConversionContextBuilder setTimestamp(TemporalAccessor temporalAccessor){
-        set(TIMESTAMP, temporalAccessor, TemporalAccessor.class);
-        return this;
-    }
+    //    /**
+    //     * Sets the converion's provider.
+    //     *
+    //     * @param provider the provider, not null.
+    //     * @return this builder, for chaining.
+    //     */
+    //    public ConversionContextBuilder setProvider(String provider){
+    //        Objects.requireNonNull(provider);
+    //        set(PROVIDER, provider);
+    //        return this;
+    //    }
+    //
+    //    /**
+    //     * Set the historic value.
+    //     *
+    //     * @param timestamp the rate's timestamp
+    //     * @return this, for chaining.
+    //     */
+    //    public ConversionContextBuilder setTimestampMillis(long timestamp){
+    //        set(TIMESTAMP, timestamp);
+    //        return this;
+    //    }
+    //
+    //    /**
+    //     * Set the historic value.
+    //     *
+    //     * @param temporalAccessor the rate's timestamp, as TemporalAccessor.
+    //     * @return this, for chaining.
+    //     */
+    //    public ConversionContextBuilder setTimestamp(TemporalAccessor temporalAccessor){
+    //        set(TIMESTAMP, temporalAccessor, TemporalAccessor.class);
+    //        return this;
+    //    }
 
     /**
      * Creates a new {@link ConversionContext} with the data from this
@@ -101,11 +107,39 @@ public class ConversionContextBuilder extends AbstractContextBuilder<ConversionC
      * Create a new Builder instance without any provider, e.g. for creating
      * new {@link ConversionContext} instances for querying.
      */
-    public ConversionContextBuilder() {
-    	set(RateType.ANY);
+    public ConversionContextBuilder(){
+        set(RateType.ANY);
     }
-  
-    public static ConversionContextBuilder create() {
-    	return new ConversionContextBuilder();
+
+    /**
+     * Creates a new {@link javax.money.convert.ConversionContextBuilder} instance.
+     *
+     * @return a new {@link javax.money.convert.ConversionContextBuilder} instance, never null.
+     */
+    public static ConversionContextBuilder create(ConversionContext conversionContext){
+        return new ConversionContextBuilder(conversionContext);
     }
+
+    /**
+     * Creates a new {@link javax.money.convert.ConversionContextBuilder} instance.
+     *
+     * @return a new {@link javax.money.convert.ConversionContextBuilder} instance, never null.
+     */
+    public static ConversionContextBuilder create(){
+        return new ConversionContextBuilder();
+    }
+
+    /**
+     * Create a new Builder, hereby using the given
+     * {@link ConversionContext}'s values as defaults. This allows changing
+     * an existing {@link ConversionContext} easily.
+     *
+     * @param context  the provider context, not {@code null}
+     * @param rateType the rate type, not null.
+     * @return a new {@link javax.money.convert.ConversionContextBuilder} instance, never null.
+     */
+    public static ConversionContextBuilder create(ProviderContext context, RateType rateType){
+        return new ConversionContextBuilder(context, rateType);
+    }
+
 }

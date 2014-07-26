@@ -13,27 +13,30 @@
 package javax.money;
 
 import javax.money.spi.RoundingProviderSpi;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import java.util.*;
+public final class TestRoundingProvider implements RoundingProviderSpi{
 
-public final class TestRoundingProvider implements RoundingProviderSpi {
-
-	@Override
-	public MonetaryRounding getRounding(RoundingQuery roundingQuery){
+    @Override
+    public MonetaryRounding getRounding(RoundingQuery roundingQuery){
         List<MonetaryRounding> result = new ArrayList<>();
-        if(roundingQuery.getRoundingName()!=null){
+        if(roundingQuery.getRoundingName() != null){
             return getCustomRounding(roundingQuery.getRoundingName());
         }
-        if(roundingQuery.getCurrencyUnit()!=null){
+        if(roundingQuery.getCurrencyUnit() != null){
             return getCustomRounding(roundingQuery.getCurrencyUnit().getCurrencyCode());
         }
         return getCustomRounding("test");
-	}
+    }
 
-	private MonetaryRounding getCustomRounding(final String customRoundingId) {
+    private MonetaryRounding getCustomRounding(final String customRoundingId){
         return new MonetaryRounding(){
 
-            private final RoundingContext CTX = new RoundingContext.Builder("TestRoundingProvider", customRoundingId).build();
+            private final RoundingContext CTX =
+                    RoundingContextBuilder.create("TestRoundingProvider", customRoundingId).build();
 
             @Override
             public RoundingContext getRoundingContext(){
@@ -42,7 +45,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi {
 
             @Override
             public MonetaryAmount apply(MonetaryAmount monetaryAmount){
-                switch (customRoundingId) {
+                switch(customRoundingId){
                     case "custom1":
                         return monetaryAmount.multiply(2);
                     case "custom2":
@@ -55,12 +58,12 @@ public final class TestRoundingProvider implements RoundingProviderSpi {
     }
 
 
-	@Override
-	public Set<String> getRoundingIds() {
+    @Override
+    public Set<String> getRoundingIds(){
         Set<String> result = new HashSet<>();
         result.add("custom1");
         result.add("custom2");
-		return result;
-	}
+        return result;
+    }
 
 }

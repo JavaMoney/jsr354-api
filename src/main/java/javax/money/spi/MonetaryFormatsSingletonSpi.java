@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.money.MonetaryException;
-import javax.money.format.AmountFormartQueryBuilder;
+import javax.money.format.AmountFormatQueryBuilder;
 import javax.money.format.AmountFormatQuery;
 import javax.money.format.MonetaryAmountFormat;
 
@@ -82,7 +82,7 @@ public interface MonetaryFormatsSingletonSpi{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){
-        return getAmountFormat(new AmountFormartQueryBuilder(locale).setProviders(providers).build());
+        return getAmountFormat(AmountFormatQueryBuilder.create(locale).setProviders(providers).build());
     }
 
     /**
@@ -95,7 +95,7 @@ public interface MonetaryFormatsSingletonSpi{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     default MonetaryAmountFormat getAmountFormat(String styleId, String... providers){
-        return getAmountFormat(new AmountFormartQueryBuilder(styleId).setProviders(providers).build());
+        return getAmountFormat(AmountFormatQueryBuilder.create(styleId).setProviders(providers).build());
     }
 
 

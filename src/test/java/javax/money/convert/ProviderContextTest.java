@@ -22,13 +22,13 @@ public class ProviderContextTest{
 
     @Test
     public void testGetRateTypes() throws Exception{
-        ProviderContext ctx = new ProviderContextBuilder("myprov",RateType.DEFERRED, RateType.HISTORIC).build();
+        ProviderContext ctx = ProviderContextBuilder.create("myprov",RateType.DEFERRED, RateType.HISTORIC).build();
         assertEquals("myprov", ctx.getProvider());
     }
 
     @Test
     public void testToBuilder() throws Exception{
-        ProviderContext ctx = new ProviderContextBuilder("myprov", RateType.ANY).build();
+        ProviderContext ctx = ProviderContextBuilder.create("myprov", RateType.ANY).build();
         assertEquals(ctx, ctx.toBuilder().build());
     }
 

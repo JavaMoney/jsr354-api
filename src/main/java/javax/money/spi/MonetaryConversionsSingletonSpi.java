@@ -16,12 +16,8 @@ import java.util.ServiceLoader;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryException;
-import javax.money.convert.ConversionQuery;
-import javax.money.convert.ConversiontQueryBuilder;
-import javax.money.convert.CurrencyConversion;
-import javax.money.convert.ExchangeRateProvider;
-import javax.money.convert.MonetaryConversions;
-import javax.money.convert.ProviderContext;
+import javax.money.convert.*;
+import javax.money.convert.ConversionQueryBuilder;
 
 /**
  * SPI (conversoin) that implements the functionalities provided by the
@@ -123,7 +119,8 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #getConversion(CurrencyUnit, String...)}
      */
     default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers){
-        return isConversionAvailable(ConversiontQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
+        return isConversionAvailable(
+                ConversionQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
     }
 
     /**
@@ -141,7 +138,7 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #isExchangeRateProviderAvailable(javax.money.convert.ConversionQuery)
      */
     default ExchangeRateProvider getExchangeRateProvider(String... providers){
-        return getExchangeRateProvider(ConversiontQueryBuilder.create().setProviders(providers).build());
+        return getExchangeRateProvider(ConversionQueryBuilder.create().setProviders(providers).build());
     }
 
     /**
@@ -171,6 +168,7 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */
     default CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers){
-        return getConversion(ConversiontQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
+        return getConversion(
+                ConversionQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
     }
 }

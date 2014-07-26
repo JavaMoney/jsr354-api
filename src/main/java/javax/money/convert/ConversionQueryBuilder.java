@@ -1,14 +1,21 @@
+/*
+ * CREDIT SUISSE IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU
+ * ACCEPT ALL OF THE TERMS CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS
+ * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
+ * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
+ * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
+ * (c) 2012-2014, Credit Suisse All rights reserved.
+ */
 package javax.money.convert;
 
+import javax.money.AbstractContextBuilder;
+import javax.money.CurrencyUnit;
+import javax.money.MonetaryCurrencies;
 import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.money.AbstractContextBuilder;
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryCurrencies;
 
 /**
  * Builder class for creating new instances of {@link javax.money.convert.ConversionQuery} adding detailed
@@ -18,7 +25,11 @@ import javax.money.MonetaryCurrencies;
  *
  * @see javax.money.convert.MonetaryConversions#getConversion(ConversionQuery)
  */
-public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQueryBuilder,ConversionQuery>{
+public final class ConversionQueryBuilder extends AbstractContextBuilder<ConversionQueryBuilder,ConversionQuery>{
+
+    private ConversionQueryBuilder(){
+    }
+
     /**
      * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
      * returned by {@link java.util.Currency} is used.
@@ -26,7 +37,7 @@ public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQ
      * @param providers the providers to use, not null.
      * @return the query for chaining.
      */
-    public ConversiontQueryBuilder setProviders(String... providers){
+    public ConversionQueryBuilder setProviders(String... providers){
         return setList("providers", Arrays.asList(providers));
     }
 
@@ -37,7 +48,7 @@ public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQ
      * @param providers the providers to use, not null.
      * @return the query for chaining.
      */
-    public ConversiontQueryBuilder setProviders(List<String> providers){
+    public ConversionQueryBuilder setProviders(List<String> providers){
         return setList("providers", providers);
     }
 
@@ -48,7 +59,7 @@ public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQ
      * @param rateTypes the rate types to use, not null.
      * @return the query for chaining.
      */
-    public ConversiontQueryBuilder setRateTypes(RateType... rateTypes){
+    public ConversionQueryBuilder setRateTypes(RateType... rateTypes){
         return setSet("rateTypes", new HashSet<>(Arrays.asList(rateTypes)));
     }
 
@@ -59,7 +70,7 @@ public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQ
      * @param rateTypes the rate types to use, not null.
      * @return the query for chaining.
      */
-    public ConversiontQueryBuilder setRateTypes(Set<RateType> rateTypes){
+    public ConversionQueryBuilder setRateTypes(Set<RateType> rateTypes){
         return setSet("rateTypes", rateTypes);
     }
 
@@ -69,7 +80,7 @@ public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQ
      * @param timestamp the target timestamp
      * @return the query for chaining.
      */
-    public ConversiontQueryBuilder setTimestampMillis(long timestamp){
+    public ConversionQueryBuilder setTimestampMillis(long timestamp){
         return set("timestamp", timestamp);
     }
 
@@ -79,7 +90,7 @@ public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQ
      * @param timestamp the target timestamp
      * @return the query for chaining.
      */
-    public ConversiontQueryBuilder setTimestamp(TemporalUnit timestamp){
+    public ConversionQueryBuilder setTimestamp(TemporalUnit timestamp){
         return set("timestamp", timestamp, TemporalUnit.class);
     }
 
@@ -89,7 +100,7 @@ public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQ
      * @param currency the base currency
      * @return the query for chaining.
      */
-    public ConversiontQueryBuilder setBaseCurrency(CurrencyUnit currency){
+    public ConversionQueryBuilder setBaseCurrency(CurrencyUnit currency){
         return set("baseCurrency", currency, CurrencyUnit.class);
     }
 
@@ -97,10 +108,10 @@ public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQ
      * Sets the base currency.
      *
      * @param currencyCode the currency code, resolvable through {@link javax.money
-     * .MonetaryCurrencies#getCurrency(String, String...)}, not null.
+     *                     .MonetaryCurrencies#getCurrency(String, String...)}, not null.
      * @return the query for chaining.
      */
-    public ConversiontQueryBuilder setBaseCurrency(String currencyCode){
+    public ConversionQueryBuilder setBaseCurrency(String currencyCode){
         return setBaseCurrency(MonetaryCurrencies.getCurrency(currencyCode));
     }
 
@@ -110,7 +121,7 @@ public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQ
      * @param currency the base currency
      * @return the query for chaining.
      */
-    public ConversiontQueryBuilder setTermCurrency(CurrencyUnit currency){
+    public ConversionQueryBuilder setTermCurrency(CurrencyUnit currency){
         return set("termCurrency", currency, CurrencyUnit.class);
     }
 
@@ -118,13 +129,13 @@ public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQ
      * Sets the term currency.
      *
      * @param currencyCode the currency code, resolvable through {@link javax.money
-     * .MonetaryCurrencies#getCurrency(String, String...)}, not null.
+     *                     .MonetaryCurrencies#getCurrency(String, String...)}, not null.
      * @return the query for chaining.
      */
-    public ConversiontQueryBuilder setTermCurrency(String currencyCode){
+    public ConversionQueryBuilder setTermCurrency(String currencyCode){
         return setTermCurrency(MonetaryCurrencies.getCurrency(currencyCode));
     }
-    
+
     /**
      * Creates a new instance of {@link ConversionQuery}.
      *
@@ -134,10 +145,24 @@ public class ConversiontQueryBuilder extends AbstractContextBuilder<ConversiontQ
     public ConversionQuery build(){
         return new ConversionQuery(this);
     }
-    
-    public ConversiontQueryBuilder(){}
-    
-	public static ConversiontQueryBuilder create() {
-		return new ConversiontQueryBuilder();
-	}
+
+    /**
+     * Creates a new {@link javax.money.convert.ConversionQueryBuilder} instance.
+     *
+     * @return a new {@link javax.money.convert.ConversionQueryBuilder} instance, never null.
+     */
+    public static ConversionQueryBuilder create(){
+        return new ConversionQueryBuilder();
+    }
+
+    /**
+     * Creates a new {@link javax.money.convert.ConversionQueryBuilder} instance.
+     *
+     * @param query the {@link javax.money.convert.ConversionQuery} instance to be used as a template.
+     * @return a new {@link javax.money.convert.ConversionQueryBuilder} instance, never null.
+     */
+    public static ConversionQueryBuilder create(ConversionQuery query){
+        return ConversionQueryBuilder.create(query);
+    }
+
 }

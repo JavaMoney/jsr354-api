@@ -31,7 +31,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
     /**
      * Constant that defines under which key the amount type is stored in the context map.
      */
-    private static final String AMOUNT_TYPE = "amountType";
+    static final String AMOUNT_TYPE = "amountType";
 
     /**
      * Key name for the context.
@@ -53,7 +53,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      *
      * @param builder the corresponding builder, not null.
      */
-    private MonetaryContext(Builder builder){
+    MonetaryContext(MonetaryContextBuilder builder){
         super(builder);
     }
 
@@ -107,7 +107,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      */
     public static MonetaryContext from(MonetaryAmountFactoryQuery monetaryAmountFactoryQuery,
                                        Class<? extends MonetaryAmount> amountClass){
-        return new Builder(amountClass).importContext(monetaryAmountFactoryQuery).build();
+        return MonetaryContextBuilder.create(amountClass).importContext(monetaryAmountFactoryQuery).build();
     }
 
     /**
@@ -118,100 +118,16 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return a new corresponding MonetaryContext instance.
      */
     public static MonetaryContext from(MonetaryContext monetaryContext, Class<? extends MonetaryAmount> amountClass){
-        return new Builder(amountClass).importContext(monetaryContext).build();
+        return MonetaryContextBuilder.create(amountClass).importContext(monetaryContext).build();
     }
 
     /**
-     * Allows to convert a instance into the corresponding {@link javax.money.MonetaryContext.Builder}, which allows
-     * to change the values and create another {@link MonetaryContext} instance.
+     * Creates a new builder instances, initialized with the data from this one.
      *
-     * @return a new Builder instance, preinitialized with the values from this instance.
+     * @return a new {@link javax.money.MonetaryContextBuilder} instance, never null.
      */
-    public MonetaryContext.Builder toBuilder(){
-        return new Builder(getAmountType()).importContext(this);
+    public MonetaryContextBuilder toBuilder(){
+        return MonetaryContextBuilder.create(this);
     }
 
-    /**
-     * Builder class for creating new instances of {@link javax.money.MonetaryContext} adding detailed information
-     * about a {@link javax.money.MonetaryAmount} instance.
-     * <p>
-     * Note this class is NOT thread-safe.
-     *
-     * @see MonetaryAmount#getMonetaryContext()
-     */
-    public static final class Builder extends AbstractContextBuilder<Builder,MonetaryContext>{
-
-        /**
-         * Creates a new builder, hereby the target implementation type is required. This can be used to explicitly
-         * acquire a specific amount type and additionally configure the amount factory with the attributes in this
-         * query.
-         *
-         * @return this builder for chaining.
-         */
-        public Builder(){
-            this(MonetaryAmount.class);
-        }
-
-        /**
-         * Creates a new builder, hereby the target implementation type is required. This can be used to explicitly
-         * acquire a specific amount type and additionally configure the amount factory with the attributes in this
-         * query.
-         *
-         * @param amountType the target amount type, not null.
-         * @return this builder for chaining.
-         */
-        public Builder(Class<? extends MonetaryAmount> amountType){
-            set(AMOUNT_TYPE, amountType, Class.class);
-        }
-
-        /**
-         * Set the maximal scale to be supported.
-         *
-         * @param maxScale the max scale, >= 0.
-         * @return this builder for chaining.
-         */
-        public Builder setMaxScale(int maxScale){
-            return set("maxScale", maxScale);
-        }
-
-        /**
-         * Set the required precision.
-         *
-         * @param precision the precision, >= 0, 0 meaning unlimited.
-         * @return this builder for chaining.
-         */
-        public Builder setPrecision(int precision){
-            return set("precision", precision);
-        }
-
-        /**
-         * Set the flag if the scale should fixed.
-         *
-         * @param fixedScale the fixed scale flag.
-         * @return this builder for chaining.
-         */
-        public Builder setFixedScale(boolean fixedScale){
-            return set("fixedScale", fixedScale);
-        }
-
-        /**
-         * Set the MonetaryAmount implementation class.
-         *
-         * @return the implementation class of the containing amount instance, never null.
-         * @see MonetaryAmount#getMonetaryContext()
-         */
-        public Builder setAmountType(Class<? extends MonetaryAmount> amountType){
-            return set(AMOUNT_TYPE, amountType, Class.class);
-        }
-
-        /**
-         * Creates a new instance of {@link MonetaryAmountFactoryQuery}.
-         *
-         * @return a new {@link MonetaryAmountFactoryQuery} instance.
-         */
-        public MonetaryContext build(){
-            return new MonetaryContext(this);
-        }
-
-    }
 }

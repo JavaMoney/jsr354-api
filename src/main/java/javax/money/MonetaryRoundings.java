@@ -174,7 +174,7 @@ public final class MonetaryRoundings{
      */
     private static final class DefaultCurrencyRounding implements MonetaryRounding, Serializable{
 
-        private static final RoundingContext ROUNDING_CONTEXT = new RoundingContext.Builder("default", "default").build();
+        private static final RoundingContext ROUNDING_CONTEXT = RoundingContextBuilder.create("default", "default").build();
         @Override
         public MonetaryAmount apply(MonetaryAmount amount){
             MonetaryRounding r = MonetaryRoundings.getRounding(amount.getCurrency());
@@ -205,7 +205,7 @@ public final class MonetaryRoundings{
          * rounding.
          * @throws javax.money.MonetaryException if no such rounding could be evaluated.
          */
-        public RoundingQuery.Builder createRoundingQueryBuilder(){
+        public RoundingQueryBuilder createRoundingQueryBuilder(){
             throw new IllegalStateException("No MonetaryRoundingsSingletonSpi registered.");
         }
 

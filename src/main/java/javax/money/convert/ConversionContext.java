@@ -8,12 +8,11 @@
  */
 package javax.money.convert;
 
+import javax.money.AbstractContext;
 import java.time.Instant;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.Objects;
-
-import javax.money.AbstractContext;
 
 /**
  * This class models a context for which a {@link ExchangeRate} is valid. It allows to define
@@ -36,26 +35,31 @@ public final class ConversionContext extends AbstractContext{
     /**
      * ConversionContext that queries any conversion available.
      */
-    public static final ConversionContext ANY_CONVERSION = ConversionContextBuilder.create().setRateType(RateType.ANY).build();
+    public static final ConversionContext ANY_CONVERSION =
+            new ConversionContextBuilder().setRateType(RateType.ANY).build();
     /**
      * ConversionContext quering for any deferred rates.
      */
-    public static final ConversionContext DEFERRED_CONVERSION = ConversionContextBuilder.create().setRateType(RateType.DEFERRED).build();
+    public static final ConversionContext DEFERRED_CONVERSION =
+            new ConversionContextBuilder().setRateType(RateType.DEFERRED).build();
     /**
      * ConversionContext quering for any historic rates.
      */
-    public static final ConversionContext HISTORIC_CONVERSION = ConversionContextBuilder.create().setRateType(RateType.HISTORIC).build();
+    public static final ConversionContext HISTORIC_CONVERSION =
+            new ConversionContextBuilder().setRateType(RateType.HISTORIC).build();
     /**
      * ConversionContext quering for real-time rates.
      */
-    public static final ConversionContext REALTIME_CONVERSION = ConversionContextBuilder.create().setRateType(RateType.REALTIME).build();
+    public static final ConversionContext REALTIME_CONVERSION =
+            new ConversionContextBuilder().setRateType(RateType.REALTIME).build();
     /**
      * ConversionContext quering for any other rates.
      */
-    public static final ConversionContext OTHER_CONVERSION = ConversionContextBuilder.create().setRateType(RateType.OTHER).build();
+    public static final ConversionContext OTHER_CONVERSION =
+            new ConversionContextBuilder().setRateType(RateType.OTHER).build();
 
     /**
-     * Private constructor, used by {@link javax.money.convert.ConversionContext.ConversionContextBuilder}.
+     * Private constructor, used by {@link javax.money.convert.ConversionContextBuilder}.
      *
      * @param builder the Builder.
      */
@@ -118,25 +122,34 @@ public final class ConversionContext extends AbstractContext{
     }
 
     /**
-     * Creates a {@link javax.money.convert.ConversionContext.ConversionContextBuilder} initialized with this instance's data.
+     * Creates a conversion query builder with the context data from this context instance.
      *
-     * @return a new {@link javax.money.convert.ConversionContext.ConversionContextBuilder}, not {@code null}.
+     * @return a corresponding conversion query builder instance, never null.
      */
     public ConversionContextBuilder toBuilder(){
-        return new ConversionContextBuilder(this);
+        return ConversionContextBuilder.create(this);
+    }
+
+    /**
+     * Creates a query builder based on this onctex.
+     *
+     * @return a new instance of {@link ConversionQueryBuilder}, never null.
+     */
+    public ConversionQueryBuilder toQueryBuilder(){
+        return ConversionQueryBuilder.create().importContext(this);
     }
 
     /**
      * Simple factory method for {@link ConversionContext}. For more
      * possibilities to initialize a {@link ConversionContext}, please use a
-     * {@link javax.money.convert.ConversionContext.ConversionContextBuilder},
+     * {@link javax.money.convert.ConversionContextBuilder},
      *
      * @param provider the provider name, not {@code null}
      * @param rateType the required rate type.
      * @return a new instance of {@link ConversionContext}
      */
     public static ConversionContext of(String provider, RateType rateType){
-        ConversionContextBuilder b = ConversionContextBuilder.create();
+        ConversionContextBuilder b = new ConversionContextBuilder();
         b.setRateType(rateType);
         b.setProvider(provider);
         return b.build();
@@ -144,7 +157,7 @@ public final class ConversionContext extends AbstractContext{
 
     /**
      * Creates a new ConversionContext for the given  {@link ProviderContext} and the given {@link RateType}.<br/>
-     * <i>Note:</i> for adding additional attributes use {@link javax.money.convert.ConversionContext.ConversionContextBuilder#Builder
+     * <i>Note:</i> for adding additional attributes use {@link javax.money.convert.ConversionContextBuilder
      * (ProviderContext, RateType)}.
      *
      * @param providerContext the provider context, not null.
@@ -152,7 +165,7 @@ public final class ConversionContext extends AbstractContext{
      * @return a corresponding instance of ConversionContext.
      */
     public static ConversionContext from(ProviderContext providerContext, RateType rateType){
-        return new ConversionContextBuilder(providerContext, rateType).build();
+        return ConversionContextBuilder.create(providerContext, rateType).build();
     }
 
     /**
@@ -181,7 +194,7 @@ public final class ConversionContext extends AbstractContext{
     /**
      * Simple factory method for {@link ConversionContext}. For more
      * possibilities to initialize a {@link ConversionContext}, please use a
-     * {@link javax.money.convert.ConversionContext.ConversionContextBuilder},
+     * {@link javax.money.convert.ConversionContextBuilder},
      *
      * @return a new instance of {@link ConversionContext}
      */
@@ -189,13 +202,6 @@ public final class ConversionContext extends AbstractContext{
         return ANY_CONVERSION;
     }
 
-    /**
-     * Creates a conversion query builder with the context data from this context instance.
-     * @return a corresponding conversion query builder instance, never null.
-     */
-    public ConversiontQueryBuilder toQueryBuilder(){
-        return ConversiontQueryBuilder.create().importContext(this).setProviders(getProvider())
-                .setRateTypes(getRateType());
-    }
+
 
 }

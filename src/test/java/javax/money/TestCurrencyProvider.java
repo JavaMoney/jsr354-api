@@ -85,7 +85,7 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
         private String code;
         private int numCode;
         private int digits;
-        private static final CurrencyContext CONTEXT = new CurrencyContext.Builder("TestCurrencyProvider").build();
+        private static final CurrencyContext CONTEXT = CurrencyContextBuilder.create("TestCurrencyProvider").build();
 
         public TestCurrency(String code, int numCode, int digits){
             this.code = code;

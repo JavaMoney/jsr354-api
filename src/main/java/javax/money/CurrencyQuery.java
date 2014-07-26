@@ -9,7 +9,9 @@
 package javax.money;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Locale;
 
 /**
  * This class models a query for accessing instances of {@link CurrencyUnit}. It
@@ -28,26 +30,32 @@ import java.util.*;
  */
 public final class CurrencyQuery extends AbstractQuery implements Serializable{
 
-    /** Key for storing a countries to be queried. */
+    /**
+     * Key for storing a countries to be queried.
+     */
     protected static final String COUNTRIES = "Query.countries";
 
-    /** Key for storing a target literal currency codes to be queried. */
+    /**
+     * Key for storing a target literal currency codes to be queried.
+     */
     protected static final String CURRENCY_CODES = "Query.currencyCodes";
 
-    /** Key for storing a target numeric currency codes to be queried. */
+    /**
+     * Key for storing a target numeric currency codes to be queried.
+     */
     protected static final String NUMERIC_CODES = "Query.numericCodes";
 
     /**
      * An instance, which basically modely a query that allows any type of currencies to be returned.
      */
-    public static final CurrencyQuery ANY_QUERY = new Builder().build();
+    public static final CurrencyQuery ANY_QUERY = CurrencyQueryBuilder.create().build();
 
     /**
      * Constructor, used from the Builder.
      *
-     * @param builder the corresponding {@link javax.money.CurrencyQuery.Builder}, not null.
+     * @param builder the corresponding {@link javax.money.CurrencyQueryBuilder}, not null.
      */
-    private CurrencyQuery(Builder builder){
+    CurrencyQuery(CurrencyQueryBuilder builder){
         super(builder);
     }
 
@@ -78,57 +86,13 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
         return getCollection(NUMERIC_CODES, Collections.emptySet());
     }
 
-
-
     /**
-     * Builder for queries for accessing {@link CurrencyUnit} instances. If not properties are set the query should
-     * returns
-     * the <i>default</i> currencies. Similarly if no provider is set explicitly the <i>default</i> ISO currencies as
-     * returned by {@link java.util.Currency} should be returned.
-     * <p>
-     * Note this class is NOT thread-safe.
+     * Creates a new builder instances, initialized with the data from this one.
+     *
+     * @return a new {@link javax.money.MonetaryAmountFactoryQueryBuilder} instance, never null.
      */
-    public static final class Builder extends AbstractQueryBuilder<Builder,CurrencyQuery>{
-
-        /**
-         * Sets the country for which currencies whould be requested.
-         *
-         * @param countries The ISO countries.
-         * @return the query for chaining.
-         */
-        public Builder setCountries(Locale... countries){
-            return setCollection(COUNTRIES, Arrays.asList(countries));
-        }
-
-        /**
-         * Sets the currency code, or the regular expression to select codes.
-         *
-         * @param codes sthe currency codes or code expressions, not null.
-         * @return the query for chaining.
-         */
-        public Builder setCurrencyCodes(String... codes){
-            return setCollection(CURRENCY_CODES, Arrays.asList(codes));
-        }
-
-        /**
-         * Set the numeric code. Setting it to -1 search for currencies that have no numeric code.
-         *
-         * @param codes the numeric codes.
-         * @return the query for chaining.
-         */
-        public Builder setNumericCodes(int... codes){
-            return setCollection(NUMERIC_CODES, Arrays.asList(codes));
-        }
-
-        /**
-         * Creates a new instance of {@link CurrencyQuery}.
-         *
-         * @return a new {@link CurrencyQuery} instance.
-         */
-        public CurrencyQuery build(){
-            return new CurrencyQuery(this);
-        }
-
+    public CurrencyQueryBuilder toBuilder(){
+        return CurrencyQueryBuilder.create(this);
     }
 
 }

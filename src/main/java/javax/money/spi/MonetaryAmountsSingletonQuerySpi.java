@@ -29,7 +29,7 @@ public interface MonetaryAmountsSingletonQuerySpi{
      * <p>
      * The evaluation order should consider the following aspects:
      * <ul>
-     * <li>If {@link javax.money.MonetaryContext#getTargetType()}} is explicitly defined, it should be considered.
+     * <li>If {@link javax.money.MonetaryContext#getAmountType()} is explicitly defined, it should be considered.
      * Nevertheless if precision/scale cannot be met, a {@link javax.money.MonetaryException} should
      * be thrown.
      * <li>The remaining implementation class candidates must cover the required precision.

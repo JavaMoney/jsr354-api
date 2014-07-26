@@ -23,14 +23,14 @@ public final class ConversionQuery extends AbstractContext {
 
 	private static final long serialVersionUID = -9147265628185601586L;
 
-	public static final ConversionQuery ANY_CONVERSION = ConversiontQueryBuilder.create().build();
+	public static final ConversionQuery ANY_CONVERSION = ConversionQueryBuilder.create().build();
 
     /**
      * Constructor, used from the ConversionQueryBuilder.
      *
      * @param builder the corresponding builder, not null.
      */
-    ConversionQuery(ConversiontQueryBuilder builder){
+    ConversionQuery(ConversionQueryBuilder builder){
         super(builder);
     }
 
@@ -116,8 +116,8 @@ public final class ConversionQuery extends AbstractContext {
      *
      * @return a new Builder, never null.
      */
-    public ConversiontQueryBuilder toBuilder(){
-        return ConversiontQueryBuilder.create().importContext(this);
+    public ConversionQueryBuilder toBuilder(){
+        return ConversionQueryBuilder.create(this);
     }
  
 }

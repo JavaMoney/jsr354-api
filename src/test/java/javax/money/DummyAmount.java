@@ -8,9 +8,7 @@
  */
 package javax.money;
 
-import java.util.Collections;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Amount pseudo (non functional) implementation, for testing only.
@@ -20,7 +18,7 @@ import java.util.Set;
 public final class DummyAmount implements
 		MonetaryAmount {
 
-    private static final CurrencyContext DUMMY_CURRENCYCONTEXT = new CurrencyContext.Builder("dummy").build();
+    private static final CurrencyContext DUMMY_CURRENCYCONTEXT = CurrencyContextBuilder.create("dummy").build();
 
     @Override
     public CurrencyUnit getCurrency() {

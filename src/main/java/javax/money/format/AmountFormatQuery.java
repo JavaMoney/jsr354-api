@@ -8,17 +8,13 @@
  */
 package javax.money.format;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Objects;
 
 import javax.money.AbstractContext;
-import javax.money.AbstractContextBuilder;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmounts;
-import javax.money.MonetaryContext;
 
 /**
  * Query for accessing instances of {@link javax.money.format.MonetaryAmountFormat}. In general it is determined by the
@@ -39,9 +35,9 @@ public final class AmountFormatQuery extends AbstractContext {
     /**
      * Constructor, used from the Builder.
      *
-     * @param builder the corresponding {@link javax.money.format.AmountFormatQuery.AmountFormartQueryBuilder}, not null.
+     * @param builder the corresponding {@link javax.money.format.AmountFormatQueryBuilder}, not null.
      */
-    AmountFormatQuery(AmountFormartQueryBuilder builder){
+    AmountFormatQuery(AmountFormatQueryBuilder builder){
         super(builder);
     }
 
@@ -89,15 +85,15 @@ public final class AmountFormatQuery extends AbstractContext {
      * @param locale the target locale, not null.
      */
     public static AmountFormatQuery of(Locale locale){
-        return new AmountFormartQueryBuilder(locale).build();
+        return AmountFormatQueryBuilder.create(locale).build();
     }
 
     /**
-     * Get a {@link javax.money.format.AmountFormatQuery.AmountFormartQueryBuilder} preinitialized with this context instance.
+     * Get a {@link javax.money.format.AmountFormatQueryBuilder} preinitialized with this context instance.
      *
      * @return a new preinitialized builder, never null.
      */
-    public AmountFormartQueryBuilder toBuilder(){
-        return new AmountFormartQueryBuilder(this);
+    public AmountFormatQueryBuilder toBuilder(){
+        return AmountFormatQueryBuilder.create(this);
     }
 }

@@ -43,11 +43,11 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
     private static final String MAX_SCALE = "maxScale";
 
     /**
-     * Constructor, used from the {@link javax.money.MonetaryAmountFactoryQuery.Builder}.
+     * Constructor, used from the {@link javax.money.MonetaryAmountFactoryQueryBuilder}.
      *
      * @param builder the corresponding builder, not null.
      */
-    private MonetaryAmountFactoryQuery(Builder builder){
+    MonetaryAmountFactoryQuery(MonetaryAmountFactoryQueryBuilder builder){
         super(builder);
     }
 
@@ -79,59 +79,13 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
         return getBoolean("fixedScale", null);
     }
 
-
     /**
-     * Builder class for creating new instances of {@link javax.money.MonetaryAmountFactoryQuery} that can be passed
-     * to access {@link javax.money.MonetaryAmountFactory} instances using a possible complex query.
-     * <p>
-     * Note this class is NOT thread-safe.
+     * Creates a new builder instances, initialized with the data from this one.
      *
-     * @see MonetaryAmounts#getAmountFactory(MonetaryAmountFactoryQuery)
-     * @see javax.money.MonetaryAmountFactory
+     * @return a new {@link javax.money.MonetaryAmountFactoryQueryBuilder} instance, never null.
      */
-    public static final class Builder extends AbstractQueryBuilder<Builder,MonetaryAmountFactoryQuery>{
-
-        /**
-         * Sets the maximal scale to be supported.
-         *
-         * @param maxScale the max scale, >= 0.
-         * @return this Builder for chaining.
-         */
-        public Builder setMaxScale(int maxScale){
-            return set("maxScale", maxScale);
-        }
-
-        /**
-         * Sets the required precision, the value 0 models unlimited precision.
-         *
-         * @param precision the precision, >= 0, 0 meaning unlimited.
-         * @return this Builder for chaining.
-         */
-        public Builder setPrecision(int precision){
-            return set("precision", precision);
-        }
-
-        /**
-         * Sets the flag if the scale should fixed, meaning minimal scale and maximal scale are always equally sized.
-         *
-         * @param fixedScale the fixed scale flag.
-         * @return this Builder for chaining.
-         */
-        public Builder setFixedScale(boolean fixedScale){
-            return set("fixedScale", fixedScale);
-        }
-
-        /**
-         * Creates a new instance of {@link MonetaryAmountFactoryQuery} based on the values of this Builder. Note that
-         * the Builder supports creation of several Builder instances from the a common Builder instance. But be aware
-         * that the keys and values contained are themself not recursively cloned (deep-copy).
-         *
-         * @return a new {@link MonetaryAmountFactoryQuery} instance.
-         */
-        public MonetaryAmountFactoryQuery build(){
-            return new MonetaryAmountFactoryQuery(this);
-        }
-
+    public MonetaryAmountFactoryQueryBuilder toBuilder(){
+        return MonetaryAmountFactoryQueryBuilder.create(this);
     }
 
 }

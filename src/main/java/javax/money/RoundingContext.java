@@ -32,13 +32,12 @@ import java.util.Objects;
  */
 public final class RoundingContext extends AbstractContext implements Serializable{
 
-
     /**
-     * Constructor, used from the {@link javax.money.RoundingContext.Builder}.
+     * Constructor, used from the {@link javax.money.RoundingContextBuilder}.
      *
      * @param builder the corresponding builder, not null.
      */
-    private RoundingContext(Builder builder){
+    RoundingContext(RoundingContextBuilder builder){
         super(builder);
     }
 
@@ -114,81 +113,13 @@ public final class RoundingContext extends AbstractContext implements Serializab
 
 
     /**
-     * Allows to convert a instance into the corresponding {@link javax.money.CurrencyContext.Builder}, which allows
+     * Allows to convert a instance into the corresponding {@link javax.money.CurrencyContextBuilder}, which allows
      * to change the values and create another {@link javax.money.CurrencyContext} instance.
      *
      * @return a new Builder instance, preinitialized with the values from this instance.
      */
-    public RoundingContext.Builder toBuilder(){
-        return new Builder(getProvider(), getRoundingId()).importContext(this);
+    public RoundingContextBuilder toBuilder(){
+        return RoundingContextBuilder.create(this);
     }
 
-    /**
-     * Builder class for creating new instances of {@link javax.money.RoundingContext} adding detailed information
-     * about a {@link javax.money.MonetaryRounding} instance.
-     * <p/>
-     * Note this class is NOT thread-safe.
-     *
-     * @see MonetaryRounding#getRoundingContext() ()
-     */
-    public static final class Builder extends AbstractContextBuilder<Builder,RoundingContext>{
-
-        /**
-         * Creates a new builder.
-         *
-         * @param provider   the provider name, creating the corresponding {@link javax.money.MonetaryRounding}
-         *                   containing, not null.
-         *                   the final {@link javax.money.RoundingContext} created by this builder, not null.
-         * @param roundingId The name of the rounding, not null.
-         */
-        public Builder(String provider, String roundingId){
-            Objects.requireNonNull(provider);
-            set("provider", provider);
-            Objects.requireNonNull(roundingId);
-            set("roundingId", roundingId);
-        }
-
-        /**
-         * Get the basic {@link javax.money.CurrencyUnit}, which is based for this rounding type.
-         *
-         * @return the target CurrencyUnit, or null.
-         */
-        public Builder setCurrencyUnit(CurrencyUnit currencyUnit){
-            Objects.requireNonNull(currencyUnit);
-            return set(currencyUnit, CurrencyUnit.class);
-        }
-
-        /**
-         * Sets the currency's timestamp, using UTC milliseconds.
-         *
-         * @param timestamp the timestamp.
-         * @return the builder for chaining
-         */
-        public Builder setTimestamp(long timestamp){
-            set("timestamp", timestamp);
-            return this;
-        }
-
-        /**
-         * Sets the currency's timestamp.
-         *
-         * @param timestamp the timestamp, not null.
-         * @return the builder for chaining
-         */
-        public Builder setTimestamp(TemporalAccessor timestamp){
-            set("timestamp", timestamp, TemporalAccessor.class);
-            return this;
-        }
-
-        /**
-         * Creates a new instance of {@link RoundingContext}.
-         *
-         * @return a new {@link RoundingContext} instance.
-         */
-        @Override
-        public RoundingContext build(){
-            return new RoundingContext(this);
-        }
-
-    }
 }

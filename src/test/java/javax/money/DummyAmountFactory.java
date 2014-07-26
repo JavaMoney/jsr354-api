@@ -8,9 +8,6 @@
  */
 package javax.money;
 
-import java.util.Collections;
-import java.util.Set;
-
 /**
  * Dummy amount factory only used for testing of the {@link MonetaryAmounts} singleton's delegation
  * logic.
@@ -21,7 +18,7 @@ public final class DummyAmountFactory implements MonetaryAmountFactory<DummyAmou
     /**
      * The {@link MonetaryContext} used.
      */
-    static MonetaryContext DUMMY_CONTEXT = new MonetaryContext.Builder(MonetaryAmount.class).set("dummy", true).build();
+    static MonetaryContext DUMMY_CONTEXT = MonetaryContextBuilder.create(MonetaryAmount.class).set("dummy", true).build();
 
     /*
      * (non-Javadoc)

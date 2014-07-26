@@ -41,7 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class TestCurrency implements CurrencyUnit, Serializable, Comparable<CurrencyUnit>{
 
-    private static final CurrencyContext CONTEXT = new CurrencyContext.Builder("test-only").build();
+    private static final CurrencyContext CONTEXT = CurrencyContextBuilder.create("test-only").build();
 
     /**
      * The predefined name space for ISO 4217 currencies, similar to
@@ -226,7 +226,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
     private final static class JDKCurrencyAdapter implements CurrencyUnit, Serializable, Comparable<CurrencyUnit>{
 
         private static final CurrencyContext JDK_CONTEXT =
-                new CurrencyContext.Builder(Currency.class.getName()).build();
+                CurrencyContextBuilder.create(Currency.class.getName()).build();
 
         /**
          * serialVersionUID.

@@ -46,7 +46,7 @@ public final class MonetaryFormats{
         }
         catch(Exception e){
             Logger.getLogger(MonetaryFormats.class.getName())
-                    .log(Level.SEVERE, "Failed to load MonetaryFormatsSingletonSpi, using default.", e);
+                    .log(Level.WARNING, "Failed to load MonetaryFormatsSingletonSpi, using default.", e);
             return new DefaultMonetaryFormatsSingletonSpi();
         }
     }

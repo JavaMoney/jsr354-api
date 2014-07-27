@@ -42,7 +42,7 @@ public final class MonetaryFormats{
      */
     private static MonetaryFormatsSingletonSpi loadMonetaryFormatsSingletonSpi(){
         try{
-            return Bootstrap.getService(MonetaryFormatsSingletonSpi.class);
+            return Bootstrap.getService(MonetaryFormatsSingletonSpi.class, new DefaultMonetaryFormatsSingletonSpi());
         }
         catch(Exception e){
             Logger.getLogger(MonetaryFormats.class.getName())

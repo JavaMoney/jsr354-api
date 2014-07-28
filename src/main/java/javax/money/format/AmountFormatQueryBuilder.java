@@ -8,11 +8,9 @@
  */
 package javax.money.format;
 
-import javax.money.AbstractContextBuilder;
 import javax.money.AbstractQueryBuilder;
+import javax.money.MonetaryAmountFactoryQuery;
 import javax.money.MonetaryContext;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -23,7 +21,7 @@ import java.util.Objects;
  */
 public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountFormatQueryBuilder,AmountFormatQuery>{
 
-    private static final String DEFAULT_STYLE_ID = "default";
+    private static final String DEFAULT_FORMAT_NAME = "default";
 
     /**
      * Creates a new {@link AmountFormatQueryBuilder}.
@@ -37,11 +35,11 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
     /**
      * Creates a new {@link AmountFormatQueryBuilder}.
      *
-     * @param styleId the target styleId {@link String}, not {@code null}.
+     * @param formatName the target format's name {@link String}, not {@code null}.
      */
-    private AmountFormatQueryBuilder(String styleId){
-        Objects.requireNonNull(styleId, "styleId required.");
-        set(AmountFormatQuery.STYLE_ID, styleId);
+    private AmountFormatQueryBuilder(String formatName){
+        Objects.requireNonNull(formatName, "formatName required.");
+        set(AmountFormatQuery.FORMAT_NAME, formatName);
     }
 
     /**
@@ -54,18 +52,18 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
     private AmountFormatQueryBuilder(Locale locale){
         Objects.requireNonNull(locale, "locale required.");
         setLocale(locale);
-        set(AmountFormatQuery.STYLE_ID, DEFAULT_STYLE_ID);
+        set(AmountFormatQuery.FORMAT_NAME, DEFAULT_FORMAT_NAME);
         set(locale);
     }
 
     /**
      * Sets a style's id.
      *
-     * @param styleId the styleId, not null.
+     * @param formatName the format's name, not null.
      * @return the Builder, for chaining.
      */
-    public AmountFormatQueryBuilder setStyleId(String styleId){
-        return set(AmountFormatQuery.STYLE_ID, styleId);
+    public AmountFormatQueryBuilder setFormatName(String formatName){
+        return set(AmountFormatQuery.FORMAT_NAME, formatName);
     }
 
     /**
@@ -81,12 +79,12 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
     /**
      * Sets the {@link javax.money.MonetaryContext} to be used, when amount's are parsed.
      *
-     * @param monetaryContext the monetary context, not {@code null}.
+     * @param monetaryQuery the monetary query, not {@code null}.
      * @return this builder for chaining.
      */
-    public AmountFormatQueryBuilder setMonetaryContext(MonetaryContext monetaryContext){
-        Objects.requireNonNull(monetaryContext);
-        return set(monetaryContext);
+    public AmountFormatQueryBuilder setMonetaryQuery(MonetaryAmountFactoryQuery monetaryQuery){
+        Objects.requireNonNull(monetaryQuery);
+        return set(monetaryQuery);
     }
 
     /**
@@ -111,11 +109,11 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
     /**
      * Creates a new {@link AmountFormatQueryBuilder}.
      *
-     * @param styleId the target styleId {@link String}, not {@code null}.
+     * @param formatName the target format's name {@link String}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatQueryBuilder} instance, never null.
      */
-    public static AmountFormatQueryBuilder create(String styleId){
-        return new AmountFormatQueryBuilder(styleId);
+    public static AmountFormatQueryBuilder create(String formatName){
+        return new AmountFormatQueryBuilder(formatName);
     }
 
     /**

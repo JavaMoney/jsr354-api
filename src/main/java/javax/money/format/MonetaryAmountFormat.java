@@ -92,7 +92,7 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String>{
      *
      * @return the {@link AmountFormatContext} used, never {@code null}.
      */
-    public AmountFormatContext getAmountFormatContext();
+    AmountFormatContext getAmountFormatContext();
 
 
     /**
@@ -102,7 +102,16 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String>{
      * @return the string printed using the settings of this formatter
      * @throws UnsupportedOperationException if the formatter is unable to print
      */
-    public String format(MonetaryAmount amount);
+    default String format(MonetaryAmount amount){
+        StringBuilder b = new StringBuilder();
+        try{
+            print(b, amount);
+        }
+        catch(IOException e){
+            throw new IllegalStateException("Formatting error.", e);
+        }
+        return b.toString();
+    }
 
     /**
      * Formats the given {@link MonetaryAmount} to a {@code Appendable}.
@@ -117,7 +126,7 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String>{
      * @throws IOException                   if an IO error occurs, thrown by the {@code appendable}
      * @throws MonetaryParseException        if there is a problem while parsing
      */
-    public void print(Appendable appendable, MonetaryAmount amount) throws IOException;
+    void print(Appendable appendable, MonetaryAmount amount) throws IOException;
 
     /**
      * Fully parses the text into an instance of {@link MonetaryAmount}.
@@ -137,6 +146,6 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String>{
      * @throws UnsupportedOperationException if the formatter is unable to parse
      * @throws MonetaryParseException        if there is a problem while parsing
      */
-    public MonetaryAmount parse(CharSequence text) throws MonetaryParseException;
+    MonetaryAmount parse(CharSequence text) throws MonetaryParseException;
 
 }

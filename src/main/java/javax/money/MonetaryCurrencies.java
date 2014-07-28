@@ -174,10 +174,10 @@ public final class MonetaryCurrencies{
      *
      * @return the orderend list provider names, modelling the default provider chain used, never null.
      */
-    public static List<String> getDefaultProviderNames(){
+    public static List<String> getDefaultProviderChain(){
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
                 () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
-                .getDefaultProviderNames();
+                .getDefaultProviderChain();
     }
 
     /**
@@ -213,7 +213,7 @@ public final class MonetaryCurrencies{
          * @return the list of preferred provider names, never null.
          */
         @Override
-        public List<String> getDefaultProviderNames(){
+        public List<String> getDefaultProviderChain(){
             List<String> list = new ArrayList<>();
             list.addAll(getProviderNames());
             Collections.sort(list);

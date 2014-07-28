@@ -35,7 +35,7 @@ public interface MonetaryCurrenciesSingletonSpi{
      * @see #getCurrencies(String...)
      * @see javax.money.CurrencyQueryBuilder
      */
-    List<String> getDefaultProviderNames();
+    List<String> getDefaultProviderChain();
 
     /**
      * Access a list of the currently registered providers. Th names can be used to

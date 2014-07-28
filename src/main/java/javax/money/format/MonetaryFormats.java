@@ -96,7 +96,7 @@ public final class MonetaryFormats{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     public static MonetaryAmountFormat getAmountFormat(String styleId){
-        return getAmountFormat(AmountFormatQueryBuilder.create(styleId).setStyleId(styleId).build());
+        return getAmountFormat(AmountFormatQueryBuilder.create(styleId).setFormatName(styleId).build());
     }
 
     /**

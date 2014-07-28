@@ -41,7 +41,7 @@ public class TestAmountFormatProvider implements
     }
 
     @Override
-    public Set<String> getAvailableStyles(){
+    public Set<String> getAvailableFormatNames(){
         return Collections.emptySet();
     }
 

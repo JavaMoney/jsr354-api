@@ -36,16 +36,6 @@ public class MonetaryFormatsTest{
     }
 
     @Test
-    public void testGetAmountFormatStyle(){
-        AmountFormatQuery s = AmountFormatQuery.of(Locale.ENGLISH);
-        MonetaryAmountFormat fmt = MonetaryFormats.getAmountFormat(s);
-        assertNotNull(fmt);
-        assertEquals(fmt.getClass(), TestAmountFormatProvider.TestFormat.class);
-        AmountFormatContext ctx = AmountFormatContextBuilder.create(Locale.ENGLISH).importContext(s).build();
-        assertEquals(ctx, fmt.getAmountFormatContext());
-    }
-
-    @Test
     public void testGetAvailableLocales(){
         Set<Locale> locales = MonetaryFormats.getAvailableLocales();
         assertNotNull(locales);

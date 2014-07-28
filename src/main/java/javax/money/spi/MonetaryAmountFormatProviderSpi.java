@@ -51,6 +51,6 @@ public interface MonetaryAmountFormatProviderSpi {
      * Gets a list with available styles for this format provider.
      * @return list of available styles, never null.
      */
-    Set<String> getAvailableStyles();
+    Set<String> getAvailableFormatNames();
 
 }

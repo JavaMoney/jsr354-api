@@ -44,11 +44,14 @@ public interface MonetaryRoundingsSingletonSpi{
     Set<String> getProviderNames();
 
     /**
-     * Allows to access the list and ordering of the default providers.
+     * Access a list of the currently registered default providers. The default providers are used, when
+     * no provider names are passed by the caller.
      *
-     * @return the ordered provider names, never {@code null}.
+     * @return the provider names in order, defining the provider chain.
+     * The default provider chain configured in {@code javamoney.properties} is used.
+     * @see javax.money.RoundingQueryBuilder
      */
-    List<String> getDefaultProviders();
+    List<String> getDefaultProviderChain();
 
     /**
      * Execute a query for {@link javax.money.MonetaryRounding}. This allows to model more complex used cases,
@@ -132,9 +135,22 @@ public interface MonetaryRoundingsSingletonSpi{
      * @param query the rounding query, not null.
      * @return true, if at least one rounding matches the query.
      */
-    default boolean isAvailable(RoundingQuery query){
+    default boolean isRoundingAvailable(RoundingQuery query){
         return !getRoundings(query).isEmpty();
     }
 
+    /**
+     * Checks if a {@link MonetaryRounding} is available given a roundingId.
+     *
+     * @param roundingId The rounding identifier.
+     * @param providers  the providers and ordering to be used. By default providers and ordering as defined in
+     *                   #getDefaultProviders is used.
+     * @return true, if a corresponding {@link javax.money.MonetaryRounding} is available.
+     * @throws IllegalArgumentException if no such rounding is registered using a
+     *                                  {@link RoundingProviderSpi} instance.
+     */
+    default boolean isRoundingAvailable(String roundingId, String... providers){
+        return isRoundingAvailable(RoundingQueryBuilder.create().setProviders(providers).setRoundingName(roundingId).build());
+    }
 
 }

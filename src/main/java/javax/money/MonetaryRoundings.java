@@ -130,6 +130,37 @@ public final class MonetaryRoundings{
     }
 
     /**
+     * Checks if a {@link MonetaryRounding} is available given a roundingId.
+     *
+     * @param roundingId The rounding identifier.
+     * @param providers  the providers and ordering to be used. By default providers and ordering as defined in
+     *                   #getDefaultProviders is used.
+     * @return true, if a corresponding {@link javax.money.MonetaryRounding} is available.
+     * @throws IllegalArgumentException if no such rounding is registered using a
+     *                                  {@link RoundingProviderSpi} instance.
+     */
+    public static boolean isRoundingAvailable(String roundingId, String... providers){
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                                                                             "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).isRoundingAvailable(roundingId, providers);
+    }
+
+    /**
+     * Checks if a {@link MonetaryRounding} matching the query is available.
+     *
+     * @param roundingQuery The {@link javax.money.RoundingQuery} that may contains arbitrary parameters to be evaluated.
+     * @return true, if a corresponding {@link javax.money.MonetaryRounding} is available.
+     * @throws IllegalArgumentException if no such rounding is registered using a
+     *                                  {@link RoundingProviderSpi} instance.
+     */
+    public static boolean isRoundingAvailable(RoundingQuery roundingQuery){
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                                                                             "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).isRoundingAvailable(roundingQuery);
+    }
+
+
+    /**
      * Access multiple {@link MonetaryRounding} instances using a possibly complex query
      *
      * @param roundingQuery The {@link javax.money.RoundingQuery} that may contains arbitrary parameters to be evaluated.
@@ -164,6 +195,17 @@ public final class MonetaryRoundings{
         return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
                                                                              "No MonetaryRoundingsSpi loaded, query functionality is not available.")
         ).getProviderNames();
+    }
+
+    /**
+     * Allows to access the default providers chain usef if no provider chain was passed explicitly..
+     *
+     * @return the chained list of provider names, never {@code null}.
+     */
+    public static List<String> getDefaultProviderChain(){
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                                                                             "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).getDefaultProviderChain();
     }
 
     /**
@@ -228,7 +270,7 @@ public final class MonetaryRoundings{
             List<MonetaryRounding> result = new ArrayList<>();
             Collection<String> providerNames = query.getProviders();
             if(providerNames == null || providerNames.isEmpty()){
-                providerNames = getDefaultProviders();
+                providerNames = getDefaultProviderChain();
             }
             for(String providerName : providerNames){
                 for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){
@@ -276,7 +318,7 @@ public final class MonetaryRoundings{
          * @return the default provider list and ordering, not null.
          */
         @Override
-        public List<String> getDefaultProviders(){
+        public List<String> getDefaultProviderChain(){
             List<String> result = new ArrayList<>();
             result.addAll(getProviderNames());
             Collections.sort(result);
@@ -294,7 +336,7 @@ public final class MonetaryRoundings{
             Set<String> result = new HashSet<>();
             String[] providerNames = providers;
             if(providerNames.length == 0){
-                providerNames = getDefaultProviders().toArray(new String[getDefaultProviders().size()]);
+                providerNames = getDefaultProviderChain().toArray(new String[getDefaultProviderChain().size()]);
             }
             for(String providerName : providerNames){
                 for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){

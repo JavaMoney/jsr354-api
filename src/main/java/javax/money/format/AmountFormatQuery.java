@@ -8,11 +8,8 @@
  */
 package javax.money.format;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Locale;
 
-import javax.money.AbstractContext;
 import javax.money.AbstractQuery;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmounts;
@@ -31,7 +28,7 @@ import javax.money.MonetaryAmounts;
  */
 public final class AmountFormatQuery extends AbstractQuery{
 
-    static final String STYLE_ID = "styleId";
+    static final String FORMAT_NAME = "formatName";
 
     /**
      * Constructor, used from the Builder.
@@ -47,8 +44,8 @@ public final class AmountFormatQuery extends AbstractQuery{
      *
      * @return the styleId, or null.
      */
-    public String getStyleId(){
-        return getText(STYLE_ID);
+    public String getFormatName(){
+        return getText(FORMAT_NAME);
     }
 
     /**

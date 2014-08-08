@@ -32,6 +32,11 @@ public final class TestRoundingProvider implements RoundingProviderSpi{
         return getCustomRounding("test");
     }
 
+    @Override
+    public Set<QueryType> getQueryTypes() {
+        return QueryType.DEFAULT_SET;
+    }
+
     private MonetaryRounding getCustomRounding(final String customRoundingId){
         return new MonetaryRounding(){
 

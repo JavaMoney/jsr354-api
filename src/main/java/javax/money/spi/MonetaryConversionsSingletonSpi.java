@@ -9,13 +9,11 @@
  */
 package javax.money.spi;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.ServiceLoader;
+import java.util.*;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryException;
+import javax.money.QueryType;
 import javax.money.convert.*;
 import javax.money.convert.ConversionQueryBuilder;
 
@@ -41,7 +39,7 @@ import javax.money.convert.ConversionQueryBuilder;
  *
  * @author Anatole Tresch
  */
-public interface MonetaryConversionsSingletonSpi{
+public interface MonetaryConversionsSingletonSpi {
 
     /**
      * Get all currently registered provider names.
@@ -87,7 +85,14 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #getExchangeRateProvider(ConversionQuery)
      * @see #getExchangeRateProvider(String...)}
      */
-    boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery);
+    default boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery){
+        try{
+            return getExchangeRateProvider(conversionQuery)!=null;
+        }
+        catch(Exception e){
+            return false;
+        }
+    }
 
     /**
      * Allows to quickly check, if a {@link javax.money.convert.CurrencyConversion} is accessible for the given
@@ -101,7 +106,30 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #getConversion(javax.money.convert.ConversionQuery)
      * @see #getConversion(CurrencyUnit, String...)}
      */
-    boolean isConversionAvailable(ConversionQuery conversionQuery);
+    default boolean isConversionAvailable(ConversionQuery conversionQuery){
+        try{
+            return getConversion(conversionQuery)!=null;
+        }
+        catch(Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+     * {@link javax.money.convert.ConversionQuery}. If no expölicit providers are passed ALL providers registered
+     * are returned in undefined order.
+     * @param providers the provider names of the providers to be accessed
+     * @return the current available query types, never null.
+     */
+    default Set<QueryType> getQueryTypes(String... providers){
+        Set<QueryType> types = new HashSet<>();
+        List<ExchangeRateProvider> exProviders = getExchangeRateProviders(providers);
+        for(ExchangeRateProvider prov: exProviders){
+            types.addAll(prov.getQueryTypes());
+        }
+        return types;
+    }
 
     /**
      * Allows to quickly check, if a {@link javax.money.convert.CurrencyConversion} is accessible for the given
@@ -118,9 +146,29 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #getConversion(javax.money.convert.ConversionQuery)
      * @see #getConversion(CurrencyUnit, String...)}
      */
-    default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers){
+    default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers) {
         return isConversionAvailable(
                 ConversionQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
+    }
+
+    /**
+     * Access the current registered {@link javax.money.convert.ExchangeRateProvider} instances. If no provider
+     * names are passed ALL current registered providers are returned in undefined order.
+     * @param providers the provider names of hte providers to be accessed
+     * @return the list of providers, in the same order as requested.
+     */
+    default List<ExchangeRateProvider> getExchangeRateProviders(String... providers){
+        List<ExchangeRateProvider> provInstances = new ArrayList<>();
+        Collection<String> providerNames = Arrays.asList(providers);
+        if(providerNames.isEmpty()){
+            providerNames = getProviderNames();
+        }
+        for (String provName : providerNames) {
+            provInstances.add(Optional.ofNullable(getExchangeRateProvider(provName)).orElseThrow(
+                    () -> new IllegalArgumentException(
+                           "Unsupported conversion/rate provider: " + provName)));
+        }
+        return provInstances;
     }
 
     /**
@@ -137,7 +185,7 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #getProviderNames()
      * @see #isExchangeRateProviderAvailable(javax.money.convert.ConversionQuery)
      */
-    default ExchangeRateProvider getExchangeRateProvider(String... providers){
+    default ExchangeRateProvider getExchangeRateProvider(String... providers) {
         return getExchangeRateProvider(ConversionQueryBuilder.create().setProviders(providers).build());
     }
 
@@ -150,7 +198,7 @@ public interface MonetaryConversionsSingletonSpi{
      * @throws javax.money.MonetaryException if no matching conversion could be found.
      * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */
-    default CurrencyConversion getConversion(ConversionQuery conversionQuery){
+    default CurrencyConversion getConversion(ConversionQuery conversionQuery) {
         Objects.requireNonNull(conversionQuery.getTermCurrency(), "Terminating Currency is required.");
         return getExchangeRateProvider(conversionQuery).getCurrencyConversion(conversionQuery.getTermCurrency());
     }
@@ -167,8 +215,9 @@ public interface MonetaryConversionsSingletonSpi{
      * @throws javax.money.MonetaryException if no matching conversion could be found.
      * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */
-    default CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers){
+    default CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers) {
         return getConversion(
                 ConversionQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
     }
+
 }

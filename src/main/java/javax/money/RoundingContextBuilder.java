@@ -8,7 +8,6 @@
  */
 package javax.money;
 
-import java.time.temporal.TemporalAccessor;
 import java.util.Objects;
 
 /**
@@ -31,9 +30,9 @@ public final class RoundingContextBuilder extends AbstractContextBuilder<Roundin
      */
     private RoundingContextBuilder(String provider, String roundingId){
         Objects.requireNonNull(provider);
-        set("provider", provider);
+        set(RoundingContext.KEY_PROVIDER, provider);
         Objects.requireNonNull(roundingId);
-        set("roundingId", roundingId);
+        set(RoundingContext.KEY_ROUNDING_NAME, roundingId);
     }
 
     /**

@@ -35,8 +35,8 @@ public final class ProviderContext extends AbstractContext{
 
     private static final long serialVersionUID = 3536713139786856877L;
 
-    public static final String RATE_TYPES = "rateTypes";
-    public static final String PROVIDER = "provider";
+    /** Key used for the rate types attribute. */
+    public static final String KEY_RATE_TYPES = "rateTypes";
 
 
     /**
@@ -48,25 +48,13 @@ public final class ProviderContext extends AbstractContext{
         super(builder);
     }
 
-
-    /**
-     * Get the provider of this rate. The provider of a rate can have different
-     * contexts in different usage scenarios, such as the service type or the
-     * stock exchange.
-     *
-     * @return the provider, or {code null}.
-     */
-    public String getProvider(){
-        return getText(PROVIDER);
-    }
-
     /**
      * Get the deferred flag. Exchange rates can be deferred or real.time.
      *
      * @return the deferred flag, or {code null}.
      */
     public Set<RateType> getRateTypes() {
-		Set<RateType> rateSet = getSet(RATE_TYPES,
+		Set<RateType> rateSet = getSet(KEY_RATE_TYPES,
 				Collections.emptySet());
 		return Collections.unmodifiableSet(rateSet);
 	}

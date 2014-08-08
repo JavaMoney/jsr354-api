@@ -28,11 +28,11 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
     private ProviderContextBuilder(String provider, RateType rateType, RateType... rateTypes){
         Objects.requireNonNull(rateType, "At least one RateType is required.");
         Objects.requireNonNull(rateTypes);
-        setProviderName(provider);
+        setProvider(provider);
         Set<RateType> rts = new HashSet<>();
         rts.add(rateType);
         Collections.addAll(rts, rateTypes);
-        setSet(ProviderContext.RATE_TYPES, rts);
+        setSet(ProviderContext.KEY_RATE_TYPES, rts);
     }
 
     /**
@@ -46,7 +46,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
         if(rateTypes.isEmpty()){
             throw new IllegalArgumentException("At least one RateType is required.");
         }
-        setProviderName(provider);
+        setProvider(provider);
         Set<RateType> rts = new HashSet<>();
         rts.addAll(rateTypes);
         setSet("rateTypes", rts);
@@ -63,19 +63,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
         importContext(context);
         Set<RateType> rts = new HashSet<>();
         rts.addAll(context.getRateTypes());
-        setSet("rateTypes", rts);
-    }
-
-    /**
-     * Sets the provider name.
-     *
-     * @param provider the new provider name
-     * @return this, for chaining.
-     */
-    public ProviderContextBuilder setProviderName(String provider){
-        Objects.requireNonNull(provider);
-        set(ProviderContext.PROVIDER, provider);
-        return this;
+        setSet(ProviderContext.KEY_RATE_TYPES, rts);
     }
 
     /**
@@ -104,7 +92,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
         }
         Set rtSet = new HashSet<>();
         rtSet.addAll(rateTypes);
-        setSet(ProviderContext.RATE_TYPES, rtSet);
+        setSet(ProviderContext.KEY_RATE_TYPES, rtSet);
         return this;
     }
 

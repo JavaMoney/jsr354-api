@@ -34,7 +34,6 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      * Creates a new instance of {@link javax.money.CurrencyQueryBuilder}.
      *
      * @param currencyQuery {@link javax.money.CurrencyQuery} used for initializing this builder.
-     * @return a new {@link javax.money.CurrencyQueryBuilder} instance, never null.
      */
     private CurrencyQueryBuilder(CurrencyQuery currencyQuery){
         Objects.requireNonNull(currencyQuery);
@@ -48,7 +47,7 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      * @return the query for chaining.
      */
     public CurrencyQueryBuilder setCountries(Locale... countries){
-        return setCollection(CurrencyQuery.COUNTRIES, Arrays.asList(countries));
+        return setCollection(CurrencyQuery.KEY_QUERY_COUNTRIES, Arrays.asList(countries));
     }
 
     /**
@@ -58,7 +57,7 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      * @return the query for chaining.
      */
     public CurrencyQueryBuilder setCurrencyCodes(String... codes){
-        return setCollection(CurrencyQuery.CURRENCY_CODES, Arrays.asList(codes));
+        return setCollection(CurrencyQuery.KEY_QUERY_CURRENCY_CODES, Arrays.asList(codes));
     }
 
     /**
@@ -68,7 +67,7 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      * @return the query for chaining.
      */
     public CurrencyQueryBuilder setNumericCodes(int... codes){
-        return setCollection(CurrencyQuery.NUMERIC_CODES, Arrays.asList(codes));
+        return setCollection(CurrencyQuery.KEY_QUERY_NUMERIC_CODES, Arrays.asList(codes));
     }
 
     /**

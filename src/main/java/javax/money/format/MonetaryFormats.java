@@ -9,10 +9,12 @@
 package javax.money.format;
 
 import javax.money.MonetaryException;
+import javax.money.QueryType;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFormatProviderSpi;
 import javax.money.spi.MonetaryFormatsSingletonSpi;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,60 +54,149 @@ public final class MonetaryFormats{
     }
 
     /**
-     * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
+     * Checks if a {@link MonetaryAmountFormat} is available for the given {@link Locale} and providers.
      *
      * @param locale the target {@link Locale}, not {@code null}.
-     * @return the matching {@link MonetaryAmountFormat}
-     * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
-     *                           corresponding {@link MonetaryAmountFormat} instance.
+     * @param providers The providers to be queried, if not set the providers as defined by #getDefaultProviderChain()
+     *                  are queried.
+     * @return true, if a corresponding {@link MonetaryAmountFormat} is accessible.
      */
-    public static MonetaryAmountFormat getAmountFormat(Locale locale){
-        return getAmountFormat(AmountFormatQueryBuilder.create(locale).setLocale(locale).build());
+    public static boolean isAvailable(Locale locale, String... providers){
+        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
+                "No MonetaryFormatsSingletonSpi " +
+                        "loaded, query functionality is not available."))
+                .isAvailable(locale, providers);
     }
 
     /**
      * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
      *
-     * @param formatQuery the required {@link AmountFormatQuery}, not {@code null}.
+     * @param locale the target {@link Locale}, not {@code null}.
+     * @param providers The providers to be queried, if not set the providers as defined by #getDefaultProviderChain()
+     *                  are queried.
+     * @return the matching {@link MonetaryAmountFormat}
+     * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
+     *                           corresponding {@link MonetaryAmountFormat} instance.
+     */
+    public static MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){
+        return getAmountFormat(AmountFormatQueryBuilder.create(locale).setProviders(providers)
+                .setLocale(locale).build());
+    }
+
+    /**
+     * Checks if a {@link MonetaryAmountFormat} is available for the given {@link javax.money.format.AmountFormatQuery}.
+     *
+     * @param formatQuery the required {@link AmountFormatQuery}, not {@code null}. If the query does not define
+     *                    any explicit provider chain, the providers as defined by #getDefaultProviderChain()
+     *                    are used.
+     * @return true, if a corresponding {@link MonetaryAmountFormat} is accessible.
+     */
+    public static boolean isAvailable(AmountFormatQuery formatQuery){
+        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
+                "No MonetaryFormatsSingletonSpi " +
+                        "loaded, query functionality is not available."))
+                .isAvailable(formatQuery);
+    }
+
+    /**
+     * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
+     *
+     * @param formatQuery the required {@link AmountFormatQuery}, not {@code null}. If the query does not define
+     *                    any explicit provider chain, the providers as defined by #getDefaultProviderChain()
+     *                    are used.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     public static MonetaryAmountFormat getAmountFormat(AmountFormatQuery formatQuery){
-        return monetaryFormatsSingletonSpi.getAmountFormat(formatQuery);
+        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
+                "No MonetaryFormatsSingletonSpi " +
+                        "loaded, query functionality is not available."))
+                .getAmountFormat(formatQuery);
     }
 
     /**
-     * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
+     * Access all {@link MonetaryAmountFormat} instances that match the given a {@link AmountFormatQuery}.
      *
-     * @param formatQuery the required {@link AmountFormatQuery}, not {@code null}.
+     * @param formatQuery the required {@link AmountFormatQuery}, not {@code null}. If the query does not define
+     *                    any explicit provider chain, the providers as defined by #getDefaultProviderChain()
+     *                    are used.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     public static Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery){
-        return monetaryFormatsSingletonSpi.getAmountFormats(formatQuery);
+        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
+                "No MonetaryFormatsSingletonSpi " +
+                        "loaded, query functionality is not available."))
+                .getAmountFormats(formatQuery);
     }
 
     /**
      * Access the a {@link MonetaryAmountFormat} given its styleId.
      *
-     * @param styleId the target styleId, not {@code null}.
+     * @param formatName the target format name, not {@code null}.
+     * @param providers The providers to be used, if not set the providers as defined by #getDefaultProviderChain() are
+     *                  used.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
-    public static MonetaryAmountFormat getAmountFormat(String styleId){
-        return getAmountFormat(AmountFormatQueryBuilder.create(styleId).setFormatName(styleId).build());
+    public static MonetaryAmountFormat getAmountFormat(String formatName, String... providers){
+        return getAmountFormat(AmountFormatQueryBuilder.create(formatName).setProviders(providers).build());
     }
 
     /**
      * Get all available locales. This equals to {@link MonetaryAmountFormatProviderSpi#getAvailableLocales()}.
-     *
+     * @param providers The providers to be used, if not set the providers as defined by #getDefaultProviderChain() are
+     *                  used.
      * @return all available locales, never {@code null}.
      */
-    public static final Set<Locale> getAvailableLocales(){
-        return monetaryFormatsSingletonSpi.getAvailableLocales();
+    public static final Set<Locale> getAvailableLocales(String... providers){
+        return monetaryFormatsSingletonSpi.getAvailableLocales(providers);
+    }
+
+    /**
+     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+     * {@link AmountFormatQuery}.
+     * @param providers The providers to be evaluated, if not set ALL providers are taken into account.
+     * @return the current available query types, never null.
+     */
+    public static Set<QueryType> getQueryTypes(String... providers){
+        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
+                "No MonetaryFormatsSingletonSpi " +
+                        "loaded, query functionality is not available."))
+        .getQueryTypes(providers);
+    }
+
+    /**
+     * Get the names of the currently registered format providers.
+     * @return the provider names, never null.
+     */
+    public static Collection<String> getProviderNames(){
+        Collection<String> providers = Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(
+                () -> new MonetaryException(
+                        "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available.")
+        ).getProviderNames();
+        if(Objects.isNull(providers)){
+            Logger.getLogger(MonetaryFormats.class.getName()).warning(
+                    "No supported rate/conversion providers returned by SPI: " +
+                            monetaryFormatsSingletonSpi.getClass().getName()
+            );
+            return Collections.emptySet();
+        }
+        return providers;
+    }
+
+    /**
+     * Get the default provider chain, identified by the unique provider names in order as evaluated and used.
+     * @return the default provider chain, never null.
+     */
+    public static List<String> getDefaultProviderChain(){
+        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
+                "No MonetaryFormatsSingletonSpi " +
+                        "loaded, query functionality is not available."))
+                .getDefaultProviderChain();
     }
 
     /**
@@ -117,6 +208,7 @@ public final class MonetaryFormats{
      * @author Werner Keil
      */
     public static final class DefaultMonetaryFormatsSingletonSpi implements MonetaryFormatsSingletonSpi{
+
 
         /**
          * Access an {@link javax.money.format.MonetaryAmountFormat} given a {@link javax.money.format
@@ -139,6 +231,41 @@ public final class MonetaryFormats{
             return result;
         }
 
+        /**
+         * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+         * {@link AmountFormatQuery}.
+         * @param providers The providers to be evaluated, if not set ALL providers are taken into account.
+         * @return the current available query types, never null.
+         */
+        @Override
+        public Set<QueryType> getQueryTypes(String... providers) {
+            Set<QueryType> result = new HashSet<>();
+            for(MonetaryAmountFormatProviderSpi spi : Bootstrap.getServices(MonetaryAmountFormatProviderSpi.class)){
+                Set<QueryType> types = spi.getQueryTypes();
+                if(Objects.nonNull(types)){
+                    result.addAll(types);
+                }
+            }
+            return result;
+        }
+
+        @Override
+        public Set<String> getProviderNames() {
+            return getSpisAsMap().keySet();
+        }
+
+        /**
+         * This default implementation simply returns all providers defined in arbitrary order.
+         * @return the default provider chain, never null.
+         */
+        @Override
+        public List<String> getDefaultProviderChain() {
+            List<String> list = new ArrayList<>();
+            list.addAll(getProviderNames());
+            Collections.sort(list);
+            return list;
+        }
+
 
         /**
          * Get all available locales. This equals to {@link javax.money.spi
@@ -148,10 +275,41 @@ public final class MonetaryFormats{
          */
         public Set<Locale> getAvailableLocales(String... providerNames){
             Set<Locale> locales = new HashSet<>();
-            for(MonetaryAmountFormatProviderSpi spi : Bootstrap.getServices(MonetaryAmountFormatProviderSpi.class)){
+            Collection<MonetaryAmountFormatProviderSpi> spis = getSpis(providerNames);
+            for (MonetaryAmountFormatProviderSpi spi: spis) {
                 locales.addAll(spi.getAvailableLocales());
             }
             return locales;
+        }
+
+        private Map<String, MonetaryAmountFormatProviderSpi> getSpisAsMap() {
+            Map<String, MonetaryAmountFormatProviderSpi> spis = new ConcurrentHashMap<>();
+            for (MonetaryAmountFormatProviderSpi spi : Bootstrap.getServices(MonetaryAmountFormatProviderSpi.class)) {
+                if (spi.getProviderName() == null) {
+                    Logger.getLogger(MonetaryFormats.class.getName()).warning("MonetaryAmountFormatProviderSpi " +
+                            "returns null for getProviderName: " + spi.getClass().getName());
+                }
+                spis.put(spi.getProviderName(), spi);
+            }
+            return spis;
+        }
+
+        private Collection<MonetaryAmountFormatProviderSpi> getSpis(String... providerNames) {
+            List<MonetaryAmountFormatProviderSpi> providers = new ArrayList<>();
+            Map<String, MonetaryAmountFormatProviderSpi> spis = getSpisAsMap();
+            if(providerNames.length==0){
+                providers.addAll(spis.values());
+            }
+            else {
+                for (String provName: providerNames) {
+                    MonetaryAmountFormatProviderSpi spi = spis.get(provName);
+                    if(Objects.isNull(spi)){
+                        throw new IllegalArgumentException("MonetaryAmountFormatProviderSpi not found: " + provName);
+                    }
+                    providers.add(spi);
+                }
+            }
+            return providers;
         }
 
     }

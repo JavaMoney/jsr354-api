@@ -47,6 +47,14 @@ public interface MonetaryCurrenciesSingletonSpi{
     Set<String> getProviderNames();
 
     /**
+     * Get the current available {@link javax.money.QueryType}.
+     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
+     *                  as defined by #getDefaultProviderChain() should be used.
+     * @return the current available query types, never null.
+     */
+    public Set<QueryType> getQueryTypes(String... providers);
+
+    /**
      * Access all currencies matching the given query.
      *
      * @param query The currency query, not null.
@@ -61,7 +69,8 @@ public interface MonetaryCurrenciesSingletonSpi{
      * with the {@link Bootstrap}.
      *
      * @param currencyCode the ISO currency code, not {@code null}.
-     * @param providers    the (optional) specification of providers to consider.
+     * @param providers    the (optional) specification of providers to consider. If not set (empty) the providers
+     *                  as defined by #getDefaultProviderChain() should be used.
      * @return the corresponding {@link javax.money.CurrencyUnit} instance.
      * @throws javax.money.UnknownCurrencyException if no such currency exists.
      */
@@ -85,7 +94,8 @@ public interface MonetaryCurrenciesSingletonSpi{
      * with the {@link Bootstrap}.
      *
      * @param country the ISO currency's country, not {@code null}.
-     * @param providers    the (optional) specification of providers to consider.
+     * @param providers    the (optional) specification of providers to consider. If not set (empty) the providers
+     *                  as defined by #getDefaultProviderChain() should be used.
      * @return the corresponding {@link javax.money.CurrencyUnit} instance.
      * @throws javax.money.UnknownCurrencyException if no such currency exists.
      */
@@ -107,7 +117,8 @@ public interface MonetaryCurrenciesSingletonSpi{
      *
      * @param locale    the target {@link java.util.Locale}, typically representing an ISO country,
      *                  not {@code null}.
-     * @param providers the (optional) specification of providers to consider.
+     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
+     *                  as defined by #getDefaultProviderChain() should be used.
      * @return a collection of all known currencies, never null.
      */
     default Set<CurrencyUnit> getCurrencies(Locale locale, String... providers){
@@ -120,7 +131,8 @@ public interface MonetaryCurrenciesSingletonSpi{
      * accessible from {@link javax.money.spi.MonetaryCurrenciesSingletonSpi#getCurrency(String, String...)}.
      *
      * @param code      the currency code, not {@code null}.
-     * @param providers the (optional) specification of providers to consider.
+     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
+     *                  as defined by #getDefaultProviderChain() should be used.
      * @return {@code true} if {@link javax.money.spi.MonetaryCurrenciesSingletonSpi#getCurrency(String, String...)}
      * would return a result for the given code.
      */
@@ -135,7 +147,8 @@ public interface MonetaryCurrenciesSingletonSpi{
      * defined, i.e. accessible from {@link #getCurrency(String, String...)}.
      *
      * @param locale    the target {@link java.util.Locale}, not {@code null}.
-     * @param providers the (optional) specification of providers to consider.
+     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
+     *                  as defined by #getDefaultProviderChain() should be used.
      * @return {@code true} if {@link #getCurrencies(java.util.Locale, String...)} would return a
      * non empty result for the given code.
      */
@@ -148,11 +161,29 @@ public interface MonetaryCurrenciesSingletonSpi{
     /**
      * Provide access to all currently known currencies.
      *
-     * @param providers the (optional) specification of providers to consider.
+     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
+     *                  as defined by #getDefaultProviderChain() should be used.
      * @return a collection of all known currencies, never null.
      */
     default Set<CurrencyUnit> getCurrencies(String... providers){
         return getCurrencies(CurrencyQueryBuilder.create().setProviders(providers).build());
     }
 
+    /**
+     * Access a single currency by query.
+     *
+     * @param query The currency query, not null.
+     * @return the {@link javax.money.CurrencyUnit} found, never null.
+     * @throws javax.money.MonetaryException if multiple currencies match the query.
+     */
+    default CurrencyUnit getCurrency(CurrencyQuery query){
+        Set<CurrencyUnit> currencies = getCurrencies(query);
+        if(currencies.isEmpty()){
+            return null;
+        }
+        if(currencies.size()==1){
+            return currencies.iterator().next();
+        }
+        throw new MonetaryException("Ambiguous request for CurrencyUnit: " + query + ", found: " + currencies);
+    }
 }

@@ -151,6 +151,19 @@ public final class MonetaryCurrencies{
      * @param query The {@link javax.money.CurrencyQuery}, not null.
      * @return the list of known currencies, never null.
      */
+    public static CurrencyUnit getCurrency(CurrencyQuery query){
+        return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
+                () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
+                .getCurrency(query);
+    }
+
+
+    /**
+     * Query all currencies matching the given query.
+     *
+     * @param query The {@link javax.money.CurrencyQuery}, not null.
+     * @return the list of known currencies, never null.
+     */
     public static Collection<CurrencyUnit> getCurrencies(CurrencyQuery query){
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
                 () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
@@ -166,6 +179,18 @@ public final class MonetaryCurrencies{
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
                 () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
                 .getProviderNames();
+    }
+
+    /**
+     * Get the current available/supported {@link javax.money.QueryType} instances, appliable to instances of
+     * {@link javax.money.CurrencyQuery}.
+     *
+     * @return the current available query types, never null.
+     */
+    public static Set<QueryType> getQueryTypes(){
+        return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
+                () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
+                .getQueryTypes();
     }
 
     /**
@@ -208,9 +233,8 @@ public final class MonetaryCurrencies{
         }
 
         /**
-         * Returns the list of preferred provider names.
-         *
-         * @return the list of preferred provider names, never null.
+         * This default implementation simply returns all providers defined in arbitrary order.
+         * @return the default provider chain, never null.
          */
         @Override
         public List<String> getDefaultProviderChain(){
@@ -236,6 +260,28 @@ public final class MonetaryCurrencies{
                     Logger.getLogger(DefaultMonetaryCurrenciesSingletonSpi.class.getName())
                             .log(Level.SEVERE, "Error loading currency provider names for " + spi.getClass().getName(),
                                  e);
+                }
+            }
+            return result;
+        }
+
+        /**
+         * Get the current available {@link javax.money.QueryType}.
+         * @param providers the (optional) specification of providers to consider. If not set the providers as defined
+         *                  by #getDefaultProviderChain() are used.
+         * @return the current available query types, never null.
+         */
+        @Override
+        public Set<QueryType> getQueryTypes(String... providers){
+            Set<QueryType> result = new HashSet<>();
+            for(CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)){
+                try{
+                    result.addAll(spi.getQueryTypes());
+                }
+                catch(Exception e){
+                    Logger.getLogger(DefaultMonetaryCurrenciesSingletonSpi.class.getName())
+                            .log(Level.SEVERE, "Error loading currency provider query types for " + spi.getClass().getName(),
+                                    e);
                 }
             }
             return result;

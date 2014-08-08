@@ -9,9 +9,7 @@
 package javax.money;
 
 import java.time.temporal.TemporalUnit;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * This abstract class defines the common generic parts of a query. Queries are used to pass complex parameters sets
@@ -26,15 +24,30 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
         extends AbstractContextBuilder<B,C>{
 
     /**
-     * Set the {@link javax.money.AbstractQuery.QueryType} to be used. If not set explicitly the <i>default</i>
-     * {@code QueryType.UNKNOWN} is used.
-     *
-     * @param queryType the query tyoe to use, not null.
-     * @return the query builder for chaining.
+     * Initializes the query builder, as a default query builder.
      */
-    public B setQueryType(AbstractQuery.QueryType queryType){
+    public AbstractQueryBuilder(){
+        set(QueryType.DEFAULT, QueryType.class);
+    }
+
+    /**
+     * Initializes the query also hereby defining the {@link QueryType} to be used.
+     *
+     * @param queryType the query type to be set, not null.
+     */
+    public AbstractQueryBuilder(QueryType queryType){
         Objects.requireNonNull(queryType);
-        return set(queryType, AbstractQuery.QueryType.class);
+        set(queryType, QueryType.class);
+    }
+
+    /**
+     * Add additional QueryType instances to this query.
+     * @param queryType the query type to be set, not null.
+     */
+    public B setQueryType(QueryType queryType){
+        Objects.requireNonNull(queryType);
+        set(queryType, QueryType.class);
+        return (B)this;
     }
 
 
@@ -47,7 +60,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      */
     public B setProviders(String... providers){
         Objects.requireNonNull(providers);
-        return setList(AbstractQuery.QUERY_PROVIDERS, Arrays.asList(providers));
+        return setList(AbstractQuery.KEY_QUERY_PROVIDERS, Arrays.asList(providers));
     }
 
     /**
@@ -68,7 +81,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @return the query builder for chaining.
      */
     public B setTimestampMillis(long timestamp){
-        return set(AbstractQuery.QUERY_TIMESTAMP, timestamp);
+        return set(AbstractQuery.KEY_QUERY_TIMESTAMP, timestamp);
     }
 
     /**
@@ -78,7 +91,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @return the query builder for chaining.
      */
     public B setTimestamp(TemporalUnit timestamp){
-        return set(AbstractQuery.QUERY_TIMESTAMP, timestamp, TemporalUnit.class);
+        return set(AbstractQuery.KEY_QUERY_TIMESTAMP, timestamp, TemporalUnit.class);
     }
 
     /**
@@ -91,7 +104,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      */
     public B setTargetType(Class<?> type){
         Objects.requireNonNull(type);
-        set(AbstractQuery.TARGET_TYPE, type, Class.class);
+        set(AbstractQuery.KEY_QUERY_TARGET_TYPE, type, Class.class);
         return (B) this;
     }
 

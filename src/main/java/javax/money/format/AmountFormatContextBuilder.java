@@ -27,23 +27,21 @@ public final class AmountFormatContextBuilder
     /**
      * Map key used for the style identifier attribute.
      */
-    private static final String DEFAULT_STYLE_ID = "default";
+    private static final String DEFAULT_FORMAT_NAME = "default";
 
     /**
      * Creates a new {@link AmountFormatContextBuilder}.
      *
-     * @param style the base {@link AmountFormatQuery}, not {@code null}.
-     * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
+     * @param formatQuery the base {@link AmountFormatQuery}, not {@code null}.
      */
-    private AmountFormatContextBuilder(AmountFormatQuery style){
-        importContext(style);
+    private AmountFormatContextBuilder(AmountFormatQuery formatQuery){
+        importContext(formatQuery);
     }
 
     /**
      * Creates a new {@link AmountFormatContextBuilder}.
      *
      * @param context the base {@link AmountFormatContext}, not {@code null}.
-     * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
     private AmountFormatContextBuilder(AmountFormatContext context){
         Objects.requireNonNull(context);
@@ -53,11 +51,11 @@ public final class AmountFormatContextBuilder
     /**
      * Creates a new {@link AmountFormatContextBuilder}.
      *
-     * @param styleId the target styleId {@link String}, not {@code null}.
+     * @param formatName the target formatName {@link String}, not {@code null}.
      */
-    private AmountFormatContextBuilder(String styleId){
-        Objects.requireNonNull(styleId, "styleId required.");
-        set(AmountFormatContext.STYLE_ID, styleId);
+    private AmountFormatContextBuilder(String formatName){
+        Objects.requireNonNull(formatName, "formatName required.");
+        set(AmountFormatContext.KEY_FORMAT_NAME, formatName);
     }
 
     /**
@@ -69,17 +67,17 @@ public final class AmountFormatContextBuilder
     private AmountFormatContextBuilder(Locale locale){
         Objects.requireNonNull(locale, "locale required.");
         setLocale(locale);
-        set(AmountFormatContext.STYLE_ID, DEFAULT_STYLE_ID);
+        set(AmountFormatContext.KEY_FORMAT_NAME, DEFAULT_FORMAT_NAME);
     }
 
     /**
-     * Sets a style's id.
+     * Sets a format's name.
      *
-     * @param styleId the styleId, not null.
+     * @param formatName the formatName, not null.
      * @return the Builder, for chaining.
      */
-    public AmountFormatContextBuilder setStyleId(String styleId){
-        return set(AmountFormatContext.STYLE_ID, styleId);
+    public AmountFormatContextBuilder setFormatName(String formatName){
+        return set(AmountFormatContext.KEY_FORMAT_NAME, formatName);
     }
 
     /**
@@ -118,11 +116,11 @@ public final class AmountFormatContextBuilder
     /**
      * Creates a new {@link AmountFormatContextBuilder}.
      *
-     * @param style the base {@link AmountFormatContext}, not {@code null}.
+     * @param formatQuery the base {@link AmountFormatContext}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
-    public static AmountFormatContextBuilder create(AmountFormatQuery style){
-        return new AmountFormatContextBuilder(style);
+    public static AmountFormatContextBuilder create(AmountFormatQuery formatQuery){
+        return new AmountFormatContextBuilder(formatQuery);
     }
 
     /**
@@ -138,11 +136,11 @@ public final class AmountFormatContextBuilder
     /**
      * Creates a new {@link AmountFormatContextBuilder}.
      *
-     * @param styleId the target styleId {@link String}, not {@code null}.
+     * @param formatName the target formatName {@link String}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
-    public static AmountFormatContextBuilder create(String styleId){
-        return new AmountFormatContextBuilder(styleId);
+    public static AmountFormatContextBuilder create(String formatName){
+        return new AmountFormatContextBuilder(formatName);
     }
 
     /**

@@ -89,39 +89,6 @@ public final class ConversionContext extends AbstractContext{
     }
 
     /**
-     * Get the current timestamp of the ConversionContext in UTC milliseconds.  If not set it tries to create an
-     * UTC timestamp from #getTimestamp().
-     *
-     * @return the timestamp in millis, or null.
-     */
-    public Long getTimestampMillis(){
-        Long value = getLong("timestamp", null);
-        if(Objects.isNull(value)){
-            TemporalAccessor acc = getTimestamp();
-            if(Objects.nonNull(acc)){
-                return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
-            }
-        }
-        return value;
-    }
-
-    /**
-     * Get the current timestamp. If not set it tries to create an Instant from #getTimestampMillis().
-     *
-     * @return the current timestamp, or null.
-     */
-    public TemporalAccessor getTimestamp(){
-        TemporalAccessor acc = getAny("timestamp", TemporalAccessor.class, null);
-        if(Objects.isNull(acc)){
-            Long value = getLong("timestamp", null);
-            if(Objects.nonNull(value)){
-                acc = Instant.ofEpochMilli(value);
-            }
-        }
-        return acc;
-    }
-
-    /**
      * Creates a conversion query builder with the context data from this context instance.
      *
      * @return a corresponding conversion query builder instance, never null.

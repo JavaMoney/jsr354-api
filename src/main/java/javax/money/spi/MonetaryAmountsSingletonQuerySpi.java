@@ -11,9 +11,11 @@ package javax.money.spi;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmountFactoryQuery;
+import javax.money.QueryType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * SPI (core) for the backing implementation of the {@link javax.money.MonetaryAmounts} singleton, implementing
@@ -49,6 +51,14 @@ public interface MonetaryAmountsSingletonQuerySpi{
      *                                       {@link javax.money.MonetaryContext}.
      */
     Collection<MonetaryAmountFactory<?>> getAmountFactories(MonetaryAmountFactoryQuery query);
+
+    /**
+     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+     * {@link javax.money.MonetaryAmountFactoryQuery}.
+     *
+     * @return the current available query types, never null.
+     */
+    Set<QueryType> getQueryTypes();
 
     /**
      * Checks if an {@link javax.money.MonetaryAmountFactory} is matching the given query.
@@ -105,4 +115,5 @@ public interface MonetaryAmountsSingletonQuerySpi{
         }
         return factories.iterator().next();
     }
+
 }

@@ -10,7 +10,6 @@ package javax.money.format;
 
 import javax.money.AbstractQueryBuilder;
 import javax.money.MonetaryAmountFactoryQuery;
-import javax.money.MonetaryContext;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -20,16 +19,16 @@ import java.util.Objects;
  * Note this class is NOT thread-safe.
  */
 public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountFormatQueryBuilder,AmountFormatQuery>{
-
+    /** The default format name used. */
     private static final String DEFAULT_FORMAT_NAME = "default";
 
     /**
      * Creates a new {@link AmountFormatQueryBuilder}.
      *
-     * @param style the base {@link AmountFormatContext}, not {@code null}.
+     * @param formatQuery the base {@link AmountFormatQuery}, not {@code null}.
      */
-    private AmountFormatQueryBuilder(AmountFormatQuery style){
-        importContext(style);
+    private AmountFormatQueryBuilder(AmountFormatQuery formatQuery){
+        importContext(formatQuery);
     }
 
     /**
@@ -39,7 +38,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      */
     private AmountFormatQueryBuilder(String formatName){
         Objects.requireNonNull(formatName, "formatName required.");
-        set(AmountFormatQuery.FORMAT_NAME, formatName);
+        set(AmountFormatQuery.KEY_QUERY_FORMAT_NAME, formatName);
     }
 
     /**
@@ -52,7 +51,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
     private AmountFormatQueryBuilder(Locale locale){
         Objects.requireNonNull(locale, "locale required.");
         setLocale(locale);
-        set(AmountFormatQuery.FORMAT_NAME, DEFAULT_FORMAT_NAME);
+        set(AmountFormatQuery.KEY_QUERY_FORMAT_NAME, DEFAULT_FORMAT_NAME);
         set(locale);
     }
 
@@ -63,7 +62,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @return the Builder, for chaining.
      */
     public AmountFormatQueryBuilder setFormatName(String formatName){
-        return set(AmountFormatQuery.FORMAT_NAME, formatName);
+        return set(AmountFormatQuery.KEY_QUERY_FORMAT_NAME, formatName);
     }
 
     /**

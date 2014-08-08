@@ -8,14 +8,12 @@
  */
 package javax.money.spi;
 
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Set;
-
 import javax.money.MonetaryException;
-import javax.money.format.AmountFormatQueryBuilder;
+import javax.money.QueryType;
 import javax.money.format.AmountFormatQuery;
+import javax.money.format.AmountFormatQueryBuilder;
 import javax.money.format.MonetaryAmountFormat;
+import java.util.*;
 
 /**
  * This interface models the singleton functionality of {@link javax.money.format.MonetaryFormats}.
@@ -43,6 +41,26 @@ public interface MonetaryFormatsSingletonSpi{
      * @return the corresponding {@link javax.money.format.MonetaryAmountFormat} instances, never null
      */
     Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery);
+
+    /**
+     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+     * {@link AmountFormatQuery}.
+     * @param providers The providers to be evaluated, if not set ALL providers are taken into account.
+     * @return the current available query types, never null.
+     */
+    Set<QueryType> getQueryTypes(String... providers);
+
+    /**
+     * Get the names of the currently registered format providers.
+     * @return the provider names, never null.
+     */
+    Set<String> getProviderNames();
+
+    /**
+     * Get the default provider chain, identified by the unique provider names in order as evaluated and used.
+     * @return the default provider chain, never null.
+     */
+    List<String> getDefaultProviderChain();
 
     /**
      * Access an {@link javax.money.format.MonetaryAmountFormat} given a {@link javax.money.format
@@ -74,9 +92,22 @@ public interface MonetaryFormatsSingletonSpi{
     }
 
     /**
+     * Checks if a {@link javax.money.format.MonetaryAmountFormat} is available given a {@link javax.money.format
+     * .AmountFormatQuery}.
+     *
+     * @param locale    the target {@link Locale}, not {@code null}.
+     * @param providers The (optional) providers to be used, oredered correspondingly.
+     * @return true, if a t least one {@link javax.money.format.MonetaryAmountFormat} is matching the query.
+     */
+    default boolean isAvailable(Locale locale, String... providers){
+        return isAvailable(AmountFormatQuery.of(locale, providers));
+    }
+
+    /**
      * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
      *
-     * @param locale the target {@link Locale}, not {@code null}.
+     * @param locale    the target {@link Locale}, not {@code null}.
+     * @param providers The (optional) providers to be used, oredered correspondingly.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
      *                           corresponding {@link MonetaryAmountFormat} instance.
@@ -88,15 +119,14 @@ public interface MonetaryFormatsSingletonSpi{
     /**
      * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
      *
-     * @param styleId   the target styleId, not {@code null}.
-     * @param providers The (optional) providers to be used, oredered correspondingly.
+     * @param formatName the target format name, not {@code null}.
+     * @param providers  The (optional) providers to be used, oredered correspondingly.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
-    default MonetaryAmountFormat getAmountFormat(String styleId, String... providers){
-        return getAmountFormat(AmountFormatQueryBuilder.create(styleId).setProviders(providers).build());
+    default MonetaryAmountFormat getAmountFormat(String formatName, String... providers){
+        return getAmountFormat(AmountFormatQueryBuilder.create(formatName).setProviders(providers).build());
     }
-
 
 }

@@ -64,7 +64,7 @@ public interface MonetaryRoundingsSingletonSpi{
 
 
     /**
-     * Creates a rounding that can be added as {@link javax.money.MonetaryOperator} to
+     * Creates a {@link MonetaryRounding} that can be added as {@link javax.money.MonetaryOperator} to
      * chained calculations. The instance must lookup the concrete
      * {@link javax.money.MonetaryRounding} instance from the {@link javax.money.spi.MonetaryRoundingsSingletonSpi}
      * based on the input {@link javax.money.MonetaryAmount}'s {@link javax.money.CurrencyUnit}.
@@ -73,9 +73,16 @@ public interface MonetaryRoundingsSingletonSpi{
      */
     MonetaryRounding getDefaultRounding();
 
+    /**
+     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+     * {@link javax.money.RoundingQuery}.
+     *
+     * @return the current available query types, never null.
+     */
+    Set<QueryType> getQueryTypes();
 
     /**
-     * Creates an {@link javax.money.MonetaryOperator} for rounding {@link javax.money.MonetaryAmount}
+     * Access a {@link javax.money.MonetaryRounding} for rounding {@link javax.money.MonetaryAmount}
      * instances given a currency.
      *
      * @param currencyUnit The currency, which determines the required precision. As
@@ -95,7 +102,7 @@ public interface MonetaryRoundingsSingletonSpi{
 
 
     /**
-     * Access an {@link javax.money.MonetaryRounding} using the rounding name.
+     * Access a {@link javax.money.MonetaryRounding} using the rounding name.
      *
      * @param roundingName The rounding name, not null.
      * @param providers    the optional provider list and ordering to be used
@@ -150,7 +157,23 @@ public interface MonetaryRoundingsSingletonSpi{
      *                                  {@link RoundingProviderSpi} instance.
      */
     default boolean isRoundingAvailable(String roundingId, String... providers){
-        return isRoundingAvailable(RoundingQueryBuilder.create().setProviders(providers).setRoundingName(roundingId).build());
+        return isRoundingAvailable(RoundingQueryBuilder.create().setProviders(providers).setRoundingName(roundingId)
+                .build());
     }
 
+    /**
+     * Checks if a {@link MonetaryRounding} is available given a {@link javax.money.CurrencyUnit}.
+     *
+     * @param currencyUnit The currency, which determines the required precision. As {@link java.math.RoundingMode},
+     *                     by default, {@link java.math.RoundingMode#HALF_UP} is used.
+     * @param providers  the providers and ordering to be used. By default providers and ordering as defined in
+     *                   #getDefaultProviders is used.
+     * @return true, if a corresponding {@link javax.money.MonetaryRounding} is available.
+     * @throws IllegalArgumentException if no such rounding is registered using a
+     *                                  {@link RoundingProviderSpi} instance.
+     */
+    default boolean isRoundingAvailable(CurrencyUnit currencyUnit, String[] providers){
+        return isRoundingAvailable(RoundingQueryBuilder.create().setProviders(providers).setCurrencyUnit(currencyUnit)
+                .build());
+    }
 }

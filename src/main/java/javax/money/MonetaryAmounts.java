@@ -13,6 +13,7 @@ import javax.money.spi.MonetaryAmountsSingletonQuerySpi;
 import javax.money.spi.MonetaryAmountsSingletonSpi;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -187,6 +188,18 @@ public final class MonetaryAmounts{
         return Optional.ofNullable(monetaryAmountsSingletonQuerySpi).orElseThrow(() -> new MonetaryException(
                                                                                          "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available.")
         ).isAvailable(query);
+    }
+
+    /**
+     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+     * {@link javax.money.MonetaryAmountFactoryQuery}.
+     *
+     * @return the current available query types, never null.
+     */
+    public static Set<QueryType> getQueryTypes(){
+        return Optional.ofNullable(monetaryAmountsSingletonQuerySpi).orElseThrow(
+                () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
+                .getQueryTypes();
     }
 
 }

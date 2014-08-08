@@ -50,7 +50,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      * @return the query for chaining.
      */
     public ConversionQueryBuilder setRateTypes(Set<RateType> rateTypes){
-        return setSet("rateTypes", rateTypes);
+        return setSet(ConversionQuery.KEY_RATE_TYPES, rateTypes);
     }
 
     /**
@@ -60,7 +60,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      * @return the query for chaining.
      */
     public ConversionQueryBuilder setBaseCurrency(CurrencyUnit currency){
-        return set("baseCurrency", currency, CurrencyUnit.class);
+        return set(ConversionQuery.KEY_BASE_CURRENCY, currency, CurrencyUnit.class);
     }
 
     /**
@@ -81,7 +81,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      * @return the query for chaining.
      */
     public ConversionQueryBuilder setTermCurrency(CurrencyUnit currency){
-        return set("termCurrency", currency, CurrencyUnit.class);
+        return set(ConversionQuery.KEY_TERM_CURRENCY, currency, CurrencyUnit.class);
     }
 
     /**

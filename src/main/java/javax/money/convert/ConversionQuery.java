@@ -21,10 +21,18 @@ import java.util.*;
  * This class is immutable, serializable and thread-safe.
  */
 public final class ConversionQuery extends AbstractQuery{
-
+    /** serialVersionUID. */
 	private static final long serialVersionUID = -9147265628185601586L;
 
-	public static final ConversionQuery ANY_CONVERSION = ConversionQueryBuilder.create().build();
+
+    /** THe key used for the base currency attribute. */
+    public static final String KEY_BASE_CURRENCY = "Query.baseCurrency";
+
+    /** THe key used for the term currency attribute. */
+    public static final String KEY_TERM_CURRENCY = "Query.termCurrency";
+
+    /** THe key used for the rate types attribute. */
+    public static final String KEY_RATE_TYPES = "Query.rateTypes";
 
     /**
      * Constructor, used from the ConversionQueryBuilder.
@@ -41,41 +49,7 @@ public final class ConversionQuery extends AbstractQuery{
      * @return the rate types set, or an empty array, but never null.
      */
     public Set<RateType> getRateTypes(){
-        return getSet("rateTypes", Collections.emptySet());
-    }
-
-    /**
-     * Get the current target timestamp of the query in UTC milliseconds.  If not set it tries to create an
-     * UTC timestamp from #getTimestamp().
-     *
-     * @return the timestamp in millis, or null.
-     */
-    public Long getTimestampMillis(){
-        Long value = getLong("timestamp", null);
-        if(Objects.isNull(value)){
-            TemporalAccessor acc = getTimestamp();
-            if(Objects.nonNull(acc)){
-                return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
-            }
-        }
-        return value;
-    }
-
-    /**
-     * Get the current target timestamp of the query. If not set it tries to create an Instant from
-     * #getTimestampMillis().
-     *
-     * @return the current timestamp, or null.
-     */
-    public TemporalAccessor getTimestamp(){
-        TemporalAccessor acc = getAny("timestamp", TemporalAccessor.class, null);
-        if(Objects.isNull(acc)){
-            Long value = getAny("timestamp", Long.class, null);
-            if(Objects.nonNull(value)){
-                acc = Instant.ofEpochMilli(value);
-            }
-        }
-        return acc;
+        return getSet(KEY_RATE_TYPES, Collections.emptySet());
     }
 
     /**
@@ -89,7 +63,7 @@ public final class ConversionQuery extends AbstractQuery{
      * @return the base CurrencyUnit, or null.
      */
     public CurrencyUnit getBaseCurrency(){
-        return getAny("baseCurrency", CurrencyUnit.class, null);
+        return getAny(KEY_BASE_CURRENCY, CurrencyUnit.class, null);
     }
 
     /**
@@ -99,7 +73,7 @@ public final class ConversionQuery extends AbstractQuery{
      * @return the terminating CurrencyUnit, or null.
      */
     public CurrencyUnit getTermCurrency(){
-        return getAny("termCurrency", CurrencyUnit.class, null);
+        return getAny(KEY_TERM_CURRENCY, CurrencyUnit.class, null);
     }
 
     /**

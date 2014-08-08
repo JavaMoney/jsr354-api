@@ -1831,28 +1831,32 @@ Hereby the above listing illustrates quite well, what are the minimal properties
 [[AccessingFormats]]
 ==== Accessing Monetary Amount Formats
 The class +javax.money.format.MonetaryFormats+ models a singleton accessor, which is, similarly to other singleton in
-this JSR, is backed up by an SPI instance of +<<MonetaryFormatsSingletonSpi>>+. The SPI implementation is
+this JSR, backed up by an SPI instance of +<<MonetaryFormatsSingletonSpi>>+. The SPI implementation is
 responsible for collecting and managing registered instances of +MonetaryAmountFormatProviderSpi+ providing the
 instances of +MonetaryAmountFormat+ accessible from the singleton. Overriding the +<<MonetaryFormatsSingletonSpi>>+
 allows to add contextual behaviour in EE or multi-tenancy runtime environment, see also <<SPI>>.
 
-The implementations of the +<<MonetaryAmountFormatProviderSpi>>+ used, provide access to +MonetaryAmountFormat+ instances
-based on
-
+The implementations of the +<<MonetaryAmountFormatProviderSpi>>+ used, provide access to +MonetaryAmountFormat+
+instances that match an +AmountFormatQuery+ given. Such a query can contain
 * a +Locale+, or
-* an +AmountFormatQuery+.
+* a format name
+* the target providers that should handle the query (meaning create/provide a +MonetaryAmountFormat+ instance.
+* any other attributes as defined by the provider that should create the formatter required, refer to the section
+  <<MetadataModeling>> for more details.
 
 [source,java]
 .Interface MonetaryFormatsSingletonSpi
 -------------------------------------------------------------------------------
 public interface MonetaryFormatsSingletonSpi{
-
-  Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery query);  <1>
-  Set<Locale> getAvailableLocales();                                           <1>
-  Set<Locale> getAvailableLocales();                                           <1>
-  Set<String> getAvailableFormatNames();
-  default String getProviderName(){...}
-  default MonetaryAmountFormat getAmountFormat(Locale locale);                 <2>
+  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <1>
+  default MonetaryAmountFormat getAmountFormat(AmountFormatQuery query);                   <2>
+  Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery query);              <2>
+  default boolean isAvailable(AmountFormatQuery formatQuery){...}
+  default boolean isAvailable(Locale locale, String.. providers){...}
+  Set<Locale> getAvailableLocales(String... providers);                                    <3>
+  Set<String> getAvailableFormatNames(String... providers);                                <4>
+  Set<String> getAvailableProviderNames();
+  List<String> geDefaultProviderChain();
 }
 -------------------------------------------------------------------------------
 <1> Methods to be implemented by clients.

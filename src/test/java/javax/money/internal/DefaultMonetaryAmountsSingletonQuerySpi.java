@@ -3,10 +3,7 @@ package javax.money.internal;
 import javax.money.*;
 import javax.money.spi.MonetaryAmountsSingletonQuerySpi;
 import javax.money.spi.MonetaryAmountsSingletonSpi;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Anatole on 03.05.2014.
@@ -23,5 +20,10 @@ public class DefaultMonetaryAmountsSingletonQuerySpi implements MonetaryAmountsS
     @Override
     public Collection<MonetaryAmountFactory<?>> getAmountFactories(MonetaryAmountFactoryQuery query){
         return factories;
+    }
+
+    @Override
+    public Set<QueryType> getQueryTypes() {
+        return QueryType.DEFAULT_SET;
     }
 }

@@ -21,8 +21,8 @@ import javax.money.MonetaryAmountFactory;
  */
 @SuppressWarnings("serial")
 public final class AmountFormatContext extends AbstractContext{
-
-    static final String STYLE_ID = "styleId";
+    /** Key used for the format name attribute. */
+    public static final String KEY_FORMAT_NAME = "formatName";
 
     /**
      * Creates a new instance of {@link javax.money.format.AmountFormatContext}.
@@ -38,8 +38,8 @@ public final class AmountFormatContext extends AbstractContext{
      *
      * @return the {@link Locale}, never {@code null}.
      */
-    public String getStyleId(){
-        return getText(STYLE_ID);
+    public String getFormatName(){
+        return getText(KEY_FORMAT_NAME);
     }
 
     /**

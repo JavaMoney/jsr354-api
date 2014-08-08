@@ -10,11 +10,9 @@
  */
 package javax.money.convert;
 
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryCurrencies;
-import javax.money.MonetaryException;
-import javax.money.MonetaryOperator;
+import javax.money.*;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * This interface defines access to the exchange rates provided by a provider.
@@ -67,6 +65,14 @@ public interface ExchangeRateProvider{
     ExchangeRate getExchangeRate(ConversionQuery conversionQuery);
 
     /**
+     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+     * {@link javax.money.convert.ConversionQuery}.
+     *
+     * @return the current available query types, never null.
+     */
+    Set<QueryType> getQueryTypes();
+
+    /**
      * Access a {@link CurrencyConversion} that can be applied as a
      * {@link MonetaryOperator} to an amount.
      *
@@ -90,6 +96,9 @@ public interface ExchangeRateProvider{
      */
     default boolean isAvailable(ConversionQuery conversionQuery){
         try{
+            if(!getQueryTypes().contains(conversionQuery.getQueryType())){
+                return false;
+            }
             getExchangeRate(conversionQuery);
             return true;
         }

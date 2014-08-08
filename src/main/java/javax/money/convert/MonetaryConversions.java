@@ -13,6 +13,7 @@ package javax.money.convert;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryCurrencies;
 import javax.money.MonetaryException;
+import javax.money.QueryType;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryConversionsSingletonSpi;
 import java.util.*;
@@ -225,6 +226,21 @@ public final class MonetaryConversions{
             return Collections.emptySet();
         }
         return providers;
+    }
+
+    /**
+     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+     * {@link javax.money.convert.ConversionQuery}.
+     *
+     * @return the current available query types, never null.
+     */
+    public static Set<QueryType> getQueryTypes(){
+        return Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
+                        "No MonetaryConveresionsSingletonSpi " +
+                                "loaded, " +
+                                "query functionality is not " +
+                                "available.")
+        ).getQueryTypes();
     }
 
     /**

@@ -50,6 +50,11 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
     }
 
     @Override
+    public Set<QueryType> getQueryTypes() {
+        return QueryType.DEFAULT_SET;
+    }
+
+    @Override
     public boolean isCurrencyAvailable(CurrencyQuery context){
         Collection<String> currencyCodea = context.getCurrencyCodes();
         for(String currencyCode : currencyCodea){

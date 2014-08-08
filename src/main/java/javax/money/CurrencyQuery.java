@@ -33,22 +33,17 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
     /**
      * Key for storing a countries to be queried.
      */
-    protected static final String COUNTRIES = "Query.countries";
+    public static final String KEY_QUERY_COUNTRIES = "Query.countries";
 
     /**
      * Key for storing a target literal currency codes to be queried.
      */
-    protected static final String CURRENCY_CODES = "Query.currencyCodes";
+    public static final String KEY_QUERY_CURRENCY_CODES = "Query.currencyCodes";
 
     /**
      * Key for storing a target numeric currency codes to be queried.
      */
-    protected static final String NUMERIC_CODES = "Query.numericCodes";
-
-    /**
-     * An instance, which basically modely a query that allows any type of currencies to be returned.
-     */
-    public static final CurrencyQuery ANY_QUERY = CurrencyQueryBuilder.create().build();
+    public static final String KEY_QUERY_NUMERIC_CODES = "Query.numericCodes";
 
     /**
      * Constructor, used from the Builder.
@@ -65,7 +60,7 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
      * @return the otarget locales, never null.
      */
     public Collection<Locale> getCountries(){
-        return getCollection(COUNTRIES, Collections.emptySet());
+        return getCollection(KEY_QUERY_COUNTRIES, Collections.emptySet());
     }
 
     /**
@@ -74,7 +69,7 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
      * @return the query for chaining.
      */
     public Collection<String> getCurrencyCodes(){
-        return getCollection(CURRENCY_CODES, Collections.emptySet());
+        return getCollection(KEY_QUERY_CURRENCY_CODES, Collections.emptySet());
     }
 
     /**
@@ -83,7 +78,7 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
      * @return the query for chaining.
      */
     public Collection<Integer> getNumericCodes(){
-        return getCollection(NUMERIC_CODES, Collections.emptySet());
+        return getCollection(KEY_QUERY_NUMERIC_CODES, Collections.emptySet());
     }
 
     /**

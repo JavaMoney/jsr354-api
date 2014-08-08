@@ -28,7 +28,8 @@ import javax.money.MonetaryAmounts;
  */
 public final class AmountFormatQuery extends AbstractQuery{
 
-    static final String FORMAT_NAME = "formatName";
+    /** Key used for the format name attribute. */
+    public static final String KEY_QUERY_FORMAT_NAME = "Query.formatName";
 
     /**
      * Constructor, used from the Builder.
@@ -45,7 +46,7 @@ public final class AmountFormatQuery extends AbstractQuery{
      * @return the styleId, or null.
      */
     public String getFormatName(){
-        return getText(FORMAT_NAME);
+        return getText(KEY_QUERY_FORMAT_NAME);
     }
 
     /**
@@ -63,7 +64,7 @@ public final class AmountFormatQuery extends AbstractQuery{
      *
      * @return the monetary context, or {@code null}.
      */
-    public MonetaryAmountFactory getMonetaryAmopuntFactory(){
+    public MonetaryAmountFactory getMonetaryAmountFactory(){
         return get(MonetaryAmountFactory.class, MonetaryAmounts.getDefaultAmountFactory());
     }
 
@@ -72,9 +73,10 @@ public final class AmountFormatQuery extends AbstractQuery{
      * (java.util.Locale)}.
      *
      * @param locale the target locale, not null.
+     * @param providers the providers to be used, not null.
      */
-    public static AmountFormatQuery of(Locale locale){
-        return AmountFormatQueryBuilder.create(locale).build();
+    public static AmountFormatQuery of(Locale locale, String... providers){
+        return AmountFormatQueryBuilder.create(locale).setProviders(providers).build();
     }
 
     /**

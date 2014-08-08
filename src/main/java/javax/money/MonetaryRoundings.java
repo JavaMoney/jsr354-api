@@ -83,9 +83,9 @@ public final class MonetaryRoundings{
      * Creates an {@link MonetaryOperator} for rounding {@link MonetaryAmount}
      * instances given a currency.
      *
-     * @param currencyUnit The currency, which determines the required precision. As
+     * @param currencyUnit The currency, which determines the required scale. As
      *                     {@link java.math.RoundingMode}, by default, {@link java.math.RoundingMode#HALF_UP}
-     *                     is sued.
+     *                     is used.
      * @param providers    the providers and ordering to be used. By default providers and ordering as defined in
      *                     #getDefaultProviders is used.
      * @return a new instance {@link MonetaryOperator} implementing the
@@ -101,7 +101,7 @@ public final class MonetaryRoundings{
      * Access an {@link MonetaryOperator} for custom rounding
      * {@link MonetaryAmount} instances.
      *
-     * @param roundingId The rounding identifier.
+     * @param roundingName The rounding identifier.
      * @param providers  the providers and ordering to be used. By default providers and ordering as defined in
      *                   #getDefaultProviders is used.
      * @return the corresponding {@link MonetaryOperator} implementing the
@@ -109,10 +109,10 @@ public final class MonetaryRoundings{
      * @throws IllegalArgumentException if no such rounding is registered using a
      *                                  {@link RoundingProviderSpi} instance.
      */
-    public static MonetaryRounding getRounding(String roundingId, String... providers){
+    public static MonetaryRounding getRounding(String roundingName, String... providers){
         return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
                                                                              "No MonetaryRoundingsSpi loaded, query functionality is not available.")
-        ).getRounding(roundingId, providers);
+        ).getRounding(roundingName, providers);
     }
 
     /**
@@ -132,17 +132,34 @@ public final class MonetaryRoundings{
     /**
      * Checks if a {@link MonetaryRounding} is available given a roundingId.
      *
-     * @param roundingId The rounding identifier.
+     * @param roundingName The rounding identifier.
      * @param providers  the providers and ordering to be used. By default providers and ordering as defined in
      *                   #getDefaultProviders is used.
      * @return true, if a corresponding {@link javax.money.MonetaryRounding} is available.
      * @throws IllegalArgumentException if no such rounding is registered using a
      *                                  {@link RoundingProviderSpi} instance.
      */
-    public static boolean isRoundingAvailable(String roundingId, String... providers){
+    public static boolean isRoundingAvailable(String roundingName, String... providers){
         return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
                                                                              "No MonetaryRoundingsSpi loaded, query functionality is not available.")
-        ).isRoundingAvailable(roundingId, providers);
+        ).isRoundingAvailable(roundingName, providers);
+    }
+
+    /**
+     * Checks if a {@link MonetaryRounding} is available given a roundingId.
+     *
+     * @param currencyUnit The currency, which determines the required scale. As {@link java.math.RoundingMode},
+     *                     by default, {@link java.math.RoundingMode#HALF_UP} is used.
+     * @param providers  the providers and ordering to be used. By default providers and ordering as defined in
+     *                   #getDefaultProviders is used.
+     * @return true, if a corresponding {@link javax.money.MonetaryRounding} is available.
+     * @throws IllegalArgumentException if no such rounding is registered using a
+     *                                  {@link RoundingProviderSpi} instance.
+     */
+    public static boolean isRoundingAvailable(CurrencyUnit currencyUnit, String... providers){
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                        "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).isRoundingAvailable(currencyUnit, providers);
     }
 
     /**
@@ -198,13 +215,26 @@ public final class MonetaryRoundings{
     }
 
     /**
+     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+     * {@link javax.money.RoundingQuery}.
+     * @param providers the providers and ordering to be used. By default providers and ordering as defined in
+     *                  #getDefaultProviders is used.
+     * @return the current available query types, never null.
+     */
+    public static Set<QueryType> getQueryTypes(String... providers){
+        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+                        "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+        ).getQueryTypes();
+    }
+
+    /**
      * Allows to access the default providers chain usef if no provider chain was passed explicitly..
      *
      * @return the chained list of provider names, never {@code null}.
      */
     public static List<String> getDefaultProviderChain(){
         return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
-                                                                             "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+                        "No MonetaryRoundingsSpi loaded, query functionality is not available.")
         ).getDefaultProviderChain();
     }
 
@@ -259,6 +289,7 @@ public final class MonetaryRoundings{
             return DEFAULT_ROUNDING;
         }
 
+
         /**
          * Query all roundings matching the given {@link javax.money.RoundingQuery}.
          *
@@ -303,6 +334,27 @@ public final class MonetaryRoundings{
             for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){
                 try{
                     result.add(prov.getProviderName());
+                }
+                catch(Exception e){
+                    Logger.getLogger(DefaultMonetaryRoundingsSingletonSpi.class.getName())
+                            .log(Level.SEVERE, "Error loading RoundingProviderSpi from provider: " + prov, e);
+                }
+            }
+            return result;
+        }
+
+        /**
+         * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+         * {@link javax.money.RoundingQuery}.
+         *
+         * @return the current available query types, never null.
+         */
+        @Override
+        public Set<QueryType> getQueryTypes() {
+            Set<QueryType> result = new HashSet<>();
+            for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){
+                try{
+                    result.addAll(prov.getQueryTypes());
                 }
                 catch(Exception e){
                     Logger.getLogger(DefaultMonetaryRoundingsSingletonSpi.class.getName())

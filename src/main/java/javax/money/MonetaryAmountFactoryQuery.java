@@ -30,17 +30,17 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
     /**
      * Key name for the context.
      */
-    private static final String PRECISION = "precision";
+    public static final String KEY_PRECISION = "precision";
 
     /**
      * Key name for the currency provider.
      */
-    private static final String FIXED_SCALE = "fixedScale";
+    public static final String KEY_FIXED_SCALE = "fixedScale";
 
     /**
      * Key name for the max scale.
      */
-    private static final String MAX_SCALE = "maxScale";
+    public static final String KEY_MAX_SCALE = "maxScale";
 
     /**
      * Constructor, used from the {@link javax.money.MonetaryAmountFactoryQueryBuilder}.
@@ -57,7 +57,7 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
      * @return the maximal scale, or null, if this attribute must not be considered.
      */
     public Integer getMaxScale(){
-        return getInt(MAX_SCALE, null);
+        return getInt(KEY_MAX_SCALE, null);
     }
 
     /**
@@ -66,7 +66,7 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
      * @return the maximal precision, or null, if this attribute must not be considered.
      */
     public Integer getPrecision(){
-        return getInt(PRECISION, null);
+        return getInt(KEY_PRECISION, null);
     }
 
     /**
@@ -76,7 +76,7 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
      * @return the fixed scale flag, or null, if this attribute must not be considered.
      */
     public Boolean getFixedScale(){
-        return getBoolean("fixedScale", null);
+        return getBoolean(KEY_FIXED_SCALE, null);
     }
 
     /**

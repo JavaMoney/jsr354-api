@@ -8,8 +8,6 @@
  */
 package javax.money;
 
-import java.time.temporal.TemporalAccessor;
-import java.util.Arrays;
 import java.util.Objects;
 
 
@@ -23,7 +21,7 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
     /**
      * Default constructor.
      */
-    private RoundingQueryBuilder(){}
+    private RoundingQueryBuilder(){super();}
 
     /**
      * Creates a new RoundingQueryBuilder.
@@ -46,7 +44,7 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
      */
     public RoundingQueryBuilder setRoundingName(String roundingName){
         Objects.requireNonNull(roundingName);
-        set("roundingName", roundingName);
+        set(RoundingQuery.KEY_QUERY_ROUNDING_NAME, roundingName);
         return this;
     }
 
@@ -59,7 +57,7 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
      * @return this instance for chaining
      */
     public RoundingQueryBuilder setScale(int scale){
-        set("scale", scale);
+        set(RoundingQuery.KEY_QUERY_SCALE, scale);
         return this;
     }
 

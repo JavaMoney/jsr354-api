@@ -25,10 +25,10 @@ import java.util.*;
 public abstract class AbstractContext implements Serializable {
 
     /** Key for storing the target providers to be queried */
-    public static final String PROVIDER = "provider";
+    public static final String KEY_PROVIDER = "provider";
 
     /** Key name for the timestamp attribute. */
-    public static final String TIMESTAMP = "timestamp";
+    public static final String KEY_TIMESTAMP = "timestamp";
 
     /**
      * The data map containing all values.
@@ -370,7 +370,7 @@ public abstract class AbstractContext implements Serializable {
      * @return the provider name, or null.
      */
     public String getProvider(){
-        return getText(PROVIDER, null);
+        return getText(KEY_PROVIDER, null);
     }
 
     /**
@@ -382,7 +382,7 @@ public abstract class AbstractContext implements Serializable {
      * @return the timestamp in millis, or null.
      */
     public Long getTimestampMillis(){
-        Long value = getAny(TIMESTAMP, Long.class, null);
+        Long value = getAny(KEY_TIMESTAMP, Long.class, null);
         if(Objects.isNull(value)){
             TemporalAccessor acc = getTimestamp();
             if(Objects.nonNull(acc)){
@@ -401,9 +401,9 @@ public abstract class AbstractContext implements Serializable {
      * @return the current timestamp, or null.
      */
     public TemporalAccessor getTimestamp(){
-        TemporalAccessor acc = getAny(TIMESTAMP, TemporalAccessor.class, null);
+        TemporalAccessor acc = getAny(KEY_TIMESTAMP, TemporalAccessor.class, null);
         if(Objects.isNull(acc)){
-            Long value = getAny(TIMESTAMP, Long.class, null);
+            Long value = getAny(KEY_TIMESTAMP, Long.class, null);
             if(Objects.nonNull(value)){
                 acc = Instant.ofEpochMilli(value);
             }

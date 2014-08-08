@@ -13,9 +13,7 @@ package javax.money;
 import java.time.Instant;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Represents a general context of data targeting an item of type {@code Q}. Contexts are used to add arbitrary
@@ -28,24 +26,25 @@ public abstract class AbstractQuery extends AbstractContext{
     /**
      * Key for storing the target providers to be queried
      */
-    public static final String QUERY_PROVIDERS = "Query.providers";
+    public static final String KEY_QUERY_PROVIDERS = "Query.providers";
 
     /**
      * Key name for the timestamp attribute.
      */
-    public static final String QUERY_TIMESTAMP = "Query.timestamp";
+    public static final String KEY_QUERY_TIMESTAMP = "Query.timestamp";
 
     /**
      * Key name for the target type attribute.
      */
-    public static final String TARGET_TYPE = "Query.targetType";
+    public static final String KEY_QUERY_TARGET_TYPE = "Query.targetType";
+
 
     /**
      * Constructor, using a builder.
      *
      * @param builder the builder, not null.
      */
-    protected AbstractQuery(AbstractContextBuilder builder){
+    protected AbstractQuery(AbstractQueryBuilder builder){
         super(builder);
     }
 
@@ -58,20 +57,20 @@ public abstract class AbstractQuery extends AbstractContext{
      * @return the ordered providers, never null.
      */
     public List<String> getProviders(){
-        return getList(QUERY_PROVIDERS, Collections.emptyList());
+        return getList(KEY_QUERY_PROVIDERS, Collections.emptyList());
     }
 
     /**
-     * Gets the query type of a query. This type allows to distinguish different types of queries, e.g. a query for
-     * mapping currencies, queries for accessing historic currencies and queries on the currencies available
-     * for a concrete tenant. Without this type, providers must distinguish different use cases only based on the
-     * input, which is very limited, cumbersome and also has some implicit risk of intersection and errors. As a
-     * consequence it is highly recommended to set and consider this property.
+     * Gets the query selectors of a query. This selectors allows to distinguish different data areas defined within a
+     * query, e.g. queries can define the type of query, a timestamp, explicit providers, target names and more.
+     * Without selectors, providers must distinguish different use cases only based on the
+     * input data of a query, which is very limited, cumbersome and also has some implicit risk of intersection and
+     * errors.
      *
-     * @return the query type, or null.
+     * @return the query selectors, never null, but may be empty (default).
      */
     public QueryType getQueryType(){
-        return get(QueryType.class, null);
+        return get(QueryType.class, QueryType.DEFAULT);
     }
 
     /**
@@ -81,7 +80,7 @@ public abstract class AbstractQuery extends AbstractContext{
      * @return this Builder for chaining.
      */
     public Class<?> getTargetType(){
-        return getAny(TARGET_TYPE, Class.class, null);
+        return getAny(KEY_QUERY_TARGET_TYPE, Class.class, null);
     }
 
     /**
@@ -91,7 +90,7 @@ public abstract class AbstractQuery extends AbstractContext{
      * @return the timestamp in millis, or null.
      */
     public Long getTimestampMillis(){
-        Long value = getLong(QUERY_TIMESTAMP, null);
+        Long value = getLong(KEY_QUERY_TIMESTAMP, null);
         if(Objects.isNull(value)){
             TemporalAccessor acc = getTimestamp();
             if(Objects.nonNull(acc)){
@@ -107,26 +106,14 @@ public abstract class AbstractQuery extends AbstractContext{
      * @return the current timestamp, or null.
      */
     public TemporalAccessor getTimestamp(){
-        TemporalAccessor acc = getAny(QUERY_TIMESTAMP, TemporalAccessor.class, null);
+        TemporalAccessor acc = getAny(KEY_QUERY_TIMESTAMP, TemporalAccessor.class, null);
         if(Objects.isNull(acc)){
-            Long value = getLong(QUERY_TIMESTAMP, null);
+            Long value = getLong(KEY_QUERY_TIMESTAMP, null);
             if(Objects.nonNull(value)){
                 acc = Instant.ofEpochMilli(value);
             }
         }
         return acc;
     }
-
-    /**
-     * This interface is used to identify classes that can be used as a query type. a query type allows to
-     * distinguish different types of queries, e.g. a query for
-     * mapping currencies, queries for accessing historic currencies and queries on the currencies available
-     * for a concrete tenant. Without this type, providers must distinguish different use cases only based on the
-     * input, which is very limited, cumbersome and also has some implicit risk of intersection and errors. As a
-     * consequence it is highly recommended to set and consider this property.
-     *
-     * @see #getQueryType()
-     */
-    public static interface QueryType{}
 
 }

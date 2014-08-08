@@ -26,6 +26,12 @@ package javax.money;
  */
 public final class RoundingQuery extends AbstractQuery{
 
+    /** Attribute key used for the rounding name attribute. */
+    public static final String KEY_QUERY_ROUNDING_NAME = "Query.roundingName";
+
+    /** Attribute key used for the scale attribute. */
+    public static final String KEY_QUERY_SCALE = "Query.scale";
+
     /**
      * Constructor, used from the {@link javax.money.RoundingQueryBuilder}.
      *
@@ -45,7 +51,7 @@ public final class RoundingQuery extends AbstractQuery{
      * @return the rounding id  or null.
      */
     public String getRoundingName(){
-        return getText("roundingName", null);
+        return getText(KEY_QUERY_ROUNDING_NAME, null);
     }
 
     /**
@@ -55,13 +61,13 @@ public final class RoundingQuery extends AbstractQuery{
      * @return the target scale or null.
      */
     public Integer getScale(){
-        return getInt("scale", null);
+        return getInt(KEY_QUERY_SCALE, null);
     }
 
     /**
      * Sets the target CurrencyUnit. Typically this determines all other properties,
      * such as scale and the concrete rounding algorithm. With
-     * rounding names, depending on the implementation, additinoal subselections are possible. Similarly
+     * rounding names, depending on the implementation, additional sub-selections are possible. Similarly
      * additional attributes can be used to select special rounding instances, e.g. for cash rounding.
      *
      * @return the CurrencyUnit, or null.

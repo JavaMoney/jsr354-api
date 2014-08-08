@@ -18,10 +18,6 @@ import java.util.Objects;
  * @author Anatole Tresch
  */
 public final class ConversionContextBuilder extends AbstractContextBuilder<ConversionContextBuilder,ConversionContext>{
-    //	/** Map key used for the provider attribute. */
-    //	private static final String PROVIDER = "provider";
-    //    /** Map key used for the timestamp attribute. */
-    //	private static final String TIMESTAMP = "timestamp";
 
     /**
      * Create a new Builder, hereby using the given
@@ -58,40 +54,6 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
         set(rateType);
         return this;
     }
-
-    //    /**
-    //     * Sets the converion's provider.
-    //     *
-    //     * @param provider the provider, not null.
-    //     * @return this builder, for chaining.
-    //     */
-    //    public ConversionContextBuilder setProvider(String provider){
-    //        Objects.requireNonNull(provider);
-    //        set(PROVIDER, provider);
-    //        return this;
-    //    }
-    //
-    //    /**
-    //     * Set the historic value.
-    //     *
-    //     * @param timestamp the rate's timestamp
-    //     * @return this, for chaining.
-    //     */
-    //    public ConversionContextBuilder setTimestampMillis(long timestamp){
-    //        set(TIMESTAMP, timestamp);
-    //        return this;
-    //    }
-    //
-    //    /**
-    //     * Set the historic value.
-    //     *
-    //     * @param temporalAccessor the rate's timestamp, as TemporalAccessor.
-    //     * @return this, for chaining.
-    //     */
-    //    public ConversionContextBuilder setTimestamp(TemporalAccessor temporalAccessor){
-    //        set(TIMESTAMP, temporalAccessor, TemporalAccessor.class);
-    //        return this;
-    //    }
 
     /**
      * Creates a new {@link ConversionContext} with the data from this

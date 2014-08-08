@@ -9,10 +9,6 @@
 package javax.money;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
-import java.util.Objects;
 
 /**
  * This class models the spec/configuration for a rounding, modelled as {@link javax.money.MonetaryRounding} in a
@@ -31,6 +27,8 @@ import java.util.Objects;
  * @author Anatole Tresch
  */
 public final class RoundingContext extends AbstractContext implements Serializable{
+    /** Attribute key used for the rounding name. */
+    public static final String KEY_ROUNDING_NAME = "roundingName";
 
     /**
      * Constructor, used from the {@link javax.money.RoundingContextBuilder}.
@@ -46,8 +44,8 @@ public final class RoundingContext extends AbstractContext implements Serializab
      *
      * @return the rounding id, or null.
      */
-    public String getRoundingId(){
-        return getText("roundingId");
+    public String getRoundingName(){
+        return getText(KEY_ROUNDING_NAME);
     }
 
     /**
@@ -60,39 +58,6 @@ public final class RoundingContext extends AbstractContext implements Serializab
     }
 
     /**
-     * Get the current timestamp of the context in UTC milliseconds.  If not set it tries to create an
-     * UTC timestamp from #getTimestamp().
-     *
-     * @return the timestamp in millis, or null.
-     */
-    public Long getTimestampMillis(){
-        Long value = getLong("timestamp", null);
-        if(Objects.isNull(value)){
-            TemporalAccessor acc = getTimestamp();
-            if(Objects.nonNull(acc)){
-                return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
-            }
-        }
-        return value;
-    }
-
-    /**
-     * Get the current timestamp. If not set it tries to create an Instant from #getTimestampMillis().
-     *
-     * @return the current timestamp, or null.
-     */
-    public TemporalAccessor getTimestamp(){
-        TemporalAccessor acc = getAny("timestamp", TemporalAccessor.class, null);
-        if(Objects.isNull(acc)){
-            Long value = getLong("timestamp", null);
-            if(Objects.nonNull(value)){
-                acc = Instant.ofEpochMilli(value);
-            }
-        }
-        return acc;
-    }
-
-    /**
      * Get the rounding's scale.
      *
      * @return the scale, if set, or null.
@@ -100,17 +65,6 @@ public final class RoundingContext extends AbstractContext implements Serializab
     public Integer getScale(){
         return getInt("scale", null);
     }
-
-    /**
-     * Returns the {@code precision} setting. This value is always non-negative.
-     *
-     * @return an {@code int} which is the value of the {@code precision}
-     * setting
-     */
-    public String getProvider(){
-        return getText(PROVIDER);
-    }
-
 
     /**
      * Allows to convert a instance into the corresponding {@link javax.money.CurrencyContextBuilder}, which allows

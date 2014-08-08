@@ -255,7 +255,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      */
     public B setProvider(String provider){
         Objects.requireNonNull(provider);
-        set(AbstractContext.PROVIDER, provider);
+        set(AbstractContext.KEY_PROVIDER, provider);
         return (B) this;
     }
 
@@ -269,7 +269,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @see #setTimestamp(java.time.temporal.TemporalAccessor)
      */
     public B setTimestampMillis(long timestamp){
-        set(AbstractContext.TIMESTAMP, timestamp);
+        set(AbstractContext.KEY_TIMESTAMP, timestamp);
         return (B)this;
     }
 
@@ -285,7 +285,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      */
 	public B setTimestamp(TemporalAccessor timestamp){
         Objects.requireNonNull(timestamp);
-        set(AbstractContext.TIMESTAMP, timestamp, TemporalAccessor.class);
+        set(AbstractContext.KEY_TIMESTAMP, timestamp, TemporalAccessor.class);
         return (B)this;
     }
 

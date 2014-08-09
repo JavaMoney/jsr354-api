@@ -9,7 +9,6 @@
 package javax.money.format;
 
 import javax.money.MonetaryException;
-import javax.money.QueryType;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryAmountFormatProviderSpi;
 import javax.money.spi.MonetaryFormatsSingletonSpi;
@@ -152,21 +151,8 @@ public final class MonetaryFormats{
      *                  used.
      * @return all available locales, never {@code null}.
      */
-    public static final Set<Locale> getAvailableLocales(String... providers){
+    public static Set<Locale> getAvailableLocales(String... providers){
         return monetaryFormatsSingletonSpi.getAvailableLocales(providers);
-    }
-
-    /**
-     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-     * {@link AmountFormatQuery}.
-     * @param providers The providers to be evaluated, if not set ALL providers are taken into account.
-     * @return the current available query types, never null.
-     */
-    public static Set<QueryType> getQueryTypes(String... providers){
-        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
-                "No MonetaryFormatsSingletonSpi " +
-                        "loaded, query functionality is not available."))
-        .getQueryTypes(providers);
     }
 
     /**
@@ -226,24 +212,6 @@ public final class MonetaryFormats{
                 Collection<MonetaryAmountFormat> formats = spi.getAmountFormats(formatQuery);
                 if(Objects.nonNull(formats)){
                     result.addAll(formats);
-                }
-            }
-            return result;
-        }
-
-        /**
-         * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-         * {@link AmountFormatQuery}.
-         * @param providers The providers to be evaluated, if not set ALL providers are taken into account.
-         * @return the current available query types, never null.
-         */
-        @Override
-        public Set<QueryType> getQueryTypes(String... providers) {
-            Set<QueryType> result = new HashSet<>();
-            for(MonetaryAmountFormatProviderSpi spi : Bootstrap.getServices(MonetaryAmountFormatProviderSpi.class)){
-                Set<QueryType> types = spi.getQueryTypes();
-                if(Objects.nonNull(types)){
-                    result.addAll(types);
                 }
             }
             return result;

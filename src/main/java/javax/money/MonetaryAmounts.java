@@ -190,16 +190,4 @@ public final class MonetaryAmounts{
         ).isAvailable(query);
     }
 
-    /**
-     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-     * {@link javax.money.MonetaryAmountFactoryQuery}.
-     *
-     * @return the current available query types, never null.
-     */
-    public static Set<QueryType> getQueryTypes(){
-        return Optional.ofNullable(monetaryAmountsSingletonQuerySpi).orElseThrow(
-                () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
-                .getQueryTypes();
-    }
-
 }

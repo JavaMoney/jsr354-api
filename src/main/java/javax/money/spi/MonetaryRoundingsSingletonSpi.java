@@ -73,13 +73,13 @@ public interface MonetaryRoundingsSingletonSpi{
      */
     MonetaryRounding getDefaultRounding();
 
-    /**
-     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-     * {@link javax.money.RoundingQuery}.
-     *
-     * @return the current available query types, never null.
-     */
-    Set<QueryType> getQueryTypes();
+//    /**
+//     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+//     * {@link javax.money.RoundingQuery}.
+//     *
+//     * @return the current available query types, never null.
+//     */
+//    Set<QueryType> getQueryTypes();
 
     /**
      * Access a {@link javax.money.MonetaryRounding} for rounding {@link javax.money.MonetaryAmount}

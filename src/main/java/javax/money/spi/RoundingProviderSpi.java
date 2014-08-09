@@ -10,7 +10,6 @@
  */
 package javax.money.spi;
 
-import java.util.Collection;
 import java.util.Set;
 
 import javax.money.*;
@@ -43,20 +42,12 @@ public interface RoundingProviderSpi {
      */
     MonetaryRounding getRounding(RoundingQuery query);
 
-    /**
-     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-     * {@link javax.money.RoundingQuery}.
-     *
-     * @return the current available query types, never null.
-     */
-    Set<QueryType> getQueryTypes();
-
 	/**
 	 * Access the ids of the roundings defined by this provider.
 	 * 
 	 * @return the ids of the defined roundings, never {@code null}.
 	 */
-	Set<String> getRoundingIds();
+	Set<String> getRoundingNames();
 
     /**
      * Get the provider's unique name.

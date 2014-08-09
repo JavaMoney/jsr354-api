@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.*;
 
 import javax.money.MonetaryAmount;
-import javax.money.QueryType;
 import javax.money.spi.MonetaryAmountFormatProviderSpi;
 
 public class TestAmountFormatProvider implements
@@ -23,11 +22,6 @@ public class TestAmountFormatProvider implements
 	public TestAmountFormatProvider() {
 		testSet.add(Locale.ENGLISH);
 	}
-
-    @Override
-    public Set<QueryType> getQueryTypes() {
-        return QueryType.DEFAULT_SET;
-    }
 
     @Override
 	public Collection<MonetaryAmountFormat> getAmountFormats(

@@ -13,7 +13,6 @@ import java.util.*;
 
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryException;
-import javax.money.QueryType;
 import javax.money.convert.*;
 import javax.money.convert.ConversionQueryBuilder;
 
@@ -113,22 +112,6 @@ public interface MonetaryConversionsSingletonSpi {
         catch(Exception e){
             return false;
         }
-    }
-
-    /**
-     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-     * {@link javax.money.convert.ConversionQuery}. If no expölicit providers are passed ALL providers registered
-     * are returned in undefined order.
-     * @param providers the provider names of the providers to be accessed
-     * @return the current available query types, never null.
-     */
-    default Set<QueryType> getQueryTypes(String... providers){
-        Set<QueryType> types = new HashSet<>();
-        List<ExchangeRateProvider> exProviders = getExchangeRateProviders(providers);
-        for(ExchangeRateProvider prov: exProviders){
-            types.addAll(prov.getQueryTypes());
-        }
-        return types;
     }
 
     /**

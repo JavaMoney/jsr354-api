@@ -13,16 +13,13 @@
 package javax.money;
 
 import javax.money.spi.RoundingProviderSpi;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public final class TestRoundingProvider implements RoundingProviderSpi{
 
     @Override
     public MonetaryRounding getRounding(RoundingQuery roundingQuery){
-        List<MonetaryRounding> result = new ArrayList<>();
         if(roundingQuery.getRoundingName() != null){
             return getCustomRounding(roundingQuery.getRoundingName());
         }
@@ -30,11 +27,6 @@ public final class TestRoundingProvider implements RoundingProviderSpi{
             return getCustomRounding(roundingQuery.getCurrencyUnit().getCurrencyCode());
         }
         return getCustomRounding("test");
-    }
-
-    @Override
-    public Set<QueryType> getQueryTypes() {
-        return QueryType.DEFAULT_SET;
     }
 
     private MonetaryRounding getCustomRounding(final String customRoundingId){
@@ -64,7 +56,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi{
 
 
     @Override
-    public Set<String> getRoundingIds(){
+    public Set<String> getRoundingNames(){
         Set<String> result = new HashSet<>();
         result.add("custom1");
         result.add("custom2");

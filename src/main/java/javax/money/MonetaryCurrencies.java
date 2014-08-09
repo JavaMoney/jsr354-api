@@ -182,18 +182,6 @@ public final class MonetaryCurrencies{
     }
 
     /**
-     * Get the current available/supported {@link javax.money.QueryType} instances, appliable to instances of
-     * {@link javax.money.CurrencyQuery}.
-     *
-     * @return the current available query types, never null.
-     */
-    public static Set<QueryType> getQueryTypes(){
-        return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
-                () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
-                .getQueryTypes();
-    }
-
-    /**
      * Query the list and ordering of provider names modelling the default provider chain to be used, if no provider
      * chain was explicitly set..
      *
@@ -260,28 +248,6 @@ public final class MonetaryCurrencies{
                     Logger.getLogger(DefaultMonetaryCurrenciesSingletonSpi.class.getName())
                             .log(Level.SEVERE, "Error loading currency provider names for " + spi.getClass().getName(),
                                  e);
-                }
-            }
-            return result;
-        }
-
-        /**
-         * Get the current available {@link javax.money.QueryType}.
-         * @param providers the (optional) specification of providers to consider. If not set the providers as defined
-         *                  by #getDefaultProviderChain() are used.
-         * @return the current available query types, never null.
-         */
-        @Override
-        public Set<QueryType> getQueryTypes(String... providers){
-            Set<QueryType> result = new HashSet<>();
-            for(CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)){
-                try{
-                    result.addAll(spi.getQueryTypes());
-                }
-                catch(Exception e){
-                    Logger.getLogger(DefaultMonetaryCurrenciesSingletonSpi.class.getName())
-                            .log(Level.SEVERE, "Error loading currency provider query types for " + spi.getClass().getName(),
-                                    e);
                 }
             }
             return result;

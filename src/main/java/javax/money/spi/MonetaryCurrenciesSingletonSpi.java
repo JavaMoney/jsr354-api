@@ -47,14 +47,6 @@ public interface MonetaryCurrenciesSingletonSpi{
     Set<String> getProviderNames();
 
     /**
-     * Get the current available {@link javax.money.QueryType}.
-     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
-     *                  as defined by #getDefaultProviderChain() should be used.
-     * @return the current available query types, never null.
-     */
-    public Set<QueryType> getQueryTypes(String... providers);
-
-    /**
      * Access all currencies matching the given query.
      *
      * @param query The currency query, not null.

@@ -27,27 +27,6 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * Initializes the query builder, as a default query builder.
      */
     public AbstractQueryBuilder(){
-        set(QueryType.DEFAULT, QueryType.class);
-    }
-
-    /**
-     * Initializes the query also hereby defining the {@link QueryType} to be used.
-     *
-     * @param queryType the query type to be set, not null.
-     */
-    public AbstractQueryBuilder(QueryType queryType){
-        Objects.requireNonNull(queryType);
-        set(queryType, QueryType.class);
-    }
-
-    /**
-     * Add additional QueryType instances to this query.
-     * @param queryType the query type to be set, not null.
-     */
-    public B setQueryType(QueryType queryType){
-        Objects.requireNonNull(queryType);
-        set(queryType, QueryType.class);
-        return (B)this;
     }
 
 

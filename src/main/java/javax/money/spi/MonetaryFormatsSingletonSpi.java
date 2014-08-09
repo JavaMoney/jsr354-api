@@ -9,7 +9,6 @@
 package javax.money.spi;
 
 import javax.money.MonetaryException;
-import javax.money.QueryType;
 import javax.money.format.AmountFormatQuery;
 import javax.money.format.AmountFormatQueryBuilder;
 import javax.money.format.MonetaryAmountFormat;
@@ -41,14 +40,6 @@ public interface MonetaryFormatsSingletonSpi{
      * @return the corresponding {@link javax.money.format.MonetaryAmountFormat} instances, never null
      */
     Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery);
-
-    /**
-     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-     * {@link AmountFormatQuery}.
-     * @param providers The providers to be evaluated, if not set ALL providers are taken into account.
-     * @return the current available query types, never null.
-     */
-    Set<QueryType> getQueryTypes(String... providers);
 
     /**
      * Get the names of the currently registered format providers.

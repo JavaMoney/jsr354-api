@@ -61,19 +61,6 @@ public abstract class AbstractQuery extends AbstractContext{
     }
 
     /**
-     * Gets the query selectors of a query. This selectors allows to distinguish different data areas defined within a
-     * query, e.g. queries can define the type of query, a timestamp, explicit providers, target names and more.
-     * Without selectors, providers must distinguish different use cases only based on the
-     * input data of a query, which is very limited, cumbersome and also has some implicit risk of intersection and
-     * errors.
-     *
-     * @return the query selectors, never null, but may be empty (default).
-     */
-    public QueryType getQueryType(){
-        return get(QueryType.class, QueryType.DEFAULT);
-    }
-
-    /**
      * Gets the target implementation type required. This can be used to explicitly acquire a specific implementation
      * type and use a query to configure the instance or factory to be returned.
      *

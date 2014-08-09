@@ -11,11 +11,9 @@ package javax.money.spi;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmountFactoryQuery;
-import javax.money.QueryType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * SPI (core) for the backing implementation of the {@link javax.money.MonetaryAmounts} singleton, implementing
@@ -53,17 +51,9 @@ public interface MonetaryAmountsSingletonQuerySpi{
     Collection<MonetaryAmountFactory<?>> getAmountFactories(MonetaryAmountFactoryQuery query);
 
     /**
-     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-     * {@link javax.money.MonetaryAmountFactoryQuery}.
-     *
-     * @return the current available query types, never null.
-     */
-    Set<QueryType> getQueryTypes();
-
-    /**
      * Checks if an {@link javax.money.MonetaryAmountFactory} is matching the given query.
      *
-     * @param query
+     * @param query the factory query, not null.
      * @return true, if at least one {@link javax.money.MonetaryAmountFactory} matches the query.
      */
     default boolean isAvailable(MonetaryAmountFactoryQuery query){

@@ -14,7 +14,6 @@ package javax.money.spi;
 
 import javax.money.CurrencyQuery;
 import javax.money.CurrencyUnit;
-import javax.money.QueryType;
 import java.util.Set;
 
 /**
@@ -55,12 +54,5 @@ public interface CurrencyProviderSpi{
      * @return the corresponding {@link CurrencyUnit}s matching, never null.
      */
     Set<CurrencyUnit> getCurrencies(CurrencyQuery query);
-
-    /**
-     * Get the {@link javax.money.QueryType} instances supported.
-     *
-     * @return the supported query types, never null.
-     */
-    Set<QueryType> getQueryTypes();
 
 }

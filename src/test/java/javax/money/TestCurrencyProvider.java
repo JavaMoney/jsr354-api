@@ -18,40 +18,38 @@ import java.util.*;
 public final class TestCurrencyProvider implements CurrencyProviderSpi{
 
     @Override
-    public Set<CurrencyUnit> getCurrencies(CurrencyQuery context){
-        Collection<String> currencyCodea = context.getCurrencyCodes();
+    public Set<CurrencyUnit> getCurrencies(CurrencyQuery currencyQuery){
         Set<CurrencyUnit> result = new HashSet<>();
-        for(String currencyCode : currencyCodea){
-            switch(currencyCode){
-                case "test1":
-                    result.add(new TestCurrency("test1", 1, 2));
-                    break;
-                case "error":
-                    throw new IllegalArgumentException("error encountered!");
-                case "invalid":
-                    result.add(new TestCurrency("invalid2", 1, 2));
-                    break;
-                default:
-                    break;
-            }
-        }
-        Collection<Locale> countries = context.getCountries();
-        for(Locale country : countries){
-            if("TEST1L".equals(country.getCountry())){
-                result.add(new TestCurrency("TEST1L", 1, 2));
-            }else if(Locale.CHINA.equals(country)){
-                throw new IllegalArgumentException("CHINA error encountered!");
-            }else if(Locale.CHINESE.equals(country)){
-                result.add(new TestCurrency("invalid2", 1, 2));
+        if(!currencyQuery.getCurrencyCodes().isEmpty()) {
+            for (String currencyCode : currencyQuery.getCurrencyCodes()) {
+                switch (currencyCode) {
+                    case "test1":
+                        result.add(new TestCurrency("test1", 1, 2));
+                        break;
+                    case "error":
+                        throw new IllegalArgumentException("error encountered!");
+                    case "invalid":
+                        result.add(new TestCurrency("invalid2", 1, 2));
+                        break;
+                    default:
+                        break;
+                }
             }
             return result;
         }
-        return result;
-    }
-
-    @Override
-    public Set<QueryType> getQueryTypes() {
-        return QueryType.DEFAULT_SET;
+        if(!currencyQuery.getCountries().isEmpty()) {
+            for (Locale country : currencyQuery.getCountries()) {
+                if ("TEST1L".equals(country.getCountry())) {
+                    result.add(new TestCurrency("TEST1L", 1, 2));
+                } else if (Locale.CHINA.equals(country)) {
+                    throw new IllegalArgumentException("CHINA error encountered!");
+                } else if (Locale.CHINESE.equals(country)) {
+                    result.add(new TestCurrency("invalid2", 1, 2));
+                }
+            }
+            return result;
+        }
+        return Collections.emptySet();
     }
 
     @Override

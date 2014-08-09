@@ -214,18 +214,19 @@ public final class MonetaryRoundings{
         ).getProviderNames();
     }
 
-    /**
-     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-     * {@link javax.money.RoundingQuery}.
-     * @param providers the providers and ordering to be used. By default providers and ordering as defined in
-     *                  #getDefaultProviders is used.
-     * @return the current available query types, never null.
-     */
-    public static Set<QueryType> getQueryTypes(String... providers){
-        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
-                        "No MonetaryRoundingsSpi loaded, query functionality is not available.")
-        ).getQueryTypes();
-    }
+//    /**
+//     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+//     * {@link javax.money.RoundingQuery}.
+//     * @param providers the providers and ordering to be used. By default providers and ordering as defined in
+//     *                  #getDefaultProviders is used.
+//     * @return the current available query types, never null.
+//     */
+//    public static Set<QueryType> getQueryTypes(String... providers){
+//        return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(() -> new MonetaryException(
+//                        "No MonetaryRoundingsSpi loaded, query functionality is not available.")
+//        ).getQueryTypes();
+//    }
+
 
     /**
      * Allows to access the default providers chain usef if no provider chain was passed explicitly..
@@ -343,26 +344,26 @@ public final class MonetaryRoundings{
             return result;
         }
 
-        /**
-         * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-         * {@link javax.money.RoundingQuery}.
-         *
-         * @return the current available query types, never null.
-         */
-        @Override
-        public Set<QueryType> getQueryTypes() {
-            Set<QueryType> result = new HashSet<>();
-            for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){
-                try{
-                    result.addAll(prov.getQueryTypes());
-                }
-                catch(Exception e){
-                    Logger.getLogger(DefaultMonetaryRoundingsSingletonSpi.class.getName())
-                            .log(Level.SEVERE, "Error loading RoundingProviderSpi from provider: " + prov, e);
-                }
-            }
-            return result;
-        }
+//        /**
+//         * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
+//         * {@link javax.money.RoundingQuery}.
+//         *
+//         * @return the current available query types, never null.
+//         */
+//        @Override
+//        public Set<QueryType> getQueryTypes() {
+//            Set<QueryType> result = new HashSet<>();
+//            for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){
+//                try{
+//                    result.addAll(prov.getQueryTypes());
+//                }
+//                catch(Exception e){
+//                    Logger.getLogger(DefaultMonetaryRoundingsSingletonSpi.class.getName())
+//                            .log(Level.SEVERE, "Error loading RoundingProviderSpi from provider: " + prov, e);
+//                }
+//            }
+//            return result;
+//        }
 
         /**
          * Get the default providers list to be used.
@@ -394,7 +395,7 @@ public final class MonetaryRoundings{
                 for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){
                     try{
                         if(prov.getProviderName().equals(providerName) || prov.getProviderName().matches(providerName)){
-                            result.addAll(prov.getRoundingIds());
+                            result.addAll(prov.getRoundingNames());
                         }
                     }
                     catch(Exception e){

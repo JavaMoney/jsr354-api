@@ -13,7 +13,6 @@ package javax.money.convert;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryException;
-import javax.money.QueryType;
 import javax.money.spi.MonetaryConversionsSingletonSpi;
 import java.util.*;
 
@@ -35,11 +34,6 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
             return provider;
         }
         throw new MonetaryException("No such rate provider(s): " + conversionQuery.getProviders());
-    }
-
-    @Override
-    public Set<QueryType> getQueryTypes(String... providers) {
-        return QueryType.DEFAULT_SET;
     }
 
     @Override
@@ -100,11 +94,6 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         @Override
         public ProviderContext getProviderContext(){
             return ctx;
-        }
-
-        @Override
-        public Set<QueryType> getQueryTypes() {
-            return QueryType.DEFAULT_SET;
         }
 
         @Override

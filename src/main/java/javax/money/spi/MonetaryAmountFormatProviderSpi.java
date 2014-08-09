@@ -8,8 +8,6 @@
  */
 package javax.money.spi;
 
-import javax.money.QueryType;
-import javax.money.format.AmountFormatContext;
 import javax.money.format.AmountFormatQuery;
 import javax.money.format.MonetaryAmountFormat;
 import java.util.Collection;
@@ -53,13 +51,5 @@ public interface MonetaryAmountFormatProviderSpi {
      * @return list of available styles, never null.
      */
     Set<String> getAvailableFormatNames();
-
-    /**
-     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-     * {@link AmountFormatQuery}.
-     *
-     * @return the current available query types, never null.
-     */
-    Set<QueryType> getQueryTypes();
 
 }

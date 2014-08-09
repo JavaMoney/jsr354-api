@@ -12,7 +12,6 @@ package javax.money.convert;
 
 import javax.money.*;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * This interface defines access to the exchange rates provided by a provider.
@@ -53,8 +52,7 @@ public interface ExchangeRateProvider{
      * Access a {@link ExchangeRate} using the given currencies. The
      * {@link ExchangeRate} may be, depending on the data provider, eal-time or
      * deferred. This method should return the rate that is <i>currently</i>
-     * valid. It should be the same as
-     * {@code getExchangeRate(base, term, System.currentTimeMillis())}.
+     * valid.
      *
      * @param conversionQuery the required {@link ConversionQuery}, not {@code null}
      * @return the matching {@link ExchangeRate}.
@@ -63,14 +61,6 @@ public interface ExchangeRateProvider{
      * @see javax.money.convert.ConversionQueryBuilder
      */
     ExchangeRate getExchangeRate(ConversionQuery conversionQuery);
-
-    /**
-     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-     * {@link javax.money.convert.ConversionQuery}.
-     *
-     * @return the current available query types, never null.
-     */
-    Set<QueryType> getQueryTypes();
 
     /**
      * Access a {@link CurrencyConversion} that can be applied as a
@@ -95,11 +85,11 @@ public interface ExchangeRateProvider{
      * defined.
      */
     default boolean isAvailable(ConversionQuery conversionQuery){
+        Objects.requireNonNull(conversionQuery);
         try{
-            if(!getQueryTypes().contains(conversionQuery.getQueryType())){
-                return false;
+            if(!conversionQuery.getProviders().isEmpty()){
+                return conversionQuery.getProviders().contains(getProviderContext().getProvider());
             }
-            getExchangeRate(conversionQuery);
             return true;
         }
         catch(Exception e){
@@ -154,8 +144,7 @@ public interface ExchangeRateProvider{
     /**
      * Checks if an {@link ExchangeRate} between two {@link CurrencyUnit} is
      * available from this provider. This method should check, if a given rate
-     * is <i>currently</i> defined. It should be the same as
-     * {@code isAvailable(base, term, System.currentTimeMillis())}.
+     * is <i>currently</i> defined.
      *
      * @param baseCode the base currency code
      * @param termCode the terminal/target currency code
@@ -172,8 +161,7 @@ public interface ExchangeRateProvider{
      * Access a {@link ExchangeRate} using the given currencies. The
      * {@link ExchangeRate} may be, depending on the data provider, eal-time or
      * deferred. This method should return the rate that is <i>currently</i>
-     * valid. It should be the same as
-     * {@code getExchangeRate(base, term, System.currentTimeMillis())}.
+     * valid.
      *
      * @param baseCode base currency code, not {@code null}
      * @param termCode term/target currency code, not {@code null}

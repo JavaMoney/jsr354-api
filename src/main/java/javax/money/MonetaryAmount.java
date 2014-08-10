@@ -8,6 +8,8 @@
  */
 package javax.money;
 
+import java.util.function.Predicate;
+
 /**
  * Interface defining a monetary amount. The effective internal representation of an amount may vary
  * depending on the implementation used. JSR 354 explicitly supports different types of monetary
@@ -666,5 +668,14 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @return a numerically equal {@code MonetaryAmount} with any trailing zeros removed.
 	 */
 	public MonetaryAmount stripTrailingZeros();
+
+	/**
+	 * Filter by CurrencyUnit
+	 * @param unit
+	 * @return the predicate from CurrencyUnit
+	 */
+	static Predicate<MonetaryAmount> filter(CurrencyUnit unit) {
+		return  m -> m.getCurrency().equals(unit);
+	}
 
 }

@@ -8,6 +8,8 @@
  */
 package javax.money;
 
+import java.math.BigDecimal;
+
 /**
  * Instances of this class allow to externalize the numeric value of a {@link MonetaryAmount}. The classs extends
  * {@link java.lang.Number} for maximal compatibility with the JDK but
@@ -24,7 +26,7 @@ package javax.money;
  *
  * @author Anatole Tresch
  */
-public abstract class NumberValue extends Number{
+public abstract class NumberValue extends Number implements Comparable<NumberValue> {
 
     /**
      * serialVersionUID.
@@ -156,5 +158,10 @@ public abstract class NumberValue extends Number{
      * @return the amount's fraction denominator.
      */
     public abstract long getAmountFractionDenominator();
+    
+    @Override
+    public int compareTo(NumberValue o) {
+    	return numberValue(BigDecimal.class).compareTo(o.numberValue(BigDecimal.class));
+    }
 
 }

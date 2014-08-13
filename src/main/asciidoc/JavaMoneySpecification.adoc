@@ -2489,32 +2489,40 @@ retrieving meta-data:
 -------------------------------------------------------------------------------
 public abstract class AbstractContext
 implements Serializable{
-
   ...
+  public String getProvider();
+  public Long getTimestampMillis();
+  public TemporalAccessor getTimestamp();
 
+  public boolean isEmpty();
+  public Boolean getBoolean(Object key);
+  public Boolean getBoolean(Object key, Boolean defaultValue);
+  public Integer getInt(Object key);
+  public Integer getInt(Object key, Integer defaultValue);
+  public Long getLong(Object key);
+  public Long getLong(Object key, Long defaultValue);
+  public Float getFloat(Object key);
+  public Float getFloat(Object key, Float defaultValue);
+  public Double getDouble(Object key);
+  public Double getDouble(Object key, Double defaultValue);
+  public String getText(Object key);
+  public String getText(Object key, String defaultValue);
   public <A> A get(Class<A> type);
   public <A> A get(Class<A> type, A defaultValue);
+  public Map<Object,Object> getValues(Class type)
   public <A> A getAny(Object key, Class<A> type);
   public <A> A getAny(Object key, Class<A> type, A defaultValue);
 
-  ...
-
-  public int getInt(Object key);
-  public int getInt(Object key, int defaultValue);
-  public long getLong(Object key);
-  public long getInt(Object key, int defaultValue);
-
-  ...
-
+  public Collection<?> getCollection(Object key);
+  public <T> Collection<T> getCollection(Object key, Collection<T> defaultValue);
   public Set<?> getSet(Object key);
   public <T> Set<T> getSet(Object key, Set<T> defaultValue);
   public List<?> getList(Object key);
   public <T> List<T> getList(Object key, List<T> defaultValue);
+  public Map<?> getMap(Object key);
+  public <K,V> Map<K,V> getMap(Object key, Map<K,V> defaultValue);
 
-  ...
-
-  public Map<Class,Object> getAttributes();
-  public Set<Class> getAttributeTypes();
+  public Set<Class> getTypes();
   public Set<Object> getKeys(Class<?> attributeType);
 
 }
@@ -2522,13 +2530,32 @@ implements Serializable{
 
 Hereby
 
+* each context instance is related to a provider, that created the context.
+* each context instance can have an (optional) validity timestamp.
 * additional attributes can be set, which models a type safe interface for adding properties, without
   duplicating artifacts or creating non portable dependencies.
   ** identified by the attribute’s type.
   ** identified an arbitrary key
 
-The classes extending this class hereby are thread-safe and immutable, since context instances must be created by
-a corresponding builder implementation.
+The classes extending this class hereby are thread-safe and immutable:
+
+* +javax.money.CurrencyContext+
+* +javax.money.MonetaryContext+
+* +javax.money.RoundingContext+
+* +javax.money.conversion.ProviderContext+
+* +javax.money.conversion.ConversionContext+
+* +javax.money.format.AmountFormatContext+
+
+Creation of context instances is encapsulated using corresponding builder instances:
+
+* +javax.money.CurrencyContextBuilder+
+* +javax.money.MonetaryContextBuilder+
+* +javax.money.RoundingContextBuilder+
+* +javax.money.conversion.ProviderContextBuilder+
+* +javax.money.conversion.ConversionContextBuilder+
+* +javax.money.format.AmountFormatContextBuilder+
+
+The builders hereby extend +AbstractContestBuilder+, discussed in the following section.
 
 [[AbstractContextBuilder]]
 === Abstract Class AbstractContextBuilder ===
@@ -2539,35 +2566,105 @@ ProviderContextBuilder, ConversionContextBuilder, AmountFormatContextBuilder+. B
 builder, which provides a type safe mechanism for storing arbitrary meta-data:
 
 [source,java]
-.Class AbstractContext
+.Class AbstractContextBuilder
 -------------------------------------------------------------------------------
 public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C extends AbstractContext>
 implements Serializable{
-  ...
+  public B setProvider(String provider);
+  public B setTimestampMillis(long timestamp);
+  public B setTimestamp(TemporalAccessor timestamp);
+
   public B set(Object value);
-  public B set(Object value, Class<?> type);
-  ...
+  public <T> B set(T value, Class<? extends T> type);
+  public B set(Object key, Object value);
+  public <T> B set(Object key, T value, Class<? extends T> type)
   public B set(int value);
   public B set(Object key, int value);
   public B set(long value);
   public B set(Object key, long value);
-  ...
-  public B set(Set<?> set);
-  public B set(Object key, Set<?> set);
-  public B set(List<?> set);
-  public B set(Object key, List<?> set);
-  ...
+  public B set(float value);
+  public B set(Object key, float value);
+  public B set(double value);
+  public B set(Object key, double value);
+  public B set(Object key, String value);
+  public B setCollection(Object key, Collection<?> value);
+  public B setList(Object key, List<?> value);
+  public B setMap(Object key, Map<?,?> value);
+  public B setSet(Object key, Set<?> value);
+
+  public B importContext(AbstractContext context, boolean overwriteDuplicates);
+  public B importContext(AbstractContext context);
+  public B removeAttributes(Class<?> type, Object... keys);
+  public B removeAll(Class<?> type);
+
+  public abstract C build();
+
 }
 -------------------------------------------------------------------------------
 
-[RED]
-TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED
-TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED
-TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED
-TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED
-TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED
-TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED
-TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED TO BE CONTINUED
+[[AbstractQuery]]
+=== Abstract Class AbstractQuery ===
+
+The abstract class +AbstractQuery+ models a base query type, which is extended by all query
+implementations within this JSR, such as +MonetaryAmountFactoryQuery, CurrencyQuery, RoundingQuery,
+ConversionQuery, AmountFormatQuery+. Basically this class models a generic
+query, which provides a type safe mechanism for storing arbitrary query-data:
+
+[source,java]
+.Abstract class AbstractQuery
+-------------------------------------------------------------------------------
+public abstract class AbstractQuery extends AbstractContext{
+
+  protected AbstractQuery(AbstractQueryBuilder builder);
+
+  public List<String> getProviders();
+  public Class<?> getTargetType();
+  public Long getTimestampMillis();
+  public TemporalAccessor getTimestamp();
+
+}
+-------------------------------------------------------------------------------
+
+As seen above a query is basically the same as a context, thus inheriting all attribute container functions.
+The query provides basic query properties:
+
+* a query contains the provider names that defines the provider chain to be used for answering the query. If not set
+  the corresponsing default provider chain must be used. The providers available are accessible by calling
+  +getProviderNames()+ on the corresponding singleton accessors/SPI interfaces, e.g.
+  +MonetaryCurrencies.getProviderNames+, +MonetaryRoundings.getProviderNames+, +MonetaryConversions.getProviderNames+
+  etc.
+* a query may defines a target type, hereby defining the target result type expected.
+* a query contains an (optional) timestamp defining the validity timestamp of the query's result.
+
+Hereby +AbstractQuery+ inherits most of the functionality from the +<<AbstractContext>>+
+super class.
+
+
+[[AbstractQueryBuilder]]
+=== Abstract Class AbstractQueryBuilder ===
+
+The abstract class +AbstractQueryBuilder+ models a base builder type, which is extended by all query builder
+implementations within this JSR, such as +MonetaryAmountFactoryQueryBuilder, CurrencyQueryBuilder, RoundingQueryBuilder,
+ConversionQueryBuilder, AmountFormatQueryBuilder+. Basically this class models a generic builder, which provides a
+type safe mechanism for storing arbitrary query-data:
+
+[source,java]
+.Abstract class AbstractQueryBuilder
+-------------------------------------------------------------------------------
+public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBuilder, C extends AbstractQuery>
+        extends AbstractContextBuilder<B,C>{
+   ...
+   public B setProviders(String... providers);
+   public B setProviders(List<String> providers);
+   public B setTimestampMillis(long timestamp);
+   public B setTimestamp(TemporalUnit timestamp);
+   public B setTargetType(Class<?> type);
+}
+-------------------------------------------------------------------------------
+
+Similarly to +AbstractQuery+ also here most of the functionality is inherited by the +<<AbstractContextBuilder>>+
+super class.
+
 
 [[Recommendations]]
 == Implementation Recommendations
@@ -2636,7 +2733,7 @@ representation of the class implementing +MonetaryAmount+. Hereby:
   and therefore should not be performed by a +MonetaryAmount+ implementation implicitly. Instead of, roundings can be
   applied as useful as monetary adjustments explicitly, when useful.
 * Also worth to mention is that for the same currency different roundings may be defined (default rounding, cash rounding,
-  special roundings for presentation purposes), so there is no such concept as _THE_ rounding for a monetary amount.
+  special rounding for presentation purposes), so there is no such concept as _THE_ rounding for a monetary amount.
 
 Configuring and Changing Internal Precision::
 An implementation of +MonetaryAmount+ may support changing the internal precision or numeric capabilities. But any
@@ -2702,7 +2799,6 @@ The +MonetaryContext+ (by default) hereby is defined as follows:
 maxPrecision = 64; // may be extended arbitrarily
 maxScale = -1; // unbounded
 numeric class = java.math.BigDecimal
-flavor = Flavor.PRECISION
 attributes: RoundingMode.HALF_EVEN.
 -------------------------------------------------------------------------------
 
@@ -2715,7 +2811,8 @@ MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(Money.class
 Money m = fact.withCurrency("USD").with(200.50).create();
 -------------------------------------------------------------------
 
-Also a generic +MonetaryAmount+ instance can be accessed using a raw factory:
+Also a generic +MonetaryAmount+ instance can be accessed using a raw factory (hereby it depends on the configured
+default amount factory, which effective type instance is returned):
 
 [source,java]
 .Example Usage MonetaryAmountFactory
@@ -2724,7 +2821,7 @@ MonetaryAmount amt = MonetaryAmounts.getDefaultAmountFactory()
                        .withCurrency("USD").with(200.50).create();
 -------------------------------------------------------------------
 
-Still we can evaluate the amount’s type effectively:
+Still we can evaluate the effective amount’s type effectively:
 
 [source,java]
 -------------------------------------------------------------------------------
@@ -2733,9 +2830,9 @@ if(Money.class==amt.getClass()){
 }
 -------------------------------------------------------------------------------
 
-But in fact, we do not need to know the exact implementation in most cases, since we can access a +MonetaryContext+,
-which provides detailed information, such as maximal precision, maximal scale, the basic implementation flavor and
-additional attributes. Refer to <<MonetaryContext>> for more details.
+But in general, we do not need to know the exact implementation in most cases, since we can access amount
+meta-data as a +MonetaryContext+, This meta-data provides information, such as the maximal precision, maximal scale
+supported by the type's implementation as well as other attributes. Refer to <<MonetaryContext>> for more details.
 
 [source,java]
 .Example Usage MonetaryContext
@@ -2749,42 +2846,49 @@ if(ctx.getMaxScale()>=5){
 }
 -------------------------------------------------------------------
 
-Finally performing arithmetics in both above scenarios works similar as it is when using +java.math.BigDecimal+:
+Finally performing arithmetic operations in both above scenarios works similar as it is when using +java.math.BigDecimal+:
 
 [source,java]
-.Example Usage MonetaryArithmetics
+.Example Usage Monetary Arithmetic
 -------------------------------------------------------------------
 MonetaryAmount amt = ...;
 amt = amt.multiply(2.0).subtract(1.345);
 -------------------------------------------------------------------
 
-Also the sample above illustrates how algorithmic operations can be chained together, similar to builders. As
-mentioned also external functionality can be chained, using instances of +MonetaryOperator+:
+Also the sample above illustrates how algorithmic operations can be chained together using a fluent API. As
+mentioned also external functionality can be chained, e.g. using instances of +MonetaryOperator+:
 
 [source,java]
 .Example Function Chaining footnote:[+MonetaryFunctions+ is not part of the JSR, its just for illustration purposes.]
 -------------------------------------------------------------------
-Money amt = Money.of("CHF", 200);
-amt = amt.multiply(2.12345).with(MonetaryRoundings.of())
+MonetaryAmount amt = ...;
+amt = amt.multiply(2.12345).with(MonetaryRoundings.getDefaultRounding())
         .with(MonetaryFunctions.minimal(100)).
-        .multiply(2.12345).with(MonetaryRoundings.of())
+        .multiply(2.12345).with(MonetaryRoundings.getDefaultRounding())
         .with(MonetaryFunctions.percent(23));
 -------------------------------------------------------------------
 
 ==== Numeric Precision and Scale
-Since the +Money+ class internally uses +java.math.BigDecimal+ the numeric capabilities match exact the capabilities
-of +BigDecimal+. By default instances of Money use +MathContext.DECIMAL64+. But on creation of a new Money instance the
-+MonetaryContext+ required can also be passed explicitly, e.g.:
+Since the +Money+ implementation class, which is part of the reference implementation, internally uses
++java.math.BigDecimal+ the numeric capabilities match exact the capabilities of +BigDecimal+.
+When accessing +MonetaryAmountFactory+ instances it is possible to configure the +MathContext+ effectively used
+(by default +Money+ uses +MathContext.DECIMAL64+).:
 
 [source,java]
-.Example Passing a MonetaryContext to the static factory method of Money
+.Example Configuring a +MonetaryAmountFactory+, using the RI class +Money+ as example.
 -------------------------------------------------------------------
-public static Money of(String currencyCode, Number number, MonetaryContext context);
+MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(
+   MonetaryAmountFactoryQueryBuilder.create(Money.class)
+     .set(new MathContext(250, RoundingMode.HALF_EVEN)).build()
+);
+// Creates an instance of Money with the given MathContext
+MonetaryAmount m1 = fact.setCurrency("CHF").setNumber(250.34).create();
+Money m2 = fact.setCurrency("CHF").setNumber(250.34).create();
 -------------------------------------------------------------------
 
 ==== Extending the API
 Now, one last thing to discuss is, how users can add their own functionality, e.g. by writing their own
-+MonetaryOperator+ functions. Basically there are two disctinct usage scenarios:
++MonetaryOperator+ functions. Basically there are two distinct usage scenarios:
 
 * When the basic arithmetic defined on each +MonetaryAmount+ are sufficient, it should be easy to implement such
   functionality, since its behaving like any other type, e.g.
@@ -2798,18 +2902,26 @@ public final class DuplicateOp implements MonetaryOperator{
 }
 -------------------------------------------------------------------------------
 
-* In case where the basic operations are not sufficient anymore, it is still not necessary to cast to any
-  implementation, since
-  ** the numeric capabilities can be evaluated using the +MonetaryContext+
+Hereby the amount type implicitly will throw an +ArithemticException+ if the numeric capabilities are not capable of
+creating the result required.
+
+* In case where the basic operations are not sufficient anymore, or it is more convenient to do a calculation
+  externally, it is still not necessary to cast to any implementation type, since
+  ** the numeric capabilities can be evaluated using the +MonetaryContext+. On +<<MonetaryAmountFactory>>+ both the
+     default and the maximal supported +MonetaryContext+ can be accessed.
   ** the numeric value can be extracted in a portable way accessing the +NumberValue+.
   ** a +MonetaryFactory+ can be created to create the result of the same implementation type, without having to cast to
   this type ever explicitly.
 
+Below is a rather academical example of a +MonetaryOperator+ that simply converts any given amount to an amount with
+the same numeric value, but with XXX (undefined) as currency:
+
 [source,java]
+.Simple example of a +MonetaryOperstor+ using the +MonetaryAmountFactory+ provided.
 -------------------------------------------------------------------------------
 public final class ToInvalid implements MonetaryOperator{
   public <T extends MonetaryAmount> T apply(T amount){
-    return (T)amount.getFactory().with("XXX").with(0).create();
+    return (T)amount.getFactory().with("XXX").create();
   }
 }
 -------------------------------------------------------------------------------
@@ -2828,12 +2940,10 @@ just replacing +FastMoney+ with +Money+:
 [source,java]
 .Usage Example - FastMoney
 -------------------------------------------------------------------
-FastMoney amt = FastMoney.of("CHF", 200);
-amt = amt.multiply(2.12345).with(MonetaryRoundings.of())
-                           .with(MonetaryFunctions.min(100))
-                           .multiply(2.12345)
-                           .with(MonetaryRoundings.of())
-                           .with(MonetaryFunctions.percent(23));
+MonetaryAmountFactory<FastMoney> fact = MonetaryAmounts.getAmountFactory(FastMoney.class);
+// Creates an instance of Money with the given MathContext
+MonetaryAmount m1 = fact.setCurrency("CHF").setNumber(250.34).create();
+FastMoney m2 = fact.setCurrency("CHF").setNumber(250.34).create();
 -------------------------------------------------------------------
 
 Of course, the +MonetaryContext+ is different than for +Money+:
@@ -2843,7 +2953,6 @@ Of course, the +MonetaryContext+ is different than for +Money+:
 maxPrecision = 18;  // hard limit
 maxScale = 5;       // fixed scale
 numeric class = Long
-flavor = Flavor.PERFORMANT
 attributes: RoundingMode.HALF_EVEN
 -------------------------------------------------------------------------------
 
@@ -2939,7 +3048,7 @@ public <T extends MonetaryAmount> T presentValue(
                                 T amt, BigDecimal rate, int periods){
   BigDecimal divisor = BigDecimal.ONE.add(rate).pow(periods);
   // cast should be safe for implementations that adhere to this spec
-  return amt.divide(divisor);
+  return (T)amt.divide(divisor);
 }
 -------------------------------------------------------------------
 
@@ -2974,7 +3083,7 @@ public final class PresentValue implements MonetaryOperator{
 -------------------------------------------------------------------
 
 For simplicity we did not add additional feature such as caching of PresentValue instances using a static factory
-method, or precalculation of divisor matrices. Now given the +MonetaryOperator+ a present value can be
+method, or pre-calculation of divisor matrices. Now given the +MonetaryOperator+ a present value can be
 calculated as follows:
 
 [source,java]
@@ -3006,36 +3115,38 @@ Also we can define the providers to be used for currency conversion by passing t
 CurrencyConversion conv = MonetaryConversions.getConversion("EUR", "EZB", "IMF");
 -------------------------------------------------------------------------------
 
-To cover also more complex usage scenarios we can also pass a +ConversionContext+ with additional parameters for
+To cover also more complex usage scenarios we can also pass a +ConversionQuery+ with additional parameters for
 conversion, e.g.:
 
 [source,java]
 -------------------------------------------------------------------
 MonetaryAmount inCHF =...;
-ConversionContext ctx = new ConversionContext().Builder()
-                                 .set(MonetaryAmount.class, MonetaryAmount.class, inCHF)
-                           .setTimesampt(ts)
-                                 .setRateType(RateType.HISTORIC)
+CurrencyConversion conv = MonetaryConversions.getConversion(ConversionQueryBuilder.create()
+                           .setProviders("CS", "EZB", "IMF")
+                           .setTermCurrency("EUR")
+                           .set(MonetaryAmount.class, MonetaryAmount.class, inCHF)
+                           .setTimestamp(ts)
+                           .setRateType(RateType.HISTORIC)
                            .set(StockExchange.NYSE) // custom type
                            .set("contractId", "AA-1234.2")
-                           .create();
-CurrencyConversion conv = MonetaryConversions.getConversion("EUR", ctx, "CS", "EZB", "IMF");
+                           .build());
+MonetaryAmount inEUR = inCHF.with(conv);
 -------------------------------------------------------------------
 
 :numbered!:
 
 == APPENDIX
 === Bibliography
-[bibliography]
+[Bibliography]
 -------------------------------------------------------------------
-- [[Bitcoin]] http://bitcoin.org/en/
-- [[ICU]] http://site.icu-project.org/
-- [[ISO-4217]] http://www.iso.org/iso/home/standards/currency_codes.htm
-- [[ISO-20022]] www.iso20022.org
-- [[JodaMoney]] http://www.joda.org/joda-money/
-- [[java.net]] http://java.net/projects/javamoney/
-- [[JSR354]] http://jcp.org/en/jsr/detail?id=354
-- [[source]] Public Source Code Repository on GitHub: http://github.com/JavaMoney,
+[[Bitcoin]] http://bitcoin.org/en/
+[[ICU]] http://site.icu-project.org/
+[[ISO-4217]] http://www.iso.org/iso/home/standards/currency_codes.htm
+[[ISO-20022]] www.iso20022.org
+[[JodaMoney]] http://www.joda.org/joda-money/
+[[java.net]] http://java.net/projects/javamoney/
+[[JSR354]] http://jcp.org/en/jsr/detail?id=354
+[[source]] Public Source Code Repository on GitHub: http://github.com/JavaMoney,
                 Branch/Tag matching updated PDR is {version}
 -------------------------------------------------------------------
 

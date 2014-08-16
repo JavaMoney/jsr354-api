@@ -7,12 +7,8 @@
  */
 package javax.money.convert;
 
-import javax.money.AbstractContext;
 import javax.money.AbstractQuery;
 import javax.money.CurrencyUnit;
-import java.time.Instant;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
 import java.util.*;
 
 /**

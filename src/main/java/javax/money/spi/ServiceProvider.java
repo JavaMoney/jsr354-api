@@ -32,7 +32,7 @@ public interface ServiceProvider {
 	 * @return The instance to be used, never {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public default <T> List<T> getServices(Class<T> serviceType){
+    default <T> List<T> getServices(Class<T> serviceType){
           return getServices(serviceType, Collections.emptyList());
     }
 
@@ -47,7 +47,7 @@ public interface ServiceProvider {
 	 *            the lis returned, if no services could be found.
 	 * @return The instance to be used, never {@code null}
 	 */
-	public <T> List<T> getServices(Class<T> serviceType,
-			List<T> defaultList);
+    <T> List<T> getServices(Class<T> serviceType,
+                            List<T> defaultList);
 
 }

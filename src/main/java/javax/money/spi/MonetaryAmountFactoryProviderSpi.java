@@ -29,7 +29,7 @@ public interface MonetaryAmountFactoryProviderSpi<T extends MonetaryAmount> {
 	 * 
 	 * @see MonetaryAmounts#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)
 	 */
-	public static enum QueryInclusionPolicy {
+    enum QueryInclusionPolicy {
 		/**
 		 * Always include this factory (and the corresponding amount type) within queries. This is
 		 * the default for normal {@link MonetaryAmount} implementation types.

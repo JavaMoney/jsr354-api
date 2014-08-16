@@ -13,7 +13,6 @@ import javax.money.spi.MonetaryAmountsSingletonQuerySpi;
 import javax.money.spi.MonetaryAmountsSingletonSpi;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

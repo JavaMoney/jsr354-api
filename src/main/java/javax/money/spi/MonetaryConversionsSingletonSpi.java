@@ -14,7 +14,6 @@ import java.util.*;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryException;
 import javax.money.convert.*;
-import javax.money.convert.ConversionQueryBuilder;
 
 /**
  * SPI (conversoin) that implements the functionalities provided by the

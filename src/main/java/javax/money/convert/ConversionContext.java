@@ -9,10 +9,6 @@
 package javax.money.convert;
 
 import javax.money.AbstractContext;
-import java.time.Instant;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
-import java.util.Objects;
 
 /**
  * This class models a context for which a {@link ExchangeRate} is valid. It allows to define

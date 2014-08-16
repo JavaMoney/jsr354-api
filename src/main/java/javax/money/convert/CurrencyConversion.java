@@ -44,14 +44,14 @@ public interface CurrencyConversion extends MonetaryOperator {
 	 * 
 	 * @return the terminating {@link CurrencyUnit} , never {@code null}.
 	 */
-	public CurrencyUnit getTermCurrency();
+    CurrencyUnit getTermCurrency();
 
 	/**
 	 * Access the target {@link ConversionContext} of this conversion instance.
 	 * 
 	 * @return the target {@link ConversionContext}.
 	 */
-	public ConversionContext getConversionContext();
+    ConversionContext getConversionContext();
 
 	/**
 	 * Get the {@link ExchangeRate} applied for the given {@link MonetaryAmount}
@@ -63,6 +63,6 @@ public interface CurrencyConversion extends MonetaryOperator {
 	 * @throws MonetaryException
 	 *             if the amount can not be converted.
 	 */
-	public ExchangeRate getExchangeRate(MonetaryAmount sourceAmount);
+    ExchangeRate getExchangeRate(MonetaryAmount sourceAmount);
 
 }

@@ -149,7 +149,7 @@ public abstract class AbstractContext implements Serializable {
      * @return the value, or default value.
      */
     public Long getLong(Object key, Long defaultValue){
-        return getAny(key, Long.class, defaultValue);
+        return getAny(key, Long.class, null);
     }
 
 
@@ -465,12 +465,7 @@ public abstract class AbstractContext implements Serializable {
     public String toString(){
         StringBuilder attrsBuilder = new StringBuilder();
         for(Map.Entry<Class<?>,Map<Object,Object>> en : this.data.entrySet()){
-            Map<Object,Object> sortedMap = new TreeMap<>(new Comparator<Object>(){
-                @Override
-                public int compare(Object o1, Object o2){
-                    return o1.toString().compareTo(o2.toString());
-                }
-            });
+            Map<Object,Object> sortedMap = new TreeMap<>((o1, o2) -> o1.toString().compareTo(o2.toString()));
             sortedMap.putAll(en.getValue());
             for(Map.Entry<Object,Object> entry : sortedMap.entrySet()){
                 Object key = entry.getKey();

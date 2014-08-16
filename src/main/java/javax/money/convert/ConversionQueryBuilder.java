@@ -8,14 +8,11 @@
  */
 package javax.money.convert;
 
-import javax.money.AbstractContextBuilder;
 import javax.money.AbstractQueryBuilder;
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryCurrencies;
-import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**

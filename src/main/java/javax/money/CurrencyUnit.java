@@ -57,7 +57,7 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit>{
 	 *         about the formatting of alternate codes, despite the fact that
 	 *         the currency codes must be unique.
 	 */
-	public String getCurrencyCode();
+    String getCurrencyCode();
 
 	/**
 	 * Gets a numeric currency code. within the ISO-4217 name space, this equals
@@ -71,7 +71,7 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit>{
 	 * 
 	 * @return the numeric currency code
 	 */
-	public int getNumericCode();
+    int getNumericCode();
 
 	/**
 	 * Gets the number of fractional digits typically used by this currency.
@@ -87,7 +87,7 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit>{
 	 *         pseudo-currencies.
 	 * 
 	 */
-	public int getDefaultFractionDigits();
+    int getDefaultFractionDigits();
 
 
     /**
@@ -95,6 +95,6 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit>{
      * on the type and capabilities of a CurrencyUnit, e.g. its provider and more.
      * @return the currency's context, never null.
      */
-    public CurrencyContext getCurrencyContext();
+    CurrencyContext getCurrencyContext();
 
 }

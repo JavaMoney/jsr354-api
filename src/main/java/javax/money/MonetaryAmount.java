@@ -100,7 +100,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * 
 	 * @return the currency, never {@code null}
 	 */
-	public CurrencyUnit getCurrency();
+    CurrencyUnit getCurrency();
 
 	/**
 	 * Returns the {@link MonetaryContext} of this {@code MonetaryAmount}. The
@@ -111,7 +111,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * 
 	 * @return the {@link MonetaryContext} of this {@code MonetaryAmount}, never {@code null} .
 	 */
-	public MonetaryContext getMonetaryContext();
+    MonetaryContext getMonetaryContext();
 
 	/**
 	 * Simple accessor for the numeric part of a {@link MonetaryAmount}. The representation type
@@ -121,7 +121,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * 
 	 * @return the numeric value of this {@link MonetaryAmount}, never {@code null}.
 	 */
-	public NumberValue getNumber();
+    NumberValue getNumber();
 
 	/**
 	 * Queries this monetary amount for a value.
@@ -192,7 +192,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *            the operator to use, not null
 	 * @return an object of the same type with the specified conversion made, not null
 	 */
-	public default MonetaryAmount with(MonetaryOperator operator){
+	default MonetaryAmount with(MonetaryOperator operator){
         return operator.apply(this);
     }
 
@@ -207,7 +207,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @return the new {@code MonetaryAmountFactory} with the given {@link MonetaryAmount} as its
 	 *         default values.
 	 */
-	public MonetaryAmountFactory<? extends MonetaryAmount> getFactory();
+    MonetaryAmountFactory<? extends MonetaryAmount> getFactory();
 
 	/**
 	 * Compares two instances of {@link MonetaryAmount}, hereby ignoring non significant trailing
@@ -219,7 +219,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @throws MonetaryException
 	 *             if the amount's currency is not equals to the currency of this instance.
 	 */
-	public boolean isGreaterThan(MonetaryAmount amount);
+    boolean isGreaterThan(MonetaryAmount amount);
 
 	/**
 	 * Compares two instances of {@link MonetaryAmount}, hereby ignoring non significant trailing
@@ -231,7 +231,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @throws MonetaryException
 	 *             if the amount's currency is not equals to the currency of this instance.
 	 */
-	public boolean isGreaterThanOrEqualTo(MonetaryAmount amount);
+    boolean isGreaterThanOrEqualTo(MonetaryAmount amount);
 
 	/**
 	 * Compares two instances of {@link MonetaryAmount}, hereby ignoring non significant trailing
@@ -243,7 +243,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @throws MonetaryException
 	 *             if the amount's currency is not equals to the currency of this instance.
 	 */
-	public boolean isLessThan(MonetaryAmount amount);
+    boolean isLessThan(MonetaryAmount amount);
 
 	/**
 	 * Compares two instances of {@link MonetaryAmount}, hereby ignoring non significant trailing
@@ -255,7 +255,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @throws MonetaryException
 	 *             if the amount's currency is not equals to the currency of this instance.
 	 */
-	public boolean isLessThanOrEqualTo(MonetaryAmount amt);
+    boolean isLessThanOrEqualTo(MonetaryAmount amt);
 
 	/**
 	 * Compares two instances of {@link MonetaryAmount}, hereby ignoring non significant trailing
@@ -267,14 +267,14 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @throws MonetaryException
 	 *             if the amount's currency is not equals to the currency of this instance.
 	 */
-	public boolean isEqualTo(MonetaryAmount amount);
+    boolean isEqualTo(MonetaryAmount amount);
 
 	/**
 	 * Checks if a {@code MonetaryAmount} is negative.
 	 * 
 	 * @return {@code true} if {@link #signum()} < 0.
 	 */
-	public default boolean isNegative(){
+	default boolean isNegative(){
         return signum() < 0;
     }
 
@@ -283,7 +283,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * 
 	 * @return {@code true} if {@link #signum()} <= 0.
 	 */
-	public default boolean isNegativeOrZero(){
+	default boolean isNegativeOrZero(){
         return signum() <= 0;
     }
 
@@ -292,7 +292,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * 
 	 * @return {@code true} if {@link #signum()} > 0.
 	 */
-	public default boolean isPositive(){
+	default boolean isPositive(){
         return signum() > 0;
     }
 
@@ -301,7 +301,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * 
 	 * @return {@code true} if {@link #signum()} >= 0.
 	 */
-	public default boolean isPositiveOrZero(){
+	default boolean isPositiveOrZero(){
         return signum() >= 0;
     }
 
@@ -310,7 +310,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * 
 	 * @return {@code true} if {@link #signum()} == 0.
 	 */
-	public default boolean isZero(){
+	default boolean isZero(){
         return signum() == 0;
     }
 
@@ -320,7 +320,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @return -1, 0, or 1 as the value of this {@code MonetaryAmount} is negative, zero, or
 	 *         positive.
 	 */
-	public int signum();
+    int signum();
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this +
@@ -334,7 +334,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             if the result exceeds the numeric capabilities of this implementation class, i.e.
 	 *             the {@link MonetaryContext} cannot be adapted as required.
 	 */
-	public MonetaryAmount add(MonetaryAmount amount);
+    MonetaryAmount add(MonetaryAmount amount);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this -
@@ -348,7 +348,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             if the result exceeds the numeric capabilities of this implementation class, i.e.
 	 *             the {@link MonetaryContext} cannot be adapted as required.
 	 */
-	public MonetaryAmount subtract(MonetaryAmount amount);
+    MonetaryAmount subtract(MonetaryAmount amount);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is <tt>(this &times;
@@ -362,7 +362,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             if the result exceeds the numeric capabilities of this implementation class, i.e.
 	 *             the {@link MonetaryContext} cannot be adapted as required.
 	 */
-	public MonetaryAmount multiply(long multiplicand);
+    MonetaryAmount multiply(long multiplicand);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is <tt>(this &times;
@@ -376,7 +376,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             if the result exceeds the numeric capabilities of this implementation class, i.e.
 	 *             the {@link MonetaryContext} cannot be adapted as required.
 	 */
-	public MonetaryAmount multiply(double multiplicand);
+    MonetaryAmount multiply(double multiplicand);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is <tt>(this &times;
@@ -390,7 +390,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             if the result exceeds the numeric capabilities of this implementation class, i.e.
 	 *             the {@link MonetaryContext} cannot be adapted as required.
 	 */
-	public MonetaryAmount multiply(Number multiplicand);
+    MonetaryAmount multiply(Number multiplicand);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this /
@@ -406,7 +406,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             {@link MonetaryContext} cannot be adapted as required.
 	 * @return {@code this / divisor}
 	 */
-	public MonetaryAmount divide(long divisor);
+    MonetaryAmount divide(long divisor);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this /
@@ -422,7 +422,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             {@link MonetaryContext} cannot be adapted as required.
 	 * @return {@code this / divisor}
 	 */
-	public MonetaryAmount divide(double divisor);
+    MonetaryAmount divide(double divisor);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this /
@@ -438,7 +438,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             {@link MonetaryContext} cannot be adapted as required.
 	 * @return {@code this / divisor}
 	 */
-	public MonetaryAmount divide(Number divisor);
+    MonetaryAmount divide(Number divisor);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this % divisor)}.
@@ -456,7 +456,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             implementation class, i.e. the {@link MonetaryContext} cannot be adapted as
 	 *             required.
 	 */
-	public MonetaryAmount remainder(long divisor);
+    MonetaryAmount remainder(long divisor);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this % divisor)}.
@@ -474,7 +474,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             implementation class, i.e. the {@link MonetaryContext} cannot be adapted as
 	 *             required.
 	 */
-	public MonetaryAmount remainder(double divisor);
+    MonetaryAmount remainder(double divisor);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (this % divisor)}.
@@ -492,7 +492,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             implementation class, i.e. the {@link MonetaryContext} cannot be adapted as
 	 *             required.
 	 */
-	public MonetaryAmount remainder(Number divisor);
+    MonetaryAmount remainder(Number divisor);
 
 	/**
 	 * Returns a two-element {@code MonetaryAmount} array containing the result of
@@ -517,7 +517,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @see #divideToIntegralValue(long)
 	 * @see #remainder(long)
 	 */
-	public MonetaryAmount[] divideAndRemainder(long divisor);
+    MonetaryAmount[] divideAndRemainder(long divisor);
 
 	/**
 	 * Returns a two-element {@code MonetaryAmount} array containing the result of
@@ -542,7 +542,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @see #divideToIntegralValue(double)
 	 * @see #remainder(double)
 	 */
-	public MonetaryAmount[] divideAndRemainder(double divisor);
+    MonetaryAmount[] divideAndRemainder(double divisor);
 
 	/**
 	 * Returns a two-element {@code MonetaryAmount} array containing the result of
@@ -567,7 +567,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @see #divideToIntegralValue(Number)
 	 * @see #remainder(Number)
 	 */
-	public MonetaryAmount[] divideAndRemainder(Number divisor);
+    MonetaryAmount[] divideAndRemainder(Number divisor);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is the integer part of the quotient
@@ -582,7 +582,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             if {@code divisor==0}
 	 * @see java.math.BigDecimal#divideToIntegralValue(java.math.BigDecimal)
 	 */
-	public MonetaryAmount divideToIntegralValue(long divisor);
+    MonetaryAmount divideToIntegralValue(long divisor);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is the integer part of the quotient
@@ -597,7 +597,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             if {@code divisor==0}
 	 * @see java.math.BigDecimal#divideToIntegralValue(java.math.BigDecimal)
 	 */
-	public MonetaryAmount divideToIntegralValue(double divisor);
+    MonetaryAmount divideToIntegralValue(double divisor);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is the integer part of the quotient
@@ -612,7 +612,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             if {@code divisor==0}
 	 * @see java.math.BigDecimal#divideToIntegralValue(java.math.BigDecimal)
 	 */
-	public MonetaryAmount divideToIntegralValue(Number divisor);
+    MonetaryAmount divideToIntegralValue(Number divisor);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose numerical value is equal to ( {@code this} *
@@ -626,7 +626,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 *             exceeds the numeric capabilities of this implementation class, i.e. the
 	 *             {@link MonetaryContext} cannot be adapted as required.
 	 */
-	public MonetaryAmount scaleByPowerOfTen(int power);
+    MonetaryAmount scaleByPowerOfTen(int power);
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is the absolute value of this
@@ -634,7 +634,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * 
 	 * @return {@code abs(this)}
 	 */
-	public MonetaryAmount abs();
+    MonetaryAmount abs();
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (-this)}, and whose scale is
@@ -642,7 +642,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * 
 	 * @return {@code -this}.
 	 */
-	public MonetaryAmount negate();
+    MonetaryAmount negate();
 
 	/**
 	 * Returns a {@code MonetaryAmount} whose value is {@code (+this)}, with rounding according to
@@ -654,7 +654,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * @throws ArithmeticException
 	 *             if rounding fails.
 	 */
-	public MonetaryAmount plus();
+    MonetaryAmount plus();
 
 	/**
 	 * Returns a {@code MonetaryAmount} which is numerically equal to this one but with any trailing
@@ -665,6 +665,6 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 	 * 
 	 * @return a numerically equal {@code MonetaryAmount} with any trailing zeros removed.
 	 */
-	public MonetaryAmount stripTrailingZeros();
+    MonetaryAmount stripTrailingZeros();
 
 }

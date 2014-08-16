@@ -305,20 +305,17 @@ public final class MonetaryRoundings{
                 providerNames = getDefaultProviderChain();
             }
             for(String providerName : providerNames){
-                for(RoundingProviderSpi prov : Bootstrap.getServices(RoundingProviderSpi.class)){
-                    if(providerName.equals(prov.getProviderName())){
-                        try{
-                            MonetaryRounding r = prov.getRounding(query);
-                            if(r!=null){
-                                result.add(r);
-                            }
+                Bootstrap.getServices(RoundingProviderSpi.class).stream().filter(prov -> providerName.equals(prov.getProviderName())).forEach(prov -> {
+                    try {
+                        MonetaryRounding r = prov.getRounding(query);
+                        if (r != null) {
+                            result.add(r);
                         }
-                        catch(Exception e){
-                            Logger.getLogger(DefaultMonetaryRoundingsSingletonSpi.class.getName())
-                                    .log(Level.SEVERE, "Error loading RoundingProviderSpi from provider: " + prov, e);
-                        }
+                    } catch (Exception e) {
+                        Logger.getLogger(DefaultMonetaryRoundingsSingletonSpi.class.getName())
+                                .log(Level.SEVERE, "Error loading RoundingProviderSpi from provider: " + prov, e);
                     }
-                }
+                });
             }
             return result;
         }

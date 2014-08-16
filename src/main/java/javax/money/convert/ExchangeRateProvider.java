@@ -87,10 +87,7 @@ public interface ExchangeRateProvider{
     default boolean isAvailable(ConversionQuery conversionQuery){
         Objects.requireNonNull(conversionQuery);
         try{
-            if(!conversionQuery.getProviders().isEmpty()){
-                return conversionQuery.getProviders().contains(getProviderContext().getProvider());
-            }
-            return true;
+            return conversionQuery.getProviders().isEmpty() || conversionQuery.getProviders().contains(getProviderContext().getProvider());
         }
         catch(Exception e){
             return false;

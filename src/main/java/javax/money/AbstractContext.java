@@ -149,7 +149,7 @@ public abstract class AbstractContext implements Serializable {
      * @return the value, or default value.
      */
     public Long getLong(Object key, Long defaultValue){
-        return getAny(key, Long.class, null);
+        return getAny(key, Long.class, defaultValue);
     }
 
 

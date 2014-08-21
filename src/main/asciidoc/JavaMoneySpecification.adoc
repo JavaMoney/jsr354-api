@@ -3122,44 +3122,58 @@ conversion, e.g.:
 -------------------------------------------------------------------
 MonetaryAmount inCHF =...;
 CurrencyConversion conv = MonetaryConversions.getConversion(ConversionQueryBuilder.create()
-                           .setProviders("CS", "EZB", "IMF")
-                           .setTermCurrency("EUR")
-                           .set(MonetaryAmount.class, MonetaryAmount.class, inCHF)
-                           .setTimestamp(ts)
-                           .setRateType(RateType.HISTORIC)
-                           .set(StockExchange.NYSE) // custom type
-                           .set("contractId", "AA-1234.2")
-                           .build());
+        .setProviders("CS", "EZB", "IMF")
+        .setTermCurrency("EUR")
+        .set(MonetaryAmount.class, inCHF, MonetaryAmount.class)
+        .setTimestamp(ts)
+        .setRateType(RateType.HISTORIC)
+        .set(StockExchange.NYSE) // custom type
+        .set("contractId", "AA-1234.2")
+        .build());
 MonetaryAmount inEUR = inCHF.with(conv);
 -------------------------------------------------------------------
 
 :numbered!:
 
 == APPENDIX
+[[Bibliography]]
 === Bibliography
-[Bibliography]
--------------------------------------------------------------------
-[[Bitcoin]] http://bitcoin.org/en/
-[[ICU]] http://site.icu-project.org/
-[[ISO-4217]] http://www.iso.org/iso/home/standards/currency_codes.htm
-[[ISO-20022]] www.iso20022.org
-[[JodaMoney]] http://www.joda.org/joda-money/
-[[java.net]] http://java.net/projects/javamoney/
-[[JSR354]] http://jcp.org/en/jsr/detail?id=354
-[[source]] Public Source Code Repository on GitHub: http://github.com/JavaMoney,
-                Branch/Tag matching updated PDR is {version}
--------------------------------------------------------------------
+
+[[[Bitcoin]]]
+http://bitcoin.org/en/
+
+[[[ICU]]]
+http://site.icu-project.org/
+
+[[[ISO-4217]]]
+http://www.iso.org/iso/home/standards/currency_codes.htm
+
+[[[ISO-20022]]]
+http://www.iso20022.org
+
+[[[JodaMoney]]]
+http://www.joda.org/joda-money/
+
+[[[java.net]]]
+http://java.net/projects/javamoney/
+
+[[[JSR354]]]
+http://jcp.org/en/jsr/detail?id=354
+
+[[[source]]]
+Public Source Code Repository on GitHub: http://github.com/JavaMoney,
+             Branch/Tag matching updated PDR is {version}
+
 
 
 === Links
 * http://jcp.org/en/jsr/detail?id=35[JSR 354 on jcp.org]
-* http://java.net/projects/javamoney/[JavaMoney on Java.net]
-** https://github.com/JavaMoney[JSR 354 API]
-** https://github.com/JavaMoney/jsr354-ro[Moneta RI]
-* http://www.javapractices.com/topic/TopicAction.do?Id=13[Java Practices -> Representing Money]
+* http://java.net/projects/javamoney/[JavaMoney Project on Java.net]
+  ** https://github.com/JavaMoney[JSR 354 API GitHub Repository]
+  ** https://github.com/JavaMoney/jsr354-ro[Moneta RI GitHub Repository]
+* http://www.javapractices.com/topic/TopicAction.do?Id=13[Java Practices about Representing Money]
 * http://blog.eisele.net/2011/08/working-with-money-in-java.html[Working with Money in Java]
 * Java currency by Roedy Green, Canadian Mind Products
-
 * http://www.eclipse.org/uomo/[UOMo Business], based on ICU4J and concepts by JScience Economics]
 * http://moneydance.com/dev/apidoc/[MoneyDance API]
 * http://javamoney.org[JavaMoney] is the Apache 2.0 licensed OSS project that evolved from JSR 354 development. It provides concrete implementations for currency conversion and mapping, advanced formatting, historic data access, regions and a set of financial calculations and formulas.

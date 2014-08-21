@@ -180,6 +180,13 @@
                 <role>Expert Group Member</role>
             </roles>
         </developer>
+        <developer>
+            <id>-</id>
+            <name>Manuela Grindei</name>
+            <roles>
+                <role>Expert Group Member</role>
+            </roles>
+        </developer>
     </developers>
 
     <ciManagement>
@@ -705,20 +712,6 @@
                             <baseDir>src/main/asciidoc/</baseDir>
                         </configuration>
                     </execution>
-                    <!--execution>
-                        <id>output-pdf</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDocumentName>test.adoc</sourceDocumentName>
-                            <outputDirectory>target/docs</outputDirectory>
-                            <sourceHighlighter>coderay</sourceHighlighter>
-                            <backend>pdf</backend>
-                            <doctype>book</doctype>
-                        </configuration>
-                    </execution-->
                     <execution>
                         <id>output-docbook</id>
                         <phase>prepare-package</phase>

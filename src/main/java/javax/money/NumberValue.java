@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 
 /**
  * Instances of this class allow to externalize the numeric value of a {@link MonetaryAmount}. The classs extends
- * {@link java.lang.Number} for maximal compatibility with the JDK but
- * also adds additional functionalities to overcome some of the pitfalls of the JDK's Number class.
+ * {@link java.lang.Number} for maximal compatibility with the JDK but also adds additional functionality to
+ * overcome some of the pitfalls of the JDK's Number class.
  * <h3>Implementation specification</h3>
  * <p>Implementations of this interface must be
  * <ul>
@@ -43,8 +43,8 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
     /**
      * Returns the <i>precision</i> of this {@code MonetaryAmount}. (The precision is the number of
      * digits in the unscaled value.)
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
      * The precision of a zero value is 1.
      *
      * @return the precision of this {@code MonetaryAmount}.
@@ -137,6 +137,7 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
      * d>0            and
      * |n| < d        // || = absolute value
      * </code>.
+     *
      * @return the amount's fraction numerator..
      */
     public abstract long getAmountFractionNumerator();
@@ -155,13 +156,14 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
      * d>0            and
      * |n| < d        // || = absolute value
      * </code>.
+     *
      * @return the amount's fraction denominator.
      */
     public abstract long getAmountFractionDenominator();
-    
+
     @Override
     public int compareTo(NumberValue o) {
-    	return numberValue(BigDecimal.class).compareTo(o.numberValue(BigDecimal.class));
+        return numberValue(BigDecimal.class).compareTo(o.numberValue(BigDecimal.class));
     }
 
 }

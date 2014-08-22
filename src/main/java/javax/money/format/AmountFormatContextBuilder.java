@@ -99,7 +99,7 @@ public final class AmountFormatContextBuilder
     public AmountFormatContextBuilder setMonetaryAmountFactory(
             @SuppressWarnings("rawtypes") MonetaryAmountFactory monetaryAmountFactory){
         Objects.requireNonNull(monetaryAmountFactory);
-        return set(monetaryAmountFactory, MonetaryAmountFactory.class);
+        return set(MonetaryAmountFactory.class, monetaryAmountFactory);
     }
 
     /**

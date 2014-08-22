@@ -9,6 +9,7 @@
 package javax.money.format;
 
 import javax.money.AbstractQueryBuilder;
+import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmountFactoryQuery;
 import java.util.Locale;
 import java.util.Objects;
@@ -87,6 +88,16 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
     }
 
     /**
+     * Sets the {@link javax.money.MonetaryAmountFactory} to be used to create amounts during parsing.
+     * @param monetaryFactory the {@link javax.money.MonetaryAmountFactory} to be used, not null.
+     * @return this builder for chaining.
+     */
+    public AmountFormatQueryBuilder setMonetaryAmountFactory(MonetaryAmountFactory monetaryFactory) {
+        Objects.requireNonNull(monetaryFactory);
+        return set(MonetaryAmountFactory.class, monetaryFactory, MonetaryAmountFactory.class);
+    }
+
+    /**
      * Creates a new {@link javax.money.format.AmountFormatQuery} instance.
      *
      * @return a new {@link javax.money.format.AmountFormatQuery} instance, never null.
@@ -126,4 +137,6 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
     public static AmountFormatQueryBuilder create(Locale locale){
         return new AmountFormatQueryBuilder(locale);
     }
+
+
 }

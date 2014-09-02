@@ -11,7 +11,7 @@ package javax.money;
 import java.io.Serializable;
 
 /**
- * This class models the spec/configuration for a rounding, modelled as {@link javax.money.MonetaryRounding} in a
+ * This class models the spec/configuration for a rounding, modeled as {@link javax.money.MonetaryRounding} in a
  * platform independent way. Each RoundingContext instance hereby has a <code>roundingId</code>, which links
  * to the {@link javax.money.spi.RoundingProviderSpi} that must create the according rounding instance. The
  * <i>default</i> </i><code>roundingId</code> is <code>default</code>.<br/>
@@ -25,9 +25,15 @@ import java.io.Serializable;
  * This class is immutable, serializable, thread-safe.
  *
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public final class RoundingContext extends AbstractContext implements Serializable{
-    /** Attribute key used for the rounding name. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1879443887564347935L;
+	
+	/** Attribute key used for the rounding name. */
     public static final String KEY_ROUNDING_NAME = "roundingName";
 
     /**

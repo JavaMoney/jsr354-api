@@ -88,19 +88,10 @@ package javax.money;
  *
  * @author Anatole Tresch
  * @author Werner Keil
- * @version 0.8.1
+ * @version 0.8.2
  * @see #with(MonetaryOperator)
  */
 public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Comparable<MonetaryAmount> {
-
-    /**
-     * Returns the amount’s currency, modeled as {@link CurrencyUnit}. Implementations may
-     * co-variantly change the return type to a more specific implementation of {@link CurrencyUnit}
-     * if desired.
-     *
-     * @return the currency, never {@code null}
-     */
-    CurrencyUnit getCurrency();
 
     /**
      * Returns the {@link MonetaryContext} of this {@code MonetaryAmount}. The
@@ -112,16 +103,6 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * @return the {@link MonetaryContext} of this {@code MonetaryAmount}, never {@code null} .
      */
     MonetaryContext getMonetaryContext();
-
-    /**
-     * Simple accessor for the numeric part of a {@link MonetaryAmount}. The representation type
-     * returned should be the best matching according to the internal representation. In all cases
-     * never any truncation should occur, so this method must be exact regarding the numeric value
-     * externalized.
-     *
-     * @return the numeric value of this {@link MonetaryAmount}, never {@code null}.
-     */
-    NumberValue getNumber();
 
     /**
      * Queries this monetary amount for a value.

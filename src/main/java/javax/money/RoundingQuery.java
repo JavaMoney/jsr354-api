@@ -24,9 +24,11 @@ package javax.money;
  * <p>
  * This class is immutable, thread-safe and serializable.
  */
-public final class RoundingQuery extends AbstractQuery{
+public final class RoundingQuery extends AbstractQuery implements CurrencySupplier{
 
-    /** Attribute key used for the rounding name attribute. */
+    /**
+     * Attribute key used for the rounding name attribute.
+     */
     static final String KEY_QUERY_ROUNDING_NAME = "Query.roundingName";
 
     /** Attribute key used for the scale attribute. */
@@ -72,7 +74,7 @@ public final class RoundingQuery extends AbstractQuery{
      *
      * @return the CurrencyUnit, or null.
      */
-    public CurrencyUnit getCurrencyUnit(){
+    public CurrencyUnit getCurrency(){
         return get(CurrencyUnit.class, (CurrencyUnit) null);
     }
 

@@ -26,11 +26,13 @@ import java.io.Serializable;
  *
  * @author Anatole Tresch
  */
-public final class RoundingContext extends AbstractContext implements Serializable{
-    
+public final class RoundingContext extends AbstractContext implements Serializable, CurrencySupplier{
+
     private static final long serialVersionUID = -1879443887564347935L;
-    
-    /** Attribute key used for the rounding name. */
+
+    /**
+     * Attribute key used for the rounding name.
+     */
     static final String KEY_ROUNDING_NAME = "roundingName";
 
     /**
@@ -56,7 +58,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
      *
      * @return the target CurrencyUnit, or null.
      */
-    public CurrencyUnit getCurrencyUnit(){
+    public CurrencyUnit getCurrency(){
         return get(CurrencyUnit.class, (CurrencyUnit) null);
     }
 

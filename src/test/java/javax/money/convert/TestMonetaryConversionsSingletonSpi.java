@@ -66,7 +66,7 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         }
 
         @Override
-        public CurrencyUnit getTermCurrency(){
+        public CurrencyUnit getCurrency(){
             return termCurrency;
         }
 
@@ -78,7 +78,8 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         @Override
         public ExchangeRate getExchangeRate(MonetaryAmount sourceAmount){
             return new DefaultExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
-                    .setBase(sourceAmount.getCurrency()).setTerm(termCurrency).setFactor(TestNumberValue.of(1)).build();
+                    .setBaseCurrency(sourceAmount.getCurrency()).setTermCurrency(termCurrency)
+                    .setFactor(TestNumberValue.of(1)).build();
         }
 
         @Override
@@ -109,18 +110,18 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         @Override
         public ExchangeRate getExchangeRate(ConversionQuery query){
             return new DefaultExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
-                    .setBase(query.getBaseCurrency()).setTerm(query.getTermCurrency()).setFactor(TestNumberValue.of(1))
-                    .build();
+                    .setBaseCurrency(query.getBaseCurrency()).setTermCurrency(query.getCurrency())
+                    .setFactor(TestNumberValue.of(1)).build();
         }
 
         @Override
         public ExchangeRate getReversed(ExchangeRate rate){
-            return getExchangeRate(rate.getTerm(), rate.getBase());
+            return getExchangeRate(rate.getCurrency(), rate.getBaseCurrency());
         }
 
         @Override
         public CurrencyConversion getCurrencyConversion(ConversionQuery query){
-            return new DummyConversion(query.getTermCurrency());
+            return new DummyConversion(query.getCurrency());
         }
 
     }

@@ -37,7 +37,7 @@ import javax.money.convert.*;
  *
  * @author Anatole Tresch
  */
-public interface MonetaryConversionsSingletonSpi {
+public interface MonetaryConversionsSingletonSpi{
 
     /**
      * Get all currently registered provider names.
@@ -85,7 +85,7 @@ public interface MonetaryConversionsSingletonSpi {
      */
     default boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery){
         try{
-            return getExchangeRateProvider(conversionQuery)!=null;
+            return getExchangeRateProvider(conversionQuery) != null;
         }
         catch(Exception e){
             return false;
@@ -106,7 +106,7 @@ public interface MonetaryConversionsSingletonSpi {
      */
     default boolean isConversionAvailable(ConversionQuery conversionQuery){
         try{
-            return getConversion(conversionQuery)!=null;
+            return getConversion(conversionQuery) != null;
         }
         catch(Exception e){
             return false;
@@ -128,7 +128,7 @@ public interface MonetaryConversionsSingletonSpi {
      * @see #getConversion(javax.money.convert.ConversionQuery)
      * @see #getConversion(CurrencyUnit, String...)}
      */
-    default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers) {
+    default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers){
         return isConversionAvailable(
                 ConversionQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
     }
@@ -136,6 +136,7 @@ public interface MonetaryConversionsSingletonSpi {
     /**
      * Access the current registered {@link javax.money.convert.ExchangeRateProvider} instances. If no provider
      * names are passed ALL current registered providers are returned in undefined order.
+     *
      * @param providers the provider names of hte providers to be accessed
      * @return the list of providers, in the same order as requested.
      */
@@ -145,10 +146,10 @@ public interface MonetaryConversionsSingletonSpi {
         if(providerNames.isEmpty()){
             providerNames = getProviderNames();
         }
-        for (String provName : providerNames) {
+        for(String provName : providerNames){
             provInstances.add(Optional.ofNullable(getExchangeRateProvider(provName)).orElseThrow(
-                    () -> new IllegalArgumentException(
-                           "Unsupported conversion/rate provider: " + provName)));
+                    () -> new IllegalArgumentException("Unsupported conversion/rate provider: " + provName)
+            ));
         }
         return provInstances;
     }
@@ -167,7 +168,7 @@ public interface MonetaryConversionsSingletonSpi {
      * @see #getProviderNames()
      * @see #isExchangeRateProviderAvailable(javax.money.convert.ConversionQuery)
      */
-    default ExchangeRateProvider getExchangeRateProvider(String... providers) {
+    default ExchangeRateProvider getExchangeRateProvider(String... providers){
         return getExchangeRateProvider(ConversionQueryBuilder.create().setProviders(providers).build());
     }
 
@@ -180,9 +181,9 @@ public interface MonetaryConversionsSingletonSpi {
      * @throws javax.money.MonetaryException if no matching conversion could be found.
      * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */
-    default CurrencyConversion getConversion(ConversionQuery conversionQuery) {
-        Objects.requireNonNull(conversionQuery.getTermCurrency(), "Terminating Currency is required.");
-        return getExchangeRateProvider(conversionQuery).getCurrencyConversion(conversionQuery.getTermCurrency());
+    default CurrencyConversion getConversion(ConversionQuery conversionQuery){
+        Objects.requireNonNull(conversionQuery.getCurrency(), "Terminating Currency is required.");
+        return getExchangeRateProvider(conversionQuery).getCurrencyConversion(conversionQuery.getCurrency());
     }
 
     /**
@@ -197,7 +198,7 @@ public interface MonetaryConversionsSingletonSpi {
      * @throws javax.money.MonetaryException if no matching conversion could be found.
      * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */
-    default CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers) {
+    default CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers){
         return getConversion(
                 ConversionQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
     }

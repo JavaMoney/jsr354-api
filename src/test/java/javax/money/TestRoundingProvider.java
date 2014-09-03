@@ -23,8 +23,8 @@ public final class TestRoundingProvider implements RoundingProviderSpi{
         if(roundingQuery.getRoundingName() != null){
             return getCustomRounding(roundingQuery.getRoundingName());
         }
-        if(roundingQuery.getCurrencyUnit() != null){
-            return getCustomRounding(roundingQuery.getCurrencyUnit().getCurrencyCode());
+        if(roundingQuery.getCurrency() != null){
+            return getCustomRounding(roundingQuery.getCurrency().getCurrencyCode());
         }
         return getCustomRounding("test");
     }

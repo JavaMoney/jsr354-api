@@ -28,8 +28,10 @@ import javax.money.MonetaryAmounts;
  */
 public final class AmountFormatQuery extends AbstractQuery{
 
-    /** Key used for the format name attribute. */
-    public static final String KEY_QUERY_FORMAT_NAME = "Query.formatName";
+    /**
+     * Key used for the format name attribute.
+     */
+    static final String KEY_QUERY_FORMAT_NAME = "Query.formatName";
 
     /**
      * Constructor, used from the Builder.
@@ -72,7 +74,7 @@ public final class AmountFormatQuery extends AbstractQuery{
      * Creates a simple format query based on a singlet Locale, similar to {@link java.text.DecimalFormat#getInstance
      * (java.util.Locale)}.
      *
-     * @param locale the target locale, not null.
+     * @param locale    the target locale, not null.
      * @param providers the providers to be used, not null.
      */
     public static AmountFormatQuery of(Locale locale, String... providers){

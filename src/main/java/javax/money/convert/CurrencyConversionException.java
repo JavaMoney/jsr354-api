@@ -111,8 +111,8 @@ public class CurrencyConversionException extends MonetaryException {
 	 * 
 	 * @return the currency at fault, may be null
 	 */
-	public CurrencyUnit getBase() {
-		return base;
+    public CurrencyUnit getBaseCurrency(){
+        return base;
 	}
 
 	/**
@@ -120,8 +120,8 @@ public class CurrencyConversionException extends MonetaryException {
 	 * 
 	 * @return the currency at fault, may be null
 	 */
-	public CurrencyUnit getTerm() {
-		return term;
+    public CurrencyUnit getTermCurrency(){
+        return term;
 	}
 
 	/**

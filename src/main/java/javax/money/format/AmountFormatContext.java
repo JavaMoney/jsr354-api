@@ -16,13 +16,16 @@ import javax.money.MonetaryAmountFactory;
 
 /**
  * The {@link AmountFormatContext} provides details about a {@link javax.money.format.MonetaryAmountFormat}.
- * @see MonetaryAmountFormat#getAmountFormatContext()
+ *
  * @author Anatole Tresch
+ * @see MonetaryAmountFormat#getAmountFormatContext()
  */
 @SuppressWarnings("serial")
 public final class AmountFormatContext extends AbstractContext{
-    /** Key used for the format name attribute. */
-    public static final String KEY_FORMAT_NAME = "formatName";
+    /**
+     * Key used for the format name attribute.
+     */
+    static final String KEY_FORMAT_NAME = "formatName";
 
     /**
      * Creates a new instance of {@link javax.money.format.AmountFormatContext}.
@@ -69,5 +72,5 @@ public final class AmountFormatContext extends AbstractContext{
     public AmountFormatContextBuilder toBuilder(){
         return AmountFormatContextBuilder.create(this);
     }
-   
+
 }

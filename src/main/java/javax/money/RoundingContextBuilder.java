@@ -49,7 +49,7 @@ public final class RoundingContextBuilder extends AbstractContextBuilder<Roundin
      *
      * @return the target CurrencyUnit, or null.
      */
-    public RoundingContextBuilder setCurrencyUnit(CurrencyUnit currencyUnit){
+    public RoundingContextBuilder setCurrency(CurrencyUnit currencyUnit){
         Objects.requireNonNull(currencyUnit);
         return set(currencyUnit, CurrencyUnit.class);
     }

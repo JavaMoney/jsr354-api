@@ -8,6 +8,7 @@
 package javax.money.convert;
 
 import javax.money.AbstractQuery;
+import javax.money.CurrencySupplier;
 import javax.money.CurrencyUnit;
 import java.util.*;
 
@@ -16,19 +17,27 @@ import java.util.*;
  * should returns the <i>default</i> currencies.<p/>
  * This class is immutable, serializable and thread-safe.
  */
-public final class ConversionQuery extends AbstractQuery{
-    /** serialVersionUID. */
-	private static final long serialVersionUID = -9147265628185601586L;
+public final class ConversionQuery extends AbstractQuery implements CurrencySupplier{
+    /**
+     * serialVersionUID.
+     */
+    private static final long serialVersionUID = -9147265628185601586L;
 
 
-    /** THe key used for the base currency attribute. */
-    public static final String KEY_BASE_CURRENCY = "Query.baseCurrency";
+    /**
+     * THe key used for the base currency attribute.
+     */
+    static final String KEY_BASE_CURRENCY = "Query.baseCurrency";
 
-    /** THe key used for the term currency attribute. */
-    public static final String KEY_TERM_CURRENCY = "Query.termCurrency";
+    /**
+     * THe key used for the term currency attribute.
+     */
+    static final String KEY_TERM_CURRENCY = "Query.termCurrency";
 
-    /** THe key used for the rate types attribute. */
-    public static final String KEY_RATE_TYPES = "Query.rateTypes";
+    /**
+     * THe key used for the rate types attribute.
+     */
+    static final String KEY_RATE_TYPES = "Query.rateTypes";
 
     /**
      * Constructor, used from the ConversionQueryBuilder.
@@ -68,7 +77,7 @@ public final class ConversionQuery extends AbstractQuery{
      *
      * @return the terminating CurrencyUnit, or null.
      */
-    public CurrencyUnit getTermCurrency(){
+    public CurrencyUnit getCurrency(){
         return getAny(KEY_TERM_CURRENCY, CurrencyUnit.class, null);
     }
 
@@ -80,5 +89,5 @@ public final class ConversionQuery extends AbstractQuery{
     public ConversionQueryBuilder toBuilder(){
         return ConversionQueryBuilder.create(this);
     }
- 
+
 }

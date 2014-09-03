@@ -10,6 +10,7 @@
  */
 package javax.money.convert;
 
+import javax.money.CurrencySupplier;
 import javax.money.CurrencyUnit;
 import javax.money.NumberValue;
 import java.io.Serializable;
@@ -73,20 +74,22 @@ import java.util.List;
  * <h3>Implementation Specification</h3>
  * <p>Implementations of this interface
  * <ul>
- *     <li>must be Comparable(with {@code ExchangeRate})</li>
- *     <li>must implement equals/hashCode considering #getBase, #getTerm, #getFactor and #getConversionContext.</li>
- *     <li>should be thread-safe</li>
- *     <li>should be serializable</li>
- *     <li>should provide a fluent builder API for constructing new rate instances easily.</li>
+ * <li>must be Comparable(with {@code ExchangeRate})</li>
+ * <li>must implement equals/hashCode considering #getBaseCurrency, #getCurrency,
+ * #getFactor and #getConversionContext.</li>
+ * <li>should be thread-safe</li>
+ * <li>should be serializable</li>
+ * <li>should provide a fluent builder API for constructing new rate instances easily.</li>
  * </ul>
  * </ul></p>
+ *
  * @author Werner Keil
  * @author Anatole Tresch
  * @see <a
  * href="https://en.wikipedia.org/wiki/Exchange_rate#Quotations">Wikipedia:
  * Exchange Rate (Quotations)</a>
  */
-public interface ExchangeRate{
+public interface ExchangeRate extends CurrencySupplier{
 
     /**
      * Access the {@link ConversionContext} of {@link ExchangeRate}.
@@ -100,14 +103,15 @@ public interface ExchangeRate{
      *
      * @return the base {@link CurrencyUnit}.
      */
-    CurrencyUnit getBase();
+    CurrencyUnit getBaseCurrency();
 
     /**
      * Get the term (target) {@link CurrencyUnit}.
      *
      * @return the term {@link CurrencyUnit}.
      */
-    CurrencyUnit getTerm();
+    @Override
+    CurrencyUnit getCurrency();
 
     /**
      * Access the rate's bid factor.
@@ -130,14 +134,14 @@ public interface ExchangeRate{
      * Derived exchange rates are defined by an ordered list of subconversions
      * with intermediate steps, whereas a direct conversion is possible in one
      * steps.
-     * <p/>
+     * <p>
      * This method always returns {@code true}, if the chain contains more than
      * one rate. Direct rates, have also a chain, but with exact one rate.
      *
      * @return true, if the exchange rate is derived.
      */
     default boolean isDerived(){
-        return getExchangeRateChain().size()>1;
+        return getExchangeRateChain().size() > 1;
     }
 
 }

@@ -30,17 +30,17 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
     /**
      * Key name for the context.
      */
-    public static final String KEY_PRECISION = "precision";
+    static final String KEY_PRECISION = "precision";
 
     /**
      * Key name for the currency provider.
      */
-    public static final String KEY_FIXED_SCALE = "fixedScale";
+    static final String KEY_FIXED_SCALE = "fixedScale";
 
     /**
      * Key name for the max scale.
      */
-    public static final String KEY_MAX_SCALE = "maxScale";
+    static final String KEY_MAX_SCALE = "maxScale";
 
     /**
      * Constructor, used from the {@link javax.money.MonetaryAmountFactoryQueryBuilder}.

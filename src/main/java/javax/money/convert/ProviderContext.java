@@ -36,7 +36,7 @@ public final class ProviderContext extends AbstractContext{
     private static final long serialVersionUID = 3536713139786856877L;
 
     /** Key used for the rate types attribute. */
-    public static final String KEY_RATE_TYPES = "rateTypes";
+    static final String KEY_RATE_TYPES = "rateTypes";
 
 
     /**

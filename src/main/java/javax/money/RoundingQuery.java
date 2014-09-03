@@ -24,13 +24,17 @@ package javax.money;
  * <p>
  * This class is immutable, thread-safe and serializable.
  */
-public final class RoundingQuery extends AbstractQuery{
+public final class RoundingQuery extends AbstractQuery implements CurrencySupplier{
 
-    /** Attribute key used for the rounding name attribute. */
-    public static final String KEY_QUERY_ROUNDING_NAME = "Query.roundingName";
+    /**
+     * Attribute key used for the rounding name attribute.
+     */
+    static final String KEY_QUERY_ROUNDING_NAME = "Query.roundingName";
 
-    /** Attribute key used for the scale attribute. */
-    public static final String KEY_QUERY_SCALE = "Query.scale";
+    /**
+     * Attribute key used for the scale attribute.
+     */
+    static final String KEY_QUERY_SCALE = "Query.scale";
 
     /**
      * Constructor, used from the {@link javax.money.RoundingQueryBuilder}.
@@ -64,15 +68,16 @@ public final class RoundingQuery extends AbstractQuery{
         return getInt(KEY_QUERY_SCALE, null);
     }
 
+
     /**
-     * Sets the target CurrencyUnit. Typically this determines all other properties,
-     * such as scale and the concrete rounding algorithm. With
+     * Returns the target CurrencyUnit, or null.
+     * Typically this determines all other properties, such as scale and the concrete rounding algorithm. With
      * rounding names, depending on the implementation, additional sub-selections are possible. Similarly
      * additional attributes can be used to select special rounding instances, e.g. for cash rounding.
      *
      * @return the CurrencyUnit, or null.
      */
-    public CurrencyUnit getCurrencyUnit(){
+    public CurrencyUnit getCurrency(){
         return get(CurrencyUnit.class, (CurrencyUnit) null);
     }
 

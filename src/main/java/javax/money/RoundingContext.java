@@ -26,9 +26,11 @@ import java.io.Serializable;
  *
  * @author Anatole Tresch
  */
-public final class RoundingContext extends AbstractContext implements Serializable{
-    /** Attribute key used for the rounding name. */
-    public static final String KEY_ROUNDING_NAME = "roundingName";
+public final class RoundingContext extends AbstractContext implements Serializable, CurrencySupplier{
+    /**
+     * Attribute key used for the rounding name.
+     */
+    static final String KEY_ROUNDING_NAME = "roundingName";
 
     /**
      * Constructor, used from the {@link javax.money.RoundingContextBuilder}.
@@ -53,7 +55,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
      *
      * @return the target CurrencyUnit, or null.
      */
-    public CurrencyUnit getCurrencyUnit(){
+    public CurrencyUnit getCurrency(){
         return get(CurrencyUnit.class, (CurrencyUnit) null);
     }
 

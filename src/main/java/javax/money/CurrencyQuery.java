@@ -33,17 +33,17 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
     /**
      * Key for storing a countries to be queried.
      */
-    public static final String KEY_QUERY_COUNTRIES = "Query.countries";
+    static final String KEY_QUERY_COUNTRIES = "Query.countries";
 
     /**
      * Key for storing a target literal currency codes to be queried.
      */
-    public static final String KEY_QUERY_CURRENCY_CODES = "Query.currencyCodes";
+    static final String KEY_QUERY_CURRENCY_CODES = "Query.currencyCodes";
 
     /**
      * Key for storing a target numeric currency codes to be queried.
      */
-    public static final String KEY_QUERY_NUMERIC_CODES = "Query.numericCodes";
+    static final String KEY_QUERY_NUMERIC_CODES = "Query.numericCodes";
 
     /**
      * Constructor, used from the Builder.

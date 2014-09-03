@@ -71,7 +71,7 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
      * @param currencyUnit the target {@link CurrencyUnit} not null.
      * @return this instance for chaining
      */
-    public RoundingQueryBuilder setCurrencyUnit(CurrencyUnit currencyUnit){
+    public RoundingQueryBuilder setCurrency(CurrencyUnit currencyUnit){
         Objects.requireNonNull(currencyUnit);
         set(CurrencyUnit.class, currencyUnit, CurrencyUnit.class);
         return this;

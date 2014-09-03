@@ -20,11 +20,12 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class models an exchange rate, which defines the factor the numeric value of a base amount in some currency
+ * This class models an exchange rate, which defines the factor the numeric value of a baseCurrency amount in some
+ * currency
  * 'A' must be multiplied
  * to get the corresponding amount in the terminating currency 'B'. Hereby
  * <ul>
- * <li>an exchange rate always models one rate from a base (source) to a term
+ * <li>an exchange rate always models one rate from a baseCurrency (source) to a termCurrency
  * (target) {@link javax.money.CurrencyUnit}.</li>
  * <li>an exchange rate is always bound to a rate type, which typically matches
  * the data source of the conversion data, e.g. different credit card providers
@@ -38,10 +39,10 @@ import java.util.Objects;
  * <li>an exchange rate can be a <i>direct</i> rate, where its factor is
  * represented by a single conversion step. Or it can model a <i>derived</i>
  * rate, where multiple conversion steps are required to define the overall
- * base/term conversion. In case of derived rates the chained rates define the
+ * baseCurrency/termCurrency conversion. In case of derived rates the chained rates define the
  * overall factor, by multiplying the individual chain rate factors. Of course,
- * this also requires that each subsequent rate's base currency in the chain
- * does match the previous term currency (and vice versa):</li>
+ * this also requires that each subsequent rate's baseCurrency currency in the chain
+ * does match the previous termCurrency currency (and vice versa):</li>
  * <li>Whereas the factor should be directly implied by the internal rate chain
  * for derived rates, this is obviously not the case for the validity range,
  * since rates can have a undefined validity range. Nevertheless in many cases
@@ -59,15 +60,15 @@ import java.util.Objects;
  * <ul>
  * <li>Exchange rate type</li>
  * <li>Exchange rate provider</li>
- * <li>base currency</li>
- * <li>term currency</li>
+ * <li>baseCurrency currency</li>
+ * <li>termCurrency currency</li>
  * </ul>
  * <p/>
  * Finally ExchangeRate is modeled as an immutable and thread safe type. Also
  * exchange rates are {@link java.io.Serializable}, hereby serializing in the following
  * form and order:
  * <ul>
- * <li>The base {@link javax.money.CurrencyUnit}
+ * <li>The baseCurrency {@link javax.money.CurrencyUnit}
  * <li>The target {@link javax.money.CurrencyUnit}
  * <li>The factor (NumberValue)
  * <li>The {@link ConversionContext}
@@ -87,13 +88,13 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      */
     private static final long serialVersionUID = 5077295306570465837L;
     /**
-     * The base currency.
+     * The baseCurrency currency.
      */
-    private final CurrencyUnit base;
+    private final CurrencyUnit baseCurrency;
     /**
      * The terminating currency.
      */
-    private final CurrencyUnit term;
+    private final CurrencyUnit termCurrency;
     /**
      * The conversion factor.
      */
@@ -115,12 +116,12 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      * @param builder The Builder, never {@code null}.
      */
     private DefaultExchangeRate(Builder builder){
-        Objects.requireNonNull(builder.base, "base may not be null.");
-        Objects.requireNonNull(builder.term, "term may not be null.");
+        Objects.requireNonNull(builder.baseCurrency, "baseCurrency may not be null.");
+        Objects.requireNonNull(builder.termCurrency, "termCurrency may not be null.");
         Objects.requireNonNull(builder.factor, "factor may not be null.");
         Objects.requireNonNull(builder.conversionContext, "exchangeRateType may not be null.");
-        this.base = builder.base;
-        this.term = builder.term;
+        this.baseCurrency = builder.baseCurrency;
+        this.termCurrency = builder.termCurrency;
         this.factor = builder.factor;
         this.conversionContext = builder.conversionContext;
 
@@ -157,21 +158,21 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
     }
 
     /**
-     * Get the base (source) {@link javax.money.CurrencyUnit}.
+     * Get the baseCurrency (source) {@link javax.money.CurrencyUnit}.
      *
-     * @return the base {@link javax.money.CurrencyUnit}.
+     * @return the baseCurrency {@link javax.money.CurrencyUnit}.
      */
-    public final CurrencyUnit getBase(){
-        return this.base;
+    public final CurrencyUnit getBaseCurrency(){
+        return this.baseCurrency;
     }
 
     /**
-     * Get the term (target) {@link javax.money.CurrencyUnit}.
+     * Get the termCurrency (target) {@link javax.money.CurrencyUnit}.
      *
-     * @return the term {@link javax.money.CurrencyUnit}.
+     * @return the termCurrency {@link javax.money.CurrencyUnit}.
      */
-    public final CurrencyUnit getTerm(){
-        return this.term;
+    public final CurrencyUnit getCurrency(){
+        return this.termCurrency;
     }
 
     /**
@@ -217,9 +218,9 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
     @Override
     public int compareTo(ExchangeRate o){
         Objects.requireNonNull(o);
-        int compare = this.getBase().getCurrencyCode().compareTo(o.getBase().getCurrencyCode());
+        int compare = this.getBaseCurrency().getCurrencyCode().compareTo(o.getBaseCurrency().getCurrencyCode());
         if(compare == 0){
-            compare = this.getTerm().getCurrencyCode().compareTo(o.getTerm().getCurrencyCode());
+            compare = this.getCurrency().getCurrencyCode().compareTo(o.getCurrency().getCurrencyCode());
         }
         if(compare == 0){
             compare = this.getConversionContext().getProvider().compareTo(o.getConversionContext().getProvider());
@@ -234,7 +235,8 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      */
     @Override
     public String toString(){
-        return "ExchangeRate [base=" + base + ", factor=" + factor + ", conversionContext=" + conversionContext + "]";
+        return "ExchangeRate [baseCurrency=" + baseCurrency + ", factor=" + factor + ", conversionContext=" +
+                conversionContext + "]";
     }
 
     /*
@@ -244,7 +246,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      */
     @Override
     public int hashCode(){
-		return Objects.hash(base, conversionContext, factor, term, chain);
+        return Objects.hash(baseCurrency, conversionContext, factor, termCurrency, chain);
     }
 
     /*
@@ -259,13 +261,11 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
         }
 		if (obj instanceof DefaultExchangeRate) {
 			DefaultExchangeRate other = (DefaultExchangeRate) obj;
-			return Objects.equals(base, other.base)
-					&& Objects.equals(conversionContext,
+            return Objects.equals(baseCurrency, other.baseCurrency) && Objects.equals(conversionContext,
 							other.conversionContext)
 					&& Objects.equals(chain, other.chain)
-					&& Objects.equals(factor, other.factor)
-					&& Objects.equals(term, other.term);
-		}
+					&& Objects.equals(factor, other.factor) && Objects.equals(termCurrency, other.termCurrency);
+        }
 		return false;
 	}
 
@@ -283,13 +283,13 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
          */
         private ConversionContext conversionContext;
         /**
-         * The base (source) currency.
+         * The baseCurrency (source) currency.
          */
-        private CurrencyUnit base;
+        private CurrencyUnit baseCurrency;
         /**
-         * The term (target) currency.
+         * The termCurrency (target) currency.
          */
-        private CurrencyUnit term;
+        private CurrencyUnit termCurrency;
         /**
          * The conversion factor.
          */
@@ -318,13 +318,13 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
         }
 
         /**
-         * Sets the base {@link javax.money.CurrencyUnit}
+         * Sets the baseCurrency {@link javax.money.CurrencyUnit}
          *
-         * @param base to base (source) {@link javax.money.CurrencyUnit} to be applied
+         * @param base to baseCurrency (source) {@link javax.money.CurrencyUnit} to be applied
          * @return the builder instance
          */
-        public Builder setBase(CurrencyUnit base){
-            this.base = base;
+        public Builder setBaseCurrency(CurrencyUnit base){
+            this.baseCurrency = base;
             return this;
         }
 
@@ -334,8 +334,8 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
          * @param term to terminating {@link javax.money.CurrencyUnit} to be applied
          * @return the builder instance
          */
-        public Builder setTerm(CurrencyUnit term){
-            this.term = term;
+        public Builder setTermCurrency(CurrencyUnit term){
+            this.termCurrency = term;
             return this;
         }
 
@@ -370,7 +370,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
 
         /**
          * Sets the conversion factor, as the factor
-         * {@code base * factor = target}.
+         * {@code baseCurrency * factor = target}.
          *
          * @param factor the factor.
          * @return The builder instance.
@@ -407,16 +407,16 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
          * useful for creating a new rate, reusing some properties from an
          * existing one.
          *
-         * @param rate the base rate
+         * @param rate the baseCurrency rate
          * @return the Builder, for chaining.
          */
         public Builder setRate(ExchangeRate rate){
-            this.base = rate.getBase();
-            this.term = rate.getTerm();
+            this.baseCurrency = rate.getBaseCurrency();
+            this.termCurrency = rate.getCurrency();
             this.conversionContext = rate.getConversionContext();
             this.factor = rate.getFactor();
             this.rateChain = rate.getExchangeRateChain();
-            this.term = rate.getTerm();
+            this.termCurrency = rate.getCurrency();
             return this;
         }
     }
@@ -427,7 +427,8 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      * @return a new {@link Builder}, never {@code null}.
      */
     public Builder toBuilder(){
-        return new Builder(getConversionContext()).setBase(getBase()).setTerm(getTerm()).setFactor(getFactor())
+        return new Builder(getConversionContext()).setBaseCurrency(getBaseCurrency()).setTermCurrency(getCurrency())
+                .setFactor(getFactor())
                 .setRateChain(getExchangeRateChain());
     }
 }

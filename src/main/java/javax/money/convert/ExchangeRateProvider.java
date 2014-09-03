@@ -87,7 +87,8 @@ public interface ExchangeRateProvider{
     default boolean isAvailable(ConversionQuery conversionQuery){
         Objects.requireNonNull(conversionQuery);
         try{
-            return conversionQuery.getProviders().isEmpty() || conversionQuery.getProviders().contains(getProviderContext().getProvider());
+            return conversionQuery.getProviders().isEmpty() ||
+                    conversionQuery.getProviders().contains(getProviderContext().getProvider());
         }
         catch(Exception e){
             return false;
@@ -181,8 +182,8 @@ public interface ExchangeRateProvider{
      * the rate cannot be reversed.
      */
     default ExchangeRate getReversed(ExchangeRate rate){
-        ConversionQuery reverseQuery = rate.getConversionContext().toQueryBuilder().setBaseCurrency(rate.getTerm())
-                .setTermCurrency(rate.getBase()).build();
+        ConversionQuery reverseQuery = rate.getConversionContext().toQueryBuilder().setBaseCurrency(rate.getCurrency())
+                .setTermCurrency(rate.getBaseCurrency()).build();
         if(isAvailable(reverseQuery)){
             return getExchangeRate(reverseQuery);
         }

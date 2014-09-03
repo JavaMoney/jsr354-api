@@ -16,55 +16,52 @@ import javax.money.TestCurrency;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class CurrencyConversionExceptionTest {
+public class CurrencyConversionExceptionTest{
 
-	private static ConversionContext CONTEXT100 = ConversionContextBuilder.create()
-			.setProvider("test").setTimestampMillis(100L).build();
+    private static ConversionContext CONTEXT100 =
+            ConversionContextBuilder.create().setProvider("test").setTimestampMillis(100L).build();
 
-	@Test
-	public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitContext() {
-		CurrencyUnit base = TestCurrency.of("CHF");
-		CurrencyUnit term = TestCurrency.of("EUR");
-		CurrencyConversionException ex = new CurrencyConversionException(base,
-				term, CONTEXT100);
-		Assert.assertEquals(null, ex.getCause());
-		Assert.assertEquals(base, ex.getBase());
-		Assert.assertEquals(term, ex.getTerm());
-		Assert.assertEquals(CONTEXT100, ex.getConversionContext());
-		Assert.assertEquals("Cannot convert CHF into EUR", ex.getMessage());
-	}
+    @Test
+    public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitContext(){
+        CurrencyUnit base = TestCurrency.of("CHF");
+        CurrencyUnit term = TestCurrency.of("EUR");
+        CurrencyConversionException ex = new CurrencyConversionException(base, term, CONTEXT100);
+        Assert.assertEquals(null, ex.getCause());
+        Assert.assertEquals(base, ex.getBaseCurrency());
+        Assert.assertEquals(term, ex.getTermCurrency());
+        Assert.assertEquals(CONTEXT100, ex.getConversionContext());
+        Assert.assertEquals("Cannot convert CHF into EUR", ex.getMessage());
+    }
 
-	@Test
-	public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitLongStringContextStringThrowable() {
-		CurrencyUnit base = TestCurrency.of("CHF");
-		CurrencyUnit term = TestCurrency.of("EUR");
-		Exception cause = new Exception("cause");
-		CurrencyConversionException ex = new CurrencyConversionException(base,
-				term, CONTEXT100, "blabla", cause);
-		Assert.assertEquals(cause, ex.getCause());
-		Assert.assertEquals(base, ex.getBase());
-		Assert.assertEquals(term, ex.getTerm());
-		Assert.assertEquals(CONTEXT100, ex.getConversionContext());
-		Assert.assertEquals("Cannot convert CHF into EUR: blabla", ex.getMessage());
-	}
+    @Test
+    public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitLongStringContextStringThrowable(){
+        CurrencyUnit base = TestCurrency.of("CHF");
+        CurrencyUnit term = TestCurrency.of("EUR");
+        Exception cause = new Exception("cause");
+        CurrencyConversionException ex = new CurrencyConversionException(base, term, CONTEXT100, "blabla", cause);
+        Assert.assertEquals(cause, ex.getCause());
+        Assert.assertEquals(base, ex.getBaseCurrency());
+        Assert.assertEquals(term, ex.getTermCurrency());
+        Assert.assertEquals(CONTEXT100, ex.getConversionContext());
+        Assert.assertEquals("Cannot convert CHF into EUR: blabla", ex.getMessage());
+    }
 
-	@Test
-	public void testToString() {
-		CurrencyUnit base = TestCurrency.of("CHF");
-		CurrencyUnit term = TestCurrency.of("EUR");
-		Exception cause = new Exception("cause");
-		CurrencyConversionException ex = new CurrencyConversionException(base,
-				term, CONTEXT100, "blabla", cause);
-		String toString = ex.toString();
-		Assert.assertNotNull(toString);
-		Assert.assertTrue(toString.contains("CurrencyConversionException"));
-		Assert.assertTrue(toString.contains("base=CHF"));
-		Assert.assertTrue(toString.contains("term=EUR"));
-		Assert.assertTrue(toString.contains("conversionContext=ConversionContext"));
-		Assert.assertTrue(toString.contains("provider[String]=test"));
-		Assert.assertTrue(toString.contains("timestamp[Long]=100"));
-		Assert.assertTrue(toString.contains("Cannot convert CHF into EUR"));
-		Assert.assertTrue(toString.contains("blabla"));
-	}
+    @Test
+    public void testToString(){
+        CurrencyUnit base = TestCurrency.of("CHF");
+        CurrencyUnit term = TestCurrency.of("EUR");
+        Exception cause = new Exception("cause");
+        CurrencyConversionException ex = new CurrencyConversionException(base, term, CONTEXT100, "blabla", cause);
+        String toString = ex.toString();
+        Assert.assertNotNull(toString);
+        Assert.assertTrue(toString.contains("CurrencyConversionException"));
+        Assert.assertTrue(toString.contains("base=CHF"));
+        Assert.assertTrue(toString.contains("term=EUR"));
+        Assert.assertTrue(toString.contains("conversionContext=ConversionContext"));
+        Assert.assertTrue(toString.contains("provider[String]=test"));
+        Assert.assertTrue(toString.contains("timestamp[Long]=100"));
+        Assert.assertTrue(toString.contains("Cannot convert CHF into EUR"));
+        Assert.assertTrue(toString.contains("blabla"));
+    }
 
 }

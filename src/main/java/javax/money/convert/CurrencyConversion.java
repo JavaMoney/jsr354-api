@@ -8,10 +8,7 @@
  */
 package javax.money.convert;
 
-import javax.money.CurrencyUnit;
-import javax.money.MonetaryAmount;
-import javax.money.MonetaryException;
-import javax.money.MonetaryOperator;
+import javax.money.*;
 
 /**
  * This interface defines a {@link CurrencyConversion} that is converting a {@link MonetaryAmount} to another
@@ -30,39 +27,33 @@ import javax.money.MonetaryOperator;
  *     MonetaryAmount amountInCHF = amount.with(conversion);
  * </pre>
  * <p>
+ * The terminating {@link CurrencyUnit} of this conversion instance can be
+ * accessed from {@code getCurrency()}, inherited from {@code CurrencySupplier}.
+ * <p>
  * Instances of this class are required to be thread-safe, but it is not a
  * requirement that they are serializable. In a EE context they can be
  * implemented using contextual beans.
- * 
+ *
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public interface CurrencyConversion extends MonetaryOperator {
+public interface CurrencyConversion extends MonetaryOperator, CurrencySupplier{
 
-	/**
-	 * Access the terminating {@link CurrencyUnit} of this conversion instance.
-	 * 
-	 * @return the terminating {@link CurrencyUnit} , never {@code null}.
-	 */
-    CurrencyUnit getTermCurrency();
-
-	/**
-	 * Access the target {@link ConversionContext} of this conversion instance.
-	 * 
-	 * @return the target {@link ConversionContext}.
-	 */
+    /**
+     * Access the target {@link ConversionContext} of this conversion instance.
+     *
+     * @return the target {@link ConversionContext}.
+     */
     ConversionContext getConversionContext();
 
-	/**
-	 * Get the {@link ExchangeRate} applied for the given {@link MonetaryAmount}
-	 * .
-	 * 
-	 * @param sourceAmount
-	 *            the amount to be converted.
-	 * @return the {@link ExchangeRate} applied.
-	 * @throws MonetaryException
-	 *             if the amount can not be converted.
-	 */
+    /**
+     * Get the {@link ExchangeRate} applied for the given {@link MonetaryAmount}
+     * .
+     *
+     * @param sourceAmount the amount to be converted.
+     * @return the {@link ExchangeRate} applied.
+     * @throws MonetaryException if the amount can not be converted.
+     */
     ExchangeRate getExchangeRate(MonetaryAmount sourceAmount);
 
 }

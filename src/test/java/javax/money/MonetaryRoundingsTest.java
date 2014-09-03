@@ -32,7 +32,7 @@ public class MonetaryRoundingsTest{
     @Test
     public void testMonetaryRoundingsGetRoundingQueryWithLongTS(){
         MonetaryOperator op = MonetaryRoundings.getRounding(
-                RoundingQueryBuilder.create().setCurrencyUnit(MonetaryCurrencies.getCurrency("test1"))
+                RoundingQueryBuilder.create().setCurrency(MonetaryCurrencies.getCurrency("test1"))
                         .set("timestamp", 200L).build());
         assertNotNull(op);
     }

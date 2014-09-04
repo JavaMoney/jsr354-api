@@ -16,7 +16,7 @@ import java.util.Objects;
  * <p>
  * Note this class is NOT thread-safe.
  *
- * @see javax.money.MonetaryAmounts#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)
+ * @see javax.money.MonetaryAmounts#getAmountFactory(MonetaryAmountFactoryQuery)
  * @see MonetaryAmountFactory
  */
 public final class MonetaryAmountFactoryQueryBuilder
@@ -25,7 +25,7 @@ public final class MonetaryAmountFactoryQueryBuilder
     /**
      * Creates a new instance of {@link javax.money.CurrencyQueryBuilder}.
      *
-     * @param monetaryAmountFactoryQuery {@link javax.money.MonetaryAmountFactoryQuery} used for initializing this
+     * @param monetaryAmountFactoryQuery {@link MonetaryAmountFactoryQuery} used for initializing this
      */
     private MonetaryAmountFactoryQueryBuilder(MonetaryAmountFactoryQuery monetaryAmountFactoryQuery){
         Objects.requireNonNull(monetaryAmountFactoryQuery);
@@ -69,12 +69,12 @@ public final class MonetaryAmountFactoryQueryBuilder
     }
 
     /**
-     * Creates a new instance of {@link javax.money.MonetaryAmountFactoryQuery} based on the values of this
+     * Creates a new instance of {@link MonetaryAmountFactoryQuery} based on the values of this
      * Builder. Note that
      * the Builder supports creation of several Builder instances from the a common Builder instance. But be aware
      * that the keys and values contained are themself not recursively cloned (deep-copy).
      *
-     * @return a new {@link javax.money.MonetaryAmountFactoryQuery} instance.
+     * @return a new {@link MonetaryAmountFactoryQuery} instance.
      */
     public MonetaryAmountFactoryQuery build(){
         return new MonetaryAmountFactoryQuery(this);
@@ -85,19 +85,19 @@ public final class MonetaryAmountFactoryQueryBuilder
      *
      * @return a new {@link javax.money.CurrencyQueryBuilder} instance, never null.
      */
-    public static MonetaryAmountFactoryQueryBuilder create(){
+    public static MonetaryAmountFactoryQueryBuilder of(){
         return new MonetaryAmountFactoryQueryBuilder();
     }
 
     /**
      * Creates a new instance of {@link javax.money.CurrencyQueryBuilder}.
      *
-     * @param monetaryAmountFactoryQuery {@link javax.money.MonetaryAmountFactoryQuery} used for initializing this
+     * @param monetaryAmountFactoryQuery {@link MonetaryAmountFactoryQuery} used for initializing this
      *                                   builder.
-     * @return a new {@link javax.money.MonetaryAmountFactoryQueryBuilder} instance, never null.
+     * @return a new {@link MonetaryAmountFactoryQueryBuilder} instance, never null.
      */
 
-    public static MonetaryAmountFactoryQueryBuilder create(MonetaryAmountFactoryQuery monetaryAmountFactoryQuery){
+    public static MonetaryAmountFactoryQueryBuilder of(MonetaryAmountFactoryQuery monetaryAmountFactoryQuery){
         return new MonetaryAmountFactoryQueryBuilder(monetaryAmountFactoryQuery);
     }
 

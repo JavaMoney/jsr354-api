@@ -33,7 +33,7 @@ public final class TestRoundingProvider implements RoundingProviderSpi{
         return new MonetaryRounding(){
 
             private final RoundingContext CTX =
-                    RoundingContextBuilder.create("TestRoundingProvider", customRoundingId).build();
+                    RoundingContextBuilder.of("TestRoundingProvider", customRoundingId).build();
 
             @Override
             public RoundingContext getRoundingContext(){

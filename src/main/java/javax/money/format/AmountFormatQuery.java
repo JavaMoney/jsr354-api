@@ -78,7 +78,7 @@ public final class AmountFormatQuery extends AbstractQuery{
      * @param providers the providers to be used, not null.
      */
     public static AmountFormatQuery of(Locale locale, String... providers){
-        return AmountFormatQueryBuilder.create(locale).setProviders(providers).build();
+        return AmountFormatQueryBuilder.of(locale).setProviders(providers).build();
     }
 
     /**
@@ -87,6 +87,6 @@ public final class AmountFormatQuery extends AbstractQuery{
      * @return a new preinitialized builder, never null.
      */
     public AmountFormatQueryBuilder toBuilder(){
-        return AmountFormatQueryBuilder.create(this);
+        return AmountFormatQueryBuilder.of(this);
     }
 }

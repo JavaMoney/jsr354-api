@@ -32,14 +32,14 @@ public class MonetaryRoundingsTest{
     @Test
     public void testMonetaryRoundingsGetRoundingQueryWithLongTS(){
         MonetaryOperator op = MonetaryRoundings.getRounding(
-                RoundingQueryBuilder.create().setCurrency(MonetaryCurrencies.getCurrency("test1"))
-                        .set("timestamp", 200L).build());
+                RoundingQueryBuilder.of().setCurrency(MonetaryCurrencies.getCurrency("test1")).set("timestamp", 200L)
+                        .build());
         assertNotNull(op);
     }
 
     @Test
     public void testMonetaryRoundingsGetRoundingQueryAny(){
-        Collection<MonetaryRounding> roundings = MonetaryRoundings.getRoundings(RoundingQueryBuilder.create().build());
+        Collection<MonetaryRounding> roundings = MonetaryRoundings.getRoundings(RoundingQueryBuilder.of().build());
         assertNotNull(roundings);
         assertFalse(roundings.isEmpty());
     }

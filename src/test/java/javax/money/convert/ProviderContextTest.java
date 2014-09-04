@@ -22,13 +22,13 @@ public class ProviderContextTest{
 
     @Test
     public void testGetRateTypes() throws Exception{
-        ProviderContext ctx = ProviderContextBuilder.create("myprov",RateType.DEFERRED, RateType.HISTORIC).build();
+        ProviderContext ctx = ProviderContextBuilder.of("myprov", RateType.DEFERRED, RateType.HISTORIC).build();
         assertEquals("myprov", ctx.getProvider());
     }
 
     @Test
     public void testToBuilder() throws Exception{
-        ProviderContext ctx = ProviderContextBuilder.create("myprov", RateType.ANY).build();
+        ProviderContext ctx = ProviderContextBuilder.of("myprov", RateType.ANY).build();
         assertEquals(ctx, ctx.toBuilder().build());
     }
 
@@ -46,7 +46,7 @@ public class ProviderContextTest{
         ProviderContext ctx2 = ProviderContext.of("test", RateType.REALTIME);
         assertEquals(ctx, ctx2);
         assertNotNull(ctx.getRateTypes());
-        assertTrue(ctx.getRateTypes().size()==1);
+        assertTrue(ctx.getRateTypes().size() == 1);
         assertTrue(ctx.getRateTypes().contains(RateType.REALTIME));
     }
 

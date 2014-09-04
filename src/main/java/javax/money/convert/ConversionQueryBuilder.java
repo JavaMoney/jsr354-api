@@ -107,7 +107,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      *
      * @return a new {@link javax.money.convert.ConversionQueryBuilder} instance, never null.
      */
-    public static ConversionQueryBuilder create(){
+    public static ConversionQueryBuilder of(){
         return new ConversionQueryBuilder();
     }
 
@@ -117,8 +117,8 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      * @param query the {@link javax.money.convert.ConversionQuery} instance to be used as a template.
      * @return a new {@link javax.money.convert.ConversionQueryBuilder} instance, never null.
      */
-    public static ConversionQueryBuilder create(ConversionQuery query){
-        return ConversionQueryBuilder.create(query);
+    public static ConversionQueryBuilder of(ConversionQuery query){
+        return ConversionQueryBuilder.of(query);
     }
 
 }

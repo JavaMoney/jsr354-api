@@ -130,7 +130,7 @@ public interface MonetaryConversionsSingletonSpi{
      */
     default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers){
         return isConversionAvailable(
-                ConversionQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
+                ConversionQueryBuilder.of().setTermCurrency(termCurrency).setProviders(providers).build());
     }
 
     /**
@@ -148,8 +148,7 @@ public interface MonetaryConversionsSingletonSpi{
         }
         for(String provName : providerNames){
             provInstances.add(Optional.ofNullable(getExchangeRateProvider(provName)).orElseThrow(
-                    () -> new IllegalArgumentException("Unsupported conversion/rate provider: " + provName)
-            ));
+                    () -> new IllegalArgumentException("Unsupported conversion/rate provider: " + provName)));
         }
         return provInstances;
     }
@@ -169,7 +168,7 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #isExchangeRateProviderAvailable(javax.money.convert.ConversionQuery)
      */
     default ExchangeRateProvider getExchangeRateProvider(String... providers){
-        return getExchangeRateProvider(ConversionQueryBuilder.create().setProviders(providers).build());
+        return getExchangeRateProvider(ConversionQueryBuilder.of().setProviders(providers).build());
     }
 
     /**
@@ -199,8 +198,7 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */
     default CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers){
-        return getConversion(
-                ConversionQueryBuilder.create().setTermCurrency(termCurrency).setProviders(providers).build());
+        return getConversion(ConversionQueryBuilder.of().setTermCurrency(termCurrency).setProviders(providers).build());
     }
 
 }

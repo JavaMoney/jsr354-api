@@ -20,7 +20,7 @@ import java.util.TreeMap;
 
 /**
  * This interface defines the common generic parts of a query. Queries are used to pass complex parameters sets
- * to lookup monetary artifacts, e.g. {@link javax.money.MonetaryAmountFactory},
+ * to lookup monetary artifacts, e.g. {@link MonetaryAmountFactory},
  * {@link javax.money.MonetaryRounding},
  * {@link javax.money.CurrencyUnit}, {@link javax.money.convert.ExchangeRateProvider} and {@link javax.money.convert
  * .CurrencyConversion}.
@@ -270,7 +270,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      */
     public B setTimestampMillis(long timestamp){
         set(AbstractContext.KEY_TIMESTAMP, timestamp);
-        return (B)this;
+        return (B) this;
     }
 
     /**
@@ -283,10 +283,10 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return this instance for chaining
      * @see #setTimestampMillis(long)
      */
-	public B setTimestamp(TemporalAccessor timestamp){
+    public B setTimestamp(TemporalAccessor timestamp){
         Objects.requireNonNull(timestamp);
         set(AbstractContext.KEY_TIMESTAMP, timestamp, TemporalAccessor.class);
-        return (B)this;
+        return (B) this;
     }
 
     /**
@@ -340,7 +340,6 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
     }
 
 
-
     /**
      * Creates a new {@link AbstractContext} with the data from this Builder
      * instance.
@@ -354,12 +353,12 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      *
      * @see Object#toString()
      */
-    
-	@Override
+
+    @Override
     public String toString(){
         StringBuilder attrsBuilder = new StringBuilder();
         for(Map.Entry<Class,Map<Object,Object>> en : ((Map<Class,Map<Object,Object>>) this.data).entrySet()){
-        	
+
             Map<Object,Object> sortedMap = new TreeMap<>(Comparator.comparing(Object::toString));
             sortedMap.putAll(en.getValue());
             for(Map.Entry<Object,Object> entry : sortedMap.entrySet()){

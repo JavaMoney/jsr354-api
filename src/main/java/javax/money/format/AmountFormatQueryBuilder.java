@@ -20,7 +20,9 @@ import java.util.Objects;
  * Note this class is NOT thread-safe.
  */
 public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountFormatQueryBuilder,AmountFormatQuery>{
-    /** The default format name used. */
+    /**
+     * The default format name used.
+     */
     private static final String DEFAULT_FORMAT_NAME = "default";
 
     /**
@@ -88,11 +90,12 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
     }
 
     /**
-     * Sets the {@link javax.money.MonetaryAmountFactory} to be used to create amounts during parsing.
+     * Sets the {@link javax.money.MonetaryAmountFactory} to be used to of amounts during parsing.
+     *
      * @param monetaryFactory the {@link javax.money.MonetaryAmountFactory} to be used, not null.
      * @return this builder for chaining.
      */
-    public AmountFormatQueryBuilder setMonetaryAmountFactory(MonetaryAmountFactory monetaryFactory) {
+    public AmountFormatQueryBuilder setMonetaryAmountFactory(MonetaryAmountFactory monetaryFactory){
         Objects.requireNonNull(monetaryFactory);
         return set(MonetaryAmountFactory.class, monetaryFactory, MonetaryAmountFactory.class);
     }
@@ -112,7 +115,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @param formatQuery the base {@link AmountFormatContext}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatQueryBuilder} instance, never null.
      */
-    public static AmountFormatQueryBuilder create(AmountFormatQuery formatQuery){
+    public static AmountFormatQueryBuilder of(AmountFormatQuery formatQuery){
         return new AmountFormatQueryBuilder(formatQuery);
     }
 
@@ -122,7 +125,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @param formatName the target format's name {@link String}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatQueryBuilder} instance, never null.
      */
-    public static AmountFormatQueryBuilder create(String formatName){
+    public static AmountFormatQueryBuilder of(String formatName){
         return new AmountFormatQueryBuilder(formatName);
     }
 
@@ -134,7 +137,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @param locale the target {@link java.util.Locale}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatQueryBuilder} instance, never null.
      */
-    public static AmountFormatQueryBuilder create(Locale locale){
+    public static AmountFormatQueryBuilder of(Locale locale){
         return new AmountFormatQueryBuilder(locale);
     }
 

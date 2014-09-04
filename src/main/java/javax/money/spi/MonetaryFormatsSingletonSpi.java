@@ -43,12 +43,14 @@ public interface MonetaryFormatsSingletonSpi{
 
     /**
      * Get the names of the currently registered format providers.
+     *
      * @return the provider names, never null.
      */
     Set<String> getProviderNames();
 
     /**
      * Get the default provider chain, identified by the unique provider names in order as evaluated and used.
+     *
      * @return the default provider chain, never null.
      */
     List<String> getDefaultProviderChain();
@@ -104,7 +106,7 @@ public interface MonetaryFormatsSingletonSpi{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){
-        return getAmountFormat(AmountFormatQueryBuilder.create(locale).setProviders(providers).build());
+        return getAmountFormat(AmountFormatQueryBuilder.of(locale).setProviders(providers).build());
     }
 
     /**
@@ -117,7 +119,7 @@ public interface MonetaryFormatsSingletonSpi{
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     default MonetaryAmountFormat getAmountFormat(String formatName, String... providers){
-        return getAmountFormat(AmountFormatQueryBuilder.create(formatName).setProviders(providers).build());
+        return getAmountFormat(AmountFormatQueryBuilder.of(formatName).setProviders(providers).build());
     }
 
 }

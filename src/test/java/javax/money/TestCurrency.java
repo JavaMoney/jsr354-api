@@ -41,7 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class TestCurrency implements CurrencyUnit, Serializable, Comparable<CurrencyUnit>{
 
-    private static final CurrencyContext CONTEXT = CurrencyContextBuilder.create("test-only").build();
+    private static final CurrencyContext CONTEXT = CurrencyContextBuilder.of("test-only").build();
 
     /**
      * The predefined name space for ISO 4217 currencies, similar to
@@ -177,8 +177,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
 
         public Builder withDefaultFractionDigits(int defaultFractionDigits){
             if(defaultFractionDigits < -1){
-                throw new IllegalArgumentException("Invalid value for defaultFractionDigits: " + defaultFractionDigits
-                );
+                throw new IllegalArgumentException("Invalid value for defaultFractionDigits: " + defaultFractionDigits);
             }
             this.defaultFractionDigits = defaultFractionDigits;
             return this;
@@ -199,7 +198,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
 
         public CurrencyUnit build(boolean cache){
             if(Objects.isNull(currencyCode) || currencyCode.isEmpty()){
-                throw new IllegalStateException("Can not create TestCurrencyUnit.");
+                throw new IllegalStateException("Can not of TestCurrencyUnit.");
             }
             if(cache){
                 String key = currencyCode;
@@ -225,8 +224,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
      */
     private final static class JDKCurrencyAdapter implements CurrencyUnit, Serializable, Comparable<CurrencyUnit>{
 
-        private static final CurrencyContext JDK_CONTEXT =
-                CurrencyContextBuilder.create(Currency.class.getName()).build();
+        private static final CurrencyContext JDK_CONTEXT = CurrencyContextBuilder.of(Currency.class.getName()).build();
 
         /**
          * serialVersionUID.

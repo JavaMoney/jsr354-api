@@ -13,7 +13,7 @@ import java.util.*;
 
 /**
  * This abstract class defines the common generic parts of a query. Queries are used to pass complex parameters sets
- * to lookup monetary artifacts, e.g. {@link javax.money.MonetaryAmountFactory},
+ * to lookup monetary artifacts, e.g. {@link MonetaryAmountFactory},
  * {@link javax.money.MonetaryRounding},
  * {@link javax.money.CurrencyUnit}, {@link javax.money.convert.ExchangeRateProvider} and {@link javax.money.convert
  * .CurrencyConversion}.
@@ -21,12 +21,12 @@ import java.util.*;
  * Instances of this class are not thread-safe and not serializable.
  */
 public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBuilder, C extends AbstractQuery>
-        extends AbstractContextBuilder<B, C> {
+        extends AbstractContextBuilder<B,C>{
 
     /**
      * Initializes the query builder, as a default query builder.
      */
-    public AbstractQueryBuilder() {
+    public AbstractQueryBuilder(){
     }
 
 
@@ -37,7 +37,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @param providers the providers to use, not null.
      * @return the query builder for chaining.
      */
-    public B setProviders(String... providers) {
+    public B setProviders(String... providers){
         Objects.requireNonNull(providers);
         return setList(AbstractQuery.KEY_QUERY_PROVIDERS, Arrays.asList(providers));
     }
@@ -49,7 +49,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @param providers the providers in order to use, not null.
      * @return the query builder for chaining.
      */
-    public B setProviders(List<String> providers) {
+    public B setProviders(List<String> providers){
         return setList(AbstractQuery.KEY_QUERY_PROVIDERS, providers);
     }
 
@@ -60,7 +60,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @return the query builder for chaining.
      */
     @Override
-    public B setProvider(String provider) {
+    public B setProvider(String provider){
         return setProviders(provider);
     }
 
@@ -70,7 +70,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @param timestamp the target timestamp
      * @return the query builder for chaining.
      */
-    public B setTimestampMillis(long timestamp) {
+    public B setTimestampMillis(long timestamp){
         return set(AbstractQuery.KEY_QUERY_TIMESTAMP, timestamp);
     }
 
@@ -80,7 +80,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @param timestamp the target timestamp
      * @return the query builder for chaining.
      */
-    public B setTimestamp(TemporalUnit timestamp) {
+    public B setTimestamp(TemporalUnit timestamp){
         return set(AbstractQuery.KEY_QUERY_TIMESTAMP, timestamp, TemporalUnit.class);
     }
 
@@ -92,7 +92,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @param type the target implementation type, not null.
      * @return this query builder for chaining.
      */
-    public B setTargetType(Class<?> type) {
+    public B setTargetType(Class<?> type){
         Objects.requireNonNull(type);
         set(AbstractQuery.KEY_QUERY_TARGET_TYPE, type, Class.class);
         return (B) this;

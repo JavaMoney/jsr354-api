@@ -55,7 +55,7 @@ public final class AmountFormatContext extends AbstractContext{
     }
 
     /**
-     * Access the format's {@link javax.money.MonetaryAmountFactory} that is used to create new amounts during
+     * Access the format's {@link javax.money.MonetaryAmountFactory} that is used to of new amounts during
      * parsing. If not set explicitly, the default {@link javax.money.MonetaryAmountFactory} is used.
      *
      * @return the {@link javax.money.MonetaryAmountFactory}, never {@code null}.
@@ -70,7 +70,7 @@ public final class AmountFormatContext extends AbstractContext{
      * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
     public AmountFormatContextBuilder toBuilder(){
-        return AmountFormatContextBuilder.create(this);
+        return AmountFormatContextBuilder.of(this);
     }
 
 }

@@ -84,7 +84,7 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      *
      * @return a new {@link javax.money.CurrencyQueryBuilder} instance, never null.
      */
-    public static CurrencyQueryBuilder create(){
+    public static CurrencyQueryBuilder of(){
         return new CurrencyQueryBuilder();
     }
 
@@ -94,7 +94,7 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      * @param currencyQuery {@link javax.money.CurrencyQuery} used for initializing this builder.
      * @return a new {@link javax.money.CurrencyQueryBuilder} instance, never null.
      */
-    public static CurrencyQueryBuilder create(CurrencyQuery currencyQuery){
+    public static CurrencyQueryBuilder of(CurrencyQuery currencyQuery){
         return new CurrencyQueryBuilder(currencyQuery);
     }
 

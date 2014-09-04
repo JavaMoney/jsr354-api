@@ -12,7 +12,7 @@ import javax.money.AbstractContextBuilder;
 import java.util.*;
 
 /**
- * Builder class to create {@link ProviderContext} instances. Instances of
+ * Builder class to of {@link ProviderContext} instances. Instances of
  * this class are not thread-safe.
  *
  * @author Anatole Tresch
@@ -125,7 +125,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @param rateTypes the rate types, not null and not empty.
      * @return a new {@link javax.money.convert.ProviderContextBuilder} instance, never null.
      */
-    public static ProviderContextBuilder create(String provider, RateType rateType, RateType... rateTypes){
+    public static ProviderContextBuilder of(String provider, RateType rateType, RateType... rateTypes){
         return new ProviderContextBuilder(provider, rateType, rateTypes);
     }
 
@@ -136,7 +136,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @param rateTypes the rate types, not null and not empty.
      * @return a new {@link javax.money.convert.ProviderContextBuilder} instance, never null.
      */
-    public static ProviderContextBuilder create(String provider, Collection<RateType> rateTypes){
+    public static ProviderContextBuilder of(String provider, Collection<RateType> rateTypes){
         return new ProviderContextBuilder(provider, rateTypes);
     }
 

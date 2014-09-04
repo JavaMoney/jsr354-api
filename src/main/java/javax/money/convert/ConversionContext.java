@@ -90,7 +90,7 @@ public final class ConversionContext extends AbstractContext{
      * @return a corresponding conversion query builder instance, never null.
      */
     public ConversionContextBuilder toBuilder(){
-        return ConversionContextBuilder.create(this);
+        return ConversionContextBuilder.of(this);
     }
 
     /**
@@ -99,7 +99,7 @@ public final class ConversionContext extends AbstractContext{
      * @return a new instance of {@link ConversionQueryBuilder}, never null.
      */
     public ConversionQueryBuilder toQueryBuilder(){
-        return ConversionQueryBuilder.create().importContext(this);
+        return ConversionQueryBuilder.of().importContext(this);
     }
 
     /**
@@ -164,7 +164,6 @@ public final class ConversionContext extends AbstractContext{
     public static ConversionContext of(){
         return ANY_CONVERSION;
     }
-
 
 
 }

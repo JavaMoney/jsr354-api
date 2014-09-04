@@ -93,13 +93,13 @@ public final class AmountFormatContextBuilder
     /**
      * Sets the {@link javax.money.MonetaryContext} to be used, when amount's are parsed.
      *
-     * @param monetaryAmountFactory the monetary amount factory, not {@code null}.
+     * @param monetaryAmountBuilder the monetary amount factory, not {@code null}.
      * @return this builder for chaining.
      */
     public AmountFormatContextBuilder setMonetaryAmountFactory(
-            @SuppressWarnings("rawtypes") MonetaryAmountFactory monetaryAmountFactory){
-        Objects.requireNonNull(monetaryAmountFactory);
-        return set(MonetaryAmountFactory.class, monetaryAmountFactory);
+            @SuppressWarnings("rawtypes") MonetaryAmountFactory monetaryAmountBuilder){
+        Objects.requireNonNull(monetaryAmountBuilder);
+        return set(MonetaryAmountFactory.class, monetaryAmountBuilder);
     }
 
     /**
@@ -126,10 +126,10 @@ public final class AmountFormatContextBuilder
     /**
      * Creates a new {@link AmountFormatContextBuilder}.
      *
-     * @param context  the {@link  AmountFormatContext}
+     * @param context the {@link  AmountFormatContext}
      * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
-    public static AmountFormatContextBuilder create(AmountFormatContext context){
+    public static AmountFormatContextBuilder of(AmountFormatContext context){
         return new AmountFormatContextBuilder(context);
     }
 
@@ -139,7 +139,7 @@ public final class AmountFormatContextBuilder
      * @param formatName the target formatName {@link String}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
-    public static AmountFormatContextBuilder create(String formatName){
+    public static AmountFormatContextBuilder of(String formatName){
         return new AmountFormatContextBuilder(formatName);
     }
 
@@ -150,7 +150,7 @@ public final class AmountFormatContextBuilder
      * @param locale the target {@link java.util.Locale}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
-    public static AmountFormatContextBuilder create(Locale locale){
+    public static AmountFormatContextBuilder of(Locale locale){
         return new AmountFormatContextBuilder(locale);
     }
 }

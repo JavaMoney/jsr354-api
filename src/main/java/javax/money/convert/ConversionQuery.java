@@ -87,7 +87,7 @@ public final class ConversionQuery extends AbstractQuery implements CurrencySupp
      * @return a new Builder, never null.
      */
     public ConversionQueryBuilder toBuilder(){
-        return ConversionQueryBuilder.create(this);
+        return ConversionQueryBuilder.of(this);
     }
 
 }

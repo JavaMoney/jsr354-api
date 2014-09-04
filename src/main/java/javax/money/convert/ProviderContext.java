@@ -35,7 +35,9 @@ public final class ProviderContext extends AbstractContext{
 
     private static final long serialVersionUID = 3536713139786856877L;
 
-    /** Key used for the rate types attribute. */
+    /**
+     * Key used for the rate types attribute.
+     */
     static final String KEY_RATE_TYPES = "rateTypes";
 
 
@@ -53,11 +55,10 @@ public final class ProviderContext extends AbstractContext{
      *
      * @return the deferred flag, or {code null}.
      */
-    public Set<RateType> getRateTypes() {
-		Set<RateType> rateSet = getSet(KEY_RATE_TYPES,
-				Collections.emptySet());
-		return Collections.unmodifiableSet(rateSet);
-	}
+    public Set<RateType> getRateTypes(){
+        Set<RateType> rateSet = getSet(KEY_RATE_TYPES, Collections.emptySet());
+        return Collections.unmodifiableSet(rateSet);
+    }
 
     /**
      * Creates a {@link ProviderContextBuilder} initialized with this instance's data.
@@ -76,7 +77,7 @@ public final class ProviderContext extends AbstractContext{
      * @return a new {@link ProviderContext} instance.
      */
     public static ProviderContext of(String provider, RateType rateType, RateType... rateTypes){
-        return ProviderContextBuilder.create(provider, rateType, rateTypes).build();
+        return ProviderContextBuilder.of(provider, rateType, rateTypes).build();
     }
 
     /**
@@ -86,7 +87,7 @@ public final class ProviderContext extends AbstractContext{
      * @return a new {@link ProviderContext} instance.
      */
     public static ProviderContext of(String provider){
-        return ProviderContextBuilder.create(provider, RateType.ANY).build();
+        return ProviderContextBuilder.of(provider, RateType.ANY).build();
     }
 
 }

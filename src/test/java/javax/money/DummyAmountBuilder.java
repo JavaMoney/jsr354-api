@@ -14,11 +14,11 @@ package javax.money;
  *
  * @author Anatole Tresch
  */
-public final class DummyAmountFactory implements MonetaryAmountFactory<DummyAmount>{
+public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmount>{
     /**
      * The {@link MonetaryContext} used.
      */
-    static MonetaryContext DUMMY_CONTEXT = MonetaryContextBuilder.create(MonetaryAmount.class).set("dummy", true).build();
+    static MonetaryContext DUMMY_CONTEXT = MonetaryContextBuilder.of(MonetaryAmount.class).set("dummy", true).build();
 
     /*
      * (non-Javadoc)
@@ -52,7 +52,7 @@ public final class DummyAmountFactory implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setCurrency(java.lang.String)
      */
     @Override
-    public DummyAmountFactory setCurrency(String currencyCode){
+    public DummyAmountBuilder setCurrency(String currencyCode){
         return this;
     }
 
@@ -61,13 +61,13 @@ public final class DummyAmountFactory implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setCurrency(javax.money.CurrencyUnit)
      */
     @Override
-    public DummyAmountFactory setCurrency(CurrencyUnit currency){
+    public DummyAmountBuilder setCurrency(CurrencyUnit currency){
         return this;
     }
 
     /*
      * (non-Javadoc)
-     * @see javax.money.MonetaryAmountFactory#create()
+     * @see javax.money.MonetaryAmountFactory#of()
      */
     @Override
     public DummyAmount create(){
@@ -79,7 +79,7 @@ public final class DummyAmountFactory implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setNumber(double)
      */
     @Override
-    public DummyAmountFactory setNumber(double number){
+    public DummyAmountBuilder setNumber(double number){
         return this;
     }
 
@@ -88,7 +88,7 @@ public final class DummyAmountFactory implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setNumber(long)
      */
     @Override
-    public DummyAmountFactory setNumber(long number){
+    public DummyAmountBuilder setNumber(long number){
         return this;
     }
 
@@ -97,7 +97,7 @@ public final class DummyAmountFactory implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setNumber(java.lang.Number)
      */
     @Override
-    public DummyAmountFactory setNumber(Number number){
+    public DummyAmountBuilder setNumber(Number number){
         return this;
     }
 
@@ -116,7 +116,7 @@ public final class DummyAmountFactory implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setContext(javax.money.MonetaryContext)
      */
     @Override
-    public DummyAmountFactory setContext(MonetaryContext monetaryContext){
+    public DummyAmountBuilder setContext(MonetaryContext monetaryContext){
         return this;
     }
 
@@ -125,7 +125,7 @@ public final class DummyAmountFactory implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setAmount(javax.money.MonetaryAmount)
      */
     @Override
-    public DummyAmountFactory setAmount(MonetaryAmount amount){
+    public DummyAmountBuilder setAmount(MonetaryAmount amount){
         return this;
     }
 

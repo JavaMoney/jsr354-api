@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * {@link MonetaryAmountFactory} instances.
  * <p>
  * This singleton allows to access {@link MonetaryAmountFactory} instances for the registered
- * {@link MonetaryAmount} implementation classes or using a flexible {@link javax.money.MonetaryAmountFactoryQuery}
+ * {@link MonetaryAmount} implementation classes or using a flexible {@link MonetaryAmountFactoryQuery}
  * instance, determining the selection attributes arbitrarely.
  *
  * @author Anatole Tresch
@@ -75,8 +75,7 @@ public final class MonetaryAmounts{
             Logger.getLogger(MonetaryCurrencies.class.getName()).log(Level.SEVERE, "Failed to load " +
                                                                              "MonetaryAmountsSingletonQuerySpi, " +
                                                                              "query functionality will not be " +
-                                                                             "available.", e
-            );
+                                                                             "available.", e);
             return null;
         }
     }
@@ -160,8 +159,8 @@ public final class MonetaryAmounts{
      */
     public static MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query){
         return Optional.ofNullable(monetaryAmountsSingletonQuerySpi).orElseThrow(() -> new MonetaryException(
-                                                                                         "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available.")
-        ).getAmountFactory(query);
+                                                                                         "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available."))
+                .getAmountFactory(query);
     }
 
     /**
@@ -172,8 +171,8 @@ public final class MonetaryAmounts{
      */
     public static Collection<MonetaryAmountFactory<?>> getAmountFactories(MonetaryAmountFactoryQuery query){
         return Optional.ofNullable(monetaryAmountsSingletonQuerySpi).orElseThrow(() -> new MonetaryException(
-                                                                                         "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available.")
-        ).getAmountFactories(query);
+                                                                                         "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available."))
+                .getAmountFactories(query);
     }
 
     /**
@@ -181,12 +180,12 @@ public final class MonetaryAmounts{
      * .MonetaryAmountFactory}.
      *
      * @param query the factory query, not null.
-     * @return true, if at least one {@link javax.money.MonetaryAmountFactory} matches the query.
+     * @return true, if at least one {@link MonetaryAmountFactory} matches the query.
      */
     public static boolean isAvailable(MonetaryAmountFactoryQuery query){
         return Optional.ofNullable(monetaryAmountsSingletonQuerySpi).orElseThrow(() -> new MonetaryException(
-                                                                                         "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available.")
-        ).isAvailable(query);
+                                                                                         "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available."))
+                .isAvailable(query);
     }
 
 }

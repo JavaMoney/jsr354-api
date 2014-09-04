@@ -94,7 +94,7 @@ public interface MonetaryRoundingsSingletonSpi{
      */
     default MonetaryRounding getRounding(CurrencyUnit currencyUnit, String... providers){
         MonetaryRounding op =
-                getRounding(RoundingQueryBuilder.create().setProviders(providers).setCurrency(currencyUnit).build());
+                getRounding(RoundingQueryBuilder.of().setProviders(providers).setCurrency(currencyUnit).build());
         return Optional.ofNullable(op).orElseThrow(() -> new IllegalStateException(
                 "No rounding provided for CurrencyUnit: " + currencyUnit.getCurrencyCode()));
     }
@@ -111,8 +111,8 @@ public interface MonetaryRoundingsSingletonSpi{
      *                                  {@link javax.money.spi.RoundingProviderSpi} instance.
      */
     default MonetaryRounding getRounding(String roundingName, String... providers){
-        MonetaryRounding op = getRounding(
-                RoundingQueryBuilder.create().setProviders(providers).setRoundingName(roundingName).build());
+        MonetaryRounding op =
+                getRounding(RoundingQueryBuilder.of().setProviders(providers).setRoundingName(roundingName).build());
         return Optional.ofNullable(op)
                 .orElseThrow(() -> new MonetaryException("No rounding provided with rounding name: " + roundingName));
     }
@@ -156,7 +156,7 @@ public interface MonetaryRoundingsSingletonSpi{
      */
     default boolean isRoundingAvailable(String roundingId, String... providers){
         return isRoundingAvailable(
-                RoundingQueryBuilder.create().setProviders(providers).setRoundingName(roundingId).build());
+                RoundingQueryBuilder.of().setProviders(providers).setRoundingName(roundingId).build());
     }
 
     /**
@@ -171,7 +171,6 @@ public interface MonetaryRoundingsSingletonSpi{
      *                                  {@link RoundingProviderSpi} instance.
      */
     default boolean isRoundingAvailable(CurrencyUnit currencyUnit, String[] providers){
-        return isRoundingAvailable(
-                RoundingQueryBuilder.create().setProviders(providers).setCurrency(currencyUnit).build());
+        return isRoundingAvailable(RoundingQueryBuilder.of().setProviders(providers).setCurrency(currencyUnit).build());
     }
 }

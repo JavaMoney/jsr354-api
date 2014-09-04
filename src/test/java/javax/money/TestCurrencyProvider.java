@@ -20,9 +20,9 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
     @Override
     public Set<CurrencyUnit> getCurrencies(CurrencyQuery currencyQuery){
         Set<CurrencyUnit> result = new HashSet<>();
-        if(!currencyQuery.getCurrencyCodes().isEmpty()) {
-            for (String currencyCode : currencyQuery.getCurrencyCodes()) {
-                switch (currencyCode) {
+        if(!currencyQuery.getCurrencyCodes().isEmpty()){
+            for(String currencyCode : currencyQuery.getCurrencyCodes()){
+                switch(currencyCode){
                     case "test1":
                         result.add(new TestCurrency("test1", 1, 2));
                         break;
@@ -37,13 +37,13 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
             }
             return result;
         }
-        if(!currencyQuery.getCountries().isEmpty()) {
-            for (Locale country : currencyQuery.getCountries()) {
-                if ("TEST1L".equals(country.getCountry())) {
+        if(!currencyQuery.getCountries().isEmpty()){
+            for(Locale country : currencyQuery.getCountries()){
+                if("TEST1L".equals(country.getCountry())){
                     result.add(new TestCurrency("TEST1L", 1, 2));
-                } else if (Locale.CHINA.equals(country)) {
+                }else if(Locale.CHINA.equals(country)){
                     throw new IllegalArgumentException("CHINA error encountered!");
-                } else if (Locale.CHINESE.equals(country)) {
+                }else if(Locale.CHINESE.equals(country)){
                     result.add(new TestCurrency("invalid2", 1, 2));
                 }
             }
@@ -88,7 +88,7 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
         private String code;
         private int numCode;
         private int digits;
-        private static final CurrencyContext CONTEXT = CurrencyContextBuilder.create("TestCurrencyProvider").build();
+        private static final CurrencyContext CONTEXT = CurrencyContextBuilder.of("TestCurrencyProvider").build();
 
         public TestCurrency(String code, int numCode, int digits){
             this.code = code;

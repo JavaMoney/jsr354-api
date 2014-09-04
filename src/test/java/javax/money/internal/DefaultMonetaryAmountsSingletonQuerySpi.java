@@ -20,7 +20,7 @@ public class DefaultMonetaryAmountsSingletonQuerySpi implements MonetaryAmountsS
     private List<MonetaryAmountFactory<?>> factories = new ArrayList<>();
 
     public DefaultMonetaryAmountsSingletonQuerySpi(){
-        factories.add(new DummyAmountFactory());
+        factories.add(new DummyAmountBuilder());
         factories = Collections.unmodifiableList(factories);
     }
 

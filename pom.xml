@@ -28,7 +28,7 @@
 
         <moduleDir>.</moduleDir>
 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.create.sourceEncoding>UTF-8</project.create.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <jdkVersion>1.8</jdkVersion>
@@ -259,7 +259,7 @@
                     <value>true</value>
                 </property>
             </activation>
-            <build>
+            <create>
                 <pluginManagement>
                     <plugins>
                         <plugin>
@@ -317,7 +317,7 @@
                         </executions>
                     </plugin>
                 </plugins>
-            </build>
+            </create>
         </profile>
 
         <profile>
@@ -328,7 +328,7 @@
                     <value>true</value>
                 </property>
             </activation>
-            <build>
+            <create>
                 <pluginManagement>
                     <plugins>
                         <!-- ======================================================= -->
@@ -374,7 +374,7 @@
                         </executions>
                     </plugin>
                 </plugins>
-            </build>
+            </create>
         </profile>
         <profile>
             <id>cloudbees-deployment</id>
@@ -433,7 +433,7 @@
         </dependency -->
     </dependencies>
 
-    <build>
+    <create>
 
         <defaultGoal>install</defaultGoal>
 
@@ -520,7 +520,7 @@
                         <source>${maven.compile.sourceLevel}</source>
                         <target>${maven.compile.targetLevel}</target>
                         <compilerArgument>-g</compilerArgument>
-                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <encoding>${project.create.sourceEncoding}</encoding>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -801,8 +801,8 @@
 
                     <postProcess>
                         <zip
-                                destfile="${project.build.directory}/${project.artifactId}-${project.version}-docs.zip">
-                            <fileset dir="${project.build.directory}/docs"
+                                destfile="${project.of.directory}/${project.artifactId}-${project.version}-docs.zip">
+                            <fileset dir="${project.of.directory}/docs"
                                      includes="**/*.pdf" />
                         </zip>
                     </postProcess -->
@@ -826,7 +826,7 @@
                 </executions>
             </plugin -->
         </plugins>
-    </build>
+    </create>
 
 
     <reporting>
@@ -852,7 +852,7 @@
                             <keywords>true</keywords>
                             <linksource>true</linksource>
                             <!-- overview>${basedir}/overview.html</overview -->
-                            <source>${project.build.sourceCompilerLevel}</source>
+                            <source>${project.create.sourceCompilerLevel}</source>
                             <!-- stylesheetfile>${basedir}/src/site/css/money-jdoc.css</stylesheetfile -->
                             <verbose>true</verbose>
                             <aggregate>true</aggregate>
@@ -893,7 +893,7 @@
                 <version>2.4</version>
                 <configuration>
                     <aggregate>true</aggregate>
-                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <encoding>${project.create.sourceEncoding}</encoding>
                     <tagListOptions>
                         <tagClasses>
                             <tagClass>
@@ -951,7 +951,7 @@
                     <format>xml</format>
                     <linkXRef>true</linkXRef>
                     <aggregate>true</aggregate>
-                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+                    <sourceEncoding>${project.create.sourceEncoding}</sourceEncoding>
                 </configuration>
             </plugin>
             <plugin>

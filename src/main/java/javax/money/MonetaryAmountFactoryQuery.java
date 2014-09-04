@@ -11,7 +11,7 @@ package javax.money;
 import java.io.Serializable;
 
 /**
- * Query to lookup indtsnvrd of {@link javax.money.MonetaryAmountFactory}, which are determined by the (minimal)
+ * Query to lookup indtsnvrd of {@link MonetaryAmountFactory}, which are determined by the (minimal)
  * capabilities required by the give use case. By default amount factories can be queried by
  * <ul>
  * <li>The maximal scale needed (THE ADDITIONAL <i>fixed scale</i> allows to define the minimal an maximal scale to
@@ -23,7 +23,7 @@ import java.io.Serializable;
  * <p>This class is thread-safe, final and serializable.</p>
  *
  * @see MonetaryAmounts#getAmountFactory(MonetaryAmountFactoryQuery)
- * @see javax.money.MonetaryAmountFactory
+ * @see MonetaryAmountFactory
  */
 public final class MonetaryAmountFactoryQuery extends AbstractQuery implements Serializable{
 
@@ -43,7 +43,7 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
     static final String KEY_MAX_SCALE = "maxScale";
 
     /**
-     * Constructor, used from the {@link javax.money.MonetaryAmountFactoryQueryBuilder}.
+     * Constructor, used from the {@link MonetaryAmountFactoryQueryBuilder}.
      *
      * @param builder the corresponding builder, not null.
      */
@@ -82,10 +82,10 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
     /**
      * Creates a new builder instances, initialized with the data from this one.
      *
-     * @return a new {@link javax.money.MonetaryAmountFactoryQueryBuilder} instance, never null.
+     * @return a new {@link MonetaryAmountFactoryQueryBuilder} instance, never null.
      */
     public MonetaryAmountFactoryQueryBuilder toBuilder(){
-        return MonetaryAmountFactoryQueryBuilder.create(this);
+        return MonetaryAmountFactoryQueryBuilder.of(this);
     }
 
 }

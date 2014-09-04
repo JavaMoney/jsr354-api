@@ -26,8 +26,7 @@ import java.io.Serializable;
  *
  * @author Anatole Tresch
  */
-public final class CurrencyContext extends AbstractContext
-        implements Serializable{
+public final class CurrencyContext extends AbstractContext implements Serializable{
 
     /**
      * Constructor, used from the {@link javax.money.CurrencyContextBuilder}.
@@ -41,12 +40,12 @@ public final class CurrencyContext extends AbstractContext
 
     /**
      * Allows to convert a instance into the corresponding {@link javax.money.CurrencyContextBuilder}, which allows
-     * to change the values and create another {@link javax.money.CurrencyContext} instance.
+     * to change the values and of another {@link javax.money.CurrencyContext} instance.
      *
      * @return a new Builder instance, preinitialized with the values from this instance.
      */
     public CurrencyContextBuilder toBuilder(){
-        return CurrencyContextBuilder.create(this);
+        return CurrencyContextBuilder.of(this);
     }
 
 

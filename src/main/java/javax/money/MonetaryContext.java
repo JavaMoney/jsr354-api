@@ -98,7 +98,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
     }
 
     /**
-     * This method allows to easily create a new MonetaryContext instance from a given {@link javax.money
+     * This method allows to easily of a new MonetaryContext instance from a given {@link javax.money
      * .MonetaryAmountFactoryQuery}.
      *
      * @param monetaryAmountFactoryQuery the monetary amount factory query, not null.
@@ -107,7 +107,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      */
     public static MonetaryContext from(MonetaryAmountFactoryQuery monetaryAmountFactoryQuery,
                                        Class<? extends MonetaryAmount> amountClass){
-        return MonetaryContextBuilder.create(amountClass).importContext(monetaryAmountFactoryQuery).build();
+        return MonetaryContextBuilder.of(amountClass).importContext(monetaryAmountFactoryQuery).build();
     }
 
     /**
@@ -118,7 +118,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return a new corresponding MonetaryContext instance.
      */
     public static MonetaryContext from(MonetaryContext monetaryContext, Class<? extends MonetaryAmount> amountClass){
-        return MonetaryContextBuilder.create(amountClass).importContext(monetaryContext).build();
+        return MonetaryContextBuilder.of(amountClass).importContext(monetaryContext).build();
     }
 
     /**
@@ -127,7 +127,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return a new {@link javax.money.MonetaryContextBuilder} instance, never null.
      */
     public MonetaryContextBuilder toBuilder(){
-        return MonetaryContextBuilder.create(this);
+        return MonetaryContextBuilder.of(this);
     }
 
 }

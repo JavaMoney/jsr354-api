@@ -20,18 +20,18 @@ import java.util.Set;
 /**
  * SPI (core) for the backing implementation of the {@link javax.money.MonetaryAmounts} singleton. It
  * should load and manage (including contextual behavior), if needed) the different registered
- * {@link MonetaryAmountFactory} instances.
+ * {@link javax.money.MonetaryAmountFactory} instances.
  *
  * @author Anatole Tresch
  */
 public interface MonetaryAmountsSingletonSpi{
 
     /**
-     * Access the {@link MonetaryAmountFactory} for the given {@code amountType} .
+     * Access the {@link javax.money.MonetaryAmountFactory} for the given {@code amountType} .
      *
      * @param amountType the {@link MonetaryAmount} implementation type, targeted by the factory.
-     * @return the {@link MonetaryAmountFactory}, or {@code null}, if no such
-     * {@link MonetaryAmountFactory} is available in the current context.
+     * @return the {@link javax.money.MonetaryAmountFactory}, or {@code null}, if no such
+     * {@link javax.money.MonetaryAmountFactory} is available in the current context.
      */
     <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType);
 
@@ -56,7 +56,7 @@ public interface MonetaryAmountsSingletonSpi{
 
 
     /**
-     * Access the default {@link MonetaryAmountFactory}.
+     * Access the default {@link javax.money.MonetaryAmountFactory}.
      *
      * @return a the default {@link MonetaryAmount} type corresponding, never {@code null}.
      * @throws MonetaryException if no {@link MonetaryAmountFactoryProviderSpi} is available, or no
@@ -76,7 +76,7 @@ public interface MonetaryAmountsSingletonSpi{
      */
     default Collection<MonetaryAmountFactory<?>> getAmountFactories(){
         List<MonetaryAmountFactory<?>> factories = new ArrayList<>();
-        for(Class<? extends MonetaryAmount> type: getAmountTypes()){
+        for(Class<? extends MonetaryAmount> type : getAmountTypes()){
             factories.add(getAmountFactory(type));
         }
         return factories;

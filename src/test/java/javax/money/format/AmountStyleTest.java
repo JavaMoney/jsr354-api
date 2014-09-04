@@ -30,7 +30,7 @@ public class AmountStyleTest{
 
     @Test
     public void testToBuilder() throws Exception{
-        AmountFormatQuery style = AmountFormatQueryBuilder.create(Locale.ENGLISH).build();
+        AmountFormatQuery style = AmountFormatQueryBuilder.of(Locale.ENGLISH).build();
         AmountFormatQueryBuilder builder = style.toBuilder();
         assertNotNull(builder);
         assertEquals(style, builder.build());
@@ -41,8 +41,8 @@ public class AmountStyleTest{
         MonetaryOperator op = value -> value.multiply(2.0d);
         assertNotNull(op);
         List<AmountFormatContext> contexts = new ArrayList<>();
-        contexts.add(AmountFormatContextBuilder.create(Locale.GERMAN).build());
-        contexts.add(AmountFormatContextBuilder.create(Locale.ENGLISH).build());
+        contexts.add(AmountFormatContextBuilder.of(Locale.GERMAN).build());
+        contexts.add(AmountFormatContextBuilder.of(Locale.ENGLISH).build());
         Set<Integer> hashCodes = new HashSet<>();
         contexts.forEach(amountFormatContext -> hashCodes.add(amountFormatContext.hashCode()));
         // Check we have 5 distinct hash codes...
@@ -54,8 +54,8 @@ public class AmountStyleTest{
         MonetaryOperator op = value -> value.multiply(2.0d);
         assertNotNull(op);
         List<AmountFormatContext> contexts = new ArrayList<>();
-        contexts.add(AmountFormatContextBuilder.create(Locale.ENGLISH).build());
-        contexts.add(AmountFormatContextBuilder.create(Locale.GERMAN).build());
+        contexts.add(AmountFormatContextBuilder.of(Locale.ENGLISH).build());
+        contexts.add(AmountFormatContextBuilder.of(Locale.GERMAN).build());
         Set<AmountFormatContext> checkContexts = new HashSet<>();
         contexts.forEach(checkContexts::add);
         // Check we have 5 distinct hash codes...
@@ -64,9 +64,9 @@ public class AmountStyleTest{
 
     @Test
     public void testToString() throws Exception{
-        AmountFormatContext style = AmountFormatContextBuilder.create(Locale.GERMAN).set("groupSizes",
-                                                                                       new int[]{1, 2, 3, 4})
-                .set("currencyStyle", "NUMERIC_CODE").set("pattern", "###").build();
+        AmountFormatContext style =
+                AmountFormatContextBuilder.of(Locale.GERMAN).set("groupSizes", new int[]{1, 2, 3, 4})
+                        .set("currencyStyle", "NUMERIC_CODE").set("pattern", "###").build();
         String toString = style.toString();
         assertNotNull(toString);
         assertTrue(toString.contains("DE"));

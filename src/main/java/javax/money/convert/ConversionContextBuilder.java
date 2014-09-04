@@ -12,7 +12,7 @@ import javax.money.AbstractContextBuilder;
 import java.util.Objects;
 
 /**
- * Builder class to create {@link ConversionContext} instances. Instances of
+ * Builder class to of {@link ConversionContext} instances. Instances of
  * this class are not thread-safe.
  *
  * @author Anatole Tresch
@@ -78,7 +78,7 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      *
      * @return a new {@link javax.money.convert.ConversionContextBuilder} instance, never null.
      */
-    public static ConversionContextBuilder create(ConversionContext conversionContext){
+    public static ConversionContextBuilder of(ConversionContext conversionContext){
         return new ConversionContextBuilder(conversionContext);
     }
 
@@ -87,7 +87,7 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      *
      * @return a new {@link javax.money.convert.ConversionContextBuilder} instance, never null.
      */
-    public static ConversionContextBuilder create(){
+    public static ConversionContextBuilder of(){
         return new ConversionContextBuilder();
     }
 

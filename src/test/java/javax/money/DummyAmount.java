@@ -12,29 +12,28 @@ import java.util.Objects;
 
 /**
  * Amount pseudo (non functional) implementation, for testing only.
- * 
+ *
  * @author Anatole Tresch
  */
-public final class DummyAmount implements
-		MonetaryAmount {
+public final class DummyAmount implements MonetaryAmount{
 
-    private static final CurrencyContext DUMMY_CURRENCYCONTEXT = CurrencyContextBuilder.create("dummy").build();
+    private static final CurrencyContext DUMMY_CURRENCYCONTEXT = CurrencyContextBuilder.of("dummy").build();
 
     @Override
-    public CurrencyUnit getCurrency() {
-        return new CurrencyUnit() {
+    public CurrencyUnit getCurrency(){
+        return new CurrencyUnit(){
             @Override
-            public String getCurrencyCode() {
+            public String getCurrencyCode(){
                 return "DMY";
             }
 
             @Override
-            public int getNumericCode() {
+            public int getNumericCode(){
                 return 0;
             }
 
             @Override
-            public int getDefaultFractionDigits() {
+            public int getDefaultFractionDigits(){
                 return 2;
             }
 
@@ -50,26 +49,26 @@ public final class DummyAmount implements
         };
     }
 
-	@Override
-	public MonetaryContext getMonetaryContext() {
-		return DummyAmountFactory.DUMMY_CONTEXT;
-	}
+    @Override
+    public MonetaryContext getMonetaryContext(){
+        return DummyAmountBuilder.DUMMY_CONTEXT;
+    }
 
-	@Override
-	public NumberValue getNumber() {
-		return new NumberValue() {
+    @Override
+    public NumberValue getNumber(){
+        return new NumberValue(){
 
-			/**
-			 * serialVersionUID.
-			 */
-			private static final long serialVersionUID = 1L;
+            /**
+             * serialVersionUID.
+             */
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public int getPrecision() {
-				return 0;
-			}
+            @Override
+            public int getPrecision(){
+                return 0;
+            }
 
-			@Override
+            @Override
             public long getAmountFractionNumerator(){
                 return 0;
             }
@@ -79,279 +78,278 @@ public final class DummyAmount implements
                 return 0;
             }
 
-			@Override
-			public int getScale() {
-
-				return 0;
-			}
-
-			@Override
-			public int intValue() {
-				return 0;
-			}
+            @Override
+            public int getScale(){
 
-			@Override
-			public int intValueExact() {
-				return 0;
-			}
+                return 0;
+            }
 
-			@Override
-			public long longValue() {
-				return 0;
-			}
+            @Override
+            public int intValue(){
+                return 0;
+            }
 
-			@Override
-			public long longValueExact() {
-				return 0;
-			}
+            @Override
+            public int intValueExact(){
+                return 0;
+            }
 
-			@Override
-			public double doubleValue() {
-				return 0;
-			}
+            @Override
+            public long longValue(){
+                return 0;
+            }
 
-			@Override
-			public double doubleValueExact() {
-				return 0;
-			}
+            @Override
+            public long longValueExact(){
+                return 0;
+            }
 
-			@Override
-			public <T extends Number> T numberValue(Class<T> numberType) {
-				return null;
-			}
+            @Override
+            public double doubleValue(){
+                return 0;
+            }
 
-			@Override
-			public <T extends Number> T numberValueExact(
-					Class<T> numberType) {
-				return null;
-			}
+            @Override
+            public double doubleValueExact(){
+                return 0;
+            }
 
-			@Override
-			public float floatValue() {
-				return 0;
-			}
+            @Override
+            public <T extends Number> T numberValue(Class<T> numberType){
+                return null;
+            }
 
-			@Override
-			public Class<?> getNumberType() {
-				return Void.class;
-			}
-		};
-	}
+            @Override
+            public <T extends Number> T numberValueExact(Class<T> numberType){
+                return null;
+            }
 
-	@Override
-	public <R> R query(MonetaryQuery<R> query) {
-		return null;
-	}
+            @Override
+            public float floatValue(){
+                return 0;
+            }
 
-	@Override
-	public DummyAmount with(MonetaryOperator operator) {
+            @Override
+            public Class<?> getNumberType(){
+                return Void.class;
+            }
+        };
+    }
 
-		return new DummyAmount();
-	}
+    @Override
+    public <R> R query(MonetaryQuery<R> query){
+        return null;
+    }
 
-	@Override
-	public boolean isGreaterThan(MonetaryAmount amount) {
+    @Override
+    public DummyAmount with(MonetaryOperator operator){
 
-		return false;
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public boolean isGreaterThanOrEqualTo(MonetaryAmount amt) {
+    @Override
+    public boolean isGreaterThan(MonetaryAmount amount){
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean isLessThan(MonetaryAmount amt) {
+    @Override
+    public boolean isGreaterThanOrEqualTo(MonetaryAmount amt){
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean isLessThanOrEqualTo(MonetaryAmount amt) {
+    @Override
+    public boolean isLessThan(MonetaryAmount amt){
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean isEqualTo(MonetaryAmount amount) {
+    @Override
+    public boolean isLessThanOrEqualTo(MonetaryAmount amt){
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean isNegative() {
+    @Override
+    public boolean isEqualTo(MonetaryAmount amount){
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean isNegativeOrZero() {
+    @Override
+    public boolean isNegative(){
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean isPositive() {
+    @Override
+    public boolean isNegativeOrZero(){
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean isPositiveOrZero() {
+    @Override
+    public boolean isPositive(){
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean isZero() {
+    @Override
+    public boolean isPositiveOrZero(){
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public int signum() {
+    @Override
+    public boolean isZero(){
 
-		return 0;
-	}
+        return false;
+    }
 
-	@Override
-	public DummyAmount add(MonetaryAmount amount) {
+    @Override
+    public int signum(){
 
-		return new DummyAmount();
-	}
+        return 0;
+    }
 
-	@Override
-	public DummyAmount subtract(MonetaryAmount amount) {
+    @Override
+    public DummyAmount add(MonetaryAmount amount){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount multiply(long multiplicand) {
+    @Override
+    public DummyAmount subtract(MonetaryAmount amount){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount multiply(double multiplicand) {
+    @Override
+    public DummyAmount multiply(long multiplicand){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount multiply(Number multiplicand) {
+    @Override
+    public DummyAmount multiply(double multiplicand){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount divide(long amount) {
+    @Override
+    public DummyAmount multiply(Number multiplicand){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount divide(double amount) {
+    @Override
+    public DummyAmount divide(long amount){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount divide(Number amount) {
+    @Override
+    public DummyAmount divide(double amount){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount remainder(long amount) {
+    @Override
+    public DummyAmount divide(Number amount){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount remainder(double amount) {
+    @Override
+    public DummyAmount remainder(long amount){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount remainder(Number amount) {
+    @Override
+    public DummyAmount remainder(double amount){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount[] divideAndRemainder(long amount) {
-		return new DummyAmount[] { new DummyAmount(), new DummyAmount() };
-	}
+    @Override
+    public DummyAmount remainder(Number amount){
 
-	@Override
-	public DummyAmount[] divideAndRemainder(double amount) {
-		return new DummyAmount[] { new DummyAmount(), new DummyAmount() };
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount[] divideAndRemainder(Number amount) {
-		return new DummyAmount[] { new DummyAmount(), new DummyAmount() };
-	}
+    @Override
+    public DummyAmount[] divideAndRemainder(long amount){
+        return new DummyAmount[]{new DummyAmount(), new DummyAmount()};
+    }
 
-	@Override
-	public DummyAmount divideToIntegralValue(long divisor) {
+    @Override
+    public DummyAmount[] divideAndRemainder(double amount){
+        return new DummyAmount[]{new DummyAmount(), new DummyAmount()};
+    }
 
-		return new DummyAmount();
-	}
+    @Override
+    public DummyAmount[] divideAndRemainder(Number amount){
+        return new DummyAmount[]{new DummyAmount(), new DummyAmount()};
+    }
 
-	@Override
-	public DummyAmount divideToIntegralValue(double divisor) {
+    @Override
+    public DummyAmount divideToIntegralValue(long divisor){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount divideToIntegralValue(Number divisor) {
+    @Override
+    public DummyAmount divideToIntegralValue(double divisor){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount scaleByPowerOfTen(int power) {
+    @Override
+    public DummyAmount divideToIntegralValue(Number divisor){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount abs() {
+    @Override
+    public DummyAmount scaleByPowerOfTen(int power){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount negate() {
+    @Override
+    public DummyAmount abs(){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount plus() {
+    @Override
+    public DummyAmount negate(){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public DummyAmount stripTrailingZeros() {
+    @Override
+    public DummyAmount plus(){
 
-		return new DummyAmount();
-	}
+        return new DummyAmount();
+    }
 
-	@Override
-	public MonetaryAmountFactory<DummyAmount> getFactory() {
-		return new DummyAmountFactory();
-	}
+    @Override
+    public DummyAmount stripTrailingZeros(){
+
+        return new DummyAmount();
+    }
+
+    @Override
+    public MonetaryAmountFactory<DummyAmount> getFactory(){
+        return new DummyAmountBuilder();
+    }
 
     @Override
     public int compareTo(MonetaryAmount o){
-    	Objects.requireNonNull(o);
+        Objects.requireNonNull(o);
         return 0;
     }
 }

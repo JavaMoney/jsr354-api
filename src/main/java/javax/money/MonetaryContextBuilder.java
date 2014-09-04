@@ -35,7 +35,6 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
         set(MonetaryContext.AMOUNT_TYPE, amountType, Class.class);
     }
 
-    
 
     /**
      * Set the maximal scale to be supported.
@@ -78,9 +77,9 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
     }
 
     /**
-     * Creates a new instance of {@link javax.money.MonetaryAmountFactoryQuery}.
+     * Creates a new instance of {@link MonetaryAmountFactoryQuery}.
      *
-     * @return a new {@link javax.money.MonetaryAmountFactoryQuery} instance.
+     * @return a new {@link MonetaryAmountFactoryQuery} instance.
      */
     public MonetaryContext build(){
         return new MonetaryContext(this);
@@ -93,8 +92,8 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      *
      * @return a new {@link javax.money.MonetaryContextBuilder} instance, never null.
      */
-    public static MonetaryContextBuilder create(){
-        return create(MonetaryAmount.class);
+    public static MonetaryContextBuilder of(){
+        return of(MonetaryAmount.class);
     }
 
     /**
@@ -102,7 +101,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      *
      * @return a new {@link javax.money.MonetaryContextBuilder} instance, never null.
      */
-    public static MonetaryContextBuilder create(MonetaryContext monetaryContext){
+    public static MonetaryContextBuilder of(MonetaryContext monetaryContext){
         return new MonetaryContextBuilder(monetaryContext);
     }
 
@@ -114,7 +113,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      * @param amountType the target amount type, not null.
      * @return a new {@link javax.money.MonetaryContextBuilder} instance, never null.
      */
-    public static MonetaryContextBuilder create(Class<? extends MonetaryAmount> amountType){
+    public static MonetaryContextBuilder of(Class<? extends MonetaryAmount> amountType){
         return new MonetaryContextBuilder(amountType);
     }
 

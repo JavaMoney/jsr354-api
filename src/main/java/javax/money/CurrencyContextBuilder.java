@@ -60,7 +60,7 @@ public final class CurrencyContextBuilder extends AbstractContextBuilder<Currenc
      *                 the final {@link CurrencyContext} created by this builder, not null.
      * @return a new {@link javax.money.CurrencyContextBuilder} instance, never null.
      */
-    public static CurrencyContextBuilder create(String provider){
+    public static CurrencyContextBuilder of(String provider){
         return new CurrencyContextBuilder(provider);
     }
 
@@ -70,7 +70,7 @@ public final class CurrencyContextBuilder extends AbstractContextBuilder<Currenc
      * @param context the {@link javax.money.CurrencyContext} to be used for initializing this builder.
      * @return a new {@link javax.money.CurrencyContextBuilder} instance, never null.
      */
-    public static CurrencyContextBuilder create(CurrencyContext context){
+    public static CurrencyContextBuilder of(CurrencyContext context){
         return new CurrencyContextBuilder(context);
     }
 

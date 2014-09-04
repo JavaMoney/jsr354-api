@@ -71,7 +71,7 @@ public abstract class AbstractQuery extends AbstractContext{
     }
 
     /**
-     * Get the current timestamp of the context in UTC milliseconds.  If not set it tries to create an
+     * Get the current timestamp of the context in UTC milliseconds.  If not set it tries to of an
      * UTC timestamp from #getTimestamp().
      *
      * @return the timestamp in millis, or null.
@@ -88,7 +88,7 @@ public abstract class AbstractQuery extends AbstractContext{
     }
 
     /**
-     * Get the current timestamp. If not set it tries to create an Instant from #getTimestampMillis().
+     * Get the current timestamp. If not set it tries to of an Instant from #getTimestampMillis().
      *
      * @return the current timestamp, or null.
      */

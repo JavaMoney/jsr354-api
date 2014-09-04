@@ -21,7 +21,7 @@ package javax.money;
  * precision and maximal scale, as well as the common implementation flavor. <br/>
  * Also a {@link MonetaryAmount} provides a {@link NumberValue}, which allows easily to extract the
  * numeric value, of the amount. And finally {@link #getFactory()} provides a
- * {@link MonetaryAmountFactory}, which allows to create instances of {@link MonetaryAmount} based
+ * {@link MonetaryAmountFactory}, which allows to of instances of {@link MonetaryAmount} based
  * on the same numeric implementation.
  * <p>
  * This JSR additionally recommends to consider the following aspects:
@@ -91,7 +91,7 @@ package javax.money;
  * @version 0.8.2
  * @see #with(MonetaryOperator)
  */
-public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Comparable<MonetaryAmount> {
+public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Comparable<MonetaryAmount>{
 
     /**
      * Returns the {@link MonetaryContext} of this {@code MonetaryAmount}. The
@@ -116,7 +116,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * @param query the query to invoke, not null
      * @return the query result, null may be returned (defined by the query)
      */
-    default <R> R query(MonetaryQuery<R> query) {
+    default <R> R query(MonetaryQuery<R> query){
         return query.queryFrom(this);
     }
 
@@ -130,7 +130,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * // converting from Money to MyMoney
      * Money m = ...;
      * MonetartyAmountFactory<MyMoney> f = MonetaryAmounts.queryAmountFactory(MyMoney.class);
-     * MyMoney myMoney = f.setAmount(m).create();
+     * MyMoney myMoney = f.setAmount(m).of();
      * </blockquote>
      * </pre>
      * <p>
@@ -170,7 +170,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * @param operator the operator to use, not null
      * @return an object of the same type with the specified conversion made, not null
      */
-    default MonetaryAmount with(MonetaryOperator operator) {
+    default MonetaryAmount with(MonetaryOperator operator){
         return operator.apply(this);
     }
 
@@ -242,7 +242,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      * @return {@code true} if {@link #signum()} < 0.
      */
-    default boolean isNegative() {
+    default boolean isNegative(){
         return signum() < 0;
     }
 
@@ -251,7 +251,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      * @return {@code true} if {@link #signum()} <= 0.
      */
-    default boolean isNegativeOrZero() {
+    default boolean isNegativeOrZero(){
         return signum() <= 0;
     }
 
@@ -260,7 +260,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      * @return {@code true} if {@link #signum()} > 0.
      */
-    default boolean isPositive() {
+    default boolean isPositive(){
         return signum() > 0;
     }
 
@@ -269,7 +269,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      * @return {@code true} if {@link #signum()} >= 0.
      */
-    default boolean isPositiveOrZero() {
+    default boolean isPositiveOrZero(){
         return signum() >= 0;
     }
 
@@ -278,7 +278,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      * @return {@code true} if {@link #signum()} == 0.
      */
-    default boolean isZero() {
+    default boolean isZero(){
         return signum() == 0;
     }
 
@@ -334,7 +334,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * accommodate the internal capabilities, and no {@link java.lang.ArithmeticException}
      * is thrown if the input number's scale exceeds the capabilities.
      *
-     * @param multiplicand value to be multiplied by this {@code MonetaryAmount}. If the multiplicand's scale exceeds the
+     * @param multiplicand value to be multiplied by this {@code MonetaryAmount}. If the multiplicand's scale exceeds
+     *                     the
      *                     capabilities of the implementation, it may be rounded implicitly.
      * @return {@code this * multiplicand}
      * @throws ArithmeticException if the result exceeds the numeric capabilities of this implementation class, i.e.
@@ -348,7 +349,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * multiplicand)</tt>, and whose scale is {@code (this.scale() +
      * multiplicand.scale())}.
      *
-     * @param multiplicand value to be multiplied by this {@code MonetaryAmount}. If the multiplicand's scale exceeds the
+     * @param multiplicand value to be multiplied by this {@code MonetaryAmount}. If the multiplicand's scale exceeds
+     *                     the
      *                     capabilities of the implementation, it may be rounded implicitly.
      * @return {@code this * multiplicand}
      * @throws ArithmeticException if the result exceeds the numeric capabilities of this implementation class, i.e.

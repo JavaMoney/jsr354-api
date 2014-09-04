@@ -84,10 +84,10 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
     /**
      * Creates a new builder instances, initialized with the data from this one.
      *
-     * @return a new {@link javax.money.MonetaryAmountFactoryQueryBuilder} instance, never null.
+     * @return a new {@link MonetaryAmountFactoryQueryBuilder} instance, never null.
      */
     public CurrencyQueryBuilder toBuilder(){
-        return CurrencyQueryBuilder.create(this);
+        return CurrencyQueryBuilder.of(this);
     }
 
 }

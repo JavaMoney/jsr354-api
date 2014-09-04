@@ -1071,7 +1071,7 @@ enum MyFlavor{ // only an example, not part of the API
   SLOW. FAST
 }
 
-MonetaryContext ctx = MonetaryContextBuilder.create()
+MonetaryContext ctx = MonetaryContextBuilder.of()
  .setMaxScale(2)
  .setFixedScale(true)
  .setPrecision(12)
@@ -1107,7 +1107,7 @@ MyMoney money = fact.setCurrency("USD").setNumber(10.50).create();
 .Usage Example for reating an Amount, querying for a +MonetaryAmountFactory+
 -------------------------------------------------------------------------------
 MonetaryAmountFactory<?> fact = MonetaryAmounts.getAmountFactory(
-  MonetaryAmountFactoryQueryBuilder.create().setMaxScale(2).setPrecision(10).build());
+  MonetaryAmountFactoryQueryBuilder.of().setMaxScale(2).setPrecision(10).build());
 MonetaryAmount money = fact.setCurrency("USD").setNumber(10.50).create();
 -------------------------------------------------------------------------------
 
@@ -1216,7 +1216,7 @@ Hereby
 -------------------------------------------------------------------------------
 // Note: Enum Region only serves as an example and not part of the API
 Collection<CurrencyUnit> currencies = MonetaryCurrencies.getCurrencies(
-  CurrencyQueryBuilder.create().setProvider("A", "B").set(Region.EMEA).setInt("contractNr", 12345).build()
+  CurrencyQueryBuilder.of().setProvider("A", "B").set(Region.EMEA).setInt("contractNr", 12345).build()
 );
 -------------------------------------------------------------------------------
 
@@ -1228,7 +1228,7 @@ provider would be implemented and registered one could perform the following que
 -------------------------------------------------------------------------------
 // Note: This is just an example: no historic provider is part of the API or RI currently
 Collection<CurrencyUnit> currencies = MonetaryCurrencies.getCurrencies(
-  CurrencyQueryBuilder.create().set(Locale.GERMANY).setTimestamp(LocalDate.of(1930,1,1)).build()
+  CurrencyQueryBuilder.of().set(Locale.GERMANY).setTimestamp(LocalDate.of(1930,1,1)).build()
 );
 -------------------------------------------------------------------------------
 
@@ -1399,11 +1399,11 @@ default currency rounding (e.g. for +CHF/Swiss Francs+), as follows:
 .Example how a cash rounding could be accessed (not part of the API)
 -------------------------------------------------------------------------------
 MonetaryRounding rounding = MonetaryRoundings.getRounding(
-                RoundingQueryBuilder.create()                         <1>
+                RoundingQueryBuilder.of()                             <1>
                 .setRoundingName("cashRounding")                      <2>
                 .setCurrencyUnit("USD")                               <3>
                 .setTimestamp(temporalAccessor)                       <4>
-                .create());                                           <5>
+                .build());                                            <5>
 -------------------------------------------------------------------------------
 <1> Access a rounding by passing a +RoundingQuery+
 <2> Acquire a specific _named_ rounding.
@@ -1652,13 +1652,13 @@ can be passed to parametrize the +<<CurrencyConversion>>+ or +<<ExchangeRateProv
 [source,java]
 .Usage Sample Create for Currency Conversion using Customized Parameters
 --------------------------------------------------------------------------
-ConversionContext ctx = ConversionContextBuilder.create()
+ConversionContext ctx = ConversionContextBuilder.of()
        .setRateType(RateType.DEFERRED).
        .set("customerID", 1234)
        .set("contractID", "213453-GFDT-02")
        .set(FallbackStragey.PROVIDER)
        .set(amount)
-       .create();
+       .build();
 
 // Access a conversion...
 CurrencyConversion conversion = MonetaryConversions.getConversion("CHF", ctx);
@@ -1814,7 +1814,7 @@ for this we could configure an +AmountFormatContext+ that implements this behavi
 [source,java]
 .Usage Example (continued) Formatting a MonetaryAmount
 --------------------------------------------------------------------------
-AmountFormatQuery query = AmountFormatQueryBuilder.create(new Locale("","INR"))
+AmountFormatQuery query = AmountFormatQueryBuilder.of(new Locale("","INR"))
                                 .set("groupSizes", new int[]{3,2]).build();
 MonetaryAmountFormat format = MonetaryAmountFormats.getAmountFormat(query);
 MonetaryAmountFactory<?> f = MonetaryAmounts.getDefaultAmountFactory();
@@ -1922,12 +1922,12 @@ THe code below illustrates a more complex example:
 [source,java]
 .Advanced setup of a AmountFormatContext
 -------------------------------------------------------------------------------
-AmountFormatContext ctx = new AmountFormatContext.Builder("htmlFormat")  <1>
-                          .setText("title", "MyTitle")                   <2>
-                          .setText("negativeStyle", ".negNumber")        <3>
-                          .setText("positiveStyle", ".posNumber+)        <3>
-                          .setText("styleClass", "styledAmount")         <4>
-                          .create();                                     <5>
+AmountFormatContext ctx = new AmountFormatContextBuilder.of("htmlFormat")  <1>
+                          .setText("title", "MyTitle")                     <2>
+                          .setText("negativeStyle", ".negNumber")          <3>
+                          .setText("positiveStyle", ".posNumber+)          <3>
+                          .setText("styleClass", "styledAmount")           <4>
+                          .build();                                        <5>
 -------------------------------------------------------------------------------
 <1> Access a format with name +htmlFormat+
 <2> Sets the format's display name
@@ -2878,7 +2878,7 @@ When accessing +MonetaryAmountFactory+ instances it is possible to configure the
 .Example Configuring a +MonetaryAmountFactory+, using the RI class +Money+ as example.
 -------------------------------------------------------------------
 MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(
-   MonetaryAmountFactoryQueryBuilder.create(Money.class)
+   MonetaryAmountFactoryQueryBuilder.of(Money.class)
      .set(new MathContext(250, RoundingMode.HALF_EVEN)).build()
 );
 // Creates an instance of Money with the given MathContext
@@ -3121,7 +3121,7 @@ conversion, e.g.:
 [source,java]
 -------------------------------------------------------------------
 MonetaryAmount inCHF =...;
-CurrencyConversion conv = MonetaryConversions.getConversion(ConversionQueryBuilder.create()
+CurrencyConversion conv = MonetaryConversions.getConversion(ConversionQueryBuilder.of()
         .setProviders("CS", "EZB", "IMF")
         .setTermCurrency("EUR")
         .set(MonetaryAmount.class, inCHF, MonetaryAmount.class)

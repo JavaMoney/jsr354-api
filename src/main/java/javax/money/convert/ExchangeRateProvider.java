@@ -109,7 +109,7 @@ public interface ExchangeRateProvider{
     default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){
         Objects.requireNonNull(base, "Base Currency is null");
         Objects.requireNonNull(term, "Term Currency is null");
-        return getExchangeRate(ConversionQueryBuilder.create().setBaseCurrency(base).setTermCurrency(term).build());
+        return getExchangeRate(ConversionQueryBuilder.of().setBaseCurrency(base).setTermCurrency(term).build());
     }
 
     /**
@@ -121,7 +121,7 @@ public interface ExchangeRateProvider{
      * never {@code null}.
      */
     default CurrencyConversion getCurrencyConversion(CurrencyUnit term){
-        return getCurrencyConversion(ConversionQueryBuilder.create().setTermCurrency(term).build());
+        return getCurrencyConversion(ConversionQueryBuilder.of().setTermCurrency(term).build());
     }
 
     /**
@@ -135,7 +135,7 @@ public interface ExchangeRateProvider{
      * defined.
      */
     default boolean isAvailable(CurrencyUnit base, CurrencyUnit term){
-        return isAvailable(ConversionQueryBuilder.create().setBaseCurrency(base).setTermCurrency(term).build());
+        return isAvailable(ConversionQueryBuilder.of().setBaseCurrency(base).setTermCurrency(term).build());
     }
 
 

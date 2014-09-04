@@ -84,7 +84,7 @@ public final class RoundingQuery extends AbstractQuery implements CurrencySuppli
      * @return a new {@link javax.money.RoundingQueryBuilder} instance, never null.
      */
     public RoundingQueryBuilder toBuilder(){
-        return RoundingQueryBuilder.create(this);
+        return RoundingQueryBuilder.of(this);
     }
 
 }

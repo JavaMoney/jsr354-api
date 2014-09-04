@@ -18,50 +18,49 @@ import org.testng.annotations.Test;
 
 /**
  * @author Anatole
- * 
  */
-public class MonetaryAmountsTest {
+public class MonetaryAmountsTest{
 
-	/**
-	 * Test method for
-	 * {@link javax.money.MonetaryAmounts#getAmountFactory(java.lang.Class)}.
-	 */
-	@Test
-	public void testGetFactory() {
-		assertNotNull(MonetaryAmounts.getDefaultAmountFactory());
-		assertNotNull(MonetaryAmounts.getAmountFactory(DummyAmount.class));
-		assertTrue(MonetaryAmounts.getDefaultAmountFactory().getClass() == MonetaryAmounts
-				.getAmountFactory(DummyAmount.class).getClass());
-	}
+    /**
+     * Test method for
+     * {@link javax.money.MonetaryAmounts#getAmountFactory(java.lang.Class)}.
+     */
+    @Test
+    public void testGetFactory(){
+        assertNotNull(MonetaryAmounts.getDefaultAmountFactory());
+        assertNotNull(MonetaryAmounts.getAmountFactory(DummyAmount.class));
+        assertTrue(MonetaryAmounts.getDefaultAmountFactory().getClass() ==
+                           MonetaryAmounts.getAmountFactory(DummyAmount.class).getClass());
+    }
 
-	/**
-	 * Test method for {@link javax.money.MonetaryAmounts#getAmountTypes()}.
-	 */
-	@Test
-	public void testGetTypes() {
-		assertNotNull(MonetaryAmounts.getAmountTypes());
-		assertTrue(MonetaryAmounts.getAmountTypes().size() == 1);
-		assertTrue(MonetaryAmounts.getAmountTypes().contains(DummyAmount.class));
-	}
+    /**
+     * Test method for {@link javax.money.MonetaryAmounts#getAmountTypes()}.
+     */
+    @Test
+    public void testGetTypes(){
+        assertNotNull(MonetaryAmounts.getAmountTypes());
+        assertTrue(MonetaryAmounts.getAmountTypes().size() == 1);
+        assertTrue(MonetaryAmounts.getAmountTypes().contains(DummyAmount.class));
+    }
 
-	/**
-	 * Test method for
-	 * {@link javax.money.MonetaryAmounts#getDefaultAmountType()}.
-	 */
-	@Test
-	public void testGetDefaultAmountType() {
-		assertNotNull(MonetaryAmounts.getDefaultAmountFactory());
-		assertEquals(DummyAmountFactory.class, MonetaryAmounts.getDefaultAmountFactory().getClass());
-	}
+    /**
+     * Test method for
+     * {@link javax.money.MonetaryAmounts#getDefaultAmountType()}.
+     */
+    @Test
+    public void testGetDefaultAmountType(){
+        assertNotNull(MonetaryAmounts.getDefaultAmountFactory());
+        assertEquals(DummyAmountBuilder.class, MonetaryAmounts.getDefaultAmountFactory().getClass());
+    }
 
-//	/**
-//	 * Test method for
-//	 * {@link javax.money.MonetaryAmounts#getAmountType(MonetaryAmountFactoryQuery)}
-//	 * .
-//	 */
-//	@Test
-//	public void testGetAmountType() {
-//		assertNotNull(MonetaryAmounts.getAmountType(null));
-//	}
+    //	/**
+    //	 * Test method for
+    //	 * {@link javax.money.MonetaryAmounts#getAmountType(MonetaryAmountFactoryQuery)}
+    //	 * .
+    //	 */
+    //	@Test
+    //	public void testGetAmountType() {
+    //		assertNotNull(MonetaryAmounts.getAmountType(null));
+    //	}
 
 }

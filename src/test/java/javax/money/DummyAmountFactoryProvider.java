@@ -13,39 +13,38 @@ import javax.money.spi.MonetaryAmountFactoryProviderSpi;
 /**
  * Dummy amount factory only used for testing of the {@link MonetaryAmounts} singleton's delegation
  * logic.
- * 
+ *
  * @author Anatole Tresch
  */
-public final class DummyAmountFactoryProvider implements
-		MonetaryAmountFactoryProviderSpi<DummyAmount> {
-	
-	@Override
-	public MonetaryAmountFactory<DummyAmount> createMonetaryAmountFactory() {
-		return new DummyAmountFactory();
-	}
+public final class DummyAmountFactoryProvider implements MonetaryAmountFactoryProviderSpi<DummyAmount>{
 
-	@Override
-	public Class<DummyAmount> getAmountType() {
-		return DummyAmount.class;
-	}
+    @Override
+    public MonetaryAmountFactory<DummyAmount> createMonetaryAmountFactory(){
+        return new DummyAmountBuilder();
+    }
 
-	@Override
-	public MonetaryContext getMaximalMonetaryContext() {
-		return DummyAmountFactory.DUMMY_CONTEXT;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.MonetaryAmountFactory#getQueryInclusionPolicy()
-	 */
-	@Override
-	public QueryInclusionPolicy getQueryInclusionPolicy() {
-		return QueryInclusionPolicy.ALWAYS;
-	}
+    @Override
+    public Class<DummyAmount> getAmountType(){
+        return DummyAmount.class;
+    }
 
-	@Override
-	public MonetaryContext getDefaultMonetaryContext() {
-		return DummyAmountFactory.DUMMY_CONTEXT;
-	}
+    @Override
+    public MonetaryContext getMaximalMonetaryContext(){
+        return DummyAmountBuilder.DUMMY_CONTEXT;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see javax.money.MonetaryAmountFactory#getQueryInclusionPolicy()
+     */
+    @Override
+    public QueryInclusionPolicy getQueryInclusionPolicy(){
+        return QueryInclusionPolicy.ALWAYS;
+    }
+
+    @Override
+    public MonetaryContext getDefaultMonetaryContext(){
+        return DummyAmountBuilder.DUMMY_CONTEXT;
+    }
 
 }

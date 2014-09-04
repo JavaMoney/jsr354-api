@@ -22,12 +22,16 @@ import java.util.*;
  * extensions os specialities.<p>
  * Superclasses of this class must be final, immutable, serializable and thread-safe.
  */
-public abstract class AbstractContext implements Serializable {
+public abstract class AbstractContext implements Serializable{
 
-    /** Key for storing the target providers to be queried */
+    /**
+     * Key for storing the target providers to be queried
+     */
     public static final String KEY_PROVIDER = "provider";
 
-    /** Key name for the timestamp attribute. */
+    /**
+     * Key name for the timestamp attribute.
+     */
     public static final String KEY_TIMESTAMP = "timestamp";
 
     /**
@@ -374,7 +378,7 @@ public abstract class AbstractContext implements Serializable {
     }
 
     /**
-     * Get the current target timestamp of the query in UTC milliseconds.  If not set it tries to create an
+     * Get the current target timestamp of the query in UTC milliseconds.  If not set it tries to of an
      * UTC timestamp from #getTimestamp(). This allows to select historical roundings that were valid in the
      * past. Its implementation specific, to what extend historical roundings are available. By default if this
      * property is not set always current {@link  javax.money.MonetaryRounding} instances are provided.
@@ -393,7 +397,7 @@ public abstract class AbstractContext implements Serializable {
     }
 
     /**
-     * Get the current target timestamp of the query. If not set it tries to create an Instant from
+     * Get the current target timestamp of the query. If not set it tries to of an Instant from
      * #getTimestampMillis(). This allows to select historical roundings that were valid in the
      * past. Its implementation specific, to what extend historical roundings are available. By default if this
      * property is not set always current {@link  javax.money.MonetaryRounding} instances are provided.
@@ -432,6 +436,7 @@ public abstract class AbstractContext implements Serializable {
 
     /**
      * Access all the values present.
+     *
      * @param type the type used.
      * @return
      */

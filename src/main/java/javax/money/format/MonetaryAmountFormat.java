@@ -30,35 +30,35 @@ import java.io.IOException;
  * instead of instantiating implementations directly, since the <code>MonetaryFormats</code> factory
  * method may return different subclasses or may implement contextual behaviour (in a EE context).
  * If you need to customize the format object, do something like this:
- * <p/>
+ * <p>
  * <blockquote>
- * <p/>
+ * <p>
  * <pre>
  * MonetaryAmountFormat f = MonetaryFormats.getInstance(loc);
  * f.setStyle(f.getStyle().toBuilder().setPattern(&quot;###.##;(###.##)&quot;).build());
  * </pre>
- * <p/>
+ * <p>
  * </blockquote>
- * <p/>
+ * <p>
  * <h4>Special Values</h4>
- * <p/>
- * <p/>
+ * <p>
+ * <p>
  * Negative zero (<code>"-0"</code>) should always parse to
  * <ul>
  * <li><code>0</code></li>
  * </ul>
- * <p/>
+ * <p>
  * <h4><a name="synchronization">Synchronization</a></h4>
- * <p/>
- * <p/>
- * Instances of this class are not required to be thread-safe. It is recommended to create separate
+ * <p>
+ * <p>
+ * Instances of this class are not required to be thread-safe. It is recommended to of separate
  * format instances for each thread. If multiple threads access a format concurrently, it must be
  * synchronized externally.
- * <p/>
+ * <p>
  * <h4>Example</h4>
- * <p/>
+ * <p>
  * <blockquote>
- * <p/>
+ * <p>
  * <pre>
  * <strong>// Print out a number using the localized number, currency,
  * // for each locale</strong>
@@ -81,7 +81,7 @@ import java.io.IOException;
  *     }
  * }
  * </pre>
- * <p/>
+ * <p>
  * </blockquote>
  */
 public interface MonetaryAmountFormat extends MonetaryQuery<String>{
@@ -115,7 +115,7 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String>{
 
     /**
      * Formats the given {@link MonetaryAmount} to a {@code Appendable}.
-     * <p/>
+     * <p>
      * Example implementations of {@code Appendable} are {@code StringBuilder}, {@code StringBuffer}
      * or {@code Writer}. Note that {@code StringBuilder} and {@code StringBuffer} never throw an
      * {@code IOException}.
@@ -130,15 +130,15 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String>{
 
     /**
      * Fully parses the text into an instance of {@link MonetaryAmount}.
-     * <p/>
+     * <p>
      * The parse must complete normally and parse the entire text. If the parse completes without
      * reading the entire length of the text, an exception is thrown. If any other problem occurs
      * during parsing, an exception is thrown.
-     * <p/>
+     * <p>
      * Additionally the effective implementation type returned can be determined by the
      * {@link MonetaryContext} applied to the {@link MonetaryAmountFormat}. This formatter will call
      * {@link javax.money.MonetaryAmounts#getDefaultAmountType()} and will use the result returned
-     * to access a corresponding {@link javax.money.MonetaryAmountFactory} to create the instance
+     * to access a corresponding {@link javax.money.MonetaryAmountFactory} to of the instance
      * returned.
      *
      * @param text the text to parse, not null

@@ -59,7 +59,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
      * @return the target CurrencyUnit, or null.
      */
     public CurrencyUnit getCurrency(){
-        return get(CurrencyUnit.class, (CurrencyUnit) null);
+        return get(CurrencyUnit.class, null);
     }
 
     /**

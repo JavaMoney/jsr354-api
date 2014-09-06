@@ -357,7 +357,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
     @Override
     public String toString(){
         StringBuilder attrsBuilder = new StringBuilder();
-        for(Map.Entry<Class,Map<Object,Object>> en : ((Map<Class,Map<Object,Object>>) this.data).entrySet()){
+        for(Map.Entry<Class,Map<Object,Object>> en : this.data.entrySet()){
 
             Map<Object,Object> sortedMap = new TreeMap<>(Comparator.comparing(Object::toString));
             sortedMap.putAll(en.getValue());

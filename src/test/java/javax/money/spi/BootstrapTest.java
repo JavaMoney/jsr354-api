@@ -59,7 +59,7 @@ public class BootstrapTest{
     @Test
     public void testGetServicesWithDefault() throws Exception{
         Collection<Object> services = Collection.class
-                .cast(Bootstrap.getServices(Boolean.class, Arrays.asList(new Boolean[]{Boolean.FALSE, Boolean.TRUE})));
+                .cast(Bootstrap.getServices(Boolean.class, Arrays.asList(Boolean.FALSE, Boolean.TRUE)));
         assertNotNull(services);
         assertFalse(services.isEmpty());
         assertTrue(services.size() == 2);
@@ -92,13 +92,13 @@ public class BootstrapTest{
         @Override
         public <T> List<T> getServices(Class<T> serviceType){
             if(String.class.equals(serviceType)){
-                return List.class.cast(Arrays.asList(new String[]{"service1", "service2"}));
+                return List.class.cast(Arrays.asList("service1", "service2"));
             }
             else if(Integer.class.equals(serviceType)){
-                return List.class.cast(Arrays.asList(new Integer[]{5}));
+                return List.class.cast(Arrays.asList(5));
             }
             else if(Long.class.equals(serviceType)){
-                return List.class.cast(Arrays.asList(new Long[]{(long) 111}));
+                return List.class.cast(Arrays.asList((long) 111));
             }
             return super.getServices(serviceType);
         }
@@ -106,13 +106,13 @@ public class BootstrapTest{
         @Override
         public <T> List<T> getServices(Class<T> serviceType, List<T> defaultList){
             if(String.class.equals(serviceType)){
-                return List.class.cast(Arrays.asList(new String[]{"service1", "service2"}));
+                return List.class.cast(Arrays.asList("service1", "service2"));
             }
             else if(Integer.class.equals(serviceType)){
-                return List.class.cast(Arrays.asList(new Integer[]{5}));
+                return List.class.cast(Arrays.asList(5));
             }
             else if(Long.class.equals(serviceType)){
-                return List.class.cast(Arrays.asList(new Long[]{(long) 111}));
+                return List.class.cast(Arrays.asList((long) 111));
             }
             return super.getServices(serviceType, defaultList);
         }

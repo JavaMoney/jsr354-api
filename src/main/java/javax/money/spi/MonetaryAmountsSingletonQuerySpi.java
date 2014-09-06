@@ -11,9 +11,8 @@ package javax.money.spi;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmountFactoryQuery;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * SPI (core) for the backing implementation of the {@link javax.money.MonetaryAmounts} singleton, implementing
@@ -48,7 +47,7 @@ public interface MonetaryAmountsSingletonQuerySpi{
      *                                       the required
      *                                       {@link javax.money.MonetaryContext}.
      */
-    Collection<MonetaryAmountFactory<?>> getAmountFactories(MonetaryAmountFactoryQuery query);
+    Collection<MonetaryAmountFactory<? extends MonetaryAmount>> getAmountFactories(MonetaryAmountFactoryQuery query);
 
     /**
      * Checks if an {@link javax.money.MonetaryAmountFactory} is matching the given query.
@@ -83,12 +82,8 @@ public interface MonetaryAmountsSingletonQuerySpi{
      * @return the type found, or null.
      */
     default Collection<Class<? extends MonetaryAmount>> getAmountTypes(MonetaryAmountFactoryQuery query){
-        Collection<MonetaryAmountFactory<?>> factories = getAmountFactories(query);
-        List<Class<? extends MonetaryAmount>> result = new ArrayList<>();
-        for(MonetaryAmountFactory<?> f : factories){
-            result.add(f.getAmountType());
-        }
-        return result;
+        Collection<MonetaryAmountFactory<? extends  MonetaryAmount>> factories = getAmountFactories(query);
+        return factories.stream().map(MonetaryAmountFactory::getAmountType).collect(Collectors.toList());
     }
 
     /**

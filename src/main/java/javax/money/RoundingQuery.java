@@ -75,7 +75,7 @@ public final class RoundingQuery extends AbstractQuery implements CurrencySuppli
      * @return the CurrencyUnit, or null.
      */
     public CurrencyUnit getCurrency(){
-        return get(CurrencyUnit.class, (CurrencyUnit) null);
+        return get(CurrencyUnit.class, null);
     }
 
     /**

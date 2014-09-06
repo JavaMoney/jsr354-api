@@ -13,13 +13,17 @@ package javax.money;
 import org.testng.annotations.Test;
 
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.testng.Assert.*;
 
 /**
  * Created by Anatole on 05.03.14.
  */
-public class UnknownCurrencyExceptionTest{
+public class UnknownCurrencyExceptionTest {
+
+    private static final Logger LOGGER = Logger.getLogger(UnknownCurrencyExceptionTest.class.getName());
     @Test
     public void testGetCurrencyCode() throws Exception{
         UnknownCurrencyException e = new UnknownCurrencyException("GGG");
@@ -34,7 +38,7 @@ public class UnknownCurrencyExceptionTest{
         UnknownCurrencyException e = new UnknownCurrencyException(Locale.CANADA_FRENCH);
         assertEquals(Locale.CANADA_FRENCH, e.getLocale());
         assertNull(e.getCurrencyCode());
-        System.out.println(e);
+        LOGGER.log(Level.INFO, e.getMessage(), e);
         assertTrue(e.toString().contains(Locale.CANADA_FRENCH.toString()));
         assertTrue(e.toString().contains("UnknownCurrencyException"));
     }

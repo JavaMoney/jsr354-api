@@ -5,7 +5,7 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * API ("Specification") Copyright (c) 2012-2013, Credit SUISSE All rights
  * reserved.
  */
 package javax.money;
@@ -18,7 +18,7 @@ import java.util.*;
 
 /**
  * Represents a general context of data targeting an item of type {@code Q}. Contexts are used to add arbitrary
- * data that cannot be be mapped in a atandard way to the money API, e.g. use case or customer specific
+ * data that cannot be be mapped in a standard way to the money API, e.g. use case or customer specific
  * extensions os specialities.<p>
  * Superclasses of this class must be final, immutable, serializable and thread-safe.
  */
@@ -47,7 +47,7 @@ public abstract class AbstractContext implements Serializable{
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected AbstractContext(AbstractContextBuilder<?,?> builder){
         for(Map.Entry<Class,Map<Object,Object>> en : ((Map<Class,Map<Object,Object>>) builder.data).entrySet()){
-            Map<Object,Object> presentMap = (Map<Object,Object>) this.data.get(en.getKey());
+            Map<Object,Object> presentMap = this.data.get(en.getKey());
             if(presentMap == null){
                 presentMap = new HashMap<>(en.getValue());
                 this.data.put(en.getKey(), presentMap);

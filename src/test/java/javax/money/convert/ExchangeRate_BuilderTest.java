@@ -66,7 +66,7 @@ public class ExchangeRate_BuilderTest{
         ExchangeRate rate =
                 b.setFactor(TestNumberValue.of(9)).setContext(ConversionContext.of("test", RateType.DEFERRED)).build();
         assertEquals(rate.getFactor().numberValue(BigDecimal.class), BigDecimal.valueOf(9));
-        assertEquals(rate.getExchangeRateChain(), Arrays.asList(new ExchangeRate[]{rate1, rate2}));
+        assertEquals(rate.getExchangeRateChain(), Arrays.asList(rate1, rate2));
     }
 
     @Test

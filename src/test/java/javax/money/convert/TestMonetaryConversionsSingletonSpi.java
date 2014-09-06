@@ -28,7 +28,6 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
 
     @Override
     public ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery){
-        Collection<ExchangeRateProvider> providers = null;
 
         if(conversionQuery.getProviders().isEmpty() || conversionQuery.getProviders().contains("test")){
             return provider;
@@ -48,7 +47,7 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
 
     @Override
     public Collection<String> getProviderNames(){
-        return Arrays.asList(new String[]{"test"});
+        return Arrays.asList("test");
     }
 
     @Override

@@ -15,7 +15,7 @@
     <artifactId>money-api</artifactId>
     <packaging>jar</packaging>
 
-    <version>0.9-SNAPSHOT</version>
+    <version>0.9</version>
 
     <name>JSR 354 (Money and Currency API)</name>
     <url>http://java.net/projects/javamoney</url>
@@ -783,48 +783,8 @@
                     <showComments>true</showComments>
                     <xincludeSupported>true</xincludeSupported>
                     <fop1Extensions>1</fop1Extensions>
-
-                    <!--
-                    <foCustomization>${basedir}/src/main/asciidoc/customization-fopdf.xsl</foCustomization>
-                    <emailMailtoEnabled>true</emailMailtoEnabled>
-                    <generatedSourceDirectory>true</generatedSourceDirectory>
-                    <generateIndex>true</generateIndex>
-                    <useEmbedForSvg>true</useEmbedForSvg>
-                    <useExtensions>1</useExtensions>
-                    <highlightSource>1</highlightSource>
-                    <highlightDefaultLanguage>java</highlightDefaultLanguage>
-                    <calloutsExtension>1</calloutsExtension>
-
-                    <fop1Extensions>1</fop1Extensions>
-                    <useEmbedForSvg>1</useEmbedForSvg>
-                    <imgSrcPath>src/main/asciidoc/images</imgSrcPath>
-
-                    <postProcess>
-                        <zip
-                                destfile="${project.of.directory}/${project.artifactId}-${project.version}-docs.zip">
-                            <fileset dir="${project.of.directory}/docs"
-                                     includes="**/*.pdf" />
-                        </zip>
-                    </postProcess -->
                 </configuration>
             </plugin>
-            <!-- plugin>
-                <groupId>com.agilejava.docbkx</groupId>
-                <artifactId>docbkx-fop-support</artifactId>
-                <version>2.0.15</version>
-                <executions>
-                    <execution>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <ansi>true</ansi>
-                            <sourceDirectory>src/main/asciidoc</sourceDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin -->
         </plugins>
     </build>
 
@@ -844,16 +804,9 @@
                         </reports>
                         <configuration>
                             <detectLinks>true</detectLinks>
-                            <!-- <links> <link>http://static.springsource.org/spring/docs/${spring.version}/javadoc-api</link>
-                                <link>http://static.springsource.org/spring-security/site/docs/3.0.x/apidocs</link>
-                                <link>http://commons.apache.org/lang/api-2.5</link> <link>http://docs.oracle.com/javaee/5/api</link>
-                                </links> -->
-                            <!-- excludePackageNames>blabla</excludePackageNames -->
                             <keywords>true</keywords>
                             <linksource>true</linksource>
-                            <!-- overview>${basedir}/overview.html</overview -->
                             <source>${project.build.sourceCompilerLevel}</source>
-                            <!-- stylesheetfile>${basedir}/src/site/css/money-jdoc.css</stylesheetfile -->
                             <verbose>true</verbose>
                             <aggregate>true</aggregate>
                             <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
@@ -883,7 +836,6 @@
                     <linkJavadoc>true</linkJavadoc>
                     <aggregate>true</aggregate>
                     <javadocDir>${project.name}/apidocs</javadocDir>
-                    <!-- stylesheet>${basedir}/src/site/css/javamoneys-jdoc.css</stylesheet -->
                     <windowTitle>JSR 354 - Java Money Sources</windowTitle>
                 </configuration>
             </plugin>
@@ -937,11 +889,6 @@
                     </tagListOptions>
                 </configuration>
             </plugin>
-            <!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.4</version> <configuration> <xrefLocation>${project.reporting.outputDirectory}/../../xref</xrefLocation>
-                <enableRulesSummary>false</enableRulesSummary> <configLocation>https://raw.github.com/JavaMoney/javamoney/master/checkstyle.xml</configLocation>
-                <headerLocation>https://raw.github.com/JavaMoney/javamoney/master/checkstyle-license.txt</headerLocation>
-                </configuration> </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>

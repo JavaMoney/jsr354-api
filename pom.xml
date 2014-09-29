@@ -240,12 +240,12 @@
     <distributionManagement>
         <repository>
             <id>sonatype-nexus-staging</id>
-            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
             <name>Nexus Release Repository</name>
         </repository>
         <snapshotRepository>
             <id>sonatype-nexus-snapshots</id>
-            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
             <name>Sonatype Nexus Snapshots</name>
         </snapshotRepository>
     </distributionManagement>
@@ -391,12 +391,12 @@
                 </site>
                 <repository>
                     <id>cloudbees</id>
-                    <url>http://repository-jsr354.forge.cloudbees.com/release/</url>
+                    <url>https://repository-jsr354.forge.cloudbees.com/release/</url>
                     <name>Cloudbees Release Repository</name>
                 </repository>
                 <snapshotRepository>
                     <id>cloudbees</id>
-                    <url>http://repository-jsr354.forge.cloudbees.com/snapshot/</url>
+                    <url>https://repository-jsr354.forge.cloudbees.com/snapshot/</url>
                     <name>Cloudbees Nexus Snapshots</name>
                 </snapshotRepository>
             </distributionManagement>

@@ -18,7 +18,8 @@ package javax.money;
  * <p>
  * Each instance of an amount provides additional meta-data in form of a {@link MonetaryContext}.
  * This context contains detailed information on the numeric capabilities, e.g. the supported
- * precision and maximal scale, as well as the common implementation flavor. <br/>
+ * precision and maximal scale, as well as the common implementation flavor.
+ *
  * Also a {@link MonetaryAmount} provides a {@link NumberValue}, which allows easily to extract the
  * numeric value, of the amount. And finally {@link #getFactory()} provides a
  * {@link MonetaryAmountFactory}, which allows to of instances of {@link MonetaryAmount} based
@@ -47,7 +48,8 @@ package javax.money;
  * <li>To enable further interoperability a static method {@code from(MonetaryAmount)} is
  * recommended to be implemented on each implementation class, that allows conversion of a
  * {@code MonetaryAmount} to a concrete instance. E.g.a class {@code MyMoney extends MonetaryAmount}
- * would contain the following method:<br/>
+ * would contain the following method:
+ *
  * <blockquote>
  * <p>
  * <pre>
@@ -329,7 +331,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     /**
      * Returns a {@code MonetaryAmount} whose value is <tt>(this &times;
      * multiplicand)</tt>, and whose scale is {@code (this.scale() +
-     * multiplicand.scale())}.<br/>
+     * multiplicand.scale())}.
      * By default the input value's scale will be rounded to
      * accommodate the internal capabilities, and no {@link java.lang.ArithmeticException}
      * is thrown if the input number's scale exceeds the capabilities.

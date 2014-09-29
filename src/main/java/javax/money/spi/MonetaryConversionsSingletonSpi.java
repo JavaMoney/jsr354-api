@@ -19,7 +19,8 @@ import javax.money.convert.*;
  * SPI (conversoin) that implements the functionalities provided by the
  * {@code MonetaryConversions} singleton accessor. It should be registered as a
  * service using the JDK {@code ServiceLoader}. Hereby only one instance can be
- * registered at a time.<br/>
+ * registered at a time.
+ *
  * This interface is designed to support also contextual behaviour, e.g. in Java
  * EE containers each application may provide its own
  * {@link ExchangeRateProvider} instances, e.g. by registering them as CDI

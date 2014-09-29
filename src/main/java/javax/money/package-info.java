@@ -15,7 +15,8 @@
  * concrete usage scenarios do not allow to define an implementation that is
  * capable of covering all aspects identified. Consequently it must be possible
  * that implementations can provide several implementations for monetary
- * amounts. <br/>
+ * amounts.
+ *
  * Users should not reference the interfaces, instead the value types should be
  * used.</li>
  * <li>Implementations must provide value types for currencies and amounts,

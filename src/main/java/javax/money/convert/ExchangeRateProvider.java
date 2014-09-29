@@ -19,7 +19,7 @@ import java.util.Objects;
  * corresponding {@link javax.money.convert.ProviderContext}.
  * Instances of this class must only provide conversion data for exact one provider, identified by
  * {@link ProviderContext#getProvider()}.
- * <br/>
+ *
  * When accessing ExchangeRateProvider instances or {@link javax.money.convert.CurrencyConversion} instances from the
  * {@link MonetaryConversions}
  * in many cases a chain of providers will be returned. It is the reponsibility of the implementation code assembling

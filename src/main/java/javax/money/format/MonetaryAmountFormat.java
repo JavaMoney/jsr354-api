@@ -19,7 +19,8 @@ import java.io.IOException;
  * </p>
  * <p>
  * To obtain a <code>MonetaryAmountFormat</code> for a specific locale, including the default
- * locale, call {@link MonetaryFormats#getAmountFormat(java.util.Locale)}. <br/>
+ * locale, call {@link MonetaryFormats#getAmountFormat(java.util.Locale)}.
+ *
  * More complex formatting scenarios can be implemented by registering instances of {@link javax.money.spi
  * .MonetaryAmountFormatProviderSpi}.
  * The spi implementation creates new instances of {@link javax.money.format.MonetaryAmountFormat} based on the

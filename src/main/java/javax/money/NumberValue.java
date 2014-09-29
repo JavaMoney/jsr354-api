@@ -129,8 +129,10 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
      * w = longValue()
      * n = getFractionNominator()
      * d = getFractionDenominator()
-     * </code><br/>
-     * the following must be always true:<br/>
+     * </code>
+     *
+     * the following must be always true:
+     *
      * <code>
      * !(w<0 && n>0)  and
      * !(w>0 && n<0)  and
@@ -148,8 +150,10 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
      * w = longValue()
      * n = getFractionNominator()
      * d = getFractionDenominator()
-     * </code><br/>
-     * the following must be always true:<br/>
+     * </code>
+     *
+     * the following must be always true:
+     *
      * <code>
      * !(w<0 && n>0)  and
      * !(w>0 && n<0)  and

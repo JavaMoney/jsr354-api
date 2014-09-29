@@ -15,7 +15,7 @@
     <artifactId>money-api</artifactId>
     <packaging>jar</packaging>
 
-    <version>1.0-SNAPSHOT</version>
+    <version>0.9</version>
 
     <name>JSR 354 (Money and Currency API)</name>
     <url>http://java.net/projects/javamoney</url>
@@ -309,7 +309,6 @@
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
-                                <!-- phase>verify</phase -->
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
@@ -411,12 +410,6 @@
                 <version>${testng.version}</version>
                 <scope>test</scope>
             </dependency>
-            <!-- dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency -->
         </dependencies>
     </dependencyManagement>
 
@@ -426,11 +419,6 @@
             <artifactId>testng</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency -->
     </dependencies>
 
     <build>
@@ -452,6 +440,11 @@
 
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.1</version>
+                </plugin>
                 <!-- ======================================================= -->
                 <!-- Packaging (OSGi bundle) -->
                 <!-- ======================================================= -->
@@ -562,15 +555,13 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <detectLinks>true</detectLinks>
-                        <!-- excludePackageNames>blabla</excludePackageNames -->
+                        <additionalparam>-Xdoclint:none</additionalparam>
+                        <detectLinks>false</detectLinks>
                         <keywords>true</keywords>
+                        <linksource>false</linksource>
                         <failOnError>false</failOnError>
-                        <linksource>true</linksource>
-                        <!-- overview>${basedir}/overview.html</overview -->
-                        <source>${maven.compile.sourceLevel}</source>
-                        <!-- stylesheetfile>${basedir}/src/site/css/money-jdoc.css</stylesheetfile -->
-                        <verbose>true</verbose>
+                        <source>1.8</source>
+                        <verbose>false</verbose>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -603,14 +594,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <version>2.9.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -679,13 +663,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.asciidoctor</groupId>
@@ -817,6 +794,7 @@
                             </docletArtifact>
                             <show>private</show>
                             <additionalparam>
+                                -Xdoclint:none
                                 -inferrel -inferdep -quiet -hide java.*
                                 -collpackages java.util.*
                                 -postfixpackage -nodefontname Tahoma
@@ -828,15 +806,30 @@
                 </reportSets>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jdepend-maven-plugin</artifactId>
+                <version>2.0-beta-2</version>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.3</version>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.15</version>
                 <configuration>
                     <aggregate>true</aggregate>
-                    <linkJavadoc>true</linkJavadoc>
+                    <xrefLocation>${project.reporting.outputDirectory}/../xref-test</xrefLocation>
+                    <linkXRef>true</linkXRef>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <targetJdk>${maven.compile.targetLevel}</targetJdk>
+                    <format>xml</format>
+                    <linkXRef>true</linkXRef>
                     <aggregate>true</aggregate>
-                    <javadocDir>${project.name}/apidocs</javadocDir>
-                    <windowTitle>JSR 354 - Java Money Sources</windowTitle>
+                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
                 </configuration>
             </plugin>
             <plugin>
@@ -849,7 +842,8 @@
                     <tagListOptions>
                         <tagClasses>
                             <tagClass>
-                                <displayName>Important fixes that have to be done until the next
+                                <displayName>Important fixes that have to be done until the
+                                    next
                                     release
                                 </displayName>
                                 <tags>
@@ -891,33 +885,22 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.0.1</version>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
                 <configuration>
-                    <targetJdk>${maven.compile.targetLevel}</targetJdk>
-                    <format>xml</format>
-                    <linkXRef>true</linkXRef>
                     <aggregate>true</aggregate>
-                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+                    <linkJavadoc>true</linkJavadoc>
+                    <aggregate>true</aggregate>
+                    <javadocDir>${project.name}/apidocs</javadocDir>
+                    <!-- stylesheet>${basedir}/src/site/css/javamoneys-jdoc.css</stylesheet -->
+                    <windowTitle>JSR 354 - Java Money API Sources</windowTitle>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.15</version>
-                <configuration>
-                    <aggregate>true</aggregate>
-                    <xrefLocation>${project.reporting.outputDirectory}/../xref-test</xrefLocation>
-                    <linkXRef>true</linkXRef>
-                </configuration>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.8</version>
             </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jdepend-maven-plugin</artifactId>
-                <version>2.0-beta-2</version>
-            </plugin>
-
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -927,7 +910,6 @@
                     <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
@@ -948,43 +930,25 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>2.7</version>
-                <reportSets>
-                    <reportSet>
-                        <inherited>true</inherited>
-                        <reports>
-                            <report>index</report>
-                            <report>scm</report>
-                            <report>plugin-management</report>
-                            <report>plugins</report>
-                            <report>summary</report>
-                            <report>dependencies</report>
-                            <report>dependency-convergence</report>
-                            <report>dependency-management</report>
-                        </reports>
-                    </reportSet>
-                    <reportSet>
-                        <inherited>false</inherited>
-                        <reports>
-                            <report>project-team</report>
-                            <report>issue-tracking</report>
-                            <report>license</report>
-                            <report>mailing-list</report>
-                            <report>cim</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>dashboard-maven-plugin</artifactId>
-                <version>1.0.0-beta-1</version>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                    <xrefLocation>${project.reporting.outputDirectory}/../xref</xrefLocation>
+                    <xmlOutput>true</xmlOutput>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                    <failOnError>false</failOnError>
+                    <findbugsXmlOutput>true</findbugsXmlOutput>
+                    <findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
+                    <xrefLocation>xref/</xrefLocation>
+                </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.1</version>
             </plugin>
         </plugins>
     </reporting>

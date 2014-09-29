@@ -119,7 +119,8 @@ public final class ConversionContext extends AbstractContext{
     }
 
     /**
-     * Creates a new ConversionContext for the given  {@link ProviderContext} and the given {@link RateType}.<br/>
+     * Creates a new ConversionContext for the given  {@link ProviderContext} and the given {@link RateType}.
+     *
      * <i>Note:</i> for adding additional attributes use {@link javax.money.convert.ConversionContextBuilder
      * (ProviderContext, RateType)}.
      *

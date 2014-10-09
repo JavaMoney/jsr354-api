@@ -8,3 +8,8 @@ This is the API module of JSR 354 licenced under JSR Spec Licence (see LICENCE.h
 
 See also:
 http://javamoney.java.net
+
+[![Build Status](https://api.travis-ci.org/JavaMoney/jsr354-api.png?branch=master)](https://travis-ci.org/JavaMoney/jsr354-api)
+[![Coverage Status](https://coveralls.io/repos/JavaMoney/jsr354-api/badge.png)](https://coveralls.io/r/JavaMoney/jsr354-api)
+
+[![Built with Maven](http://maven.apache.org/images/logos/maven-feather.png)](http://maven.org/)

@@ -3,4 +3,4 @@ jdk:
   - oraclejdk8
 
 after_success:
-  - mvn clean cobertura:cobertura org.eluder.coveralls:coveralls-maven-plugin:cobertura
+  - mvn clean test jacoco:report org.eluder.coveralls:coveralls-maven-plugin:report

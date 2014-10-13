@@ -2,6 +2,8 @@
 /.classpath
 /.project
 /.idea
+/money-api.iml
+/.resourceCache
 /jdk-stub/bin
 /target
 /javamoney-api/core/bin
@@ -21,9 +23,5 @@
 /money-platform/api/.settings/*.prefs
 /money-platform/.settings
 /money-platform/target
-/money-api.iml
-/checkstyle-suppressions.xml
-/checkstyle.xml
-/.resourceCache
 /target
 /doc

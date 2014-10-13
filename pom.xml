@@ -588,13 +588,17 @@
                     <artifactId>asciidoctor-maven-plugin</artifactId>
                     <version>0.1.4</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.7.2.201409121644</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.2.201409121644</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>

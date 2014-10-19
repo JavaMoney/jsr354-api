@@ -375,31 +375,6 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>cloudbees-deployment</id>
-            <activation>
-                <property>
-                    <name>cloudbees</name>
-                </property>
-            </activation>
-            <distributionManagement>
-                <site>
-                    <id>cloudbees</id>
-                    <url>svn:https://svn-jsr354.forge.cloudbees.com/site/</url>
-                    <name>Cloudbees Public SVN Site Repository</name>
-                </site>
-                <repository>
-                    <id>cloudbees</id>
-                    <url>https://repository-jsr354.forge.cloudbees.com/release/</url>
-                    <name>Cloudbees Release Repository</name>
-                </repository>
-                <snapshotRepository>
-                    <id>cloudbees</id>
-                    <url>https://repository-jsr354.forge.cloudbees.com/snapshot/</url>
-                    <name>Cloudbees Nexus Snapshots</name>
-                </snapshotRepository>
-            </distributionManagement>
-        </profile>
     </profiles>
 
     <dependencyManagement>
@@ -586,7 +561,7 @@
                 <plugin>
                     <groupId>org.asciidoctor</groupId>
                     <artifactId>asciidoctor-maven-plugin</artifactId>
-                    <version>0.1.4</version>
+                    <version>1.5.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
@@ -684,7 +659,7 @@
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>0.1.4</version>
+                <version>1.5.0</version>
                 <configuration>
                     <sourceDirectory>src/main/asciidoc</sourceDirectory>
                     <baseDir>${project.basedir}</baseDir>
@@ -707,15 +682,15 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>output-docbook</id>
+                        <id>output-pdf</id>
                         <phase>prepare-package</phase>
                         <goals>
                             <goal>process-asciidoc</goal>
                         </goals>
                         <configuration>
-                            <backend>docbook</backend>
+                            <backend>pdf</backend>
                             <doctype>book</doctype>
-                            <embedAssets>false</embedAssets>
+                            <embedAssets>true</embedAssets>
                             <outputDirectory>target/generated-docs</outputDirectory>
                             <imagesDir>src/main/asciidoc/images/</imagesDir>
                             <baseDir>src/main/asciidoc/</baseDir>
@@ -723,7 +698,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--plugin>
                 <groupId>com.agilejava.docbkx</groupId>
                 <artifactId>docbkx-maven-plugin</artifactId>
                 <version>2.0.15</version>
@@ -778,7 +753,7 @@
                     <xincludeSupported>true</xincludeSupported>
                     <fop1Extensions>1</fop1Extensions>
                 </configuration>
-            </plugin>
+            </plugin-->
         </plugins>
     </build>
 

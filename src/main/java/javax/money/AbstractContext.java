@@ -46,7 +46,7 @@ public abstract class AbstractContext implements Serializable{
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected AbstractContext(AbstractContextBuilder<?,?> builder){
-        for(Map.Entry<Class,Map<Object,Object>> en : ((Map<Class,Map<Object,Object>>) builder.data).entrySet()){
+        for(Map.Entry<Class,Map<Object,Object>> en : builder.data.entrySet()){
             Map<Object,Object> presentMap = this.data.get(en.getKey());
             if(presentMap == null){
                 presentMap = new HashMap<>(en.getValue());

@@ -118,7 +118,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      * @return a new {@link javax.money.convert.ConversionQueryBuilder} instance, never null.
      */
     public static ConversionQueryBuilder of(ConversionQuery query){
-        return ConversionQueryBuilder.of(query);
+        return new ConversionQueryBuilder().importContext(query);
     }
 
 }

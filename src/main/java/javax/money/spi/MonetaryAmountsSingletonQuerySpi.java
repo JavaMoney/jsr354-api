@@ -68,7 +68,7 @@ public interface MonetaryAmountsSingletonQuerySpi{
      * @return the type found, or null.
      */
     default Class<? extends MonetaryAmount> getAmountType(MonetaryAmountFactoryQuery query){
-        MonetaryAmountFactory f = getAmountFactory(query);
+        MonetaryAmountFactory<?> f = getAmountFactory(query);
         if(f != null){
             return f.getAmountType();
         }

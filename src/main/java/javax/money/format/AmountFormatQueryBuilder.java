@@ -95,7 +95,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @param monetaryFactory the {@link javax.money.MonetaryAmountFactory} to be used, not null.
      * @return this builder for chaining.
      */
-    public AmountFormatQueryBuilder setMonetaryAmountFactory(MonetaryAmountFactory monetaryFactory){
+    public AmountFormatQueryBuilder setMonetaryAmountFactory(MonetaryAmountFactory<?> monetaryFactory){
         Objects.requireNonNull(monetaryFactory);
         return set(MonetaryAmountFactory.class, monetaryFactory, MonetaryAmountFactory.class);
     }

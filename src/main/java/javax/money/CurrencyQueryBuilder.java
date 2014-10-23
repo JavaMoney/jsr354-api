@@ -8,7 +8,9 @@
  */
 package javax.money;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -67,7 +69,11 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      * @return the query for chaining.
      */
     public CurrencyQueryBuilder setNumericCodes(int... codes){
-        return setCollection(CurrencyQuery.KEY_QUERY_NUMERIC_CODES, Arrays.asList(codes));
+        Collection<Integer> value = new ArrayList<>(codes.length);
+        for (int code : codes) {
+            value.add(code);
+        }
+        return setCollection(CurrencyQuery.KEY_QUERY_NUMERIC_CODES, value);
     }
 
     /**

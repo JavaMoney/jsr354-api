@@ -11,6 +11,7 @@ package javax.money;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
@@ -67,7 +68,8 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      * @return the query for chaining.
      */
     public CurrencyQueryBuilder setNumericCodes(int... codes){
-        return setCollection(CurrencyQuery.KEY_QUERY_NUMERIC_CODES, Arrays.asList(codes));
+        return setCollection(CurrencyQuery.KEY_QUERY_NUMERIC_CODES,
+                Arrays.stream(codes).boxed().collect(Collectors.toList()));
     }
 
     /**

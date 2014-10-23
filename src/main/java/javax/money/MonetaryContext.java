@@ -94,7 +94,8 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @see MonetaryAmount#getMonetaryContext()
      */
     public Class<? extends MonetaryAmount> getAmountType(){
-        return getAny(AMOUNT_TYPE, Class.class);
+        Class<?> clazz = getAny(AMOUNT_TYPE, Class.class);
+        return clazz.asSubclass(MonetaryAmount.class);
     }
 
     /**

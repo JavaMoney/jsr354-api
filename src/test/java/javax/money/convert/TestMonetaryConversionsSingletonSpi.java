@@ -52,7 +52,7 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
 
     @Override
     public List<String> getDefaultProviderChain(){
-        return new ArrayList(getProviderNames());
+        return new ArrayList<>(getProviderNames());
     }
 
     private static final class DummyConversion implements CurrencyConversion{

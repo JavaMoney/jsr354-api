@@ -30,7 +30,7 @@ public class TestAmountFormatProvider implements
         if (Objects.nonNull(loc) && "BAR".equals(loc.getCountry()) && "foo".equals(loc.getLanguage())){
             return Collections.emptySet();
         }
-        List result = new ArrayList<>();
+        List<MonetaryAmountFormat> result = new ArrayList<>();
         result.add(new TestFormat(formatStyle));
         return result;
 	}

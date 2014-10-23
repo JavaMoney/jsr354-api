@@ -440,7 +440,7 @@ public abstract class AbstractContext implements Serializable{
      * @param type the type used.
      * @return
      */
-    public Map<Object,Object> getValues(Class type){
+    public Map<Object,Object> getValues(Class<?> type){
         return this.data.get(type);
     }
 
@@ -476,7 +476,7 @@ public abstract class AbstractContext implements Serializable{
                 Object key = entry.getKey();
                 attrsBuilder.append("  ");
                 if(key.getClass() == Class.class){
-                    attrsBuilder.append(((Class) key).getName());
+                    attrsBuilder.append(((Class<?>) key).getName());
                 }else{
                     attrsBuilder.append(key);
                 }

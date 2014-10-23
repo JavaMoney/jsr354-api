@@ -15,71 +15,72 @@ import javax.money.MonetaryAmount;
 import javax.money.spi.MonetaryAmountFormatProviderSpi;
 
 public class TestAmountFormatProvider implements
-		MonetaryAmountFormatProviderSpi {
+        MonetaryAmountFormatProviderSpi {
 
-	private Set<Locale> testSet = new HashSet<>();
+    private Set<Locale> testSet = new HashSet<>();
 
-	public TestAmountFormatProvider() {
-		testSet.add(Locale.ENGLISH);
-	}
+    public TestAmountFormatProvider() {
+        testSet.add(Locale.ENGLISH);
+    }
 
     @Override
-	public Collection<MonetaryAmountFormat> getAmountFormats(
-			AmountFormatQuery formatStyle) {
+    public Collection<MonetaryAmountFormat> getAmountFormats(
+            AmountFormatQuery formatStyle) {
         Locale loc = formatStyle.getLocale();
-        if (Objects.nonNull(loc) && "BAR".equals(loc.getCountry()) && "foo".equals(loc.getLanguage())){
+        if (Objects.nonNull(loc) && "BAR".equals(loc.getCountry()) && "foo".equals(loc.getLanguage())) {
             return Collections.emptySet();
         }
-        List result = new ArrayList<>();
+        List<MonetaryAmountFormat> result = new ArrayList<>();
         result.add(new TestFormat(formatStyle));
         return result;
-	}
+    }
 
     @Override
-    public Set<Locale> getAvailableLocales(){
+    public Set<Locale> getAvailableLocales() {
         return Collections.unmodifiableSet(testSet);
     }
 
     @Override
-    public Set<String> getAvailableFormatNames(){
+    public Set<String> getAvailableFormatNames() {
         return Collections.emptySet();
     }
 
     public static final class TestFormat implements MonetaryAmountFormat {
 
-		private AmountFormatContext formatStyle;
-		TestFormat(AmountFormatQuery formatStyle) {
-			Objects.requireNonNull(formatStyle);
-			this.formatStyle = AmountFormatContextBuilder.create(formatStyle).build();
-		}
+        private AmountFormatContext formatStyle;
 
-		@Override
-		public String queryFrom(MonetaryAmount amount) {
-			return toString();
-		}
+        TestFormat(AmountFormatQuery formatStyle) {
+            Objects.requireNonNull(formatStyle);
+            this.formatStyle = AmountFormatContextBuilder.create(formatStyle).build();
+        }
 
-		@Override
-		public AmountFormatContext getAmountFormatContext() {
-			return formatStyle;
-		}
+        @Override
+        public String queryFrom(MonetaryAmount amount) {
+            return toString();
+        }
 
-		@Override
-		public String format(MonetaryAmount amount) {
-			return "TestFormat:" + amount.toString();
-		}
+        @Override
+        public AmountFormatContext getAmountFormatContext() {
+            return formatStyle;
+        }
 
-		@Override
-		public void print(Appendable appendable, MonetaryAmount amount)
-				throws IOException {
-			appendable.append(format(amount));
-		}
+        @Override
+        public String format(MonetaryAmount amount) {
+            return "TestFormat:" + amount.toString();
+        }
 
-		@Override
-		public MonetaryAmount parse(CharSequence text)
-				throws MonetaryParseException {
-			throw new UnsupportedOperationException("TestFormat only.");
-		}
+        @Override
+        public void print(Appendable appendable, MonetaryAmount amount)
+                throws IOException {
+            appendable.append(format(amount));
+        }
 
-	}
+        @Override
+        public MonetaryAmount parse(CharSequence text)
+                throws MonetaryParseException {
+            throw new UnsupportedOperationException("TestFormat only.");
+        }
+
+    }
 
 }

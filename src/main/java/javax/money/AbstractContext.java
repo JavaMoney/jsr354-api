@@ -22,7 +22,7 @@ import java.util.*;
  * extensions os specialities.<p>
  * Superclasses of this class must be final, immutable, serializable and thread-safe.
  */
-public abstract class AbstractContext implements Serializable{
+public abstract class AbstractContext implements Serializable {
 
     /**
      * Key for storing the target providers to be queried
@@ -37,7 +37,7 @@ public abstract class AbstractContext implements Serializable{
     /**
      * The data map containing all values.
      */
-    private final Map<Class<?>,Map<Object,Object>> data = new HashMap<>();
+    private final Map<Class<?>, Map<Object, Object>> data = new HashMap<>();
 
     /**
      * Private constructor, used by {@link AbstractContextBuilder}.
@@ -45,13 +45,13 @@ public abstract class AbstractContext implements Serializable{
      * @param builder the Builder.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    protected AbstractContext(AbstractContextBuilder<?,?> builder){
-        for(Map.Entry<Class,Map<Object,Object>> en : builder.data.entrySet()){
-            Map<Object,Object> presentMap = this.data.get(en.getKey());
-            if(presentMap == null){
+    protected AbstractContext(AbstractContextBuilder<?, ?> builder) {
+        for (Map.Entry<Class, Map<Object, Object>> en : builder.data.entrySet()) {
+            Map<Object, Object> presentMap = this.data.get(en.getKey());
+            if (presentMap == null) {
                 presentMap = new HashMap<>(en.getValue());
                 this.data.put(en.getKey(), presentMap);
-            }else{
+            } else {
                 presentMap.putAll(en.getValue());
             }
         }
@@ -63,9 +63,9 @@ public abstract class AbstractContext implements Serializable{
      * @param type The attribute type, not null.
      * @return all present keys of attributes of the (exact) given type, never null.
      */
-    public Set<Object> getKeys(Class<?> type){
-        Map<Object,Object> values = this.data.get(type);
-        if(values != null){
+    public Set<Object> getKeys(Class<?> type) {
+        Map<Object, Object> values = this.data.get(type);
+        if (values != null) {
             return values.keySet();
         }
         return Collections.emptySet();
@@ -76,7 +76,7 @@ public abstract class AbstractContext implements Serializable{
      *
      * @return all currently present attribute types, never null.
      */
-    public Set<Class<?>> getTypes(){
+    public Set<Class<?>> getTypes() {
         return this.data.keySet();
     }
 
@@ -89,13 +89,13 @@ public abstract class AbstractContext implements Serializable{
      */
     // Type safe cast
     @SuppressWarnings("unchecked")
-    public <T> T getAny(Object key, Class<T> type, T defaultValue){
-        Map<Object,Object> values = this.data.get(type);
+    public <T> T getAny(Object key, Class<T> type, T defaultValue) {
+        Map<Object, Object> values = this.data.get(type);
         Object value = null;
-        if(values != null){
+        if (values != null) {
             value = values.get(key);
         }
-        if(value != null){
+        if (value != null) {
             return (T) value;
         }
         return defaultValue;
@@ -108,7 +108,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key  the attribute's key, not {@code null}
      * @return the attribute value, or {@code null}.
      */
-    public <T> T getAny(Object key, Class<T> type){
+    public <T> T getAny(Object key, Class<T> type) {
         return getAny(key, type, null);
     }
 
@@ -118,7 +118,7 @@ public abstract class AbstractContext implements Serializable{
      * @param type the attribute's type, not {@code null}
      * @return the attribute value, or {@code null}.
      */
-    public <T> T get(Class<T> type){
+    public <T> T get(Class<T> type) {
         return getAny(type, type);
     }
 
@@ -130,7 +130,7 @@ public abstract class AbstractContext implements Serializable{
      * @return the attribute's value, or the {@code defaultValue} passed, if no
      * such attribute is present.
      */
-    public <T> T get(Class<T> type, T defaultValue){
+    public <T> T get(Class<T> type, T defaultValue) {
         return Optional.ofNullable(get(type)).orElse(defaultValue);
     }
 
@@ -141,7 +141,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    public Long getLong(Object key){
+    public Long getLong(Object key) {
         return getLong(key, null);
     }
 
@@ -152,7 +152,7 @@ public abstract class AbstractContext implements Serializable{
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public Long getLong(Object key, Long defaultValue){
+    public Long getLong(Object key, Long defaultValue) {
         return getAny(key, Long.class, defaultValue);
     }
 
@@ -163,7 +163,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    public Float getFloat(Object key){
+    public Float getFloat(Object key) {
         return getFloat(key, null);
     }
 
@@ -174,7 +174,7 @@ public abstract class AbstractContext implements Serializable{
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public Float getFloat(Object key, Float defaultValue){
+    public Float getFloat(Object key, Float defaultValue) {
         return getAny(key, Float.class, defaultValue);
     }
 
@@ -184,7 +184,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    public Integer getInt(Object key){
+    public Integer getInt(Object key) {
         return getInt(key, null);
     }
 
@@ -195,7 +195,7 @@ public abstract class AbstractContext implements Serializable{
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public Integer getInt(Object key, Integer defaultValue){
+    public Integer getInt(Object key, Integer defaultValue) {
         return getAny(key, Integer.class, defaultValue);
     }
 
@@ -205,7 +205,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    public Boolean getBoolean(Object key){
+    public Boolean getBoolean(Object key) {
         return getBoolean(key, null);
     }
 
@@ -216,7 +216,7 @@ public abstract class AbstractContext implements Serializable{
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public Boolean getBoolean(Object key, Boolean defaultValue){
+    public Boolean getBoolean(Object key, Boolean defaultValue) {
         return getAny(key, Boolean.class, defaultValue);
     }
 
@@ -226,7 +226,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    public Double getDouble(Object key){
+    public Double getDouble(Object key) {
         return getDouble(key, null);
     }
 
@@ -237,7 +237,7 @@ public abstract class AbstractContext implements Serializable{
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public Double getDouble(Object key, Double defaultValue){
+    public Double getDouble(Object key, Double defaultValue) {
         return getAny(key, Double.class, defaultValue);
     }
 
@@ -247,7 +247,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    public String getText(Object key){
+    public String getText(Object key) {
         return getText(key, null);
     }
 
@@ -258,7 +258,7 @@ public abstract class AbstractContext implements Serializable{
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public String getText(Object key, String defaultValue){
+    public String getText(Object key, String defaultValue) {
         return getAny(key, String.class, defaultValue);
     }
 
@@ -269,7 +269,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    public Character getChar(Object key){
+    public Character getChar(Object key) {
         return getChar(key, null);
     }
 
@@ -280,7 +280,7 @@ public abstract class AbstractContext implements Serializable{
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public Character getChar(Object key, Character defaultValue){
+    public Character getChar(Object key, Character defaultValue) {
         return getAny(key, Character.class, defaultValue);
     }
 
@@ -290,7 +290,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    public Collection<?> getCollection(Object key){
+    public Collection<?> getCollection(Object key) {
         return getCollection(key, null);
     }
 
@@ -301,7 +301,7 @@ public abstract class AbstractContext implements Serializable{
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public <T> Collection<T> getCollection(Object key, Collection<T> defaultValue){
+    public <T> Collection<T> getCollection(Object key, Collection<T> defaultValue) {
         return getAny(key, Collection.class, defaultValue);
     }
 
@@ -311,7 +311,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    public List<?> getList(Object key){
+    public List<?> getList(Object key) {
         return getList(key, null);
     }
 
@@ -322,7 +322,7 @@ public abstract class AbstractContext implements Serializable{
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public <T> List<T> getList(Object key, List<T> defaultValue){
+    public <T> List<T> getList(Object key, List<T> defaultValue) {
         return getAny(key, List.class, defaultValue);
     }
 
@@ -332,7 +332,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    public Set<?> getSet(Object key){
+    public Set<?> getSet(Object key) {
         return getSet(key, null);
     }
 
@@ -343,7 +343,7 @@ public abstract class AbstractContext implements Serializable{
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public <T> Set<T> getSet(Object key, Set<T> defaultValue){
+    public <T> Set<T> getSet(Object key, Set<T> defaultValue) {
         return getAny(key, Set.class, defaultValue);
     }
 
@@ -353,7 +353,7 @@ public abstract class AbstractContext implements Serializable{
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    public Map<?,?> getMap(Object key){
+    public Map<?, ?> getMap(Object key) {
         return getMap(key, null);
     }
 
@@ -364,7 +364,7 @@ public abstract class AbstractContext implements Serializable{
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public <K, V> Map<K,V> getMap(Object key, Map<K,V> defaultValue){
+    public <K, V> Map<K, V> getMap(Object key, Map<K, V> defaultValue) {
         return getAny(key, Map.class, defaultValue);
     }
 
@@ -373,7 +373,7 @@ public abstract class AbstractContext implements Serializable{
      *
      * @return the provider name, or null.
      */
-    public String getProvider(){
+    public String getProvider() {
         return getText(KEY_PROVIDER, null);
     }
 
@@ -385,11 +385,11 @@ public abstract class AbstractContext implements Serializable{
      *
      * @return the timestamp in millis, or null.
      */
-    public Long getTimestampMillis(){
+    public Long getTimestampMillis() {
         Long value = getAny(KEY_TIMESTAMP, Long.class, null);
-        if(Objects.isNull(value)){
+        if (Objects.isNull(value)) {
             TemporalAccessor acc = getTimestamp();
-            if(Objects.nonNull(acc)){
+            if (Objects.nonNull(acc)) {
                 return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
             }
         }
@@ -404,11 +404,11 @@ public abstract class AbstractContext implements Serializable{
      *
      * @return the current timestamp, or null.
      */
-    public TemporalAccessor getTimestamp(){
+    public TemporalAccessor getTimestamp() {
         TemporalAccessor acc = getAny(KEY_TIMESTAMP, TemporalAccessor.class, null);
-        if(Objects.isNull(acc)){
+        if (Objects.isNull(acc)) {
             Long value = getAny(KEY_TIMESTAMP, Long.class, null);
-            if(Objects.nonNull(value)){
+            if (Objects.nonNull(value)) {
                 acc = Instant.ofEpochMilli(value);
             }
         }
@@ -420,7 +420,7 @@ public abstract class AbstractContext implements Serializable{
      *
      * @return true, if no attributes are set.
      */
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return this.data.isEmpty();
     }
 
@@ -430,7 +430,7 @@ public abstract class AbstractContext implements Serializable{
      * @see java.lang.Object#hashCode()
      */
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return Objects.hash(data);
     }
 
@@ -440,7 +440,7 @@ public abstract class AbstractContext implements Serializable{
      * @param type the type used.
      * @return
      */
-    public Map<Object,Object> getValues(Class type){
+    public Map<Object, Object> getValues(Class<?> type) {
         return this.data.get(type);
     }
 
@@ -450,11 +450,11 @@ public abstract class AbstractContext implements Serializable{
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj){
-        if(obj == this){
+    public boolean equals(Object obj) {
+        if (obj == this) {
             return true;
         }
-        if(obj instanceof AbstractContext){
+        if (obj instanceof AbstractContext) {
             AbstractContext other = (AbstractContext) obj;
             return Objects.equals(data, other.data);
         }
@@ -467,23 +467,23 @@ public abstract class AbstractContext implements Serializable{
      * @see Object#toString()
      */
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder attrsBuilder = new StringBuilder();
-        for(Map.Entry<Class<?>,Map<Object,Object>> en : this.data.entrySet()){
-            Map<Object,Object> sortedMap = new TreeMap<>((o1, o2) -> o1.toString().compareTo(o2.toString()));
+        for (Map.Entry<Class<?>, Map<Object, Object>> en : this.data.entrySet()) {
+            Map<Object, Object> sortedMap = new TreeMap<>((o1, o2) -> o1.toString().compareTo(o2.toString()));
             sortedMap.putAll(en.getValue());
-            for(Map.Entry<Object,Object> entry : sortedMap.entrySet()){
+            for (Map.Entry<Object, Object> entry : sortedMap.entrySet()) {
                 Object key = entry.getKey();
                 attrsBuilder.append("  ");
-                if(key.getClass() == Class.class){
-                    attrsBuilder.append(((Class) key).getName());
-                }else{
+                if (key.getClass() == Class.class) {
+                    attrsBuilder.append(((Class<?>) key).getName());
+                } else {
                     attrsBuilder.append(key);
                 }
                 attrsBuilder.append('[');
-                if(en.getKey().getName().startsWith("java.lang.")){
+                if (en.getKey().getName().startsWith("java.lang.")) {
                     attrsBuilder.append(en.getKey().getName().substring("java.lang.".length()));
-                }else{
+                } else {
                     attrsBuilder.append(en.getKey().getName());
                 }
                 attrsBuilder.append("]=");

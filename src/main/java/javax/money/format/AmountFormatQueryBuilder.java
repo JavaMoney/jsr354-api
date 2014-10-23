@@ -19,7 +19,7 @@ import java.util.Objects;
  * <p>
  * Note this class is NOT thread-safe.
  */
-public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountFormatQueryBuilder,AmountFormatQuery>{
+public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountFormatQueryBuilder, AmountFormatQuery> {
     /**
      * The default format name used.
      */
@@ -30,7 +30,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      *
      * @param formatQuery the base {@link AmountFormatQuery}, not {@code null}.
      */
-    private AmountFormatQueryBuilder(AmountFormatQuery formatQuery){
+    private AmountFormatQueryBuilder(AmountFormatQuery formatQuery) {
         importContext(formatQuery);
     }
 
@@ -39,7 +39,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      *
      * @param formatName the target format's name {@link String}, not {@code null}.
      */
-    private AmountFormatQueryBuilder(String formatName){
+    private AmountFormatQueryBuilder(String formatName) {
         Objects.requireNonNull(formatName, "formatName required.");
         set(AmountFormatQuery.KEY_QUERY_FORMAT_NAME, formatName);
     }
@@ -51,7 +51,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      *
      * @param locale the target {@link java.util.Locale}, not {@code null}.
      */
-    private AmountFormatQueryBuilder(Locale locale){
+    private AmountFormatQueryBuilder(Locale locale) {
         Objects.requireNonNull(locale, "locale required.");
         setLocale(locale);
         set(AmountFormatQuery.KEY_QUERY_FORMAT_NAME, DEFAULT_FORMAT_NAME);
@@ -64,7 +64,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @param formatName the format's name, not null.
      * @return the Builder, for chaining.
      */
-    public AmountFormatQueryBuilder setFormatName(String formatName){
+    public AmountFormatQueryBuilder setFormatName(String formatName) {
         return set(AmountFormatQuery.KEY_QUERY_FORMAT_NAME, formatName);
     }
 
@@ -74,7 +74,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @param locale the locale, not null.
      * @return the Builder, for chaining.
      */
-    public AmountFormatQueryBuilder setLocale(Locale locale){
+    public AmountFormatQueryBuilder setLocale(Locale locale) {
         return set(locale);
     }
 
@@ -84,7 +84,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @param monetaryQuery the monetary query, not {@code null}.
      * @return this builder for chaining.
      */
-    public AmountFormatQueryBuilder setMonetaryQuery(MonetaryAmountFactoryQuery monetaryQuery){
+    public AmountFormatQueryBuilder setMonetaryQuery(MonetaryAmountFactoryQuery monetaryQuery) {
         Objects.requireNonNull(monetaryQuery);
         return set(monetaryQuery);
     }
@@ -95,7 +95,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @param monetaryFactory the {@link javax.money.MonetaryAmountFactory} to be used, not null.
      * @return this builder for chaining.
      */
-    public AmountFormatQueryBuilder setMonetaryAmountFactory(MonetaryAmountFactory monetaryFactory){
+    public AmountFormatQueryBuilder setMonetaryAmountFactory(MonetaryAmountFactory<?> monetaryFactory) {
         Objects.requireNonNull(monetaryFactory);
         return set(MonetaryAmountFactory.class, monetaryFactory, MonetaryAmountFactory.class);
     }
@@ -105,7 +105,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      *
      * @return a new {@link javax.money.format.AmountFormatQuery} instance, never null.
      */
-    public AmountFormatQuery build(){
+    public AmountFormatQuery build() {
         return new AmountFormatQuery(this);
     }
 
@@ -115,7 +115,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @param formatQuery the base {@link AmountFormatContext}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatQueryBuilder} instance, never null.
      */
-    public static AmountFormatQueryBuilder of(AmountFormatQuery formatQuery){
+    public static AmountFormatQueryBuilder of(AmountFormatQuery formatQuery) {
         return new AmountFormatQueryBuilder(formatQuery);
     }
 
@@ -125,7 +125,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @param formatName the target format's name {@link String}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatQueryBuilder} instance, never null.
      */
-    public static AmountFormatQueryBuilder of(String formatName){
+    public static AmountFormatQueryBuilder of(String formatName) {
         return new AmountFormatQueryBuilder(formatName);
     }
 
@@ -137,7 +137,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @param locale the target {@link java.util.Locale}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatQueryBuilder} instance, never null.
      */
-    public static AmountFormatQueryBuilder of(Locale locale){
+    public static AmountFormatQueryBuilder of(Locale locale) {
         return new AmountFormatQueryBuilder(locale);
     }
 

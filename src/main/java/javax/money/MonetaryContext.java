@@ -26,7 +26,7 @@ import java.io.Serializable;
  *
  * @author Anatole Tresch
  */
-public final class MonetaryContext extends AbstractContext implements Serializable{
+public final class MonetaryContext extends AbstractContext implements Serializable {
 
     /**
      * Constant that defines under which key the amount type is stored in the context map.
@@ -53,7 +53,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      *
      * @param builder the corresponding builder, not null.
      */
-    MonetaryContext(MonetaryContextBuilder builder){
+    MonetaryContext(MonetaryContextBuilder builder) {
         super(builder);
     }
 
@@ -63,7 +63,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return an {@code int} which is the value of the {@code precision}
      * setting
      */
-    public int getPrecision(){
+    public int getPrecision() {
         return getInt(PRECISION, 0);
     }
 
@@ -72,7 +72,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      *
      * @return {@code true} if {@code minScale == maxScale}.
      */
-    public boolean isFixedScale(){
+    public boolean isFixedScale() {
         return getBoolean(FIXED_SCALE, false);
     }
 
@@ -83,7 +83,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      *
      * @return the maximal scale supported, always {@code >= -1}
      */
-    public int getMaxScale(){
+    public int getMaxScale() {
         return getInt(MAX_SCALE, -1);
     }
 
@@ -93,8 +93,9 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return the implementation class of the containing amount instance, never null.
      * @see MonetaryAmount#getMonetaryContext()
      */
-    public Class<? extends MonetaryAmount> getAmountType(){
-        return getAny(AMOUNT_TYPE, Class.class);
+    public Class<? extends MonetaryAmount> getAmountType() {
+        Class<?> clazz = getAny(AMOUNT_TYPE, Class.class);
+        return clazz.asSubclass(MonetaryAmount.class);
     }
 
     /**
@@ -106,7 +107,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return a new corresponding MonetaryContext instance.
      */
     public static MonetaryContext from(MonetaryAmountFactoryQuery monetaryAmountFactoryQuery,
-                                       Class<? extends MonetaryAmount> amountClass){
+                                       Class<? extends MonetaryAmount> amountClass) {
         return MonetaryContextBuilder.of(amountClass).importContext(monetaryAmountFactoryQuery).build();
     }
 
@@ -117,7 +118,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @param amountClass     the targt amount class.
      * @return a new corresponding MonetaryContext instance.
      */
-    public static MonetaryContext from(MonetaryContext monetaryContext, Class<? extends MonetaryAmount> amountClass){
+    public static MonetaryContext from(MonetaryContext monetaryContext, Class<? extends MonetaryAmount> amountClass) {
         return MonetaryContextBuilder.of(amountClass).importContext(monetaryContext).build();
     }
 
@@ -126,7 +127,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      *
      * @return a new {@link javax.money.MonetaryContextBuilder} instance, never null.
      */
-    public MonetaryContextBuilder toBuilder(){
+    public MonetaryContextBuilder toBuilder() {
         return MonetaryContextBuilder.of(this);
     }
 

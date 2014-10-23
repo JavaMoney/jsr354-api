@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  *
  * @author Anatole Tresch
  */
-public interface MonetaryAmountsSingletonQuerySpi{
+public interface MonetaryAmountsSingletonQuerySpi {
 
     /**
      * Get the {@link javax.money.MonetaryAmountFactory} implementation class, that best matches to cover the given
@@ -55,7 +55,7 @@ public interface MonetaryAmountsSingletonQuerySpi{
      * @param query the factory query, not null.
      * @return true, if at least one {@link javax.money.MonetaryAmountFactory} matches the query.
      */
-    default boolean isAvailable(MonetaryAmountFactoryQuery query){
+    default boolean isAvailable(MonetaryAmountFactoryQuery query) {
         return !getAmountFactories(query).isEmpty();
     }
 
@@ -67,9 +67,9 @@ public interface MonetaryAmountsSingletonQuerySpi{
      * @param query the factory query, not null.
      * @return the type found, or null.
      */
-    default Class<? extends MonetaryAmount> getAmountType(MonetaryAmountFactoryQuery query){
-        MonetaryAmountFactory f = getAmountFactory(query);
-        if(f != null){
+    default Class<? extends MonetaryAmount> getAmountType(MonetaryAmountFactoryQuery query) {
+        MonetaryAmountFactory<?> f = getAmountFactory(query);
+        if (f != null) {
             return f.getAmountType();
         }
         return null;
@@ -81,8 +81,8 @@ public interface MonetaryAmountsSingletonQuerySpi{
      * @param query the factory query, not null.
      * @return the type found, or null.
      */
-    default Collection<Class<? extends MonetaryAmount>> getAmountTypes(MonetaryAmountFactoryQuery query){
-        Collection<MonetaryAmountFactory<? extends  MonetaryAmount>> factories = getAmountFactories(query);
+    default Collection<Class<? extends MonetaryAmount>> getAmountTypes(MonetaryAmountFactoryQuery query) {
+        Collection<MonetaryAmountFactory<? extends MonetaryAmount>> factories = getAmountFactories(query);
         return factories.stream().map(MonetaryAmountFactory::getAmountType).collect(Collectors.toList());
     }
 
@@ -93,9 +93,9 @@ public interface MonetaryAmountsSingletonQuerySpi{
      * @param query the factory query, not null.
      * @return the type found, or null.
      */
-    default MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query){
+    default MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query) {
         Collection<MonetaryAmountFactory<?>> factories = getAmountFactories(query);
-        if(factories.isEmpty()){
+        if (factories.isEmpty()) {
             return null;
         }
         return factories.iterator().next();

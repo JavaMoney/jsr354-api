@@ -332,9 +332,9 @@ There are five main section in this document:
 
 <<<
 
-[[Use Cases]]
-=== Use Cases
-
+[[UseCase]]
+Use Case
+--------
 This section describes some, but not all, of the use cases that should be covered with this JSR. 
 
 === Scenario eCommerce (Online-Shop)

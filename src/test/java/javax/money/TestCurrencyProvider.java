@@ -15,16 +15,19 @@ package javax.money;
 import javax.money.spi.CurrencyProviderSpi;
 import java.util.*;
 
-public final class TestCurrencyProvider implements CurrencyProviderSpi{
+public final class TestCurrencyProvider implements CurrencyProviderSpi {
 
     @Override
-    public Set<CurrencyUnit> getCurrencies(CurrencyQuery currencyQuery){
+    public Set<CurrencyUnit> getCurrencies(CurrencyQuery currencyQuery) {
         Set<CurrencyUnit> result = new HashSet<>();
-        if(!currencyQuery.getCurrencyCodes().isEmpty()){
-            for(String currencyCode : currencyQuery.getCurrencyCodes()){
-                switch(currencyCode){
+        if (!currencyQuery.getCurrencyCodes().isEmpty()) {
+            for (String currencyCode : currencyQuery.getCurrencyCodes()) {
+                switch (currencyCode) {
                     case "test1":
                         result.add(new TestCurrency("test1", 1, 2));
+                        break;
+                    case "test2":
+                        result.add(new TestCurrency("test2", 1, 2));
                         break;
                     case "error":
                         throw new IllegalArgumentException("error encountered!");
@@ -37,13 +40,13 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
             }
             return result;
         }
-        if(!currencyQuery.getCountries().isEmpty()){
-            for(Locale country : currencyQuery.getCountries()){
-                if("TEST1L".equals(country.getCountry())){
+        if (!currencyQuery.getCountries().isEmpty()) {
+            for (Locale country : currencyQuery.getCountries()) {
+                if ("TEST1L".equals(country.getCountry())) {
                     result.add(new TestCurrency("TEST1L", 1, 2));
-                }else if(Locale.CHINA.equals(country)){
+                } else if (Locale.CHINA.equals(country)) {
                     throw new IllegalArgumentException("CHINA error encountered!");
-                }else if(Locale.CHINESE.equals(country)){
+                } else if (Locale.CHINESE.equals(country)) {
                     result.add(new TestCurrency("invalid2", 1, 2));
                 }
             }
@@ -53,10 +56,10 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
     }
 
     @Override
-    public boolean isCurrencyAvailable(CurrencyQuery context){
+    public boolean isCurrencyAvailable(CurrencyQuery context) {
         Collection<String> currencyCodea = context.getCurrencyCodes();
-        for(String currencyCode : currencyCodea){
-            switch(currencyCode){
+        for (String currencyCode : currencyCodea) {
+            switch (currencyCode) {
                 case "test1":
                 case "error":
                 case "invalid":
@@ -64,12 +67,12 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
             }
         }
         Collection<Locale> countries = context.getCountries();
-        for(Locale country : countries){
-            if("TEST1L".equals(country.getCountry())){
+        for (Locale country : countries) {
+            if ("TEST1L".equals(country.getCountry())) {
                 return true;
-            }else if(Locale.CHINA.equals(country)){
+            } else if (Locale.CHINA.equals(country)) {
                 return true;
-            }else if(Locale.CHINESE.equals(country)){
+            } else if (Locale.CHINESE.equals(country)) {
                 return true;
             }
         }
@@ -78,41 +81,41 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
 
 
     @Override
-    public String getProviderName(){
+    public String getProviderName() {
         return "test";
     }
 
 
-    private static final class TestCurrency implements CurrencyUnit{
+    private static final class TestCurrency implements CurrencyUnit {
 
         private String code;
         private int numCode;
         private int digits;
         private static final CurrencyContext CONTEXT = CurrencyContextBuilder.of("TestCurrencyProvider").build();
 
-        public TestCurrency(String code, int numCode, int digits){
+        public TestCurrency(String code, int numCode, int digits) {
             this.code = code;
             this.numCode = numCode;
             this.digits = digits;
         }
 
         @Override
-        public String getCurrencyCode(){
+        public String getCurrencyCode() {
             return code;
         }
 
         @Override
-        public int getNumericCode(){
+        public int getNumericCode() {
             return numCode;
         }
 
         @Override
-        public int getDefaultFractionDigits(){
+        public int getDefaultFractionDigits() {
             return digits;
         }
 
         @Override
-        public CurrencyContext getCurrencyContext(){
+        public CurrencyContext getCurrencyContext() {
             return CONTEXT;
         }
 
@@ -120,7 +123,7 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
          * @see java.lang.Object#hashCode()
          */
         @Override
-        public int hashCode(){
+        public int hashCode() {
             return Objects.hashCode(code);
         }
 
@@ -128,11 +131,11 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
          * @see java.lang.Object#equals(java.lang.Object)
          */
         @Override
-        public boolean equals(Object obj){
-            if(obj == this){
+        public boolean equals(Object obj) {
+            if (obj == this) {
                 return true;
             }
-            if(obj instanceof TestCurrency){
+            if (obj instanceof TestCurrency) {
                 TestCurrency other = (TestCurrency) obj;
                 return Objects.equals(code, other.code);
             }
@@ -140,7 +143,7 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi{
         }
 
         @Override
-        public int compareTo(CurrencyUnit o){
+        public int compareTo(CurrencyUnit o) {
             Objects.requireNonNull(o);
             return getCurrencyCode().compareTo(o.getCurrencyCode());
         }

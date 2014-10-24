@@ -16,21 +16,28 @@ import javax.money.spi.MonetaryAmountFactoryProviderSpi;
  *
  * @author Anatole Tresch
  */
-public final class DummyAmountFactoryProvider implements MonetaryAmountFactoryProviderSpi<DummyAmount>{
+public final class DummyAmountFactoryProvider implements MonetaryAmountFactoryProviderSpi<DummyAmount> {
+
+    /**
+     * The {@link MonetaryContext} used.
+     */
+    private static final MonetaryContext DUMMY_CONTEXT = MonetaryContextBuilder.of(MonetaryAmount.class)
+            .set("dummy", true)
+            .build();
 
     @Override
-    public MonetaryAmountFactory<DummyAmount> createMonetaryAmountFactory(){
+    public MonetaryAmountFactory<DummyAmount> createMonetaryAmountFactory() {
         return new DummyAmountBuilder();
     }
 
     @Override
-    public Class<DummyAmount> getAmountType(){
+    public Class<DummyAmount> getAmountType() {
         return DummyAmount.class;
     }
 
     @Override
-    public MonetaryContext getMaximalMonetaryContext(){
-        return DummyAmountBuilder.DUMMY_CONTEXT;
+    public MonetaryContext getMaximalMonetaryContext() {
+        return DUMMY_CONTEXT;
     }
 
     /*
@@ -38,13 +45,13 @@ public final class DummyAmountFactoryProvider implements MonetaryAmountFactoryPr
      * @see javax.money.MonetaryAmountFactory#getQueryInclusionPolicy()
      */
     @Override
-    public QueryInclusionPolicy getQueryInclusionPolicy(){
+    public QueryInclusionPolicy getQueryInclusionPolicy() {
         return QueryInclusionPolicy.ALWAYS;
     }
 
     @Override
-    public MonetaryContext getDefaultMonetaryContext(){
-        return DummyAmountBuilder.DUMMY_CONTEXT;
+    public MonetaryContext getDefaultMonetaryContext() {
+        return DUMMY_CONTEXT;
     }
 
 }

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.money.DummyAmount;
+import javax.money.DummyAmountBuilder;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryRoundings;
 
@@ -46,7 +47,7 @@ public class ConcurrentInitializationTest {
      */
     @Test
     public void shouldSupportConcurrentInitialization() throws ExecutionException, InterruptedException {
-        final DummyAmount amount = new DummyAmount();
+        final DummyAmount amount = new DummyAmountBuilder().create();
 
         final List<Thread> threads = new ArrayList<>(THREAD_COUNT);
         final List<Throwable> throwables = Collections.synchronizedList(new ArrayList<>());

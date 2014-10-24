@@ -14,18 +14,25 @@ package javax.money;
  *
  * @author Anatole Tresch
  */
-public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmount>{
+public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmount> {
     /**
      * The {@link MonetaryContext} used.
      */
-    static MonetaryContext DUMMY_CONTEXT = MonetaryContextBuilder.of(MonetaryAmount.class).set("dummy", true).build();
+    private static final MonetaryContext DUMMY_CONTEXT = MonetaryContextBuilder.of(MonetaryAmount.class)
+            .set("dummy", true)
+            .build();
+
+    /**
+     * The signum for the created DummyAmount.
+     */
+    private int signum = 0;
 
     /*
      * (non-Javadoc)
      * @see javax.money.MonetaryAmountFactory#getAmountType()
      */
     @Override
-    public Class<DummyAmount> getAmountType(){
+    public Class<DummyAmount> getAmountType() {
         return DummyAmount.class;
     }
 
@@ -34,7 +41,7 @@ public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#getDefaultMonetaryContext()
      */
     @Override
-    public MonetaryContext getDefaultMonetaryContext(){
+    public MonetaryContext getDefaultMonetaryContext() {
         return DUMMY_CONTEXT;
     }
 
@@ -43,7 +50,7 @@ public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#getMaximalMonetaryContext()
      */
     @Override
-    public MonetaryContext getMaximalMonetaryContext(){
+    public MonetaryContext getMaximalMonetaryContext() {
         return DUMMY_CONTEXT;
     }
 
@@ -52,7 +59,7 @@ public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setCurrency(java.lang.String)
      */
     @Override
-    public DummyAmountBuilder setCurrency(String currencyCode){
+    public DummyAmountBuilder setCurrency(String currencyCode) {
         return this;
     }
 
@@ -61,7 +68,7 @@ public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setCurrency(javax.money.CurrencyUnit)
      */
     @Override
-    public DummyAmountBuilder setCurrency(CurrencyUnit currency){
+    public DummyAmountBuilder setCurrency(CurrencyUnit currency) {
         return this;
     }
 
@@ -70,16 +77,26 @@ public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#of()
      */
     @Override
-    public DummyAmount create(){
-        return new DummyAmount();
+    public DummyAmount create() {
+        return new DummyAmount(signum, DUMMY_CONTEXT);
+    }
+
+    /**
+     * Sets the signum for the DummyAmount to becreated.
+     *
+     * @param signum
+     */
+    public DummyAmountBuilder setSignum(final int signum) {
+        this.signum = signum;
+        return this;
     }
 
     /*
-     * (non-Javadoc)
-     * @see javax.money.MonetaryAmountFactory#setNumber(double)
-     */
+         * (non-Javadoc)
+         * @see javax.money.MonetaryAmountFactory#setNumber(double)
+         */
     @Override
-    public DummyAmountBuilder setNumber(double number){
+    public DummyAmountBuilder setNumber(double number) {
         return this;
     }
 
@@ -88,7 +105,7 @@ public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setNumber(long)
      */
     @Override
-    public DummyAmountBuilder setNumber(long number){
+    public DummyAmountBuilder setNumber(long number) {
         return this;
     }
 
@@ -97,17 +114,17 @@ public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setNumber(java.lang.Number)
      */
     @Override
-    public DummyAmountBuilder setNumber(Number number){
+    public DummyAmountBuilder setNumber(Number number) {
         return this;
     }
 
     @Override
-    public NumberValue getMaxNumber(){
+    public NumberValue getMaxNumber() {
         return null;
     }
 
     @Override
-    public NumberValue getMinNumber(){
+    public NumberValue getMinNumber() {
         return null;
     }
 
@@ -116,7 +133,7 @@ public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setContext(javax.money.MonetaryContext)
      */
     @Override
-    public DummyAmountBuilder setContext(MonetaryContext monetaryContext){
+    public DummyAmountBuilder setContext(MonetaryContext monetaryContext) {
         return this;
     }
 
@@ -125,7 +142,7 @@ public final class DummyAmountBuilder implements MonetaryAmountFactory<DummyAmou
      * @see javax.money.MonetaryAmountFactory#setAmount(javax.money.MonetaryAmount)
      */
     @Override
-    public DummyAmountBuilder setAmount(MonetaryAmount amount){
+    public DummyAmountBuilder setAmount(MonetaryAmount amount) {
         return this;
     }
 

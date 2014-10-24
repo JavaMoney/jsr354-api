@@ -15,48 +15,56 @@ import java.util.Objects;
  *
  * @author Anatole Tresch
  */
-public final class DummyAmount implements MonetaryAmount{
+public final class DummyAmount implements MonetaryAmount {
 
     private static final CurrencyContext DUMMY_CURRENCYCONTEXT = CurrencyContextBuilder.of("dummy").build();
 
+    private final int signum;
+    private final MonetaryContext monetaryContext;
+
+    public DummyAmount(final int signum, MonetaryContext monetaryContext) {
+        this.signum = signum;
+        this.monetaryContext = monetaryContext;
+    }
+
     @Override
-    public CurrencyUnit getCurrency(){
-        return new CurrencyUnit(){
+    public CurrencyUnit getCurrency() {
+        return new CurrencyUnit() {
             @Override
-            public String getCurrencyCode(){
+            public String getCurrencyCode() {
                 return "DMY";
             }
 
             @Override
-            public int getNumericCode(){
+            public int getNumericCode() {
                 return 0;
             }
 
             @Override
-            public int getDefaultFractionDigits(){
+            public int getDefaultFractionDigits() {
                 return 2;
             }
 
             @Override
-            public CurrencyContext getCurrencyContext(){
+            public CurrencyContext getCurrencyContext() {
                 return DUMMY_CURRENCYCONTEXT;
             }
 
             @Override
-            public int compareTo(CurrencyUnit o){
+            public int compareTo(CurrencyUnit o) {
                 return 0;
             }
         };
     }
 
     @Override
-    public MonetaryContext getMonetaryContext(){
-        return DummyAmountBuilder.DUMMY_CONTEXT;
+    public MonetaryContext getMonetaryContext() {
+        return monetaryContext;
     }
 
     @Override
-    public NumberValue getNumber(){
-        return new NumberValue(){
+    public NumberValue getNumber() {
+        return new NumberValue() {
 
             /**
              * serialVersionUID.
@@ -64,291 +72,251 @@ public final class DummyAmount implements MonetaryAmount{
             private static final long serialVersionUID = 1L;
 
             @Override
-            public int getPrecision(){
+            public int getPrecision() {
                 return 0;
             }
 
             @Override
-            public long getAmountFractionNumerator(){
+            public long getAmountFractionNumerator() {
                 return 0;
             }
 
             @Override
-            public long getAmountFractionDenominator(){
+            public long getAmountFractionDenominator() {
                 return 0;
             }
 
             @Override
-            public int getScale(){
+            public int getScale() {
 
                 return 0;
             }
 
             @Override
-            public int intValue(){
+            public int intValue() {
                 return 0;
             }
 
             @Override
-            public int intValueExact(){
+            public int intValueExact() {
                 return 0;
             }
 
             @Override
-            public long longValue(){
+            public long longValue() {
                 return 0;
             }
 
             @Override
-            public long longValueExact(){
+            public long longValueExact() {
                 return 0;
             }
 
             @Override
-            public double doubleValue(){
+            public double doubleValue() {
                 return 0;
             }
 
             @Override
-            public double doubleValueExact(){
+            public double doubleValueExact() {
                 return 0;
             }
 
             @Override
-            public <T extends Number> T numberValue(Class<T> numberType){
+            public <T extends Number> T numberValue(Class<T> numberType) {
                 return null;
             }
 
             @Override
-            public <T extends Number> T numberValueExact(Class<T> numberType){
+            public <T extends Number> T numberValueExact(Class<T> numberType) {
                 return null;
             }
 
             @Override
-            public float floatValue(){
+            public float floatValue() {
                 return 0;
             }
 
             @Override
-            public Class<?> getNumberType(){
+            public Class<?> getNumberType() {
                 return Void.class;
             }
         };
     }
 
-    @Override
-    public <R> R query(MonetaryQuery<R> query){
-        return null;
-    }
 
     @Override
-    public DummyAmount with(MonetaryOperator operator){
-
-        return new DummyAmount();
-    }
-
-    @Override
-    public boolean isGreaterThan(MonetaryAmount amount){
+    public boolean isGreaterThan(MonetaryAmount amount) {
 
         return false;
     }
 
     @Override
-    public boolean isGreaterThanOrEqualTo(MonetaryAmount amt){
+    public boolean isGreaterThanOrEqualTo(MonetaryAmount amt) {
 
         return false;
     }
 
     @Override
-    public boolean isLessThan(MonetaryAmount amt){
+    public boolean isLessThan(MonetaryAmount amt) {
 
         return false;
     }
 
     @Override
-    public boolean isLessThanOrEqualTo(MonetaryAmount amt){
+    public boolean isLessThanOrEqualTo(MonetaryAmount amt) {
 
         return false;
     }
 
     @Override
-    public boolean isEqualTo(MonetaryAmount amount){
+    public boolean isEqualTo(MonetaryAmount amount) {
 
         return false;
     }
 
     @Override
-    public boolean isNegative(){
+    public int signum() {
 
-        return false;
+        return signum;
     }
 
     @Override
-    public boolean isNegativeOrZero(){
+    public DummyAmount add(MonetaryAmount amount) {
 
-        return false;
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public boolean isPositive(){
+    public DummyAmount subtract(MonetaryAmount amount) {
 
-        return false;
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public boolean isPositiveOrZero(){
+    public DummyAmount multiply(long multiplicand) {
 
-        return false;
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public boolean isZero(){
+    public DummyAmount multiply(double multiplicand) {
 
-        return false;
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public int signum(){
+    public DummyAmount multiply(Number multiplicand) {
 
-        return 0;
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount add(MonetaryAmount amount){
+    public DummyAmount divide(long amount) {
 
-        return new DummyAmount();
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount subtract(MonetaryAmount amount){
+    public DummyAmount divide(double amount) {
 
-        return new DummyAmount();
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount multiply(long multiplicand){
+    public DummyAmount divide(Number amount) {
 
-        return new DummyAmount();
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount multiply(double multiplicand){
+    public DummyAmount remainder(long amount) {
 
-        return new DummyAmount();
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount multiply(Number multiplicand){
+    public DummyAmount remainder(double amount) {
 
-        return new DummyAmount();
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount divide(long amount){
+    public DummyAmount remainder(Number amount) {
 
-        return new DummyAmount();
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount divide(double amount){
-
-        return new DummyAmount();
+    public DummyAmount[] divideAndRemainder(long amount) {
+        return new DummyAmount[]{new DummyAmountBuilder().create(), new DummyAmountBuilder().create()};
     }
 
     @Override
-    public DummyAmount divide(Number amount){
-
-        return new DummyAmount();
+    public DummyAmount[] divideAndRemainder(double amount) {
+        return new DummyAmount[]{new DummyAmountBuilder().create(), new DummyAmountBuilder().create()};
     }
 
     @Override
-    public DummyAmount remainder(long amount){
-
-        return new DummyAmount();
+    public DummyAmount[] divideAndRemainder(Number amount) {
+        return new DummyAmount[]{new DummyAmountBuilder().create(), new DummyAmountBuilder().create()};
     }
 
     @Override
-    public DummyAmount remainder(double amount){
+    public DummyAmount divideToIntegralValue(long divisor) {
 
-        return new DummyAmount();
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount remainder(Number amount){
+    public DummyAmount divideToIntegralValue(double divisor) {
 
-        return new DummyAmount();
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount[] divideAndRemainder(long amount){
-        return new DummyAmount[]{new DummyAmount(), new DummyAmount()};
+    public DummyAmount divideToIntegralValue(Number divisor) {
+
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount[] divideAndRemainder(double amount){
-        return new DummyAmount[]{new DummyAmount(), new DummyAmount()};
+    public DummyAmount scaleByPowerOfTen(int power) {
+
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount[] divideAndRemainder(Number amount){
-        return new DummyAmount[]{new DummyAmount(), new DummyAmount()};
+    public DummyAmount abs() {
+
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount divideToIntegralValue(long divisor){
+    public DummyAmount negate() {
 
-        return new DummyAmount();
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount divideToIntegralValue(double divisor){
+    public DummyAmount plus() {
 
-        return new DummyAmount();
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount divideToIntegralValue(Number divisor){
+    public DummyAmount stripTrailingZeros() {
 
-        return new DummyAmount();
+        return new DummyAmountBuilder().create();
     }
 
     @Override
-    public DummyAmount scaleByPowerOfTen(int power){
-
-        return new DummyAmount();
-    }
-
-    @Override
-    public DummyAmount abs(){
-
-        return new DummyAmount();
-    }
-
-    @Override
-    public DummyAmount negate(){
-
-        return new DummyAmount();
-    }
-
-    @Override
-    public DummyAmount plus(){
-
-        return new DummyAmount();
-    }
-
-    @Override
-    public DummyAmount stripTrailingZeros(){
-
-        return new DummyAmount();
-    }
-
-    @Override
-    public MonetaryAmountFactory<DummyAmount> getFactory(){
+    public MonetaryAmountFactory<DummyAmount> getFactory() {
         return new DummyAmountBuilder();
     }
 
     @Override
-    public int compareTo(MonetaryAmount o){
+    public int compareTo(MonetaryAmount o) {
         Objects.requireNonNull(o);
         return 0;
     }

@@ -22,17 +22,20 @@ import java.util.*;
  * extensions os specialities.<p>
  * Superclasses of this class must be final, immutable, serializable and thread-safe.
  */
+@SuppressWarnings("unchecked")
 public abstract class AbstractContext implements Serializable {
 
-    /**
-     * Key for storing the target providers to be queried
-     */
-    public static final String KEY_PROVIDER = "provider";
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Key name for the timestamp attribute.
-     */
-    public static final String KEY_TIMESTAMP = "timestamp";
+	/**
+	 * Key for storing the target providers to be queried
+	 */
+	public static final String KEY_PROVIDER = "provider";
+
+	/**
+	 * Key name for the timestamp attribute.
+	 */
+	public static final String KEY_TIMESTAMP = "timestamp";
 
     /**
      * The data map containing all values.
@@ -44,18 +47,18 @@ public abstract class AbstractContext implements Serializable {
      *
      * @param builder the Builder.
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    protected AbstractContext(AbstractContextBuilder<?, ?> builder) {
-        for (Map.Entry<Class, Map<Object, Object>> en : builder.data.entrySet()) {
-            Map<Object, Object> presentMap = this.data.get(en.getKey());
-            if (presentMap == null) {
-                presentMap = new HashMap<>(en.getValue());
-                this.data.put(en.getKey(), presentMap);
-            } else {
-                presentMap.putAll(en.getValue());
-            }
-        }
-    }
+	@SuppressWarnings("rawtypes")
+	protected AbstractContext(AbstractContextBuilder<?, ?> builder) {
+		for (Map.Entry<Class, Map<Object, Object>> en : builder.data.entrySet()) {
+			Map<Object, Object> presentMap = this.data.get(en.getKey());
+			if (presentMap == null) {
+				presentMap = new HashMap<>(en.getValue());
+				this.data.put(en.getKey(), presentMap);
+			} else {
+				presentMap.putAll(en.getValue());
+			}
+		}
+	}
 
     /**
      * Get the present keys for a given attribute type.
@@ -301,7 +304,7 @@ public abstract class AbstractContext implements Serializable {
      * @param defaultValue the default value returned, if the attribute is not present.
      * @return the value, or default value.
      */
-    public <T> Collection<T> getCollection(Object key, Collection<T> defaultValue) {
+	public <T> Collection<T> getCollection(Object key, Collection<T> defaultValue) {
         return getAny(key, Collection.class, defaultValue);
     }
 

@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.money.CurrencyUnit;
@@ -51,9 +52,9 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
     }
 
     @Override
-    public Collection<String> getProviderNames() {
-        return Arrays.asList("test");
-    }
+	public Collection<String> getProviderNames() {
+		return Collections.singletonList("test");
+	}
 
     @Override
     public List<String> getDefaultProviderChain() {

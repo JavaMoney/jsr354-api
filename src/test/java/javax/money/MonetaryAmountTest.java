@@ -15,8 +15,8 @@ package javax.money;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertSame;
 
 public class MonetaryAmountTest {
 
@@ -35,7 +35,7 @@ public class MonetaryAmountTest {
         final MonetaryAmount retVal = monetaryAmount.query(amount -> amount);
 
         //then
-        assertSame(monetaryAmount, retVal);
+        assertSame(retVal, monetaryAmount);
     }
 
     /**
@@ -51,7 +51,7 @@ public class MonetaryAmountTest {
         final MonetaryAmount retVal = monetaryAmount.with(amount -> amount);
 
         //then
-        assertSame(monetaryAmount, retVal);
+        assertSame(retVal, monetaryAmount);
     }
 
     /**

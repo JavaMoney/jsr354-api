@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author Anatole Tresch
  */
-public class DefaultServiceProvider implements ServiceProvider {
+class DefaultServiceProvider implements ServiceProvider {
     /** List of services loaded, per class. */
     private final ConcurrentHashMap<Class, List<Object>> servicesLoaded = new ConcurrentHashMap<>();
 

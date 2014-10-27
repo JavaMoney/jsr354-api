@@ -17,11 +17,11 @@ import java.util.*;
 
 /**
  * Represents a general context of data targeting an item of type {@code Q}. Contexts are used to add arbitrary
- * data that cannot be be mapped in a atandard way to the money API, e.g. use case or customer specific
+ * data that cannot be be mapped in a standard way to the money API, e.g. use case or customer specific
  * extensions os specialities.<p>
  * Superclasses of this class must be final, immutable, serializable and thread-safe.
  */
-public abstract class AbstractQuery extends AbstractContext{
+public abstract class AbstractQuery extends AbstractContext {
 
     /**
      * Key for storing the target providers to be queried
@@ -44,7 +44,7 @@ public abstract class AbstractQuery extends AbstractContext{
      *
      * @param builder the builder, not null.
      */
-    protected AbstractQuery(AbstractQueryBuilder builder){
+    protected AbstractQuery(AbstractQueryBuilder builder) {
         super(builder);
     }
 
@@ -56,7 +56,7 @@ public abstract class AbstractQuery extends AbstractContext{
      *
      * @return the ordered providers, never null.
      */
-    public List<String> getProviders(){
+    public List<String> getProviders() {
         return getList(KEY_QUERY_PROVIDERS, Collections.emptyList());
     }
 
@@ -66,7 +66,7 @@ public abstract class AbstractQuery extends AbstractContext{
      *
      * @return this Builder for chaining.
      */
-    public Class<?> getTargetType(){
+    public Class<?> getTargetType() {
         return getAny(KEY_QUERY_TARGET_TYPE, Class.class, null);
     }
 
@@ -76,11 +76,11 @@ public abstract class AbstractQuery extends AbstractContext{
      *
      * @return the timestamp in millis, or null.
      */
-    public Long getTimestampMillis(){
+    public Long getTimestampMillis() {
         Long value = getLong(KEY_QUERY_TIMESTAMP, null);
-        if(Objects.isNull(value)){
+        if (Objects.isNull(value)) {
             TemporalAccessor acc = getTimestamp();
-            if(Objects.nonNull(acc)){
+            if (Objects.nonNull(acc)) {
                 return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
             }
         }
@@ -92,11 +92,11 @@ public abstract class AbstractQuery extends AbstractContext{
      *
      * @return the current timestamp, or null.
      */
-    public TemporalAccessor getTimestamp(){
+    public TemporalAccessor getTimestamp() {
         TemporalAccessor acc = getAny(KEY_QUERY_TIMESTAMP, TemporalAccessor.class, null);
-        if(Objects.isNull(acc)){
+        if (Objects.isNull(acc)) {
             Long value = getLong(KEY_QUERY_TIMESTAMP, null);
-            if(Objects.nonNull(value)){
+            if (Objects.nonNull(value)) {
                 acc = Instant.ofEpochMilli(value);
             }
         }

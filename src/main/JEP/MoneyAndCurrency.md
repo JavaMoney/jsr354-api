@@ -52,6 +52,15 @@ The latest version can be found at https://github.com/JavaMoney/jsr354-api/blob/
 The reference implementation as well is documented in a short user guide accessible
 under https://github.com/JavaMoney/jsr354-ri/blob/master/src/main/asciidoc/userguide.adoc
 
+Generally the JSR's code can be found at: 
+
+* _API:_ https://github.com/JavaMoney/jsr354-api
+* _RI:_ https://github.com/JavaMoney/jsr354-ri
+* _TCK:_ https://github.com/JavaMoney/jsr354-tck
+
+The build is based on maven. THe API does not depend on any other modules, whereas RI and TCK depend
+on a common parent project located at: https://github.com/JavaMoney/javamoney-parent
+
 Summarizing the JSR contains the following main artifacts:
 
 * Interfaces for amounts (``MonetaryAmount``), currencies (``CurrencyUnit``), rounding (``MonetaryRounding``),

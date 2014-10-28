@@ -40,13 +40,13 @@ Adding this JSR is requested by huge parts of the Java community, e.g.
 see http://www.takipiblog.com/350-developers-voted-for-features-in-java-9-have-they-decided-the-same-as-oracle/#more-659
 Similarly adding the API to the JDK will help companies and financial institutions
 to adopt the API. The Java language would be the first programming language that
-comes with extensive and well designed support for handling with financial
+comes with extensive and support for handling financial
 data.
 
 Description
 -----------
 
-The JSR's API and design are described in the correponding specification.
+The JSR's API and design are described in the corresponding specification.
 The latest version can be found at https://github.com/JavaMoney/jsr354-api/blob/master/src/main/asciidoc/JavaMoneySpecification.adoc.
 
 The reference implementation as well is documented in a short user guide accessible
@@ -58,7 +58,7 @@ Generally the JSR's code can be found at:
 * _RI:_ https://github.com/JavaMoney/jsr354-ri
 * _TCK:_ https://github.com/JavaMoney/jsr354-tck
 
-The build is based on maven. THe API does not depend on any other modules, whereas RI and TCK depend
+The build is based on Maven. The API does not depend on any other modules, whereas RI and TCK depend
 on a common parent project located at: https://github.com/JavaMoney/javamoney-parent
 
 Summarizing the JSR contains the following main artifacts:
@@ -70,7 +70,7 @@ Summarizing the JSR contains the following main artifacts:
 * The singleton accessors are backed up by SPI interfaces (``MonetaryCurrenciesSingletonSpi,
   MonetaryAmountsSingletonSpi, MonetaryRoundingsSingletonSpi, MonetaryConversionSingletonSpi,
   MonetaryFormatsSingletonSpi``).
-* More complex detailed not possible being modelled in a unified way, could be added to context
+* More complex details which cannot be modelled in a unified way, could be added to context
   instances (extending ``AbstractContext``): ``CurrencyContext, MonetaryAmountContext, RoundingContext,
   ConversionContext, ProviderContext, MonetaryFormatContext``).
 * Contexts can be created using a fluent builder API: ``CurrencyContextBuilder, MonetaryAmountContextBuilder,
@@ -86,8 +86,8 @@ Summarizing the JSR contains the following main artifacts:
 * Finally the API provides functional interfaces (unary or functions) for adding external functions
   to amounts.
 
-The implementation part as well comes with some interesting features:
-* It provides two implementation for amount: ``Money`` (based on ``BigDecimal``) and ``FastMoney`` (based on a ``long`` value).
+The reference implementation comes with some interesting features as well:
+* It provides two implementations for amount: ``Money`` (based on ``BigDecimal``) and ``FastMoney`` (based on a ``long`` value).
 * It provides default formatting for all currencies, based on the current ``DecimalFormat`` instance.
 * It provides CurrencyUnit instances for all currencies already available from ``java.util.Currency``.
 * It provides a ``BuildableCurrencyUnit`` and an according`` BuildableCurrencyUnitBuilder``.
@@ -95,9 +95,9 @@ The implementation part as well comes with some interesting features:
 * It provides default formatting based on ``java.text.DecimalFormat``, hereby also supporting some
   additional features, such as adaptive number grouping, different currency styles and more.
 
-The following sections give some examples how the API is designed for use:
+The following sections give some examples of how the API is designed for use:
 
-### Working with org.javamoney.moneta.Money
+#### Working with org.javamoney.moneta.Money
 
 The class ``org.javamoney.moneta.Money`` implements ``MonetaryAmount`` using ``java.math.BigDecimal`` internally:
 
@@ -128,7 +128,7 @@ precision, maximal scale supported by the type’s implementation as well as oth
        System.out.println("Sufficient scale for our use case, go for it.");
     }
 
-Finally performing arithmetic operations in both above scenarios works similar as it is when using 
+Finally performing arithmetic operations in both of the above scenarios works similar as it is when using 
 ``java.math.BigDecimal``:
 
     MonetaryAmount amt = ...;
@@ -143,14 +143,14 @@ As mentioned also external functionality can be chained, e.g. using instances of
           .multiply(2.12345).with(MonetaryRoundings.getDefaultRounding())
           .with(MonetaryFunctions.percent(23));
         
-### Numeric Precision and Scale
+#### Numeric Precision and Scale
 
 Since the ``Money`` implementation class, which is part of the reference implementation, internally 
 uses ``java.math.BigDecimal`` the numeric capabilities match exact the capabilities of ``BigDecimal``. 
 When accessing ``MonetaryAmountFactory`` instances it is possible to configure the ``MathContext``
 effectively used (by default ``Money`` uses ``MathContext.DECIMAL64``).:
 
-### Example Configuring a ``MonetaryAmountFactory``, using the RI class ``Money`` as example.
+#### Example Configuring a ``MonetaryAmountFactory``, using the RI class ``Money`` as example.
 
     MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(
        MonetaryAmountFactoryQueryBuilder.of(Money.class)
@@ -161,14 +161,14 @@ effectively used (by default ``Money`` uses ``MathContext.DECIMAL64``).:
     MonetaryAmount m1 = fact.setCurrency("CHF").setNumber(250.34).create();
     Money m2 = fact.setCurrency("CHF").setNumber(250.34).create();
 
-### Extending the API
+#### Extending the API
 
 Now, one last thing to discuss is, how users can add their own functionality, e.g. by writing their own
 ``MonetaryOperator`` functions. Basically there are two distinct usage scenarios:
 
-* When the basic arithmetic defined on each MonetaryAmount are sufficient, it should be easy to
-  implement such functionality, since its behaving like any other type. Hereby the amount type 
-  implicitly will throw an ``ArithemticException`` if the numeric capabilities are not
+* When the basic arithmetic defined on each MonetaryAmount is sufficient, it should be easy to
+  implement such functionality, since it's behaving like any other type. The amount type 
+  will throw an ``ArithemticException`` by default, if the numeric capabilities are not
   capable of creating the result required.
 
     public final class DuplicateOp implements MonetaryOperator{
@@ -177,12 +177,12 @@ Now, one last thing to discuss is, how users can add their own functionality, e.
       }
     }
   
-* In case where the basic operations are not sufficient anymore, or it is more convenient to do a calculation
+* In case the basic operations are not sufficient anymore, or it is more convenient to do a calculation
   externally, it is still not necessary to cast to any implementation type, since 
 
 ** the numeric capabilities can be evaluated using the ``MonetaryContext``. On ``MonetaryAmountFactory`` both
    the default and the maximal supported ``MonetaryContext`` can be accessed.
-** the numeric value can be extracted in a portable way accessing the ``NumberValue``.
+** the numerical value can be extracted in a portable way accessing the ``NumberValue``.
 ** a ``MonetaryFactory`` can be created to create the result of the same implementation type, without having
    to cast to this type ever explicitly.
 
@@ -195,7 +195,7 @@ amount to an amount with the same numeric value, but with XXX (undefined) as cur
       }
     }
   
-### Working with ``org.javamoney.moneta.FastMoney``
+#### Working with ``org.javamoney.moneta.FastMoney``
 
 ``org.javamoney.moneta.FastMoney`` implements a ``MonetaryAmount`` using ``long`` as numeric representation, 
 whereas the full amount is interpreted as minor units, with a denumerator of 100000.
@@ -219,7 +219,7 @@ Of course, the ``MonetaryContext`` is different than for Money:
     numeric class = Long
     attributes: RoundingMode.HALF_EVEN
 
-### Calculating a Total
+#### Calculating a Total
 
 A total of amounts can be calculated in multiple ways, one way is simply to chain the amounts with 
 ``add(MonetaryAmount)``:
@@ -274,7 +274,7 @@ Now with the ``MonetaryOperator`` totalizing looks as follows:
 A similar approach can also be used for other multi value calculations as used in statistics, e.g.
 average, median etc. Corresponding implementation classes are as well part of the reference implementation.
 
-### Calculating a Present Value
+#### Calculating a Present Value
 
 The present value (abbreviated PV) shows how financial formulas can be implemented based on the JSR 354 API.
 A PV models the current value of a financial in- or outflow in the future, weighted with a calculatory 
@@ -283,7 +283,7 @@ interest rate. Calculation of a PV requires the following parameters:
 * the time of the cash flow (in periods)
 * the discount rate (the rate of return that could be earned on an investment in the financial markets
   with similar risk.); the opportunity cost of capital
-* the net cash flow i.e. ``cash inflow – cash outflow``, at time t . For educational purposes,
+* the net cash flow i.e. ``cash inflow – cash outflow``, at time t.
 
 The same financial function now can be implemented as follows:
 
@@ -329,10 +329,10 @@ present value can be calculated as follows:
     // with a rate of 5%.
     Money pv = m.with(new PresentValue(new BigDecimal("0.05"), 2));
 
-### Performing Currency Conversion
+#### Performing Currency Conversion
 
-Currency Conversion also is a special case of a ``MonetaryOperator`` since it creates a new amount based
-on another amount. Hereby by the conversion the resulting amount will typically have a different currency
+Currency Conversion is also a special case of a ``MonetaryOperator`` since it creates a new amount based
+on another amount. The resulting amount will typically have a different currency
 and a different numeric amount:
 
     MonetaryAmount inCHF =...;
@@ -368,25 +368,25 @@ interoperability. This TCK must be run against the Java runtime with the
 JSR included. It should be executed without any errors without any additional
 configuration.
 From a runtime perspective the JSR's API currently requires Java SE 8, since
-it makes use of lamdas, method references and default methods. When Java ME
+it makes use of lambdas, method references and default methods. When Java ME
 would also provide functional features, the API could be usable in ME as well.
 
 
 Dependencies
 ------------
 
-The JSR's bootstrap mechanism uses java.util.ServiceLoader for loading of
-backing services. Logging is done using java.util.logging. The currency
-providers for ISO currencies are using java.util.Currency internally,
-currently wrapping the Currency instance into an adapter implementing
-CurrencyUnit. Alternatively it would be possible to let java.util.Currency
-implement CurrencyUnit. Basically most of the methods required are already
-present. The additional CurrencyContext to be returned can be easily
+The JSR's bootstrap mechanism uses ``java.util.ServiceLoader`` for loading of
+backing services. Logging is done using ``java.util.logging``. The currency
+providers for ISO currencies are using ``java.util.Currency`` internally,
+currently wrapping the ``Currency`` instance into an adapter implementing
+``CurrencyUnit``. Alternatively it would be possible to have ``java.util.Currency``
+implement ``CurrencyUnit``. Basically most of the methods required are already
+present. The additional ``CurrencyContext`` to be returned can be easily
 implemented by a static default instance.
-The amount implementations provided are based on BigDecimal (Money) and
-long (FastMoney). FastMoney additionally also uses java.math.Math for
+The amount implementations provided are based on ``BigDecimal`` (``Money``) and
+``long`` (``FastMoney``). ``FastMoney`` additionally also uses ``java.math.Math`` for
 arithmetic functions.
-The JSR's formatting API internally relies on java.text.DecimalFormat for
+The JSR's formatting API internally relies on ``java.text.DecimalFormat`` for
 the default formats provided.
 The JSR's conversion providers finally are trying to update their datafeeds
 on startup. It is arguable, if these providers in the current form should

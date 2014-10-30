@@ -781,6 +781,8 @@ public interface MonetaryAmount{
   MonetaryAmount scaleByPowerOfTen(int power);
   MonetaryAmount abs();
   MonetaryAmount negate();
+  MonetaryAmount plus();
+  MonetaryAmount stripTrailingZeros();
 }
 --------------------------------------
 

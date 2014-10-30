@@ -117,13 +117,13 @@ To give some first impressions of the API the following sections give some examp
 The class ``org.javamoney.moneta.Money`` implements ``MonetaryAmount`` using ``java.math.BigDecimal`` internally:
 
     MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(Money.class);
-    Money m = fact.withCurrency("USD").with(200.50).create();
+    Money m = fact.setCurrency("USD").setNumber(200.50).create();
 
 Also a generic MonetaryAmount instance can be accessed using a raw factory (hereby it depends on the
 configured default amount factory, which effective type instance is returned):
 
     MonetaryAmount amt = MonetaryAmounts.getDefaultAmountFactory()
-                       .withCurrency("USD").with(200.50).create();
+                       .setCurrency("USD").setNumber(200.50).create();
                        
 Still we can evaluate the effective amount’s type effectively:
 
@@ -206,7 +206,7 @@ amount to an amount with the same numeric value, but with XXX (undefined) as cur
 
     public final class ToInvalid implements MonetaryOperator{
       public <T extends MonetaryAmount> T apply(T amount){
-        return (T)amount.getFactory().with("XXX").create();
+        return (T)amount.getFactory().setCurrency("XXX").create();
       }
     }
   

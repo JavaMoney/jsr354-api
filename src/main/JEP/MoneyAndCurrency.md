@@ -22,10 +22,16 @@ Summary
 JSR 354 defines a flexible and extensible API for dealing with currencies,
 monetary amounts, currency conversion and monetary formatting.
 
+Goals
+-----
+
+Extend the Java eco-system with financial abstractions out of the box.
+
 Non-Goals
 ---------
 
-The JSR 354 should not replace the existing java.util.Currency class.
+The JSR 354 must not replace the existing java.util.Currency class. This class
+could as well implement CurrencyUnit easily.
 
 Success Metrics
 ---------------
@@ -95,7 +101,16 @@ The reference implementation comes with some interesting features as well:
 * It provides default formatting based on ``java.text.DecimalFormat``, hereby also supporting some
   additional features, such as adaptive number grouping, different currency styles and more.
 
-The following sections give some examples of how the API is designed for use:
+How the API should be included into the OpenJDK should be discussed with the OpenJDK architects.
+Currently we see the following options:
+
+* Adding a separate package like "javax.money" (current), or "java.money" somewhat similar to 310. 
+  Whether that's considered "core" or optional in future JDKs was up to packaging (preferred solution).
+* Tighter integration, along the lines of "java.util" or "java.util.money" where as mentioned 
+  java.util.Currency would implement CurrencyUnit, and a type like Money plus other core features
+  provided to the JDK.
+
+To give some first impressions of the API the following sections give some examples of how the API is designed for use:
 
 #### Working with org.javamoney.moneta.Money
 

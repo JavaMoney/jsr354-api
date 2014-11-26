@@ -1,9 +1,9 @@
 ﻿JSR 354 Money and Currency -- Specification
 ===========================================
 :title: JSR 354 (Money & Currency) - Specification
-:revnumber: 0.9-SNAPSHOT
+:revnumber: 1.0-SNAPSHOT
 :revremark: Public Final Draft
-:revdate: June 2014
+:revdate: November 2014
 :longversion: {revnumber} ({revremark}) {revdate}
 :authorinitials: ATR
 :author: Anatole Tresch, Credit Suisse
@@ -31,7 +31,7 @@ toc::[]
 
 *EVALUATION LICENCE*
 
-*JSR-000354 Money and Currency API 1.0 Public Review*
+*JSR-000354 Money and Currency API 1.0 Final Draft Review*
 
 CREDIT SUISSE AG IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY
 UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS
@@ -46,7 +46,7 @@ Specification: JSR-354 Money and Currency API ("Specification")+
 Version: {revnumber}+
 Status: {revremark}+
 Release: {revdate}+
-Copyright 2013-2014 Credit Suisse AG+
+Copyright 2012-2014 Credit Suisse AG+
 8070 Zurich, Switzerland+
 All rights reserved.+
 
@@ -332,8 +332,8 @@ There are five main section in this document:
 
 <<<
 
-[[UseCase]]
-Use Case
+[[UseCases]]
+Use Cases
 --------
 This section describes some, but not all, of the use cases that should be covered with this JSR. 
 
@@ -3192,5 +3192,5 @@ Public Source Code Repository on GitHub: http://github.com/JavaMoney,
 * http://en.wikipedia.org/wiki/Karatsuba_algorithm[Karatsuba Algorithm] for Fast Big Decimal Multiplication
 
 === Related Initiatives
-* timeandmoney.sourceforge.net/[Eric Evans Time and Money Library]
-* http://bitcoinj.github.io/[Bitcoin Java Client]
+* http://timeandmoney.sourceforge.net/ [Eric Evans Time and Money Library]
+* http://bitcoinj.github.io/ [Bitcoin Java Client]

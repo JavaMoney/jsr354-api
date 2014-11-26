@@ -3176,7 +3176,7 @@ Public Source Code Repository on GitHub: http://github.com/JavaMoney,
   ** https://github.com/JavaMoney/jsr354-ro[Moneta RI GitHub Repository]
 * http://www.javapractices.com/topic/TopicAction.do?Id=13[Java Practices about Representing Money]
 * http://blog.eisele.net/2011/08/working-with-money-in-java.html[Working with Money in Java]
-* Java currency by Roedy Green, Canadian Mind Products (http://mindprod.com/jgloss/jgloss.html)
+* http://mindprod.com/jgloss/currency.html[Java currency by Roedy Green], Canadian Mind Products
 * http://www.eclipse.org/uomo/[UOMo Business], based on ICU4J and concepts by JScience Economics]
 * http://site.icu-project.org/[ICU4J] Uses Number for all operations and internal storage in its Money type.
 * http://moneydance.com/dev/apidoc/[MoneyDance API]

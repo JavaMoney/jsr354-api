@@ -3176,13 +3176,13 @@ Public Source Code Repository on GitHub: http://github.com/JavaMoney,
   ** https://github.com/JavaMoney/jsr354-ro[Moneta RI GitHub Repository]
 * http://www.javapractices.com/topic/TopicAction.do?Id=13[Java Practices about Representing Money]
 * http://blog.eisele.net/2011/08/working-with-money-in-java.html[Working with Money in Java]
-* Java currency by Roedy Green, Canadian Mind Products
+* Java currency by Roedy Green, [http://mindprod.com/jgloss/jgloss.html Canadian Mind Products]
 * http://www.eclipse.org/uomo/[UOMo Business], based on ICU4J and concepts by JScience Economics]
+* http://site.icu-project.org/[ICU4J] Uses Number for all operations and internal storage in its Money type.
 * http://moneydance.com/dev/apidoc/[MoneyDance API]
 * http://javamoney.org[JavaMoney] is the Apache 2.0 licensed OSS project that evolved from JSR 354 development. It provides concrete implementations for currency conversion and mapping, advanced formatting, historic data access, regions and a set of financial calculations and formulas.
 * http://www.joda.org/joda-money[Joda Money] can be referred to as an inspiration for API and design style. it is based on real-world use cases in an e-commerce application for airlines
 * http://grails.org/plugin/currencies[Grails Currencies] uses BigDecimal as internal representation, but API only exposes Number in all Money operations like plus(), minus() or similar.
-* site.icu-project.org/[ICU4J] Uses Number for all operations and internal storage in its Money type.
 * http://lemnik.wordpress.com/2011/03/25/bigdecimal-and-your-money/[Why not to use BigDecimal for Money]
 * http://de.wikipedia.org/wiki/M-Pesa[M-Pesa-Mobile Money] in Africa
 * Currency Internationalization (i18n), Multiple Currencies and Foreign Exchange (FX).

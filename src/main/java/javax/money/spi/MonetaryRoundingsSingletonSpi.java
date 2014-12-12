@@ -91,11 +91,12 @@ public interface MonetaryRoundingsSingletonSpi{
      * @param providers    the optional provider list and ordering to be used
      * @return a new instance {@link javax.money.MonetaryOperator} implementing the
      * rounding, never {@code null}.
+     * @throws MonetaryException if no such rounding could be provided.
      */
     default MonetaryRounding getRounding(CurrencyUnit currencyUnit, String... providers){
         MonetaryRounding op =
                 getRounding(RoundingQueryBuilder.of().setProviders(providers).setCurrency(currencyUnit).build());
-        return Optional.ofNullable(op).orElseThrow(() -> new IllegalStateException(
+        return Optional.ofNullable(op).orElseThrow(() -> new MonetaryException(
                 "No rounding provided for CurrencyUnit: " + currencyUnit.getCurrencyCode()));
     }
 
@@ -170,7 +171,7 @@ public interface MonetaryRoundingsSingletonSpi{
      * @throws IllegalArgumentException if no such rounding is registered using a
      *                                  {@link RoundingProviderSpi} instance.
      */
-    default boolean isRoundingAvailable(CurrencyUnit currencyUnit, String[] providers){
+    default boolean isRoundingAvailable(CurrencyUnit currencyUnit, String... providers) {
         return isRoundingAvailable(RoundingQueryBuilder.of().setProviders(providers).setCurrency(currencyUnit).build());
     }
 }

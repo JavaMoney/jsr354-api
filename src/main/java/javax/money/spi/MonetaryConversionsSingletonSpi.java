@@ -140,6 +140,7 @@ public interface MonetaryConversionsSingletonSpi{
      *
      * @param providers the provider names of hte providers to be accessed
      * @return the list of providers, in the same order as requested.
+     * @throws MonetaryException if a provider could not be resolved.
      */
     default List<ExchangeRateProvider> getExchangeRateProviders(String... providers){
         List<ExchangeRateProvider> provInstances = new ArrayList<>();
@@ -149,7 +150,7 @@ public interface MonetaryConversionsSingletonSpi{
         }
         for(String provName : providerNames){
             provInstances.add(Optional.ofNullable(getExchangeRateProvider(provName)).orElseThrow(
-                    () -> new IllegalArgumentException("Unsupported conversion/rate provider: " + provName)));
+                    () -> new MonetaryException("Unsupported conversion/rate provider: " + provName)));
         }
         return provInstances;
     }
@@ -182,8 +183,9 @@ public interface MonetaryConversionsSingletonSpi{
      * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */
     default CurrencyConversion getConversion(ConversionQuery conversionQuery){
-        Objects.requireNonNull(conversionQuery.getCurrency(), "Terminating Currency is required.");
-        return getExchangeRateProvider(conversionQuery).getCurrencyConversion(conversionQuery.getCurrency());
+        return getExchangeRateProvider(conversionQuery).getCurrencyConversion(
+                Objects.requireNonNull(conversionQuery.getCurrency(), "Terminating Currency is required.")
+        );
     }
 
     /**

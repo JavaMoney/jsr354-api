@@ -876,8 +876,8 @@ public abstract class NumberValue extends java.lang.Number{
 
 Hereby
 
-. +getNumberType()+ provides information about the numeric representation used internally. It does explicitly not
-  constraint the type returned to be a subtype of +java.lang.Number+ to allow also alternate implementations used.
+. +getNumberType()+ provides information about the numeric representation used internally. It explicitly does not
+  constrain the type returned to be a subtype of +java.lang.Number+ to allow alternate implementations to be used.
 . +intValueExact(), longValueExact(), doubleValueExact()+ extend the methods defined in +java.lang.Number+, with their
   exact variants. Exact means, that it is required to throw an +ArithmeticException+, if the current numeric value must
   be truncated to fit into the required target type. So in the following cases an exception must be thrown:

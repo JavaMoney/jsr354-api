@@ -280,7 +280,7 @@ JSR 354 targets to support all general application areas, e.g.
 * etc.
 
 This specification will not discuss low latency concerns as required for example by algorithmic trading applications.
-Nevertheless the API was designed to support different implementations of monetary amounts and allows to be extended in
+Nevertheless the API was designed to support different implementations of monetary amounts and allows for extension in
 several ways. So it should be flexible enough that corresponding implementations can be used transparently to
 accommodate such applications.
 

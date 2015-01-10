@@ -15,20 +15,20 @@ import java.util.stream.Collectors;
 
 
 /**
- * Builder for queries for accessing {@link javax.money.CurrencyUnit} instances. If not properties are set the
+ * Builder for queries for accessing {@link javax.money.CurrencyUnit} instances. If not properties are setTyped the
  * query should
  * returns
- * the <i>default</i> currencies. Similarly if no provider is set explicitly the <i>default</i> ISO currencies as
+ * the <i>default</i> currencies. Similarly if no provider is setTyped explicitly the <i>default</i> ISO currencies as
  * returned by {@link java.util.Currency} should be returned.
  * <p>
  * Note this class is NOT thread-safe.
  */
-public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQueryBuilder,CurrencyQuery>{
+public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQueryBuilder, CurrencyQuery> {
 
     /**
      * Default constructor.
      */
-    private CurrencyQueryBuilder(){
+    private CurrencyQueryBuilder() {
     }
 
     /**
@@ -36,7 +36,7 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      *
      * @param currencyQuery {@link javax.money.CurrencyQuery} used for initializing this builder.
      */
-    private CurrencyQueryBuilder(CurrencyQuery currencyQuery){
+    private CurrencyQueryBuilder(CurrencyQuery currencyQuery) {
         Objects.requireNonNull(currencyQuery);
         importContext(currencyQuery);
     }
@@ -47,8 +47,8 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      * @param countries The ISO countries.
      * @return the query for chaining.
      */
-    public CurrencyQueryBuilder setCountries(Locale... countries){
-        return setCollection(CurrencyQuery.KEY_QUERY_COUNTRIES, Arrays.asList(countries));
+    public CurrencyQueryBuilder setCountries(Locale... countries) {
+        return set(CurrencyQuery.KEY_QUERY_COUNTRIES, Arrays.asList(countries));
     }
 
     /**
@@ -57,8 +57,8 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      * @param codes sthe currency codes or code expressions, not null.
      * @return the query for chaining.
      */
-    public CurrencyQueryBuilder setCurrencyCodes(String... codes){
-        return setCollection(CurrencyQuery.KEY_QUERY_CURRENCY_CODES, Arrays.asList(codes));
+    public CurrencyQueryBuilder setCurrencyCodes(String... codes) {
+        return set(CurrencyQuery.KEY_QUERY_CURRENCY_CODES, Arrays.asList(codes));
     }
 
     /**
@@ -67,8 +67,8 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      * @param codes the numeric codes.
      * @return the query for chaining.
      */
-    public CurrencyQueryBuilder setNumericCodes(int... codes){
-        return setCollection(CurrencyQuery.KEY_QUERY_NUMERIC_CODES,
+    public CurrencyQueryBuilder setNumericCodes(int... codes) {
+        return set(CurrencyQuery.KEY_QUERY_NUMERIC_CODES,
                 Arrays.stream(codes).boxed().collect(Collectors.toList()));
     }
 
@@ -77,7 +77,7 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      *
      * @return a new {@link javax.money.CurrencyQuery} instance, never null.
      */
-    public CurrencyQuery build(){
+    public CurrencyQuery build() {
         return new CurrencyQuery(this);
     }
 
@@ -86,7 +86,7 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      *
      * @return a new {@link javax.money.CurrencyQueryBuilder} instance, never null.
      */
-    public static CurrencyQueryBuilder of(){
+    public static CurrencyQueryBuilder of() {
         return new CurrencyQueryBuilder();
     }
 
@@ -96,7 +96,7 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
      * @param currencyQuery {@link javax.money.CurrencyQuery} used for initializing this builder.
      * @return a new {@link javax.money.CurrencyQueryBuilder} instance, never null.
      */
-    public static CurrencyQueryBuilder of(CurrencyQuery currencyQuery){
+    public static CurrencyQueryBuilder of(CurrencyQuery currencyQuery) {
         return new CurrencyQueryBuilder(currencyQuery);
     }
 

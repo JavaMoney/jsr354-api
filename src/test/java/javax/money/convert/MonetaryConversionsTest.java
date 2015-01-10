@@ -21,48 +21,98 @@ import static org.testng.Assert.*;
 /**
  * Created by Anatole on 05.03.14.
  */
-public class MonetaryConversionsTest{
+public class MonetaryConversionsTest {
     @Test
-    public void testGetConversion() throws Exception{
+    public void testGetConversion() throws Exception {
         assertNotNull(MonetaryConversions.getConversion(TestCurrency.of("CHF")));
     }
 
     @Test
-    public void testGetConversion1() throws Exception{
+    public void testGetConversion1() throws Exception {
         assertNotNull(MonetaryConversions.getConversion(
                 ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).build()));
     }
 
     @Test
-    public void testGetConversion2() throws Exception{
+    public void testGetExchangeRateProvider1() throws Exception {
+        assertNotNull(MonetaryConversions.getExchangeRateProvider(
+                ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).build()));
+    }
+
+    @Test
+    public void testIsConversionAvailable1_Query() throws Exception {
+        assertTrue(MonetaryConversions.isConversionAvailable(
+                ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).build()));
+    }
+
+    @Test
+    public void testIsExchangeRateProviderAvailable1_Query() throws Exception {
+        assertTrue(MonetaryConversions.isExchangeRateProviderAvailable(
+                ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).build()));
+    }
+
+    @Test
+    public void testGetConversion2() throws Exception {
         assertNotNull(MonetaryConversions.getConversion(
+                ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).setProviders("test").build()));
+        try {
+            MonetaryConversions.getConversion(
+                    ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).setProviders("foo").build());
+            fail("Should throw MonetaryException");
+        } catch (MonetaryException e) {
+            // OK
+        }
+    }
+
+    @Test
+    public void testIsConversionAvailable2() throws Exception {
+        assertTrue(MonetaryConversions.isConversionAvailable(
                 ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).setProviders("test").build()));
     }
 
     @Test
-    public void testGetConversion3() throws Exception{
+    public void testGetConversion_String_StringArr() throws Exception {
+        assertNotNull(MonetaryConversions.getConversion("test1", "test"));
+        assertNotNull(MonetaryConversions.getConversion("test1"));
+        try {
+            MonetaryConversions.getConversion("test1", "foo");
+            fail("Should throw MonetaryException");
+        } catch (MonetaryException e) {
+            // OK
+        }
+    }
+
+    @Test
+    public void testIsConversionAvailable_String_StringArr() throws Exception {
+        assertTrue(MonetaryConversions.isConversionAvailable("test1", "test"));
+        assertTrue(MonetaryConversions.isConversionAvailable("test1"));
+        assertFalse(MonetaryConversions.isConversionAvailable("test1", "foo"));
+    }
+
+    @Test
+    public void testGetConversion3() throws Exception {
         assertNotNull(MonetaryConversions.getConversion(TestCurrency.of("CHF"), "test"));
     }
 
     @Test
-    public void testGetExchangeRateProvider() throws Exception{
+    public void testGetExchangeRateProvider() throws Exception {
         assertNotNull(MonetaryConversions.getExchangeRateProvider("test"));
     }
 
     @Test(expectedExceptions = MonetaryException.class)
-    public void testGetExchangeRateProvider_Invalid() throws Exception{
+    public void testGetExchangeRateProvider_Invalid() throws Exception {
         MonetaryConversions.getExchangeRateProvider("fooBarAnyBla");
     }
 
     @Test
-    public void testGetProviderNames() throws Exception{
+    public void testGetProviderNames() throws Exception {
         assertNotNull(MonetaryConversions.getProviderNames());
         assertTrue(MonetaryConversions.getProviderNames().contains("test"));
         assertTrue(MonetaryConversions.getProviderNames().size() == 1);
     }
 
     @Test
-    public void testGetDefaultProviderChain() throws Exception{
+    public void testGetDefaultProviderChain() throws Exception {
         assertNotNull(MonetaryConversions.getDefaultProviderChain());
         assertFalse(MonetaryConversions.getDefaultProviderChain().isEmpty());
         assertEquals(1, MonetaryConversions.getDefaultProviderChain().size());

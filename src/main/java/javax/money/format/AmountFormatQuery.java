@@ -26,7 +26,7 @@ import javax.money.MonetaryAmounts;
  * <p>
  * This class is immutable, thread-safe and serializable.
  */
-public final class AmountFormatQuery extends AbstractQuery{
+public final class AmountFormatQuery extends AbstractQuery {
 
     /**
      * Key used for the format name attribute.
@@ -38,7 +38,7 @@ public final class AmountFormatQuery extends AbstractQuery{
      *
      * @param builder the corresponding {@link javax.money.format.AmountFormatQueryBuilder}, not null.
      */
-    AmountFormatQuery(AmountFormatQueryBuilder builder){
+    AmountFormatQuery(AmountFormatQueryBuilder builder) {
         super(builder);
     }
 
@@ -47,7 +47,7 @@ public final class AmountFormatQuery extends AbstractQuery{
      *
      * @return the styleId, or null.
      */
-    public String getFormatName(){
+    public String getFormatName() {
         return getText(KEY_QUERY_FORMAT_NAME);
     }
 
@@ -56,8 +56,8 @@ public final class AmountFormatQuery extends AbstractQuery{
      *
      * @return the style's locale, or null.
      */
-    public Locale getLocale(){
-        return get(Locale.class);
+    public Locale getLocale() {
+        return getTyped(Locale.class);
     }
 
     /**
@@ -66,8 +66,8 @@ public final class AmountFormatQuery extends AbstractQuery{
      *
      * @return the monetary context, or {@code null}.
      */
-    public MonetaryAmountFactory getMonetaryAmountFactory(){
-        return get(MonetaryAmountFactory.class, MonetaryAmounts.getDefaultAmountFactory());
+    public MonetaryAmountFactory getMonetaryAmountFactory() {
+        return getTyped(MonetaryAmountFactory.class, MonetaryAmounts.getDefaultAmountFactory());
     }
 
     /**
@@ -77,7 +77,7 @@ public final class AmountFormatQuery extends AbstractQuery{
      * @param locale    the target locale, not null.
      * @param providers the providers to be used, not null.
      */
-    public static AmountFormatQuery of(Locale locale, String... providers){
+    public static AmountFormatQuery of(Locale locale, String... providers) {
         return AmountFormatQueryBuilder.of(locale).setProviders(providers).build();
     }
 
@@ -86,7 +86,7 @@ public final class AmountFormatQuery extends AbstractQuery{
      *
      * @return a new preinitialized builder, never null.
      */
-    public AmountFormatQueryBuilder toBuilder(){
+    public AmountFormatQueryBuilder toBuilder() {
         return AmountFormatQueryBuilder.of(this);
     }
 }

@@ -21,7 +21,7 @@ import javax.money.MonetaryAmountFactory;
  * @see MonetaryAmountFormat#getAmountFormatContext()
  */
 @SuppressWarnings("serial")
-public final class AmountFormatContext extends AbstractContext{
+public final class AmountFormatContext extends AbstractContext {
     /**
      * Key used for the format name attribute.
      */
@@ -32,7 +32,7 @@ public final class AmountFormatContext extends AbstractContext{
      *
      * @param builder the corresponding builder.
      */
-    AmountFormatContext(AmountFormatContextBuilder builder){
+    AmountFormatContext(AmountFormatContextBuilder builder) {
         super(builder);
     }
 
@@ -41,7 +41,7 @@ public final class AmountFormatContext extends AbstractContext{
      *
      * @return the {@link Locale}, never {@code null}.
      */
-    public String getFormatName(){
+    public String getFormatName() {
         return getText(KEY_FORMAT_NAME);
     }
 
@@ -50,18 +50,18 @@ public final class AmountFormatContext extends AbstractContext{
      *
      * @return the Locale, or null.
      */
-    public Locale getLocale(){
-        return get(Locale.class);
+    public Locale getLocale() {
+        return getTyped(Locale.class);
     }
 
     /**
      * Access the format's {@link javax.money.MonetaryAmountFactory} that is used to of new amounts during
-     * parsing. If not set explicitly, the default {@link javax.money.MonetaryAmountFactory} is used.
+     * parsing. If not setTyped explicitly, the default {@link javax.money.MonetaryAmountFactory} is used.
      *
      * @return the {@link javax.money.MonetaryAmountFactory}, never {@code null}.
      */
-    public MonetaryAmountFactory<?> getParseFactory(){
-        return get(MonetaryAmountFactory.class);
+    public MonetaryAmountFactory<?> getParseFactory() {
+        return getTyped(MonetaryAmountFactory.class);
     }
 
     /**
@@ -69,7 +69,7 @@ public final class AmountFormatContext extends AbstractContext{
      *
      * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
-    public AmountFormatContextBuilder toBuilder(){
+    public AmountFormatContextBuilder toBuilder() {
         return AmountFormatContextBuilder.of(this);
     }
 

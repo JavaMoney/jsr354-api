@@ -25,21 +25,21 @@ import java.util.Set;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public interface MonetaryRoundingsSingletonSpi{
+public interface MonetaryRoundingsSingletonSpi {
 
     /**
      * Allows to access the names of the current defined roundings.
      *
      * @param providers the providers and ordering to be used. By default providers and ordering as defined in
      *                  #getDefaultProviders is used.
-     * @return the set of custom rounding ids, never {@code null}.
+     * @return the setTyped of custom rounding ids, never {@code null}.
      */
     Set<String> getRoundingNames(String... providers);
 
     /**
      * Allows to access the names of the current registered rounding providers.
      *
-     * @return the set of provider names, never {@code null}.
+     * @return the setTyped of provider names, never {@code null}.
      */
     Set<String> getProviderNames();
 
@@ -93,7 +93,7 @@ public interface MonetaryRoundingsSingletonSpi{
      * rounding, never {@code null}.
      * @throws MonetaryException if no such rounding could be provided.
      */
-    default MonetaryRounding getRounding(CurrencyUnit currencyUnit, String... providers){
+    default MonetaryRounding getRounding(CurrencyUnit currencyUnit, String... providers) {
         MonetaryRounding op =
                 getRounding(RoundingQueryBuilder.of().setProviders(providers).setCurrency(currencyUnit).build());
         return Optional.ofNullable(op).orElseThrow(() -> new MonetaryException(
@@ -111,7 +111,7 @@ public interface MonetaryRoundingsSingletonSpi{
      * @throws IllegalArgumentException if no such rounding is registered using a
      *                                  {@link javax.money.spi.RoundingProviderSpi} instance.
      */
-    default MonetaryRounding getRounding(String roundingName, String... providers){
+    default MonetaryRounding getRounding(String roundingName, String... providers) {
         MonetaryRounding op =
                 getRounding(RoundingQueryBuilder.of().setProviders(providers).setRoundingName(roundingName).build());
         return Optional.ofNullable(op)
@@ -127,9 +127,9 @@ public interface MonetaryRoundingsSingletonSpi{
      * @param query the rounding query, not null.
      * @return the rounding found, or null, if no rounding matches the query.
      */
-    default MonetaryRounding getRounding(RoundingQuery query){
+    default MonetaryRounding getRounding(RoundingQuery query) {
         Collection<MonetaryRounding> roundings = getRoundings(query);
-        if(roundings.isEmpty()){
+        if (roundings.isEmpty()) {
             return null;
         }
         return roundings.iterator().next();
@@ -141,7 +141,7 @@ public interface MonetaryRoundingsSingletonSpi{
      * @param query the rounding query, not null.
      * @return true, if at least one rounding matches the query.
      */
-    default boolean isRoundingAvailable(RoundingQuery query){
+    default boolean isRoundingAvailable(RoundingQuery query) {
         return !getRoundings(query).isEmpty();
     }
 
@@ -155,7 +155,7 @@ public interface MonetaryRoundingsSingletonSpi{
      * @throws IllegalArgumentException if no such rounding is registered using a
      *                                  {@link RoundingProviderSpi} instance.
      */
-    default boolean isRoundingAvailable(String roundingId, String... providers){
+    default boolean isRoundingAvailable(String roundingId, String... providers) {
         return isRoundingAvailable(
                 RoundingQueryBuilder.of().setProviders(providers).setRoundingName(roundingId).build());
     }

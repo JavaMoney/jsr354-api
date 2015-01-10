@@ -8,6 +8,7 @@
  */
 package javax.money;
 
+import java.math.MathContext;
 import java.util.Objects;
 
 /**
@@ -125,6 +126,11 @@ public final class DummyAmount implements MonetaryAmount {
             @Override
             public <T extends Number> T numberValue(Class<T> numberType) {
                 return null;
+            }
+
+            @Override
+            public NumberValue round(MathContext mathContext) {
+                return this;
             }
 
             @Override

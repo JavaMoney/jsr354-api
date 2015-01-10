@@ -28,7 +28,7 @@ import java.util.Locale;
  *
  * @author Anatole Tresch
  */
-public final class CurrencyQuery extends AbstractQuery implements Serializable{
+public final class CurrencyQuery extends AbstractQuery implements Serializable {
 
     /**
      * Key for storing a countries to be queried.
@@ -50,7 +50,7 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
      *
      * @param builder the corresponding {@link javax.money.CurrencyQueryBuilder}, not null.
      */
-    CurrencyQuery(CurrencyQueryBuilder builder){
+    CurrencyQuery(CurrencyQueryBuilder builder) {
         super(builder);
     }
 
@@ -59,8 +59,8 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
      *
      * @return the otarget locales, never null.
      */
-    public Collection<Locale> getCountries(){
-        return getCollection(KEY_QUERY_COUNTRIES, Collections.emptySet());
+    public Collection<Locale> getCountries() {
+        return get(KEY_QUERY_COUNTRIES, Collection.class, Collections.emptySet());
     }
 
     /**
@@ -68,8 +68,8 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
      *
      * @return the query for chaining.
      */
-    public Collection<String> getCurrencyCodes(){
-        return getCollection(KEY_QUERY_CURRENCY_CODES, Collections.emptySet());
+    public Collection<String> getCurrencyCodes() {
+        return get(KEY_QUERY_CURRENCY_CODES, Collection.class, Collections.emptySet());
     }
 
     /**
@@ -77,8 +77,8 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
      *
      * @return the query for chaining.
      */
-    public Collection<Integer> getNumericCodes(){
-        return getCollection(KEY_QUERY_NUMERIC_CODES, Collections.emptySet());
+    public Collection<Integer> getNumericCodes() {
+        return get(KEY_QUERY_NUMERIC_CODES, Collection.class, Collections.emptySet());
     }
 
     /**
@@ -86,7 +86,7 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable{
      *
      * @return a new {@link MonetaryAmountFactoryQueryBuilder} instance, never null.
      */
-    public CurrencyQueryBuilder toBuilder(){
+    public CurrencyQueryBuilder toBuilder() {
         return CurrencyQueryBuilder.of(this);
     }
 

@@ -15,12 +15,12 @@ import javax.money.*;
  * {@link MonetaryAmount} with a different target {@link CurrencyUnit}. Each instance of this class is bound to
  * a specific {@link ExchangeRateProvider} (or a chain of rate providers), a term {@link CurrencyUnit} and
  * (optionally) a target timestamp. Additionally the {@link javax.money.convert.ConversionContext} can have additional
- * attributes set that are passed to the rate provider (chain).
- *
+ * attributes setTyped that are passed to the rate provider (chain).
+ * <p>
  * This interface serves a an API for the clients, but also must be implemented
  * and registered as SPI to the mechanisms required by the
  * {@link javax.money.spi.MonetaryConversionsSingletonSpi} implementation.
- *
+ * <p>
  * By extending {@link MonetaryOperator} currency conversion can simply be applied on each {@link MonetaryAmount}
  * calling the amount'0s with method:
  * <pre>
@@ -39,7 +39,7 @@ import javax.money.*;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public interface CurrencyConversion extends MonetaryOperator, CurrencySupplier{
+public interface CurrencyConversion extends MonetaryOperator, CurrencySupplier {
 
     /**
      * Access the target {@link ConversionContext} of this conversion instance.

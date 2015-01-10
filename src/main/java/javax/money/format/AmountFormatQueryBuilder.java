@@ -55,7 +55,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
         Objects.requireNonNull(locale, "locale required.");
         setLocale(locale);
         set(AmountFormatQuery.KEY_QUERY_FORMAT_NAME, DEFAULT_FORMAT_NAME);
-        set(locale);
+        setTyped(locale);
     }
 
     /**
@@ -75,7 +75,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      * @return the Builder, for chaining.
      */
     public AmountFormatQueryBuilder setLocale(Locale locale) {
-        return set(locale);
+        return setTyped(locale);
     }
 
     /**
@@ -86,7 +86,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      */
     public AmountFormatQueryBuilder setMonetaryQuery(MonetaryAmountFactoryQuery monetaryQuery) {
         Objects.requireNonNull(monetaryQuery);
-        return set(monetaryQuery);
+        return setTyped(monetaryQuery);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
      */
     public AmountFormatQueryBuilder setMonetaryAmountFactory(MonetaryAmountFactory<?> monetaryFactory) {
         Objects.requireNonNull(monetaryFactory);
-        return set(MonetaryAmountFactory.class, monetaryFactory, MonetaryAmountFactory.class);
+        return set(MonetaryAmountFactory.class, monetaryFactory);
     }
 
     /**

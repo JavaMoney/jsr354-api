@@ -17,7 +17,7 @@ import java.util.Objects;
  *
  * @author Anatole Tresch
  */
-public final class ConversionContextBuilder extends AbstractContextBuilder<ConversionContextBuilder,ConversionContext>{
+public final class ConversionContextBuilder extends AbstractContextBuilder<ConversionContextBuilder, ConversionContext> {
 
     /**
      * Create a new Builder, hereby using the given
@@ -26,7 +26,7 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      *
      * @param context the context, not {@code null}
      */
-    private ConversionContextBuilder(ConversionContext context){
+    private ConversionContextBuilder(ConversionContext context) {
         importContext(context);
     }
 
@@ -38,7 +38,7 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      * @param context  the provider context, not {@code null}
      * @param rateType the rate type, not null.
      */
-    private ConversionContextBuilder(ProviderContext context, RateType rateType){
+    private ConversionContextBuilder(ProviderContext context, RateType rateType) {
         importContext(context);
         setRateType(rateType);
     }
@@ -49,9 +49,9 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      * @param rateType the rate type
      * @return this, for chaining.
      */
-    public ConversionContextBuilder setRateType(RateType rateType){
+    public ConversionContextBuilder setRateType(RateType rateType) {
         Objects.requireNonNull(rateType);
-        set(rateType);
+        setTyped(rateType);
         return this;
     }
 
@@ -61,7 +61,7 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      *
      * @return a new {@link ConversionContext}. never {@code null}.
      */
-    public ConversionContext build(){
+    public ConversionContext build() {
         return new ConversionContext(this);
     }
 
@@ -69,8 +69,8 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      * Create a new Builder instance without any provider, e.g. for creating
      * new {@link ConversionContext} instances for querying.
      */
-    public ConversionContextBuilder(){
-        set(RateType.ANY);
+    public ConversionContextBuilder() {
+        setTyped(RateType.ANY);
     }
 
     /**
@@ -78,7 +78,7 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      *
      * @return a new {@link javax.money.convert.ConversionContextBuilder} instance, never null.
      */
-    public static ConversionContextBuilder of(ConversionContext conversionContext){
+    public static ConversionContextBuilder of(ConversionContext conversionContext) {
         return new ConversionContextBuilder(conversionContext);
     }
 
@@ -87,7 +87,7 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      *
      * @return a new {@link javax.money.convert.ConversionContextBuilder} instance, never null.
      */
-    public static ConversionContextBuilder of(){
+    public static ConversionContextBuilder of() {
         return new ConversionContextBuilder();
     }
 
@@ -100,7 +100,7 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      * @param rateType the rate type, not null.
      * @return a new {@link javax.money.convert.ConversionContextBuilder} instance, never null.
      */
-    public static ConversionContextBuilder create(ProviderContext context, RateType rateType){
+    public static ConversionContextBuilder create(ProviderContext context, RateType rateType) {
         return new ConversionContextBuilder(context, rateType);
     }
 

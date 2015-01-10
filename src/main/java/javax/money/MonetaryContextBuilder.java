@@ -17,9 +17,9 @@ package javax.money;
  *
  * @see javax.money.MonetaryAmount#getMonetaryContext()
  */
-public final class MonetaryContextBuilder extends AbstractContextBuilder<MonetaryContextBuilder,MonetaryContext>{
+public final class MonetaryContextBuilder extends AbstractContextBuilder<MonetaryContextBuilder, MonetaryContext> {
 
-    private MonetaryContextBuilder(MonetaryContext monetaryContext){
+    private MonetaryContextBuilder(MonetaryContext monetaryContext) {
         importContext(monetaryContext);
     }
 
@@ -29,10 +29,9 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      * query.
      *
      * @param amountType the target amount type, not null.
-     * @return this builder for chaining.
      */
-    MonetaryContextBuilder(Class<? extends MonetaryAmount> amountType){
-        set(MonetaryContext.AMOUNT_TYPE, amountType, Class.class);
+    MonetaryContextBuilder(Class<? extends MonetaryAmount> amountType) {
+        set(MonetaryContext.AMOUNT_TYPE, amountType);
     }
 
 
@@ -42,7 +41,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      * @param maxScale the max scale, >= 0.
      * @return this builder for chaining.
      */
-    public MonetaryContextBuilder setMaxScale(int maxScale){
+    public MonetaryContextBuilder setMaxScale(int maxScale) {
         return set("maxScale", maxScale);
     }
 
@@ -52,7 +51,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      * @param precision the precision, >= 0, 0 meaning unlimited.
      * @return this builder for chaining.
      */
-    public MonetaryContextBuilder setPrecision(int precision){
+    public MonetaryContextBuilder setPrecision(int precision) {
         return set("precision", precision);
     }
 
@@ -62,7 +61,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      * @param fixedScale the fixed scale flag.
      * @return this builder for chaining.
      */
-    public MonetaryContextBuilder setFixedScale(boolean fixedScale){
+    public MonetaryContextBuilder setFixedScale(boolean fixedScale) {
         return set("fixedScale", fixedScale);
     }
 
@@ -72,8 +71,8 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      * @return the implementation class of the containing amount instance, never null.
      * @see javax.money.MonetaryAmount#getMonetaryContext()
      */
-    public MonetaryContextBuilder setAmountType(Class<? extends MonetaryAmount> amountType){
-        return set(MonetaryContext.AMOUNT_TYPE, amountType, Class.class);
+    public MonetaryContextBuilder setAmountType(Class<? extends MonetaryAmount> amountType) {
+        return set(MonetaryContext.AMOUNT_TYPE, amountType);
     }
 
     /**
@@ -81,7 +80,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      *
      * @return a new {@link MonetaryAmountFactoryQuery} instance.
      */
-    public MonetaryContext build(){
+    public MonetaryContext build() {
         return new MonetaryContext(this);
     }
 
@@ -92,7 +91,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      *
      * @return a new {@link javax.money.MonetaryContextBuilder} instance, never null.
      */
-    public static MonetaryContextBuilder of(){
+    public static MonetaryContextBuilder of() {
         return of(MonetaryAmount.class);
     }
 
@@ -101,7 +100,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      *
      * @return a new {@link javax.money.MonetaryContextBuilder} instance, never null.
      */
-    public static MonetaryContextBuilder of(MonetaryContext monetaryContext){
+    public static MonetaryContextBuilder of(MonetaryContext monetaryContext) {
         return new MonetaryContextBuilder(monetaryContext);
     }
 
@@ -113,7 +112,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      * @param amountType the target amount type, not null.
      * @return a new {@link javax.money.MonetaryContextBuilder} instance, never null.
      */
-    public static MonetaryContextBuilder of(Class<? extends MonetaryAmount> amountType){
+    public static MonetaryContextBuilder of(Class<? extends MonetaryAmount> amountType) {
         return new MonetaryContextBuilder(amountType);
     }
 

@@ -57,7 +57,7 @@ public abstract class AbstractQuery extends AbstractContext {
      * @return the ordered providers, never null.
      */
     public List<String> getProviders() {
-        return getList(KEY_QUERY_PROVIDERS, Collections.emptyList());
+        return get(KEY_QUERY_PROVIDERS, List.class, Collections.emptyList());
     }
 
     /**
@@ -67,40 +67,40 @@ public abstract class AbstractQuery extends AbstractContext {
      * @return this Builder for chaining.
      */
     public Class<?> getTargetType() {
-        return getAny(KEY_QUERY_TARGET_TYPE, Class.class, null);
+        return get(KEY_QUERY_TARGET_TYPE, Class.class, null);
     }
 
     /**
-     * Get the current timestamp of the context in UTC milliseconds.  If not set it tries to of an
+     * Get the current timestamp of the context in UTC milliseconds.  If not setTyped it tries to of an
      * UTC timestamp from #getTimestamp().
      *
      * @return the timestamp in millis, or null.
      */
     public Long getTimestampMillis() {
-        Long value = getLong(KEY_QUERY_TIMESTAMP, null);
-        if (Objects.isNull(value)) {
-            TemporalAccessor acc = getTimestamp();
-            if (Objects.nonNull(acc)) {
-                return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
-            }
+        Object value = get(KEY_QUERY_TIMESTAMP, null);
+        if (value instanceof Long) {
+            return (Long) value;
+        } else if (value instanceof TemporalAccessor) {
+            TemporalAccessor acc = (TemporalAccessor) value;
+            return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
         }
-        return value;
+        return null;
     }
 
     /**
-     * Get the current timestamp. If not set it tries to of an Instant from #getTimestampMillis().
+     * Get the current timestamp. If not setTyped it tries to of an Instant from #getTimestampMillis().
      *
      * @return the current timestamp, or null.
      */
     public TemporalAccessor getTimestamp() {
-        TemporalAccessor acc = getAny(KEY_QUERY_TIMESTAMP, TemporalAccessor.class, null);
-        if (Objects.isNull(acc)) {
-            Long value = getLong(KEY_QUERY_TIMESTAMP, null);
-            if (Objects.nonNull(value)) {
-                acc = Instant.ofEpochMilli(value);
-            }
+        Object value = get(KEY_QUERY_TIMESTAMP, null);
+        if (value instanceof TemporalAccessor) {
+            return (TemporalAccessor) value;
+        } else if (value instanceof Long) {
+            Long ts = (Long) value;
+            return Instant.ofEpochMilli(ts);
         }
-        return acc;
+        return null;
     }
 
 }

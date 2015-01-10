@@ -9,6 +9,8 @@
 package javax.money;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 /**
  * Instances of this class allow to externalize the numeric value of a {@link MonetaryAmount}. The classs extends
@@ -104,6 +106,15 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
      * @return the (possibly) truncated value of the {@link MonetaryAmount}.
      */
     public abstract <T extends Number> T numberValue(Class<T> numberType);
+
+    /**
+     * Access the current NumberValue rounded using the given {@link java.math.MathContext}.
+     *
+     * @param mathContext the {@link java.math.MathContext} to be applied.
+     * @return the new NumberValue, never null.
+     * @see java.math.BigDecimal#round(java.math.MathContext)
+     */
+    public abstract NumberValue round(MathContext mathContext);
 
     /**
      * Access the numeric value as {@code Number}. Hereby no truncation will be performed to fit the

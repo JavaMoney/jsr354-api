@@ -20,7 +20,7 @@ import javax.money.AbstractContext;
  * <ul>
  * <li>a unique nont localizable provider name. This provider name is also used to identify a concrete instance of
  * ExchangeRateProvider.</li>
- * <li>a set of {@link javax.money.convert.RateType} an ExchangeRateProvider supports</li>
+ * <li>a setTyped of {@link javax.money.convert.RateType} an ExchangeRateProvider supports</li>
  * <li>a time range for which an ExchangeRateProvider delivers rates.</li
  * </ul>
  * Additionally a instance of ProviderContext can have arbitrary additional attributes describing more precisely
@@ -31,7 +31,7 @@ import javax.money.AbstractContext;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-public final class ProviderContext extends AbstractContext{
+public final class ProviderContext extends AbstractContext {
 
     private static final long serialVersionUID = 3536713139786856877L;
 
@@ -46,7 +46,7 @@ public final class ProviderContext extends AbstractContext{
      *
      * @param builder the Builder.
      */
-    ProviderContext(ProviderContextBuilder builder){
+    ProviderContext(ProviderContextBuilder builder) {
         super(builder);
     }
 
@@ -55,8 +55,8 @@ public final class ProviderContext extends AbstractContext{
      *
      * @return the deferred flag, or {code null}.
      */
-    public Set<RateType> getRateTypes(){
-        Set<RateType> rateSet = getSet(KEY_RATE_TYPES, Collections.emptySet());
+    public Set<RateType> getRateTypes() {
+        Set<RateType> rateSet = get(KEY_RATE_TYPES, Set.class, Collections.emptySet());
         return Collections.unmodifiableSet(rateSet);
     }
 
@@ -65,7 +65,7 @@ public final class ProviderContext extends AbstractContext{
      *
      * @return a new {@link ProviderContextBuilder}, never {@code null}.
      */
-    public ProviderContextBuilder toBuilder(){
+    public ProviderContextBuilder toBuilder() {
         return ProviderContextBuilder.create(this);
     }
 
@@ -76,7 +76,7 @@ public final class ProviderContext extends AbstractContext{
      * @param rateTypes the required {@link RateType}s, not null
      * @return a new {@link ProviderContext} instance.
      */
-    public static ProviderContext of(String provider, RateType rateType, RateType... rateTypes){
+    public static ProviderContext of(String provider, RateType rateType, RateType... rateTypes) {
         return ProviderContextBuilder.of(provider, rateType, rateTypes).build();
     }
 
@@ -86,7 +86,7 @@ public final class ProviderContext extends AbstractContext{
      * @param provider the provider id, not null.
      * @return a new {@link ProviderContext} instance.
      */
-    public static ProviderContext of(String provider){
+    public static ProviderContext of(String provider) {
         return ProviderContextBuilder.of(provider, RateType.ANY).build();
     }
 

@@ -32,7 +32,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
         Set<RateType> rts = new HashSet<>();
         rts.add(rateType);
         Collections.addAll(rts, rateTypes);
-        setSet(ProviderContext.KEY_RATE_TYPES, rts);
+        set(ProviderContext.KEY_RATE_TYPES, rts);
     }
 
     /**
@@ -49,7 +49,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
         setProvider(provider);
         Set<RateType> rts = new HashSet<>();
         rts.addAll(rateTypes);
-        setSet("rateTypes", rts);
+        set("rateTypes", rts);
     }
 
     /**
@@ -63,7 +63,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
         importContext(context);
         Set<RateType> rts = new HashSet<>();
         rts.addAll(context.getRateTypes());
-        setSet(ProviderContext.KEY_RATE_TYPES, rts);
+        set(ProviderContext.KEY_RATE_TYPES, rts);
     }
 
     /**
@@ -92,7 +92,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
         }
         Set rtSet = new HashSet<>();
         rtSet.addAll(rateTypes);
-        setSet(ProviderContext.KEY_RATE_TYPES, rtSet);
+        set(ProviderContext.KEY_RATE_TYPES, rtSet);
         return this;
     }
 

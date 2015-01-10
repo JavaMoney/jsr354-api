@@ -24,7 +24,7 @@ import java.util.*;
  * @author Anatole Tresch
  * @version 0.8
  */
-public interface MonetaryCurrenciesSingletonSpi{
+public interface MonetaryCurrenciesSingletonSpi {
 
     /**
      * Access a list of the currently registered default providers. The default providers are used, when
@@ -50,7 +50,7 @@ public interface MonetaryCurrenciesSingletonSpi{
      * Access all currencies matching the given query.
      *
      * @param query The currency query, not null.
-     * @return a set of all currencies found, never null.
+     * @return a setTyped of all currencies found, never null.
      */
     Set<CurrencyUnit> getCurrencies(CurrencyQuery query);
 
@@ -61,19 +61,19 @@ public interface MonetaryCurrenciesSingletonSpi{
      * with the {@link Bootstrap}.
      *
      * @param currencyCode the ISO currency code, not {@code null}.
-     * @param providers    the (optional) specification of providers to consider. If not set (empty) the providers
+     * @param providers    the (optional) specification of providers to consider. If not setTyped (empty) the providers
      *                     as defined by #getDefaultProviderChain() should be used.
      * @return the corresponding {@link javax.money.CurrencyUnit} instance.
      * @throws javax.money.UnknownCurrencyException if no such currency exists.
      */
-    default CurrencyUnit getCurrency(String currencyCode, String... providers){
+    default CurrencyUnit getCurrency(String currencyCode, String... providers) {
         Objects.requireNonNull(currencyCode, "Currency Code may not be null");
         Collection<CurrencyUnit> found =
                 getCurrencies(CurrencyQueryBuilder.of().setCurrencyCodes(currencyCode).setProviders(providers).build());
-        if(found.isEmpty()){
+        if (found.isEmpty()) {
             throw new UnknownCurrencyException(currencyCode);
         }
-        if(found.size() > 1){
+        if (found.size() > 1) {
             throw new MonetaryException("Ambiguous CurrencyUnit for code: " + currencyCode + ": " + found);
         }
         return found.iterator().next();
@@ -85,18 +85,18 @@ public interface MonetaryCurrenciesSingletonSpi{
      * with the {@link Bootstrap}.
      *
      * @param country   the ISO currency's country, not {@code null}.
-     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
+     * @param providers the (optional) specification of providers to consider. If not setTyped (empty) the providers
      *                  as defined by #getDefaultProviderChain() should be used.
      * @return the corresponding {@link javax.money.CurrencyUnit} instance.
      * @throws javax.money.UnknownCurrencyException if no such currency exists.
      */
-    default CurrencyUnit getCurrency(Locale country, String... providers){
+    default CurrencyUnit getCurrency(Locale country, String... providers) {
         Collection<CurrencyUnit> found =
                 getCurrencies(CurrencyQueryBuilder.of().setCountries(country).setProviders(providers).build());
-        if(found.isEmpty()){
+        if (found.isEmpty()) {
             throw new MonetaryException("No currency unit found for locale: " + country);
         }
-        if(found.size() > 1){
+        if (found.size() > 1) {
             throw new MonetaryException("Ambiguous CurrencyUnit for locale: " + country + ": " + found);
         }
         return found.iterator().next();
@@ -107,11 +107,11 @@ public interface MonetaryCurrenciesSingletonSpi{
      *
      * @param locale    the target {@link java.util.Locale}, typically representing an ISO country,
      *                  not {@code null}.
-     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
+     * @param providers the (optional) specification of providers to consider. If not setTyped (empty) the providers
      *                  as defined by #getDefaultProviderChain() should be used.
      * @return a collection of all known currencies, never null.
      */
-    default Set<CurrencyUnit> getCurrencies(Locale locale, String... providers){
+    default Set<CurrencyUnit> getCurrencies(Locale locale, String... providers) {
         return getCurrencies(CurrencyQueryBuilder.of().setCountries(locale).setProviders(providers).build());
     }
 
@@ -120,12 +120,12 @@ public interface MonetaryCurrenciesSingletonSpi{
      * accessible from {@link javax.money.spi.MonetaryCurrenciesSingletonSpi#getCurrency(String, String...)}.
      *
      * @param code      the currency code, not {@code null}.
-     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
+     * @param providers the (optional) specification of providers to consider. If not setTyped (empty) the providers
      *                  as defined by #getDefaultProviderChain() should be used.
      * @return {@code true} if {@link javax.money.spi.MonetaryCurrenciesSingletonSpi#getCurrency(String, String...)}
      * would return a result for the given code.
      */
-    default boolean isCurrencyAvailable(String code, String... providers){
+    default boolean isCurrencyAvailable(String code, String... providers) {
         return !getCurrencies(CurrencyQueryBuilder.of().setCurrencyCodes(code).setProviders(providers).build())
                 .isEmpty();
     }
@@ -135,23 +135,23 @@ public interface MonetaryCurrenciesSingletonSpi{
      * defined, i.e. accessible from {@link #getCurrency(String, String...)}.
      *
      * @param locale    the target {@link java.util.Locale}, not {@code null}.
-     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
+     * @param providers the (optional) specification of providers to consider. If not setTyped (empty) the providers
      *                  as defined by #getDefaultProviderChain() should be used.
      * @return {@code true} if {@link #getCurrencies(java.util.Locale, String...)} would return a
      * non empty result for the given code.
      */
-    default boolean isCurrencyAvailable(Locale locale, String... providers){
+    default boolean isCurrencyAvailable(Locale locale, String... providers) {
         return !getCurrencies(CurrencyQueryBuilder.of().setCountries(locale).setProviders(providers).build()).isEmpty();
     }
 
     /**
      * Provide access to all currently known currencies.
      *
-     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
+     * @param providers the (optional) specification of providers to consider. If not setTyped (empty) the providers
      *                  as defined by #getDefaultProviderChain() should be used.
      * @return a collection of all known currencies, never null.
      */
-    default Set<CurrencyUnit> getCurrencies(String... providers){
+    default Set<CurrencyUnit> getCurrencies(String... providers) {
         return getCurrencies(CurrencyQueryBuilder.of().setProviders(providers).build());
     }
 
@@ -162,12 +162,12 @@ public interface MonetaryCurrenciesSingletonSpi{
      * @return the {@link javax.money.CurrencyUnit} found, never null.
      * @throws javax.money.MonetaryException if multiple currencies match the query.
      */
-    default CurrencyUnit getCurrency(CurrencyQuery query){
+    default CurrencyUnit getCurrency(CurrencyQuery query) {
         Set<CurrencyUnit> currencies = getCurrencies(query);
-        if(currencies.isEmpty()){
+        if (currencies.isEmpty()) {
             return null;
         }
-        if(currencies.size() == 1){
+        if (currencies.size() == 1) {
             return currencies.iterator().next();
         }
         throw new MonetaryException("Ambiguous request for CurrencyUnit: " + query + ", found: " + currencies);

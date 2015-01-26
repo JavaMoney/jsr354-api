@@ -3,7 +3,7 @@
 :title: JSR 354 (Money & Currency) - Specification
 :revnumber: 1.0-SNAPSHOT
 :revremark: Public Final Draft
-:revdate: November 2014
+:revdate: January 2015
 :longversion: {revnumber} ({revremark}) {revdate}
 :authorinitials: ATR
 :author: Anatole Tresch, Credit Suisse
@@ -813,7 +813,16 @@ Hereby
   +BigDecimal+, +long+ or something else. The only constraint is that the numeric value can be exposed as +NumberValue+
   and that the +MonetaryContext+ returned reflects the numeric capabilities accordingly.
 
-Implementations of +MonetaryAmount<T>+
+When dealing with +double+ values additional aspects must be considered:
+
+* multiplying/adding/subtracting with POSITIVE_INFINITY should throw ArithmeticException because it overflows
+* multiplying/adding/subtracting with NEGATIVE_INFINITY should throw ArithmeticException because it overflows
+* multiplying/adding/subtracting with NaN should throw ArithmeticException because the result is NaN
+* dividing by POSITIVE_INFINITY returns 0
+* dividing by NEGATIVE_INFINITY returns  0
+* dividing/multiplying/adding/subtracting by NaN should throw ArithmeticException because the result is NaN
+
+Finally implementations of +MonetaryAmount<T>+
 
 . must implement +equals/hashCode+, hereby it is recommended considering
    .. its implementation type

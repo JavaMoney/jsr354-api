@@ -24,7 +24,7 @@ import javax.money.AbstractContext;
  *
  * @author Anatole Tresch
  */
-public final class ConversionContext extends AbstractContext{
+public final class ConversionContext extends AbstractContext {
 
     private static final long serialVersionUID = 2386546659786888877L;
 
@@ -59,7 +59,7 @@ public final class ConversionContext extends AbstractContext{
      *
      * @param builder the Builder.
      */
-    ConversionContext(ConversionContextBuilder builder){
+    ConversionContext(ConversionContextBuilder builder) {
         super(builder);
     }
 
@@ -68,8 +68,8 @@ public final class ConversionContext extends AbstractContext{
      *
      * @return the deferred flag, or {code null}.
      */
-    public RateType getRateType(){
-        return get(RateType.class);
+    public RateType getRateType() {
+        return getTyped(RateType.class);
     }
 
 
@@ -80,7 +80,7 @@ public final class ConversionContext extends AbstractContext{
      *
      * @return the provider, or {code null}.
      */
-    public String getProvider(){
+    public String getProvider() {
         return getText("provider");
     }
 
@@ -89,7 +89,7 @@ public final class ConversionContext extends AbstractContext{
      *
      * @return a corresponding conversion query builder instance, never null.
      */
-    public ConversionContextBuilder toBuilder(){
+    public ConversionContextBuilder toBuilder() {
         return ConversionContextBuilder.of(this);
     }
 
@@ -98,7 +98,7 @@ public final class ConversionContext extends AbstractContext{
      *
      * @return a new instance of {@link ConversionQueryBuilder}, never null.
      */
-    public ConversionQueryBuilder toQueryBuilder(){
+    public ConversionQueryBuilder toQueryBuilder() {
         return ConversionQueryBuilder.of().importContext(this);
     }
 
@@ -111,7 +111,7 @@ public final class ConversionContext extends AbstractContext{
      * @param rateType the required rate type.
      * @return a new instance of {@link ConversionContext}
      */
-    public static ConversionContext of(String provider, RateType rateType){
+    public static ConversionContext of(String provider, RateType rateType) {
         ConversionContextBuilder b = new ConversionContextBuilder();
         b.setRateType(rateType);
         b.setProvider(provider);
@@ -120,7 +120,7 @@ public final class ConversionContext extends AbstractContext{
 
     /**
      * Creates a new ConversionContext for the given  {@link ProviderContext} and the given {@link RateType}.
-     *
+     * <p>
      * <i>Note:</i> for adding additional attributes use {@link javax.money.convert.ConversionContextBuilder
      * (ProviderContext, RateType)}.
      *
@@ -128,7 +128,7 @@ public final class ConversionContext extends AbstractContext{
      * @param rateType        the rate type, not null.
      * @return a corresponding instance of ConversionContext.
      */
-    public static ConversionContext from(ProviderContext providerContext, RateType rateType){
+    public static ConversionContext from(ProviderContext providerContext, RateType rateType) {
         return ConversionContextBuilder.create(providerContext, rateType).build();
     }
 
@@ -139,8 +139,8 @@ public final class ConversionContext extends AbstractContext{
      * @param rateType the required rate type.
      * @return a new instance of {@link ConversionContext}
      */
-    public static ConversionContext of(RateType rateType){
-        switch(rateType){
+    public static ConversionContext of(RateType rateType) {
+        switch (rateType) {
             default:
             case ANY:
                 return ANY_CONVERSION;
@@ -162,7 +162,7 @@ public final class ConversionContext extends AbstractContext{
      *
      * @return a new instance of {@link ConversionContext}
      */
-    public static ConversionContext of(){
+    public static ConversionContext of() {
         return ANY_CONVERSION;
     }
 

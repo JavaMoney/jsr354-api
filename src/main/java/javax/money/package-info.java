@@ -11,7 +11,7 @@
 /**
  * Main package of the Money and Currency API. In more detail:
  * <ul>
- * <li>JSR 354 defines a minimal set of interfaces for interoperability, since
+ * <li>JSR 354 defines a minimal setTyped of interfaces for interoperability, since
  * concrete usage scenarios do not allow to define an implementation that is
  * capable of covering all aspects identified. Consequently it must be possible
  * that implementations can provide several implementations for monetary
@@ -22,7 +22,7 @@
  * <li>Implementations must provide value types for currencies and amounts,
  * implementing {@link javax.money.CurrencyUnit} and
  * {@link javax.money.MonetaryAmount}.</li>
- * <li>Implementations must also provide a minimal set of roundings, modeled as
+ * <li>Implementations must also provide a minimal setTyped of roundings, modeled as
  * {@link javax.money.MonetaryRounding}. This should include basic roundings for
  * ISO currencies, roundings defined by {@link java.math.MathContext} or
  * {@link java.math.RoundingMode}.</li>

@@ -23,7 +23,7 @@ import javax.money.MonetaryException;
  *
  * @author Anatole Tresch
  */
-public final class Bootstrap{
+public final class Bootstrap {
     /**
      * The ServiceProvider used.
      */
@@ -36,7 +36,7 @@ public final class Bootstrap{
     /**
      * Private singletons constructor.
      */
-    private Bootstrap(){
+    private Bootstrap() {
     }
 
     /**
@@ -44,13 +44,12 @@ public final class Bootstrap{
      *
      * @return {@link ServiceProvider} to be used for loading the services.
      */
-    private static ServiceProvider loadDefaultServiceProvider(){
-        try{
-            for(ServiceProvider sp : ServiceLoader.load(ServiceProvider.class)){
+    private static ServiceProvider loadDefaultServiceProvider() {
+        try {
+            for (ServiceProvider sp : ServiceLoader.load(ServiceProvider.class)) {
                 return sp;
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             Logger.getLogger(Bootstrap.class.getName()).info("No ServiceProvider loaded, using default.");
         }
         return new DefaultServiceProvider();
@@ -60,16 +59,22 @@ public final class Bootstrap{
      * Replace the current {@link ServiceProvider} in use.
      *
      * @param serviceProvider the new {@link ServiceProvider}
+     * @return the removed , or null.
      */
-    public static void init(ServiceProvider serviceProvider){
+    public static ServiceProvider init(ServiceProvider serviceProvider) {
         Objects.requireNonNull(serviceProvider);
-        synchronized(LOCK){
+        synchronized (LOCK) {
             if (Objects.isNull(Bootstrap.serviceProviderDelegate)) {
                 Bootstrap.serviceProviderDelegate = serviceProvider;
                 Logger.getLogger(Bootstrap.class.getName())
-                        .info("Money Bootstrap: new ServiceProvider set: " + serviceProvider.getClass().getName());
+                        .info("Money Bootstrap: new ServiceProvider setTyped: " + serviceProvider.getClass().getName());
+                return null;
             } else {
-                throw new IllegalStateException("Services are already initialized.");
+                ServiceProvider prevProvider = Bootstrap.serviceProviderDelegate;
+                Bootstrap.serviceProviderDelegate = serviceProvider;
+                Logger.getLogger(Bootstrap.class.getName())
+                        .warning("Money Bootstrap: ServiceProvider replaced: " + serviceProvider.getClass().getName());
+                return prevProvider;
             }
         }
     }
@@ -79,9 +84,9 @@ public final class Bootstrap{
      *
      * @return the {@link ServiceProvider} used.
      */
-    static ServiceProvider getServiceProvider(){
+    static ServiceProvider getServiceProvider() {
         if (Objects.isNull(serviceProviderDelegate)) {
-            synchronized(LOCK){
+            synchronized (LOCK) {
                 if (Objects.isNull(serviceProviderDelegate)) {
                     serviceProviderDelegate = loadDefaultServiceProvider();
                 }
@@ -97,7 +102,7 @@ public final class Bootstrap{
      * @return the services found.
      * @see ServiceProvider#getServices(Class)
      */
-    public static <T> Collection<T> getServices(Class<T> serviceType){
+    public static <T> Collection<T> getServices(Class<T> serviceType) {
         return getServiceProvider().getServices(serviceType);
     }
 
@@ -109,7 +114,7 @@ public final class Bootstrap{
      * @return the services found.
      * @see ServiceProvider#getServices(Class, List)
      */
-    public static <T> List<T> getServices(Class<T> serviceType, List<T> defaultServices){
+    public static <T> List<T> getServices(Class<T> serviceType, List<T> defaultServices) {
         return getServiceProvider().getServices(serviceType, defaultServices);
     }
 
@@ -120,9 +125,9 @@ public final class Bootstrap{
      * @return the service found, never {@code null}.
      * @see ServiceProvider#getServices(Class)
      */
-    public static <T> T getService(Class<T> serviceType){
+    public static <T> T getService(Class<T> serviceType) {
         List<T> services = getServiceProvider().getServices(serviceType);
-        if(services.isEmpty()){
+        if (services.isEmpty()) {
             throw new MonetaryException("No such service found: " + serviceType);
         }
         return services.get(0);
@@ -137,9 +142,9 @@ public final class Bootstrap{
      * {@code defaultService==null}.
      * @see ServiceProvider#getServices(Class, List)
      */
-    public static <T> T getService(Class<T> serviceType, T defaultService){
+    public static <T> T getService(Class<T> serviceType, T defaultService) {
         List<T> services = getServiceProvider().getServices(serviceType);
-        if(services.isEmpty()){
+        if (services.isEmpty()) {
             return defaultService;
         }
         return services.get(0);

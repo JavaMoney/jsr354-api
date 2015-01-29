@@ -15,7 +15,7 @@ import java.io.Serializable;
  * platform independent way. Each RoundingContext instance hereby has a <code>roundingId</code>, which links
  * to the {@link javax.money.spi.RoundingProviderSpi} that must of the according rounding instance. The
  * <i>default</i> </i><code>roundingId</code> is <code>default</code>.
- *
+ * <p>
  * A RoundingContext can take up arbitrary attributes that must be documented by the
  * {@link javax.money.spi.RoundingProviderSpi} implementations.
  * <p>
@@ -27,7 +27,7 @@ import java.io.Serializable;
  *
  * @author Anatole Tresch
  */
-public final class RoundingContext extends AbstractContext implements Serializable, CurrencySupplier{
+public final class RoundingContext extends AbstractContext implements Serializable, CurrencySupplier {
 
     private static final long serialVersionUID = -1879443887564347935L;
 
@@ -41,7 +41,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
      *
      * @param builder the corresponding builder, not null.
      */
-    RoundingContext(RoundingContextBuilder builder){
+    RoundingContext(RoundingContextBuilder builder) {
         super(builder);
     }
 
@@ -50,7 +50,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
      *
      * @return the rounding id, or null.
      */
-    public String getRoundingName(){
+    public String getRoundingName() {
         return getText(KEY_ROUNDING_NAME);
     }
 
@@ -59,17 +59,8 @@ public final class RoundingContext extends AbstractContext implements Serializab
      *
      * @return the target CurrencyUnit, or null.
      */
-    public CurrencyUnit getCurrency(){
+    public CurrencyUnit getCurrency() {
         return get(CurrencyUnit.class, null);
-    }
-
-    /**
-     * Get the rounding's scale.
-     *
-     * @return the scale, if set, or null.
-     */
-    public Integer getScale(){
-        return getInt("scale", null);
     }
 
     /**
@@ -78,7 +69,7 @@ public final class RoundingContext extends AbstractContext implements Serializab
      *
      * @return a new Builder instance, preinitialized with the values from this instance.
      */
-    public RoundingContextBuilder toBuilder(){
+    public RoundingContextBuilder toBuilder() {
         return RoundingContextBuilder.of(this);
     }
 

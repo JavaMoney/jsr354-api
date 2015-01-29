@@ -15,6 +15,9 @@ import static org.testng.Assert.*;
 
 import org.testng.annotations.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Anatole on 05.03.14.
  */
@@ -50,5 +53,14 @@ public class ProviderContextTest{
         assertTrue(ctx.getRateTypes().contains(RateType.REALTIME));
     }
 
+    @Test
+    public void testProviderContextBuilder() {
+        Set<RateType> types = new HashSet<>();
+        types.add(RateType.DEFERRED);
+        types.add(RateType.HISTORIC);
+        ProviderContextBuilder b = ProviderContextBuilder.of("prov", types);
+        ProviderContext ctx = b.build();
+        assertEquals(ctx.getRateTypes(), types);
+    }
 
 }

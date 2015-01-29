@@ -12,6 +12,7 @@ package javax.money;
 
 import org.testng.annotations.Test;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,29 +21,29 @@ import java.util.Set;
 import static org.testng.Assert.*;
 
 /**
-* Created by Anatole on 05.03.14.
-*/
-public class AbstractContextTest{
+ * Created by Anatole on 05.03.14.
+ */
+public class AbstractContextTest {
     @Test
     public void testSet() {
-        TestContext ctx = new TestContext.Builder().set("Test").build();
-        assertNotNull(ctx.get(String.class));
-        assertEquals(ctx.get(String.class), "Test");
-        assertEquals(ctx.getAny(String.class, String.class), "Test");
-        assertEquals(ctx.getAny("String", String.class), null);
+        TestContext ctx = new TestContext.Builder().setTyped("Test").build();
+        assertNotNull(ctx.getTyped(String.class));
+        assertEquals(ctx.getTyped(String.class), "Test");
+        assertEquals(ctx.get(String.class, String.class), "Test");
+        assertEquals(ctx.get("String", String.class), null);
     }
 
     @Test
-    public void testSetWithKey(){
+    public void testSetWithKey() {
         TestContext ctx = new TestContext.Builder().set("myKey", "Test").build();
-        assertNull(ctx.get(String.class));
-        assertEquals("Test", ctx.getAny("myKey", String.class));
-        assertEquals(ctx.getAny("myKey", String.class), "Test");
-        assertEquals(ctx.getAny(String.class, String.class), null);
+        assertNull(ctx.getTyped(String.class));
+        assertEquals("Test", ctx.get("myKey", String.class));
+        assertEquals(ctx.get("myKey", String.class), "Test");
+        assertEquals(ctx.get(String.class, String.class), null);
     }
 
     @Test
-    public void testSetAll(){
+    public void testSetAll() {
         TestContext ctx = new TestContext.Builder().set("myKey", "Test").build();
         TestContext ctx2 = new TestContext.Builder().importContext(ctx).build();
         assertEquals(ctx, ctx2);
@@ -50,40 +51,29 @@ public class AbstractContextTest{
 
     @Test
     public void testSetWithKeyAndType() {
-        TestContext ctx = new TestContext.Builder().set("MyNum", 2, Number.class).build();
-        assertNull(ctx.get(String.class));
-        assertEquals("myKey", ctx.get(String.class, "myKey"));
-        assertEquals(ctx.getAny("MyNum", Number.class), 2);
-        assertEquals(ctx.getAny("MyNum", Integer.class), null);
+        TestContext ctx = new TestContext.Builder().set("MyNum", 2).build();
+        assertNull(ctx.getTyped(String.class));
+        assertEquals(Integer.valueOf(2), ctx.getInt("MyNum"));
+        assertEquals(ctx.get("MyNum", Number.class), 2);
+        assertNotNull(ctx.get("MyNum", Integer.class));
     }
 
     @Test
     public void testget() {
-        TestContext ctx = new TestContext.Builder().set("Test").build();
-        assertNotNull(ctx.get(String.class));
-        assertEquals(ctx.getAny("Gugus", String.class, "defaultValue"), "defaultValue");
-        assertEquals(ctx.get(Boolean.class, Boolean.TRUE), Boolean.TRUE);
-    }
-
-    @Test
-    public void testgetTypes(){
-        TestContext ctx = new TestContext.Builder().set("Test").set(2).set(2L).build();
-        Set<Class<?>> types = ctx.getTypes();
-        assertNotNull(types);
-        assertTrue(types.size()==3);
-        assertTrue(types.contains(String.class));
-        assertTrue(types.contains(Integer.class));
-        assertTrue(types.contains(Long.class));
+        TestContext ctx = new TestContext.Builder().setTyped("Test").build();
+        assertNotNull(ctx.getTyped(String.class));
+        assertEquals(ctx.get("Gugus", String.class, "defaultValue"), "defaultValue");
+        assertEquals(ctx.getTyped(Boolean.class, Boolean.TRUE), Boolean.TRUE);
     }
 
     @Test
     public void testHashCode() {
         List<TestContext> contexts = new ArrayList<>();
-        contexts.add(new TestContext.Builder().set("Test").set(1).set((long) 2).build());
-        contexts.add(new TestContext.Builder().set("Test").set(2).set((long) 1).build());
-        contexts.add(new TestContext.Builder().set("Test").set(2).build());
-        contexts.add(new TestContext.Builder().set("Test").set((long) 2).build());
-        contexts.add(new TestContext.Builder().set("Test").set(Boolean.TRUE).set("Test").build());
+        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(1).setTyped((long) 2).build());
+        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(2).setTyped((long) 1).build());
+        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(2).build());
+        contexts.add(new TestContext.Builder().setTyped("Test").setTyped((long) 2).build());
+        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(Boolean.TRUE).setTyped("Test").build());
         Set<Integer> hashCodes = new HashSet<>();
         contexts.forEach(ctx -> hashCodes.add(ctx.hashCode()));
         // Check we have 5 distinct hash codes...
@@ -93,13 +83,13 @@ public class AbstractContextTest{
     @Test
     public void testEquals() {
         List<TestContext> contexts = new ArrayList<>();
-        contexts.add(new TestContext.Builder().set("Test").set(11).set((long) 2).build());
-        contexts.add(new TestContext.Builder().set("Test").set(2).set((long) 11).build());
-        contexts.add(new TestContext.Builder().set("Test").set(2).build());
-        contexts.add(new TestContext.Builder().set("Test").set((long) 2).build());
-        contexts.add(new TestContext.Builder().set("Test").set(Boolean.TRUE).set("Test").build());
+        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(11).setTyped((long) 2).build());
+        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(2).setTyped((long) 11).build());
+        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(2).build());
+        contexts.add(new TestContext.Builder().setTyped("Test").setTyped((long) 2).build());
+        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(Boolean.TRUE).setTyped("Test").build());
         Set<TestContext> checkContexts = new HashSet<>();
-        for(TestContext ctx : contexts){
+        for (TestContext ctx : contexts) {
             checkContexts.add(ctx);
             checkContexts.add(ctx);
         }
@@ -109,7 +99,7 @@ public class AbstractContextTest{
 
     @Test
     public void testToString() {
-        TestContext ctx = new TestContext.Builder().set("Test").set(1).set((long) 2).build();
+        TestContext ctx = new TestContext.Builder().setTyped("Test").setTyped(1).setTyped((long) 2).build();
         assertNotNull(ctx.toString());
         System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("1"));
@@ -121,22 +111,56 @@ public class AbstractContextTest{
         assertTrue(ctx.toString().contains("TestContext"));
     }
 
-    private static class TestContext extends AbstractContext{
+    @Test
+    public void testGetKeys() {
+        TestContext ctx = new TestContext.Builder().setTyped("Test").set("a", 1).set("b", 2).build();
+        Set<Object> keys = ctx.getKeys(String.class);
+        assertNotNull(keys);
+        assertFalse(keys.isEmpty());
+        assertEquals(String.class, keys.iterator().next());
+        keys = ctx.getKeys(Integer.class);
+        assertNotNull(keys);
+        assertTrue(keys.size() == 2);
+        assertTrue("a".equals(keys.iterator().next()) || "b".equals(keys.iterator().next()));
+    }
 
-		private static final long serialVersionUID = 1L;
+    @Test
+    public void testGetType() {
+        TestContext ctx = new TestContext.Builder().setTyped("Test").set("a", 1).set("b", 2).build();
+        assertEquals(String.class, ctx.getType(String.class));
+        assertEquals(Integer.class, ctx.getType("a"));
+        assertEquals(Integer.class, ctx.getType("b"));
+    }
 
-		/**
+    @Test
+    public void testGetTimestampMillis() {
+        TestContext ctx = new TestContext.Builder().setTimestampMillis(2000L).build();
+        assertEquals(Long.valueOf(2000L), ctx.getTimestampMillis());
+    }
+
+    @Test
+    public void testGetTimestamp() {
+        Instant now = Instant.now();
+        TestContext ctx = new TestContext.Builder().setTimestamp(now).build();
+        assertEquals(now, ctx.getTimestamp());
+    }
+
+    private static class TestContext extends AbstractContext {
+
+        private static final long serialVersionUID = 1L;
+
+        /**
          * Private constructor, used by {@link AbstractContext.AbstractContextBuilder}.
          *
          * @param builder the Builder.
          */
-        protected TestContext(@SuppressWarnings("rawtypes") AbstractContextBuilder builder){
+        protected TestContext(@SuppressWarnings("rawtypes") AbstractContextBuilder builder) {
             super(builder);
         }
 
-        private static final class Builder extends AbstractContextBuilder<Builder, TestContext>{
+        private static final class Builder extends AbstractContextBuilder<Builder, TestContext> {
             @Override
-            public TestContext build(){
+            public TestContext build() {
                 return new TestContext(this);
             }
         }

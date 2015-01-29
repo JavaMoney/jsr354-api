@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  * @author Anatole Tresch
  * @version 0.8
  */
-public final class MonetaryCurrencies{
+public final class MonetaryCurrencies {
     /**
      * The used {@link javax.money.spi.MonetaryCurrenciesSingletonSpi} instance.
      */
@@ -37,20 +37,19 @@ public final class MonetaryCurrencies{
     /**
      * Required for deserialization only.
      */
-    private MonetaryCurrencies(){
+    private MonetaryCurrencies() {
     }
 
     /**
      * Loads the SPI backing bean.
      *
-     * @return
+     * @return the {@link MonetaryCurrenciesSingletonSpi} backing bean to be used.
      */
-    private static MonetaryCurrenciesSingletonSpi loadMonetaryCurrenciesSingletonSpi(){
-        try{
+    private static MonetaryCurrenciesSingletonSpi loadMonetaryCurrenciesSingletonSpi() {
+        try {
             return Bootstrap
                     .getService(MonetaryCurrenciesSingletonSpi.class, new DefaultMonetaryCurrenciesSingletonSpi());
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             Logger.getLogger(MonetaryCurrencies.class.getName())
                     .log(Level.SEVERE, "Failed to load MonetaryCurrenciesSingletonSpi, using default.", e);
             return new DefaultMonetaryCurrenciesSingletonSpi();
@@ -67,7 +66,7 @@ public final class MonetaryCurrencies{
      * @return the corresponding {@link CurrencyUnit} instance.
      * @throws UnknownCurrencyException if no such currency exists.
      */
-    public static CurrencyUnit getCurrency(String currencyCode, String... providers){
+    public static CurrencyUnit getCurrency(String currencyCode, String... providers) {
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
                 () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
                 .getCurrency(currencyCode, providers);
@@ -84,7 +83,7 @@ public final class MonetaryCurrencies{
      * @return the corresponding {@link CurrencyUnit} instance.
      * @throws UnknownCurrencyException if no such currency exists.
      */
-    public static CurrencyUnit getCurrency(Locale locale, String... providers){
+    public static CurrencyUnit getCurrency(Locale locale, String... providers) {
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
                 () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
                 .getCurrency(locale, providers);
@@ -101,7 +100,7 @@ public final class MonetaryCurrencies{
      * @return the corresponding {@link CurrencyUnit} instance.
      * @throws UnknownCurrencyException if no such currency exists.
      */
-    public static Set<CurrencyUnit> getCurrencies(Locale locale, String... providers){
+    public static Set<CurrencyUnit> getCurrencies(Locale locale, String... providers) {
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
                 () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
                 .getCurrencies(locale, providers);
@@ -116,7 +115,7 @@ public final class MonetaryCurrencies{
      * @return {@code true} if {@link MonetaryCurrencies#getCurrency(String, java.lang.String...)}
      * would return a result for the given code.
      */
-    public static boolean isCurrencyAvailable(String code, String... providers){
+    public static boolean isCurrencyAvailable(String code, String... providers) {
         return Objects.nonNull(monetaryCurrenciesSpi) && monetaryCurrenciesSpi.isCurrencyAvailable(code, providers);
     }
 
@@ -129,7 +128,7 @@ public final class MonetaryCurrencies{
      * @return {@code true} if {@link #getCurrencies(Locale, String...)} would return a
      * result containing a currency with the given code.
      */
-    public static boolean isCurrencyAvailable(Locale locale, String... providers){
+    public static boolean isCurrencyAvailable(Locale locale, String... providers) {
         return Objects.nonNull(monetaryCurrenciesSpi) && monetaryCurrenciesSpi.isCurrencyAvailable(locale, providers);
     }
 
@@ -139,7 +138,7 @@ public final class MonetaryCurrencies{
      * @param providers the (optional) specification of providers to consider.
      * @return the list of known currencies, never null.
      */
-    public static Collection<CurrencyUnit> getCurrencies(String... providers){
+    public static Collection<CurrencyUnit> getCurrencies(String... providers) {
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
                 () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
                 .getCurrencies(providers);
@@ -151,7 +150,7 @@ public final class MonetaryCurrencies{
      * @param query The {@link javax.money.CurrencyQuery}, not null.
      * @return the list of known currencies, never null.
      */
-    public static CurrencyUnit getCurrency(CurrencyQuery query){
+    public static CurrencyUnit getCurrency(CurrencyQuery query) {
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
                 () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
                 .getCurrency(query);
@@ -164,7 +163,7 @@ public final class MonetaryCurrencies{
      * @param query The {@link javax.money.CurrencyQuery}, not null.
      * @return the list of known currencies, never null.
      */
-    public static Collection<CurrencyUnit> getCurrencies(CurrencyQuery query){
+    public static Collection<CurrencyUnit> getCurrencies(CurrencyQuery query) {
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
                 () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
                 .getCurrencies(query);
@@ -175,7 +174,7 @@ public final class MonetaryCurrencies{
      *
      * @return the list of known currencies, never null.
      */
-    public static Set<String> getProviderNames(){
+    public static Set<String> getProviderNames() {
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
                 () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
                 .getProviderNames();
@@ -183,11 +182,11 @@ public final class MonetaryCurrencies{
 
     /**
      * Query the list and ordering of provider names modelling the default provider chain to be used, if no provider
-     * chain was explicitly set..
+     * chain was explicitly setTyped..
      *
      * @return the orderend list provider names, modelling the default provider chain used, never null.
      */
-    public static List<String> getDefaultProviderChain(){
+    public static List<String> getDefaultProviderChain() {
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(
                 () -> new MonetaryException("No MonetaryCurrenciesSingletonSpi loaded, check your system setup."))
                 .getDefaultProviderChain();
@@ -202,19 +201,18 @@ public final class MonetaryCurrencies{
      * @author Anatole Tresch
      * @version 0.8
      */
-    private static final class DefaultMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesSingletonSpi{
+    private static final class DefaultMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesSingletonSpi {
 
         @Override
-        public Set<CurrencyUnit> getCurrencies(CurrencyQuery query){
+        public Set<CurrencyUnit> getCurrencies(CurrencyQuery query) {
             Set<CurrencyUnit> result = new HashSet<>();
-            for(CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)){
-                try{
+            for (CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)) {
+                try {
                     result.addAll(spi.getCurrencies(query));
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     Logger.getLogger(DefaultMonetaryCurrenciesSingletonSpi.class.getName())
                             .log(Level.SEVERE, "Error loading currency provider names for " + spi.getClass().getName(),
-                                 e);
+                                    e);
                 }
             }
             return result;
@@ -222,10 +220,11 @@ public final class MonetaryCurrencies{
 
         /**
          * This default implementation simply returns all providers defined in arbitrary order.
+         *
          * @return the default provider chain, never null.
          */
         @Override
-        public List<String> getDefaultProviderChain(){
+        public List<String> getDefaultProviderChain() {
             List<String> list = new ArrayList<>();
             list.addAll(getProviderNames());
             Collections.sort(list);
@@ -238,16 +237,15 @@ public final class MonetaryCurrencies{
          * @return the names of the currently loaded providers, never null.
          */
         @Override
-        public Set<String> getProviderNames(){
+        public Set<String> getProviderNames() {
             Set<String> result = new HashSet<>();
-            for(CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)){
-                try{
+            for (CurrencyProviderSpi spi : Bootstrap.getServices(CurrencyProviderSpi.class)) {
+                try {
                     result.add(spi.getProviderName());
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     Logger.getLogger(DefaultMonetaryCurrenciesSingletonSpi.class.getName())
                             .log(Level.SEVERE, "Error loading currency provider names for " + spi.getClass().getName(),
-                                 e);
+                                    e);
                 }
             }
             return result;

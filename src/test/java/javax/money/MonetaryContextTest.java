@@ -24,37 +24,50 @@ import static org.testng.Assert.*;
 /**
  * Created by Anatole on 05.03.14.
  */
-public class MonetaryContextTest{
+public class MonetaryContextTest {
 
     @Test
-    public void testGetPrecision() throws Exception{
+    public void testGetPrecision() throws Exception {
         MonetaryContext ctx = MonetaryContextBuilder.of(MonetaryAmount.class).setPrecision(299).build();
         assertTrue(ctx.getPrecision() == 299);
     }
 
     @Test
-    public void testIsFixedScale() throws Exception{
+    public void testIsFixedScale() throws Exception {
         MonetaryContext ctx = MonetaryContextBuilder.of(MonetaryAmount.class).setFixedScale(true).build();
         assertTrue(ctx.isFixedScale());
     }
 
     @Test
-    public void testGetMaxScale() throws Exception{
+    public void testGetMaxScale() throws Exception {
         MonetaryContext ctx = MonetaryContextBuilder.of(MonetaryAmount.class).setMaxScale(122).build();
         assertTrue(ctx.getMaxScale() == 122);
     }
 
     @Test
-    public void testGetAmountType() throws Exception{
+    public void testGetAmontType() throws Exception {
+        MonetaryContext ctx = MonetaryContextBuilder.of(MonetaryAmount.class).setAmountType(DummyAmount.class).build();
+        assertTrue(ctx.getAmountType() == DummyAmount.class);
+    }
+
+    @Test
+    public void testOf_MonetaryContext() throws Exception {
+        MonetaryContext ctx = MonetaryContextBuilder.of(MonetaryAmount.class).setAmountType(DummyAmount.class).build();
+        assertEquals(ctx, MonetaryContextBuilder.of(ctx).build());
+    }
+
+    @Test
+    public void testGetAmountType() throws Exception {
         MonetaryContext ctx = MonetaryContextBuilder.of(MonetaryAmount.class).setMaxScale(122).build();
         assertEquals(ctx.getAmountType(), MonetaryAmount.class);
-        abstract class TestAmount implements MonetaryAmount{}
+        abstract class TestAmount implements MonetaryAmount {
+        }
         ctx = MonetaryContextBuilder.of(TestAmount.class).build();
         assertEquals(ctx.getAmountType(), TestAmount.class);
     }
 
     @Test
-    public void testHashCode() throws Exception{
+    public void testHashCode() throws Exception {
         List<MonetaryContext> contexts = new ArrayList<>();
         contexts.add(MonetaryContextBuilder.of(MonetaryAmount.class).setMaxScale(122).build());
         contexts.add(MonetaryContextBuilder.of(MonetaryAmount.class).setPrecision(299).build());
@@ -66,13 +79,13 @@ public class MonetaryContextTest{
     }
 
     @Test
-    public void testEquals() throws Exception{
+    public void testEquals() throws Exception {
         List<MonetaryContext> contexts = new ArrayList<>();
         contexts.add(MonetaryContextBuilder.of(MonetaryAmount.class).setMaxScale(122).build());
         contexts.add(MonetaryContextBuilder.of(MonetaryAmount.class).setPrecision(299).build());
         contexts.add(MonetaryContextBuilder.of(MonetaryAmount.class).setFixedScale(true).build());
         Set<MonetaryContext> checkContexts = new HashSet<>();
-        for(MonetaryContext ctx : contexts){
+        for (MonetaryContext ctx : contexts) {
             checkContexts.add(ctx);
             checkContexts.add(ctx);
         }
@@ -81,11 +94,12 @@ public class MonetaryContextTest{
     }
 
     @Test
-    public void testToString() throws Exception{
-        abstract class TestAmount implements MonetaryAmount{}
+    public void testToString() throws Exception {
+        abstract class TestAmount implements MonetaryAmount {
+        }
         MonetaryContext ctx =
                 MonetaryContextBuilder.of(TestAmount.class).setFixedScale(true).setMaxScale(111).setPrecision(200)
-                        .set("myKey", "myValue").set("TEST").build();
+                        .set("myKey", "myValue").setTyped("TEST").build();
         assertNotNull(ctx.toString());
         System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("111"));

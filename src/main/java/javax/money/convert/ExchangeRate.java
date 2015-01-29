@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * This class models an exchange rate, which defines the factor the numeric value of a base amount in some currency
  * 'A' must be multiplied
- * to get the corresponding amount in the terminating currency 'B'. Hereby
+ * to getTyped the corresponding amount in the terminating currency 'B'. Hereby
  * <ul>
  * <li>an exchange rate always models one rate from a base (source) to a term
  * (target) {@link CurrencyUnit}.</li>
@@ -89,7 +89,7 @@ import java.util.List;
  * href="https://en.wikipedia.org/wiki/Exchange_rate#Quotations">Wikipedia:
  * Exchange Rate (Quotations)</a>
  */
-public interface ExchangeRate extends CurrencySupplier{
+public interface ExchangeRate extends CurrencySupplier {
 
     /**
      * Access the {@link ConversionContext} of {@link ExchangeRate}.
@@ -140,7 +140,7 @@ public interface ExchangeRate extends CurrencySupplier{
      *
      * @return true, if the exchange rate is derived.
      */
-    default boolean isDerived(){
+    default boolean isDerived() {
         return getExchangeRateChain().size() > 1;
     }
 

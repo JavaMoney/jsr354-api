@@ -16,19 +16,21 @@ import java.util.Objects;
  * <p>
  * Note this class is NOT thread-safe.
  */
-public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQueryBuilder,RoundingQuery>{
+public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQueryBuilder, RoundingQuery> {
 
     /**
      * Default constructor.
      */
-    private RoundingQueryBuilder(){super();}
+    private RoundingQueryBuilder() {
+        super();
+    }
 
     /**
      * Creates a new RoundingQueryBuilder.
      *
      * @param roundingQuery the rounding query, used as a template, not null.
      */
-    private RoundingQueryBuilder(RoundingQuery roundingQuery){
+    private RoundingQueryBuilder(RoundingQuery roundingQuery) {
         importContext(roundingQuery);
     }
 
@@ -42,7 +44,7 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
      * @param roundingName the (custom) rounding name expression, not {@code null}.
      * @return this instance for chaining
      */
-    public RoundingQueryBuilder setRoundingName(String roundingName){
+    public RoundingQueryBuilder setRoundingName(String roundingName) {
         Objects.requireNonNull(roundingName);
         set(RoundingQuery.KEY_QUERY_ROUNDING_NAME, roundingName);
         return this;
@@ -56,7 +58,7 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
      * @param scale the target scale, >0.
      * @return this instance for chaining
      */
-    public RoundingQueryBuilder setScale(int scale){
+    public RoundingQueryBuilder setScale(int scale) {
         set(RoundingQuery.KEY_QUERY_SCALE, scale);
         return this;
     }
@@ -71,9 +73,9 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
      * @param currencyUnit the target {@link CurrencyUnit} not null.
      * @return this instance for chaining
      */
-    public RoundingQueryBuilder setCurrency(CurrencyUnit currencyUnit){
+    public RoundingQueryBuilder setCurrency(CurrencyUnit currencyUnit) {
         Objects.requireNonNull(currencyUnit);
-        set(CurrencyUnit.class, currencyUnit, CurrencyUnit.class);
+        set(CurrencyUnit.class, currencyUnit);
         return this;
     }
 
@@ -82,14 +84,14 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
      *
      * @return a new {@link javax.money.RoundingQuery} instance.
      */
-    public RoundingQuery build(){
+    public RoundingQuery build() {
         return new RoundingQuery(this);
     }
 
     /**
      * Creates a new RoundingQueryBuilder.
      */
-    public static RoundingQueryBuilder of(){
+    public static RoundingQueryBuilder of() {
         return new RoundingQueryBuilder();
     }
 
@@ -99,7 +101,7 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
      * @param roundingQuery the rounding query, used as a template, not null.
      * @return a new {@link javax.money.RoundingQueryBuilder} instance, never null.
      */
-    public static RoundingQueryBuilder of(RoundingQuery roundingQuery){
+    public static RoundingQueryBuilder of(RoundingQuery roundingQuery) {
         return new RoundingQueryBuilder(roundingQuery);
     }
 

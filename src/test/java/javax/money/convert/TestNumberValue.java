@@ -14,6 +14,7 @@ import javax.money.NumberValue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -23,7 +24,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-class TestNumberValue extends NumberValue {
+public class TestNumberValue extends NumberValue {
 
 	/**
 	 * serialVersionUID.
@@ -196,11 +197,16 @@ class TestNumberValue extends NumberValue {
 				+ numberType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.money.NumberValue#numberValueExact(java.lang.Class)
-	 */
-	@SuppressWarnings("unchecked")
+    @Override
+    public NumberValue round(MathContext mathContext) {
+        return new TestNumberValue(new BigDecimal(this.number.toString()).round(mathContext));
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see javax.money.NumberValue#numberValueExact(java.lang.Class)
+     */
+    @SuppressWarnings("unchecked")
 	@Override
 	public <T extends Number> T numberValueExact(Class<T> numberType) {
 		if (BigDecimal.class == numberType) {

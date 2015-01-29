@@ -23,7 +23,7 @@ import java.util.Objects;
  * @see MonetaryAmountFormat#getAmountFormatContext()
  */
 public final class AmountFormatContextBuilder
-        extends AbstractContextBuilder<AmountFormatContextBuilder,AmountFormatContext>{
+        extends AbstractContextBuilder<AmountFormatContextBuilder, AmountFormatContext> {
     /**
      * Map key used for the style identifier attribute.
      */
@@ -34,7 +34,7 @@ public final class AmountFormatContextBuilder
      *
      * @param formatQuery the base {@link AmountFormatQuery}, not {@code null}.
      */
-    private AmountFormatContextBuilder(AmountFormatQuery formatQuery){
+    private AmountFormatContextBuilder(AmountFormatQuery formatQuery) {
         importContext(formatQuery);
     }
 
@@ -43,7 +43,7 @@ public final class AmountFormatContextBuilder
      *
      * @param context the base {@link AmountFormatContext}, not {@code null}.
      */
-    private AmountFormatContextBuilder(AmountFormatContext context){
+    private AmountFormatContextBuilder(AmountFormatContext context) {
         Objects.requireNonNull(context);
         importContext(context);
     }
@@ -53,7 +53,7 @@ public final class AmountFormatContextBuilder
      *
      * @param formatName the target formatName {@link String}, not {@code null}.
      */
-    private AmountFormatContextBuilder(String formatName){
+    private AmountFormatContextBuilder(String formatName) {
         Objects.requireNonNull(formatName, "formatName required.");
         set(AmountFormatContext.KEY_FORMAT_NAME, formatName);
     }
@@ -64,7 +64,7 @@ public final class AmountFormatContextBuilder
      *
      * @param locale the target {@link java.util.Locale}, not {@code null}.
      */
-    private AmountFormatContextBuilder(Locale locale){
+    private AmountFormatContextBuilder(Locale locale) {
         Objects.requireNonNull(locale, "locale required.");
         setLocale(locale);
         set(AmountFormatContext.KEY_FORMAT_NAME, DEFAULT_FORMAT_NAME);
@@ -76,7 +76,7 @@ public final class AmountFormatContextBuilder
      * @param formatName the formatName, not null.
      * @return the Builder, for chaining.
      */
-    public AmountFormatContextBuilder setFormatName(String formatName){
+    public AmountFormatContextBuilder setFormatName(String formatName) {
         return set(AmountFormatContext.KEY_FORMAT_NAME, formatName);
     }
 
@@ -86,8 +86,8 @@ public final class AmountFormatContextBuilder
      * @param locale the locale, not null.
      * @return the Builder, for chaining.
      */
-    public AmountFormatContextBuilder setLocale(Locale locale){
-        return set(locale);
+    public AmountFormatContextBuilder setLocale(Locale locale) {
+        return setTyped(locale);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class AmountFormatContextBuilder
      * @return this builder for chaining.
      */
     public AmountFormatContextBuilder setMonetaryAmountFactory(
-            @SuppressWarnings("rawtypes") MonetaryAmountFactory monetaryAmountBuilder){
+            @SuppressWarnings("rawtypes") MonetaryAmountFactory monetaryAmountBuilder) {
         Objects.requireNonNull(monetaryAmountBuilder);
         return set(MonetaryAmountFactory.class, monetaryAmountBuilder);
     }
@@ -109,7 +109,7 @@ public final class AmountFormatContextBuilder
      * @return a new {@link AmountFormatContext} instance.
      */
     @Override
-    public AmountFormatContext build(){
+    public AmountFormatContext build() {
         return new AmountFormatContext(this);
     }
 
@@ -119,7 +119,7 @@ public final class AmountFormatContextBuilder
      * @param formatQuery the base {@link AmountFormatContext}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
-    public static AmountFormatContextBuilder create(AmountFormatQuery formatQuery){
+    public static AmountFormatContextBuilder create(AmountFormatQuery formatQuery) {
         return new AmountFormatContextBuilder(formatQuery);
     }
 
@@ -129,7 +129,7 @@ public final class AmountFormatContextBuilder
      * @param context the {@link  AmountFormatContext}
      * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
-    public static AmountFormatContextBuilder of(AmountFormatContext context){
+    public static AmountFormatContextBuilder of(AmountFormatContext context) {
         return new AmountFormatContextBuilder(context);
     }
 
@@ -139,7 +139,7 @@ public final class AmountFormatContextBuilder
      * @param formatName the target formatName {@link String}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
-    public static AmountFormatContextBuilder of(String formatName){
+    public static AmountFormatContextBuilder of(String formatName) {
         return new AmountFormatContextBuilder(formatName);
     }
 
@@ -150,7 +150,7 @@ public final class AmountFormatContextBuilder
      * @param locale the target {@link java.util.Locale}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatContextBuilder} instance, never null.
      */
-    public static AmountFormatContextBuilder of(Locale locale){
+    public static AmountFormatContextBuilder of(Locale locale) {
         return new AmountFormatContextBuilder(locale);
     }
 }

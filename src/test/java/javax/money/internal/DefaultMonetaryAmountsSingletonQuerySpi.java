@@ -15,17 +15,20 @@ import java.util.*;
 /**
  * Test implementation of MonetaryAmountsSingletonQuerySpi.
  */
-public class DefaultMonetaryAmountsSingletonQuerySpi implements MonetaryAmountsSingletonQuerySpi{
+public class DefaultMonetaryAmountsSingletonQuerySpi implements MonetaryAmountsSingletonQuerySpi {
 
     private List<MonetaryAmountFactory<?>> factories = new ArrayList<>();
 
-    public DefaultMonetaryAmountsSingletonQuerySpi(){
+    public DefaultMonetaryAmountsSingletonQuerySpi() {
         factories.add(new DummyAmountBuilder());
         factories = Collections.unmodifiableList(factories);
     }
 
     @Override
-    public Collection<MonetaryAmountFactory<?>> getAmountFactories(MonetaryAmountFactoryQuery query){
+    public Collection<MonetaryAmountFactory<?>> getAmountFactories(MonetaryAmountFactoryQuery query) {
+        if (query.getProviders().contains("gigigig2")) {
+            return Collections.emptyList();
+        }
         return factories;
     }
 

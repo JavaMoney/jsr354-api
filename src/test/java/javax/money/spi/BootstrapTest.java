@@ -21,13 +21,12 @@ import javax.money.MonetaryException;
 @Test
 public class BootstrapTest {
 
-
-    @Test(expectedExceptions = IllegalStateException.class)
+    @Test
     public void testInit_InitTwice() throws Exception {
-        Bootstrap.init(new TestServiceProvider());
-        Bootstrap.init(new TestServiceProvider());
+        TestServiceProvider testProv = new TestServiceProvider();
+        ServiceProvider prov = Bootstrap.init(testProv);
+        assertTrue(testProv == Bootstrap.init(prov));
     }
-
 
     @Test
     public void testInit() throws Exception {

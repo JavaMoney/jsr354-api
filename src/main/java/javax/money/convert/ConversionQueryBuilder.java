@@ -23,31 +23,31 @@ import java.util.Set;
  *
  * @see javax.money.convert.MonetaryConversions#getConversion(ConversionQuery)
  */
-public final class ConversionQueryBuilder extends AbstractQueryBuilder<ConversionQueryBuilder,ConversionQuery>{
+public final class ConversionQueryBuilder extends AbstractQueryBuilder<ConversionQueryBuilder, ConversionQuery> {
 
-    private ConversionQueryBuilder(){
+    private ConversionQueryBuilder() {
     }
 
     /**
-     * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
+     * Set the providers to be considered. If not setTyped explicitly the <i>default</i> ISO currencies as
      * returned by {@link java.util.Currency} is used.
      *
      * @param rateTypes the rate types to use, not null.
      * @return the query for chaining.
      */
-    public ConversionQueryBuilder setRateTypes(RateType... rateTypes){
-        return setSet("rateTypes", new HashSet<>(Arrays.asList(rateTypes)));
+    public ConversionQueryBuilder setRateTypes(RateType... rateTypes) {
+        return set("rateTypes", new HashSet<>(Arrays.asList(rateTypes)));
     }
 
     /**
-     * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
+     * Set the providers to be considered. If not setTyped explicitly the <i>default</i> ISO currencies as
      * returned by {@link java.util.Currency} is used.
      *
      * @param rateTypes the rate types to use, not null.
      * @return the query for chaining.
      */
-    public ConversionQueryBuilder setRateTypes(Set<RateType> rateTypes){
-        return setSet(ConversionQuery.KEY_RATE_TYPES, rateTypes);
+    public ConversionQueryBuilder setRateTypes(Set<RateType> rateTypes) {
+        return set(ConversionQuery.KEY_RATE_TYPES, rateTypes);
     }
 
     /**
@@ -56,8 +56,8 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      * @param currency the base currency
      * @return the query for chaining.
      */
-    public ConversionQueryBuilder setBaseCurrency(CurrencyUnit currency){
-        return set(ConversionQuery.KEY_BASE_CURRENCY, currency, CurrencyUnit.class);
+    public ConversionQueryBuilder setBaseCurrency(CurrencyUnit currency) {
+        return set(ConversionQuery.KEY_BASE_CURRENCY, currency);
     }
 
     /**
@@ -67,7 +67,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      *                     .MonetaryCurrencies#getCurrency(String, String...)}, not null.
      * @return the query for chaining.
      */
-    public ConversionQueryBuilder setBaseCurrency(String currencyCode){
+    public ConversionQueryBuilder setBaseCurrency(String currencyCode) {
         return setBaseCurrency(MonetaryCurrencies.getCurrency(currencyCode));
     }
 
@@ -77,8 +77,8 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      * @param currency the base currency
      * @return the query for chaining.
      */
-    public ConversionQueryBuilder setTermCurrency(CurrencyUnit currency){
-        return set(ConversionQuery.KEY_TERM_CURRENCY, currency, CurrencyUnit.class);
+    public ConversionQueryBuilder setTermCurrency(CurrencyUnit currency) {
+        return set(ConversionQuery.KEY_TERM_CURRENCY, currency);
     }
 
     /**
@@ -88,7 +88,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      *                     .MonetaryCurrencies#getCurrency(String, String...)}, not null.
      * @return the query for chaining.
      */
-    public ConversionQueryBuilder setTermCurrency(String currencyCode){
+    public ConversionQueryBuilder setTermCurrency(String currencyCode) {
         return setTermCurrency(MonetaryCurrencies.getCurrency(currencyCode));
     }
 
@@ -98,7 +98,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      * @return a new {@link ConversionQuery} instance.
      */
     @Override
-    public ConversionQuery build(){
+    public ConversionQuery build() {
         return new ConversionQuery(this);
     }
 
@@ -107,7 +107,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      *
      * @return a new {@link javax.money.convert.ConversionQueryBuilder} instance, never null.
      */
-    public static ConversionQueryBuilder of(){
+    public static ConversionQueryBuilder of() {
         return new ConversionQueryBuilder();
     }
 
@@ -117,7 +117,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      * @param query the {@link javax.money.convert.ConversionQuery} instance to be used as a template.
      * @return a new {@link javax.money.convert.ConversionQueryBuilder} instance, never null.
      */
-    public static ConversionQueryBuilder of(ConversionQuery query){
+    public static ConversionQueryBuilder of(ConversionQuery query) {
         return new ConversionQueryBuilder().importContext(query);
     }
 

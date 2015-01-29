@@ -50,4 +50,11 @@ public class CurrencyQueryBuilderTest {
         assertEquals(Integer.valueOf(978), iterator.next());
     }
 
+    @Test
+    public void testOf_CurrencyQuery() {
+        CurrencyQuery query = CurrencyQueryBuilder.of().setNumericCodes(756, 978).build();
+        assertEquals(CurrencyQueryBuilder.of(query).build(), query);
+
+    }
+
 }

@@ -16,13 +16,13 @@ import javax.money.TestCurrency;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class CurrencyConversionExceptionTest{
+public class CurrencyConversionExceptionTest {
 
     private static ConversionContext CONTEXT100 =
             ConversionContextBuilder.of().setProvider("test").setTimestampMillis(100L).build();
 
     @Test
-    public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitContext(){
+    public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitContext() {
         CurrencyUnit base = TestCurrency.of("CHF");
         CurrencyUnit term = TestCurrency.of("EUR");
         CurrencyConversionException ex = new CurrencyConversionException(base, term, CONTEXT100);
@@ -34,7 +34,7 @@ public class CurrencyConversionExceptionTest{
     }
 
     @Test
-    public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitLongStringContextStringThrowable(){
+    public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitLongStringContextStringThrowable() {
         CurrencyUnit base = TestCurrency.of("CHF");
         CurrencyUnit term = TestCurrency.of("EUR");
         Exception cause = new Exception("cause");
@@ -47,7 +47,7 @@ public class CurrencyConversionExceptionTest{
     }
 
     @Test
-    public void testToString(){
+    public void testToString() {
         CurrencyUnit base = TestCurrency.of("CHF");
         CurrencyUnit term = TestCurrency.of("EUR");
         Exception cause = new Exception("cause");
@@ -58,8 +58,8 @@ public class CurrencyConversionExceptionTest{
         Assert.assertTrue(toString.contains("base=CHF"));
         Assert.assertTrue(toString.contains("term=EUR"));
         Assert.assertTrue(toString.contains("conversionContext=ConversionContext"));
-        Assert.assertTrue(toString.contains("provider[String]=test"));
-        Assert.assertTrue(toString.contains("timestamp[Long]=100"));
+        Assert.assertTrue(toString.contains("provider=test"));
+        Assert.assertTrue(toString.contains("timestamp=100"));
         Assert.assertTrue(toString.contains("Cannot convert CHF into EUR"));
         Assert.assertTrue(toString.contains("blabla"));
     }

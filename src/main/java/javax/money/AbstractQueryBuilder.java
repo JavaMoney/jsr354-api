@@ -8,6 +8,7 @@
  */
 package javax.money;
 
+import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalUnit;
 import java.util.*;
 
@@ -21,36 +22,62 @@ import java.util.*;
  * Instances of this class are not thread-safe and not serializable.
  */
 public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBuilder, C extends AbstractQuery>
-        extends AbstractContextBuilder<B,C>{
+        extends AbstractContextBuilder<B, C> {
 
     /**
      * Initializes the query builder, as a default query builder.
      */
-    public AbstractQueryBuilder(){
+    public AbstractQueryBuilder() {
     }
 
 
     /**
-     * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
+     * Set the providers to be considered. If not setTyped explicitly the <i>default</i> ISO currencies as
      * returned by {@link java.util.Currency} is used.
      *
      * @param providers the providers to use, not null.
      * @return the query builder for chaining.
      */
-    public B setProviders(String... providers){
-        Objects.requireNonNull(providers);
-        return setList(AbstractQuery.KEY_QUERY_PROVIDERS, Arrays.asList(providers));
+    public B setProviders(String... providers) {
+        return setProviders(Arrays.asList(providers));
     }
 
     /**
-     * Set the providers to be considered. If not set explicitly the <i>default</i> providers and the corresponding
+     * Set the providers to be considered. If not setTyped explicitly the <i>default</i> ISO currencies as
+     * returned by {@link java.util.Currency} is used.
+     *
+     * @param providers the providers to use, not null.
+     * @return the query builder for chaining.
+     */
+    public B setProviders(List<String> providers) {
+        Objects.requireNonNull(providers);
+        return set(AbstractQuery.KEY_QUERY_PROVIDERS, providers);
+    }
+
+    /**
+     * Set the target timestamp as {@link java.time.temporal.TemporalAccessor}. This allows to select historical
+     * roundings that were valid in the past. Its implementation specific, to what extend historical roundings
+     * are available. By default if this property is not setTyped always current {@link  javax.money.MonetaryRounding}
+     * instances are provided.
+     *
+     * @param timestamp the target timestamp
+     * @return this instance for chaining
+     * @see #setTimestampMillis(long)
+     */
+    public B setTimestamp(TemporalAccessor timestamp) {
+        set(AbstractQuery.KEY_QUERY_TIMESTAMP, Objects.requireNonNull(timestamp));
+        return (B) this;
+    }
+
+    /**
+     * Set the providers to be considered. If not setTyped explicitly the <i>default</i> providers and the corresponding
      * default ordering are used.
      *
      * @param providers the providers in order to use, not null.
      * @return the query builder for chaining.
      */
-    public B setProviders(List<String> providers){
-        return setList(AbstractQuery.KEY_QUERY_PROVIDERS, providers);
+    public B set(List<String> providers) {
+        return set(AbstractQuery.KEY_QUERY_PROVIDERS, providers);
     }
 
     /**
@@ -60,7 +87,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @return the query builder for chaining.
      */
     @Override
-    public B setProvider(String provider){
+    public B setProvider(String provider) {
         return setProviders(provider);
     }
 
@@ -70,7 +97,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @param timestamp the target timestamp
      * @return the query builder for chaining.
      */
-    public B setTimestampMillis(long timestamp){
+    public B setTimestampMillis(long timestamp) {
         return set(AbstractQuery.KEY_QUERY_TIMESTAMP, timestamp);
     }
 
@@ -80,8 +107,8 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @param timestamp the target timestamp
      * @return the query builder for chaining.
      */
-    public B setTimestamp(TemporalUnit timestamp){
-        return set(AbstractQuery.KEY_QUERY_TIMESTAMP, timestamp, TemporalUnit.class);
+    public B setTimestamp(TemporalUnit timestamp) {
+        return set(AbstractQuery.KEY_QUERY_TIMESTAMP, timestamp);
     }
 
     /**
@@ -92,10 +119,18 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @param type the target implementation type, not null.
      * @return this query builder for chaining.
      */
-    public B setTargetType(Class<?> type){
+    public B setTargetType(Class<?> type) {
         Objects.requireNonNull(type);
-        set(AbstractQuery.KEY_QUERY_TARGET_TYPE, type, Class.class);
+        set(AbstractQuery.KEY_QUERY_TARGET_TYPE, type);
         return (B) this;
     }
+
+    /**
+     * Creates a new {@link AbstractQuery} with the data from this Builder
+     * instance.
+     *
+     * @return a new {@link AbstractQuery}. never {@code null}.
+     */
+    public abstract C build();
 
 }

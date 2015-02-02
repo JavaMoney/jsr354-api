@@ -103,7 +103,7 @@ public abstract class AbstractContext implements Serializable {
      * @return the attribute value, or {@code null}.
      */
     public <T> T get(Object key, Class<T> type) {
-        return get(key, type, null);
+		return get(String.valueOf(key), type, null);
     }
 
     /**

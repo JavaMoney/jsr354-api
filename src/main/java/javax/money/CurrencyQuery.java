@@ -60,7 +60,11 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable {
      * @return the otarget locales, never null.
      */
     public Collection<Locale> getCountries() {
-        return get(KEY_QUERY_COUNTRIES, Collection.class, Collections.emptySet());
+        Collection<Locale> result = get(KEY_QUERY_COUNTRIES, Collection.class);
+        if (result == null) {
+            return Collections.emptySet();
+        }
+        return result;
     }
 
     /**
@@ -69,7 +73,11 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable {
      * @return the query for chaining.
      */
     public Collection<String> getCurrencyCodes() {
-        return get(KEY_QUERY_CURRENCY_CODES, Collection.class, Collections.emptySet());
+        Collection<String> result = get(KEY_QUERY_CURRENCY_CODES, Collection.class);
+        if (result == null) {
+            return Collections.emptySet();
+        }
+        return result;
     }
 
     /**
@@ -78,7 +86,11 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable {
      * @return the query for chaining.
      */
     public Collection<Integer> getNumericCodes() {
-        return get(KEY_QUERY_NUMERIC_CODES, Collection.class, Collections.emptySet());
+        Collection<Integer> result = get(KEY_QUERY_NUMERIC_CODES, Collection.class);
+        if (result == null) {
+            return Collections.emptySet();
+        }
+        return result;
     }
 
     /**

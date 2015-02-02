@@ -174,7 +174,7 @@ public final class MonetaryAmounts {
     }
 
     /**
-     * Allows to check if any of the <i>getTyped</i>XXX methods return non empty/non null results of {@link javax.money
+     * Allows to check if any of the <i>get</i>XXX methods return non empty/non null results of {@link javax.money
      * .MonetaryAmountFactory}.
      *
      * @param query the factory query, not null.

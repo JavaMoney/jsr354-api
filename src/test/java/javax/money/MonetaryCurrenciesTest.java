@@ -116,7 +116,7 @@ public class MonetaryCurrenciesTest {
 
     /**
      * Query the list and ordering of provider names modelling the default provider chain to be used, if no provider
-     * chain was explicitly setTyped..
+     * chain was explicitly set..
      *
      * @return the orderend list provider names, modelling the default provider chain used, never null.
      */

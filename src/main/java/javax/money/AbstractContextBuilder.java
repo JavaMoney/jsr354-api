@@ -28,7 +28,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
     /**
      * The data map containing all values.
      */
-    final Map<Object, Object> data = new HashMap<>();
+    final Map<String, Object> data = new HashMap<>();
 
     /**
      * Apply all attributes on the given context.
@@ -38,7 +38,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return this Builder, for chaining
      */
     public B importContext(AbstractContext context, boolean overwriteDuplicates){
-        for (Map.Entry<Object, Object> en : context.data.entrySet()) {
+        for (Map.Entry<String, Object> en : context.data.entrySet()) {
             if (overwriteDuplicates) {
                 this.data.put(en.getKey(), en.getValue());
             }else{
@@ -67,7 +67,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @param value the value
      * @return the Builder, for chaining.
      */
-    public B set(Object key, int value){
+    public B set(String key, int value) {
         this.data.put(key, Objects.requireNonNull(value));
         return (B) this;
     }
@@ -80,7 +80,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @param value the value
      * @return the Builder, for chaining.
      */
-    public B set(Object key, boolean value){
+    public B set(String key, boolean value) {
         this.data.put(key, Objects.requireNonNull(value));
         return (B) this;
     }
@@ -93,7 +93,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @param value the value
      * @return the Builder, for chaining.
      */
-    public B set(Object key, long value){
+    public B set(String key, long value) {
         this.data.put(key, Objects.requireNonNull(value));
         return (B) this;
     }
@@ -106,7 +106,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @param value the value
      * @return the Builder, for chaining.
      */
-    public B set(Object key, float value){
+    public B set(String key, float value) {
         this.data.put(key, Objects.requireNonNull(value));
         return (B) this;
     }
@@ -118,7 +118,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @param value the value
      * @return the Builder, for chaining.
      */
-    public B set(Object key, double value){
+    public B set(String key, double value) {
         this.data.put(key, Objects.requireNonNull(value));
         return (B) this;
     }
@@ -131,7 +131,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @param value the value
      * @return the Builder, for chaining.
      */
-    public B set(Object key, char value){
+    public B set(String key, char value) {
         this.data.put(key, Objects.requireNonNull(value));
         return (B) this;
     }
@@ -145,8 +145,8 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @param value the attribute value
      * @return this Builder, for chaining
      */
-    public B setTyped(Object value) {
-        data.put(value.getClass(), value);
+    public B set(Object value) {
+        data.put(value.getClass().getName(), value);
         return (B) this;
     }
 
@@ -158,8 +158,24 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @param key   the attribute's key, not {@code null}
      * @return this Builder, for chaining
      */
-    public B set(Object key, Object value){
+    public B set(String key, Object value) {
         data.put(key, value);
+        return (B) this;
+    }
+
+    /**
+     * Sets an attribute, using {@code attribute.getClass()} as attribute
+     * <i>type</i>.
+     *
+     * @param value the attribute value
+     * @param key   the attribute's key, not {@code null}
+     * @return this Builder, for chaining
+     */
+    public <T> B set(Class<T> key, T value) {
+        Object old = set(key.getName(), value);
+        if (old != null && old.getClass().isAssignableFrom(value.getClass())) {
+            return (B) old;
+        }
         return (B) this;
     }
 
@@ -178,7 +194,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
     /**
      * Set the target timestamp in UTC millis. This allows to select historical roundings that were valid in the
      * past. Its implementation specific, to what extend historical roundings are available. By default if this
-     * property is not setTyped always current {@link  javax.money.MonetaryRounding} instances are provided.
+     * property is not set always current {@link  javax.money.MonetaryRounding} instances are provided.
      *
      * @param timestamp the target timestamp
      * @return this instance for chaining
@@ -192,7 +208,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
     /**
      * Set the target timestamp as {@link java.time.temporal.TemporalAccessor}. This allows to select historical
      * roundings that were valid in the past. Its implementation specific, to what extend historical roundings
-     * are available. By default if this property is not setTyped always current {@link  javax.money.MonetaryRounding}
+     * are available. By default if this property is not set always current {@link  javax.money.MonetaryRounding}
      * instances are provided.
      *
      * @param timestamp the target timestamp
@@ -212,8 +228,8 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @param keys the keys
      * @return this Builder, for chaining
      */
-    public B removeAttributes(Object... keys) {
-        for (Object key : keys) {
+    public B removeAttributes(String... keys) {
+        for (String key : keys) {
             this.data.remove(key);
         }
         return (B) this;

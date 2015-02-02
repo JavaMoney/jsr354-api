@@ -55,7 +55,7 @@ public final class MonetaryFormats {
      * Checks if a {@link MonetaryAmountFormat} is available for the given {@link Locale} and providers.
      *
      * @param locale    the target {@link Locale}, not {@code null}.
-     * @param providers The providers to be queried, if not setTyped the providers as defined by #getDefaultProviderChain()
+     * @param providers The providers to be queried, if not set the providers as defined by #getDefaultProviderChain()
      *                  are queried.
      * @return true, if a corresponding {@link MonetaryAmountFormat} is accessible.
      */
@@ -69,7 +69,7 @@ public final class MonetaryFormats {
      * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
      *
      * @param locale    the target {@link Locale}, not {@code null}.
-     * @param providers The providers to be queried, if not setTyped the providers as defined by #getDefaultProviderChain()
+     * @param providers The providers to be queried, if not set the providers as defined by #getDefaultProviderChain()
      *                  are queried.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
@@ -129,7 +129,7 @@ public final class MonetaryFormats {
      * Access the a {@link MonetaryAmountFormat} given its styleId.
      *
      * @param formatName the target format name, not {@code null}.
-     * @param providers  The providers to be used, if not setTyped the providers as defined by #getDefaultProviderChain() are
+     * @param providers  The providers to be used, if not set the providers as defined by #getDefaultProviderChain() are
      *                   used.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
@@ -142,7 +142,7 @@ public final class MonetaryFormats {
     /**
      * Get all available locales. This equals to {@link MonetaryAmountFormatProviderSpi#getAvailableLocales()}.
      *
-     * @param providers The providers to be used, if not setTyped the providers as defined by #getDefaultProviderChain() are
+     * @param providers The providers to be used, if not set the providers as defined by #getDefaultProviderChain() are
      *                  used.
      * @return all available locales, never {@code null}.
      */

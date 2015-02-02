@@ -51,7 +51,7 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      */
     public ConversionContextBuilder setRateType(RateType rateType) {
         Objects.requireNonNull(rateType);
-        setTyped(rateType);
+        set(rateType);
         return this;
     }
 
@@ -70,7 +70,7 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
      * new {@link ConversionContext} instances for querying.
      */
     public ConversionContextBuilder() {
-        setTyped(RateType.ANY);
+        set(RateType.ANY);
     }
 
     /**

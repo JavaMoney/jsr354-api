@@ -51,17 +51,17 @@ public final class AmountFormatContext extends AbstractContext {
      * @return the Locale, or null.
      */
     public Locale getLocale() {
-        return getTyped(Locale.class);
+        return get(Locale.class);
     }
 
     /**
      * Access the format's {@link javax.money.MonetaryAmountFactory} that is used to of new amounts during
-     * parsing. If not setTyped explicitly, the default {@link javax.money.MonetaryAmountFactory} is used.
+     * parsing. If not set explicitly, the default {@link javax.money.MonetaryAmountFactory} is used.
      *
      * @return the {@link javax.money.MonetaryAmountFactory}, never {@code null}.
      */
     public MonetaryAmountFactory<?> getParseFactory() {
-        return getTyped(MonetaryAmountFactory.class);
+        return get(MonetaryAmountFactory.class);
     }
 
     /**

@@ -57,7 +57,12 @@ public abstract class AbstractQuery extends AbstractContext {
      * @return the ordered providers, never null.
      */
     public List<String> getProviders() {
-        return get(KEY_QUERY_PROVIDERS, List.class, Collections.emptyList());
+
+        List<String> result = get(KEY_QUERY_PROVIDERS, List.class);
+        if (result == null) {
+            return Collections.emptyList();
+        }
+        return result;
     }
 
     /**
@@ -67,17 +72,17 @@ public abstract class AbstractQuery extends AbstractContext {
      * @return this Builder for chaining.
      */
     public Class<?> getTargetType() {
-        return get(KEY_QUERY_TARGET_TYPE, Class.class, null);
+        return get(KEY_QUERY_TARGET_TYPE, Class.class);
     }
 
     /**
-     * Get the current timestamp of the context in UTC milliseconds.  If not setTyped it tries to of an
+     * Get the current timestamp of the context in UTC milliseconds.  If not set it tries to of an
      * UTC timestamp from #getTimestamp().
      *
      * @return the timestamp in millis, or null.
      */
     public Long getTimestampMillis() {
-        Object value = get(KEY_QUERY_TIMESTAMP, null);
+        Object value = get(KEY_QUERY_TIMESTAMP, Object.class);
         if (value instanceof Long) {
             return (Long) value;
         } else if (value instanceof TemporalAccessor) {
@@ -88,7 +93,7 @@ public abstract class AbstractQuery extends AbstractContext {
     }
 
     /**
-     * Get the current timestamp. If not setTyped it tries to of an Instant from #getTimestampMillis().
+     * Get the current timestamp. If not set it tries to of an Instant from #getTimestampMillis().
      *
      * @return the current timestamp, or null.
      */

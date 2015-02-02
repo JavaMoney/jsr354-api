@@ -13,7 +13,7 @@ import javax.money.CurrencyUnit;
 import java.util.*;
 
 /**
- * Query for accessing {@link javax.money.convert.CurrencyConversion} instances. If not properties are setTyped the query
+ * Query for accessing {@link javax.money.convert.CurrencyConversion} instances. If not properties are set the query
  * should returns the <i>default</i> currencies.<p/>
  * This class is immutable, serializable and thread-safe.
  */
@@ -49,26 +49,30 @@ public final class ConversionQuery extends AbstractQuery implements CurrencySupp
     }
 
     /**
-     * Get the rate types setTyped.
+     * Get the rate types set.
      *
-     * @return the rate types setTyped, or an empty array, but never null.
+     * @return the rate types set, or an empty array, but never null.
      */
     public Set<RateType> getRateTypes() {
-        return get(KEY_RATE_TYPES, Set.class, Collections.emptySet());
+        Set<RateType> result = get(KEY_RATE_TYPES, Set.class);
+        if (result == null) {
+            return Collections.emptySet();
+        }
+        return result;
     }
 
     /**
      * Get the base currency. This attribute is optional, when a {@link javax.money.convert.CurrencyConversion}
-     * is accessed. It is optional if accessing instances of {@link javax.money.convert.ExchangeRateProvider}. If setTyped
+     * is accessed. It is optional if accessing instances of {@link javax.money.convert.ExchangeRateProvider}. If set
      * it can constraint
      * a {@link javax.money.convert.CurrencyConversion} or {@link javax.money.convert.ExchangeRateProvider} to
-     * only support one type of base currency. By default it is not setTyped, hereby determining the base currency by the
+     * only support one type of base currency. By default it is not set, hereby determining the base currency by the
      * amount onto which the conversion is applied.
      *
      * @return the base CurrencyUnit, or null.
      */
     public CurrencyUnit getBaseCurrency() {
-        return get(KEY_BASE_CURRENCY, CurrencyUnit.class, null);
+        return get(KEY_BASE_CURRENCY, CurrencyUnit.class);
     }
 
     /**
@@ -78,7 +82,7 @@ public final class ConversionQuery extends AbstractQuery implements CurrencySupp
      * @return the terminating CurrencyUnit, or null.
      */
     public CurrencyUnit getCurrency() {
-        return get(KEY_TERM_CURRENCY, CurrencyUnit.class, null);
+        return get(KEY_TERM_CURRENCY, CurrencyUnit.class);
     }
 
     /**

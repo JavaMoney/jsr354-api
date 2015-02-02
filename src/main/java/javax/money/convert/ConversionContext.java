@@ -69,7 +69,7 @@ public final class ConversionContext extends AbstractContext {
      * @return the deferred flag, or {code null}.
      */
     public RateType getRateType() {
-        return getTyped(RateType.class);
+        return get(RateType.class);
     }
 
 

@@ -67,7 +67,7 @@ public final class Bootstrap {
             if (Objects.isNull(Bootstrap.serviceProviderDelegate)) {
                 Bootstrap.serviceProviderDelegate = serviceProvider;
                 Logger.getLogger(Bootstrap.class.getName())
-                        .info("Money Bootstrap: new ServiceProvider setTyped: " + serviceProvider.getClass().getName());
+                        .info("Money Bootstrap: new ServiceProvider set: " + serviceProvider.getClass().getName());
                 return null;
             } else {
                 ServiceProvider prevProvider = Bootstrap.serviceProviderDelegate;

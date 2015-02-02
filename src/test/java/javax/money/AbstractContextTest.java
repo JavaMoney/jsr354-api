@@ -21,25 +21,25 @@ import java.util.Set;
 import static org.testng.Assert.*;
 
 /**
- * Created by Anatole on 05.03.14.
+ * Tests for {@link javax.money.AbstractContext}.
  */
 public class AbstractContextTest {
     @Test
     public void testSet() {
-        TestContext ctx = new TestContext.Builder().setTyped("Test").build();
-        assertNotNull(ctx.getTyped(String.class));
-        assertEquals(ctx.getTyped(String.class), "Test");
-        assertEquals(ctx.get(String.class, String.class), "Test");
+        TestContext ctx = new TestContext.Builder().set("Test").build();
+        assertNotNull(ctx.get(String.class));
+        assertEquals(ctx.get(String.class), "Test");
+        assertEquals(ctx.get(String.class.getName(), String.class), "Test");
         assertEquals(ctx.get("String", String.class), null);
     }
 
     @Test
     public void testSetWithKey() {
         TestContext ctx = new TestContext.Builder().set("myKey", "Test").build();
-        assertNull(ctx.getTyped(String.class));
+        assertNull(ctx.get(String.class));
         assertEquals("Test", ctx.get("myKey", String.class));
         assertEquals(ctx.get("myKey", String.class), "Test");
-        assertEquals(ctx.get(String.class, String.class), null);
+        assertEquals(ctx.get(String.class.getName(), String.class), null);
     }
 
     @Test
@@ -52,28 +52,20 @@ public class AbstractContextTest {
     @Test
     public void testSetWithKeyAndType() {
         TestContext ctx = new TestContext.Builder().set("MyNum", 2).build();
-        assertNull(ctx.getTyped(String.class));
+        assertNull(ctx.get(String.class));
         assertEquals(Integer.valueOf(2), ctx.getInt("MyNum"));
         assertEquals(ctx.get("MyNum", Number.class), 2);
         assertNotNull(ctx.get("MyNum", Integer.class));
     }
 
     @Test
-    public void testget() {
-        TestContext ctx = new TestContext.Builder().setTyped("Test").build();
-        assertNotNull(ctx.getTyped(String.class));
-        assertEquals(ctx.get("Gugus", String.class, "defaultValue"), "defaultValue");
-        assertEquals(ctx.getTyped(Boolean.class, Boolean.TRUE), Boolean.TRUE);
-    }
-
-    @Test
     public void testHashCode() {
         List<TestContext> contexts = new ArrayList<>();
-        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(1).setTyped((long) 2).build());
-        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(2).setTyped((long) 1).build());
-        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(2).build());
-        contexts.add(new TestContext.Builder().setTyped("Test").setTyped((long) 2).build());
-        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(Boolean.TRUE).setTyped("Test").build());
+        contexts.add(new TestContext.Builder().set("Test").set(1).set((long) 2).build());
+        contexts.add(new TestContext.Builder().set("Test").set(2).set((long) 1).build());
+        contexts.add(new TestContext.Builder().set("Test").set(2).build());
+        contexts.add(new TestContext.Builder().set("Test").set((long) 2).build());
+        contexts.add(new TestContext.Builder().set("Test").set(Boolean.TRUE).set("Test").build());
         Set<Integer> hashCodes = new HashSet<>();
         contexts.forEach(ctx -> hashCodes.add(ctx.hashCode()));
         // Check we have 5 distinct hash codes...
@@ -83,11 +75,11 @@ public class AbstractContextTest {
     @Test
     public void testEquals() {
         List<TestContext> contexts = new ArrayList<>();
-        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(11).setTyped((long) 2).build());
-        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(2).setTyped((long) 11).build());
-        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(2).build());
-        contexts.add(new TestContext.Builder().setTyped("Test").setTyped((long) 2).build());
-        contexts.add(new TestContext.Builder().setTyped("Test").setTyped(Boolean.TRUE).setTyped("Test").build());
+        contexts.add(new TestContext.Builder().set("Test").set(11).set((long) 2).build());
+        contexts.add(new TestContext.Builder().set("Test").set(2).set((long) 11).build());
+        contexts.add(new TestContext.Builder().set("Test").set(2).build());
+        contexts.add(new TestContext.Builder().set("Test").set((long) 2).build());
+        contexts.add(new TestContext.Builder().set("Test").set(Boolean.TRUE).set("Test").build());
         Set<TestContext> checkContexts = new HashSet<>();
         for (TestContext ctx : contexts) {
             checkContexts.add(ctx);
@@ -99,7 +91,7 @@ public class AbstractContextTest {
 
     @Test
     public void testToString() {
-        TestContext ctx = new TestContext.Builder().setTyped("Test").setTyped(1).setTyped((long) 2).build();
+        TestContext ctx = new TestContext.Builder().set("Test").set(1).set((long) 2).build();
         assertNotNull(ctx.toString());
         System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("1"));
@@ -113,8 +105,8 @@ public class AbstractContextTest {
 
     @Test
     public void testGetKeys() {
-        TestContext ctx = new TestContext.Builder().setTyped("Test").set("a", 1).set("b", 2).build();
-        Set<Object> keys = ctx.getKeys(String.class);
+        TestContext ctx = new TestContext.Builder().set("Test").set("a", 1).set("b", 2).build();
+        Set<String> keys = ctx.getKeys(String.class);
         assertNotNull(keys);
         assertFalse(keys.isEmpty());
         assertEquals(String.class, keys.iterator().next());
@@ -126,8 +118,8 @@ public class AbstractContextTest {
 
     @Test
     public void testGetType() {
-        TestContext ctx = new TestContext.Builder().setTyped("Test").set("a", 1).set("b", 2).build();
-        assertEquals(String.class, ctx.getType(String.class));
+        TestContext ctx = new TestContext.Builder().set("Test").set("a", 1).set("b", 2).build();
+        assertEquals(String.class, ctx.getType(String.class.getName()));
         assertEquals(Integer.class, ctx.getType("a"));
         assertEquals(Integer.class, ctx.getType("b"));
     }

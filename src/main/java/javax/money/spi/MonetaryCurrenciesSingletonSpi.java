@@ -50,7 +50,7 @@ public interface MonetaryCurrenciesSingletonSpi {
      * Access all currencies matching the given query.
      *
      * @param query The currency query, not null.
-     * @return a setTyped of all currencies found, never null.
+     * @return a set of all currencies found, never null.
      */
     Set<CurrencyUnit> getCurrencies(CurrencyQuery query);
 
@@ -61,7 +61,7 @@ public interface MonetaryCurrenciesSingletonSpi {
      * with the {@link Bootstrap}.
      *
      * @param currencyCode the ISO currency code, not {@code null}.
-     * @param providers    the (optional) specification of providers to consider. If not setTyped (empty) the providers
+     * @param providers    the (optional) specification of providers to consider. If not set (empty) the providers
      *                     as defined by #getDefaultProviderChain() should be used.
      * @return the corresponding {@link javax.money.CurrencyUnit} instance.
      * @throws javax.money.UnknownCurrencyException if no such currency exists.
@@ -85,7 +85,7 @@ public interface MonetaryCurrenciesSingletonSpi {
      * with the {@link Bootstrap}.
      *
      * @param country   the ISO currency's country, not {@code null}.
-     * @param providers the (optional) specification of providers to consider. If not setTyped (empty) the providers
+     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
      *                  as defined by #getDefaultProviderChain() should be used.
      * @return the corresponding {@link javax.money.CurrencyUnit} instance.
      * @throws javax.money.UnknownCurrencyException if no such currency exists.
@@ -107,7 +107,7 @@ public interface MonetaryCurrenciesSingletonSpi {
      *
      * @param locale    the target {@link java.util.Locale}, typically representing an ISO country,
      *                  not {@code null}.
-     * @param providers the (optional) specification of providers to consider. If not setTyped (empty) the providers
+     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
      *                  as defined by #getDefaultProviderChain() should be used.
      * @return a collection of all known currencies, never null.
      */
@@ -120,7 +120,7 @@ public interface MonetaryCurrenciesSingletonSpi {
      * accessible from {@link javax.money.spi.MonetaryCurrenciesSingletonSpi#getCurrency(String, String...)}.
      *
      * @param code      the currency code, not {@code null}.
-     * @param providers the (optional) specification of providers to consider. If not setTyped (empty) the providers
+     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
      *                  as defined by #getDefaultProviderChain() should be used.
      * @return {@code true} if {@link javax.money.spi.MonetaryCurrenciesSingletonSpi#getCurrency(String, String...)}
      * would return a result for the given code.
@@ -135,7 +135,7 @@ public interface MonetaryCurrenciesSingletonSpi {
      * defined, i.e. accessible from {@link #getCurrency(String, String...)}.
      *
      * @param locale    the target {@link java.util.Locale}, not {@code null}.
-     * @param providers the (optional) specification of providers to consider. If not setTyped (empty) the providers
+     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
      *                  as defined by #getDefaultProviderChain() should be used.
      * @return {@code true} if {@link #getCurrencies(java.util.Locale, String...)} would return a
      * non empty result for the given code.
@@ -147,7 +147,7 @@ public interface MonetaryCurrenciesSingletonSpi {
     /**
      * Provide access to all currently known currencies.
      *
-     * @param providers the (optional) specification of providers to consider. If not setTyped (empty) the providers
+     * @param providers the (optional) specification of providers to consider. If not set (empty) the providers
      *                  as defined by #getDefaultProviderChain() should be used.
      * @return a collection of all known currencies, never null.
      */

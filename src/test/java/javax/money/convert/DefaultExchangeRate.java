@@ -23,7 +23,7 @@ import java.util.Objects;
  * This class models an exchange rate, which defines the factor the numeric value of a baseCurrency amount in some
  * currency
  * 'A' must be multiplied
- * to getTyped the corresponding amount in the terminating currency 'B'. Hereby
+ * to get the corresponding amount in the terminating currency 'B'. Hereby
  * <ul>
  * <li>an exchange rate always models one rate from a baseCurrency (source) to a termCurrency
  * (target) {@link javax.money.CurrencyUnit}.</li>
@@ -129,10 +129,10 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
     }
 
     /**
-     * Internal method to setTyped the rate chain, which also ensure that the chain
+     * Internal method to set the rate chain, which also ensure that the chain
      * passed, when not null, contains valid elements.
      *
-     * @param chain the chain to setTyped.
+     * @param chain the chain to set.
      */
     private void setExchangeRateChain(List<ExchangeRate> chain) {
         this.chain.clear();

@@ -19,7 +19,7 @@ package javax.money;
  * {@link MonetaryAmountFactory}.
  * </ul>
  * <p>
- * Implementations of this interface allow to getTyped {@link MonetaryAmount} instances providing
+ * Implementations of this interface allow to get {@link MonetaryAmount} instances providing
  * different data as required:
  * <ul>
  * <li>the {@link CurrencyUnit}, or the corresponding currency code (must be solvable by
@@ -154,7 +154,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
     }
 
     /**
-     * Creates a new instance of {@link MonetaryAmount}, using the current data setTyped on this factory.
+     * Creates a new instance of {@link MonetaryAmount}, using the current data set on this factory.
      *
      * @return the corresponding {@link MonetaryAmount}.
      * @see #getAmountType()

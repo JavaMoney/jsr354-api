@@ -20,7 +20,7 @@ import javax.money.AbstractContext;
  * <ul>
  * <li>a unique nont localizable provider name. This provider name is also used to identify a concrete instance of
  * ExchangeRateProvider.</li>
- * <li>a setTyped of {@link javax.money.convert.RateType} an ExchangeRateProvider supports</li>
+ * <li>a set of {@link javax.money.convert.RateType} an ExchangeRateProvider supports</li>
  * <li>a time range for which an ExchangeRateProvider delivers rates.</li
  * </ul>
  * Additionally a instance of ProviderContext can have arbitrary additional attributes describing more precisely
@@ -56,7 +56,10 @@ public final class ProviderContext extends AbstractContext {
      * @return the deferred flag, or {code null}.
      */
     public Set<RateType> getRateTypes() {
-        Set<RateType> rateSet = get(KEY_RATE_TYPES, Set.class, Collections.emptySet());
+        Set<RateType> rateSet = get(KEY_RATE_TYPES, Set.class);
+        if (rateSet == null) {
+            return Collections.emptySet();
+        }
         return Collections.unmodifiableSet(rateSet);
     }
 

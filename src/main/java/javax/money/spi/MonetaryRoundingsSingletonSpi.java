@@ -32,14 +32,14 @@ public interface MonetaryRoundingsSingletonSpi {
      *
      * @param providers the providers and ordering to be used. By default providers and ordering as defined in
      *                  #getDefaultProviders is used.
-     * @return the setTyped of custom rounding ids, never {@code null}.
+     * @return the set of custom rounding ids, never {@code null}.
      */
     Set<String> getRoundingNames(String... providers);
 
     /**
      * Allows to access the names of the current registered rounding providers.
      *
-     * @return the setTyped of provider names, never {@code null}.
+     * @return the set of provider names, never {@code null}.
      */
     Set<String> getProviderNames();
 

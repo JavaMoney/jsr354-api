@@ -99,7 +99,7 @@ public class MonetaryContextTest {
         }
         MonetaryContext ctx =
                 MonetaryContextBuilder.of(TestAmount.class).setFixedScale(true).setMaxScale(111).setPrecision(200)
-                        .set("myKey", "myValue").setTyped("TEST").build();
+                        .set("myKey", "myValue").set("TEST").build();
         assertNotNull(ctx.toString());
         System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("111"));

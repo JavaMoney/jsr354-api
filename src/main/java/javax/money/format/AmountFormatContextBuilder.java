@@ -87,7 +87,7 @@ public final class AmountFormatContextBuilder
      * @return the Builder, for chaining.
      */
     public AmountFormatContextBuilder setLocale(Locale locale) {
-        return setTyped(locale);
+        return set(locale);
     }
 
     /**

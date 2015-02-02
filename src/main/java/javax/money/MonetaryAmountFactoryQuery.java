@@ -25,7 +25,7 @@ import java.io.Serializable;
  * @see MonetaryAmounts#getAmountFactory(MonetaryAmountFactoryQuery)
  * @see MonetaryAmountFactory
  */
-public final class MonetaryAmountFactoryQuery extends AbstractQuery implements Serializable{
+public final class MonetaryAmountFactoryQuery extends AbstractQuery implements Serializable {
 
     /**
      * Key name for the context.
@@ -47,7 +47,7 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
      *
      * @param builder the corresponding builder, not null.
      */
-    MonetaryAmountFactoryQuery(MonetaryAmountFactoryQueryBuilder builder){
+    MonetaryAmountFactoryQuery(MonetaryAmountFactoryQueryBuilder builder) {
         super(builder);
     }
 
@@ -56,8 +56,8 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
      *
      * @return the maximal scale, or null, if this attribute must not be considered.
      */
-    public Integer getMaxScale(){
-        return getInt(KEY_MAX_SCALE, null);
+    public Integer getMaxScale() {
+        return getInt(KEY_MAX_SCALE);
     }
 
     /**
@@ -65,8 +65,8 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
      *
      * @return the maximal precision, or null, if this attribute must not be considered.
      */
-    public Integer getPrecision(){
-        return getInt(KEY_PRECISION, null);
+    public Integer getPrecision() {
+        return getInt(KEY_PRECISION);
     }
 
     /**
@@ -75,8 +75,8 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
      *
      * @return the fixed scale flag, or null, if this attribute must not be considered.
      */
-    public Boolean getFixedScale(){
-        return getBoolean(KEY_FIXED_SCALE, null);
+    public Boolean getFixedScale() {
+        return getBoolean(KEY_FIXED_SCALE);
     }
 
     /**
@@ -84,7 +84,7 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
      *
      * @return a new {@link MonetaryAmountFactoryQueryBuilder} instance, never null.
      */
-    public MonetaryAmountFactoryQueryBuilder toBuilder(){
+    public MonetaryAmountFactoryQueryBuilder toBuilder() {
         return MonetaryAmountFactoryQueryBuilder.of(this);
     }
 

@@ -57,7 +57,7 @@ public final class AmountFormatQuery extends AbstractQuery {
      * @return the style's locale, or null.
      */
     public Locale getLocale() {
-        return getTyped(Locale.class);
+        return get(Locale.class);
     }
 
     /**
@@ -67,7 +67,11 @@ public final class AmountFormatQuery extends AbstractQuery {
      * @return the monetary context, or {@code null}.
      */
     public MonetaryAmountFactory getMonetaryAmountFactory() {
-        return getTyped(MonetaryAmountFactory.class, MonetaryAmounts.getDefaultAmountFactory());
+        MonetaryAmountFactory factory = get(MonetaryAmountFactory.class);
+        if (factory == null) {
+            return MonetaryAmounts.getDefaultAmountFactory();
+        }
+        return factory;
     }
 
     /**

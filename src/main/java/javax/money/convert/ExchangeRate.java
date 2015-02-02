@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * This class models an exchange rate, which defines the factor the numeric value of a base amount in some currency
  * 'A' must be multiplied
- * to getTyped the corresponding amount in the terminating currency 'B'. Hereby
+ * to get the corresponding amount in the terminating currency 'B'. Hereby
  * <ul>
  * <li>an exchange rate always models one rate from a base (source) to a term
  * (target) {@link CurrencyUnit}.</li>

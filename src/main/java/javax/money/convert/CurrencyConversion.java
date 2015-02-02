@@ -15,7 +15,7 @@ import javax.money.*;
  * {@link MonetaryAmount} with a different target {@link CurrencyUnit}. Each instance of this class is bound to
  * a specific {@link ExchangeRateProvider} (or a chain of rate providers), a term {@link CurrencyUnit} and
  * (optionally) a target timestamp. Additionally the {@link javax.money.convert.ConversionContext} can have additional
- * attributes setTyped that are passed to the rate provider (chain).
+ * attributes set that are passed to the rate provider (chain).
  * <p>
  * This interface serves a an API for the clients, but also must be implemented
  * and registered as SPI to the mechanisms required by the

@@ -197,7 +197,7 @@ public final class MonetaryRoundings {
      *
      * @param providers the providers and ordering to be used. By default providers and ordering as defined in
      *                  #getDefaultProviders is used.
-     * @return the setTyped of custom rounding ids, never {@code null}.
+     * @return the set of custom rounding ids, never {@code null}.
      */
     public static Set<String> getRoundingNames(String... providers) {
         return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(
@@ -208,7 +208,7 @@ public final class MonetaryRoundings {
     /**
      * Allows to access the names of the current registered providers.
      *
-     * @return the setTyped of provider names, never {@code null}.
+     * @return the set of provider names, never {@code null}.
      */
     public static Set<String> getProviderNames() {
         return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(
@@ -363,7 +363,7 @@ public final class MonetaryRoundings {
          *
          * @param providers the providers and ordering to be used. By default providers and ordering as defined in
          *                  #getDefaultProviders is used, not null.
-         * @return the setTyped of custom rounding ids, never {@code null}.
+         * @return the set of custom rounding ids, never {@code null}.
          */
         public Set<String> getRoundingNames(String... providers) {
             Set<String> result = new HashSet<>();

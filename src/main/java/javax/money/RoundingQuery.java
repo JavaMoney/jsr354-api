@@ -24,14 +24,16 @@ package javax.money;
  * <p>
  * This class is immutable, thread-safe and serializable.
  */
-public final class RoundingQuery extends AbstractQuery implements CurrencySupplier{
+public final class RoundingQuery extends AbstractQuery implements CurrencySupplier {
 
     /**
      * Attribute key used for the rounding name attribute.
      */
     static final String KEY_QUERY_ROUNDING_NAME = "Query.roundingName";
 
-    /** Attribute key used for the scale attribute. */
+    /**
+     * Attribute key used for the scale attribute.
+     */
     static final String KEY_QUERY_SCALE = "Query.scale";
 
     /**
@@ -39,7 +41,7 @@ public final class RoundingQuery extends AbstractQuery implements CurrencySuppli
      *
      * @param builder the corresponding builder, not null.
      */
-    RoundingQuery(RoundingQueryBuilder builder){
+    RoundingQuery(RoundingQueryBuilder builder) {
         super(builder);
     }
 
@@ -52,8 +54,8 @@ public final class RoundingQuery extends AbstractQuery implements CurrencySuppli
      *
      * @return the rounding id  or null.
      */
-    public String getRoundingName(){
-        return getText(KEY_QUERY_ROUNDING_NAME, null);
+    public String getRoundingName() {
+        return getText(KEY_QUERY_ROUNDING_NAME);
     }
 
     /**
@@ -62,8 +64,8 @@ public final class RoundingQuery extends AbstractQuery implements CurrencySuppli
      *
      * @return the target scale or null.
      */
-    public Integer getScale(){
-        return getInt(KEY_QUERY_SCALE, null);
+    public Integer getScale() {
+        return getInt(KEY_QUERY_SCALE);
     }
 
     /**
@@ -74,8 +76,8 @@ public final class RoundingQuery extends AbstractQuery implements CurrencySuppli
      *
      * @return the CurrencyUnit, or null.
      */
-    public CurrencyUnit getCurrency(){
-        return get(CurrencyUnit.class, null);
+    public CurrencyUnit getCurrency() {
+        return get(CurrencyUnit.class);
     }
 
     /**
@@ -83,7 +85,7 @@ public final class RoundingQuery extends AbstractQuery implements CurrencySuppli
      *
      * @return a new {@link javax.money.RoundingQueryBuilder} instance, never null.
      */
-    public RoundingQueryBuilder toBuilder(){
+    public RoundingQueryBuilder toBuilder() {
         return RoundingQueryBuilder.of(this);
     }
 

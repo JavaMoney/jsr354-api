@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 
 
 /**
- * Builder for queries for accessing {@link javax.money.CurrencyUnit} instances. If not properties are setTyped the
+ * Builder for queries for accessing {@link javax.money.CurrencyUnit} instances. If not properties are set the
  * query should
  * returns
- * the <i>default</i> currencies. Similarly if no provider is setTyped explicitly the <i>default</i> ISO currencies as
+ * the <i>default</i> currencies. Similarly if no provider is set explicitly the <i>default</i> ISO currencies as
  * returned by {@link java.util.Currency} should be returned.
  * <p>
  * Note this class is NOT thread-safe.

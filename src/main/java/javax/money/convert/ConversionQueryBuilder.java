@@ -29,7 +29,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
     }
 
     /**
-     * Set the providers to be considered. If not setTyped explicitly the <i>default</i> ISO currencies as
+     * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
      * returned by {@link java.util.Currency} is used.
      *
      * @param rateTypes the rate types to use, not null.
@@ -40,7 +40,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
     }
 
     /**
-     * Set the providers to be considered. If not setTyped explicitly the <i>default</i> ISO currencies as
+     * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
      * returned by {@link java.util.Currency} is used.
      *
      * @param rateTypes the rate types to use, not null.

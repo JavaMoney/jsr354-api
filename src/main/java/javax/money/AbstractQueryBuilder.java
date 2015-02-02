@@ -32,7 +32,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
 
 
     /**
-     * Set the providers to be considered. If not setTyped explicitly the <i>default</i> ISO currencies as
+     * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
      * returned by {@link java.util.Currency} is used.
      *
      * @param providers the providers to use, not null.
@@ -43,7 +43,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
     }
 
     /**
-     * Set the providers to be considered. If not setTyped explicitly the <i>default</i> ISO currencies as
+     * Set the providers to be considered. If not set explicitly the <i>default</i> ISO currencies as
      * returned by {@link java.util.Currency} is used.
      *
      * @param providers the providers to use, not null.
@@ -57,7 +57,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
     /**
      * Set the target timestamp as {@link java.time.temporal.TemporalAccessor}. This allows to select historical
      * roundings that were valid in the past. Its implementation specific, to what extend historical roundings
-     * are available. By default if this property is not setTyped always current {@link  javax.money.MonetaryRounding}
+     * are available. By default if this property is not set always current {@link  javax.money.MonetaryRounding}
      * instances are provided.
      *
      * @param timestamp the target timestamp
@@ -70,7 +70,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
     }
 
     /**
-     * Set the providers to be considered. If not setTyped explicitly the <i>default</i> providers and the corresponding
+     * Set the providers to be considered. If not set explicitly the <i>default</i> providers and the corresponding
      * default ordering are used.
      *
      * @param providers the providers in order to use, not null.

@@ -286,8 +286,8 @@ accommodate such applications.
 
 [[Scope]]
 === Scope
-JSR 354 targets a standalone scope. Nevertheless it may be included into the JDK later, so its design and scope must
-consider integration into the JDK. Additionally the work on the JSR has shown, that it is possible to define a flexible
+JSR 354 targets a standalone scope. Nevertheless it may be integrated with the JDK later, so its design and scope must
+consider JDK patterns. Additionally the work on the JSR has shown, that it is possible to define a flexible
 and comprehensive API that is also almost compatible with Java ME. Since with the Internet of Things small
 devices are getting more important, and there is high probability that monetary aspects must be implemented, the expert
 group decided to keep the API independent of JDK artifacts that are not supported on ME, where easily possible.
@@ -295,22 +295,9 @@ Basically this affects usage of +java.math+ and +java.text+. Nevertheless the re
 existing functionality and the JSR also includes requirements (also checkable by the TCK) to ensure a minimal set of
 functionality on Java SE.
 During the development of the JSR a wide set of features were implemented. Most of these features will not end up within
-the JSR itself, as the JSR now has scope limited to interoperation, enabling feature innovation elsewhere. The
-corresponding libraries were published under [JavaMoney] as an Apache 2 licensed open source project. Compared to the
-early draft review the following features are no longer in the scope of the JSR:
-
-* complex formatting (replaced by a simple formatter for amounts)
-* region API
-* validity API
-* additional financial functions and formulas
-
-Though the features above were removed from the JSR, their development ensured that scope was fully evaluated and that
-the parts best suited to standardization were identified. Where beneficial to the community parts of the JavaMoney
-project may also use Java 8 features like Lambdas when Java 8 goes final,  while the JSR remains backward-compatible
-with Java 7 in first release, see below.
-
-Including this JSR into the JDK at a time later time would be an option that should be discussed within a corresponding
-Java Enhancement Proposal (JEP). For the time being the JSR focuses on the key monetary aspects to be modeled.
+the JSR itself, enabling feature innovation elsewhere. The corresponding libraries were published under [JavaMoney]
+as an Apache 2 licensed open source project. Though these libraries were removed from the JSR, their development
+ensured that scope was fully evaluated and that the parts best suited to standardization were identified.
 
 === Required Java version
 The specification is based on Java SE 8.0 language features. Implementations may target any suitable Java SE version,
@@ -464,7 +451,7 @@ Based on the scope and use cases described above the following core requirements
 
 . The JSR must provide an API for handling and calculating with monetary amounts.
 . The JSR must support different numeric capabilities and guarantees to be provided by the monetary amount
-  implementations. These data is called monetary context and must be accessible from an amount instance during runtime.
+  implementations. These data is called _monetary context_ and must be accessible from an amount instance during runtime.
 . The JSR must specify a minimal set of interfaces for interoperability, since concrete usage scenarios do not allow to
   define an implementation that is capable of covering all aspects identified. Consequently it must be possible that
   implementations can provide several implementations for monetary amounts.
@@ -501,7 +488,7 @@ also to the section <<Boostrap>> for more details on possible EE/CDI integration
 
 [[RequirementsNonFunctional]]
 === Non Functional Requirements
-. Since this JSR may be a good candidate to be included into the JDK later, any possible extension to the Java platform
+. Since this JSR may be a candidate to be included into the JDK later, any possible extension to the Java platform
   must be fully backward compatible.
 . Implementation requirements for currencies must require only minimal (if any) extensions on the existing
   +java.util.Currency+.
@@ -523,13 +510,11 @@ also to the section <<Boostrap>> for more details on possible EE/CDI integration
    .. parsing is explicitly named, as it is generally special, named +parse(...)+
    .. overall monetary API _feel_ should be similar to +java.math.BigDecimal+.
 . There are rare places where POSIX timestamps based on millisecond resolution as returned by
-  +System.currentTimeMillis()+ are used. These timestamps are modelled as +long+. Since this JSR
-  is based on Java 7, the new date and time types introduced with Java 8 are not used as part of this API.
-  Nevertheless the context types that can be passed to different methods allow to use these types as needed.
-  Refer to the <<Examples>> section for according samples.
-. This JSR will be used also for (business) critical software like real time trading and similar systems.
+  +System.currentTimeMillis()+ are used. These timestamps are modelled as +long+. New date and time types introduced
+  with Java 8 are supported similarly, but of course, will not be available in Java prior to version 8.
+. This JSR will probably also be used also for (business) critical software like real time trading and similar systems.
   These systems and use cases require very specific parameters, which are impossible to model by this JSR and
-  may vary for different use cases, provider and/or companies. As a solution attributable contexts can be
+  may vary for different use cases, provider and/or companies. As a solution attributable contexts and queries can be
   passed optionally that can contain arbitrary parameters needed.
 . Though performance aspects can not directly targeted by this JSR, it is important that the JSR considers performance
   aspects where possible, so that provided implementations are able to optimize performance as required by the usage
@@ -559,16 +544,16 @@ different runtime environments and component loading mechanisms. It is discussed
 ==== Module/Repository Overview
 The JSR’s source code repository under <<source>> provides several modules:
 
-jsr354-api:: contains the JSR 354 API as described also be this specification.
-jsr354-ri:: contains the ''moneta'' reference implementation. footnote:[Note that the reference implementation is not a required be
-    part for public review, so it may still change.]
-jsr354-tck:: contains the technical compatibility kit (TCK). footnote:[Note that the TCK is not a required part for
-    public review.]
+jsr354-api:: contains the JSR 354 API as described also by this specification.
+jsr354-ri:: contains the ''moneta'' reference implementation.
+jsr354-tck:: contains the technical compatibility kit (TCK).
 javamoney-parent:: is a root “POM” project for all modules under +org.javamoney+. This includes the RI/TCK projects,
-  but not jsr354-api.
+  but not jsr354-api (which is standalone).
 javamoney-library:: contains a financial library (JavaMoney) adding comprehensive support for several extended
   functionality, built on top of this JSR, but not part of the JSR.
 javamoney-examples:: finally contains the examples and demos, and also is not part of this JSR.
+
+It is also planned to provide a Java 7 based backport of the API and RI.
 
 [[CoreAPI]]
 === Money and Currency Core API
@@ -580,13 +565,13 @@ as supporting types for rounding and the extensions API. Hereby the main artifac
   implementations on functional level. Interoperability on data level is ensured by +getNumber()+ and +getCurrency()+.
   As a consequence amount can be implemented in different ways, focusing on the behavioural and data representation
   requirements implied by the concrete use cases.
-* The abstract type +NumberValue+ returns the numeric part of an amount, so it can be accessed and externalized in different ways. Its
-  purpose is to ensure maximal interoperability with existing functionality in the JDK. Therefore it also extends
-  +java.lang.Number+.
+* The abstract type +NumberValue+ returns the numeric part of an amount, so it can be accessed and externalized in
+  different ways. Its purpose is to ensure maximal interoperability with existing functionality in the JDK. Therefore
+  it also extends +java.lang.Number+.
 * +NumberSupplier+ and +CurrencySupplier+ model functional interfaces as defined by JDK 8.
-* +MonetaryOperator+ and +MonetaryQuery+ model the extension points for monetary logic. They allow to implement external
-  functionality, either adding operations returning an amount (+MonetaryOperator+), or returning any
-  arbitrary other value ( +MonetaryQuery+).
+* +MonetaryOperator+ and +MonetaryQuery+ model functional interfaces providing extension points for monetary logic.
+  They allow to implement external functionality, either adding operations returning an amount (+MonetaryOperator+), or
+  returning any arbitrary other value (+MonetaryQuery+).
 * the +MonetaryAmountFactory+ finally represents an abstraction for creating new instances of amounts. Besides setting
   an amount currency and number value, it allows also to change the numeric capabilities, if the underlying
   implementation supports doing this. The capabilities available for a concrete factory can be queried by accessing
@@ -601,17 +586,19 @@ as supporting types for rounding and the extensions API. Hereby the main artifac
   requirements/required capabilities.
 * +RoundingQuery+ models a query for evaluating instances of +MonetaryRounding+ given concrete
   requirements/required capabilities.
-* +MonetaryContextBuilder, CurrencyContextBuilder, RoundingContextBuilder, MonetaryAmountFactoryQuery, CurrencyQuery,
-  RoundingQuery+ all model the builders necessary for creating instances of the several context and query classes.
+* +MonetaryContextBuilder, CurrencyContextBuilder, RoundingContextBuilder, MonetaryAmountFactoryQueryBuilder,
+  CurrencyQueryBuilder, RoundingQueryBuilder+ all model the builders necessary for creating instances of the several
+  context and query classes.
 * +MonetaryException+ is the base exception class for the money API, it extends +java.lang.RuntimeException+.
 
-Finally the core module also contains the base classes used for metadata and query modeling:
+Finally the core module also contains base classes used for metadata and query modeling:
 
 * +AbstractContext+ models the abstract basic value type for additional context data, used in several parts of this
-  JSR.
+  JSR. It provides the basic logic for implementing an immutable context internally using a +Map<String,Object>+
+  store.
 * +AbstractQuery+ models the abstract query value type for querying monetary data from the different singleton accessors
-  provided.
-* +AbstractContextBuilder, AbstractQueryBuilder+ models the abstract basic builder types for builders that create
+  provided. +AbstractQuery+ extends +AbstractContext+.
+* +AbstractContextBuilder, AbstractQueryBuilder+ model the abstract basic builder types for builders that create
   instances of +AbstractContext, AbstractQuery+, used in several parts of this JSR.
 
 Refer to section <<MetadataModeling>> for more details.
@@ -635,7 +622,7 @@ This topic was discussed intensively in the expert group, some of the aspects co
 
 Nevertheless for an API to be complete, you need some type of concrete classes as entry points. Since the API is
 designed as a standalone APIs the singleton accessor patterns are a good choice, so this API provides according
-accessor classes. Summarizing the following singleton accessors are available as part of the JSR's core module:
+accessor classes. Summarizing the following singletons are available as part of the JSR's core module:
 
 * +MonetaryCurrencies+ provides access and query functionality to +CurrencyUnit+ instances.
 * +MonetaryAmounts+ provides access and query functionality to factories for creating +MonetaryAmount+ instances.
@@ -644,7 +631,7 @@ accessor classes. Summarizing the following singleton accessors are available as
 Additionally the conversion and formatting module also provide singletons:
 
 * +MonetaryConversions+ for accessing +CurrencyConversion+ and +ExchangeRateProvider+ instances.
-* +MonetaryFormats+ for accessing +MonetaryFormat+ instances.
+* +MonetaryFormats+ for accessing +MonetaryAmountFormat+ instances.
 
 The following sections will describe these artifacts in more detail.
 
@@ -656,7 +643,7 @@ what kind of additions are necessary.
 
 Fortunately a minimal interface +CurrencyUnit+ could be extracted, that models almost a subset of the existing
 functionality on +java.util.Currency+, so the existing class could easily implement the new interface. Compared to
-+java.util.Currency+ the new currency interface does not provide methods for localizing a currency instances such as
++java.util.Currency+ the new currency interface does not provide methods for localizing a currency instance such as
 +getDisplayName(Locale)+, +getSymbol(Locale)+. This allows to separate the different concerns of data modelling and
 formatting. Additionally the JSR's currency interface provides access to a +CurrencyContext+ meta-data class,
 which is capable of providing arbitrary meta-data on the current instance. This meta-data container can be used to
@@ -847,8 +834,8 @@ Finally implementations of +MonetaryAmount<T>+
 
 NOTE: This also means that two different implementations types with the same currency and numeric value are 'NOT equal'.
 For comparing two +MonetaryAmount+ instances during financial calculations the amount’s comparison methods should be
-used. E.g. +isEqualTo(MonetaryAmount)+ must return +true+, if they have equal currencies and equal numeric values, hereby
-ignoring non-significant trailing zeros and different monetary contexts.
+used. E.g. +isEqualTo(MonetaryAmount)+ must return +true+, if they have equal currencies and equal numeric values,
+hereby ignoring non-significant trailing zeros and different monetary contexts.
 
 The interfaces +MonetaryOperator+ and +MonetaryQuery<R>+ provide a powerful extension mechanism. The two interfaces
 operate as a form of the strategy pattern, allowing the algorithm of a query or operation to be external to the
@@ -861,7 +848,7 @@ different implementations it is very important that the numeric value of an amou
 This can be achieved by calling +NumberValue getNumber();+ on +MonetaryAmount+.
 
 Nevertheless simply returning +java.lang.Number+, is also not desired, since conversion to known types may imply
-rounding errors or truncation. So +NumberValue+ extends +java.lang.Number+, +java.lang.Number+ is the basic type used in
+rounding errors or truncation. So +NumberValue+ extends +java.lang.Number+, which is the basic type used in
 the JDK, but +NumberValue+ adds methods that help users to better identify the risks of different externalization
 operations and provide functionality for effective access to the numeric data:
 
@@ -1071,6 +1058,8 @@ Hereby
       * +getAmountType()+ gives access to the amount’s implementation type used.
       * new instances are built using an instance of +MonetaryContextBuilder+, which also can be accessed from each
         +MonetaryContext+ instance.
+      * the inherited +AbstractContext+ provides access to additional non standard context properties, see
+        <<AbstractContext>>.
 
 The example below creates a +MonetaryContext+ matching amount implementations that are performance optimized, that have
 a maximal precision of +12+, with a maximal scale of +2+ and should be rounded up:
@@ -1093,17 +1082,18 @@ MonetaryContext ctx = MonetaryContextBuilder.of()
 
 For further details on contexts, related builders and meta-data modeling, refer to section <<MetadataModeling>>.
 
+
 [[CreatingAmounts]]
 ==== Creating Monetary Amount Instances
 Basically new instances of +MonetaryAmount+ can be created in different ways. One way footnote:[Types may also be
 instantiated directly depending on the implementation.] will be by using factories,
 modeled by the interface +javax.money.MonetaryAmountFactory<T>+. Instances can be obtained in different ways
 
-* calling +getFactory()+ on an any instance of +MonetaryAmount+, returns an instance that is pre-initialized with the current
-  amount instance’s values, allowing for easily creation of similar amount instances, with some or multiple properties
-  changed. This is known as the prototype pattern [<<GoF>>]. This is useful for +MonetaryOperator+ implementations, where
-  the default operations available on +MonetaryAmount+ are not sufficient for implementing the logic/result required, or
-  calculations are done externally and a new amount is created with the numeric result of that calculation.
+* calling +getFactory()+ on an any instance of +MonetaryAmount+, returns an instance that is pre-initialized with the
+  current amount’s values, allowing for easily creation of similar amount instances, with some or multiple properties
+  changed. This is known as the prototype pattern [<<GoF>>]. This is useful for +MonetaryOperator+ implementations,
+  where the default operations available on +MonetaryAmount+ are not sufficient for implementing the logic/result
+  required, or calculations are done externally and a new amount is created with the numeric result of that calculation.
 * the +MonetaryAmounts+ singleton also provides access to +MonetaryAmountFactory+ instances, hereby also allowing to
   bind to a specific implementation type or query for matching +MonetaryAmountFactory+ instances:
 
@@ -1114,15 +1104,22 @@ MonetaryAmountFactory<MyMoney> fact = MonetaryAmounts.getAmountFactory(MyMoney.c
 MyMoney money = fact.setCurrency("USD").setNumber(10.50).create();
 -------------------------------------------------------------------------------
 
+More complex evaluations of +MonetaryAmountFactory+ instances can be performed as only constraint by the registered
+SPIs (see <<SPI>>) using +MonetaryAmountFactoryQuery+ and its related Builder class:
+
 [source,java]
-.Usage Example for reating an Amount, querying for a +MonetaryAmountFactory+
+.Usage Example for querying for a +MonetaryAmountFactory+
 -------------------------------------------------------------------------------
 MonetaryAmountFactory<?> fact = MonetaryAmounts.getAmountFactory(
-  MonetaryAmountFactoryQueryBuilder.of().setMaxScale(2).setPrecision(10).build());
+   MonetaryAmountFactoryQueryBuilder.of()
+     .setMaxScale(2)
+     .setPrecision(10)
+     .build());
 MonetaryAmount money = fact.setCurrency("USD").setNumber(10.50).create();
 -------------------------------------------------------------------------------
 
-Ass shown the signature of +MonetaryAmountFactory+ is modelled as a builder also supporting a fluent programming style:
+As illustrated above the signature of +MonetaryAmountFactory+ is modelled as a builder also supporting a fluent
+programming style:
 
 [source,java]
 .Interface MonetaryAmountFactory
@@ -1146,7 +1143,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 
 Hereby
 
-* create returns a new instance of +T+ based on the current data set on the factory.
+* create returns a new instance of +T+ based on the current properties of the factory instance.
 * If no +MonetaryContext+ has been set explicitly a _default_ +MonetaryContext+ is used, which can be determined by
   calling +getDefaultMonetaryContext()+.
 * The _maximal_ supported +MonetaryContext+ can also be determined by calling +getMaximalMonetaryContext()+.
@@ -1161,14 +1158,14 @@ Hereby
 *** If the current implementation supports extending the +MonetaryContext+ used, the +MonetaryContext+ should be
     extended to accommodate the precision and scale required, e.g. an implementation based on +java.math.BigDecimal+
     can be constrained to a +MathContext.DECIMAL64+, but can be easily extended to support bigger precisions.
-*** If the current implementation is not able to reflect the numeric value required without doing any truncation, it
-    must throw an +ArithmeticException+.
+*** If the current implementation is not able to reflect the numeric value required without doing any significant
+    truncation, it must throw an +ArithmeticException+.
 
 [[SingletonAccessors]]
 ==== Accessing Currencies, Amounts and Roundings
 
 All JSR's main artifacts are accessible by corresponding singleton accessor classes. Hereby the exact behaviour of the
-singletons are delegated to according SPI's. This allows to implement runtime dependent behaviour that can be
+singletons are delegated to corresponding SPI's. This allows to implement runtime dependent behaviour that can be
 different for different runtime environments, e.g. use CDI based contextual implementations, instead of the default
 SE ServiceLoader based component lifecycle. Refer to section <<SPI>> for more details.
 
@@ -1227,7 +1224,11 @@ Hereby
 -------------------------------------------------------------------------------
 // Note: Enum Region only serves as an example and not part of the API
 Collection<CurrencyUnit> currencies = MonetaryCurrencies.getCurrencies(
-  CurrencyQueryBuilder.of().setProvider("A", "B").set(Region.EMEA).setInt("contractNr", 12345).build()
+  CurrencyQueryBuilder.of()
+    .setProvider("A", "B")
+    .set(Region.EMEA)
+    .set("contractNr", 12345)
+    .build()
 );
 -------------------------------------------------------------------------------
 
@@ -1239,7 +1240,10 @@ provider would be implemented and registered one could perform the following que
 -------------------------------------------------------------------------------
 // Note: This is just an example: no historic provider is part of the API or RI currently
 Collection<CurrencyUnit> currencies = MonetaryCurrencies.getCurrencies(
-  CurrencyQueryBuilder.of().set(Locale.GERMANY).setTimestamp(LocalDate.of(1930,1,1)).build()
+  CurrencyQueryBuilder.of()
+    .set(Locale.GERMANY)
+    .setTimestamp(LocalDate.of(1930,1,1))
+    .build()
 );
 -------------------------------------------------------------------------------
 
@@ -1305,15 +1309,16 @@ javax.money.defaults.amount.class=my.fully.qualified.MonetaryAmountType
   +MonetaryAmountFactory+ using a +MonetaryAmountFactoryQuery+.
 
 IMPORTANT: Implementations of this JSR must at least provide one implementation of
-+MonetaryAmountFactoryProviderSpi+ with a query policy equal to +QueryInclusionPolicy.ALWAYS+*. Refer to section
++MonetaryAmountFactoryProviderSpi+ with a query policy equal to
++MonetaryAmountFactoryProviderSpi.QueryInclusionPolicy.ALWAYS+*. Refer to section
 <<MonetaryAmountFactoryProviderSpi>> for more details.
 
 [[AccessingRoundings]]
 ===== Accessing Roundings
 
 Rounding is modeled by implementations of +MonetaryRounding+, which extends +MonetaryOperator+ but also provides
-rounding meta-data, modeled as +RoundingContext+. Hereby beside mathematical roundings, also non standard
-variants with arbitrary rules and constraints are quite common in the financial area.
+rounding meta-data, modeled as +RoundingContext+. This is very useful since in the financial area beside mathematical
+roundings, also non standard variants with arbitrary rules and constraints are quite common in the financial area.
 
 This JSR provides several roundings accessible from the +javax.money.MonetaryRoundings+ singleton based on:
 
@@ -1324,15 +1329,15 @@ This JSR provides several roundings accessible from the +javax.money.MonetaryRou
 .. the maximal _precision_ (+int+)
 .. the target _scale_ (+int+)
 .. the +java.math.RoundingMode+, providing a definition of the required mathematical rounding.
-   If not defined +HALF_EVEN+ rounding mode should be used.
+   If not defined +HALF_EVEN+ rounding mode should be used as a default.
 . Using a +RoundingContext+, which can be configured with any kind of attributes. Also other use cases can be supported,
   e.g. it could be possible to access special cash rounding, which may be different than the default currency rounding
   (e.g. for +CHF/Swiss Francs+).
 
-The +MonetaryRoundings+ singleton provides access to roundings as follows:
+The +MonetaryRoundings+ singleton provides access to +MonetaryRounding+ instances as follows:
 
 [source,java]
-.MonetaryRoundingss Singleton
+.MonetaryRoundings Singleton
 -------------------------------------------------------------------------------
 public final class MonetaryRoundings{
   private MonetaryRoundings(){}
@@ -1367,14 +1372,13 @@ Hereby
      (+List, Set, Collection+).
 * +getProviderNames()+ provide the names of all currently registered +RoundingProviderSpi+ instances. Refer to section
   <<RoundingProviderSpi>> for more details.
-* +getDefaultProviderNames()+ provide the names of the current default +RoundingProviderSpi+ providers in the corresponding
-  chain order.
+* +getDefaultProviderNames()+ provide the names of the current default +RoundingProviderSpi+ providers in the
+  corresponding chain order.
 * +getRounding(RoundingQuery)+ offers maximal flexibility for accessing roundings. It is only restricted by the
   capabilities provided by the registered +RoundingProviderSpi+ instances. Refer to section <<RoundingProviderSpi>>
   for more details.
 * +getRoundings(RoundingQuery)+ offers maximal flexibility for accessing roundings, but allows accessing multiple
   roundings.
-
 
 
 The +RoundingQuery+ for accessing a rounding from the +MonetaryRoundings+ singleton is modeled as follows:
@@ -1411,11 +1415,11 @@ default currency rounding (e.g. for +CHF/Swiss Francs+), as follows:
 .Example how a cash rounding could be accessed (not part of the API)
 -------------------------------------------------------------------------------
 MonetaryRounding rounding = MonetaryRoundings.getRounding(
-                RoundingQueryBuilder.of()                             <1>
-                .setRoundingName("cashRounding")                      <2>
-                .setCurrencyUnit("USD")                               <3>
-                .setTimestamp(temporalAccessor)                       <4>
-                .build());                                            <5>
+                RoundingQueryBuilder.of()                               <1>
+                  .setRoundingName("cashRounding")                      <2>
+                  .setCurrencyUnit("USD")                               <3>
+                  .setTimestamp(temporalAccessor)                       <4>
+                  .build());                                            <5>
 -------------------------------------------------------------------------------
 <1> Access a rounding by passing a +RoundingQuery+
 <2> Acquire a specific _named_ rounding.
@@ -1490,6 +1494,20 @@ This runtime exception +extends MonetaryException+ and is thrown whenever
   passed is provided as a property on the exception as +public String getCurrencyCode();+.
 * a +Locale+ given cannot be resolved into a corresponding +CurrencyUnit+ instance. The unresolvable +Locale+ passed is
   provided as a property on the exception as +public Locale getLocale();+.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [[CurrencyConversion]]
 === Currency Conversion

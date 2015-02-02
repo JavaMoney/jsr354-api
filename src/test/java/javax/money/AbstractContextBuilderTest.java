@@ -78,14 +78,6 @@ public class AbstractContextBuilderTest {
     }
 
     @Test
-    public void testSet_Char() throws Exception {
-        AbstractContextBuilder b = createBuilder();
-        b.set("myKey", 'k');
-        AbstractContext ctx = b.build();
-        assertEquals(ctx.getChar("myKey").charValue(), 'k');
-    }
-
-    @Test
     public void testSet_Long() throws Exception {
         AbstractContextBuilder b = createBuilder();
         b.set("myKey", 12345L);
@@ -136,9 +128,9 @@ public class AbstractContextBuilderTest {
     @Test
     public void testSet_Object() throws Exception {
         AbstractContextBuilder b = createBuilder();
-        b.setTyped(BigDecimal.valueOf(10.0d));
+        b.set(BigDecimal.valueOf(10.0d));
         AbstractContext ctx = b.build();
-        assertEquals(ctx.getTyped(BigDecimal.class), BigDecimal.valueOf(10.0d));
+        assertEquals(ctx.get(BigDecimal.class), BigDecimal.valueOf(10.0d));
     }
 
     @Test
@@ -189,7 +181,7 @@ public class AbstractContextBuilderTest {
         b.set("myKey", "test");
         AbstractContext ctx = b.build();
         assertEquals(ctx.getText("myKey"), "test");
-        b.removeAttributes(String.class, "gugus");
+        b.removeAttributes("gugus");
         assertEquals(ctx.getText("myKey"), "test");
         b.removeAttributes("myKey");
         ctx = b.build();

@@ -64,7 +64,11 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * setting
      */
     public int getPrecision() {
-        return getInt(PRECISION, 0);
+        Integer val = getInt(PRECISION);
+        if (val == null) {
+            return 0;
+        }
+        return val;
     }
 
     /**
@@ -73,7 +77,11 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return {@code true} if {@code minScale == maxScale}.
      */
     public boolean isFixedScale() {
-        return getBoolean(FIXED_SCALE, false);
+        Boolean val = getBoolean(FIXED_SCALE);
+        if (val == null) {
+            return false;
+        }
+        return val;
     }
 
     /**
@@ -84,7 +92,11 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * @return the maximal scale supported, always {@code >= -1}
      */
     public int getMaxScale() {
-        return getInt(MAX_SCALE, -1);
+        Integer val = getInt(MAX_SCALE);
+        if (val == null) {
+            return -1;
+        }
+        return val;
     }
 
     /**

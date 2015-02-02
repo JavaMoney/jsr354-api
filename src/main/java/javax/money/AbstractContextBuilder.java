@@ -28,7 +28,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
     /**
      * The data map containing all values.
      */
-    final Map<Object, Object> data = new HashMap<>();
+	final Map<String, Object> data = new HashMap<>();
 
     /**
      * Apply all attributes on the given context.
@@ -40,9 +40,10 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
     public B importContext(AbstractContext context, boolean overwriteDuplicates){
         for (Map.Entry<Object, Object> en : context.data.entrySet()) {
             if (overwriteDuplicates) {
-                this.data.put(en.getKey(), en.getValue());
+				this.data.put(String.valueOf(en.getKey()), en.getValue());
             }else{
-                this.data.putIfAbsent(en.getKey(), en.getValue());
+				this.data.putIfAbsent(String.valueOf(en.getKey()),
+						en.getValue());
             }
         }
         return (B) this;
@@ -68,7 +69,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(Object key, int value){
-        this.data.put(key, Objects.requireNonNull(value));
+		this.data.put(String.valueOf(key), Objects.requireNonNull(value));
         return (B) this;
     }
 
@@ -81,7 +82,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(Object key, boolean value){
-        this.data.put(key, Objects.requireNonNull(value));
+		this.data.put(String.valueOf(key), Objects.requireNonNull(value));
         return (B) this;
     }
 
@@ -94,7 +95,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(Object key, long value){
-        this.data.put(key, Objects.requireNonNull(value));
+		this.data.put(String.valueOf(key), Objects.requireNonNull(value));
         return (B) this;
     }
 
@@ -107,7 +108,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(Object key, float value){
-        this.data.put(key, Objects.requireNonNull(value));
+		this.data.put(String.valueOf(key), Objects.requireNonNull(value));
         return (B) this;
     }
 
@@ -119,7 +120,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(Object key, double value){
-        this.data.put(key, Objects.requireNonNull(value));
+		this.data.put(String.valueOf(key), Objects.requireNonNull(value));
         return (B) this;
     }
 
@@ -132,7 +133,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(Object key, char value){
-        this.data.put(key, Objects.requireNonNull(value));
+		this.data.put(String.valueOf(key), Objects.requireNonNull(value));
         return (B) this;
     }
 
@@ -146,7 +147,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return this Builder, for chaining
      */
     public B setTyped(Object value) {
-        data.put(value.getClass(), value);
+		data.put(String.valueOf(value.getClass()), value);
         return (B) this;
     }
 
@@ -159,7 +160,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return this Builder, for chaining
      */
     public B set(Object key, Object value){
-        data.put(key, value);
+		data.put(String.valueOf(key), value);
         return (B) this;
     }
 

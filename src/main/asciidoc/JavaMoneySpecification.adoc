@@ -1495,26 +1495,12 @@ This runtime exception +extends MonetaryException+ and is thrown whenever
 * a +Locale+ given cannot be resolved into a corresponding +CurrencyUnit+ instance. The unresolvable +Locale+ passed is
   provided as a property on the exception as +public Locale getLocale();+.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 [[CurrencyConversion]]
 === Currency Conversion
-Currency conversion is an important aspects when dealing with monetary amounts. Unfortunately currency conversion has
+Currency conversion is an important aspect when dealing with monetary amounts. Unfortunately currency conversion has
 a great variety of how it is implemented. Whereas a web shop may base its logic on an API provided by a financial
-backend, that make explicit conversion even not necessary, in the financial industry, conversion is a very complex
-aspects, since
+backend, that makes explicit conversion even not necessary, in the financial industry, conversion is a very complex
+concern, since
 
 * conversion may be different based on the use case
 * conversion may be different based on the provider of the exchange rates
@@ -1523,50 +1509,68 @@ aspects, since
 * conversion rates are different related to the target timestamp
 
 Hereby this list is not complete. Different companies may have further requirements and aspects to be considered.
+The API focuses on the common aspects of currency conversion such as:
+
+* a source and a target currency
+* an exchange rate
+* providing conversion providers and having the possibiity to address and combine providers as needed.
+
+Hereby currency conversion or the access of exchange rates can be parametrized with additional meta-data, similar
+to other models defined by this JSR. This allows to enrich the basic model with whatever complexity is required,
+hereby keeping the basic model as simple as possible.
 
 [[AccessingConversions]]
 ==== Accessing Monetary Conversions
-The API defines a singleton accessor, called +MonetaryConversions+, which provides access to all different aspects
-related to currency conversion, such as
+Similar to other areas of this JSR a +MonetaryConversions+ singleoton is defined, which provides access to all different
+aspects related to currency conversion, such as
 
-* access to providers that offer conversion rates, modelled as +<<ExchangeRate>>+.
-* access to conversion operators (extending +MonetaryOperator+), that can be used with any +MonetaryAmount+ instances.
+* access to providers that offer conversion rates, modelled as +<<ExchangeRateProviders, ExchangeRate>>+.
+* access to conversion operators (+CurrencyConversion extends MonetaryOperator+), that can be used with any
+ +MonetaryAmount+ instances.
 * access to further information about the providers currently available.
 
-The following sections give an overview about the functionality in more detail. Similar to other singletons in this API
-the singleton is backed up by a +MonetaryConversionsSingletonSpi+ SPI to allow customized (contextual) implementation
-of the functionality defined. Refer to the SPI section in this document for more details.
+The following sections give an overview about the functionality in more detail. Similar to other singletons also
++MonetaryConversions+ is backed up by a +MonetaryConversionsSingletonSpi+ SPI to allow customized (e.g. contextual)
+implementation of the functionality defined. Refer to the <<SPI>> section in this document for more details.
 
 ==== Converting Amounts
-Basically converting of amounts is modelled by the +CurrencyConversion+ interface which +extends MonetaryOperator+,
+Basically converting of amounts is modelled by the +CurrencyConversion+ interface which extends +MonetaryOperator+,
 hereby adding meta-data support, modelled by +ConversionContext+. Hereby a *conversion is always bound to a specific
-terminating (target) currency*. So basically a +MonetaryAmount+ can simply be converted by
+terminating (target) currency*. So basically a +MonetaryAmount+ can simply be converted by passing a
++CurrencyConversion+ to the amount's +with(MonetaryOperator)+ method:
 
 [source,java]
 .Usage Sample Currency Conversion
 -------------------------------------------------------------------------------
 MonetaryAmount amount = ...;
+
+// Get a default conversion to Swiss Franc
 CurrencyConversion conversion = MonetaryConversions.getConversion("CHF");
+
+// Convert the amount
 MonetaryAmount amount2 = amount.with(conversion);
 -------------------------------------------------------------------------------
 
 Using a fluent API style this can be written even shorter as:
 
 [source,java]
-.Usage Sample Currency Conversion, using the fluent API
 -------------------------------------------------------------------------------
 MonetaryAmount amount2 = amount.with(MonetaryConversions.getConversion("CHF"));
 -------------------------------------------------------------------------------
 
-A +CurrencyConversion+ instance hereby also allows to extract the +ExchangeRate+ instances used:
+A +CurrencyConversion+ instance hereby also allows to extract the concrete +ExchangeRate+ applied. This allows
+further pass the +ExchangeRate+ instance to any subsequent logic.
 
 [source,java]
-.Usage Sample Currency Conversion, accessing exchange rates
+.Currency Conversion, accessing exchange rates
 -------------------------------------------------------------------------------
 CurrencyConversion conversion = MonetaryConversions.getConversion("CHF");
 MonetaryAmount amount = ...;
 ExchangeRate rate = conversion.getExchangeRate(amount);
 -------------------------------------------------------------------------------
+
+Nevertheless for accessing +ExchangeRate+ instances an +ExchangeRateProvider+ is much more effective. It can be accessed
+from the +MonetaryConversions+ singletons as well as from a +CurrencyConversion+.
 
 [[ExchangeRates]]
 ==== Exchange Rates and Rate Providers
@@ -1586,11 +1590,11 @@ Summarizing an +ExchangeRate+ is modelled as follows:
 [source,java]
 .Interface ExchangeRate
 -------------------------------------------------------------------------------
-public interface ExchangeRate{
+public interface ExchangeRate extends CurrencySupplier{
   ...
   ConversionContext getConversionContext();
-  CurrencyUnit getBase();
-  CurrencyUnit getTerm();
+  CurrencyUnit getBaseCurrency();
+  CurrencyUnit getCurrency();
   NumberValue getFactor();
   // Support for chained rates
   List<ExchangeRate> getExchangeRateChain();
@@ -1600,7 +1604,7 @@ public interface ExchangeRate{
 
 Hereby
 
-* +getBase(), getTerm(), getFactor()+ model basically the mapping from the base currency to the target currency.
+* +getBaseCurrency(), getCurrency(), getFactor()+ model basically the mapping from the base currency to the target currency.
 * +isDerived()+ allows to check if the mapping in fact is backed up by a derived mapping, e.g. a triangular rate chain.
 * +getExchangeRateChain()+ return the full rate chain. In case of a non derived rate, this chain must contain only
   the single rate itself. In case of triangular rate the chain contains all contained subrates.
@@ -1624,8 +1628,8 @@ Implementations of +ExchangeRate+
 . should be implemented as value types, with a fluent Builder pattern.
 
 ===== Exchange Rate Providers
-We have seen in the previous section that an +ExchangeRate+ can be obtained from a +CurrencyConversion+. Hereby a
-currency conversion is backed up by an +ExchangeRateProvider+. Such a provider allows
+We have seen in the previous section that an +ExchangeRate+ can be obtained from a +CurrencyConversion+ or from
+its backing +ExchangeRateProvider+. Such a provider allows
 
 * to access +ExchangeRate+ instances, providing a base and a terminating (target) currency.
 * to access +CurrencyConversion+ instances, providing a terminating (target) currency.
@@ -1637,20 +1641,20 @@ Summarizing an +ExchangeRateProvider+ is modelled as follows:
 -------------------------------------------------------------------------------
 public interface ExchangeRateProvider{
   ProviderContext getProviderContext();
-  boolean isAvailable(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
-  ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term, ConversionContext conversionContext);
-  CurrencyConversion getCurrencyConversion(CurrencyUnit term, ConversionContext conversionContext);
 
-  default boolean isAvailable(CurrencyUnit base, CurrencyUnit term){...}
-  default boolean isAvailable(String baseCode, String termCode){...}
-  default boolean isAvailable(String baseCode, String termCode, ConversionContext conversionContext){...}
-  default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){...}
-  default ExchangeRate getExchangeRate(String baseCode, String termCode){...}
-  default ExchangeRate getExchangeRate(String baseCode, String termCode, ConversionContext conversionContext){...}
-  default ExchangeRate getReversed(ExchangeRate rate){...}
-  default CurrencyConversion getCurrencyConversion(CurrencyUnit term){...}
-  default CurrencyConversion getCurrencyConversion(String termCode){...}
-  default CurrencyConversion getCurrencyConversion(String termCode, ConversionContext conversionContext){...}
+  boolean isAvailable(ConversionQuery conversionQuery);
+  ExchangeRate getExchangeRate(ConversionQuery conversionQuery);
+  CurrencyConversion getCurrencyConversion(ConversionQuery conversionQuery);
+
+  default boolean isAvailable(CurrencyUnit base, CurrencyUnit term);
+  default boolean isAvailable(String baseCode, String termCode);
+  default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term);
+  default ExchangeRate getExchangeRate(String baseCode, String termCode);
+  default CurrencyConversion getCurrencyConversion(CurrencyUnit term);
+  default CurrencyConversion getCurrencyConversion(String termCode);
+
+  default ExchangeRate getReversed(ExchangeRate rate);
+
 }
 -------------------------------------------------------------------------------
 
@@ -1663,6 +1667,24 @@ Hereby
 * +getReversed+ can be called to reverse an exchange rate (NOTE: rates can, but must not be reversible).
 * the +getCurrencyConversion+ methods allow to access a +CurrencyConversion+ that is internally backed up by the
   given rate provider instance.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 ===== Conversion Context
 The API allows additionally to pass a +ConversionContext+, which allow to pass any additional attributes/parameters

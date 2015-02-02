@@ -58,4 +58,11 @@ public interface CurrencyConversion extends MonetaryOperator, CurrencySupplier {
      */
     ExchangeRate getExchangeRate(MonetaryAmount sourceAmount);
 
+    /**
+     * Access the underlying {@link javax.money.convert.ExchangeRateProvider}.
+     *
+     * @return the underlying {@link javax.money.convert.ExchangeRateProvider}, never null.
+     */
+    ExchangeRateProvider getExchangeRateProvider();
+
 }

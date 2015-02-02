@@ -98,7 +98,7 @@ public abstract class AbstractQuery extends AbstractContext {
      * @return the current timestamp, or null.
      */
     public TemporalAccessor getTimestamp() {
-        Object value = get(KEY_QUERY_TIMESTAMP, null);
+        Object value = get(KEY_QUERY_TIMESTAMP, Object.class);
         if (value instanceof TemporalAccessor) {
             return (TemporalAccessor) value;
         } else if (value instanceof Long) {

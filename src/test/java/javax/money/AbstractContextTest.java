@@ -109,7 +109,7 @@ public class AbstractContextTest {
         Set<String> keys = ctx.getKeys(String.class);
         assertNotNull(keys);
         assertFalse(keys.isEmpty());
-        assertEquals(String.class, keys.iterator().next());
+        assertEquals(String.class.getName(), keys.iterator().next());
         keys = ctx.getKeys(Integer.class);
         assertNotNull(keys);
         assertTrue(keys.size() == 2);

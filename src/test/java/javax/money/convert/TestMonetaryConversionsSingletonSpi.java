@@ -88,6 +88,11 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         }
 
         @Override
+        public ExchangeRateProvider getExchangeRateProvider() {
+            return null;
+        }
+
+        @Override
         public MonetaryAmount apply(MonetaryAmount value) {
             return value;
         }

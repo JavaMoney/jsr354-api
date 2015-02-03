@@ -61,6 +61,11 @@ public class MonetaryConversionsSingletonSpiTest {
                             }
 
                             @Override
+                            public ExchangeRateProvider getExchangeRateProvider() {
+                                return null;
+                            }
+
+                            @Override
                             public CurrencyUnit getCurrency() {
                                 return null;
                             }
@@ -94,6 +99,11 @@ public class MonetaryConversionsSingletonSpiTest {
 
                             @Override
                             public ExchangeRate getExchangeRate(MonetaryAmount sourceAmount) {
+                                return null;
+                            }
+
+                            @Override
+                            public ExchangeRateProvider getExchangeRateProvider() {
                                 return null;
                             }
 

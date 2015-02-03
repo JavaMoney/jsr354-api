@@ -15,7 +15,7 @@
     <artifactId>money-api</artifactId>
     <packaging>jar</packaging>
 
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-RC2</version>
 
     <name>JSR 354 (Money and Currency API)</name>
     <url>http://java.net/projects/javamoney</url>
@@ -260,7 +260,7 @@
                 </property>
             </activation>
             <build>
-            <pluginManagement>
+                <pluginManagement>
                     <plugins>
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
@@ -328,7 +328,7 @@
                 </property>
             </activation>
             <build>
-            <pluginManagement>
+                <pluginManagement>
                     <plugins>
                         <!-- ======================================================= -->
                         <!-- License -->
@@ -570,32 +570,32 @@
                 </plugin>
                 <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
                 <plugin>
-                	<groupId>org.eclipse.m2e</groupId>
-                	<artifactId>lifecycle-mapping</artifactId>
-                	<version>1.0.0</version>
-                	<configuration>
-                		<lifecycleMappingMetadata>
-                			<pluginExecutions>
-                				<pluginExecution>
-                					<pluginExecutionFilter>
-                						<groupId>org.jacoco</groupId>
-                						<artifactId>
-                							jacoco-maven-plugin
-                						</artifactId>
-                						<versionRange>
-                							[0.7.2.201409121644,)
-                						</versionRange>
-                						<goals>
-                							<goal>prepare-agent</goal>
-                						</goals>
-                					</pluginExecutionFilter>
-                					<action>
-                						<ignore></ignore>
-                					</action>
-                				</pluginExecution>
-                			</pluginExecutions>
-                		</lifecycleMappingMetadata>
-                	</configuration>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.jacoco</groupId>
+                                        <artifactId>
+                                            jacoco-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [0.7.2.201409121644,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>prepare-agent</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -613,7 +613,7 @@
                 </executions>
             </plugin>
             <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
             </plugin>

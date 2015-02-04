@@ -279,7 +279,7 @@
                         <artifactId>maven-gpg-plugin</artifactId>
                         <configuration>
                             <defaultKeyring>false</defaultKeyring>
-                            <keyname>jsr354-private</keyname>
+                            <keyname>0E3BCC9A</keyname>
                         </configuration>
                         <executions>
                             <execution>

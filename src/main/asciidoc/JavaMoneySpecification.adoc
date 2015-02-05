@@ -1668,26 +1668,9 @@ Hereby
 * the +getCurrencyConversion+ methods allow to access a +CurrencyConversion+ that is internally backed up by the
   given rate provider instance.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-===== Conversion Context
-The API allows additionally to pass a +ConversionContext+, which allow to pass any additional attributes/parameters
+===== Conversion Query and Conversion Context
+The API allows additionally to pass a +ConversionQuery+, which allow to pass any additional attributes/parameters
 that may be required by a concrete +ExchangeRateProvider+ instance. This allows to support arbitrary complex use cases,
 as an example footnote:[This example is completely arbitrary.] an implementation require/allow to pass
 
@@ -1697,53 +1680,58 @@ as an example footnote:[This example is completely arbitrary.] an implementation
 * a fallback strategy
 * a deferred rate should be obtained
 
-The parameters then can be included in an instance of +ConversionContext+. This context then can be used to pass
-additional parameters to all rate providers that answer a given conversion query. The built +ConversionContext+ then
-can be passed to parametrize the +<<CurrencyConversion>>+ or +<<ExchangeRateProvider>>+ instances:
+All these parameters then can be defined as part of a +ConversionQuery+. With such a query any kind of additional
+parameters can be passed to the rate providers used to evaluate the required +ExchangeRate+. A +ConversionQuery+ then
+can be used to parametrize the +<<CurrencyConversion>>+ as well as an +<<ExchangeRateProvider>>+ instance
+acquired:
 
 [source,java]
-.Usage Sample Create for Currency Conversion using Customized Parameters
+.Usage Sample for configuring of a Currency Conversion / ExchangeRate (Provider)
 --------------------------------------------------------------------------
-ConversionContext ctx = ConversionContextBuilder.of()
+ConversionQuery query = ConversionQueryBuilder.of()
        .setRateType(RateType.DEFERRED).
        .set("customerID", 1234)
        .set("contractID", "213453-GFDT-02")
        .set(FallbackStragey.PROVIDER)
        .set(amount)
+       .setTermCurrency("CHF")
        .build();
 
 // Access a conversion...
-CurrencyConversion conversion = MonetaryConversions.getConversion("CHF", ctx);
+CurrencyConversion conversion = MonetaryConversions.getConversion(query);
 
 // ... or access a rate provider.
 ExchangeRateProvider prov = MonetaryConversions.getExchangeRateProvider();
-CurrencyConversion conversion = prov.getCurrencyConversion("CHF", ctx);
-ExchangeRate rate = prov.getExchangeRate();
+CurrencyConversion conversion = prov.getCurrencyConversion(query);
+
+// for a rate, we need also a base currency
+query = query.toBuilder().setBaseCurrency("USD").build();
+ExchangeRate rate = prov.getExchangeRate(query);
 --------------------------------------------------------------------------
 
-IMPORTANT: Important to understand is that its the responsibility of the used +ExchangeRateProvider+ implementation to interpret
-the attributes passed within a +ConversionContext+.  Unknown parameters should simply be ignored, since a provider can
-be used in a _provider chain_ (explained in the next section).
+IMPORTANT: Important to understand is that its the responsibility of the used +ExchangeRateProvider+ implementation to
+interpret the attributes passed within a +ConversionQuery+.  Unknown parameters should simply be ignored, since a
+provider can be used in a _provider chain_ (explained in the next section).
 
 [[ExchangeRateProviderChains]]
-==== Provider Chains
+==== ExchangeRateProvider Chains
 Reading the previous sections one might ask, how multiple providers can be used or how an individual rate provider can
-be accessed. In fact all the examples seen so far rely on the default provider chain that may be accessed by calling
+be accessed. In fact all the examples seen so far rely on the default provider chain that can be accessed by calling
 +MonetaryConversions.getDefaultProviderChain()+. Hereby the chain contains an ordered list of provider names, which
 correspond to the provider names that identify each registered +ExchangeRateProvider+ uniquely. The provider name is
-defined as a mandatory attribute on the +ProviderContext+, accessible from +ExchangeRateProvider.getProviderContext()+.
+defined as a mandatory attribute on the +ProviderContext+, accessible from each +ExchangeRateProvider+ from
++ExchangeRateProvider.getProviderContext()+.
 
 E.g. the output of the +European Central Bank (ECB)+ provider context, shipped with the _Moneta reference
 implementation_, prints out the following when accessing +toString()+:
 
 [listing]
-.toString() of European Central Bank (ECB) Rate Provider Context (from Moneta RI)
 --------------------------------------------------
-ProviderContext [attributes={class java.lang.String={PROVIDER=Compound: ECB}}]
+ProviderContext [attributes={PROVIDER=Compound: ECB}]
 --------------------------------------------------
 
 [source,java]
-.Usage Sample Accessing the default Exchange Rate Provider Chain
+.Usage Sample Accessing the default Exchange Rate Provider Chain IDs
 --------------------------------------------------------------------------
 // Accessing the default provider chain, configurable in javamoney.properties
 List<String> providerIds = MonetaryConversions.getDefaultProviderChain();
@@ -1754,17 +1742,17 @@ default provider chain. So the following two statements are equivalent, given th
 "ECB-HIST"+:
 
 [source,java]
-.Equivalent calls when the default provider chain equals "ECB", "IMF", "ECB-HIST"
 -------------------------------------------------------------------------------
 // equivlent calls when the default provider chain equals to
 // {"ECB", "IMF", "ECB-HIST"}
-CurrencyConversion conversion = MonetaryConversions.getConversion("CHF", ctx);
-CurrencyConversion conversion = MonetaryConversions.getConversion("CHF", ctx, "ECB", "IMF", "ECB-HIST");
+CurrencyConversion conversion = MonetaryConversions.getConversion("CHF");
+CurrencyConversion conversion = MonetaryConversions.getConversion("CHF", "ECB", "IMF", "ECB-HIST");
 -------------------------------------------------------------------------------
 
-Within a provider chain, the first provider that returns a non-null result determines the final value requested,
-e.g. the exchange rate to be used to calculate the currency conversion. By passing the chain or providers to be used
-different usage scenarios can be easily separated/supported, but still keeping the API simple for the trivial use cases.
+Within a provider chain, the first provider that returns a non-null result determines the final value of the
+method call, e.g. the exchange rate to be used to calculate the currency conversion. By passing the chain or providers
+to be used different usage scenarios can be easily separated/supported, but still keeping the API simple for the
+simple use cases.
 
 The default rate provider chain can be configured within +javamoney.properties+ added to the classpath:
 
@@ -1784,16 +1772,16 @@ formatting packages. In contrary to the JDK formatter the formatter defined by t
 arbitrarily expandable.
 
 The entry point for the JSR formatter is the +MonetaryFormats+ singleton, which provides access to different formatter
-API artifacts. The following section describe the relevant artifacts in more detail.
+API artifacts. The following section describes the relevant artifacts in more detail.
 
 ==== Formatting of Monetary Amounts
 As defined in <<RequirementsFormatting|Requirements>>, this JSR must provide an API for providing flexible and
 expandable formatting capabilities for +MonetaryAmount+ instances. Though formatting is a very complex field the JSR’s
 expert group has identified a minimal set of functionality, that provides an API simple to use, but still being
-flexible to accommodate a wide range of usage scenarios. Some aspects to considered are:
+flexible to accommodate a wide range of usage scenarios. Aspects to be considered are:
 
-. Amount values can be rounded for display by applying a +MonetaryOperator+ before formatting/printing.
-. Similarly amount values can be operated after parsing by applying a +MonetaryOperator+. This is the reciprocal
+. Amount values can be rounded for display by applying any +MonetaryOperator+ before formatting/printing.
+. Similarly amount values can be operated after parsing by applying any +MonetaryOperator+. This is the reciprocal
   operation to the display rounding above.
 . It is possible to define number grouping with flexible group sizes and different grouping characters. as for example
   needed to format +INR+ footnote:[+INR 123456000.21+ is formatted as +INR 12,34,56,000.21+].
@@ -1826,8 +1814,11 @@ Hereby
 * The meta-data of the format are provided by an immutable +AmountFormatContext+ value type. Refer to
   <<MetadataModeling>> for further details on meta-data modeling.
 
-Similar to other parts queries can be used to configure/access formatter instances:
-* The +AmountFormatQuery+ defines the parameters and attributes that configure a formatting. Hereby a format can be
+The power of the API now comes with the capability to pass instances of +AmountFormatQuery+ to the singleton
+for accessing +MonetaryAmountFormat+ instances. Similar to other queries defined by this JSR it is possible
+to pass any additional parameters that are necessary to configure the concrete formatting to be returned.
+Summarizing:
+* The +AmountFormatQuery+ defines the parameters and attributes that configure a format. Hereby a format can be
   identified by _name_ or configured on the fly. The effective behaviour depends on the concrete functionality
   provided by the (possibly several) registered instances of type +<<MonetaryAmountFormatProviderSpi>>+.
 * The +<<MonetaryAmountFormatProviderSpi>>+ implementation finally must interpret the attributes in
@@ -1844,8 +1835,8 @@ is exact the same, e.g. formatting for Indian Rupees is expected to have differe
 Contrary to the formatter in +javax.text+ implementations of this interface must be thread-safe.
 
 Examples::
-Given the API above, acquiring a +MonetaryAmountFormat+ instance is simple, the most simple usage is just creating one
-for a given +Locale+:
+Given the API above, acquiring a +MonetaryAmountFormat+ instance is simple, the most simple usage is just accessing one
+using a +Locale+:
 
 [source,java]
 .Usage Example Formatting a MonetaryAmount
@@ -1855,8 +1846,12 @@ MonetaryAmount amount = f.setCurrency("CHF").setNumber(12.50).create();
 
 MonetaryAmountFormat format =
                         MonetaryAmountFormats.getAmountFormat(Locale.GERMANY);
+
+// format the given amount
 String formatted = format.format(amount); // result: CHF 12,50
-amount = f.setCurrency("INR").setNumber(123456789101112.123456).create();
+
+// create another amount based on the given amount
+amount = f.toBuilder().setCurrency("INR").setNumber(123456789101112.123456).create();
 formatted  = format.format(amount); // result: INR 123.456.789.101.112,12
 --------------------------------------------------------------------------
 
@@ -1869,22 +1864,21 @@ for this we could configure an +AmountFormatContext+ that implements this behavi
 AmountFormatQuery query = AmountFormatQueryBuilder.of(new Locale("","INR"))
                                 .set("groupSizes", new int[]{3,2]).build();
 MonetaryAmountFormat format = MonetaryAmountFormats.getAmountFormat(query);
-MonetaryAmountFactory<?> f = MonetaryAmounts.getDefaultAmountFactory();
+
 MonetaryAmount amount =
-          f.setCurrency("INR").setNumber(123456789101112.123456).create();
+          MonetaryAmounts.getDefaultAmountFactory()
+            .setCurrency("INR")
+            .setNumber(123456789101112.123456).create();
+
 String formatted = format.format(amount);
          // result: INR 12,34,56,78,91,01,112.12
 --------------------------------------------------------------------------
 
 [[ConfigureFormatting]]
 ==== Configuring a Monetary Amount Formatter
-As seen in the example above a +MonetaryAmountFormat+ can be configured using an +AmountFormatQuery+ with arbitrary
-attributes, so also very complex and historic formats can be supported easily:
-
-AmountFormatQuery::
-The +javax.money.format.AmountFormatQuery+ defines how a +MonetaryAmountFormat+ instance should format and/or parse
-+MonetaryAmount+ instances. Instances of +AmountFormatQuery+ can be created using an +AmountFormatQueryBuilder+.
-Summarizing the signatures look as follows:
+As mentioned before a +MonetaryAmountFormat+ can be configured using an +AmountFormatQuery+ with arbitrary
+attributes, so also very complex and historic formats can be supported easily. Instances of +AmountFormatQuery+ can be
+created using an +AmountFormatQueryBuilder+:
 
 [source,java]
 .Class AmountFormatQuery
@@ -1910,29 +1904,28 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
 }
 -------------------------------------------------------------------------------
 
-Hereby the above listing illustrates quite well, what are the minimal properties that define an +AmountFormatContext+:
+Hereby the above listing illustrates quite well, what are the minimal properties that define an +AmountFormatQuery+:
 
 * a format name, by default +"default"+.
 * a +Locale+
 * of course, additional parameters can be added as needed, such as output and input patterns, color or style settings,
   +MonetaryAmountFactory+ instance to be used for creating amounts on parsing etc.
 
+The configuration active for a concrete +MonetaryAmountFormat+ is accessible also from the +AmountFormatContext+, which
+can obtained by calling +MonetaryAmountFormat.getAmountFormatContext()+.
+
 
 [[AccessingFormats]]
-==== Accessing Monetary Amount Formats
+==== MonetaryFormats Accessor Singleton
 The class +javax.money.format.MonetaryFormats+ models a singleton accessor, which is, similarly to other singleton in
 this JSR, backed up by an SPI instance of +<<MonetaryFormatsSingletonSpi>>+. The SPI implementation is
-responsible for collecting and managing registered instances of +MonetaryAmountFormatProviderSpi+ providing the
-instances of +MonetaryAmountFormat+ accessible from the singleton. Overriding the +<<MonetaryFormatsSingletonSpi>>+
-allows to add contextual behaviour in EE or multi-tenancy runtime environment, see also <<SPI>>.
-
-The implementations of the +<<MonetaryAmountFormatProviderSpi>>+ used, provide access to +MonetaryAmountFormat+
-instances that match an +AmountFormatQuery+ given. Such a query can contain
+responsible for collecting and managing registered instances of +MonetaryAmountFormatProviderSpi+ providing them based
+on the +AmountFormatQuery+ passed. Such a query can contain
 
 * a +Locale+, or
 * a format name
-* the target providers that should handle the query (meaning create/provide a +MonetaryAmountFormat+ instance.
-* any other attributes as defined by the provider that should create the formatter required, refer to the section
+* the target providers that should be selected to handle the query to create/provide a +MonetaryAmountFormat+ instance.
+* any other attributes as defined by the provider that should handle the query, refer to the section
   <<MetadataModeling>> for more details.
 
 [source,java]
@@ -1940,21 +1933,34 @@ instances that match an +AmountFormatQuery+ given. Such a query can contain
 -------------------------------------------------------------------------------
 public interface MonetaryFormatsSingletonSpi{
   default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <1>
-  default MonetaryAmountFormat getAmountFormat(AmountFormatQuery query);                   <2>
+  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <1>
+  default MonetaryAmountFormat getAmountFormat(String name, String... providers);          <1>
   Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery query);              <2>
-  default boolean isAvailable(AmountFormatQuery formatQuery){...}
-  default boolean isAvailable(Locale locale, String.. providers){...}
-  Set<Locale> getAvailableLocales(String... providers);                                    <3>
-  Set<String> getAvailableFormatNames(String... providers);                                <4>
-  Set<String> getAvailableProviderNames();
-  List<String> geDefaultProviderChain();
+  default boolean isAvailable(Locale locale, String... providers){...}                     <3>
+  default boolean isAvailable(AmountFormatQuery formatQuery){...}                          <4>
+  Set<Locale> getAvailableLocales(String... providers);                                    <5>
+  Set<String> getFormatNames(String... providers);                                         <6>
+  Set<String> getProviderNames();                                                          <7>
+  List<String> geDefaultProviderChain();                                                   <8>
 }
 -------------------------------------------------------------------------------
-<1> Methods to be implemented by clients.
-<2> Default methods.
+<1> By default all this methods are mapped into a corresponding instance of +AmountFormatQuery+ and passed to <2>.
+<2> Main method called for accessing formats.
+<3> This method is mapped into a corresponding instance of +AmountFormatQuery+ and passed to <4>.
+<4> This method by default tries to access a formatting calling <2>.
+<5> Collect all locales available from the given providers. If no provider IDs are passed the default provider chain
+    is used.
+<6> Get the available format names for the given providers. If no provider IDs are passed the default provider chain
+    is used.
+<7> Access all registered provider's ids.
+<8> Access the ids of the default provider chain, in the ordering as executing.
 
+Similar to other singletons of this JSR overriding the
++<<MonetaryFormatsSingletonSpi>>+ allows to add contextual behaviour in EE or multi-tenancy runtime environment.
+Refer to <<SPI>> for further details.
 
-The +MonetaryFormats+ singleton finally defines the following access methods:
+The +MonetaryFormats+ singleton finally defines the following access methods, very similar to the
++MonetaryFOrmatsSingletonSpi+:
 
 [source,java]
 .MonetaryFormats Singleton
@@ -1964,22 +1970,31 @@ public final class MonetaryFormats{
 
   public static MonetaryAmountFormat getAmountFormat(Locale locale);
   public static MonetaryAmountFormat getAmountFormat(AmountFormatContext context);
-  public static Set<Locale> getAvailableLocales();
+  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}
+  public static MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}
+  public static  MonetaryAmountFormat getAmountFormat(String name, String... providers);
+  public static  Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery query);
+  public static boolean isAvailable(Locale locale, String... providers){...}
+  public static boolean isAvailable(AmountFormatQuery formatQuery){...}
+  public static Set<Locale> getAvailableLocales(String... providers);
+  public static Set<String> getFormatNames(String... providers);
+  public static Set<String> getProviderNames();
+  public static List<String> geDefaultProviderChain();
 }
 -------------------------------------------------------------------------------
 
 The design chosen ist so flexible that every kind of formatting related to monetary amounts can be easily mapped.
-THe code below illustrates a more complex example:
+The code below illustrates a hypothetical, but more complex example:
 
 [source,java]
-.Advanced setup of a AmountFormatContext
+.Advanced setup of a AmountFormatQuery
 -------------------------------------------------------------------------------
-AmountFormatContext ctx = new AmountFormatContextBuilder.of("htmlFormat")  <1>
-                          .setText("title", "MyTitle")                     <2>
-                          .setText("negativeStyle", ".negNumber")          <3>
-                          .setText("positiveStyle", ".posNumber+)          <3>
-                          .setText("styleClass", "styledAmount")           <4>
-                          .build();                                        <5>
+AmountFormatQuery query = new AmountFormatQueryBuilder.of("htmlFormat")<1>
+                          .set("title", "MyTitle")                     <2>
+                          .set("negativeStyle", ".negNumber")          <3>
+                          .set("positiveStyle", ".posNumber+)          <3>
+                          .set("styleClass", "styledAmount")           <4>
+                          .build();                                    <5>
 -------------------------------------------------------------------------------
 <1> Access a format with name +htmlFormat+
 <2> Sets the format's display name
@@ -1987,9 +2002,11 @@ AmountFormatContext ctx = new AmountFormatContextBuilder.of("htmlFormat")  <1>
 <4> Sets the overall default style class.
 <5> Creates a new instance.
 
-NOTE: The example above is arbitrarily chosen. This specification does not require this behaviour to be available.
+NOTE: The example above is arbitrarily chosen. This specification does not require this behaviour to be available, or
+be implemented as shown before.
 
-The default format provider chain can be configured within +javamoney.properties+ added to the classpath:
+Similar to currency conversion the default format provider chain can be configured within +javamoney.properties+ added
+to the classpath:
 
 [source]
 .javamoney.properties Configuration of default format provider chain
@@ -2006,6 +2023,38 @@ successfully. It provides hereby additional info:
 
 * the original input +CharSequence+ passed to the +MonetaryAmountFormat+.
 * the error index within the input String, where parsing failed unrecoverable.
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 [[SPI]]
 === Money and Currency SPI

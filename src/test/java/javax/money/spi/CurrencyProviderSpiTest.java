@@ -25,15 +25,12 @@ import static org.testng.Assert.*;
  */
 public class CurrencyProviderSpiTest {
 
-    private static CurrencyProviderSpi testProvider = new CurrencyProviderSpi() {
-        @Override
-        public Set<CurrencyUnit> getCurrencies(CurrencyQuery query) {
-            Set<CurrencyUnit> result = new HashSet<>();
-            if (query.getCurrencyCodes().contains("CHF")) {
-                result.add(TestCurrency.of("CHF"));
-            }
-            return result;
+    private static CurrencyProviderSpi testProvider = query -> {
+        Set<CurrencyUnit> result = new HashSet<>();
+        if (query.getCurrencyCodes().contains("CHF")) {
+            result.add(TestCurrency.of("CHF"));
         }
+        return result;
     };
 
     @Test

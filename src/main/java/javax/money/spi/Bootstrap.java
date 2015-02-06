@@ -46,6 +46,7 @@ public final class Bootstrap {
      */
     private static ServiceProvider loadDefaultServiceProvider() {
         try {
+
             for (ServiceProvider sp : ServiceLoader.load(ServiceProvider.class)) {
                 return sp;
             }

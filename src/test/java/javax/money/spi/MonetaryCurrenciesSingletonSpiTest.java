@@ -14,7 +14,6 @@ import javax.money.CurrencyQuery;
 import javax.money.CurrencyQueryBuilder;
 import javax.money.CurrencyUnit;
 import javax.money.TestCurrency;
-import javax.money.convert.*;
 import java.util.*;
 
 import static org.testng.AssertJUnit.*;
@@ -28,7 +27,7 @@ public class MonetaryCurrenciesSingletonSpiTest {
 
         @Override
         public List<String> getDefaultProviderChain() {
-            return Arrays.asList(new String[]{"a"});
+            return Arrays.asList("a");
         }
 
         @Override

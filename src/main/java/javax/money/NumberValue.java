@@ -10,7 +10,6 @@ package javax.money;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 
 /**
  * Instances of this class allow to externalize the numeric value of a {@link MonetaryAmount}. The classs extends

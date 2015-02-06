@@ -11,8 +11,6 @@ package javax.money.spi;
 import org.testng.annotations.Test;
 
 import javax.money.*;
-import javax.money.format.*;
-import java.io.IOException;
 import java.util.*;
 
 import static org.testng.AssertJUnit.*;

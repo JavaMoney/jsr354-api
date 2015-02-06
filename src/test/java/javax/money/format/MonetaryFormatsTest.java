@@ -17,7 +17,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import static org.testng.Assert.*;
-import static org.testng.Assert.assertEquals;
 
 /**
  * Tests for {@link MonetaryFormats}.

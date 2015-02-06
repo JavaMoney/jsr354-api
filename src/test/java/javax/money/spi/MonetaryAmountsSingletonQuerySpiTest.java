@@ -10,7 +10,6 @@ package javax.money.spi;
 
 import javax.money.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.testng.AssertJUnit.*;
@@ -20,16 +19,12 @@ import static org.testng.AssertJUnit.*;
  */
 public class MonetaryAmountsSingletonQuerySpiTest {
 
-    MonetaryAmountsSingletonQuerySpi testSpi = new MonetaryAmountsSingletonQuerySpi() {
-        @Override
-        public Collection<MonetaryAmountFactory<? extends MonetaryAmount>> getAmountFactories(MonetaryAmountFactoryQuery query) {
-            List<MonetaryAmountFactory<? extends MonetaryAmount>> factories = new ArrayList<>();
-            if (query.getBoolean("select")) {
-                factories.add(new DummyAmountBuilder());
-            }
-            return factories;
+    MonetaryAmountsSingletonQuerySpi testSpi = query -> {
+        List<MonetaryAmountFactory<? extends MonetaryAmount>> factories = new ArrayList<>();
+        if (query.getBoolean("select")) {
+            factories.add(new DummyAmountBuilder());
         }
-
+        return factories;
     };
 
     public void testIsAvailable() {

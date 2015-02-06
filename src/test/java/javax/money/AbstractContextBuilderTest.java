@@ -98,7 +98,7 @@ public class AbstractContextBuilderTest {
         AbstractContextBuilder b = createBuilder();
         b.set("myKey", 1.5d);
         AbstractContext ctx = b.build();
-        assertEquals(ctx.getDouble("myKey").doubleValue(), 1.5d, 0.0d);
+        assertEquals(ctx.getDouble("myKey"), 1.5d, 0.0d);
     }
 
     @Test

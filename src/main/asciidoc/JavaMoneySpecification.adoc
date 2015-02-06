@@ -3,7 +3,7 @@
 :title: JSR 354 (Money & Currency) - Specification
 :revnumber: 1.0-SNAPSHOT
 :revremark: Public Final Draft
-:revdate: January 2015
+:revdate: February 2015
 :longversion: {revnumber} ({revremark}) {revdate}
 :authorinitials: ATR
 :author: Anatole Tresch, Credit Suisse
@@ -300,7 +300,7 @@ as an Apache 2 licensed open source project. Though these libraries were removed
 ensured that scope was fully evaluated and that the parts best suited to standardization were identified.
 
 === Required Java version
-The specification is based on Java SE 8.0 language features. Implementations may target any suitable Java SE version,
+The specification is based on Java SE 8 language features. Implementations may target any suitable Java SE version,
 or given an increasing SE/ME correlation also matching ME versions. For users of JDK 7 a forward compatible backport of
 the API will be provided. This allows to design an API, which will easily fit into Java 9, but still supporting
 older releases, since there are many financial applications and products that will require years

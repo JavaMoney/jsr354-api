@@ -46,7 +46,7 @@ Specification: JSR-354 Money and Currency API ("Specification")+
 Version: {revnumber}+
 Status: {revremark}+
 Release: {revdate}+
-Copyright 2012-2014 Credit Suisse AG+
+Copyright 2012-2015 Credit Suisse AG+
 8070 Zurich, Switzerland+
 All rights reserved.+
 

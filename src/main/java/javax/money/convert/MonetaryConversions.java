@@ -10,13 +10,22 @@
  */
 package javax.money.convert;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.ServiceLoader;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
+
 import javax.money.CurrencyUnit;
 import javax.money.MonetaryCurrencies;
 import javax.money.MonetaryException;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryConversionsSingletonSpi;
-import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * This singleton defines access to the exchange and currency conversion logic
@@ -175,7 +184,31 @@ public final class MonetaryConversions{
                 .orElseThrow(() -> new MonetaryException("No such rate provider: " + Arrays.toString(providers)));
     }
 
+	/**
+	 * Access an instance of {@link CurrencyConversion} using the
+	 * {@link ExchangeRateProviderSupplier}.
+	 * 
+	 * @param provider
+	 *            the exchange rate provider.
+	 * @param providers
+	 *            the exchange rate provider.
+	 * @return the exchange rate provider.
+	 * @throws IllegalArgumentException
+	 *             if no such {@link ExchangeRateProvider} is available.
+	 */
+	public static ExchangeRateProvider getExchangeRateProvider(
+			ExchangeRateProviderSupplier provider,
+			ExchangeRateProviderSupplier... providers) {
 
+		List<ExchangeRateProviderSupplier> suplliers = new ArrayList<>();
+		suplliers.add(Objects.requireNonNull(provider));
+		Stream.of(providers).forEach(suplliers::add);
+
+		String[] array = suplliers.stream()
+				.map(ExchangeRateProviderSupplier::get).toArray(String[]::new);
+		return getExchangeRateProvider(array);
+
+	}
     /**
      * Access an instance of {@link CurrencyConversion} using the given
      * providers as a provider chain. Use {@link #getProviderNames()}

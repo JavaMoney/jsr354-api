@@ -280,7 +280,7 @@ JSR 354 targets to support all general application areas, e.g.
 * etc.
 
 This specification will not discuss low latency concerns as required for example by algorithmic trading applications.
-Nevertheless the API was designed to support different implementations of monetary amounts and allows to be extended in
+Nevertheless the API was designed to support different implementations of monetary amounts and allows for extension in
 several ways. So it should be flexible enough that corresponding implementations can be used transparently to
 accommodate such applications.
 
@@ -869,8 +869,8 @@ public abstract class NumberValue extends java.lang.Number{
 
 Hereby
 
-. +getNumberType()+ provides information about the numeric representation used internally. It does explicitly not
-  constraint the type returned to be a subtype of +java.lang.Number+ to allow also alternate implementations used.
+. +getNumberType()+ provides information about the numeric representation used internally. It explicitly does not
+  constrain the type returned to be a subtype of +java.lang.Number+ to allow alternate implementations to be used.
 . +intValueExact(), longValueExact(), doubleValueExact()+ extend the methods defined in +java.lang.Number+, with their
   exact variants. Exact means, that it is required to throw an +ArithmeticException+, if the current numeric value must
   be truncated to fit into the required target type. So in the following cases an exception must be thrown:
@@ -2505,9 +2505,8 @@ public class MyCurrencyProvider implements CurrencyProvider {
 == Meta-Data Modeling ==
 === Overview ===
 
-The JSR uses a unified meta-data model to support also more advanced use cases, which are not explicitly specified.
-Mostly reasons for not specifying these aspects is that these things are highly use case and organization dependent
-aspects. In general there are 2 flavors of meta-data used throughout the JSR:
+The JSR uses a unified meta-data model to support more advanced use cases, which are not explicitly specified.
+The main reason for not specifying these aspects is that they are highly use case and organization dependent. In general there are two flavors of meta-data used throughout the JSR:
 
 . _Contexts_ provide additional information on value types or services, such as currencies, amounts, conversions or
   formats. Contexts are accessible directly from the corresponding value types, by calling methods named

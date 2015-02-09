@@ -64,10 +64,7 @@ public class ConcurrentInitializationTest {
             thread.join();
         }
 
-        for (Throwable throwable : throwables) {
-            throwable.printStackTrace();
-        }
-
+        throwables.forEach(java.lang.Throwable::printStackTrace);
         assertEquals(0, throwables.size());
 
     }

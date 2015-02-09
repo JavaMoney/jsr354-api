@@ -46,6 +46,7 @@ public final class Bootstrap {
      */
     private static ServiceProvider loadDefaultServiceProvider() {
         try {
+
             for (ServiceProvider sp : ServiceLoader.load(ServiceProvider.class)) {
                 return sp;
             }
@@ -115,10 +116,12 @@ public final class Bootstrap {
      */
     public static <T> T getService(Class<T> serviceType) {
         List<T> services = getServiceProvider().getServices(serviceType);
-        if (services.isEmpty()) {
-            throw new MonetaryException("No such service found: " + serviceType);
-        }
-        return services.get(0);
+		return services
+				.stream()
+				.findFirst()
+				.orElseThrow(
+						() -> new MonetaryException("No such service found: "
+								+ serviceType));
     }
 
 }

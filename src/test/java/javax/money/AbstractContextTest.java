@@ -10,15 +10,19 @@
  */
 package javax.money;
 
-import org.testng.annotations.Test;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.testng.Assert.*;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link javax.money.AbstractContext}.
@@ -132,7 +136,7 @@ public class AbstractContextTest {
 
     @Test
     public void testGetTimestamp() {
-        Instant now = Instant.now();
+        LocalDateTime now = LocalDateTime.now();
         TestContext ctx = new TestContext.Builder().setTimestamp(now).build();
         assertEquals(now, ctx.getTimestamp());
     }

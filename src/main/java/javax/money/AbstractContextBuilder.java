@@ -8,6 +8,7 @@
  */
 package javax.money;
 
+import java.time.LocalDateTime;
 import java.time.temporal.TemporalAccessor;
 import java.util.HashMap;
 import java.util.Map;
@@ -215,7 +216,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return this instance for chaining
      * @see #setTimestampMillis(long)
      */
-    public B setTimestamp(TemporalAccessor timestamp){
+	public B setTimestamp(LocalDateTime timestamp) {
         set(AbstractContext.KEY_TIMESTAMP, Objects.requireNonNull(timestamp));
         return (B) this;
     }

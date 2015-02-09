@@ -3,7 +3,7 @@
 :title: JSR 354 (Money & Currency) - Specification
 :revnumber: 1.0-SNAPSHOT
 :revremark: Public Final Draft
-:revdate: January 2015
+:revdate: February 2015
 :longversion: {revnumber} ({revremark}) {revdate}
 :authorinitials: ATR
 :author: Anatole Tresch, Credit Suisse
@@ -46,7 +46,7 @@ Specification: JSR-354 Money and Currency API ("Specification")+
 Version: {revnumber}+
 Status: {revremark}+
 Release: {revdate}+
-Copyright 2012-2014 Credit Suisse AG+
+Copyright 2012-2015 Credit Suisse AG+
 8070 Zurich, Switzerland+
 All rights reserved.+
 
@@ -288,9 +288,7 @@ accommodate such applications.
 === Scope
 JSR 354 targets a standalone scope. Nevertheless it may be integrated with the JDK later, so its design and scope must
 consider JDK patterns. Additionally the work on the JSR has shown, that it is possible to define a flexible
-and comprehensive API that is also almost compatible with Java ME. Since with the Internet of Things small
-devices are getting more important, and there is high probability that monetary aspects must be implemented, the expert
-group decided to keep the API independent of JDK artifacts that are not supported on ME, where easily possible.
+and comprehensive API that is also compatible with Java Embedded.
 Basically this affects usage of +java.math+ and +java.text+. Nevertheless the reference implementation is free to use
 existing functionality and the JSR also includes requirements (also checkable by the TCK) to ensure a minimal set of
 functionality on Java SE.
@@ -300,8 +298,8 @@ as an Apache 2 licensed open source project. Though these libraries were removed
 ensured that scope was fully evaluated and that the parts best suited to standardization were identified.
 
 === Required Java version
-The specification is based on Java SE 8.0 language features. Implementations may target any suitable Java SE version,
-or given an increasing SE/ME correlation also matching ME versions. For users of JDK 7 a forward compatible backport of
+The specification is based on Java SE 8 language features. Implementations may target any suitable Java SE version,
+or given an increasing SE/ME correlation also future ME versions. For users of JDK 7 a forward compatible backport of
 the API will be provided. This allows to design an API, which will easily fit into Java 9, but still supporting
 older releases, since there are many financial applications and products that will require years
 until they were migrated to Java 8. In general there are only a few aspects within the API that would be affected by
@@ -481,9 +479,8 @@ It must be possible to format and parse monetary amounts. Therefore the JSR defi
 . supports rounding of amounts for display and reverse rounding during parsing.
 
 [[RequirementsFormattingEE]]
-=== EE and ME Support
-. This JSR must avoid restrictions that prevents its use in different runtime environments, such as EE or ME. Thus e.g.
-direct references to elements in java.math and java.text which is not supported by Java ME so far must be avoided. Refer
+=== Java EE Support
+. This JSR must avoid restrictions that prevents its use in different runtime environments, such as Java EE. Refer
 also to the section <<Boostrap>> for more details on possible EE/CDI integration.
 
 [[RequirementsNonFunctional]]

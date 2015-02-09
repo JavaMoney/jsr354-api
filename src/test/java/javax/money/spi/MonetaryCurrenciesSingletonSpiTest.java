@@ -27,7 +27,7 @@ public class MonetaryCurrenciesSingletonSpiTest {
 
         @Override
         public List<String> getDefaultProviderChain() {
-            return Arrays.asList(new String[]{"a"});
+            return Arrays.asList("a");
         }
 
         @Override

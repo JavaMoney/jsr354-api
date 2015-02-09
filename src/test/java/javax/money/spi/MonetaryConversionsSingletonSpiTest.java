@@ -25,12 +25,12 @@ public class MonetaryConversionsSingletonSpiTest {
 
         @Override
         public Collection<String> getProviderNames() {
-            return Arrays.asList(new String[]{"b", "a"});
+            return Arrays.asList("b", "a");
         }
 
         @Override
         public List<String> getDefaultProviderChain() {
-            return Arrays.asList(new String[]{"a", "b"});
+            return Arrays.asList("a", "b");
         }
 
         @Override

@@ -2,12 +2,8 @@ package javax.money.format;
 
 import org.testng.annotations.Test;
 
-import javax.money.CurrencyUnit;
 import javax.money.DummyAmountBuilder;
-import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmountFactory;
-import javax.money.MonetaryContext;
-import javax.money.NumberValue;
 import java.util.Locale;
 
 import static org.testng.Assert.*;

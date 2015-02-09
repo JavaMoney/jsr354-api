@@ -103,7 +103,7 @@ public class MonetaryAmountsTest {
         assertTrue(factories.size() == 1);
         factories = MonetaryAmounts.
                 getAmountFactories(MonetaryAmountFactoryQueryBuilder.of()
-                        .setProvider("gigigig2").build());
+                        .setProviderName("gigigig2").build());
         assertNotNull(factories);
         assertTrue(factories.isEmpty());
     }
@@ -119,7 +119,7 @@ public class MonetaryAmountsTest {
                         .setTargetType(DummyAmount.class).build()));
         assertFalse(MonetaryAmounts.
                 isAvailable(MonetaryAmountFactoryQueryBuilder.of()
-                        .setProvider("gigigig2").build()));
+                        .setProviderName("gigigig2").build()));
     }
 
 }

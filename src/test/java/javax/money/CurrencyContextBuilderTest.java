@@ -10,9 +10,9 @@ public class CurrencyContextBuilderTest {
     public void testOf() throws Exception {
         CurrencyContext ctx = CurrencyContextBuilder.of("prov").build();
         assertNotNull(ctx);
-        assertEquals(ctx.getProvider(), "prov");
+        assertEquals(ctx.getProviderName(), "prov");
         CurrencyContext ctx2 = CurrencyContextBuilder.of(ctx).build();
         assertNotNull(ctx2);
-        assertEquals(ctx2.getProvider(), "prov");
+        assertEquals(ctx2.getProviderName(), "prov");
     }
 }

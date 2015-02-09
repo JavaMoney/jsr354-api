@@ -185,7 +185,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @param provider the provider, not null.
      * @return the Builder for chaining
      */
-    public B setProvider(String provider){
+    public B setProviderName(String provider) {
         Objects.requireNonNull(provider);
         set(AbstractContext.KEY_PROVIDER, provider);
         return (B) this;

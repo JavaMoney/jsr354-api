@@ -17,7 +17,7 @@ import java.util.*;
  *
  * @author Anatole Tresch
  */
-public final class ProviderContextBuilder extends AbstractContextBuilder<ProviderContextBuilder,ProviderContext>{
+public final class ProviderContextBuilder extends AbstractContextBuilder<ProviderContextBuilder, ProviderContext> {
 
     /**
      * Create a new Builder instance.
@@ -25,10 +25,10 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @param provider  the provider name, not {@code null}.
      * @param rateTypes the rate types, not null and not empty.
      */
-    private ProviderContextBuilder(String provider, RateType rateType, RateType... rateTypes){
+    private ProviderContextBuilder(String provider, RateType rateType, RateType... rateTypes) {
         Objects.requireNonNull(rateType, "At least one RateType is required.");
         Objects.requireNonNull(rateTypes);
-        setProvider(provider);
+        setProviderName(provider);
         Set<RateType> rts = new HashSet<>();
         rts.add(rateType);
         Collections.addAll(rts, rateTypes);
@@ -41,12 +41,12 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @param provider  the provider name, not {@code null}.
      * @param rateTypes the rate types, not null and not empty.
      */
-    private ProviderContextBuilder(String provider, Collection<RateType> rateTypes){
+    private ProviderContextBuilder(String provider, Collection<RateType> rateTypes) {
         Objects.requireNonNull(rateTypes);
-        if(rateTypes.isEmpty()){
+        if (rateTypes.isEmpty()) {
             throw new IllegalArgumentException("At least one RateType is required.");
         }
-        setProvider(provider);
+        setProviderName(provider);
         Set<RateType> rts = new HashSet<>();
         rts.addAll(rateTypes);
         set("rateTypes", rts);
@@ -59,7 +59,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      *
      * @param context the context, not {@code null}
      */
-    private ProviderContextBuilder(ProviderContext context){
+    private ProviderContextBuilder(ProviderContext context) {
         importContext(context);
         Set<RateType> rts = new HashSet<>();
         rts.addAll(context.getRateTypes());
@@ -73,7 +73,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @return this, for chaining.
      * @throws IllegalArgumentException when not at least one {@link RateType} is provided.
      */
-    public ProviderContextBuilder setRateTypes(RateType... rateTypes){
+    public ProviderContextBuilder setRateTypes(RateType... rateTypes) {
         return setRateTypes(Arrays.asList(rateTypes));
     }
 
@@ -85,9 +85,9 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @throws IllegalArgumentException when not at least one {@link RateType} is provided.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public ProviderContextBuilder setRateTypes(Collection<RateType> rateTypes){
+    public ProviderContextBuilder setRateTypes(Collection<RateType> rateTypes) {
         Objects.requireNonNull(rateTypes);
-        if(rateTypes.size() == 0){
+        if (rateTypes.size() == 0) {
             throw new IllegalArgumentException("At least one RateType is required.");
         }
         Set rtSet = new HashSet<>();
@@ -102,7 +102,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      *
      * @return a new {@link ProviderContext}. never {@code null}.
      */
-    public ProviderContext build(){
+    public ProviderContext build() {
         return new ProviderContext(this);
     }
 
@@ -114,7 +114,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @param context the context, not {@code null}
      * @return a new {@link javax.money.convert.ProviderContextBuilder} instance, never null.
      */
-    public static ProviderContextBuilder create(ProviderContext context){
+    public static ProviderContextBuilder create(ProviderContext context) {
         return new ProviderContextBuilder(context);
     }
 
@@ -125,7 +125,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @param rateTypes the rate types, not null and not empty.
      * @return a new {@link javax.money.convert.ProviderContextBuilder} instance, never null.
      */
-    public static ProviderContextBuilder of(String provider, RateType rateType, RateType... rateTypes){
+    public static ProviderContextBuilder of(String provider, RateType rateType, RateType... rateTypes) {
         return new ProviderContextBuilder(provider, rateType, rateTypes);
     }
 
@@ -136,7 +136,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @param rateTypes the rate types, not null and not empty.
      * @return a new {@link javax.money.convert.ProviderContextBuilder} instance, never null.
      */
-    public static ProviderContextBuilder of(String provider, Collection<RateType> rateTypes){
+    public static ProviderContextBuilder of(String provider, Collection<RateType> rateTypes) {
         return new ProviderContextBuilder(provider, rateTypes);
     }
 

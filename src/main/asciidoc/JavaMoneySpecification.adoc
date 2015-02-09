@@ -2025,44 +2025,16 @@ successfully. It provides hereby additional info:
 * the error index within the input String, where parsing failed unrecoverable.
 
 
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
 [[SPI]]
 === Money and Currency SPI
 JSR 354 defines a complete API and provides a default reference implementation. An implementation of this API must
 provide several implementation services, called the SPI, to provide the effective functionality. These services must be
-registered to the +Bootstrap+ singleton. The +Bootstrap+ singleton relies, by default, on
-+java.util.ServiceLoader+ to load the implementation services, but this mechanism can be replaced by an alternate
-component loading mechanism, such as _CDI_ in a EE context.
+registered to the JSR's +Bootstrap+ mechanism. The +Bootstrap+ singleton internally loads an instance of
++ServiceProvider+ using +java.util.ServiceLoader+. The default loader used hereby relies on
++java.util.ServiceLoader+ to load the implementation services, so be default the JSR behaves like a normal SE
+based JSR. However by registering alternate implementations of +ServiceProvider+ the component loading mechanism can
+be replaced completely, e.g. with a mechanism that also tries to get access a _CDI_ +BeanManager+ from JNDI
+thus enabling to register SPI implementations as CDI managed beans.
 
 All SPIs are contained in the package +javax.money.spi+. Summarizing the following SPIs are available:
 
@@ -2071,8 +2043,8 @@ All SPIs are contained in the package +javax.money.spi+. Summarizing the followi
 * +CurrencyProviderSpi+ (mandatory, multiple service chain) - provides instances of +CurrencyUnit+, accessible from
   +MonetaryCurrencies+ singleton.
 * +MonetaryAmountsSingletonSpi+ (mandatory, only one instance selected by priority) - manages instances of
-  +MonetaryAmountFactoryProviderSpi+, which create instances of +MonetaryAmountFactory+, that are being accessible by
-  +MonetaryAmounts+.
+  +MonetaryAmountFactoryProviderSpi+, which create instances of +MonetaryAmountFactory+, that are being accessible from
+  the +MonetaryAmounts+ singleton.
 * +MonetaryAmountFactoryProviderSpi+ (mandatory, multiple service chain) - is responsible for registering and providing
   instances of +MonetaryAmountFactory+.
 * +MonetaryAmountsSingletonQuerySpi+ (mandatory, only one instance selected by priority) - this SPI allows to
@@ -2109,30 +2081,79 @@ All SPIs are contained in the package +javax.money.spi+. Summarizing the followi
   aspects, as the first a _non null_ result returned by a provider is taken as result of a call. The prioritization of
   components is implicitly defined by the order of the components returned by the +ServiceProvider+ SPI implementation.
 
+NOTE: SPI interfaces called +XXXSingletonSpi+ are generally loaded once during early boot of the JSR and are subsequently
+managed as static references within the singleton accessors. This may look as a constraint, but in fact you just have
+to ensure to delegate component loading and management to the +Bootstrap+ mechanism. You can refer to the Moneta
+reference implementation for further details, which exactly implements this behaviour.
+
+
 [[CoreSPI]]
 ==== Core SPI
-===== Registering Currencies
-By adding instances of +javax.money.spi.CurrencyProvider+ additional +CurrencyUnit+ instances can be registered into
-the +MonetaryCurrencies+ singleton:
+===== Accessing Currencies
+Currencies are accessed from the <<MonetaryCurrencies>> singleton. This singleton is backed up by an implementation of
++MonetaryCurrenciesSingletonSpi+, which must be registered to the <<Bootstrap>>:
+
 
 [source,java]
-.Interface CurrencyProviderSpi
+.Interface MonetaryCurrenciesSingletonSpi
 -------------------------------------------------------------------------------
-public interface CurrencyProviderSpi {
-  CurrencyUnit getCurrencyUnit(String currencyCode);
-  CurrencyUnit getCurrencyUnit(Locale locale);
-  Collection<CurrencyUnit> getCurrencies();
+public interface MonetaryCurrenciesSingletonSpi {
+  List<String> getDefaultProviderChain();
+  Set<String> getProviderNames();
+  Set<CurrencyUnit> getCurrencies(CurrencyQuery query);
+  default CurrencyUnit getCurrency(String currencyCode, String... providers);
+  default CurrencyUnit getCurrency(Locale country, String... providers);
+  default Set<CurrencyUnit> getCurrencies(Locale locale, String... providers);
+  default boolean isCurrencyAvailable(String code, String... providers);
+  default boolean isCurrencyAvailable(Locale locale, String... providers);
+  default Set<CurrencyUnit> getCurrencies(String... providers);
+  default CurrencyUnit getCurrency(CurrencyQuery query);
 }
 -------------------------------------------------------------------------------
 
 Hereby
 
-* similar to +java.util.Currency.getInstance(String)+ a currency is identified and can be accessed by its _currency code_.
-* similar to +java.util.Currency.getInstance(Locale)+ a currency can also be accessed by a +Locale+. Hereby the +Locale+
-  typically represents an ISO country, but there are might alternate variants feasible.
-* Also important is to mention that implementation of the +CurrencyProviderSpi+ are responsible for caching the
-  instances. Similarly the behavior of a +CurrencyProviderSpi+ implementation can also be _contextually dependent_,
-  as required when running in a Java EE container.
+* Similar to other areas multiple instances of +CurrencyProviderSpi+ can be registered.
+* Each +CurrencyProviderSpi+ instance is identified by its (unique) provider name.
+* On access the required chain of +CurrencyProviderSpi+ can be defined explicitly.
+* If no provider chain is explicitly passed, the default provider chain as defined by +getDefaultProviderChain()+
+  is used.
+* When accessing +CurrencyUnit+ instances the first non null/not empty instances returned by a provider are used
+  as a result by default. Implementations of +MonetaryCurrenciesSingletonSpi+ may also add additional combination
+  strategies by defining additional attributes that can be passed as part of a +CurrencyQuery+ passed.
+* Basically it is sufficient for implementations to provide the +getCurrencies(CurrencyQuery)+ method for looking
+  up currencies, since by default all other methods delegate to this method.
+
+Implementations of this class should use the <<Bootstrap>> suport to evaluate the instances of +CurrencyProviderSpi+
+for a given runtime context.
+
+
+===== Registering Currencies
+By registering instances of +javax.money.spi.CurrencyProviderSpi+ to the <<Bootstrap>> logic additional +CurrencyUnit+
+instances can be registered into the +MonetaryCurrencies+ singleton:
+
+[source,java]
+.Interface CurrencyProviderSpi
+-------------------------------------------------------------------------------
+public interface CurrencyProviderSpi {
+  default String getProviderName();
+  default boolean isCurrencyAvailable(CurrencyQuery query);
+  Set<CurrencyUnit> getCurrencies(CurrencyQuery query);
+}
+-------------------------------------------------------------------------------
+
+Hereby
+
+* each provider must return a unique provider ID from +getProviderName()+. By
+  default the provider's simple class name is used.
+* with +getCurrencies(CurrencyQuery)+ each provider can return the +CurrencyUnit+ instances that are valid as
+  defined by the +CurrencyQuery+ instance passed. Hereby a query can refer to a single currency instance, or a more
+  open query returning multiple instances. Additional parameters can be supported as needed for the concrete
+  use cases, e.g. historic or regional reference, namespace schemas etc. If a provider cannot deliver any +CurrencyUnit+
+  instances, an empty +Set+ must be returned.
+* +isCurrencyAvailable(CurrencyQuery)+ allows to check for any currencies being available. By default this method
+  calls +getCurrencies(CurrencyQuery)+ and simply checks for an empty +Set+ being returned. Implementations may
+  override this behaviour with a more efficient approach.
 
 
 ===== Registering Monetary Amount Factories
@@ -2150,20 +2171,20 @@ public interface MonetaryAmountFactoryProviderSpi<T extends MonetaryAmount> {
   }
   Class<T> getAmountType();
   MonetaryContext getDefaultMonetaryContext();
+  default MonetaryContext geMaximalMonetaryContext(){...}     // default: delegates to getDefaultMonetaryContext()
+  default QueryInclusionPolicy getQueryInclusionPolicy(){...} // default: QueryInclusionPolicy.ALWAYS
 
-  MonetaryAmountFactory<T> createAmountFactory();
+  MonetaryAmountFactory<T> createMonetaryAmountFactory();
 
-  default QueryInclusionPolicy getQueryInclusionPolicy(){...} // QueryInclusionPolicy.ALWAYS
-  default MonetaryContext geMaximalMonetaryContext(){...}     // equals to getDefaultMonetaryContext()
 }
 -------------------------------------------------------------------------------
 
 Hereby
 
-* +getAmountType()+ returns a new implementation of +T+ which is returned by a +MonetaryAmountFactory+ created by an instance.
-* The maximal supported +MonetaryContext+ can be determined by calling +getMaximalMonetaryContext()+.
+* +getAmountType()+ returns a new implementation of +T+ which is returned by a +MonetaryAmountFactory+ created by an
+  instance.
 * The default +MonetaryContext+ used can be determined by calling +getDefaultMonetaryContext()+.
-* +createAmountFactory()+ creates a corresponding +MonetaryAmountFactory+ factory.
+* The maximal supported +MonetaryContext+ can be determined by calling +getMaximalMonetaryContext()+.
 * +getQueryInclusionPolicy()+ defines if the given spi (and hence the corresponding +MonetaryAmount+ implementation
   type) is to be considered, when +MonetaryAmounts.queryAmountType(MonetaryContext)+ is called:
   ** +ALWAYS+ means that given instance should be considered always as a candidate. Nevertheless the active
@@ -2175,161 +2196,240 @@ Hereby
   ** +NEVER+ signals that the corresponding implementation type is considered not to be a valid return type of a query
      operation. This is useful, e.g. for special amount types as decorators, which do not provide their own numeric
      representations.
+* +createAmountFactory()+ finally creates a corresponding +MonetaryAmountFactory+ factory.
+
 
 ===== Backing the MonetaryAmounts Singleton
 Also the functionality of the +MonetaryAmounts+ accessor singleton is backed up by two SPI interfaces, called
-+javax.money.spi.MonetaryAmountsSingletonSpi+ and +javax.money.spi.MonetaryAmountsSingletonQuerySpi+. An
-implementation should rely on the +Bootstrap+ class to access the available instances of +MonetaryAmountFactory+.
-Nevertheless being able to register alternate implementations of this
-SPIs would allow to support more complex rules for a couple of enterprise related functionality such as:
++javax.money.spi.MonetaryAmountsSingletonSpi+ and +javax.money.spi.MonetaryAmountsSingletonQuerySpi+. Implementations
+of these interfaces should rely on the +Bootstrap+ class to access the available instances of +MonetaryAmountFactory+
+and +MonetaryAmountFactoryProviderSpi+ respectively. Nevertheless being able to register alternate implementations
+would allow to support more complex rules for a couple of enterprise related functionality such as:
 
-.MonetaryAmountsSingletonSpi
-* contextual availability of amount types (and related factories).
-* contextual differences for default amount types, as provided by +MonetaryAmounts.getDefaultAmountType()+.
-* contextual differences for default +MonetaryContext+ instances applied.
+Implementing +MonetaryAmountsSingletonSpi+ allows
+* to provide amount types (and related factories) based on the current runtime context.
+* to configure the default amount type, as provided by +MonetaryAmounts.getDefaultAmountType()+, differently based on
+   the current runtime context.
+* to configure different defaults for the +MonetaryContext+ used by the amount implementation types/factories.
 
-.MonetaryAmountsSingletonQuerySpi
-* alternate implementations of the algorithm used within +MonetaryAmounts.queryAmountType(MonetaryContext)+ to determine
-  the best matching +MonetaryAmount+ implementation given a +MonetaryContext+ required.
-
-The SPIa provide the following methods to adapt the behaviour of the +MonetaryAmounts+ singleton:
+The interface is defined as follows:
 
 [source,java]
 .Interface MonetaryAmountsSingletonSpi
 -------------------------------------------------------------------------------
 public interface MonetaryAmountsSingletonSpi{
-  public <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType);
-  public MonetaryAmountFactory<?> getDefaultAmountFactory();
-  public Set<Class<? extends MonetaryAmount>> getAmountTypes();
+  <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType);
+  Class<? extends MonetaryAmount> getDefaultAmountType();
+  Collection<Class<? extends MonetaryAmount>> getAmountTypes();
+  default MonetaryAmountFactory<?> getDefaultAmountFactory();
+  default Collection<MonetaryAmountFactory<?>> getAmountFactories();
 }
 -------------------------------------------------------------------------------
 
 Hereby
 
-* +getAmountFactory(Class)+ should return an instance of +MonetaryAmountFactory+ that creates the given amount type.
-  Optionally also a required +MonetaryContext+ can be passed, this is especially useful for accessing
-  +MonetaryAmountFactory+ implementations that are capable of supporting different target +MonetaryContext+ instances,
-  e.g. implementations based on +java.math.BigDecimal+.
-* +getAmountTypes()+ should return a list of available implementation types for the current runtime context.
+* +getAmountFactory(Class<T>)+ should return an instance of +MonetaryAmountFactory<T>+ that creates the amount instances.
+* +getDefaultAmountType()+ returns the default implementation type created by the factory returned
+  from +getDefaultAmountFactory()+ for the current runtime context.
+* +getAmountTypes()+ should return a collection of available implementation types for the current runtime context.
 * +getDefaultAmountFactory()+ should return the default +MonetaryAmountFactory+  for the current context. Hereby an
   implementation must never return +null+. If no +MonetaryAmountFactory+ instances are registered, a +MonetaryException+
   should be thrown.
+* Similar to +getAmountTypes()+ the method +getAmountFactories()+ returns all corresponding factories for the current
+  context.
+
+
+
+Implementing +MonetaryAmountsSingletonQuerySpi+ allows to provide alternate implementations of query algorithm used
+within +MonetaryAmounts.queryAmountType(MonetaryContext)+ to evaluate the best matching +MonetaryAmount+ implementation
+given a +MonetaryAmountFactoryQuery+ required. The interface is defined as follows:
 
 [source,java]
 .Interface MonetaryAmountsSingletonQuerySpi
 -------------------------------------------------------------------------------
 public interface MonetaryAmountsSingletonQuerySpi{
-  public Class<? extends MonetaryAmount> queryAmountType(MonetaryAmountsSingletonSpi amountsSpi, MonetaryContext requiredContext);
+  default MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query);
+  Collection<MonetaryAmountFactory<? extends MonetaryAmount>> getAmountFactories(MonetaryAmountFactoryQuery query);
+  default Class<? extends MonetaryAmount> getAmountType(MonetaryAmountFactoryQuery query)
+  default Collection<Class<? extends MonetaryAmount>> getAmountTypes(MonetaryAmountFactoryQuery query)
+  default boolean isAvailable(MonetaryAmountFactoryQuery query);
 }
 -------------------------------------------------------------------------------
 
 Hereby
 
-* +queryAmountType(MonetaryContext)+ allows to evaluate a +MonetaryAmount+ implementation type that best covers the
-  requirements defined by the passed +MonetaryContext+. Implementations should consider the following rules:
-  ** if the +MonetaryContext+ passed is explicitly requiring a concrete implementation type, a factory of this type
-     should be returned given the following conditions are met:
-  *** the implementation is capable to support the required maximal _scale_.
-  *** the implementation is capable to support the required maximal _precision_.
+* The only method to be overriden by default is +getAmountFactories(MonetaryAmountFactoryQuery)+, which evaluates
+  a given +MonetaryAmountFactoryQuery+ and returns the matching +MonetaryAmountFactory+ instances.
+* Additionally there are a couple of default methods, which reflect the overall functionality provided from
+  the +MonetaryAmounts+ singleton. This gives implementation providers full control about the functionality
+  executed. Summarizing the methods implemented by default are:
+ ** +getAmountType(MonetaryAmountFactoryQuery)+ allows to evaluate a +MonetaryAmount+ implementation type that best
+    covers the requirements defined by the passed +MonetaryAmountFactoryQuery+. If multiple types match the query
+    and are not resolvable, a +MonetaryException+ should be thrown.
+ ** +getAmountFactory(MonetaryAmountFactoryQuery)+ matches +getAmountType(MonetaryAmountFactoryQuery)+, but returns
+    the +MonetaryAmountFactory+ instance instead of the implementation type.
+ ** +getAmountTypes(MonetaryAmountFactoryQuery)+ allows to evaluate all +MonetaryAmount+ implementation types that
+    covers the requirements defined by the passed +MonetaryAmountFactoryQuery+.
+ ** +isAvailable(MonetaryAmountFactoryQuery)+ allows to determine (without any exception thrown) if the given
+    query returns any types/factories matching.
 
-If one of the conditions above fails a +MonetaryException+ must be thrown. footnote:[This makes sense, since acquiring
-for a concrete type with invalid capabilities can be seen as a programming error, since the default and maximal
-capabilities of a concrete type are accessible from the according implementation factory.]
-
-* If no concrete type is given (passing the +MonetaryAmount+ interface as type), the following must be checked against
+In general implementations of this interface should consider the following rules:
+. if the +MonetaryAmountFactoryQuery+ passed is explicitly requiring a concrete implementation type, a factory of this
+  type should be returned given the following conditions are met:
+ .. the implementation is capable to support the required maximal _scale_.
+ .. the implementation is capable to support the required maximal _precision_.
+. If no concrete type is given (passing the +MonetaryAmount+ interface as type), the following must be checked against
   each registered +MonetaryAmountFactoryProviderSpi+ that are eligible as a possible result type footnote:[This is the
   case, if the the value from +MonetaryAmountFactoryProviderSpi.getInclusionPolicy()+ does not equal to
   +QueryInclusionPolicy.NEVER+, or  +QueryInclusionPolicy.DIRECT_REF_ONLY+.] to be returned from a query:
-  ** is the +MonetaryAmountFactoryProviderSpi+ capable to support the required maximal scale (+required scale <=
+ .. is the +MonetaryAmountFactoryProviderSpi+ capable to support the required maximal scale (+required scale <=
      maxScale+).
-  ** is the +MonetaryAmountFactoryProviderSpi+ capable to support the required maximal precision (+required precision
+ .. is the +MonetaryAmountFactoryProviderSpi+ capable to support the required maximal precision (+required precision
      <= maxPrecision, or precision==0/unlimited+).
-* Additional attributes to consider may be provided with the +MonetaryContext+ required, though this specification does
-  not define any further aspects in detail.
-* if all of the above is true, the according result of +MonetaryAmountFactoryProviderSpi.getAmountType()+ should be
-  returned.
+. Additional attributes to consider may be provided with the +MonetaryAmountFactoryQuery+ provided, though this
+  specification does not define any further aspects in detail.
+. if all of the above is true, the according amount types or amount factories should be returned.
+
+If one of the conditions above fails a +MonetaryException+ must be thrown footnote:[This makes sense, since acquiring
+for a concrete type with invalid capabilities can be seen as a programming error, since the default and maximal
+capabilities of a concrete type are accessible from the according implementation factory.], or in case of
++Collection<?>+ being the method's return type, an empty collection should be returned.  Also
++isAvailable(MonetaryAmountFactoryQuery)+ should never throw an exception, but return +false+, if no matching
++MonetaryAmountFactoryProviderSpi+ could be determined.
+
 
 [[MonetaryRoundingsSingletonSpi]]
-===== Registering Roundings
+===== Accessing Roundings
 Since a monetary rounding is nothing else than a conversion from an unrounded amount to a rounded amount, it is modeled
-as +<<MonetaryOperator>>+. The +MonetaryRoundings+ singleton hereby allows to access different roundings. Similar to other
-singletons in this JSR the "MonetaryRoundings+ singleton is backed up by an instance of
-+MonetaryRoundingsSingletonSpi+, which allows to override the exact logic, how the registered
+as +<<MonetaryOperator>>+. Nevertheless similar to other artifacts defined by this JSR also roundings have
+metadata attached, so roundings extends +<<MonetaryOperator>>+ and additionally provide access to the so called
++RoundingContext+.
++MonetaryRounding+ instances are accessed from the +MonetaryRoundings+ singleton. Similar to other
+singletons in this JSR the +MonetaryRoundings+ singleton is backed up by an instance of
++MonetaryRoundingsSingletonSpi+, which allows to control the exact logic how registered
 +javax.money.spi.RoundingProviderSpi+ are managed:
 
 [source,java]
 .Interface MonetaryRoundingsSingletonSpi
 -------------------------------------------------------------------------------
 public interface MonetaryRoundingsSingletonSpi {
-  MonetaryOperator getRounding(RoundingContext roundingContext);        <1>
-  Set<String> getRoundingIds();                                         <1>
-  default MonetaryOperator getDefaultRounding(){...}                    <2>
-  default MonetaryOperator getRounding(CurrencyUnit currencyUnit){...}  <2>
-  default MonetaryOperator getRounding(String roundingId){...}          <2>
+  Collection<MonetaryRounding> getRoundings(RoundingQuery query);
+  default MonetaryRounding getRounding(RoundingQuery roundingQuery);
+  MonetaryRounding getDefaultRounding();
+  default MonetaryRounding getRounding(CurrencyUnit currencyUnit, String... providers);
+  default MonetaryRounding getRounding(String roundingName, String... providers);
+  default MonetaryRounding getRounding(RoundingQuery query);
+  default boolean isRoundingAvailable(RoundingQuery query);
+  default boolean isRoundingAvailable(String roundingId, String... providers);
+  default boolean isRoundingAvailable(CurrencyUnit currencyUnit, String... providers);
+
+  Set<String> getRoundingNames(String... providers);
+  Set<String> getProviderNames();
+  List<String> getDefaultProviderChain();
 }
 -------------------------------------------------------------------------------
-<1> Methods to be overriden.
-<2> Default methods that optionally can be overridden, by default delegating to +getRounding(RoundingContext)+.
 
+Similar to <<CurrencyConversion>> a provider based service model is defined, meaning
+* multiple rounding providers can be registered
+* when accessing +MonetaryRounding+ instances the providers and ordering of the provider chain that should handle the
+  request can be explicitly defined.
+* if no chain is passed explicitly a default provider chain is used, configurable within the +javamoney.properties+
+  file (see details later).
+* +getRoundingNames+ allows to evaluate all explicitly named roundings available from a given set of rounding providers.
+* +getProviderNames()+ allows to evaluate the names of the registered providers for the current context.
+* +getDefaultProviderChain()+ return the ordered list of provider names representing the default provider chain
+  used, when no explicit rounding providers are selected.
 
-The corresponding +RoundingProviderSpi+ is also relatively simple, since complex parameters can be stored as part
-of the +<<RoundingContext>>+ passed:
+Basically all access methods by default delegate to +getRoundings(RoundingQuery)+. Nevertheless all possible
+access methods from the +MonetaryRoundings+ singleton are reflected in the SPI, so implementations have full control of
+the logic executed.
+
+Summarizing:
+
+* +MonetaryRounding+ instances can be accessed
+ ** based on a +CurrencyUnit+, hereby returning the default rounding for a given currency.
+ ** by its explicit (unique) _roundingId_.
+ ** by passing a +RoundingQuery+ allowing to add arbitrary additional parameters to configure the rounding
+    returned.
+
+===== Registering Roundings
+
+To register additional +MonetaryRounding+ instances of +RoundingProviderSpi+ must be implemented and registered with the current
+<<Bootstrap>> logic:
 
 [source,java]
 .Interface RoundingProviderSpi
 -------------------------------------------------------------------------------
 public interface RoundingProviderSpi {
-  MonetaryOperator getRounding(RoundingContext roundingContext);
-  Set<String> getRoundingIds();
+  MonetaryRounding getRounding(RoundingQuery query);
+  Set<String> getRoundingNames();
+  default String getProviderName();
 }
 -------------------------------------------------------------------------------
 
 Hereby:
 
-* if a provider cannot provide the requested rounding, it should simply return +null+.
-* a provider only should return the rounding ids, which a provider would also create rounding instances for. Its
-  the responsibility of the implementation of +MonetaryRoundingsSingletonSpi+ to collect all names contributed by providers
-  to built the full list of rounding names.
-* the default rounding name is defined as "default". An implementation must provide a rounding for every +CurrencyUnit+
-  known to the system. This comprises all JDK currencies as well as any additionally registered currency instances.
-* _By default_ the digits returned from +CurrencyUnit.getDefaultFractionDigits()+
-  are used, but implementations can provide alternate (e.g. non standard) implementations.
-* Under SE (or where available) reference implementations should also provide _default_ arithmetic rounding instances,
-  e.g. you can set a maximal scale of +1+ and a +RoundingMode+ (where available on the target platform) as an additional
-  attribute.
-* Implementations should also support cash rounding. E.g. in Switzerland default rounding is done for a scale of +2+,
+* +getRounding(RoundingQuery)+ should return the matching rounding, given a +RoundingQuery+. If a provider cannot
+  provide the requested rounding, it should simply return +null+.
+* +getRoundingNames()+ returns all rounding names of the explicitly accessible roundings provided by this rounding
+  provider. It is within the responsibility of the implementation of +MonetaryRoundingsSingletonSpi+ to collect all
+  rounding names contributed by providers to built the full list of rounding names.
+* Similar to other providers in this JSR each rounding provider must declare an explicit unique name provided by the
+  +getProviderName()+ method.
+
+Implementations of this JSR should also consider additional aspects:
+
+. When providing roundings targeting currencies, _by default_, if no explicit rounding is available for a given
+  +CurrencyUnit+, the digits returned from +CurrencyUnit.getDefaultFractionDigits()+ and +RoundingMode.HALF_EVEN+
+  should be used, to create a rounding for a given +CurrencyUnit+.
+. Under Java SE (or where available) reference implementations should also provide _default_ arithmetic rounding
+  instances, e.g. you can set a maximal scale of +1+ and a +RoundingMode+ as an additional attribute.
+. Implementations should also support cash rounding. E.g. in Switzerland default rounding is done for a scale of +2+,
   whereas when paying in cash, the minor units must be divisible by +5+, since +5+ is the smallest coin possible.
-* It is possible to provide customized roundings by name. The names of the defined custom rounding must be returned,
-  when +getRoundingIds()+ is called.
-* Finally it is possible to provide roundings also for _past dates_, hereby considering an additional
-  timestamp given.
+. Finally it may also possible to provide _historic_ roundings hereby considering an additional timestamp or
+  date given.
 
 
-===== Backing the MonetaryConversions Singleton
-Currency conversion mechanisms are provided by the +MonetaryConversions+ singleton. This singleton is backed up by an
-implementation of +javax.money.spi. MonetaryConversionsSingletonSpi+. This singleton in a SE environment may implemented as a
-real singleton, sharing the same state and functionality, whereas in a EE context the implementation will likely behave
-contextually (providing different runtime context depending on the current runtime context, e.g. the ear or war
-currently active. So implementing this SPI provides full control about the singleton’s effective behaviour. As a
-consequence the methods basically are similar to the ones provided by the singleton class:
+[[CurrencyConversionSpi]]
+==== Currency Conversion SPI
+
+===== Accessing Currency Conversion Artifacts
+
+Currency Conversion and rate providers mechanisms are provided by the +MonetaryConversions+ singleton
+(see <<CurrencyConversion>>). This singleton is backed up by an implementation of
++javax.money.spi.MonetaryConversionsSingletonSpi+. Implementing this SPI provides full control about the singleton’s
+effective behaviour. As a consequence the methods to be implemented basically match the ones defined by the
++MonetaryConversions+ class:
 
 [source,java]
 .Interface MonetaryConversionsSingletonSpi
 -------------------------------------------------------------------------------
 public interface MonetaryConversionsSingletonSpi {
-  ExchangeRateProvider getExchangeRateProvider(String... providers);
+  ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery);
+  default ExchangeRateProvider getExchangeRateProvider(String... providers);
+  default List<ExchangeRateProvider> getExchangeRateProviders(String... providers);
+
+  default boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery);
+  default CurrencyConversion getConversion(ConversionQuery conversionQuery);
+  default CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers);
+  default boolean isConversionAvailable(ConversionQuery conversionQuery);
+  default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers);
+
   Collection<String> getProviderNames();
   List<String> getDefaultProviderChain();
-
-  default boolean isProviderAvailable(String provider){...}
-  default ProviderContext getProviderContext(String provider);
-  default CurrencyConversion getConversion(CurrencyUnit termCurrency,
-                          ConversionContext conversionContext, String... providers);
 }
 -------------------------------------------------------------------------------
 
 Hereby
 
+* multiple +ExchangeRateProvider+ instances can be registered.
+* each +ExchangeRateProvider+ is identified by it's (unique) name, accessible from
+  +ExchangeRateProvider.getProviderContext().getProviderName()+.
+* +getProviderNames()+ allows to evaluate the names of the registered providers for the current context.
+* +getDefaultProviderChain()+ return the ordered list of provider names representing the default provider chain
+  used, when no explicit rounding providers are selected.
+* +ExchangeRateProvider+ instances can be accessed directly by passing the single provider name only as the target
+  chain definition, e.g. the provider 'XY' can be accessed by calling +getExchangeRateProvider("XY")+.
 * the main artifact defining currency conversion is an +ExchangeRateProvider+. It provides +ExchangeRate+ instances
   defining the factor for converting an base amount to a target (aka _terminating_) amount.
 * A +CurrencyConversion+ basically is only an adapter to an +ExchangeRateProvider+, which allows simple use of
@@ -2337,55 +2437,111 @@ Hereby
 * +getExchangeRateProvider(String…)+ allows to pass an ordered array of provider names. The names identify the
   providers to be used allow to define a _composite_ +ExchangeRateProvider+ instance (modeling a provider chain),
   that is able to answer requests based on multiple rate providers. As an example calling +ExchangeRateProvider prov =
-  getExchangeRateProvider(“ECB”, “IMF”)+ should return a _composite_ +ExchangeRateProvider+ instance, that internally
-  first tries to resolve an +ExchangeRate+ requested, using the provider named "ECB". On success the "ECB" rate should
-  be returned. If this fails, to whatever reason, the provider with name "IMF" should be tried. If no provider is able
-  to return a valid result, a +CurrencyConversionException+ must be thrown as defined in the corresponding
-  +ExchangeRateProvider+ interface API documentation.
-  Additionally if no explicit provider names are passed, the provider names and ordering as defined by
+  getExchangeRateProvider(“ECB”, “IMF”)+ should by default return a _composite_ +ExchangeRateProvider+ instance, that
+  internally first tries to resolve an +ExchangeRate+ requested, using the provider named "ECB". On success the "ECB"
+  rate should be returned. If this fails, to whatever reason, the provider with name "IMF" should be tried. If no
+  provider is able to return a valid result, a +CurrencyConversionException+ must be thrown as defined in the
+  corresponding +ExchangeRateProvider+ interface API documentation.
+* If no explicit provider names are passed, the provider names and ordering as defined by
   +getDefaultProviderChain()+ have to be used.
-* As for other SPIs in this JSR the loading of different +ExchangeRateProvider+ instances should be delegated to the
-  +Bootstrap+ implementation.
+* Implementations can easily provide alternate combination policies, but defining a corresponding configuration flag
+  that can be passed to a +ConversionQuery+ and that must be interpreted by the registered
+  +MonetaryConversionsSingletonSpi+ implementation, e.g.
+
+[source, java]
+-------------------------------------------------------------------------------
+ExchangeRateProvider rateProvider = getExchangeRateProvider(ConversionQueryBuilder.of()
+   .setProviders("XY", "foo")
+   .set(MyProviderCombiationPolicy.CHEAPEST_CONTRACT_FIRST)
+   .build());
+-------------------------------------------------------------------------------
+
+Basically all access methods by default delegate to +getExchangeRateProvider(ConversionQuery)+. Nevertheless all possible
+access methods from the +MonetaryConversions+ singleton are reflected in the SPI, so implementations have full control of
+the logic executed.
+
 
 ===== Adding Currency Conversion Capabilities
 Adding additional capabilities for currency conversion equals to implementing and registering classes implementing the
-+ExchangeRateProvider+ interface. The interface itself is part of the API and described in +<<ExchangeRate>>+ and
-+<<ExchangeRateProvider>>+.
-Basically the implementation of the +MonetaryConversionsSingletonSpi+ determines how the implementations must be
-registered. Hereby the registered +ServiceProvider+ implementation is responsible for loading and providing the
-according components. Refer also to <<Bootstrap>> Mechanism for more details.
++ExchangeRateProvider+ interface. The interface itself is part of the API and described in +<<ExchangeRateProvider>>+
+and +<<ExchangeRate>>+.
 
-===== Adapting the Logging Backend
-By default the JSR API logic uses +java.util.logging+ (JUL) as logging backend. JUL allows to configure additional or
-customized logging Handler instances, so alternate logging backends can be used easily, by registering a forwarding
-+Handler+ implementation for +javax.money+ and configuring the +Logger+ instance to not delegating to its parent loggers.
+Implementations of the +MonetaryConversionsSingletonSpi+ should use the current <<Bootstrap>> implementation
+to load right providers to be used for a given runtime context.
 
-The implementation that implements the API’s SPI may use a different logging approach.
 
 [[FormattingSPI]]
 ==== Formatting SPI
-===== Providing Amount Formats
-The +MonetaryFormats+ singleton delegates creation of +MonetaryAmountFormat+ instances to registered instances of
-+javax.money.spi.MonetaryAmountFormatProviderSpi+. Hereby at least one instance of +MonetaryAmountFormatProviderSpi+ must be
-registered as +Bootstrap+ component, which is defined as follows:
+[[MonetaryFormatsSingletonSpi]]
+===== Accessing Monetary Amount Formats
+
+Amount Formats are provided by the +MonetaryFormats+ singleton (see <<MonetaryFormats>>). This singleton is
+backed up by an implementation of +javax.money.spi.MonetaryFormatsSingletonSpi+. Implementing this SPI provides
+full control about the singleton’s effective behaviour. As a consequence the methods to be implemented basically
+match the ones defined by the +MonetaryFormats+ class:
+
+[source,java]
+.Interface MonetaryFormatsSingletonSpi
+-------------------------------------------------------------------------------
+public interface MonetaryFormatsSingletonSpi {
+  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers);
+  default MonetaryAmountFormat getAmountFormat(String formatName, String... providers);
+  Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery);
+  default MonetaryAmountFormat getAmountFormat(AmountFormatQuery formatQuery);
+  default boolean isAvailable(AmountFormatQuery formatQuery);
+  default boolean isAvailable(Locale locale, String... providers);
+  Set<Locale> getAvailableLocales(String... providers);
+  Set<String> getProviderNames();
+  List<String> getDefaultProviderChain();
+}
+-------------------------------------------------------------------------------
+
+Hereby
+
+* multiple +MonetaryAmountFormat+ instances can be accessed, provided by registered instances of
+  +MonetaryAmountFormatProviderSpi+ (see next section for details), whereby each provider spi is identified
+  by a unique provider name.
+* +getProviderNames()+ allows to evaluate the names of the registered providers for the current context.
+* +getDefaultProviderChain()+ return the ordered list of provider names representing the default provider chain
+  used, when no explicit rounding providers are selected.
+* Instances of +MonetaryAmountFormat+ can be identified and accessed using a format name.
+* Instances of +MonetaryAmountFormat+ can be accessed using a target +Locale+.
+* When accessing +MonetaryAmountFormat+ instances, the provider chain to be used can be defined explicitly by passing
+  the ordered provider names. If no explicit provider names are passed, the provider names and ordering as defined by
+  +getDefaultProviderChain()+ have to be used.
+* +getAvailableLocales()+ allows to access the locales for which providers can return formats.
+
+Basically all access methods by default delegate to +getAmountFormat(AmountFormatQuery)+. Nevertheless all possible
+access methods from the +MonetaryFormats+ singleton are reflected in the SPI, so implementations have full control of
+the logic executed.
+
+[[MonetaryAmountFormatProviderSpi]]
+===== Adding Amount Formats
+The +MonetaryFormats+ singleton delegates access to +MonetaryAmountFormat+ instances to the registered
++MonetaryFormatsSingletonSpi+ instance. The ladder class is responsible to manage the registered instances of
++javax.money.spi.MonetaryAmountFormatProviderSpi+ to evaluate the correct results:
 
 [source,java]
 .Interface MonetaryAmountFormatProviderSpi
 -------------------------------------------------------------------------------
 public interface MonetaryAmountFormatProviderSpi {
-  MonetaryAmountFormat getAmountFormat(AmountFormatContext context);
+   default String getProviderName();
+   Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery);
+   Set<Locale> getAvailableLocales();
+   Set<String> getAvailableFormatNames();
 }
 -------------------------------------------------------------------------------
 
 Hereby
-* +getAmountFormat(AmountFormatContext)+ returns the corresponding +MonetaryAmountFormat+ instance.
+* +getProviderName()+ defines the (unique) provider name that can be used to reference this format provider either
+  explicitly when accessing format instances or when configuring the default provider chain.
+* at least one instance of +MonetaryAmountFormatProviderSpi+ must be registered to the <<Bootstrap>> logic.
+* +getAmountFormats(AmountFormatQuery)+ returns the corresponding +MonetaryAmountFormat+ instances that match the given
+  query. If the query doe not match, an empty collection should be returned.
+* +getAvailableLocales()+ returns the locales for which instances of +MonetaryAmountFormat+ can be accessed.
+* +getAvailableFormatNames()+ returns the explicit format names for whcih instances of +MonetaryAmountFormat+ can be
+  accessed explicitly from a provider.
 
-IMPORTANT: Note that the +MonetaryFormats+ API class, that is relying on this SPI, will not cache any instances.
-When caching is useful, it must be implemented by the SPI.
-
-Multiple instances of this interface can be registered hereby forming a chain of responsibility, whereas the components
-priority define the ordering within the chain. The first component in the chain, that returns a non-null result,
-determines the final result from calling +MonetaryFormats+.
 
 [[Bootstrap]]
 ==== The Bootstrapping Mechanism
@@ -2393,10 +2549,8 @@ determines the final result from calling +MonetaryFormats+.
 Basically the +Bootstrap+ singleton class is used by all API components to access instances of the different pluggable
 components of the Money API. Hereby also the +Bootstrap+ class delegates the location and loading of services to an
 implementation of a +javax.money.spi.ServiceProvider+, which implements the detailed logic how services are located and
-managed. If no +ServiceProvider+ is configured, a default implementation is used that delegates to
-+java.util.ServiceLoader+:
-
-image::bootstrap.png[align=center]
+managed. If no +ServiceProvider+ is configured, a default implementation is used that uses the
++java.util.ServiceLoader+ to load and locate the instances.
 
 Hereby the methods on the +ServiceProvider+, reflect the main functionality of the overall +Bootstrap+ class:
 
@@ -2404,26 +2558,23 @@ Hereby the methods on the +ServiceProvider+, reflect the main functionality of t
 .Class Bootstrap
 -------------------------------------------------------------------------------
 public final class Bootstrap{
+  public static ServiceProvider init(ServiceProvider serviceProvider);
   public static <T> Collection<T> getServices(Class<T> serviceType){...}
-  public static <T> Collection<T> getServices(Class<T> serviceType,
-                                                Collection<T> defaultServices){...}
   public static <T> T getService(Class<T> serviceType) {...}
-  public static <T> T getService(Class<T> serviceType, T defaultService) {...}
-  public static final class ProviderComparator implements Comparator<Object>{...}
 }
 -------------------------------------------------------------------------------
 
 Summarizing the +Bootstrap+ singleton
 
 * Tries to load an instance of +ServiceProvider+ using +java.util.ServiceLoader+.
-* if no implementation was registered, it falls back to a default +ServiceProvider+ implementation, delegating to
-  +java.util.ServiceLoader+ and with no specific order.
+* if no implementation was registered, it falls back to a default provider implementation, delegating to
+  +java.util.ServiceLoader+ and with no specific ordering/priorization mechanism.
 * if _exact one_ implementation is registered, this implementation is used for loading/accessing the services required
   by the JSR 354 API. The implementation of +ServiceLoader+ hereby can also implement a contextual service registry.
 * if _multiple_ implementations are registered, the implementation is not defined, Hereby a warning is logged.
 
 ===== Service Provider
-To use an alternate implementation of +javax.money.spi.ServiceProvider+ an alternate implementation must be registered
+To use an alternate implementation of +javax.money.spi.ServiceProvider+ it must be registered
 using the +java.util.ServiceLoader+. If no instance is registered, an instance of +DefaultServiceProvider+ is loaded,
 that relies on the +java.util.ServiceLoader+.
 
@@ -2433,32 +2584,30 @@ singleton class:
 [source,java]
 .Interface ServiceProvider
 -------------------------------------------------------------------------------
+@FunctionalInterface
 public interface ServiceProvider {
-  <T> Collection<T> getServices(Class<T> serviceType,
-                        Collection<T> defaultList);
-  default <T> Collection<T> getServices(Class<T> serviceType){...}
+  <T> Collection<T> getServices(Class<T> serviceType){...}
 }
 -------------------------------------------------------------------------------
 
 Hereby
 
-* if a required service type can not be satisfied,
-  ** the corresponding +defaultList+ should be returned as a schedule (this also includes returning +null+).
-  ** If the required numeric capabilities exceed the maximal supported +MonetaryContext+, a +MonetaryException+ must be
-     thrown, refer also to <<MonetaryAmount>> for further details.
+* if a required service type can not be satisfied,  an empty Collection should be returned.
+
 
 ===== Support for EE / CDI
 We have seen that all the singleton accessors defined by this API can be replaced by customized implementations. This
-allows also to adapt the behaviour in case your application runs in a EE/CDI context. Basically CDI can be integrated
-in multiple ways:
+allows also to adapt the behaviour in case your application runs in a EE/CDI context. Given this all singleton
+backing implementations should delegate to the bootstrap component's +ServiceProvider+ to evaluate the right
+instances of components given a special type. As a consequence integration with Java EE can be done in multiple ways:
 
 * you can override the singleton SPIs (+MonetaryAmountsSinlgetonSpi, MonetarFormatsSingletonSpi, MonetaryRoundingsSpi,
-MonetaryConversionsSingletonSpi+ and reimplement the mechanism how the different components are located within the
-current runtime environment. Additionally you can filter or adapt the components accessible, e.g. based on tenant
-or other contextual information. Overriding the singletons gives you full control and basically also allows you to mix
-different component containers (e.g. SE and CDI). Nevertheless overriding the SPIs requires more knowledge about the
-specification. Basically you are recommended to execute the TCK to identify locations, where your implementation may
-not be compliant with this spec.
+MonetaryConversionsSingletonSpi, MonetaryFormatsSingletonSpi+ and reimplement the mechanism how the different
+components are located within the current runtime environment. Additionally you can filter or adapt the components
+accessible, e.g. based on tenant or other contextual information. Overriding the singletons gives you full control.
+Nevertheless overriding the SPIs requires more knowledge about the specification. Basically we recommended to
+execute the TCK to identify locations, where your implementation may not be compliant with this spec, when using
+this approach.
 * Far more easy is to reuse the default singleton implementations, but exchange the +ServiceProvider+ used. This is
   basically quite easy:
   ** Implement an alternative instance of +ServiceProvider+.
@@ -2473,7 +2622,7 @@ foo.bar.MyFooServiceProvider
 
 This will delegate all requests for SPIs to your +foo.bar.MyFooServiceProvider+ implementation. Within this
 implementation you must:
-* fall back on SE mechanism, when EE/CDI is not available, or through a +IllegalStateException+.
+* fall back on SE mechanism, when EE/CDI is not available.
 * locate the components as required
 * enable component precedence by ordering the instances found, e.g. you can base your ordering on +@Priority+
   annotations on the classes loaded. Hereby the components with higher priority must be returned first. They
@@ -2491,26 +2640,17 @@ public class CDIServices implements ServiceProvider {
   @Override
   public <T> List<T> getServices(Class<T> serviceType) {
     List<T> instances = new ArrayList<T>();
-	for (T t : CDIContainer  // backed up by CDI.current().getBeanManager();
+    for(T t: ServiceLoader.load(serviceType)){
+      instances.add(t);
+    }
+    for (T t : CDIContainer  // backed up by CDI.current().getBeanManager();
 				.getInstances(serviceType)) {
 	  instances.add(t);
 	}
+	Collections.sort(instances, PrioritySorter::sort);
 	return instances;
   }
 
-  @Override
-  public <T> List<T> getServices(Class<T> serviceType, List<T> defaultList) {
-    // backed up by CDI.current().getBeanManager();
-    Instance<T> found = CDIContainer.getInstances(serviceType);
-	if (found.isUnsatisfied()) {
-	  return defaultList;
-	}
-	List<T> instances = new ArrayList<T>();
-	for (T t : found) {
-	  instances.add(t);
-	}
-	return instances;
-  }
 }
 
 -------------------------------------------------------------------------------
@@ -2521,11 +2661,12 @@ As a side effect you may add additional functionality to your setup:
   +ServiceLoader+ to your CDI runtime context.
 * With CDI you can, of course, register your SPI implementations simply by implementing them as CDI managed
   beans:
+  * You still can use the +ServiceLoader+ to register your beans.
 
 [source,java]
 .Example writing a CurrencyProvider with CDI
 -------------------------------------------------------------------------------
-@ServicePriority(ServicePriority.NORM_PRIORITY + 1)
+@Priority(100)
 @Singleton
 public class MyCurrencyProvider implements CurrencyProvider {
 
@@ -2535,23 +2676,29 @@ public class MyCurrencyProvider implements CurrencyProvider {
     this.currencies.put("MSCU", new MyCurrency());
   }
 
-  @Override
-  public CurrencyUnit getCurrencyUnit(String currencyCode){
-    return this.currencies.get(currencyCode);
-  }
-
-
-  @Override
-  public CurrencyUnit getCurrencyUnit(Locale locale){
-    return null;
-  }
-
-  @Override
-  public Collection<CurrencyUnit> getCurrencies(){
-    return this.currencies.values();
-  }
+  [...]
 }
 -------------------------------------------------------------------------------
+
+[[LoggingSpi]]
+==== Adapting the Logging Backend
+By default the JSR API logic uses +java.util.logging+ (JUL) as logging backend. JUL allows to configure additional or
+customized logging Handler instances, so alternate logging backends can be used easily, by registering a forwarding
++Handler+ implementation for +javax.money+ and configuring the +Logger+ instance to not delegating to its parent loggers.
+
+The implementation that implements the API’s SPI may use a different logging approach.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 [[MetadataModeling]]
 == Meta-Data Modeling ==
@@ -2564,7 +2711,7 @@ aspects. In general there are 2 flavors of meta-data used throughout the JSR:
 . _Contexts_ provide additional information on value types or services, such as currencies, amounts, conversions or
   formats. Contexts are accessible directly from the corresponding value types, by calling methods named
   +getXXXContext()+.
-. _Queries_ models a generic and flexible way to access services, such as currencies, amounts, conversions or formats
+. _Queries_ models a generic and flexible way to configure services, such as currencies, amounts, conversions or formats
   as needed. Queries can be passed to the different accessor singletons, and also are forwarded to the SPI
   implementations effectively providing the data/services required.
 
@@ -2578,7 +2725,7 @@ Similarly there are two abstract base classes provided:
 The following sections give further information on these concepts.
 
 [[AbstractContext]]
-=== Abstract Class AbstractContext ===
+=== AbstractContext ===
 
 The abstract class +AbstractContext+ models a base type, which is extended by all context implementations within this
 JSR, such as +MonetaryContext, CurrencyContext, RoundingContext, ProviderContext, ConversionContext,
@@ -2591,52 +2738,32 @@ retrieving meta-data:
 public abstract class AbstractContext
 implements Serializable{
   ...
-  public String getProvider();
+  public String getProviderName();
   public Long getTimestampMillis();
   public TemporalAccessor getTimestamp();
 
   public boolean isEmpty();
-  public Boolean getBoolean(Object key);
-  public Boolean getBoolean(Object key, Boolean defaultValue);
-  public Integer getInt(Object key);
-  public Integer getInt(Object key, Integer defaultValue);
-  public Long getLong(Object key);
-  public Long getLong(Object key, Long defaultValue);
-  public Float getFloat(Object key);
-  public Float getFloat(Object key, Float defaultValue);
-  public Double getDouble(Object key);
-  public Double getDouble(Object key, Double defaultValue);
-  public String getText(Object key);
-  public String getText(Object key, String defaultValue);
-  public <A> A get(Class<A> type);
-  public <A> A get(Class<A> type, A defaultValue);
-  public Map<Object,Object> getValues(Class type)
-  public <A> A getAny(Object key, Class<A> type);
-  public <A> A getAny(Object key, Class<A> type, A defaultValue);
-
-  public Collection<?> getCollection(Object key);
-  public <T> Collection<T> getCollection(Object key, Collection<T> defaultValue);
-  public Set<?> getSet(Object key);
-  public <T> Set<T> getSet(Object key, Set<T> defaultValue);
-  public List<?> getList(Object key);
-  public <T> List<T> getList(Object key, List<T> defaultValue);
-  public Map<?> getMap(Object key);
-  public <K,V> Map<K,V> getMap(Object key, Map<K,V> defaultValue);
-
-  public Set<Class> getTypes();
-  public Set<Object> getKeys(Class<?> attributeType);
-
+  public Boolean getBoolean(String key);
+  public Integer getInt(String key);
+  public Long getLong(String key);
+  public Float getFloat(String key);
+  public Double getDouble(String key);
+  public String getText(String key);
+  public <T> T get(Class<T> type);
+  public <T> T get(String key, Class<T> type);
+  public Set<String> getKeys(Class<?> type)
+  public <T> Map<String,T> getValues(Class<T> type)
 }
 -------------------------------------------------------------------------------
 
 Hereby
 
-* each context instance is related to a provider, that created the context.
-* each context instance can have an (optional) validity timestamp.
+* each context instance is related to a provider, that created the context, accessible from +getProviderName()+.
+* each context instance can have an (optional) timestamp.
 * additional attributes can be set, which models a type safe interface for adding properties, without
   duplicating artifacts or creating non portable dependencies.
   ** identified by the attribute’s type.
-  ** identified an arbitrary key
+  ** identified an arbitrary literal key
 
 The classes extending this class hereby are thread-safe and immutable:
 
@@ -2671,31 +2798,27 @@ builder, which provides a type safe mechanism for storing arbitrary meta-data:
 -------------------------------------------------------------------------------
 public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C extends AbstractContext>
 implements Serializable{
-  public B setProvider(String provider);
+  public B setProviderName(String provider);
   public B setTimestampMillis(long timestamp);
   public B setTimestamp(TemporalAccessor timestamp);
 
   public B set(Object value);
   public <T> B set(T value, Class<? extends T> type);
-  public B set(Object key, Object value);
-  public <T> B set(Object key, T value, Class<? extends T> type)
+  public B set(String key, Object value);
+  public <T> B set(String key, T value, Class<? extends T> type)
   public B set(int value);
-  public B set(Object key, int value);
+  public B set(String key, int value);
   public B set(long value);
-  public B set(Object key, long value);
+  public B set(String key, long value);
   public B set(float value);
-  public B set(Object key, float value);
+  public B set(String key, float value);
   public B set(double value);
-  public B set(Object key, double value);
-  public B set(Object key, String value);
-  public B setCollection(Object key, Collection<?> value);
-  public B setList(Object key, List<?> value);
-  public B setMap(Object key, Map<?,?> value);
-  public B setSet(Object key, Set<?> value);
+  public B set(String key, double value);
+  public B set(String key, String value);
 
   public B importContext(AbstractContext context, boolean overwriteDuplicates);
   public B importContext(AbstractContext context);
-  public B removeAttributes(Class<?> type, Object... keys);
+  public B removeAttributes(Class<?> type, String... keys);
   public B removeAll(Class<?> type);
 
   public abstract C build();
@@ -2718,7 +2841,7 @@ public abstract class AbstractQuery extends AbstractContext{
 
   protected AbstractQuery(AbstractQueryBuilder builder);
 
-  public List<String> getProviders();
+  public List<String> getProviderNames();
   public Class<?> getTargetType();
   public Long getTimestampMillis();
   public TemporalAccessor getTimestamp();
@@ -2730,7 +2853,7 @@ As seen above a query is basically the same as a context, thus inheriting all at
 The query provides basic query properties:
 
 * a query contains the provider names that defines the provider chain to be used for answering the query. If not set
-  the corresponsing default provider chain must be used. The providers available are accessible by calling
+  the corresponding default provider chain must be used. The providers available are accessible by calling
   +getProviderNames()+ on the corresponding singleton accessors/SPI interfaces, e.g.
   +MonetaryCurrencies.getProviderNames+, +MonetaryRoundings.getProviderNames+, +MonetaryConversions.getProviderNames+
   etc.
@@ -2755,8 +2878,8 @@ type safe mechanism for storing arbitrary query-data:
 public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBuilder, C extends AbstractQuery>
         extends AbstractContextBuilder<B,C>{
    ...
-   public B setProviders(String... providers);
-   public B setProviders(List<String> providers);
+   public B setProviderNames(String... providers);
+   public B setProviderNames(List<String> providers);
    public B setTimestampMillis(long timestamp);
    public B setTimestamp(TemporalUnit timestamp);
    public B setTargetType(Class<?> type);
@@ -2783,6 +2906,16 @@ most of them for the following reasons:
 
 Nevertheless we think some practices are important and should be followed by implementations, so we added the most
 relevant ones in the following sections.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 === Monetary Arithmetic
 When dealing with monetary amounts the following aspects should be considered:

@@ -20,34 +20,19 @@ import java.util.List;
  * @author Anatole Tresch
  * @author Werner Keil
  */
+@FunctionalInterface
 public interface ServiceProvider {
 
 	/**
 	 * Access a list of services, given its type. The bootstrap mechanism should
 	 * order the instance for precedence, hereby the most significant should be
-	 * first in order.
-	 * 
+     * first in order. If no such services are found, an empty list should be
+     * returned.
+     *
 	 * @param serviceType
 	 *            the service type.
 	 * @return The instance to be used, never {@code null}
 	 */
-	@SuppressWarnings("unchecked")
-    default <T> List<T> getServices(Class<T> serviceType){
-          return getServices(serviceType, Collections.emptyList());
-    }
-
-	/**
-	 * Access a list of services, given its type. The bootstrap mechanism should
-	 * order the instance for precedence, hereby the most significant should be
-	 * first in order.
-	 * 
-	 * @param serviceType
-	 *            the service type.
-	 * @param defaultList
-	 *            the lis returned, if no services could be found.
-	 * @return The instance to be used, never {@code null}
-	 */
-    <T> List<T> getServices(Class<T> serviceType,
-                            List<T> defaultList);
+    <T> List<T> getServices(Class<T> serviceType);
 
 }

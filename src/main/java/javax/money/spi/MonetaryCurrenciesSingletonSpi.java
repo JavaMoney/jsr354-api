@@ -69,7 +69,7 @@ public interface MonetaryCurrenciesSingletonSpi {
     default CurrencyUnit getCurrency(String currencyCode, String... providers) {
         Objects.requireNonNull(currencyCode, "Currency Code may not be null");
         Collection<CurrencyUnit> found =
-                getCurrencies(CurrencyQueryBuilder.of().setCurrencyCodes(currencyCode).setProviders(providers).build());
+                getCurrencies(CurrencyQueryBuilder.of().setCurrencyCodes(currencyCode).setProviderNames(providers).build());
         if (found.isEmpty()) {
             throw new UnknownCurrencyException(currencyCode);
         }
@@ -92,7 +92,7 @@ public interface MonetaryCurrenciesSingletonSpi {
      */
     default CurrencyUnit getCurrency(Locale country, String... providers) {
         Collection<CurrencyUnit> found =
-                getCurrencies(CurrencyQueryBuilder.of().setCountries(country).setProviders(providers).build());
+                getCurrencies(CurrencyQueryBuilder.of().setCountries(country).setProviderNames(providers).build());
         if (found.isEmpty()) {
             throw new MonetaryException("No currency unit found for locale: " + country);
         }
@@ -112,7 +112,7 @@ public interface MonetaryCurrenciesSingletonSpi {
      * @return a collection of all known currencies, never null.
      */
     default Set<CurrencyUnit> getCurrencies(Locale locale, String... providers) {
-        return getCurrencies(CurrencyQueryBuilder.of().setCountries(locale).setProviders(providers).build());
+        return getCurrencies(CurrencyQueryBuilder.of().setCountries(locale).setProviderNames(providers).build());
     }
 
     /**
@@ -126,7 +126,7 @@ public interface MonetaryCurrenciesSingletonSpi {
      * would return a result for the given code.
      */
     default boolean isCurrencyAvailable(String code, String... providers) {
-        return !getCurrencies(CurrencyQueryBuilder.of().setCurrencyCodes(code).setProviders(providers).build())
+        return !getCurrencies(CurrencyQueryBuilder.of().setCurrencyCodes(code).setProviderNames(providers).build())
                 .isEmpty();
     }
 
@@ -141,7 +141,7 @@ public interface MonetaryCurrenciesSingletonSpi {
      * non empty result for the given code.
      */
     default boolean isCurrencyAvailable(Locale locale, String... providers) {
-        return !getCurrencies(CurrencyQueryBuilder.of().setCountries(locale).setProviders(providers).build()).isEmpty();
+        return !getCurrencies(CurrencyQueryBuilder.of().setCountries(locale).setProviderNames(providers).build()).isEmpty();
     }
 
     /**
@@ -152,7 +152,7 @@ public interface MonetaryCurrenciesSingletonSpi {
      * @return a collection of all known currencies, never null.
      */
     default Set<CurrencyUnit> getCurrencies(String... providers) {
-        return getCurrencies(CurrencyQueryBuilder.of().setProviders(providers).build());
+        return getCurrencies(CurrencyQueryBuilder.of().setProviderNames(providers).build());
     }
 
     /**

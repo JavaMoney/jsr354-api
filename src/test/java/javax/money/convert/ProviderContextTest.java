@@ -21,30 +21,30 @@ import java.util.Set;
 /**
  * Created by Anatole on 05.03.14.
  */
-public class ProviderContextTest{
+public class ProviderContextTest {
 
     @Test
-    public void testGetRateTypes() throws Exception{
+    public void testGetRateTypes() throws Exception {
         ProviderContext ctx = ProviderContextBuilder.of("myprov", RateType.DEFERRED, RateType.HISTORIC).build();
-        assertEquals("myprov", ctx.getProvider());
+        assertEquals("myprov", ctx.getProviderName());
     }
 
     @Test
-    public void testToBuilder() throws Exception{
+    public void testToBuilder() throws Exception {
         ProviderContext ctx = ProviderContextBuilder.of("myprov", RateType.ANY).build();
         assertEquals(ctx, ctx.toBuilder().build());
     }
 
     @Test
-    public void testOf() throws Exception{
+    public void testOf() throws Exception {
         ProviderContext ctx = ProviderContext.of("testprov");
         ProviderContext ctx2 = ProviderContext.of("testprov");
         assertEquals(ctx, ctx2);
-        assertEquals("testprov", ctx.getProvider());
+        assertEquals("testprov", ctx.getProviderName());
     }
 
     @Test
-    public void testOfWithRateType() throws Exception{
+    public void testOfWithRateType() throws Exception {
         ProviderContext ctx = ProviderContext.of("test", RateType.REALTIME);
         ProviderContext ctx2 = ProviderContext.of("test", RateType.REALTIME);
         assertEquals(ctx, ctx2);

@@ -12,7 +12,6 @@ package javax.money.convert;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -35,26 +34,26 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
     @Override
     public ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery) {
 
-        if (conversionQuery.getProviders().isEmpty() || conversionQuery.getProviders().contains("test")) {
+        if (conversionQuery.getProviderNames().isEmpty() || conversionQuery.getProviderNames().contains("test")) {
             return provider;
         }
-        throw new MonetaryException("No such rate provider(s): " + conversionQuery.getProviders());
+        throw new MonetaryException("No such rate provider(s): " + conversionQuery.getProviderNames());
     }
 
     @Override
     public boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery) {
-        return conversionQuery.getProviders().isEmpty() || conversionQuery.getProviders().contains("test");
+        return conversionQuery.getProviderNames().isEmpty() || conversionQuery.getProviderNames().contains("test");
     }
 
     @Override
     public boolean isConversionAvailable(ConversionQuery conversionQuery) {
-        return conversionQuery.getProviders().isEmpty() || conversionQuery.getProviders().contains("test");
+        return conversionQuery.getProviderNames().isEmpty() || conversionQuery.getProviderNames().contains("test");
     }
 
     @Override
-	public Collection<String> getProviderNames() {
-		return Collections.singletonList("test");
-	}
+    public Collection<String> getProviderNames() {
+        return Collections.singletonList("test");
+    }
 
     @Override
     public List<String> getDefaultProviderChain() {

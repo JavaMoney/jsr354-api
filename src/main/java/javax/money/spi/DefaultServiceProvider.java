@@ -38,14 +38,14 @@ class DefaultServiceProvider implements ServiceProvider {
      * @return the items found, never {@code null}.
      */
     @Override
-    public <T> List<T> getServices(final Class<T> serviceType, final List<T> defaultList) {
+    public <T> List<T> getServices(final Class<T> serviceType) {
         @SuppressWarnings("unchecked")
         List<T> found = (List<T>) servicesLoaded.get(serviceType);
         if (found != null) {
             return found;
         }
 
-        return loadServices(serviceType, defaultList);
+        return loadServices(serviceType);
     }
 
     /**
@@ -57,14 +57,11 @@ class DefaultServiceProvider implements ServiceProvider {
      *
      * @return  the items found, never {@code null}.
      */
-    private <T> List<T> loadServices(final Class<T> serviceType, final List<T> defaultList) {
+    private <T> List<T> loadServices(final Class<T> serviceType) {
+        List<T> services = new ArrayList<>();
         try {
-            List<T> services = new ArrayList<>();
             for (T t : ServiceLoader.load(serviceType)) {
                 services.add(t);
-            }
-            if(services.isEmpty()){
-                services.addAll(defaultList);
             }
             @SuppressWarnings("unchecked")
             final List<T> previousServices = (List<T>) servicesLoaded.putIfAbsent(serviceType, (List<Object>) services);
@@ -72,7 +69,7 @@ class DefaultServiceProvider implements ServiceProvider {
         } catch (Exception e) {
             Logger.getLogger(DefaultServiceProvider.class.getName()).log(Level.WARNING,
                                                                          "Error loading services of type " + serviceType, e);
-            return defaultList;
+            return services;
         }
     }
 

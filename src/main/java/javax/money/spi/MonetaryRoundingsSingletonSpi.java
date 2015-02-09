@@ -73,14 +73,6 @@ public interface MonetaryRoundingsSingletonSpi {
      */
     MonetaryRounding getDefaultRounding();
 
-    //    /**
-    //     * Get the current available/supported {@link javax.money.QueryType} instances, applicable to instances of
-    //     * {@link javax.money.RoundingQuery}.
-    //     *
-    //     * @return the current available query types, never null.
-    //     */
-    //    Set<QueryType> getQueryTypes();
-
     /**
      * Access a {@link javax.money.MonetaryRounding} for rounding {@link javax.money.MonetaryAmount}
      * instances given a currency.
@@ -95,7 +87,7 @@ public interface MonetaryRoundingsSingletonSpi {
      */
     default MonetaryRounding getRounding(CurrencyUnit currencyUnit, String... providers) {
         MonetaryRounding op =
-                getRounding(RoundingQueryBuilder.of().setProviders(providers).setCurrency(currencyUnit).build());
+                getRounding(RoundingQueryBuilder.of().setProviderNames(providers).setCurrency(currencyUnit).build());
         return Optional.ofNullable(op).orElseThrow(() -> new MonetaryException(
                 "No rounding provided for CurrencyUnit: " + currencyUnit.getCurrencyCode()));
     }
@@ -113,7 +105,7 @@ public interface MonetaryRoundingsSingletonSpi {
      */
     default MonetaryRounding getRounding(String roundingName, String... providers) {
         MonetaryRounding op =
-                getRounding(RoundingQueryBuilder.of().setProviders(providers).setRoundingName(roundingName).build());
+                getRounding(RoundingQueryBuilder.of().setProviderNames(providers).setRoundingName(roundingName).build());
         return Optional.ofNullable(op)
                 .orElseThrow(() -> new MonetaryException("No rounding provided with rounding name: " + roundingName));
     }
@@ -122,7 +114,7 @@ public interface MonetaryRoundingsSingletonSpi {
     /**
      * Query a specific rounding with the given query. If multiple roundings match the query the first one is
      * selected, since the query allows to determine the providers and their ordering by setting {@link
-     * RoundingQuery#getProviders()}.
+     * RoundingQuery#getProviderNames()}.
      *
      * @param query the rounding query, not null.
      * @return the rounding found, or null, if no rounding matches the query.
@@ -157,7 +149,7 @@ public interface MonetaryRoundingsSingletonSpi {
      */
     default boolean isRoundingAvailable(String roundingId, String... providers) {
         return isRoundingAvailable(
-                RoundingQueryBuilder.of().setProviders(providers).setRoundingName(roundingId).build());
+                RoundingQueryBuilder.of().setProviderNames(providers).setRoundingName(roundingId).build());
     }
 
     /**
@@ -172,6 +164,6 @@ public interface MonetaryRoundingsSingletonSpi {
      *                                  {@link RoundingProviderSpi} instance.
      */
     default boolean isRoundingAvailable(CurrencyUnit currencyUnit, String... providers) {
-        return isRoundingAvailable(RoundingQueryBuilder.of().setProviders(providers).setCurrency(currencyUnit).build());
+        return isRoundingAvailable(RoundingQueryBuilder.of().setProviderNames(providers).setCurrency(currencyUnit).build());
     }
 }

@@ -43,7 +43,8 @@ public final class MonetaryFormats {
      */
     private static MonetaryFormatsSingletonSpi loadMonetaryFormatsSingletonSpi() {
         try {
-            return Bootstrap.getService(MonetaryFormatsSingletonSpi.class, new DefaultMonetaryFormatsSingletonSpi());
+            return Optional.ofNullable(Bootstrap.getService(MonetaryFormatsSingletonSpi.class))
+                    .orElseGet(() -> new DefaultMonetaryFormatsSingletonSpi());
         } catch (Exception e) {
             Logger.getLogger(MonetaryFormats.class.getName())
                     .log(Level.WARNING, "Failed to load MonetaryFormatsSingletonSpi, using default.", e);
@@ -76,7 +77,7 @@ public final class MonetaryFormats {
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     public static MonetaryAmountFormat getAmountFormat(Locale locale, String... providers) {
-        return getAmountFormat(AmountFormatQueryBuilder.of(locale).setProviders(providers).setLocale(locale).build());
+        return getAmountFormat(AmountFormatQueryBuilder.of(locale).setProviderNames(providers).setLocale(locale).build());
     }
 
     /**
@@ -136,7 +137,7 @@ public final class MonetaryFormats {
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     public static MonetaryAmountFormat getAmountFormat(String formatName, String... providers) {
-        return getAmountFormat(AmountFormatQueryBuilder.of(formatName).setProviders(providers).build());
+        return getAmountFormat(AmountFormatQueryBuilder.of(formatName).setProviderNames(providers).build());
     }
 
     /**

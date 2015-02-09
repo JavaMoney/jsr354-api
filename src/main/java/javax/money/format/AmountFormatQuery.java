@@ -82,7 +82,7 @@ public final class AmountFormatQuery extends AbstractQuery {
      * @param providers the providers to be used, not null.
      */
     public static AmountFormatQuery of(Locale locale, String... providers) {
-        return AmountFormatQueryBuilder.of(locale).setProviders(providers).build();
+        return AmountFormatQueryBuilder.of(locale).setProviderNames(providers).build();
     }
 
     /**

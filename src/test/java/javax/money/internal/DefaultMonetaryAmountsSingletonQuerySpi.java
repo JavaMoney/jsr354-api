@@ -26,7 +26,7 @@ public class DefaultMonetaryAmountsSingletonQuerySpi implements MonetaryAmountsS
 
     @Override
     public Collection<MonetaryAmountFactory<?>> getAmountFactories(MonetaryAmountFactoryQuery query) {
-        if (query.getProviders().contains("gigigig2")) {
+        if (query.getProviderNames().contains("gigigig2")) {
             return Collections.emptyList();
         }
         return factories;

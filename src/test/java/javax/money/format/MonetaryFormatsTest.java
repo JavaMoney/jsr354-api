@@ -58,17 +58,17 @@ public class MonetaryFormatsTest {
     @Test
     public void testIsAvailable_Query() {
         assertTrue(MonetaryFormats.isAvailable(AmountFormatQueryBuilder.of("Test")
-                .setProvider("TestAmountFormatProvider").build()));
+                .setProviderName("TestAmountFormatProvider").build()));
         assertTrue(MonetaryFormats.isAvailable(AmountFormatQueryBuilder.of("Test")
                 .build()));
         assertFalse(MonetaryFormats.isAvailable(AmountFormatQueryBuilder.of("Test")
-                .setProvider("foo").build()));
+                .setProviderName("foo").build()));
     }
 
     @Test
     public void testGetAmountFormats_Query() {
         Collection<MonetaryAmountFormat> formats1 = MonetaryFormats.getAmountFormats(AmountFormatQueryBuilder.of("Test")
-                .setProvider("TestAmountFormatProvider").build());
+                .setProviderName("TestAmountFormatProvider").build());
         assertNotNull(formats1);
         assertEquals(formats1.size(), 1);
         Collection<MonetaryAmountFormat> formats2 = MonetaryFormats.getAmountFormats(AmountFormatQueryBuilder.of("Test")
@@ -76,7 +76,7 @@ public class MonetaryFormatsTest {
         assertNotNull(formats2);
         assertEquals(formats2.size(), 1);
         Collection<MonetaryAmountFormat> formats3 = MonetaryFormats.getAmountFormats(AmountFormatQueryBuilder.of("Test")
-                .setProvider("foo").build());
+                .setProviderName("foo").build());
         assertNotNull(formats3);
         assertEquals(formats3.size(), 0);
     }

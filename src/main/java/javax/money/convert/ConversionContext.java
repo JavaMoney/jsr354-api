@@ -80,7 +80,7 @@ public final class ConversionContext extends AbstractContext {
      *
      * @return the provider, or {code null}.
      */
-    public String getProvider() {
+    public String getProviderName() {
         return getText("provider");
     }
 
@@ -114,7 +114,7 @@ public final class ConversionContext extends AbstractContext {
     public static ConversionContext of(String provider, RateType rateType) {
         ConversionContextBuilder b = new ConversionContextBuilder();
         b.setRateType(rateType);
-        b.setProvider(provider);
+        b.setProviderName(provider);
         return b.build();
     }
 

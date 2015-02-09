@@ -38,8 +38,8 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @param providers the providers to use, not null.
      * @return the query builder for chaining.
      */
-    public B setProviders(String... providers) {
-        return setProviders(Arrays.asList(providers));
+    public B setProviderNames(String... providers) {
+        return setProviderNames(Arrays.asList(providers));
     }
 
     /**
@@ -49,7 +49,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @param providers the providers to use, not null.
      * @return the query builder for chaining.
      */
-    public B setProviders(List<String> providers) {
+    public B setProviderNames(List<String> providers) {
         Objects.requireNonNull(providers);
         return set(AbstractQuery.KEY_QUERY_PROVIDERS, providers);
     }
@@ -87,8 +87,8 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @return the query builder for chaining.
      */
     @Override
-    public B setProvider(String provider) {
-        return setProviders(provider);
+    public B setProviderName(String provider) {
+        return setProviderNames(provider);
     }
 
     /**

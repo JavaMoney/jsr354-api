@@ -20,7 +20,7 @@ import java.util.Objects;
  *
  * @see javax.money.CurrencyUnit#getCurrencyContext()
  */
-public final class CurrencyContextBuilder extends AbstractContextBuilder<CurrencyContextBuilder,CurrencyContext>{
+public final class CurrencyContextBuilder extends AbstractContextBuilder<CurrencyContextBuilder, CurrencyContext> {
 
     /**
      * Creates a new builder.
@@ -28,9 +28,9 @@ public final class CurrencyContextBuilder extends AbstractContextBuilder<Currenc
      * @param provider the provider name, creating the corresponding {@link CurrencyUnit} containing
      *                 the final {@link CurrencyContext} created by this builder, not null.
      */
-    private CurrencyContextBuilder(String provider){
+    private CurrencyContextBuilder(String provider) {
         Objects.requireNonNull(provider);
-        setProvider(provider);
+        setProviderName(provider);
     }
 
     /**
@@ -38,7 +38,7 @@ public final class CurrencyContextBuilder extends AbstractContextBuilder<Currenc
      *
      * @param context the {@link javax.money.CurrencyContext} to be used for initializing this builder.
      */
-    private CurrencyContextBuilder(CurrencyContext context){
+    private CurrencyContextBuilder(CurrencyContext context) {
         Objects.requireNonNull(context);
         importContext(context);
     }
@@ -49,7 +49,7 @@ public final class CurrencyContextBuilder extends AbstractContextBuilder<Currenc
      * @return a new {@link javax.money.CurrencyContext} instance.
      */
     @Override
-    public CurrencyContext build(){
+    public CurrencyContext build() {
         return new CurrencyContext(this);
     }
 
@@ -60,7 +60,7 @@ public final class CurrencyContextBuilder extends AbstractContextBuilder<Currenc
      *                 the final {@link CurrencyContext} created by this builder, not null.
      * @return a new {@link javax.money.CurrencyContextBuilder} instance, never null.
      */
-    public static CurrencyContextBuilder of(String provider){
+    public static CurrencyContextBuilder of(String provider) {
         return new CurrencyContextBuilder(provider);
     }
 
@@ -70,7 +70,7 @@ public final class CurrencyContextBuilder extends AbstractContextBuilder<Currenc
      * @param context the {@link javax.money.CurrencyContext} to be used for initializing this builder.
      * @return a new {@link javax.money.CurrencyContextBuilder} instance, never null.
      */
-    public static CurrencyContextBuilder of(CurrencyContext context){
+    public static CurrencyContextBuilder of(CurrencyContext context) {
         return new CurrencyContextBuilder(context);
     }
 

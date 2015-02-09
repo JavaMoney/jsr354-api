@@ -35,7 +35,7 @@ public class MonetaryConversionsSingletonSpiTest {
 
         @Override
         public ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery) {
-            if (conversionQuery.getProviders().contains("a")) {
+            if (conversionQuery.getProviderNames().contains("a")) {
                 return new ExchangeRateProvider() {
                     @Override
                     public ProviderContext getProviderContext() {
@@ -77,7 +77,7 @@ public class MonetaryConversionsSingletonSpiTest {
                         };
                     }
                 };
-            } else if (conversionQuery.getProviders().contains("b")) {
+            } else if (conversionQuery.getProviderNames().contains("b")) {
                 return new ExchangeRateProvider() {
                     @Override
                     public ProviderContext getProviderContext() {
@@ -154,10 +154,10 @@ public class MonetaryConversionsSingletonSpiTest {
 
     @Test
     public void testIsConversionAvailable() {
-        assertTrue(testSpi.isConversionAvailable(ConversionQueryBuilder.of().setProviders("a").setTermCurrency(TestCurrency.of("CHF")).build()));
-        assertTrue(testSpi.isConversionAvailable(ConversionQueryBuilder.of().setProviders("b").setTermCurrency(TestCurrency.of("CHF")).build()));
-        assertTrue(testSpi.isConversionAvailable(ConversionQueryBuilder.of().setProviders("b", "b").setTermCurrency(TestCurrency.of("CHF")).build()));
-        assertFalse(testSpi.isConversionAvailable(ConversionQueryBuilder.of().setProviders("foo").setTermCurrency(TestCurrency.of("CHF")).build()));
+        assertTrue(testSpi.isConversionAvailable(ConversionQueryBuilder.of().setProviderNames("a").setTermCurrency(TestCurrency.of("CHF")).build()));
+        assertTrue(testSpi.isConversionAvailable(ConversionQueryBuilder.of().setProviderNames("b").setTermCurrency(TestCurrency.of("CHF")).build()));
+        assertTrue(testSpi.isConversionAvailable(ConversionQueryBuilder.of().setProviderNames("b", "b").setTermCurrency(TestCurrency.of("CHF")).build()));
+        assertFalse(testSpi.isConversionAvailable(ConversionQueryBuilder.of().setProviderNames("foo").setTermCurrency(TestCurrency.of("CHF")).build()));
     }
 
 }

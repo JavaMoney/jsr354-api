@@ -109,18 +109,6 @@ public final class Bootstrap {
     /**
      * Delegate method for {@link ServiceProvider#getServices(Class)}.
      *
-     * @param serviceType     the service type.
-     * @param defaultServices the default service list.
-     * @return the services found.
-     * @see ServiceProvider#getServices(Class, List)
-     */
-    public static <T> List<T> getServices(Class<T> serviceType, List<T> defaultServices) {
-        return getServiceProvider().getServices(serviceType, defaultServices);
-    }
-
-    /**
-     * Delegate method for {@link ServiceProvider#getServices(Class)}.
-     *
      * @param serviceType the service type.
      * @return the service found, never {@code null}.
      * @see ServiceProvider#getServices(Class)
@@ -129,23 +117,6 @@ public final class Bootstrap {
         List<T> services = getServiceProvider().getServices(serviceType);
         if (services.isEmpty()) {
             throw new MonetaryException("No such service found: " + serviceType);
-        }
-        return services.get(0);
-    }
-
-    /**
-     * Delegate method for {@link ServiceProvider#getServices(Class)}.
-     *
-     * @param serviceType    the service type.
-     * @param defaultService returned if no service was found.
-     * @return the service found, only {@code null}, if no service was found and
-     * {@code defaultService==null}.
-     * @see ServiceProvider#getServices(Class, List)
-     */
-    public static <T> T getService(Class<T> serviceType, T defaultService) {
-        List<T> services = getServiceProvider().getServices(serviceType);
-        if (services.isEmpty()) {
-            return defaultService;
         }
         return services.get(0);
     }

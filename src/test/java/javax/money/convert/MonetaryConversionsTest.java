@@ -54,10 +54,10 @@ public class MonetaryConversionsTest {
     @Test
     public void testGetConversion2() throws Exception {
         assertNotNull(MonetaryConversions.getConversion(
-                ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).setProviders("test").build()));
+                ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).setProviderNames("test").build()));
         try {
             MonetaryConversions.getConversion(
-                    ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).setProviders("foo").build());
+                    ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).setProviderNames("foo").build());
             fail("Should throw MonetaryException");
         } catch (MonetaryException e) {
             // OK
@@ -67,7 +67,7 @@ public class MonetaryConversionsTest {
     @Test
     public void testIsConversionAvailable2() throws Exception {
         assertTrue(MonetaryConversions.isConversionAvailable(
-                ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).setProviders("test").build()));
+                ConversionQueryBuilder.of().setTermCurrency(TestCurrency.of("CHF")).setProviderNames("test").build()));
     }
 
     @Test

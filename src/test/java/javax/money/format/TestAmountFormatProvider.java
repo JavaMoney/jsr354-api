@@ -26,7 +26,7 @@ public class TestAmountFormatProvider implements
     @Override
     public Collection<MonetaryAmountFormat> getAmountFormats(
             AmountFormatQuery formatStyle) {
-        if (formatStyle.getProviders().contains("foo")) {
+        if (formatStyle.getProviderNames().contains("foo")) {
             return Collections.emptyList();
         }
         Locale loc = formatStyle.getLocale();

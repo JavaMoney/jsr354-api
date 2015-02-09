@@ -47,8 +47,9 @@ public final class MonetaryCurrencies {
      */
     private static MonetaryCurrenciesSingletonSpi loadMonetaryCurrenciesSingletonSpi() {
         try {
-            return Bootstrap
-                    .getService(MonetaryCurrenciesSingletonSpi.class, new DefaultMonetaryCurrenciesSingletonSpi());
+            return Optional.ofNullable(Bootstrap
+                    .getService(MonetaryCurrenciesSingletonSpi.class)).orElseGet(
+                    () -> new DefaultMonetaryCurrenciesSingletonSpi());
         } catch (Exception e) {
             Logger.getLogger(MonetaryCurrencies.class.getName())
                     .log(Level.SEVERE, "Failed to load MonetaryCurrenciesSingletonSpi, using default.", e);

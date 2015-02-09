@@ -56,7 +56,7 @@ public abstract class AbstractQuery extends AbstractContext {
      *
      * @return the ordered providers, never null.
      */
-    public List<String> getProviders() {
+    public List<String> getProviderNames() {
 
         List<String> result = get(KEY_QUERY_PROVIDERS, List.class);
         if (result == null) {

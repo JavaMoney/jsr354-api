@@ -18,34 +18,34 @@ import org.testng.annotations.Test;
 /**
  * Created by Anatole on 05.03.14.
  */
-public class ConversionContextTest{
+public class ConversionContextTest {
     @Test
-    public void testGetRateType() throws Exception{
+    public void testGetRateType() throws Exception {
         ConversionContext ctx = ConversionContextBuilder.of().setRateType(RateType.DEFERRED).build();
         assertEquals(RateType.DEFERRED, ctx.getRateType());
     }
 
     @Test
-    public void testGetProvider() throws Exception{
-        ConversionContext ctx = ConversionContextBuilder.of().setProvider("myprov").build();
-        assertEquals("myprov", ctx.getProvider());
+    public void testGetProvider() throws Exception {
+        ConversionContext ctx = ConversionContextBuilder.of().setProviderName("myprov").build();
+        assertEquals("myprov", ctx.getProviderName());
     }
 
     @Test
-    public void testToBuilder() throws Exception{
-        ConversionContext ctx = ConversionContextBuilder.of().setProvider("myprov").build();
+    public void testToBuilder() throws Exception {
+        ConversionContext ctx = ConversionContextBuilder.of().setProviderName("myprov").build();
         assertEquals(ctx, ctx.toBuilder().build());
     }
 
     @Test
-    public void testOf() throws Exception{
+    public void testOf() throws Exception {
         ConversionContext ctx = ConversionContext.of();
         ConversionContext ctx2 = ConversionContext.of();
         assertEquals(ctx, ctx2);
     }
 
     @Test
-    public void testOf1() throws Exception{
+    public void testOf1() throws Exception {
         ConversionContext ctx = ConversionContext.of(RateType.REALTIME);
         ConversionContext ctx2 = ConversionContext.of(RateType.REALTIME);
         assertEquals(ctx, ctx2);
@@ -53,11 +53,11 @@ public class ConversionContextTest{
     }
 
     @Test
-    public void testOf2() throws Exception{
+    public void testOf2() throws Exception {
         ConversionContext ctx = ConversionContext.of("prov", RateType.REALTIME);
         ConversionContext ctx2 = ConversionContext.of("prov", RateType.REALTIME);
         assertEquals(ctx, ctx2);
         assertEquals(RateType.REALTIME, ctx.getRateType());
-        assertEquals("prov", ctx.getProvider());
+        assertEquals("prov", ctx.getProviderName());
     }
 }

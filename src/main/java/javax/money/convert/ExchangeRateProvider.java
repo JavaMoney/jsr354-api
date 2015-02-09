@@ -18,7 +18,7 @@ import java.util.Objects;
  * The provider and its capabilities can be defined in arbitrary detail by the
  * corresponding {@link javax.money.convert.ProviderContext}.
  * Instances of this class must only provide conversion data for exact one provider, identified by
- * {@link ProviderContext#getProvider()}.
+ * {@link ProviderContext#getProviderName()}.
  *
  * When accessing ExchangeRateProvider instances or {@link javax.money.convert.CurrencyConversion} instances from the
  * {@link MonetaryConversions}
@@ -87,8 +87,8 @@ public interface ExchangeRateProvider{
     default boolean isAvailable(ConversionQuery conversionQuery){
         Objects.requireNonNull(conversionQuery);
         try{
-            return conversionQuery.getProviders().isEmpty() ||
-                    conversionQuery.getProviders().contains(getProviderContext().getProvider());
+            return conversionQuery.getProviderNames().isEmpty() ||
+                    conversionQuery.getProviderNames().contains(getProviderContext().getProviderName());
         }
         catch(Exception e){
             return false;

@@ -54,8 +54,9 @@ public final class MonetaryRoundings {
      */
     private static MonetaryRoundingsSingletonSpi loadMonetaryRoundingsSingletonSpi() {
         try {
-            return Bootstrap
-                    .getService(MonetaryRoundingsSingletonSpi.class, new DefaultMonetaryRoundingsSingletonSpi());
+            return Optional.ofNullable(Bootstrap
+                    .getService(MonetaryRoundingsSingletonSpi.class))
+                    .orElseGet(() -> new DefaultMonetaryRoundingsSingletonSpi());
         } catch (Exception e) {
             Logger.getLogger(MonetaryCurrencies.class.getName())
                     .log(Level.SEVERE, "Failed to load MonetaryCurrenciesSingletonSpi, using default.", e);
@@ -304,7 +305,7 @@ public final class MonetaryRoundings {
         @Override
         public Collection<MonetaryRounding> getRoundings(RoundingQuery query) {
             List<MonetaryRounding> result = new ArrayList<>();
-            Collection<String> providerNames = query.getProviders();
+            Collection<String> providerNames = query.getProviderNames();
             if (providerNames == null || providerNames.isEmpty()) {
                 providerNames = getDefaultProviderChain();
             }

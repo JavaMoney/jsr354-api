@@ -35,10 +35,10 @@ public class AbstractQueryTest {
     @Test
     public void testGetProviders() throws Exception {
         AbstractQueryBuilder b = createBuilder();
-        b.setProviders("1", "2", "3");
+        b.setProviderNames("1", "2", "3");
         AbstractQuery query = b.build();
         assertNotNull(query);
-        List<String> providers = query.getProviders();
+        List<String> providers = query.getProviderNames();
         assertNotNull(providers);
         assertTrue(providers.size() == 3);
         assertTrue(providers.contains("1"));

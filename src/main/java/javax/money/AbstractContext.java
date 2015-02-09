@@ -176,7 +176,7 @@ public abstract class AbstractContext implements Serializable {
      *
      * @return the provider name, or null.
      */
-    public String getProvider() {
+    public String getProviderName() {
         return getText(KEY_PROVIDER);
     }
 

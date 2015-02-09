@@ -14,7 +14,6 @@ import javax.money.CurrencyQuery;
 import javax.money.CurrencyQueryBuilder;
 import javax.money.CurrencyUnit;
 import javax.money.TestCurrency;
-import javax.money.convert.*;
 import java.util.*;
 
 import static org.testng.AssertJUnit.*;
@@ -42,7 +41,7 @@ public class MonetaryCurrenciesSingletonSpiTest {
             if (codes.size() == 1) {
                 return new HashSet(Arrays.asList(new CurrencyUnit[]{TestCurrency.of("USD")}));
             }
-            Collection<String> providers = query.getProviders();
+            Collection<String> providers = query.getProviderNames();
             if (providers.size() == 1) {
                 return new HashSet(Arrays.asList(new CurrencyUnit[]{TestCurrency.of("CHF")}));
             }

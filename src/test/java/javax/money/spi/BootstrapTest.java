@@ -59,22 +59,6 @@ public class BootstrapTest {
     }
 
     @Test
-    public void testGetServicesWithDefault() throws Exception {
-        Collection<Object> services = Collection.class
-                .cast(Bootstrap.getServices(Boolean.class, Arrays.asList(Boolean.FALSE, Boolean.TRUE)));
-        assertNotNull(services);
-        assertFalse(services.isEmpty());
-        assertTrue(services.size() == 2);
-        assertTrue(services.contains(Boolean.FALSE));
-        assertTrue(services.contains(Boolean.TRUE));
-        services = Collection.class.cast(Bootstrap.getServices(String.class, null));
-        assertNotNull(services);
-        assertFalse(services.isEmpty());
-        assertTrue(services.contains("service1"));
-        assertTrue(services.contains("service2"));
-    }
-
-    @Test
     public void testGetService() throws Exception {
         Integer num = Bootstrap.getService(Integer.class);
         assertNotNull(num);
@@ -84,13 +68,6 @@ public class BootstrapTest {
     @Test(expectedExceptions = {MonetaryException.class})
     public void testGetService_BadCase() throws Exception {
         Bootstrap.getService(Locale.class);
-    }
-
-    @Test
-    public void testGetService1() throws Exception {
-        Long num = Bootstrap.getService(Long.class, 111L);
-        assertNotNull(num);
-        assertTrue(num.equals(111L));
     }
 
     public final static class TestServiceProvider extends DefaultServiceProvider
@@ -108,16 +85,5 @@ public class BootstrapTest {
             return super.getServices(serviceType);
         }
 
-        @Override
-        public <T> List<T> getServices(Class<T> serviceType, List<T> defaultList) {
-            if (String.class.equals(serviceType)) {
-                return List.class.cast(Arrays.asList("service1", "service2"));
-            } else if (Integer.class.equals(serviceType)) {
-                return List.class.cast(Arrays.asList(5));
-            } else if (Long.class.equals(serviceType)) {
-                return List.class.cast(Arrays.asList((long) 111));
-            }
-            return super.getServices(serviceType, defaultList);
-        }
     }
 }

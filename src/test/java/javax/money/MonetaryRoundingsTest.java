@@ -75,7 +75,7 @@ public class MonetaryRoundingsTest {
                 RoundingQueryBuilder.of().setCurrency(TestCurrency.of("CHF")).set("timestamp", 200L)
                         .build()));
         assertFalse(MonetaryRoundings.isRoundingAvailable(
-                RoundingQueryBuilder.of().setCurrency(TestCurrency.of("CHF")).setProvider("foo")
+                RoundingQueryBuilder.of().setCurrency(TestCurrency.of("CHF")).setProviderName("foo")
                         .build()));
     }
 

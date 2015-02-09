@@ -11,9 +11,14 @@
 package javax.money;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a general context of data targeting an item of type {@code Q}. Contexts are used to add arbitrary
@@ -81,31 +86,23 @@ public abstract class AbstractQuery extends AbstractContext {
      *
      * @return the timestamp in millis, or null.
      */
-    public Long getTimestampMillis() {
-        Object value = get(KEY_QUERY_TIMESTAMP, Object.class);
-        if (value instanceof Long) {
-            return (Long) value;
-        } else if (value instanceof TemporalAccessor) {
-            TemporalAccessor acc = (TemporalAccessor) value;
-            return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
+    @Override
+	public Long getTimestampMillis() {
+		LocalDateTime value = getTimestamp();
+		if (Objects.nonNull(value)) {
+			return Date.from(value.atZone(ZoneId.systemDefault()).toInstant())
+					.getTime();
         }
         return null;
     }
 
     /**
      * Get the current timestamp. If not set it tries to of an Instant from #getTimestampMillis().
-     *
      * @return the current timestamp, or null.
      */
-    public TemporalAccessor getTimestamp() {
-        Object value = get(KEY_QUERY_TIMESTAMP, Object.class);
-        if (value instanceof TemporalAccessor) {
-            return (TemporalAccessor) value;
-        } else if (value instanceof Long) {
-            Long ts = (Long) value;
-            return Instant.ofEpochMilli(ts);
-        }
-        return null;
+    @Override
+	public LocalDateTime getTimestamp() {
+		return get(KEY_QUERY_TIMESTAMP, LocalDateTime.class);
     }
 
 }

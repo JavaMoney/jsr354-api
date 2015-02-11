@@ -2686,40 +2686,43 @@ customized logging Handler instances, so alternate logging backends can be used 
 The implementation that implements the API’s SPI may use a different logging approach.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 [[MetadataModeling]]
-== Meta-Data Modeling ==
+== Meta-Data Contexts and Query Models ==
 === Overview ===
 
-The JSR uses a unified meta-data model to support also more advanced use cases, which are not explicitly specified.
+The JSR uses a unified meta-data model to support more advanced use cases, which are not explicitly specified.
 Mostly reasons for not specifying these aspects is that these things are highly use case and organization dependent
 aspects. In general there are 2 flavors of meta-data used throughout the JSR:
 
 . _Contexts_ provide additional information on value types or services, such as currencies, amounts, conversions or
   formats. Contexts are accessible directly from the corresponding value types, by calling methods named
-  +getXXXContext()+.
-. _Queries_ models a generic and flexible way to configure services, such as currencies, amounts, conversions or formats
-  as needed. Queries can be passed to the different accessor singletons, and also are forwarded to the SPI
+  +getContext()+.
+. _Queries_ models a generic and flexible way to configure/parametrize services for accessing currencies, amounts,
+  conversions or formats. Queries can be passed to the different accessor singletons, and also are forwarded to the SPI
   implementations effectively providing the data/services required.
 
 Similarly there are two abstract base classes provided:
 
 . +AbstractContext+ models an abstract base type, which is extended by all context implementations within this JSR,
   such as +MonetaryContext, CurrencyContext, RoundingContext, ProviderContext, ConversionContext, AmountFormatContext+.
-. +AbstractQuery+ models an abstract base type, which is extended by all query implementations within this JSR,
+. +AbstractQuery+ models an abstract base query, which is extended by all query implementations within this JSR,
   such as +MonetaryAmountFactoryQuery, CurrencyQuery, RoundingQuery, ConversionQuery, AmountFormatQuery+.
 
 The following sections give further information on these concepts.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 [[AbstractContext]]
 === AbstractContext ===
@@ -2737,9 +2740,8 @@ implements Serializable{
   ...
   public String getProviderName();
   public Long getTimestampMillis();
-  public TemporalAccessor getTimestamp();
+  public LocalDateTime getTimestamp();
 
-  public boolean isEmpty();
   public Boolean getBoolean(String key);
   public Integer getInt(String key);
   public Long getLong(String key);
@@ -2748,19 +2750,23 @@ implements Serializable{
   public String getText(String key);
   public <T> T get(Class<T> type);
   public <T> T get(String key, Class<T> type);
+
+  public boolean isEmpty();
+  public Class<?> getType(String key);
   public Set<String> getKeys(Class<?> type)
-  public <T> Map<String,T> getValues(Class<T> type)
 }
 -------------------------------------------------------------------------------
 
 Hereby
 
 * each context instance is related to a provider, that created the context, accessible from +getProviderName()+.
-* each context instance can have an (optional) timestamp.
+* each context instance can have an (optional) timestamp, e.g. usable for historic data.
 * additional attributes can be set, which models a type safe interface for adding properties, without
   duplicating artifacts or creating non portable dependencies.
   ** identified by the attribute’s type.
   ** identified an arbitrary literal key
+* the +getXXX, get+ methods only return values of the resulting type is assignment compatible, so no class cast
+  exceptions do occur.
 
 The classes extending this class hereby are thread-safe and immutable:
 
@@ -2797,26 +2803,20 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
 implements Serializable{
   public B setProviderName(String provider);
   public B setTimestampMillis(long timestamp);
-  public B setTimestamp(TemporalAccessor timestamp);
+  public B setTimestamp(LocalDateTime timestamp);
 
   public B set(Object value);
   public <T> B set(T value, Class<? extends T> type);
   public B set(String key, Object value);
   public <T> B set(String key, T value, Class<? extends T> type)
-  public B set(int value);
   public B set(String key, int value);
-  public B set(long value);
   public B set(String key, long value);
-  public B set(float value);
   public B set(String key, float value);
-  public B set(double value);
   public B set(String key, double value);
-  public B set(String key, String value);
 
   public B importContext(AbstractContext context, boolean overwriteDuplicates);
   public B importContext(AbstractContext context);
-  public B removeAttributes(Class<?> type, String... keys);
-  public B removeAll(Class<?> type);
+  public B removeAttributes(String... keys);
 
   public abstract C build();
 

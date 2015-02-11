@@ -104,7 +104,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      * @return the {@link MonetaryContext} of this {@code MonetaryAmount}, never {@code null} .
      */
-    MonetaryContext getMonetaryContext();
+    MonetaryContext getContext();
 
     /**
      * Queries this monetary amount for a value.

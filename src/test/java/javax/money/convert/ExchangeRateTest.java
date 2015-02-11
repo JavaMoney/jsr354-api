@@ -37,7 +37,7 @@ public class ExchangeRateTest {
         assertEquals(term, rate.getCurrency());
         assertTrue(1.5d == rate.getFactor().doubleValue());
         assertEquals(ConversionContext.of("myProvider", RateType.DEFERRED),
-                rate.getConversionContext());
+                rate.getContext());
         assertEquals(Arrays.asList(new ExchangeRate[]{rate}),
                 rate.getExchangeRateChain());
     }
@@ -52,7 +52,7 @@ public class ExchangeRateTest {
         assertEquals(term, rate.getCurrency());
         assertTrue(1.5d == rate.getFactor().doubleValue());
         assertEquals(ConversionContext.of("test", RateType.DEFERRED),
-                rate.getConversionContext());
+                rate.getContext());
         assertEquals(Arrays.asList(new ExchangeRate[]{rate}),
                 rate.getExchangeRateChain());
     }
@@ -75,7 +75,7 @@ public class ExchangeRateTest {
         assertEquals(term, rate.getCurrency());
         assertTrue(0.8d * 1.4d == rate.getFactor().doubleValue());
         assertEquals(ConversionContext.of("test", RateType.DEFERRED),
-                rate.getConversionContext());
+                rate.getContext());
         assertEquals(Arrays.asList(new ExchangeRate[]{rate1, rate2}),
                 rate.getExchangeRateChain());
     }
@@ -97,7 +97,7 @@ public class ExchangeRateTest {
         assertEquals(term, rate.getCurrency());
         assertTrue(0.8d * 1.4d == rate.getFactor().doubleValue());
         assertEquals(ConversionContext.of("test", RateType.DEFERRED),
-                rate.getConversionContext());
+                rate.getContext());
         assertEquals(Arrays.asList(new ExchangeRate[]{rate1, rate2}),
                 rate.getExchangeRateChain());
     }

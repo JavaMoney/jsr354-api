@@ -18,7 +18,7 @@ import java.util.Objects;
  * <p>
  * Note this class is NOT thread-safe.
  *
- * @see javax.money.CurrencyUnit#getCurrencyContext()
+ * @see javax.money.CurrencyUnit#getContext()
  */
 public final class CurrencyContextBuilder extends AbstractContextBuilder<CurrencyContextBuilder, CurrencyContext> {
 

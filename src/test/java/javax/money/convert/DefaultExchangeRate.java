@@ -153,7 +153,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      *
      * @return the conversion context, never null.
      */
-    public final ConversionContext getConversionContext() {
+    public final ConversionContext getContext() {
         return this.conversionContext;
     }
 
@@ -223,7 +223,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
             compare = this.getCurrency().getCurrencyCode().compareTo(o.getCurrency().getCurrencyCode());
         }
         if (compare == 0) {
-            compare = this.getConversionContext().getProviderName().compareTo(o.getConversionContext().getProviderName());
+            compare = this.getContext().getProviderName().compareTo(o.getContext().getProviderName());
         }
         return compare;
     }
@@ -413,7 +413,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
         public Builder setRate(ExchangeRate rate) {
             this.baseCurrency = rate.getBaseCurrency();
             this.termCurrency = rate.getCurrency();
-            this.conversionContext = rate.getConversionContext();
+            this.conversionContext = rate.getContext();
             this.factor = rate.getFactor();
             this.rateChain = rate.getExchangeRateChain();
             this.termCurrency = rate.getCurrency();
@@ -427,7 +427,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      * @return a new {@link Builder}, never {@code null}.
      */
     public Builder toBuilder() {
-        return new Builder(getConversionContext()).setBaseCurrency(getBaseCurrency()).setTermCurrency(getCurrency())
+        return new Builder(getContext()).setBaseCurrency(getBaseCurrency()).setTermCurrency(getCurrency())
                 .setFactor(getFactor())
                 .setRateChain(getExchangeRateChain());
     }

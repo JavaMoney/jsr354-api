@@ -75,7 +75,7 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         }
 
         @Override
-        public ConversionContext getConversionContext() {
+        public ConversionContext getContext() {
             return ctx;
         }
 
@@ -102,7 +102,7 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
         private ProviderContext ctx = ProviderContext.of("test");
 
         @Override
-        public ProviderContext getProviderContext() {
+        public ProviderContext getContext() {
             return ctx;
         }
 

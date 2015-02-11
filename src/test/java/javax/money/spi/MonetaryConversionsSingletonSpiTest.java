@@ -38,7 +38,7 @@ public class MonetaryConversionsSingletonSpiTest {
             if (conversionQuery.getProviderNames().contains("a")) {
                 return new ExchangeRateProvider() {
                     @Override
-                    public ProviderContext getProviderContext() {
+                    public ProviderContext getContext() {
                         return ProviderContext.of("a");
                     }
 
@@ -51,7 +51,7 @@ public class MonetaryConversionsSingletonSpiTest {
                     public CurrencyConversion getCurrencyConversion(ConversionQuery conversionQuery) {
                         return new CurrencyConversion() {
                             @Override
-                            public ConversionContext getConversionContext() {
+                            public ConversionContext getContext() {
                                 return null;
                             }
 
@@ -80,7 +80,7 @@ public class MonetaryConversionsSingletonSpiTest {
             } else if (conversionQuery.getProviderNames().contains("b")) {
                 return new ExchangeRateProvider() {
                     @Override
-                    public ProviderContext getProviderContext() {
+                    public ProviderContext getContext() {
                         return ProviderContext.of("b");
                     }
 
@@ -93,7 +93,7 @@ public class MonetaryConversionsSingletonSpiTest {
                     public CurrencyConversion getCurrencyConversion(ConversionQuery conversionQuery) {
                         return new CurrencyConversion() {
                             @Override
-                            public ConversionContext getConversionContext() {
+                            public ConversionContext getContext() {
                                 return null;
                             }
 

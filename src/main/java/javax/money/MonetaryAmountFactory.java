@@ -143,13 +143,13 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
      *
      * @param amount the amount to be used, not {@code null}.
      * @return this factory instance, for chaining.
-     * @throws MonetaryException when the {@link MonetaryContext} implied by {@code amount.getMonetaryContext()}
+     * @throws MonetaryException when the {@link MonetaryContext} implied by {@code amount.getContext()}
      *                           exceeds the capabilities supported by this factory type.
      */
     default MonetaryAmountFactory<T> setAmount(MonetaryAmount amount) {
         setCurrency(amount.getCurrency());
         setNumber(amount.getNumber());
-        setContext(amount.getMonetaryContext());
+        setContext(amount.getContext());
         return this;
     }
 

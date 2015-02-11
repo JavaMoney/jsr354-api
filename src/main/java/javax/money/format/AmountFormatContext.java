@@ -18,7 +18,7 @@ import javax.money.MonetaryAmountFactory;
  * The {@link AmountFormatContext} provides details about a {@link javax.money.format.MonetaryAmountFormat}.
  *
  * @author Anatole Tresch
- * @see MonetaryAmountFormat#getAmountFormatContext()
+ * @see MonetaryAmountFormat#getContext()
  */
 @SuppressWarnings("serial")
 public final class AmountFormatContext extends AbstractContext {

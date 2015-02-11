@@ -115,7 +115,7 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi {
         }
 
         @Override
-        public CurrencyContext getCurrencyContext() {
+        public CurrencyContext getContext() {
             return CONTEXT;
         }
 

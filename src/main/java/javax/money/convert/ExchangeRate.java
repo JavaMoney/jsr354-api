@@ -76,7 +76,7 @@ import java.util.List;
  * <ul>
  * <li>must be Comparable(with {@code ExchangeRate})</li>
  * <li>must implement equals/hashCode considering #getBaseCurrency, #getCurrency,
- * #getFactor and #getConversionContext.</li>
+ * #getFactor and #getContext.</li>
  * <li>should be thread-safe</li>
  * <li>should be serializable</li>
  * <li>should provide a fluent builder API for constructing new rate instances easily.</li>
@@ -96,7 +96,7 @@ public interface ExchangeRate extends CurrencySupplier {
      *
      * @return the conversion context, never null.
      */
-    ConversionContext getConversionContext();
+    ConversionContext getContext();
 
     /**
      * Get the base (source) {@link CurrencyUnit}.

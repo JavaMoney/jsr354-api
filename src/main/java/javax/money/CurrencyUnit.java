@@ -95,6 +95,6 @@ public interface CurrencyUnit extends Comparable<CurrencyUnit>{
      * on the type and capabilities of a CurrencyUnit, e.g. its provider and more.
      * @return the currency's context, never null.
      */
-    CurrencyContext getCurrencyContext();
+    CurrencyContext getContext();
 
 }

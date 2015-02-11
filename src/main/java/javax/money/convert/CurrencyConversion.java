@@ -46,7 +46,7 @@ public interface CurrencyConversion extends MonetaryOperator, CurrencySupplier {
      *
      * @return the target {@link ConversionContext}.
      */
-    ConversionContext getConversionContext();
+    ConversionContext getContext();
 
     /**
      * Get the {@link ExchangeRate} applied for the given {@link MonetaryAmount}

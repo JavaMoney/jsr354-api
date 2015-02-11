@@ -93,7 +93,7 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String>{
      *
      * @return the {@link AmountFormatContext} used, never {@code null}.
      */
-    AmountFormatContext getAmountFormatContext();
+    AmountFormatContext getContext();
 
 
     /**

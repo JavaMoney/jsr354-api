@@ -20,7 +20,7 @@ import java.util.Objects;
  * <p>
  * Note this class is NOT thread-safe.
  *
- * @see MonetaryAmountFormat#getAmountFormatContext()
+ * @see MonetaryAmountFormat#getContext()
  */
 public final class AmountFormatContextBuilder
         extends AbstractContextBuilder<AmountFormatContextBuilder, AmountFormatContext> {

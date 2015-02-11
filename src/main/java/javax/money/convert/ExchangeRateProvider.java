@@ -46,7 +46,7 @@ public interface ExchangeRateProvider{
      *
      * @return the exchange rate type, never {@code null}.
      */
-    ProviderContext getProviderContext();
+    ProviderContext getContext();
 
     /**
      * Access a {@link ExchangeRate} using the given currencies. The
@@ -88,7 +88,7 @@ public interface ExchangeRateProvider{
         Objects.requireNonNull(conversionQuery);
         try{
             return conversionQuery.getProviderNames().isEmpty() ||
-                    conversionQuery.getProviderNames().contains(getProviderContext().getProviderName());
+                    conversionQuery.getProviderNames().contains(getContext().getProviderName());
         }
         catch(Exception e){
             return false;
@@ -182,7 +182,7 @@ public interface ExchangeRateProvider{
      * the rate cannot be reversed.
      */
     default ExchangeRate getReversed(ExchangeRate rate){
-        ConversionQuery reverseQuery = rate.getConversionContext().toQueryBuilder().setBaseCurrency(rate.getCurrency())
+        ConversionQuery reverseQuery = rate.getContext().toQueryBuilder().setBaseCurrency(rate.getCurrency())
                 .setTermCurrency(rate.getBaseCurrency()).build();
         if(isAvailable(reverseQuery)){
             return getExchangeRate(reverseQuery);

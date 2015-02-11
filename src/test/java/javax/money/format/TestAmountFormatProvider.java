@@ -63,7 +63,7 @@ public class TestAmountFormatProvider implements
         }
 
         @Override
-        public AmountFormatContext getAmountFormatContext() {
+        public AmountFormatContext getContext() {
             return formatStyle;
         }
 

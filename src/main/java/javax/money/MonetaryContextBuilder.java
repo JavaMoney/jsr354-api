@@ -15,7 +15,7 @@ package javax.money;
  * <p>
  * Note this class is NOT thread-safe.
  *
- * @see javax.money.MonetaryAmount#getMonetaryContext()
+ * @see javax.money.MonetaryAmount#getContext()
  */
 public final class MonetaryContextBuilder extends AbstractContextBuilder<MonetaryContextBuilder, MonetaryContext> {
 
@@ -69,7 +69,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      * Set the MonetaryAmount implementation class.
      *
      * @return the implementation class of the containing amount instance, never null.
-     * @see javax.money.MonetaryAmount#getMonetaryContext()
+     * @see javax.money.MonetaryAmount#getContext()
      */
     public MonetaryContextBuilder setAmountType(Class<? extends MonetaryAmount> amountType) {
         return set(MonetaryContext.AMOUNT_TYPE, amountType);

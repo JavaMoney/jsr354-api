@@ -59,7 +59,7 @@ public class MonetaryFormatsSingletonSpiTest {
         class PseudoFormat implements MonetaryAmountFormat {
 
             @Override
-            public AmountFormatContext getAmountFormatContext() {
+            public AmountFormatContext getContext() {
                 return AmountFormatContextBuilder.of(Locale.ENGLISH).build();
             }
 

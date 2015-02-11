@@ -47,7 +47,7 @@ public final class DummyAmount implements MonetaryAmount {
             }
 
             @Override
-            public CurrencyContext getCurrencyContext() {
+            public CurrencyContext getContext() {
                 return DUMMY_CURRENCYCONTEXT;
             }
 
@@ -59,7 +59,7 @@ public final class DummyAmount implements MonetaryAmount {
     }
 
     @Override
-    public MonetaryContext getMonetaryContext() {
+    public MonetaryContext getContext() {
         return monetaryContext;
     }
 

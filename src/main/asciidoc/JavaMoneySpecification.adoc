@@ -3234,9 +3234,7 @@ The present value (abbreviated PV) shows how financial formulas can be implement
 models the current value of a financial in- or outflow in the future, weighted with a calculatory interest rate.
 The PV is defined as follows:
 
-  C
--------
-(1+r)^n
+  C / ((1+r)^n)
 
 Hereby
 

@@ -1,10 +1,5 @@
 package javax.money.spi;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +8,8 @@ import java.util.Locale;
 import org.testng.annotations.Test;
 
 import javax.money.MonetaryException;
+
+import static org.testng.Assert.*;
 
 /**
  * Created by Anatole on 04.03.14.
@@ -65,9 +62,9 @@ public class BootstrapTest {
         assertTrue(num.equals(5));
     }
 
-    @Test(expectedExceptions = {MonetaryException.class})
+    @Test
     public void testGetService_BadCase() throws Exception {
-        Bootstrap.getService(Locale.class);
+        assertNull(Bootstrap.getService(Locale.class));
     }
 
     public final static class TestServiceProvider extends DefaultServiceProvider

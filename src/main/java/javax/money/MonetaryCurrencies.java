@@ -52,7 +52,7 @@ public final class MonetaryCurrencies {
                     () -> new DefaultMonetaryCurrenciesSingletonSpi());
         } catch (Exception e) {
             Logger.getLogger(MonetaryCurrencies.class.getName())
-                    .log(Level.SEVERE, "Failed to load MonetaryCurrenciesSingletonSpi, using default.", e);
+                    .log(Level.INFO, "Failed to load MonetaryCurrenciesSingletonSpi, using default.", e);
             return new DefaultMonetaryCurrenciesSingletonSpi();
         }
     }

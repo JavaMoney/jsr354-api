@@ -26,6 +26,11 @@ class DefaultServiceProvider implements ServiceProvider {
     /** List of services loaded, per class. */
     private final ConcurrentHashMap<Class, List<Object>> servicesLoaded = new ConcurrentHashMap<>();
 
+    @Override
+    public int getPriority() {
+        return 0;
+    }
+
     /**
      * Loads and registers services.
      *

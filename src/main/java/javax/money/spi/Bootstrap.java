@@ -111,17 +111,16 @@ public final class Bootstrap {
      * Delegate method for {@link ServiceProvider#getServices(Class)}.
      *
      * @param serviceType the service type.
-     * @return the service found, never {@code null}.
+     * @return the service found, or {@code null}.
      * @see ServiceProvider#getServices(Class)
      */
     public static <T> T getService(Class<T> serviceType) {
         List<T> services = getServiceProvider().getServices(serviceType);
 		return services
 				.stream()
-				.findFirst()
-				.orElseThrow(
-						() -> new MonetaryException("No such service found: "
-								+ serviceType));
+                .sorted((o1, o2) -> o1.getClass().getSimpleName().compareTo(o2.getClass().getSimpleName()))
+                .findFirst()
+                .orElse(null);
     }
 
 }

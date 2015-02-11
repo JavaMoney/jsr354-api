@@ -655,7 +655,7 @@ public interface CurrencyUnit{
   String getCurrencyCode();
   int getNumericCode();
   int getDefaultFractionDigits();
-  CurrencyContext getCurrencyContext();
+  CurrencyContext getContext();
 }
 --------------------------------------------
 
@@ -724,7 +724,7 @@ The interface is defined as follows:
 public interface MonetaryAmount{
   CurrencyUnit getCurrency();
   NumberValue getNumber();
-  MonetaryContext getMonetaryContext();
+  MonetaryContext getContext();
 
   // Create a factory that allows to create a new amount based on this amount
   MonetaryAmountFactory<?> getFactory();
@@ -776,7 +776,7 @@ Hereby
   return type to a more specific implementation of +CurrencyUnit+ if desired.
 * +NumberValue getNumber()+ returns a +NumberValue+ (discussed within the next section) that models the numeric part of
   an amount for data interoperability.
-* +getMonetaryContext()+ allows to access the monetary meta-data context of an amount, which may include data similar
+* +getContext()+ allows to access the monetary meta-data context of an amount, which may include data similar
   to +java.math.MathContext+ but also other arbitrary attributes determined by the implementation (refer to section
   <<metadata modelling>> for more details on contexts).
 * Instances of +MonetaryOperator+ and +MonetaryQuery<R>+ can be applied on a +MonetaryAmount+ instance by passing them
@@ -1589,7 +1589,7 @@ Summarizing an +ExchangeRate+ is modelled as follows:
 -------------------------------------------------------------------------------
 public interface ExchangeRate extends CurrencySupplier{
   ...
-  ConversionContext getConversionContext();
+  ConversionContext getContext();
   CurrencyUnit getBaseCurrency();
   CurrencyUnit getCurrency();
   NumberValue getFactor();
@@ -1605,7 +1605,7 @@ Hereby
 * +isDerived()+ allows to check if the mapping in fact is backed up by a derived mapping, e.g. a triangular rate chain.
 * +getExchangeRateChain()+ return the full rate chain. In case of a non derived rate, this chain must contain only
   the single rate itself. In case of triangular rate the chain contains all contained subrates.
-* the +ConversionContext+ accessible from +getConversionContext()+ allows to store additional meta data (refer also to
+* the +ConversionContext+ accessible from +getContext()+ allows to store additional meta data (refer also to
   <<MetadataModeling>> for further details) about the rate instance, such as
   ** the rate's provider
   ** the rate's timestamp
@@ -1637,7 +1637,7 @@ Summarizing an +ExchangeRateProvider+ is modelled as follows:
 .Interface ExchangeRateProvider
 -------------------------------------------------------------------------------
 public interface ExchangeRateProvider{
-  ProviderContext getProviderContext();
+  ProviderContext getContext();
 
   boolean isAvailable(ConversionQuery conversionQuery);
   ExchangeRate getExchangeRate(ConversionQuery conversionQuery);
@@ -1717,7 +1717,7 @@ be accessed. In fact all the examples seen so far rely on the default provider c
 +MonetaryConversions.getDefaultProviderChain()+. Hereby the chain contains an ordered list of provider names, which
 correspond to the provider names that identify each registered +ExchangeRateProvider+ uniquely. The provider name is
 defined as a mandatory attribute on the +ProviderContext+, accessible from each +ExchangeRateProvider+ from
-+ExchangeRateProvider.getProviderContext()+.
++ExchangeRateProvider.getContext()+.
 
 E.g. the output of the +European Central Bank (ECB)+ provider context, shipped with the _Moneta reference
 implementation_, prints out the following when accessing +toString()+:
@@ -1801,7 +1801,7 @@ public interface MonetaryAmountFormat extends MonetaryQuery<String>{
   default String format(MonetaryAmount<?> amount){...}
   void print(Appendable appendable, MonetaryAmount<?> amount) throws IOException;
   MonetaryAmount<?> parse(CharSequence text) throws ParseException;
-  AmountFormatContext getAmountFormatContext();
+  AmountFormatContext getContext();
 }
 -------------------------------------------------------------------------------
 
@@ -1909,7 +1909,7 @@ Hereby the above listing illustrates quite well, what are the minimal properties
   +MonetaryAmountFactory+ instance to be used for creating amounts on parsing etc.
 
 The configuration active for a concrete +MonetaryAmountFormat+ is accessible also from the +AmountFormatContext+, which
-can obtained by calling +MonetaryAmountFormat.getAmountFormatContext()+.
+can obtained by calling +MonetaryAmountFormat.getContext()+.
 
 
 [[AccessingFormats]]
@@ -2421,7 +2421,7 @@ Hereby
 
 * multiple +ExchangeRateProvider+ instances can be registered.
 * each +ExchangeRateProvider+ is identified by it's (unique) name, accessible from
-  +ExchangeRateProvider.getProviderContext().getProviderName()+.
+  +ExchangeRateProvider.getContext().getProviderName()+.
 * +getProviderNames()+ allows to evaluate the names of the registered providers for the current context.
 * +getDefaultProviderChain()+ return the ordered list of provider names representing the default provider chain
   used, when no explicit rounding providers are selected.
@@ -2712,18 +2712,6 @@ The following sections give further information on these concepts.
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
 [[AbstractContext]]
 === AbstractContext ===
 
@@ -2739,8 +2727,6 @@ public abstract class AbstractContext
 implements Serializable{
   ...
   public String getProviderName();
-  public Long getTimestampMillis();
-  public LocalDateTime getTimestamp();
 
   public Boolean getBoolean(String key);
   public Integer getInt(String key);
@@ -2760,7 +2746,6 @@ implements Serializable{
 Hereby
 
 * each context instance is related to a provider, that created the context, accessible from +getProviderName()+.
-* each context instance can have an (optional) timestamp, e.g. usable for historic data.
 * additional attributes can be set, which models a type safe interface for adding properties, without
   duplicating artifacts or creating non portable dependencies.
   ** identified by the attribute’s type.
@@ -2802,8 +2787,6 @@ builder, which provides a type safe mechanism for storing arbitrary meta-data:
 public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C extends AbstractContext>
 implements Serializable{
   public B setProviderName(String provider);
-  public B setTimestampMillis(long timestamp);
-  public B setTimestamp(LocalDateTime timestamp);
 
   public B set(Object value);
   public <T> B set(T value, Class<? extends T> type);
@@ -2840,8 +2823,6 @@ public abstract class AbstractQuery extends AbstractContext{
 
   public List<String> getProviderNames();
   public Class<?> getTargetType();
-  public Long getTimestampMillis();
-  public TemporalAccessor getTimestamp();
 
 }
 -------------------------------------------------------------------------------
@@ -2855,7 +2836,6 @@ The query provides basic query properties:
   +MonetaryCurrencies.getProviderNames+, +MonetaryRoundings.getProviderNames+, +MonetaryConversions.getProviderNames+
   etc.
 * a query may defines a target type, hereby defining the target result type expected.
-* a query contains an (optional) timestamp defining the validity timestamp of the query's result.
 
 Hereby +AbstractQuery+ inherits most of the functionality from the +<<AbstractContext>>+
 super class.
@@ -2877,8 +2857,6 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
    ...
    public B setProviderNames(String... providers);
    public B setProviderNames(List<String> providers);
-   public B setTimestampMillis(long timestamp);
-   public B setTimestamp(TemporalUnit timestamp);
    public B setTargetType(Class<?> type);
 }
 -------------------------------------------------------------------------------
@@ -2904,15 +2882,6 @@ most of them for the following reasons:
 Nevertheless we think some practices are important and should be followed by implementations, so we added the most
 relevant ones in the following sections.
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 === Monetary Arithmetic
 When dealing with monetary amounts the following aspects should be considered:
@@ -3002,6 +2971,7 @@ The precision used for displaying of monetary amounts on the screen, a printout 
 systems, is completely dependent on the use cases. This JSR supports these scenarios with the possibility to apply
 arbitrary monetary adjustments (modeled as +MonetaryOperator+).
 
+
 == Examples
 The following sections illustrate the API’s usage in more detail.
 
@@ -3017,7 +2987,7 @@ As an example the reference implementation provides a class +org.javamoney.monet
 .Class Money
 -------------------------------------------------------------------------------
 public final class Money
-implements MonetaryAmount, Comparable<MonetaryAmount>, Serializable {
+implements MonetaryAmount, Comparable<MonetaryAmount>, Serializable, CurrencySupplier {
   ...
 }
 -------------------------------------------------------------------------------
@@ -3077,7 +3047,8 @@ if(ctx.getMaxScale()>=5){
 }
 -------------------------------------------------------------------
 
-Finally performing arithmetic operations in both above scenarios works similar as it is when using +java.math.BigDecimal+:
+Finally performing arithmetic operations in both above scenarios works similar as it is when using
++java.math.BigDecimal+:
 
 [source,java]
 .Example Usage Monetary Arithmetic
@@ -3110,7 +3081,7 @@ When accessing +MonetaryAmountFactory+ instances it is possible to configure the
 -------------------------------------------------------------------
 MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(
    MonetaryAmountFactoryQueryBuilder.of(Money.class)
-     .set(new MathContext(250, RoundingMode.HALF_EVEN)).build()
+     .set(new MathContext(250, RoundingMode.HALF_DOWN)).build()
 );
 // Creates an instance of Money with the given MathContext
 MonetaryAmount m1 = fact.setCurrency("CHF").setNumber(250.34).create();
@@ -3152,7 +3123,7 @@ the same numeric value, but with XXX (undefined) as currency:
 -------------------------------------------------------------------------------
 public final class ToInvalid implements MonetaryOperator{
   public <T extends MonetaryAmount> T apply(T amount){
-    return (T)amount.getFactory().with("XXX").create();
+    return (T)amount.getFactory().setCurrency("XXX").create();
   }
 }
 -------------------------------------------------------------------------------
@@ -3263,12 +3234,16 @@ The present value (abbreviated PV) shows how financial formulas can be implement
 models the current value of a financial in- or outflow in the future, weighted with a calculatory interest rate.
 The PV is defined as follows:
 
+  C
+-------
+(1+r)^n
 
 Hereby
 
-* the time of the cash flow (in periods)
-* the discount rate (the rate of return that could be earned on an investment in the financial markets with similar risk.); the opportunity cost of capital
-* the net cash flow i.e. cash inflow – cash outflow, at time t . For educational purposes,
+* +n+ is the time of the cash flow (in periods)
+* +r+ is the discount rate (the rate of return that could be earned on an investment in the financial markets with
+  similar risk.); the opportunity cost of capital.
+* +C+ is the net cash flow i.e. cash inflow – cash outflow, at time t . For educational purposes,
 
 The same financial function now can be implemented for example as follows:
 
@@ -3356,7 +3331,7 @@ CurrencyConversion conv = MonetaryConversions.getConversion(ConversionQueryBuild
         .setProviders("CS", "EZB", "IMF")
         .setTermCurrency("EUR")
         .set(MonetaryAmount.class, inCHF, MonetaryAmount.class)
-        .setTimestamp(ts)
+        .set(LocalDate.of(2008, 1, 1))
         .setRateType(RateType.HISTORIC)
         .set(StockExchange.NYSE) // custom type
         .set("contractId", "AA-1234.2")
@@ -3394,7 +3369,6 @@ http://jcp.org/en/jsr/detail?id=354
 [[[source]]]
 Public Source Code Repository on GitHub: http://github.com/JavaMoney,
              Branch/Tag matching updated PDR is {version}
-
 
 
 === Links

@@ -219,9 +219,15 @@
 
     <licenses>
         <license>
-            <name>Spec License</name>
+            <name>Spec Evaluation License</name>
             <comments>Spec</comments>
-            <url>LICENSE.html</url>
+            <url>EVALUATION-LICENSE.html</url>
+            <distribution>repo</distribution>
+        </license>
+        <license>
+            <name>Spec Implementation License</name>
+            <comments>Spec</comments>
+            <url>IMPLEMENTATION-LICENSE.html</url>
             <distribution>repo</distribution>
         </license>
     </licenses>

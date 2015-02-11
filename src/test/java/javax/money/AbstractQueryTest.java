@@ -61,8 +61,8 @@ public class AbstractQueryTest {
         AbstractQuery query = b.build();
         assertEquals(query.getTimestampMillis().longValue(), 200L);
 		LocalDateTime localDateTime = LocalDateTime
-				.parse("1969-12-31T21:00:00.200");
-		assertEquals(query.getTimestamp(), localDateTime);
+                .parse("1970-01-01T01:00:00.200");
+        assertEquals(query.getTimestamp(), localDateTime);
     }
 
     @Test

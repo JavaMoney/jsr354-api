@@ -19,7 +19,7 @@ import org.testng.annotations.Test;
 public class CurrencyConversionExceptionTest {
 
     private static ConversionContext CONTEXT100 =
-            ConversionContextBuilder.of().setProviderName("test").setTimestampMillis(100L).build();
+            ConversionContextBuilder.of().setProviderName("test").set("timestampMillis", 100L).build();
 
     @Test
     public void testCurrencyConversionExceptionCurrencyUnitCurrencyUnitContext() {

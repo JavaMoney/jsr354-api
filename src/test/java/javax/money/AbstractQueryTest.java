@@ -10,8 +10,6 @@ package javax.money;
 
 import org.testng.annotations.Test;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.testng.Assert.*;
@@ -54,24 +52,24 @@ public class AbstractQueryTest {
         assertEquals(query.getTargetType(), String.class);
     }
 
-    @Test
-    public void testGetTimestampMillis() throws Exception {
-        AbstractQueryBuilder b = createBuilder();
-        b.setTimestampMillis(200L);
-        AbstractQuery query = b.build();
-        assertEquals(query.getTimestampMillis().longValue(), 200L);
-		LocalDateTime localDateTime = LocalDateTime
-                .parse("1970-01-01T01:00:00.200");
-        assertEquals(query.getTimestamp(), localDateTime);
-    }
-
-    @Test
-    public void testGetTimestamp() throws Exception {
-        AbstractQueryBuilder b = createBuilder();
-		LocalDateTime instant = LocalDateTime.now();
-        b.setTimestamp(instant);
-        AbstractQuery query = b.build();
-        assertEquals(query.getTimestamp(), instant);
-		assertEquals(query.getTimestamp(), instant);
-    }
+//    @Test
+//    public void testGetTimestampMillis() throws Exception {
+//        AbstractQueryBuilder b = createBuilder();
+//        b.setTimestampMillis(200L);
+//        AbstractQuery query = b.build();
+//        assertEquals(query.getTimestampMillis().longValue(), 200L);
+//		LocalDateTime localDateTime = LocalDateTime
+//                .parse("1970-01-01T01:00:00.200");
+//        assertEquals(query.getTimestamp(), localDateTime);
+//    }
+//
+//    @Test
+//    public void testGetTimestamp() throws Exception {
+//        AbstractQueryBuilder b = createBuilder();
+//		LocalDateTime instant = LocalDateTime.now();
+//        b.setTimestamp(instant);
+//        AbstractQuery query = b.build();
+//        assertEquals(query.getTimestamp(), instant);
+//		assertEquals(query.getTimestamp(), instant);
+//    }
 }

@@ -189,19 +189,6 @@ public class AbstractContextBuilderTest {
     }
 
     @Test
-    public void testRemoveAll() throws Exception {
-        AbstractContextBuilder b = createBuilder();
-        Set<Number> set = new HashSet<>();
-        set.add(BigDecimal.ONE);
-        b.set("myKey", "test");
-        AbstractContext ctx = b.build();
-        assertEquals(ctx.getText("myKey"), "test");
-        b.removeAll();
-        ctx = b.build();
-        assertEquals(ctx.getText("myKey"), null);
-    }
-
-    @Test
     public void testToString() throws Exception {
         AbstractContextBuilder b = createBuilder();
         Set<Number> set = new HashSet<>();

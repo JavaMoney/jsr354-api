@@ -11,9 +11,6 @@
 package javax.money;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -34,12 +31,8 @@ public abstract class AbstractContext implements Serializable {
 	/**
 	 * Key for storing the target providers to be queried
 	 */
-	public static final String KEY_PROVIDER = "provider";
+    protected static final String KEY_PROVIDER = "provider";
 
-	/**
-	 * Key name for the timestamp attribute.
-	 */
-	public static final String KEY_TIMESTAMP = "timestamp";
 
     /**
      * The data map containing all values.
@@ -175,43 +168,6 @@ public abstract class AbstractContext implements Serializable {
         return getText(KEY_PROVIDER);
     }
 
-    /**
-     * Get the current target timestamp of the query in UTC milliseconds.  If not set it tries to of an
-     * UTC timestamp from #getTimestamp(). This allows to select historical roundings that were valid in the
-     * past. Its implementation specific, to what extend historical roundings are available. By default if this
-     * property is not set always current {@link  javax.money.MonetaryRounding} instances are provided.
-     *
-     * @return the timestamp in millis, or null.
-     */
-    public Long getTimestampMillis() {
-        Long value = get(KEY_TIMESTAMP, Long.class);
-        if (Objects.isNull(value)) {
-            TemporalAccessor acc = getTimestamp();
-            if (Objects.nonNull(acc)) {
-                return (acc.getLong(ChronoField.INSTANT_SECONDS) * 1000L) + acc.getLong(ChronoField.MILLI_OF_SECOND);
-            }
-        }
-        return value;
-    }
-
-    /**
-     * Get the current target timestamp of the query. If not set it tries to of an Instant from
-     * #getTimestampMillis(). This allows to select historical roundings that were valid in the
-     * past. Its implementation specific, to what extend historical roundings are available. By default if this
-     * property is not set always current {@link  javax.money.MonetaryRounding} instances are provided.
-     *
-     * @return the current timestamp, or null.
-     */
-    public TemporalAccessor getTimestamp() {
-        TemporalAccessor acc = get(KEY_TIMESTAMP, TemporalAccessor.class);
-        if (Objects.isNull(acc)) {
-            Long value = get(KEY_TIMESTAMP, Long.class);
-            if (Objects.nonNull(value)) {
-                acc = Instant.ofEpochMilli(value);
-            }
-        }
-        return acc;
-    }
 
     /**
      * Checks if the current instance has no attributes set. This is often the cases, when used in default cases.
@@ -230,19 +186,6 @@ public abstract class AbstractContext implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(data);
-    }
-
-    /**
-     * Access all the key/values present, filtered by the values that are assignable to the given type.
-     *
-     * @param type the value type, not null.
-     * @return return all key/values with values assignable to a given value type.
-     */
-    public <T> Map<String, T> getValues(Class<T> type) {
-        Map<String, T> result = new HashMap<>();
-        data.entrySet().stream().filter(en -> type.isAssignableFrom(en.getValue().getClass())).forEach(
-                en -> result.put(en.getKey(), type.cast(en.getValue())));
-        return result;
     }
 
     /*

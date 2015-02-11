@@ -8,12 +8,7 @@
  */
 package javax.money;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,30 +55,6 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
     }
 
     /**
-     * Set the target timestamp as {@link java.time.temporal.TemporalAccessor}. This allows to select historical
-     * roundings that were valid in the past. Its implementation specific, to what extend historical roundings
-     * are available. By default if this property is not set always current {@link  javax.money.MonetaryRounding}
-     * instances are provided.
-     *
-     * @param timestamp the target timestamp
-     * @return this instance for chaining
-     * @see #setTimestampMillis(long)
-     */
-	@Override
-	public B setTimestamp(LocalDateTime timestamp) {
-		set(AbstractQuery.KEY_QUERY_TIMESTAMP,
-				Objects.requireNonNull(timestamp));
-		return (B) this;
-	}
-
-	public B setTimestamp(LocalDate timestamp) {
-		return setTimestamp(timestamp.atTime(LocalTime.now()));
-	}
-
-	public B setTimestamp(LocalTime timestamp) {
-		return setTimestamp(LocalDate.now().atTime(timestamp));
-	}
-    /**
      * Set the providers to be considered. If not set explicitly the <i>default</i> providers and the corresponding
      * default ordering are used.
      *
@@ -105,19 +76,6 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
         return setProviderNames(provider);
     }
 
-    /**
-     * Sets the target timestamp as UTC millisesonds.
-     *
-     * @param timestamp the target timestamp
-     * @return the query builder for chaining.
-     */
-    @Override
-	public B setTimestampMillis(long timestamp) {
-		Date date = new Date(timestamp);
-		LocalDateTime localDateTime = LocalDateTime.ofInstant(date.toInstant(),
-				ZoneId.systemDefault());
-		return set(AbstractQuery.KEY_QUERY_TIMESTAMP, localDateTime);
-    }
 
     /**
      * Sets the target implementation type required. This can be used to explicitly acquire a specific
@@ -140,6 +98,6 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @return a new {@link AbstractQuery}. never {@code null}.
      */
     @Override
-	public abstract C build();
+    public abstract C build();
 
 }

@@ -10,15 +10,8 @@
  */
 package javax.money;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Represents a general context of data targeting an item of type {@code Q}. Contexts are used to add arbitrary
@@ -78,31 +71,6 @@ public abstract class AbstractQuery extends AbstractContext {
      */
     public Class<?> getTargetType() {
         return get(KEY_QUERY_TARGET_TYPE, Class.class);
-    }
-
-    /**
-     * Get the current timestamp of the context in UTC milliseconds.  If not set it tries to of an
-     * UTC timestamp from #getTimestamp().
-     *
-     * @return the timestamp in millis, or null.
-     */
-    @Override
-	public Long getTimestampMillis() {
-		LocalDateTime value = getTimestamp();
-		if (Objects.nonNull(value)) {
-			return Date.from(value.atZone(ZoneId.systemDefault()).toInstant())
-					.getTime();
-        }
-        return null;
-    }
-
-    /**
-     * Get the current timestamp. If not set it tries to of an Instant from #getTimestampMillis().
-     * @return the current timestamp, or null.
-     */
-    @Override
-	public LocalDateTime getTimestamp() {
-		return get(KEY_QUERY_TIMESTAMP, LocalDateTime.class);
     }
 
 }

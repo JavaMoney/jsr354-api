@@ -506,9 +506,10 @@ also to the section <<Boostrap>> for more details on possible EE/CDI integration
       +from(...)+
    .. parsing is explicitly named, as it is generally special, named +parse(...)+
    .. overall monetary API _feel_ should be similar to +java.math.BigDecimal+.
-. There are rare places where POSIX timestamps based on millisecond resolution as returned by
-  +System.currentTimeMillis()+ are used. These timestamps are modelled as +long+. New date and time types introduced
-  with Java 8 are supported similarly, but of course, will not be available in Java prior to version 8.
+. Queries and contexts may require adding additional time related data, such as POSIX timestamps based on millisecond
+  resolution as returned by +System.currentTimeMillis()+ or other time types based on new Java 8 date/time API.
+  These aspects are not explicitly modelled, since they depend on the capabilities of the corresponding providers
+  and the <<MetadataModeling>> capabilities provide good flexibility to implement these things effectively.
 . This JSR will probably also be used also for (business) critical software like real time trading and similar systems.
   These systems and use cases require very specific parameters, which are impossible to model by this JSR and
   may vary for different use cases, provider and/or companies. As a solution attributable contexts and queries can be
@@ -674,7 +675,7 @@ Hereby
   details on contexts). It basically allows to evaluate the data provider of a currency unit, but can also contain
   additional data as useful, determined by the implementation that provided the currency instance. This context allows
   to support also more complex use cases for extended currency meta-data such as:
-** validity timestamps
+** validity range, e.g. modelled as from/to +LocalDate+
 ** regional validity constraints
 ** provider validity constraints, e.g. the target stock exchange
 ** internal provider reference ids
@@ -790,8 +791,8 @@ Hereby
 * The rest of the methods model common arithmetic operations that are often used in financial applications. Adding
   and subtracting hereby is only possible with amounts that are of the same currency (aka being 'currency compatible'
   footnote:[Note that currency conversion is a complex aspect that can not be performed implicitly or automatically.
-  E.g. a conversion rate is dependent from the timestamp, the currencies involved, the provider, the amount ...])
-  with the amount, on which the operation is executed. The arithmetic methods should basically behave
+  E.g. a conversion rate is dependent from the target date and time, the currencies involved, the provider, the
+  amount ...]) with the amount, on which the operation is executed. The arithmetic methods should basically behave
   similar to +java.math.BigDecimal+, always returning amounts with the same +CurrencyUnit+.
 * The specification and interface do not define precisely how the amount is stored. Implementations could use a
   +BigDecimal+, +long+ or something else. The only constraint is that the numeric value can be exposed as +NumberValue+
@@ -1399,8 +1400,8 @@ cases:
 . Access cash rounding for a +CurrencyUnit+, which may be different from the default rounding.
   E.g. for +Swiss Francs+ the cash rounding will be in +5+ minor unit steps: +1.00, 1.05, 1.10+ etc. This can be
   achieved by creating an instance of +RoundingContext+ with _currency unit_ and _cashRounding=true_ explicitly yet.
-. Access to historic roundings can be achieved by setting +CurrencyUnit+ and the target timestamp. If the
-  provider also supports other time types instead of +long+, they can be set as attributes on the context.
+. Access to historic roundings can be achieved by setting a +CurrencyUnit+ and an (optional) target +LocalDate+ (or
+  whatever time type is most appropriate).
 . by setting the _rounding id_ to a non default value, custom roundings can be implemented, e.g. for support
   of technical formats.
 
@@ -1411,17 +1412,18 @@ default currency rounding (e.g. for +CHF/Swiss Francs+), as follows:
 [source,java]
 .Example how a cash rounding could be accessed (not part of the API)
 -------------------------------------------------------------------------------
+LocalDate localDate = ...;
 MonetaryRounding rounding = MonetaryRoundings.getRounding(
                 RoundingQueryBuilder.of()                               <1>
                   .setRoundingName("cashRounding")                      <2>
-                  .setCurrencyUnit("USD")                               <3>
-                  .setTimestamp(temporalAccessor)                       <4>
+                  .setCurrencyUnit("CHF")                               <3>
+                  .set(localDate)                                       <4>
                   .build());                                            <5>
 -------------------------------------------------------------------------------
 <1> Access a rounding by passing a +RoundingQuery+
 <2> Acquire a specific _named_ rounding.
 <3> Set the target currency unit (predefined attribute).
-<4> Access a rounding valid for the given timestamp.
+<4> Access a rounding valid for the given +LocalDate+.
 <5> Creates the new +RoundingQuery+ instance.
 
 Finally the default rounding provider chain can be configured within +javamoney.properties+ added to the classpath:
@@ -1433,7 +1435,6 @@ Finally the default rounding provider chain can be configured within +javamoney.
 ...
 javax.money.defaults.MonetaryRoundings.providerChain=provider1,provider2,provider3
 -------------------------------------------------------------------------------
-
 
 [[FunctionalSupport]]
 ==== Additional Functional Support
@@ -1503,7 +1504,7 @@ concern, since
 * conversion may be different based on the provider of the exchange rates
 * conversion rates may vary based on the amount to be converted
 * conversion rates may vary based on contract or business unit
-* conversion rates are different related to the target timestamp
+* conversion rates are different related to the target date/time
 
 Hereby this list is not complete. Different companies may have further requirements and aspects to be considered.
 The API focuses on the common aspects of currency conversion such as:
@@ -1608,7 +1609,7 @@ Hereby
 * the +ConversionContext+ accessible from +getContext()+ allows to store additional meta data (refer also to
   <<MetadataModeling>> for further details) about the rate instance, such as
   ** the rate's provider
-  ** the rate's timestamp
+  ** the rate's +LocalDateTime+ or +ZonedDateTime+
   ** any other data that may be relevant
 * each instance of rate finally can easily be converted into an according +ExchangeRate.Builder+ instance, so
   adaptations/changes on existing rates can be done easily.
@@ -2383,8 +2384,8 @@ Implementations of this JSR should also consider additional aspects:
   instances, e.g. you can set a maximal scale of +1+ and a +RoundingMode+ as an additional attribute.
 . Implementations should also support cash rounding. E.g. in Switzerland default rounding is done for a scale of +2+,
   whereas when paying in cash, the minor units must be divisible by +5+, since +5+ is the smallest coin possible.
-. Finally it may also possible to provide _historic_ roundings hereby considering an additional timestamp or
-  date given.
+. Finally it may also possible to provide _historic_ roundings hereby considering an additional target date/time, e.g.
+  modelled as +LocalDate+.
 
 
 [[CurrencyConversionSpi]]

@@ -4,7 +4,7 @@
  * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
  * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
  * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
- * (c) 2012-2013, Credit Suisse All rights reserved.
+ * (c) 2012-2015, Credit Suisse All rights reserved.
  */
 package javax.money.spi;
 

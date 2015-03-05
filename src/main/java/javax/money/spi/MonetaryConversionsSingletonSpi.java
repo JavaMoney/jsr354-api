@@ -176,7 +176,7 @@ public interface MonetaryConversionsSingletonSpi {
      *
      * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
      *                        required, not null.
-     * @return the correspöonding conversion, not null.
+     * @return the corresponding conversion, not null.
      * @throws javax.money.MonetaryException if no matching conversion could be found.
      * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */

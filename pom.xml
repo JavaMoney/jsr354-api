@@ -139,7 +139,7 @@
             </roles>
         </developer>
         <developer>
-            <id>-</id>
+            <id>simasch</id>
             <name>Simon Martinelli</name>
             <roles>
                 <role>Expert Group Member</role>
@@ -174,7 +174,7 @@
             </roles>
         </developer>
         <developer>
-            <id>-</id>
+            <id>otaviojava</id>
             <name>Otavio Santana</name>
             <roles>
                 <role>Expert Group Member</role>
@@ -361,8 +361,6 @@
                                 </excludes>
                             </configuration>
                         </plugin>
-                        <!-- TODO enable this only for major upgrades (ensure to copy LICENSE.txt
-                            to LICENSE.bak first) -->
                     </plugins>
                 </pluginManagement>
                 <plugins>
@@ -716,79 +714,8 @@
                             <baseDir>src/main/asciidoc/</baseDir>
                         </configuration>
                     </execution>
-                    <!-- execution>
-                        <id>output-pdf</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <backend>pdf</backend>
-                            <doctype>book</doctype>
-                            <embedAssets>true</embedAssets>
-                            <outputDirectory>target/generated-docs</outputDirectory>
-                            <imagesDir>src/main/asciidoc/images/</imagesDir>
-                            <baseDir>src/main/asciidoc/</baseDir>
-                        </configuration>
-                    </execution -->
                 </executions>
             </plugin>
-            <!--plugin>
-                <groupId>com.agilejava.docbkx</groupId>
-                <artifactId>docbkx-maven-plugin</artifactId>
-                <version>2.0.15</version>
-                <executions>
-                    <execution>
-                        <id>doc</id>
-                        <goals>
-                            <goal>generate-pdf</goal>
-                        </goals>
-                        <phase>prepare-package</phase>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>net.sf.docbook</groupId>
-                        <artifactId>docbook-xml</artifactId>
-                        <version>5.0-all</version>
-                        <classifier>resources</classifier>
-                        <type>zip</type>
-                        <scope>runtime</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>net.sf.xslthl</groupId>
-                        <artifactId>xslthl</artifactId>
-                        <version>2.0.1</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>net.sf.offo</groupId>
-                        <artifactId>fop-hyph</artifactId>
-                        <version>1.2</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <imgSrcPath>../../</imgSrcPath>
-                    <admonGraphics>1</admonGraphics>
-                    <graphicExtensions>1</graphicExtensions>
-                    <showXslMessages>true</showXslMessages>
-                    <collectXrefTargets>1</collectXrefTargets>
-                    <highlightSource>1</highlightSource>
-                    <hyphenate>true</hyphenate>
-                    <hyphenateVerbatim>true</hyphenateVerbatim>
-                    <includes>JavaMoneySpecification.xml</includes>
-                    <sourceDirectory>target/generated-docs</sourceDirectory>
-                    <targetDirectory>target/docs</targetDirectory>
-                    <generateToc>1</generateToc>
-                    <paperType>A4</paperType>
-                    <admonGraphicsPath>src/main/asciidoc/images/icons/</admonGraphicsPath>
-                    <calloutGraphicsPath>src/main/asciidoc/images/icons/callouts/</calloutGraphicsPath>
-                    <showComments>true</showComments>
-                    <xincludeSupported>true</xincludeSupported>
-                    <fop1Extensions>1</fop1Extensions>
-                </configuration>
-            </plugin-->
         </plugins>
     </build>
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2013, Credit Suisse (Anatole Tresch), Werner Keil. Licensed under the Apache
+ * Copyright (c) 2012, 2015, Credit Suisse (Anatole Tresch), Werner Keil. Licensed under the Apache
  * License, Version 2.0 (the "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License
@@ -37,6 +37,7 @@ import javax.money.convert.*;
  * not work.
  *
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public interface MonetaryConversionsSingletonSpi {
 
@@ -176,7 +177,7 @@ public interface MonetaryConversionsSingletonSpi {
      *
      * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
      *                        required, not null.
-     * @return the correspöonding conversion, not null.
+     * @return the corresponding conversion, not null.
      * @throws javax.money.MonetaryException if no matching conversion could be found.
      * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */

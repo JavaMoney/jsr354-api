@@ -354,7 +354,8 @@
                                 <encoding>UTF-8</encoding>
                                 <excludes>
                                     <exclude>target/**</exclude>
-                                    <exclude>LICENSE*.txt</exclude>
+                                    <exclude>*LICENSE*.txt</exclude>
+                                    <exclude>*LICENSE*.html</exclude>
                                     <exclude>README.*</exclude>
                                     <exclude>checkstyle*.*</exclude>
                                     <exclude>*.css</exclude>
@@ -721,7 +722,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>output-docbook</id>
+                        <id>output-pdf</id>
                         <phase>prepare-package</phase>
                         <goals>
                             <goal>process-asciidoc</goal>

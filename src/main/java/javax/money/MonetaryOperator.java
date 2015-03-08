@@ -8,7 +8,7 @@
  * 
  * Specification: JSR-354 Money and Currency API ("Specification")
  * 
- * Copyright (c) 2012-2014, Credit Suisse All rights reserved.
+ * Copyright (c) 2012-2015, Credit Suisse All rights reserved.
  */
 package javax.money;
 
@@ -48,14 +48,12 @@ import java.util.function.UnaryOperator;
  * thread-safe when invoked.
  * 
  * <p>
- * This interface is considered to be adaptable/compatible with
- * {@code java.util.function.UnaryOperator} as introduced in Java 8.
+ * This interface extends {@code java.util.function.UnaryOperator} introduced by Java 8.
  * 
  * @author Werner Keil
  * @author Anatole Tresch
- * @author Stephen Colebourne
  * 
- * @version 0.8.4
+ * @version 0.9
  */
 @FunctionalInterface
 public interface MonetaryOperator extends UnaryOperator<MonetaryAmount> {

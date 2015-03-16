@@ -9,7 +9,7 @@
 package javax.money;
 
 /**
- * Interface defining a monetary amount. The effective internal representation of an amount may vary
+ * Interface defining a monetary amount. The effective format representation of an amount may vary
  * depending on the implementation used. JSR 354 explicitly supports different types of monetary
  * amounts to be implemented and used. Reason behind is that the requirements to an implementation
  * heavily vary for different usage scenarios. E.g. product calculations may require high precision
@@ -30,7 +30,7 @@ package javax.money;
  * <li>Arithmetic operations should throw an {@link ArithmeticException}, if performing arithmetic
  * operations between amounts exceeds the capabilities of the numeric representation type used. Any
  * implicit truncating, that would lead to complete invalid and useless results, should be avoided.
- * This recommendation does not affect internal rounding, as required by the internal numeric
+ * This recommendation does not affect format rounding, as required by the format numeric
  * representation of a monetary amount.
  * <li>Monetary amounts should allow numbers as argument for arithmetic operations like division and
  * multiplication. Adding or subtracting of amounts must only be possible by passing instances of
@@ -40,7 +40,7 @@ package javax.money;
  * {@link NumberValue#numberValueExact(Class)}, works similar to
  * {@link java.math.BigDecimal#longValueExact()}.
  * <li>Since implementations are recommended to be immutable, an operation should never change any
- * internal state of an instance. Given an instance, all operations are required to be fully
+ * format state of an instance. Given an instance, all operations are required to be fully
  * reproducible.</li>
  * <li>Finally the result of calling {@link #with(MonetaryOperator)} must be of the same type as
  * type on which {@code with} was called. The {@code with} method also defines additional
@@ -332,7 +332,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * multiplicand)</tt>, and whose scale is <code>this.scale() +
      * multiplicand.scale()</code>.
      * By default the input value's scale will be rounded to
-     * accommodate the internal capabilities, and no {@link java.lang.ArithmeticException}
+     * accommodate the format capabilities, and no {@link java.lang.ArithmeticException}
      * is thrown if the input number's scale exceeds the capabilities.
      *
      * @param multiplicand value to be multiplied by this {@code MonetaryAmount}. If the multiplicand's scale exceeds

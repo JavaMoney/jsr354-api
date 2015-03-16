@@ -43,7 +43,7 @@ import java.util.Objects;
  * overall factor, by multiplying the individual chain rate factors. Of course,
  * this also requires that each subsequent rate's baseCurrency currency in the chain
  * does match the previous termCurrency currency (and vice versa):</li>
- * <li>Whereas the factor should be directly implied by the internal rate chain
+ * <li>Whereas the factor should be directly implied by the format rate chain
  * for derived rates, this is obviously not the case for the validity range,
  * since rates can have a undefined validity range. Nevertheless in many cases
  * also the validity range can (but must not) be derived from the rate chain.</li>

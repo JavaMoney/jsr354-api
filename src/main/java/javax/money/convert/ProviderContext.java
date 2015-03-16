@@ -18,7 +18,7 @@ import javax.money.AbstractContext;
  * .ExchangeRateProvider} delivers, including the provider's name, rate type and additional data.
  * By default such a context supports the following attributes:
  * <ul>
- * <li>a unique nont localizable provider name. This provider name is also used to identify a concrete instance of
+ * <li>a unique non localizable provider name. This provider name is also used to identify a concrete instance of
  * ExchangeRateProvider.</li>
  * <li>a set of {@link javax.money.convert.RateType} an ExchangeRateProvider supports</li>
  * <li>a time range for which an ExchangeRateProvider delivers rates.</li
@@ -56,6 +56,7 @@ public final class ProviderContext extends AbstractContext {
      * @return the deferred flag, or {code null}.
      */
     public Set<RateType> getRateTypes() {
+        @SuppressWarnings("unchecked")
         Set<RateType> rateSet = get(KEY_RATE_TYPES, Set.class);
         if (rateSet == null) {
             return Collections.emptySet();

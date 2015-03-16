@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * <p>
  * This singleton allows to access {@link MonetaryAmountFactory} instances for the registered
  * {@link MonetaryAmount} implementation classes or using a flexible {@link MonetaryAmountFactoryQuery}
- * instance, determining the selection attributes arbitrarely.
+ * instance, determining the selection attributes arbitrarily.
  *
  * @author Anatole Tresch
  * @author Werner Keil

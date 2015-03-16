@@ -22,7 +22,7 @@ import java.util.Set;
 import static org.testng.Assert.*;
 
 /**
- * Created by Anatole on 05.03.14.
+ * Tests for {@link javax.money.MonetaryContext}.
  */
 public class MonetaryContextTest {
 
@@ -45,7 +45,7 @@ public class MonetaryContextTest {
     }
 
     @Test
-    public void testGetAmontType() throws Exception {
+    public void testGetAmountTypeExplicit() throws Exception {
         MonetaryContext ctx = MonetaryContextBuilder.of(MonetaryAmount.class).setAmountType(DummyAmount.class).build();
         assertTrue(ctx.getAmountType() == DummyAmount.class);
     }

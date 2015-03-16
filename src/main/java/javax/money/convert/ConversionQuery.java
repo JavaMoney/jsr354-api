@@ -53,6 +53,7 @@ public final class ConversionQuery extends AbstractQuery implements CurrencySupp
      *
      * @return the rate types set, or an empty array, but never null.
      */
+    @SuppressWarnings("unchecked")
     public Set<RateType> getRateTypes() {
         Set<RateType> result = get(KEY_RATE_TYPES, Set.class);
         if (result == null) {

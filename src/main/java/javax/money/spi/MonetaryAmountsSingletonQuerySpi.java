@@ -76,7 +76,7 @@ public interface MonetaryAmountsSingletonQuerySpi {
     }
 
     /**
-     * Executes the query and returns the {@link javax.money.MonetaryAmount} implementation typea found.
+     * Executes the query and returns the {@link javax.money.MonetaryAmount} implementation types found.
      *
      * @param query the factory query, not null.
      * @return the type found, or null.

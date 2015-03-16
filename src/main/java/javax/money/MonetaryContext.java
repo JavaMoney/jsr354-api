@@ -127,7 +127,7 @@ public final class MonetaryContext extends AbstractContext implements Serializab
      * Creates a new {@link }MonetaryContext).
      *
      * @param monetaryContext the base context, not null.
-     * @param amountClass     the targt amount class.
+     * @param amountClass     the target amount class.
      * @return a new corresponding MonetaryContext instance.
      */
     public static MonetaryContext from(MonetaryContext monetaryContext, Class<? extends MonetaryAmount> amountClass) {

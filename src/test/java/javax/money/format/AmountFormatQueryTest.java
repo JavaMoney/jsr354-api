@@ -17,9 +17,9 @@ import java.util.*;
 import static org.testng.Assert.*;
 
 /**
- * Created by Anatole on 05.03.14.
+ * Tests for {@link AmountFormatQuery}.
  */
-public class AmountStyleTest{
+public class AmountFormatQueryTest {
     @Test
     public void testOf() throws Exception{
         AmountFormatQuery style = AmountFormatQuery.of(Locale.ENGLISH);

@@ -28,6 +28,7 @@ import java.util.Locale;
  *
  * @author Anatole Tresch
  */
+@SuppressWarnings("unchecked")
 public final class CurrencyQuery extends AbstractQuery implements Serializable {
 
     /**
@@ -57,7 +58,7 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable {
     /**
      * Returns the target locales.
      *
-     * @return the otarget locales, never null.
+     * @return the target locales, never null.
      */
     public Collection<Locale> getCountries() {
         Collection<Locale> result = get(KEY_QUERY_COUNTRIES, Collection.class);

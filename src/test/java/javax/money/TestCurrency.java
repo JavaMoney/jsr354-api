@@ -113,7 +113,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
         // Templates.
     }
 
-    public int compareTo(CurrencyUnit currency) {
+    public int compareTo(@SuppressWarnings("NullableProblems") CurrencyUnit currency) {
         Objects.requireNonNull(currency);
         return getCurrencyCode().compareTo(currency.getCurrencyCode());
     }
@@ -224,7 +224,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
         /**
          * Private constructor.
          *
-         * @param currency
+         * @param currency the JDK currency, not null.
          */
         private JDKCurrencyAdapter(Currency currency) {
             if (Objects.isNull(currency)) {
@@ -233,7 +233,8 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
             this.currency = currency;
         }
 
-        public int compareTo(CurrencyUnit currency) {
+        @Override
+        public int compareTo(@SuppressWarnings("NullableProblems") CurrencyUnit currency) {
             Objects.requireNonNull(currency);
             int compare = getCurrencyCode().compareTo(currency.getCurrencyCode());
             if (compare == 0) {

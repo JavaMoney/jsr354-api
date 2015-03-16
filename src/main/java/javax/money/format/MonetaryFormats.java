@@ -44,7 +44,7 @@ public final class MonetaryFormats {
     private static MonetaryFormatsSingletonSpi loadMonetaryFormatsSingletonSpi() {
         try {
             return Optional.ofNullable(Bootstrap.getService(MonetaryFormatsSingletonSpi.class))
-                    .orElseGet(() -> new DefaultMonetaryFormatsSingletonSpi());
+                    .orElseGet(DefaultMonetaryFormatsSingletonSpi::new);
         } catch (Exception e) {
             Logger.getLogger(MonetaryFormats.class.getName())
                     .log(Level.WARNING, "Failed to load MonetaryFormatsSingletonSpi, using default.", e);
@@ -156,10 +156,11 @@ public final class MonetaryFormats {
      *
      * @return the provider names, never null.
      */
+    @SuppressWarnings("ConstantConditions")
     public static Collection<String> getProviderNames() {
         Collection<String> providers = Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(
                 () -> new MonetaryException(
-                        "No MonetaryConveresionsSingletonSpi loaded, query functionality is not available."))
+                        "No MonetaryFormatsSingletonSpi loaded, query functionality is not available."))
                 .getProviderNames();
         if (Objects.isNull(providers)) {
             Logger.getLogger(MonetaryFormats.class.getName()).warning(

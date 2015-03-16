@@ -176,7 +176,7 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
     public abstract long getAmountFractionDenominator();
 
     @Override
-    public int compareTo(NumberValue o) {
+    public int compareTo(@SuppressWarnings("NullableProblems") NumberValue o) {
         return numberValue(BigDecimal.class).compareTo(o.numberValue(BigDecimal.class));
     }
 

@@ -33,7 +33,7 @@ public class MonetaryFormatsSingletonSpiTest {
 
         @Override
         public Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery) {
-            List<MonetaryAmountFormat> formats = new ArrayList();
+            List<MonetaryAmountFormat> formats = new ArrayList<>();
             if (Locale.ENGLISH.equals(formatQuery.getLocale())) {
                 formats.add(new PseudoFormat());
             } else if ("f1".equals(formatQuery.getFormatName())) {
@@ -44,14 +44,14 @@ public class MonetaryFormatsSingletonSpiTest {
 
         @Override
         public Set<String> getProviderNames() {
-            Set<String> names = new HashSet();
+            Set<String> names = new HashSet<>();
             names.add("b");
             return names;
         }
 
         @Override
         public List<String> getDefaultProviderChain() {
-            List<String> names = new ArrayList();
+            List<String> names = new ArrayList<>();
             names.add("b");
             return names;
         }

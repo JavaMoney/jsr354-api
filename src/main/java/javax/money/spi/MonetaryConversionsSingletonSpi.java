@@ -15,7 +15,7 @@ import javax.money.MonetaryException;
 import javax.money.convert.*;
 
 /**
- * SPI (conversoin) that implements the functionalities provided by the
+ * SPI (conversion) that implements the functionality provided by the
  * {@code MonetaryConversions} singleton accessor. It should be registered as a
  * service using the JDK {@code ServiceLoader}. Hereby only one instance can be
  * registered at a time.
@@ -63,7 +63,7 @@ public interface MonetaryConversionsSingletonSpi {
      * that will be included into a <i>compound</i> instance, with the same order as returned by the {@link javax
      * .money.convert.ConversionQuery}.
      *
-     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the type of conversion
      *                        required, not null.
      * @return an {@link ExchangeRateProvider} built up with the given sub
      * providers, never {@code null}
@@ -76,7 +76,7 @@ public interface MonetaryConversionsSingletonSpi {
      * Allows to quickly check, if a {@link javax.money.convert.ExchangeRateProvider} is accessible for the given
      * {@link javax.money.convert.ConversionQuery}.
      *
-     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the type of conversion
      *                        required, not null.
      * @return {@code true}, if such a conversion is supported, meaning an according
      * {@link ExchangeRateProvider} can be
@@ -96,7 +96,7 @@ public interface MonetaryConversionsSingletonSpi {
      * Allows to quickly check, if a {@link javax.money.convert.CurrencyConversion} is accessible for the given
      * {@link javax.money.convert.ConversionQuery}.
      *
-     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the type of conversion
      *                        required, not null.
      * @return {@code true}, if such a conversion is supported, meaning an according
      * {@link CurrencyConversion} can be
@@ -118,7 +118,7 @@ public interface MonetaryConversionsSingletonSpi {
      *
      * @param termCurrency the terminating/target currency unit, not null.
      * @param providers    the provider names defines a corresponding
-     *                     prpovider chain that must be encapsulated by the resulting {@link javax
+     *                     provider chain that must be encapsulated by the resulting {@link javax
      *                     .money.convert.CurrencyConversion}. By default the provider
      *                     chain as defined by #getDefaultProviderChain will be used.
      * @return {@code true}, if such a conversion is supported, meaning an according
@@ -157,7 +157,7 @@ public interface MonetaryConversionsSingletonSpi {
      * Access a compound instance of an {@link ExchangeRateProvider} based on the given provider chain.
      *
      * @param providers the {@link javax.money.convert.ConversionQuery} provider names defines a corresponding
-     *                  prpovider chain that must be
+     *                  provider chain that must be
      *                  encapsulated by the resulting {@link javax.money.convert.ExchangeRateProvider}. By default
      *                  the default
      *                  provider changes as defined in #getDefaultProviderChain will be used.
@@ -174,7 +174,7 @@ public interface MonetaryConversionsSingletonSpi {
     /**
      * Access an instance of {@link CurrencyConversion}.
      *
-     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the tpye of conversion
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery} determining the type of conversion
      *                        required, not null.
      * @return the corresponding conversion, not null.
      * @throws javax.money.MonetaryException if no matching conversion could be found.
@@ -191,10 +191,10 @@ public interface MonetaryConversionsSingletonSpi {
      *
      * @param termCurrency the terminating/target currency unit, not null.
      * @param providers    the {@link javax.money.convert.ConversionQuery} provider names defines a corresponding
-     *                     prpovider chain that must be encapsulated by the resulting {@link javax
+     *                     provider chain that must be encapsulated by the resulting {@link javax
      *                     .money.convert.CurrencyConversion}. By default the default
      *                     provider chain as defined by #getDefaultProviderChain will be used.
-     * @return the correspöonding conversion, not null.
+     * @return the corresponding conversion, not null.
      * @throws javax.money.MonetaryException if no matching conversion could be found.
      * @see #isConversionAvailable(javax.money.convert.ConversionQuery)
      */

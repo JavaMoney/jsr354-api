@@ -56,7 +56,7 @@ public abstract class AbstractQuery extends AbstractContext {
      */
     public List<String> getProviderNames() {
 
-        List<String> result = get(KEY_QUERY_PROVIDERS, List.class);
+        @SuppressWarnings("unchecked") List<String> result = get(KEY_QUERY_PROVIDERS, List.class);
         if (result == null) {
             return Collections.emptyList();
         }

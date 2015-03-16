@@ -71,12 +71,6 @@ public class MonetaryCurrenciesTest {
         assertNotNull(curs);
     }
 
-    /**
-     * Query all currencies matching the given query.
-     *
-     * @param query The {@link javax.money.CurrencyQuery}, not null.
-     * @return the list of known currencies, never null.
-     */
     @Test
     public void testGetCurrency_CurrencyQuery() {
         CurrencyUnit cur = MonetaryCurrencies.getCurrency(
@@ -88,12 +82,6 @@ public class MonetaryCurrenciesTest {
     }
 
 
-    /**
-     * Query all currencies matching the given query.
-     *
-     * @param query The {@link javax.money.CurrencyQuery}, not null.
-     * @return the list of known currencies, never null.
-     */
     @Test
     public void testGetCurrencies_CurrencyQuery() {
         Collection<CurrencyUnit> currencies = MonetaryCurrencies.getCurrencies(
@@ -102,23 +90,12 @@ public class MonetaryCurrenciesTest {
         assertNotNull(currencies);
     }
 
-    /**
-     * Query all currencies matching the given query.
-     *
-     * @return the list of known currencies, never null.
-     */
     @Test
     public void testGetProviderNames() {
         Set<String> chain = MonetaryCurrencies.getProviderNames();
         assertNotNull(chain);
     }
 
-    /**
-     * Query the list and ordering of provider names modelling the default provider chain to be used, if no provider
-     * chain was explicitly set..
-     *
-     * @return the orderend list provider names, modelling the default provider chain used, never null.
-     */
     @Test
     public void testGetDefaultProviderChain() {
         List<String> chain = MonetaryCurrencies.getDefaultProviderChain();

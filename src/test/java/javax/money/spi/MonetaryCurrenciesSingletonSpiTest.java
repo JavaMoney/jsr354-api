@@ -32,22 +32,22 @@ public class MonetaryCurrenciesSingletonSpiTest {
 
         @Override
         public Set<String> getProviderNames() {
-            return new HashSet(Arrays.asList(new String[]{"a", "b"}));
+            return new HashSet<>(Arrays.asList(new String[]{"a", "b"}));
         }
 
         @Override
         public Set<CurrencyUnit> getCurrencies(CurrencyQuery query) {
             Collection<String> codes = query.getCurrencyCodes();
             if (codes.size() == 1) {
-                return new HashSet(Arrays.asList(new CurrencyUnit[]{TestCurrency.of("USD")}));
+                return new HashSet<>(Arrays.asList(new CurrencyUnit[]{TestCurrency.of("USD")}));
             }
             Collection<String> providers = query.getProviderNames();
             if (providers.size() == 1) {
-                return new HashSet(Arrays.asList(new CurrencyUnit[]{TestCurrency.of("CHF")}));
+                return new HashSet<>(Arrays.asList(new CurrencyUnit[]{TestCurrency.of("CHF")}));
             }
             Collection<Locale> countries = query.getCountries();
             if (!countries.isEmpty()) {
-                return new HashSet(Arrays.asList(new CurrencyUnit[]{TestCurrency.of("EUR")}));
+                return new HashSet<>(Arrays.asList(new CurrencyUnit[]{TestCurrency.of("EUR")}));
             }
             return Collections.emptySet();
         }

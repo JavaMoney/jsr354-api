@@ -14,7 +14,7 @@ package javax.money;
  * <ul>
  * <li>Accessing roundings using rounding names and/or regular expressions.</li>
  * <li>Accessing mathematical rounding by setting a scale and (optionally) a {@link java.math.MathContext} as
- * additinal generic attribute.</li>
+ * additional generic attribute.</li>
  * <li>Accessing default roundings for a {@link javax.money.CurrencyUnit}. This method should return the most
  * appropriate rounding for a currency. If no
  * currency specific rounding is available, it should return a rounding with {@code scale==currency

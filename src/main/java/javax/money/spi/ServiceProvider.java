@@ -10,7 +10,6 @@
  */
 package javax.money.spi;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

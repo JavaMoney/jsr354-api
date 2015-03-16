@@ -57,7 +57,7 @@ public interface MonetaryRoundingsSingletonSpi {
      * Execute a query for {@link javax.money.MonetaryRounding}. This allows to model more complex used cases,
      * such as historic or special roundings.
      *
-     * @param query the query to be exected, not null.
+     * @param query the query to be expected, not null.
      * @return the roundings found, never null.
      */
     Collection<MonetaryRounding> getRoundings(RoundingQuery query);

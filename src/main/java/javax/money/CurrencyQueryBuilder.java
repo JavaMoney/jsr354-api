@@ -42,7 +42,7 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
     }
 
     /**
-     * Sets the country for which currencies whould be requested.
+     * Sets the country for which currencies should be requested.
      *
      * @param countries The ISO countries.
      * @return the query for chaining.
@@ -54,7 +54,7 @@ public final class CurrencyQueryBuilder extends AbstractQueryBuilder<CurrencyQue
     /**
      * Sets the currency code, or the regular expression to select codes.
      *
-     * @param codes sthe currency codes or code expressions, not null.
+     * @param codes the currency codes or code expressions, not null.
      * @return the query for chaining.
      */
     public CurrencyQueryBuilder setCurrencyCodes(String... codes) {

@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by Anatole on 05.03.14.
+ * Tests for {@link javax.money.convert.ProviderContext}.
  */
 public class ProviderContextTest {
 

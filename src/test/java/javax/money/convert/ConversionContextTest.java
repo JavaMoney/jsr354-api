@@ -16,7 +16,7 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.Test;
 
 /**
- * Created by Anatole on 05.03.14.
+ * Tests for {@link ConversionContext}.
  */
 public class ConversionContextTest {
     @Test

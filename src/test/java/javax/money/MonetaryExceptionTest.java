@@ -17,7 +17,7 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
 /**
- * Created by Anatole on 05.03.14.
+ * Tests for {@link javax.money.MonetaryException}.
  */
 public class MonetaryExceptionTest{
     @Test

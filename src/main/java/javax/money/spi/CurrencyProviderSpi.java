@@ -36,7 +36,7 @@ public interface CurrencyProviderSpi{
     }
 
     /**
-     * CHecks if a {@link CurrencyUnit} instances matching the given
+     * Checks if a {@link CurrencyUnit} instances matching the given
      * {@link javax.money.CurrencyContext} is available from this provider.
      *
      * @param query the {@link javax.money.CurrencyQuery} containing the parameters determining the query. not null.

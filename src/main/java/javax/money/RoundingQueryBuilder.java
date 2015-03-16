@@ -67,7 +67,7 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
      * Sets the target {@link CurrencyUnit}, which defines a rounding targeting a concrete {@link
      * CurrencyUnit}.
      * Typically this determines all other properties, such as scale and the concrete rounding algorithm. With
-     * rounding names, depending on the implementation, additinoal subselections are possible. Similarly
+     * rounding names, depending on the implementation, additional subselections are possible. Similarly
      * additional attributes can be used to select special rounding instances, e.g. for cash rounding.
      *
      * @param currencyUnit the target {@link CurrencyUnit} not null.

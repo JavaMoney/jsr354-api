@@ -52,7 +52,7 @@ public final class DummyAmount implements MonetaryAmount {
             }
 
             @Override
-            public int compareTo(CurrencyUnit o) {
+            public int compareTo(@SuppressWarnings("NullableProblems") CurrencyUnit o) {
                 return 0;
             }
         };

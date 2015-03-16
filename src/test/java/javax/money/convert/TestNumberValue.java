@@ -309,6 +309,7 @@ public class TestNumberValue extends NumberValue {
 			// Avoid imprecise conversion to double value if at all possible
 			return new BigDecimal(num.toString());
 		} catch (NumberFormatException e) {
+            // ignore
 		}
 		return BigDecimal.valueOf(num.doubleValue());
 	}

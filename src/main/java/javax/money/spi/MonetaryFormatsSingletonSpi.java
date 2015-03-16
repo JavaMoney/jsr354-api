@@ -27,7 +27,7 @@ public interface MonetaryFormatsSingletonSpi {
     /**
      * Get all available locales. This equals to {@link MonetaryAmountFormatProviderSpi#getAvailableLocales()}.
      *
-     * @param providers The (optional) providers to be used, oredered correspondingly.
+     * @param providers The (optional) providers to be used, ordered correspondingly.
      * @return all available locales, never {@code null}.
      */
     Set<Locale> getAvailableLocales(String... providers);
@@ -36,7 +36,7 @@ public interface MonetaryFormatsSingletonSpi {
      * Access all {@link javax.money.format.MonetaryAmountFormat} instances matching the given {@link javax.money.format
      * .AmountFormatQuery}.
      *
-     * @param formatQuery The format query defining the requirements of the formatters.
+     * @param formatQuery The format query defining the requirements of the formatter.
      * @return the corresponding {@link javax.money.format.MonetaryAmountFormat} instances, never null
      */
     Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery);
@@ -89,7 +89,7 @@ public interface MonetaryFormatsSingletonSpi {
      * .AmountFormatQuery}.
      *
      * @param locale    the target {@link Locale}, not {@code null}.
-     * @param providers The (optional) providers to be used, oredered correspondingly.
+     * @param providers The (optional) providers to be used, ordered correspondingly.
      * @return true, if a t least one {@link javax.money.format.MonetaryAmountFormat} is matching the query.
      */
     default boolean isAvailable(Locale locale, String... providers) {
@@ -100,7 +100,7 @@ public interface MonetaryFormatsSingletonSpi {
      * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
      *
      * @param locale    the target {@link Locale}, not {@code null}.
-     * @param providers The (optional) providers to be used, oredered correspondingly.
+     * @param providers The (optional) providers to be used, ordered correspondingly.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
      *                           corresponding {@link MonetaryAmountFormat} instance.
@@ -113,7 +113,7 @@ public interface MonetaryFormatsSingletonSpi {
      * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
      *
      * @param formatName the target format name, not {@code null}.
-     * @param providers  The (optional) providers to be used, oredered correspondingly.
+     * @param providers  The (optional) providers to be used, ordered correspondingly.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
      *                           corresponding {@link MonetaryAmountFormat} instance.

@@ -197,7 +197,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
 
     /**
      * Allows to evaluate if this exchange rate is a derived exchange rate.
-     * Derived exchange rates are defined by an ordered list of subconversions
+     * Derived exchange rates are defined by an ordered list of child conversions
      * with intermediate steps, whereas a direct conversion is possible in one
      * steps.
      * <p>
@@ -216,7 +216,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     @Override
-    public int compareTo(ExchangeRate o) {
+    public int compareTo(@SuppressWarnings("NullableProblems") ExchangeRate o) {
         Objects.requireNonNull(o);
         int compare = this.getBaseCurrency().getCurrencyCode().compareTo(o.getBaseCurrency().getCurrencyCode());
         if (compare == 0) {
@@ -295,7 +295,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
          */
         private NumberValue factor;
         /**
-         * The chain of invovled rates.
+         * The chain of involved rates.
          */
         private List<ExchangeRate> rateChain = new ArrayList<>();
 

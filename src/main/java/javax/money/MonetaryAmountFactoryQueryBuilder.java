@@ -72,7 +72,7 @@ public final class MonetaryAmountFactoryQueryBuilder
      * Creates a new instance of {@link MonetaryAmountFactoryQuery} based on the values of this
      * Builder. Note that
      * the Builder supports creation of several Builder instances from the a common Builder instance. But be aware
-     * that the keys and values contained are themself not recursively cloned (deep-copy).
+     * that the keys and values contained are themselves not recursively cloned (deep-copy).
      *
      * @return a new {@link MonetaryAmountFactoryQuery} instance.
      */

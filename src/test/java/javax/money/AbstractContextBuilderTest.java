@@ -21,6 +21,7 @@ import static org.testng.Assert.*;
 public class AbstractContextBuilderTest {
 
     private AbstractContextBuilder<AbstractContextBuilder, AbstractContext> createBuilder() {
+        //noinspection unchecked
         return new AbstractContextBuilder() {
             @Override
             public AbstractContext build() {
@@ -173,6 +174,7 @@ public class AbstractContextBuilderTest {
         assertEquals(ctx.get("myKey", Set.class), set);
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Test
     public void testRemoveAttributes() throws Exception {
         AbstractContextBuilder b = createBuilder();
@@ -188,6 +190,7 @@ public class AbstractContextBuilderTest {
         assertEquals(ctx.getText("myKey"), null);
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Test
     public void testToString() throws Exception {
         AbstractContextBuilder b = createBuilder();

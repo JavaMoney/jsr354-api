@@ -11,7 +11,7 @@ package javax.money;
 import java.io.Serializable;
 
 /**
- * Query to lookup indtsnvrd of {@link MonetaryAmountFactory}, which are determined by the (minimal)
+ * Query to lookup instances of {@link MonetaryAmountFactory}, which are determined by the (minimal)
  * capabilities required by the give use case. By default amount factories can be queried by
  * <ul>
  * <li>The maximal scale needed (THE ADDITIONAL <i>fixed scale</i> allows to define the minimal an maximal scale to

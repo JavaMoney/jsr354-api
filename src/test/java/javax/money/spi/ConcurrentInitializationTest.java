@@ -23,7 +23,7 @@ import javax.money.MonetaryRoundings;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
- * Test concurrent initialization/bootstrappingof {@link javax.money.spi.Bootstrap}.
+ * Test concurrent initialization/bootstrapping of {@link javax.money.spi.Bootstrap}.
  */
 public class ConcurrentInitializationTest {
 

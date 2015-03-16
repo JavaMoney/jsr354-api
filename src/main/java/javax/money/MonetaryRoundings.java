@@ -184,7 +184,7 @@ public final class MonetaryRoundings {
      *
      * @param roundingQuery The {@link javax.money.RoundingQuery} that may contains arbitrary parameters to be
      *                      evaluated.
-     * @return all {@link javax.money.MonetaryRounding} instances macthing the query, never {@code null}.
+     * @return all {@link javax.money.MonetaryRounding} instances matching the query, never {@code null}.
      */
     public static Collection<MonetaryRounding> getRoundings(RoundingQuery roundingQuery) {
         return Optional.ofNullable(monetaryRoundingsSpi).orElseThrow(
@@ -232,7 +232,7 @@ public final class MonetaryRoundings {
 
 
     /**
-     * Allows to access the default providers chain usef if no provider chain was passed explicitly..
+     * Allows to access the default providers chain used if no provider chain was passed explicitly..
      *
      * @return the chained list of provider names, never {@code null}.
      */
@@ -287,7 +287,7 @@ public final class MonetaryRoundings {
         }
 
         /**
-         * Get the default rounding, which deleggates rounding dynamically dependenging on the current  currency.
+         * Get the default rounding, which delegates rounding dynamically depending on the current  currency.
          *
          * @return the default rounding, never null.
          */

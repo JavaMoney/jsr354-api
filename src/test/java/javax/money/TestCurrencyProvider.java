@@ -57,8 +57,8 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi {
 
     @Override
     public boolean isCurrencyAvailable(CurrencyQuery context) {
-        Collection<String> currencyCodea = context.getCurrencyCodes();
-        for (String currencyCode : currencyCodea) {
+        Collection<String> currencyCodes = context.getCurrencyCodes();
+        for (String currencyCode : currencyCodes) {
             switch (currencyCode) {
                 case "test1":
                 case "error":
@@ -143,7 +143,7 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi {
         }
 
         @Override
-        public int compareTo(CurrencyUnit o) {
+        public int compareTo(@SuppressWarnings("NullableProblems") CurrencyUnit o) {
             Objects.requireNonNull(o);
             return getCurrencyCode().compareTo(o.getCurrencyCode());
         }

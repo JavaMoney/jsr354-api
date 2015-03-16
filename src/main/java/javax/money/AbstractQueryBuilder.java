@@ -85,6 +85,7 @@ public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBu
      * @param type the target implementation type, not null.
      * @return this query builder for chaining.
      */
+    @SuppressWarnings("unchecked")
     public B setTargetType(Class<?> type) {
         Objects.requireNonNull(type);
         set(AbstractQuery.KEY_QUERY_TARGET_TYPE, type);

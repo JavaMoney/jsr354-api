@@ -49,7 +49,7 @@ public final class MonetaryCurrencies {
         try {
             return Optional.ofNullable(Bootstrap
                     .getService(MonetaryCurrenciesSingletonSpi.class)).orElseGet(
-                    () -> new DefaultMonetaryCurrenciesSingletonSpi());
+                    DefaultMonetaryCurrenciesSingletonSpi::new);
         } catch (Exception e) {
             Logger.getLogger(MonetaryCurrencies.class.getName())
                     .log(Level.INFO, "Failed to load MonetaryCurrenciesSingletonSpi, using default.", e);
@@ -185,7 +185,7 @@ public final class MonetaryCurrencies {
      * Query the list and ordering of provider names modelling the default provider chain to be used, if no provider
      * chain was explicitly set..
      *
-     * @return the orderend list provider names, modelling the default provider chain used, never null.
+     * @return the ordered list provider names, modelling the default provider chain used, never null.
      */
     public static List<String> getDefaultProviderChain() {
         return Optional.ofNullable(monetaryCurrenciesSpi).orElseThrow(

@@ -56,6 +56,12 @@ import java.util.function.UnaryOperator;
  * @version 0.9
  */
 @FunctionalInterface
-public interface MonetaryOperator extends UnaryOperator<MonetaryAmount> {
+public interface MonetaryOperator{
 
+    /**
+     * Applies the operator on the given amount.
+     * @param amount the amount to be operated on.
+     * @return the applied amount.
+     */
+    MonetaryAmount apply(MonetaryAmount amount);
 }

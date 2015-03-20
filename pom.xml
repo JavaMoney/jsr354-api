@@ -37,10 +37,6 @@
         <basedir>.</basedir>
         <!-- Dependency versions -->
         <testng.version>6.8.5</testng.version>
-
-        <license.licenseName>jcp_spec</license.licenseName>
-        <license.licenseResolver>src/license</license.licenseResolver>
-
     </properties>
 
     <organization>
@@ -221,13 +217,13 @@
         <license>
             <name>Spec Evaluation License</name>
             <comments>Spec</comments>
-            <url>EVALUATION-LICENSE.html</url>
+            <url>EVALUATION-LICENSE.txt</url>
             <distribution>repo</distribution>
         </license>
         <license>
             <name>Spec Implementation License</name>
             <comments>Spec</comments>
-            <url>IMPLEMENTATION-LICENSE.html</url>
+            <url>IMPLEMENTATION-LICENSE.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -245,16 +241,34 @@
 
     <distributionManagement>
         <repository>
-            <id>sonatype-nexus-staging</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-            <name>Nexus Release Repository</name>
+            <id>bintray</id>
+            <name>oss-jfrog-artifactory-snapshots</name>
+            <url>https://oss.jfrog.org/artifactory/oss-release-local</url>
         </repository>
         <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <name>Sonatype Nexus Snapshots</name>
+            <id>bintray</id>
+            <name>oss-jfrog-artifactory-snapshots</name>
+            <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>libs-release</name>
+            <url>http://oss.jfrog.org/artifactory/libs-release</url>
+        </repository>
+        <repository>
+            <snapshots />
+            <id>snapshots</id>
+            <name>libs-snapshot</name>
+            <url>http://oss.jfrog.org/artifactory/libs-snapshot</url>
+        </repository>
+    </repositories>
+
 
     <profiles>
         <profile>
@@ -317,62 +331,6 @@
                                 <id>attach-sources</id>
                                 <goals>
                                     <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>license</id>
-            <activation>
-                <property>
-                    <name>license</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <!-- ======================================================= -->
-                        <!-- License -->
-                        <!-- ======================================================= -->
-                        <!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>license-maven-plugin</artifactId>
-                            <version>1.4</version> </plugin> -->
-                        <plugin>
-                            <groupId>com.google.code.maven-license-plugin</groupId>
-                            <artifactId>maven-license-plugin</artifactId>
-                            <version>1.4.0</version>
-                            <configuration>
-                                <basedir>${basedir}</basedir>
-                                <header>${basedir}/src/etc/header.txt</header>
-                                <quiet>false</quiet>
-                                <failIfMissing>true</failIfMissing>
-                                <aggregate>false</aggregate>
-                                <encoding>UTF-8</encoding>
-                                <excludes>
-                                    <exclude>target/**</exclude>
-                                    <exclude>*LICENSE*.txt</exclude>
-                                    <exclude>*LICENSE*.html</exclude>
-                                    <exclude>README.*</exclude>
-                                    <exclude>checkstyle*.*</exclude>
-                                    <exclude>*.css</exclude>
-                                </excludes>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-                <plugins>
-                    <plugin>
-                        <groupId>com.google.code.maven-license-plugin</groupId>
-                        <artifactId>maven-license-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>format</goal>
                                 </goals>
                             </execution>
                         </executions>

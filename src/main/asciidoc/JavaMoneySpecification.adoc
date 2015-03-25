@@ -2272,13 +2272,13 @@ public interface MonetaryConversionsSingletonSpi {
   List<String> getDefaultProviderChain();
 
   // Modelled as default methods in Java 8
-  default ExchangeRateProvider getExchangeRateProvider(String... providers);
-  default List<ExchangeRateProvider> getExchangeRateProviders(String... providers);
-  default boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery);
-  default CurrencyConversion getConversion(ConversionQuery conversionQuery);
-  default CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers);
-  default boolean isConversionAvailable(ConversionQuery conversionQuery);
-  default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers);
+  ExchangeRateProvider getExchangeRateProvider(String... providers);
+  List<ExchangeRateProvider> getExchangeRateProviders(String... providers);
+  boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery);
+  CurrencyConversion getConversion(ConversionQuery conversionQuery);
+  CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers);
+  boolean isConversionAvailable(ConversionQuery conversionQuery);
+  boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers);
 }
 -------------------------------------------------------------------------------
 
@@ -2352,11 +2352,11 @@ public interface MonetaryFormatsSingletonSpi {
   List<String> getDefaultProviderChain();
 
   // Modelled as default methods in Java 8
-  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers);
-  default MonetaryAmountFormat getAmountFormat(String formatName, String... providers);
-  default MonetaryAmountFormat getAmountFormat(AmountFormatQuery formatQuery);
-  default boolean isAvailable(AmountFormatQuery formatQuery);
-  default boolean isAvailable(Locale locale, String... providers);
+  MonetaryAmountFormat getAmountFormat(Locale locale, String... providers);
+  MonetaryAmountFormat getAmountFormat(String formatName, String... providers);
+  MonetaryAmountFormat getAmountFormat(AmountFormatQuery formatQuery);
+  boolean isAvailable(AmountFormatQuery formatQuery);
+  boolean isAvailable(Locale locale, String... providers);
 }
 -------------------------------------------------------------------------------
 

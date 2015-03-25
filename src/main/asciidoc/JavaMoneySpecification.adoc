@@ -1,10 +1,10 @@
 ﻿JSR 354 Money and Currency -- Specification
 ===========================================
 :title: JSR 354 (Money & Currency) - Specification
-:revnumber: 1.0-RC3
-:revremark: Proposed Final Draft
+:revnumber: 1.0
+:revremark: Final
 :revdate: March 2015
-:longversion: 1.0-RC3 (Proposed Final Draft) March 2015
+:longversion: 1.0 (Final) March 2015
 :authorinitials: ATR
 :author: Anatole Tresch, Credit Suisse
 :email: <anatole.tresch@credit-suisse.com>
@@ -29,8 +29,8 @@ image::https://raw.githubusercontent.com/JavaMoney/jsr354-api/master/src/main/as
 ==== Version Information:
 ------------------------------------------------------------------
 Specification: JSR-354 Money and Currency API ("Specification")
-Version:       1.0-RC3
-Status:        Proposed Final Draft
+Version:       1.0
+Status:        Final
 Release:       March 2015
 Copyright:     2012-2015
                Credit Suisse AG
@@ -100,26 +100,31 @@ Nevertheless the API was designed to support different implementations of moneta
 several ways. So it should be flexible enough that corresponding implementations can be used transparently to
 accommodate such applications.
 
+As many applications in the financial area will quite probably use Java 7 for several years this JSR supports
+both platforms, Java 7 as well as Java 8.
+
 [[Scope]]
 === Scope
-JSR 354 targets a standalone scope. Nevertheless it may be integrated with the JDK later, so its design and scope must
-consider JDK patterns. Additionally the work on the JSR has shown, that it is possible to define a flexible
-and comprehensive API that is also compatible with Java Embedded.
-Basically this affects usage of +java.math+ and +java.text+. Nevertheless the reference implementation is free to use
+JSR 354 targets a standalone scope. Nevertheless we considered a later integration into the JDK, so its design and scope
+must follow JDK patterns. Additionally the work on the JSR has shown, that it is possible to define a flexible
+and comprehensive API that is not only be compatible with Java 7 and Java 8, but also with Java Embedded.
+Basically this affects usage of +java.math+ and +java.text+. Nevertheless the reference implementations are free to use
 existing functionality and the JSR also includes requirements (also checkable by the TCK) to ensure a minimal set of
-functionality on Java SE.
+functionality on Java SE 7 and SE 8.
 During the development of the JSR a wide set of features were implemented. Most of these features will not end up within
-the JSR itself, enabling feature innovation elsewhere. The corresponding libraries were published under [JavaMoney]
+the JSR itself, enabling feature innovation elsewhere. The corresponding libraries were avaailable under [JavaMoney]
 as an Apache 2 licensed open source project. Though these libraries were removed from the JSR, their development
 ensured that scope was fully evaluated and that the parts best suited to standardization were identified.
 
 === Required Java version
-The specification is based on Java SE 8 language features. Implementations may target any suitable Java SE version,
-or given an increasing SE/ME correlation also future ME versions. For users of JDK 7 a forward compatible backport of
-the API will be provided. This allows to design an API, which will easily fit into Java 9, but still supporting
-older releases, since there are many financial applications and products that will require years
-until they were migrated to Java 8. In general there are only a few aspects within the API that would be affected by
-building the API based on Java 8, but there are many benefits, especially _default methods_ and _the functional features_.
+The specification supports Java SE platforms version 7 and 8 (in fact the Java 7 based API is even compatible with Java 6).
+The Java 8 based API is backward compatible with the Java 7 version since its only adding additional default method
+implementations to the API. Implementations hereby may target any suitable Java SE version, or given an increasing
+SE/ME correlation also future ME versions. The JSR consequently provides two reference implementations, one based on
+Java 7, one based on Java 8 language features. Since the Java 8 version is backward compatible the same TCK can be
+used for testing both reference implementations.
+This allows to design an API, which will easily fit into Java 8 and beyond, but still supporting
+older releases.
 
 
 === How this document is organized
@@ -358,16 +363,18 @@ different runtime environments and component loading mechanisms. It is discussed
 ==== Module/Repository Overview
 The JSR’s source code repository under <<source>> provides several modules:
 
-jsr354-api:: contains the JSR 354 API as described also by this specification.
-jsr354-ri:: contains the ''moneta'' reference implementation.
-jsr354-tck:: contains the technical compatibility kit (TCK).
+jsr354-api:: contains the JSR 354 API based on Java 8 as described by this specification.
+jsr354-api-bp:: contains the JSR 354 API based on Java 7 as described by this specification.
+jsr354-ri:: contains the ''moneta'' reference implementation based on Java 8 language features.
+jsr354-ri-bp:: contains the ''moneta'' reference implementation based on Java 7 language features.
+jsr354-tck:: contains the technical compatibility kit (TCK). The TCK is built using Java 7 but can be seemlessly be
+used to test implementations based on Java 8.
 javamoney-parent:: is a root “POM” project for all modules under +org.javamoney+. This includes the RI/TCK projects,
   but not jsr354-api (which is standalone).
 javamoney-library:: contains a financial library (JavaMoney) adding comprehensive support for several extended
   functionality, built on top of this JSR, but not part of the JSR.
 javamoney-examples:: finally contains the examples and demos, and also is not part of this JSR.
 
-It is also planned to provide a Java 7 based backport of the API and RI.
 
 [[CoreAPI]]
 === Money and Currency Core API
@@ -559,9 +566,9 @@ public interface MonetaryAmount{
   boolean isLessThanOrEqualsTo(MonetaryAmount amount);
   ...
   boolean isEqualTo(MonetaryAmount amount);
-  default boolean isNegative(){...}  // delegates to signum
-  default boolean isPositive(){...}  // delegates to signum
-  default boolean isZero(){...}      // delegates to signum
+  boolean isNegative();
+  boolean isPositive();
+  boolean isZero();
   int signum();
 
   // Algorithmic functions and calculations
@@ -680,7 +687,6 @@ public abstract class NumberValue extends java.lang.Number{
   public abstract int getScale();
   public abstract long getAmountFractionNumerator();
   public abstract long getAmountFractionDenominator();
-
 }
 -------------------------------------------------------------------------------
 
@@ -716,16 +722,26 @@ operations, being applied on amounts. This is modelled by
 * +javax.money.MonetaryOperator+, which models a function +f(M1) -> M2+, that converts an amount to another amount, and
 * +javax.money.MonetaryQuery+, which models a function +f(M1) -> T+, that converts an amount to any type of result.
 
+Note that interfaces in Java 7 and Java 8 have similar signatures, whereas Java 8 additionally is annotated with the
++@FunctionalInterface+ annotation.
+
 [[MonetaryOperator]]
 ===== Monetary Operators
 The interface +javax.money.MonetaryOperator+ defines an arbitrary function +f(M1) -> M2+, that converts an
 amount to another amount. Examples of such operations are rounding, currency conversion or monetary calculations:
 
 [source,java]
-.Interface MonetaryOperator
+.Interface MonetaryOperator (Java 7)
 -------------------------------------------------------------------------------
+// Java 8
 @FunctionalInterface
-public interface MonetaryOperator extends UnaryOperator<MonetaryAmount>{
+public interface MonetaryOperator{
+   MonetaryAmount apply(MonetaryAmount amount);
+}
+
+// Java 7
+public interface MonetaryOperator{
+   MonetaryAmount apply(MonetaryAmount amount);
 }
 -------------------------------------------------------------------------------
 
@@ -790,7 +806,13 @@ The interface +javax.money.MonetaryQuery+ models a function +f(M1) -> T+, that c
 [source,java]
 .Interface MonetaryQuery
 -------------------------------------------------------------------------------
+// Java 8
 @FunctionalInterface
+public interface MonetaryQuery<R> {
+  R queryFrom(MonetaryAmount<?> amount);
+}
+
+// Java 7
 public interface MonetaryQuery<R> {
   R queryFrom(MonetaryAmount<?> amount);
 }
@@ -941,15 +963,15 @@ programming style:
 public interface MonetaryAmountFactory<T extends MonetaryAmount> {
   Class<T> getAmountType();
   MonetaryContext getDefaultMonetaryContext();
-  default MonetaryContext geMaximalMonetaryContext(){...}
+  MonetaryContext geMaximalMonetaryContext();
 
   MonetaryAmountFactory<T> setCurrency(CurrencyUnit currency);
   MonetaryAmountFactory<T> setNumber(double number);
   MonetaryAmountFactory<T> setNumber(long number);
   MonetaryAmountFactory<T> setNumber(Number number);
   MonetaryAmountFactory<T> setContext(MonetaryContext ctx);
-  default MonetaryAmountFactory<T> setCurrency(String code){...}
-  default MonetaryAmountFactory<T> setAmount(MonetaryAmount amount){...}
+  MonetaryAmountFactory<T> setCurrency(String code);
+  MonetaryAmountFactory<T> setAmount(MonetaryAmount amount);
 
   T create();
 }
@@ -1259,13 +1281,19 @@ part as well as to the currency of an amount is modeled with corresponding _func
 
 [[CurrencySupplier]]
 ===== CurrencySupplier
-The interface +javax.money.CurrencySupplier+ is a functional interface (the +CurrencyUnit+ producing specialization of
-a +Supplier+ as defined in Java 8), whose functional method is +getCurrency()+:
+The interface +javax.money.CurrencySupplier+ is a functional interface similar to +Supplier<CurrencyUnit>+ as defined
+in Java 8), whose functional method is +getCurrency()+:
 
 [source,java]
 .Interface CurrencySupplier
 -------------------------------------------------------------------------------
+// Java 8
 @FunctionalInterface
+public interface CurrencySupplier {
+  CurrencyUnit getCurrency();
+}
+
+// Java 7
 public interface CurrencySupplier {
   CurrencyUnit getCurrency();
 }
@@ -1277,13 +1305,19 @@ Hereby
 
 [[NumberSupplier]]
 ===== NumberSupplier
-The interface +javax.money.NumberSupplier+ is a functional interface (the +NumberValue+ -producing specialization of a
-+Supplier+ as defined in Java 8), whose functional method is +getNumberValue()+:
+The interface +javax.money.NumberSupplier+ is a functional interface similar to specialization of
++Supplier<NumberValue>+ as defined in Java 8), whose functional method is +getNumberValue()+:
 
 [source,java]
 .Interface NumberSupplier
 -------------------------------------------------------------------------------
+// Java 8
 @FunctionalInterface
+public interface NumberSupplier {
+  NumberValue getNumber();
+}
+
+// Java 7
 public interface NumberSupplier {
   NumberValue getNumber();
 }
@@ -1412,7 +1446,7 @@ public interface ExchangeRate extends CurrencySupplier{
   NumberValue getFactor();
   // Support for chained rates
   List<ExchangeRate> getExchangeRateChain();
-  default boolean isDerived(){...}
+  boolean isDerived();
 }
 -------------------------------------------------------------------------------
 
@@ -1453,6 +1487,7 @@ Summarizing an +ExchangeRateProvider+ is modelled as follows:
 [source,java]
 .Interface ExchangeRateProvider
 -------------------------------------------------------------------------------
+// Java 8
 public interface ExchangeRateProvider{
   ProviderContext getContext();
 
@@ -1460,15 +1495,14 @@ public interface ExchangeRateProvider{
   ExchangeRate getExchangeRate(ConversionQuery conversionQuery);
   CurrencyConversion getCurrencyConversion(ConversionQuery conversionQuery);
 
-  default boolean isAvailable(CurrencyUnit base, CurrencyUnit term);
-  default boolean isAvailable(String baseCode, String termCode);
-  default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term);
-  default ExchangeRate getExchangeRate(String baseCode, String termCode);
-  default CurrencyConversion getCurrencyConversion(CurrencyUnit term);
-  default CurrencyConversion getCurrencyConversion(String termCode);
-
-  default ExchangeRate getReversed(ExchangeRate rate);
-
+  // modelled as default methods in Java 8
+  boolean isAvailable(CurrencyUnit base, CurrencyUnit term);
+  boolean isAvailable(String baseCode, String termCode);
+  ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term);
+  ExchangeRate getExchangeRate(String baseCode, String termCode);
+  CurrencyConversion getCurrencyConversion(CurrencyUnit term);
+  CurrencyConversion getCurrencyConversion(String termCode);
+  ExchangeRate getReversed(ExchangeRate rate);
 }
 -------------------------------------------------------------------------------
 
@@ -1615,7 +1649,7 @@ shown below:
 .Interface MonetaryAmountFormat
 -------------------------------------------------------------------------------
 public interface MonetaryAmountFormat extends MonetaryQuery<String>{
-  default String format(MonetaryAmount<?> amount){...}
+  String format(MonetaryAmount<?> amount);
   void print(Appendable appendable, MonetaryAmount<?> amount) throws IOException;
   MonetaryAmount<?> parse(CharSequence text) throws ParseException;
   AmountFormatContext getContext();
@@ -1746,28 +1780,32 @@ on the +AmountFormatQuery+ passed. Such a query can contain
 .Interface MonetaryFormatsSingletonSpi
 -------------------------------------------------------------------------------
 public interface MonetaryFormatsSingletonSpi{
-  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <1>
-  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <1>
-  default MonetaryAmountFormat getAmountFormat(String name, String... providers);          <1>
-  Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery query);              <2>
-  default boolean isAvailable(Locale locale, String... providers){...}                     <3>
-  default boolean isAvailable(AmountFormatQuery formatQuery){...}                          <4>
-  Set<Locale> getAvailableLocales(String... providers);                                    <5>
-  Set<String> getFormatNames(String... providers);                                         <6>
-  Set<String> getProviderNames();                                                          <7>
-  List<String> geDefaultProviderChain();                                                   <8>
+  Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery query);              <1>
+  Set<Locale> getAvailableLocales(String... providers);                                    <2>
+  Set<String> getFormatNames(String... providers);                                         <3>
+  Set<String> getProviderNames();                                                          <4>
+  List<String> geDefaultProviderChain();                                                   <5>
+
+  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <6>
+  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <6>
+  default MonetaryAmountFormat getAmountFormat(String name, String... providers);          <6>
+
+  default boolean isAvailable(Locale locale, String... providers){...}                     <7>
+  default boolean isAvailable(AmountFormatQuery formatQuery){...}                          <7>
+
 }
 -------------------------------------------------------------------------------
-<1> By default all this methods are mapped into a corresponding instance of +AmountFormatQuery+ and passed to <2>.
-<2> Main method called for accessing formats.
-<3> This method is mapped into a corresponding instance of +AmountFormatQuery+ and passed to <4>.
-<4> This method by default tries to access a formatting calling <2>.
-<5> Collect all locales available from the given providers. If no provider IDs are passed the default provider chain
+<1> Main method called for accessing formats.
+<2> Collect all locales available from the given providers. If no provider IDs are passed the default provider chain
     is used.
-<6> Get the available format names for the given providers. If no provider IDs are passed the default provider chain
+<3> Get the available format names for the given providers. If no provider IDs are passed the default provider chain
     is used.
-<7> Access all registered provider's ids.
-<8> Access the ids of the default provider chain, in the ordering as executing.
+<4> Access all registered provider's ids.
+<5> Access the ids of the default provider chain, in the ordering as executing.
+<6> In java 8 these methods are provided as default methods delegating to +getAmountFormats(AmountFormatQuery)+.
+<7> In java 8 these methods are default methods trying to access a formatting calling
+    +getAmountFormats(AmountFormatQuery)+.
+
 
 Similar to other singletons of this JSR overriding the
 +<<MonetaryFormatsSingletonSpi>>+ allows to add contextual behaviour in EE or multi-tenancy runtime environment.
@@ -1784,10 +1822,10 @@ public final class MonetaryFormats{
 
   public static MonetaryAmountFormat getAmountFormat(Locale locale);
   public static MonetaryAmountFormat getAmountFormat(AmountFormatContext context);
-  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}
   public static MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}
-  public static  MonetaryAmountFormat getAmountFormat(String name, String... providers);
-  public static  Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery query);
+  public static MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}
+  public static MonetaryAmountFormat getAmountFormat(String name, String... providers);
+  public static Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery query);
   public static boolean isAvailable(Locale locale, String... providers){...}
   public static boolean isAvailable(AmountFormatQuery formatQuery){...}
   public static Set<Locale> getAvailableLocales(String... providers);
@@ -1915,13 +1953,15 @@ public interface MonetaryCurrenciesSingletonSpi {
   List<String> getDefaultProviderChain();
   Set<String> getProviderNames();
   Set<CurrencyUnit> getCurrencies(CurrencyQuery query);
-  default CurrencyUnit getCurrency(String currencyCode, String... providers);
-  default CurrencyUnit getCurrency(Locale country, String... providers);
-  default Set<CurrencyUnit> getCurrencies(Locale locale, String... providers);
-  default boolean isCurrencyAvailable(String code, String... providers);
-  default boolean isCurrencyAvailable(Locale locale, String... providers);
-  default Set<CurrencyUnit> getCurrencies(String... providers);
-  default CurrencyUnit getCurrency(CurrencyQuery query);
+
+  // The following methods are modelled as default methods in Java 8
+  CurrencyUnit getCurrency(String currencyCode, String... providers);
+  CurrencyUnit getCurrency(Locale country, String... providers);
+  Set<CurrencyUnit> getCurrencies(Locale locale, String... providers);
+  boolean isCurrencyAvailable(String code, String... providers);
+  boolean isCurrencyAvailable(Locale locale, String... providers);
+  Set<CurrencyUnit> getCurrencies(String... providers);
+  CurrencyUnit getCurrency(CurrencyQuery query);
 }
 -------------------------------------------------------------------------------
 
@@ -1950,9 +1990,11 @@ instances can be registered into the +MonetaryCurrencies+ singleton:
 .Interface CurrencyProviderSpi
 -------------------------------------------------------------------------------
 public interface CurrencyProviderSpi {
-  default String getProviderName();
-  default boolean isCurrencyAvailable(CurrencyQuery query);
   Set<CurrencyUnit> getCurrencies(CurrencyQuery query);
+
+  // Modelled as default methods in Java 8
+  String getProviderName();
+  boolean isCurrencyAvailable(CurrencyQuery query);
 }
 -------------------------------------------------------------------------------
 
@@ -2035,8 +2077,10 @@ public interface MonetaryAmountsSingletonSpi{
   <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType);
   Class<? extends MonetaryAmount> getDefaultAmountType();
   Collection<Class<? extends MonetaryAmount>> getAmountTypes();
-  default MonetaryAmountFactory<?> getDefaultAmountFactory();
-  default Collection<MonetaryAmountFactory<?>> getAmountFactories();
+
+  // Modelled as default methods in Java 8
+  MonetaryAmountFactory<?> getDefaultAmountFactory();
+  Collection<MonetaryAmountFactory<?>> getAmountFactories();
 }
 -------------------------------------------------------------------------------
 
@@ -2053,7 +2097,6 @@ Hereby
   context.
 
 
-
 Implementing +MonetaryAmountsSingletonQuerySpi+ allows to provide alternate implementations of query algorithm used
 within +MonetaryAmounts.queryAmountType(MonetaryContext)+ to evaluate the best matching +MonetaryAmount+ implementation
 given a +MonetaryAmountFactoryQuery+ required. The interface is defined as follows:
@@ -2062,11 +2105,13 @@ given a +MonetaryAmountFactoryQuery+ required. The interface is defined as follo
 .Interface MonetaryAmountsSingletonQuerySpi
 -------------------------------------------------------------------------------
 public interface MonetaryAmountsSingletonQuerySpi{
-  default MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query);
   Collection<MonetaryAmountFactory<? extends MonetaryAmount>> getAmountFactories(MonetaryAmountFactoryQuery query);
-  default Class<? extends MonetaryAmount> getAmountType(MonetaryAmountFactoryQuery query)
-  default Collection<Class<? extends MonetaryAmount>> getAmountTypes(MonetaryAmountFactoryQuery query)
-  default boolean isAvailable(MonetaryAmountFactoryQuery query);
+
+  // Modelled as default methods in Java 8
+  MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query);
+  Class<? extends MonetaryAmount> getAmountType(MonetaryAmountFactoryQuery query)
+  Collection<Class<? extends MonetaryAmount>> getAmountTypes(MonetaryAmountFactoryQuery query)
+  boolean isAvailable(MonetaryAmountFactoryQuery query);
 }
 -------------------------------------------------------------------------------
 
@@ -2128,18 +2173,19 @@ singletons in this JSR the +MonetaryRoundings+ singleton is backed up by an inst
 -------------------------------------------------------------------------------
 public interface MonetaryRoundingsSingletonSpi {
   Collection<MonetaryRounding> getRoundings(RoundingQuery query);
-  default MonetaryRounding getRounding(RoundingQuery roundingQuery);
   MonetaryRounding getDefaultRounding();
-  default MonetaryRounding getRounding(CurrencyUnit currencyUnit, String... providers);
-  default MonetaryRounding getRounding(String roundingName, String... providers);
-  default MonetaryRounding getRounding(RoundingQuery query);
-  default boolean isRoundingAvailable(RoundingQuery query);
-  default boolean isRoundingAvailable(String roundingId, String... providers);
-  default boolean isRoundingAvailable(CurrencyUnit currencyUnit, String... providers);
-
   Set<String> getRoundingNames(String... providers);
   Set<String> getProviderNames();
   List<String> getDefaultProviderChain();
+
+  // Modelled as default methods in Java 8
+  MonetaryRounding getRounding(RoundingQuery roundingQuery);
+  MonetaryRounding getRounding(CurrencyUnit currencyUnit, String... providers);
+  MonetaryRounding getRounding(String roundingName, String... providers);
+  MonetaryRounding getRounding(RoundingQuery query);
+  boolean isRoundingAvailable(RoundingQuery query);
+  boolean isRoundingAvailable(String roundingId, String... providers);
+  boolean isRoundingAvailable(CurrencyUnit currencyUnit, String... providers);
 }
 -------------------------------------------------------------------------------
 
@@ -2177,7 +2223,9 @@ To register additional +MonetaryRounding+ instances of +RoundingProviderSpi+ mus
 public interface RoundingProviderSpi {
   MonetaryRounding getRounding(RoundingQuery query);
   Set<String> getRoundingNames();
-  default String getProviderName();
+
+  // Modelled as default method in Java 8
+  String getProviderName();
 }
 -------------------------------------------------------------------------------
 
@@ -2220,17 +2268,17 @@ effective behaviour. As a consequence the methods to be implemented basically ma
 -------------------------------------------------------------------------------
 public interface MonetaryConversionsSingletonSpi {
   ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery);
+  Collection<String> getProviderNames();
+  List<String> getDefaultProviderChain();
+
+  // Modelled as default methods in Java 8
   default ExchangeRateProvider getExchangeRateProvider(String... providers);
   default List<ExchangeRateProvider> getExchangeRateProviders(String... providers);
-
   default boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery);
   default CurrencyConversion getConversion(ConversionQuery conversionQuery);
   default CurrencyConversion getConversion(CurrencyUnit termCurrency, String... providers);
   default boolean isConversionAvailable(ConversionQuery conversionQuery);
   default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers);
-
-  Collection<String> getProviderNames();
-  List<String> getDefaultProviderChain();
 }
 -------------------------------------------------------------------------------
 
@@ -2298,15 +2346,17 @@ match the ones defined by the +MonetaryFormats+ class:
 .Interface MonetaryFormatsSingletonSpi
 -------------------------------------------------------------------------------
 public interface MonetaryFormatsSingletonSpi {
-  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers);
-  default MonetaryAmountFormat getAmountFormat(String formatName, String... providers);
   Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery);
-  default MonetaryAmountFormat getAmountFormat(AmountFormatQuery formatQuery);
-  default boolean isAvailable(AmountFormatQuery formatQuery);
-  default boolean isAvailable(Locale locale, String... providers);
   Set<Locale> getAvailableLocales(String... providers);
   Set<String> getProviderNames();
   List<String> getDefaultProviderChain();
+
+  // Modelled as default methods in Java 8
+  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers);
+  default MonetaryAmountFormat getAmountFormat(String formatName, String... providers);
+  default MonetaryAmountFormat getAmountFormat(AmountFormatQuery formatQuery);
+  default boolean isAvailable(AmountFormatQuery formatQuery);
+  default boolean isAvailable(Locale locale, String... providers);
 }
 -------------------------------------------------------------------------------
 
@@ -2339,10 +2389,12 @@ The +MonetaryFormats+ singleton delegates access to +MonetaryAmountFormat+ insta
 .Interface MonetaryAmountFormatProviderSpi
 -------------------------------------------------------------------------------
 public interface MonetaryAmountFormatProviderSpi {
-   default String getProviderName();
    Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery);
    Set<Locale> getAvailableLocales();
    Set<String> getAvailableFormatNames();
+
+   // Modelled as default method in Java 8
+   String getProviderName();
 }
 -------------------------------------------------------------------------------
 

@@ -1786,12 +1786,12 @@ public interface MonetaryFormatsSingletonSpi{
   Set<String> getProviderNames();                                                          <4>
   List<String> geDefaultProviderChain();                                                   <5>
 
-  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <6>
-  default MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <6>
-  default MonetaryAmountFormat getAmountFormat(String name, String... providers);          <6>
-
-  default boolean isAvailable(Locale locale, String... providers){...}                     <7>
-  default boolean isAvailable(AmountFormatQuery formatQuery){...}                          <7>
+  // The following methods are modelled as default methods in Java 8
+  MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <6>
+  MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <6>
+  MonetaryAmountFormat getAmountFormat(String name, String... providers);          <6>
+  boolean isAvailable(Locale locale, String... providers){...}                     <7>
+  boolean isAvailable(AmountFormatQuery formatQuery){...}                          <7>
 
 }
 -------------------------------------------------------------------------------

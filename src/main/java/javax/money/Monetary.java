@@ -8,7 +8,7 @@
  * 
  * Specification: JSR-354 Money and Currency API ("Specification")
  * 
- * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
+ * Copyright (c) 2012-2015, Credit Suisse All rights reserved.
  */
 package javax.money;
 

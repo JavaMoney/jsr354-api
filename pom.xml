@@ -61,27 +61,12 @@
             </roles>
         </developer>
         <developer>
-            <id>dunnschtig</id>
-            <name>Sascha Freitag</name>
-            <organization>Credit Suisse</organization>
-            <roles>
-                <role>Expert Group Member (until EDR)</role>
-            </roles>
-        </developer>
-        <developer>
             <id>tom-huesler</id>
             <name>Thomas Hüsler</name>
             <organization>Espalier Technologies</organization>
             <timezone>GMT+1</timezone>
             <roles>
                 <role>Expert Group Member</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>vgrazi</id>
-            <name>Victor Grazi</name>
-            <roles>
-                <role>Expert Group Member (Emeritus)</role>
             </roles>
         </developer>
         <developer>
@@ -94,13 +79,6 @@
         <developer>
             <id>chrisphe</id>
             <name>Christopher Pheby</name>
-            <roles>
-                <role>Expert Group Member</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>crazybob</id>
-            <name>Bob Lee</name>
             <roles>
                 <role>Expert Group Member</role>
             </roles>
@@ -121,21 +99,13 @@
         </developer>
         <developer>
             <id>-</id>
-            <name>Mathias Bücker</name>
-            <organization>Credit Suisse</organization>
-            <roles>
-                <role>Expert Group Member</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>-</id>
             <name>Benjamin Cotton</name>
             <roles>
                 <role>Expert Group Member</role>
             </roles>
         </developer>
         <developer>
-            <id>simasch</id>
+            <id>-</id>
             <name>Simon Martinelli</name>
             <roles>
                 <role>Expert Group Member</role>
@@ -156,29 +126,10 @@
             </roles>
         </developer>
         <developer>
-            <id>-</id>
-            <name>Arumugam Swaminathan</name>
-            <roles>
-                <role>Expert Group Member</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>-</id>
-            <name>Sanjay Nagpal</name>
-            <roles>
-                <role>Expert Group Member</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>otaviojava</id>
-            <name>Otavio Santana</name>
-            <roles>
-                <role>Expert Group Member</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>-</id>
-            <name>Manuela Grindei</name>
+            <id>rajmahendra</id>
+            <name>Rajmahendra Hegde</name>
+            <email>rajmahendra@gmail.com</email>
+            <organization>JUG Chennai</organization>
             <roles>
                 <role>Expert Group Member</role>
             </roles>

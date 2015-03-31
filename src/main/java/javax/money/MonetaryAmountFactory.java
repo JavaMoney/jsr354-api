@@ -13,9 +13,9 @@ package javax.money;
  * <ul>
  * <li>calling {@link MonetaryAmount#getFactory()}, returning a {@link MonetaryAmountFactory}
  * creating amounts of the same implementation type, which also provided the factory instance.</li>
- * <li>calling {@link MonetaryAmounts#getAmountFactory(Class)} accessing a
+ * <li>calling {@link Monetary#getAmountFactory(Class)} accessing a
  * {@link MonetaryAmountFactory} for a concrete type <code>Class<T></code>.</li>
- * <li>calling {@link MonetaryAmounts#getDefaultAmountFactory()} accessing a default
+ * <li>calling {@link Monetary#getDefaultAmountFactory()} accessing a default
  * {@link MonetaryAmountFactory}.
  * </ul>
  * <p>
@@ -23,7 +23,7 @@ package javax.money;
  * different data as required:
  * <ul>
  * <li>the {@link CurrencyUnit}, or the corresponding currency code (must be solvable by
- * {@link javax.money.MonetaryCurrencies}).</li>
+ * {@link Monetary}).</li>
  * <li>the number part</li>
  * <li>the {@link MonetaryContext}</li>
  * <li>by passing any {@link MonetaryAmount} instance, it is possible to convert an arbitrary amount
@@ -64,12 +64,12 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
      * Sets the {@link CurrencyUnit} to be used.
      *
      * @param currencyCode the currencyCode of the currency to be used, not {@code null}. The currency code
-     *                     will be resolved using {@link MonetaryCurrencies#getCurrency(String, String...)}.
+     *                     will be resolved using {@link Monetary#getCurrency(String, String...)}.
      * @return This factory instance, for chaining.
      * @throws UnknownCurrencyException if the {@code currencyCode} is not resolvable.
      */
     default MonetaryAmountFactory<T> setCurrency(String currencyCode) {
-        return setCurrency(MonetaryCurrencies.getCurrency(currencyCode));
+        return setCurrency(Monetary.getCurrency(currencyCode));
     }
 
     /**

@@ -17,8 +17,8 @@ import java.util.concurrent.ExecutionException;
 
 import javax.money.DummyAmount;
 import javax.money.DummyAmountBuilder;
+import javax.money.Monetary;
 import javax.money.MonetaryAmount;
-import javax.money.MonetaryRoundings;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -36,7 +36,7 @@ public class ConcurrentInitializationTest {
 
         @Override
         public void run() {
-            MonetaryRoundings.getDefaultRounding().apply(amount);
+            Monetary.getDefaultRounding().apply(amount);
         }
     }
 

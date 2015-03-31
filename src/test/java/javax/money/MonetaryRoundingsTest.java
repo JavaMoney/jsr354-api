@@ -26,76 +26,76 @@ public class MonetaryRoundingsTest {
 
     @Test
     public void testMonetaryRoundingsGetRoundingCurrencyUnit() {
-        MonetaryOperator op = MonetaryRoundings.getRounding(MonetaryCurrencies.getCurrency("test1"));
+        MonetaryOperator op = Monetary.getRounding(Monetary.getCurrency("test1"));
         assertNotNull(op);
     }
 
     @Test
     public void testMonetaryRoundingsGetRoundingQueryWithLongTS() {
-        MonetaryOperator op = MonetaryRoundings.getRounding(
-                RoundingQueryBuilder.of().setCurrency(MonetaryCurrencies.getCurrency("test1")).set("timestamp", 200L)
+        MonetaryOperator op = Monetary.getRounding(
+                RoundingQueryBuilder.of().setCurrency(Monetary.getCurrency("test1")).set("timestamp", 200L)
                         .build());
         assertNotNull(op);
     }
 
     @Test
     public void testMonetaryRoundingsGetRoundingQueryAny() {
-        Collection<MonetaryRounding> roundings = MonetaryRoundings.getRoundings(RoundingQueryBuilder.of().build());
+        Collection<MonetaryRounding> roundings = Monetary.getRoundings(RoundingQueryBuilder.of().build());
         assertNotNull(roundings);
         assertFalse(roundings.isEmpty());
     }
 
     @Test
     public void testMonetaryRoundingsGetDefaultRounding() {
-        MonetaryOperator op = MonetaryRoundings.getDefaultRounding();
+        MonetaryOperator op = Monetary.getDefaultRounding();
         assertNotNull(op);
     }
 
     @Test
     public void testMonetaryRoundingsGetRoundingWithId() {
-        MonetaryOperator op = MonetaryRoundings.getRounding("custom1");
+        MonetaryOperator op = Monetary.getRounding("custom1");
         assertNotNull(op);
     }
 
     @Test
     public void testIsRoundingsAvailable() {
-        assertTrue(MonetaryRoundings.isRoundingAvailable("custom1"));
-        assertFalse(MonetaryRoundings.isRoundingAvailable("foo"));
+        assertTrue(Monetary.isRoundingAvailable("custom1"));
+        assertFalse(Monetary.isRoundingAvailable("foo"));
     }
 
     @Test
     public void testIsRoundingsAvailable_CurrencyUnit() {
-        assertFalse(MonetaryRoundings.isRoundingAvailable(TestCurrency.of("CHF"), "foo"));
-        assertTrue(MonetaryRoundings.isRoundingAvailable(TestCurrency.of("CHF")));
+        assertFalse(Monetary.isRoundingAvailable(TestCurrency.of("CHF"), "foo"));
+        assertTrue(Monetary.isRoundingAvailable(TestCurrency.of("CHF")));
     }
 
     @Test
     public void testIsRoundingsAvailable_Query() {
-        assertTrue(MonetaryRoundings.isRoundingAvailable(
+        assertTrue(Monetary.isRoundingAvailable(
                 RoundingQueryBuilder.of().setCurrency(TestCurrency.of("CHF")).set("timestamp", 200L)
                         .build()));
-        assertFalse(MonetaryRoundings.isRoundingAvailable(
+        assertFalse(Monetary.isRoundingAvailable(
                 RoundingQueryBuilder.of().setCurrency(TestCurrency.of("CHF")).setProviderName("foo")
                         .build()));
     }
 
     @Test
     public void testGetDefaultProviderChain() {
-        List<String> chain = MonetaryRoundings.getDefaultProviderChain();
+        List<String> chain = Monetary.getDefaultRoundingProviderChain();
         assertNotNull(chain);
         assertFalse(chain.isEmpty());
     }
 
     @Test
     public void testMonetaryRoundingsGetCustomRoundingIds() {
-        Set<String> ids = MonetaryRoundings.getRoundingNames();
+        Set<String> ids = Monetary.getRoundingNames();
         assertNotNull(ids);
         assertTrue(ids.size() == 2);
     }
 
     @Test
     public void testMonetaryRoundingsGetProviderNames() {
-        Set<String> names = MonetaryRoundings.getProviderNames();
+        Set<String> names = Monetary.getRoundingProviderNames();
         assertNotNull(names);
         assertTrue(names.size() == 1);
     }

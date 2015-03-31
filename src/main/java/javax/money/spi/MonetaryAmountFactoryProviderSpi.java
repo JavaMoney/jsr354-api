@@ -10,7 +10,6 @@ package javax.money.spi;
 
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmountFactory;
-import javax.money.MonetaryAmounts;
 import javax.money.MonetaryContext;
 
 /**
@@ -24,9 +23,9 @@ public interface MonetaryAmountFactoryProviderSpi<T extends MonetaryAmount>{
 
     /**
      * Determines how the factory should be considered when querying for matching implementation
-     * types calling {@link MonetaryAmounts#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)} .
+     * types calling {@link javax.money.Monetary#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)} .
      *
-     * @see MonetaryAmounts#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)
+     * @see javax.money.Monetary#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)
      */
     enum QueryInclusionPolicy{
         /**
@@ -50,10 +49,10 @@ public interface MonetaryAmountFactoryProviderSpi<T extends MonetaryAmount>{
     /**
      * Method that determines if this factory should be considered for general evaluation of
      * matching {@link MonetaryAmount} implementation types when calling
-     * {@link MonetaryAmounts#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)}.
+     * {@link javax.money.Monetary#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)}.
      *
      * @return {@code true} to include this factory into the evaluation.
-     * @see MonetaryAmounts#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)
+     * @see javax.money.Monetary#getAmountFactory(javax.money.MonetaryAmountFactoryQuery)
      */
     default QueryInclusionPolicy getQueryInclusionPolicy(){
         return QueryInclusionPolicy.ALWAYS;

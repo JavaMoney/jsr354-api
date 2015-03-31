@@ -21,7 +21,7 @@ import static org.testng.AssertJUnit.*;
 /**
  * Tests the default methods on MonetaryAmountsSingletonSpi.
  */
-public class MonetaryCurrenciesSingletonSpiTest {
+public class MonetarySingletonSpiTest {
 
     private MonetaryCurrenciesSingletonSpi testSpi = new MonetaryCurrenciesSingletonSpi() {
 

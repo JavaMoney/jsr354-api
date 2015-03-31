@@ -25,65 +25,65 @@ public class MonetaryAmountsTest {
 
     /**
      * Test method for
-     * {@link javax.money.MonetaryAmounts#getAmountFactory(java.lang.Class)}.
+     * {@link javax.money.Monetary#getAmountFactory(java.lang.Class)}.
      */
     @Test
     public void testGetFactory() {
-        assertNotNull(MonetaryAmounts.getDefaultAmountFactory());
-        assertNotNull(MonetaryAmounts.getAmountFactory(DummyAmount.class));
-        assertTrue(MonetaryAmounts.getDefaultAmountFactory().getClass() ==
-                MonetaryAmounts.getAmountFactory(DummyAmount.class).getClass());
+        assertNotNull(Monetary.getDefaultAmountFactory());
+        assertNotNull(Monetary.getAmountFactory(DummyAmount.class));
+        assertTrue(Monetary.getDefaultAmountFactory().getClass() ==
+                Monetary.getAmountFactory(DummyAmount.class).getClass());
     }
 
     /**
-     * Test method for {@link javax.money.MonetaryAmounts#getAmountTypes()}.
+     * Test method for {@link javax.money.Monetary#getAmountTypes()}.
      */
     @Test
     public void testGetTypes() {
-        assertNotNull(MonetaryAmounts.getAmountTypes());
-        assertTrue(MonetaryAmounts.getAmountTypes().size() == 1);
-        assertTrue(MonetaryAmounts.getAmountTypes().contains(DummyAmount.class));
+        assertNotNull(Monetary.getAmountTypes());
+        assertTrue(Monetary.getAmountTypes().size() == 1);
+        assertTrue(Monetary.getAmountTypes().contains(DummyAmount.class));
     }
 
     /**
      * Test method for
-     * {@link javax.money.MonetaryAmounts#getDefaultAmountType()}.
+     * {@link javax.money.Monetary#getDefaultAmountType()}.
      */
     @Test
     public void testGetDefaultAmountFactory() {
-        assertNotNull(MonetaryAmounts.getDefaultAmountFactory());
-        assertEquals(DummyAmountBuilder.class, MonetaryAmounts.getDefaultAmountFactory().getClass());
+        assertNotNull(Monetary.getDefaultAmountFactory());
+        assertEquals(DummyAmountBuilder.class, Monetary.getDefaultAmountFactory().getClass());
     }
 
     /**
      * Test method for
-     * {@link MonetaryAmounts#getAmountFactories()}.
+     * {@link Monetary#getAmountFactories()}.
      */
     @Test
     public void testGetAmountFactories() {
-        Collection<MonetaryAmountFactory<?>> factories = MonetaryAmounts.getAmountFactories();
+        Collection<MonetaryAmountFactory<?>> factories = Monetary.getAmountFactories();
         assertNotNull(factories);
         assertFalse(factories.isEmpty());
     }
 
     /**
      * Test method for
-     * {@link MonetaryAmounts#getDefaultAmountType()}.
+     * {@link Monetary#getDefaultAmountType()}.
      */
     @Test
     public void testGetDefaultAmountType() {
-        Class<? extends MonetaryAmount> type = MonetaryAmounts.getDefaultAmountType();
+        Class<? extends MonetaryAmount> type = Monetary.getDefaultAmountType();
         assertNotNull(type);
         assertEquals(type, DummyAmount.class);
     }
 
     /**
      * Test method for
-     * {@link MonetaryAmounts#getAmountFactory(MonetaryAmountFactoryQuery)}.
+     * {@link Monetary#getAmountFactory(MonetaryAmountFactoryQuery)}.
      */
     @Test
     public void testGetAmountFactory_Query() {
-        MonetaryAmountFactory f = MonetaryAmounts.getAmountFactory(MonetaryAmountFactoryQueryBuilder.of()
+        MonetaryAmountFactory f = Monetary.getAmountFactory(MonetaryAmountFactoryQueryBuilder.of()
                 .setTargetType(DummyAmount.class).build());
         assertNotNull(f);
         assertEquals(f.getClass(), DummyAmountBuilder.class);
@@ -92,16 +92,16 @@ public class MonetaryAmountsTest {
 
     /**
      * Test method for
-     * {@link MonetaryAmounts#getAmountFactories(MonetaryAmountFactoryQuery)}.
+     * {@link Monetary#getAmountFactories(MonetaryAmountFactoryQuery)}.
      */
     @Test
     public void testGetAmountFactories_Query() {
-        Collection<MonetaryAmountFactory<?>> factories = MonetaryAmounts.
+        Collection<MonetaryAmountFactory<?>> factories = Monetary.
                 getAmountFactories(MonetaryAmountFactoryQueryBuilder.of()
                         .setTargetType(DummyAmount.class).build());
         assertNotNull(factories);
         assertTrue(factories.size() == 1);
-        factories = MonetaryAmounts.
+        factories = Monetary.
                 getAmountFactories(MonetaryAmountFactoryQueryBuilder.of()
                         .setProviderName("gigigig2").build());
         assertNotNull(factories);
@@ -110,14 +110,14 @@ public class MonetaryAmountsTest {
 
     /**
      * Test method for
-     * {@link MonetaryAmounts#getAmountFactories(MonetaryAmountFactoryQuery)}.
+     * {@link Monetary#getAmountFactories(MonetaryAmountFactoryQuery)}.
      */
     @Test
     public void testIsAvailable_Query() {
-        assertTrue(MonetaryAmounts.
+        assertTrue(Monetary.
                 isAvailable(MonetaryAmountFactoryQueryBuilder.of()
                         .setTargetType(DummyAmount.class).build()));
-        assertFalse(MonetaryAmounts.
+        assertFalse(Monetary.
                 isAvailable(MonetaryAmountFactoryQueryBuilder.of()
                         .setProviderName("gigigig2").build()));
     }

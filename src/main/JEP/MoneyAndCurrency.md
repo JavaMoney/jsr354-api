@@ -71,8 +71,7 @@ Summarizing the JSR contains the following main artifacts:
 
 * Interfaces for amounts (``MonetaryAmount``), currencies (``CurrencyUnit``), rounding (``MonetaryRounding``),
   conversion (``CurrencyConverter, ExchangeRateprovider``) and formatting (``MonetaryAmountFormat``).
-* Corresponding singleton accessors (``MonetaryCurrencies, MonetaryAmounts, MonetaryRoundings,
-  MonetaryConversions, MonetaryFormats``).
+* Corresponding singleton accessors (``Monetary, MonetaryConversions, MonetaryFormats``).
 * The singleton accessors are backed up by SPI interfaces (``MonetaryCurrenciesSingletonSpi,
   MonetaryAmountsSingletonSpi, MonetaryRoundingsSingletonSpi, MonetaryConversionSingletonSpi,
   MonetaryFormatsSingletonSpi``).
@@ -116,13 +115,13 @@ To give some first impressions of the API the following sections give some examp
 
 The class ``org.javamoney.moneta.Money`` implements ``MonetaryAmount`` using ``java.math.BigDecimal`` internally:
 
-    MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(Money.class);
+    MonetaryAmountFactory<Money> fact = Monetary.getAmountFactory(Money.class);
     Money m = fact.setCurrency("USD").setNumber(200.50).create();
 
 Also a generic MonetaryAmount instance can be accessed using a raw factory (hereby it depends on the
 configured default amount factory, which effective type instance is returned):
 
-    MonetaryAmount amt = MonetaryAmounts.getDefaultAmountFactory()
+    MonetaryAmount amt = Monetary.getDefaultAmountFactory()
                        .setCurrency("USD").setNumber(200.50).create();
                        
 Still we can evaluate the effective amount’s type effectively:
@@ -167,7 +166,7 @@ effectively used (by default ``Money`` uses ``MathContext.DECIMAL64``).:
 
 #### Example Configuring a ``MonetaryAmountFactory``, using the RI class ``Money`` as example.
 
-    MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(
+    MonetaryAmountFactory<Money> fact = Monetary.getAmountFactory(
        MonetaryAmountFactoryQueryBuilder.of(Money.class)
          .set(new MathContext(250, RoundingMode.HALF_EVEN)).build()
     );
@@ -222,7 +221,7 @@ the possible amounts to be modeled are limited to an overall precision of 18 and
 Beside that the overall handling of ``FastMoney`` is similar to ``Money``. So we could rewrite the former
 example by just replacing ``FastMoney`` with ``Money``:
 
-    MonetaryAmountFactory<FastMoney> fact = MonetaryAmounts.getAmountFactory(FastMoney.class);
+    MonetaryAmountFactory<FastMoney> fact = Monetary.getAmountFactory(FastMoney.class);
     // Creates an instance of Money with the given MathContext
     MonetaryAmount m1 = fact.setCurrency("CHF").setNumber(250.34).create();
     FastMoney m2 = fact.setCurrency("CHF").setNumber(250.34).create();
@@ -269,7 +268,7 @@ As an alternate it is also possible to define a ``MonetaryOperator``, which can 
       }
     
       public <T extends MonetaryAmount> T getTotal(Class<T> amountType){
-        return MonetaryAmounts.getAmountFactory(amountType).with(total).create();
+        return Monetary.getAmountFactory(amountType).with(total).create();
       }
     }
 

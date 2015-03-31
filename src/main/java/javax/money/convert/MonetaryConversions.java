@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import javax.money.CurrencyUnit;
-import javax.money.MonetaryCurrencies;
+import javax.money.Monetary;
 import javax.money.MonetaryException;
 import javax.money.spi.Bootstrap;
 import javax.money.spi.MonetaryConversionsSingletonSpi;
@@ -67,7 +67,7 @@ public final class MonetaryConversions{
 
     /**
      * Access an instance of {@link CurrencyConversion} for the given providers.
-     * Use {@link #getProviderNames()} to check, which are available.
+     * Use {@link #getConversionProviderNames()} to check, which are available.
      *
      * @param termCurrency the terminating or target currency, not {@code null}
      * @param providers    Additional providers, for building a provider chain
@@ -79,7 +79,7 @@ public final class MonetaryConversions{
         Objects.requireNonNull(termCurrency);
         if(providers.length == 0){
             return MONETARY_CONVERSION_SPI.getConversion(
-                    ConversionQueryBuilder.of().setTermCurrency(termCurrency).setProviderNames(getDefaultProviderChain())
+                    ConversionQueryBuilder.of().setTermCurrency(termCurrency).setProviderNames(getDefaultConversionProviderChain())
                             .build());
         }
         return MONETARY_CONVERSION_SPI.getConversion(
@@ -88,7 +88,7 @@ public final class MonetaryConversions{
 
     /**
      * Access an instance of {@link CurrencyConversion} for the given providers.
-     * Use {@link #getProviderNames()}} to check, which are available.
+     * Use {@link #getConversionProviderNames()}} to check, which are available.
      *
      * @param termCurrencyCode the terminating or target currency code, not {@code null}
      * @param providers        Additional providers, for building a provider chain
@@ -98,12 +98,12 @@ public final class MonetaryConversions{
      */
     public static CurrencyConversion getConversion(String termCurrencyCode, String... providers){
         Objects.requireNonNull(termCurrencyCode, "Term currency code may not be null");
-        return getConversion(MonetaryCurrencies.getCurrency(termCurrencyCode), providers);
+        return getConversion(Monetary.getCurrency(termCurrencyCode), providers);
     }
 
     /**
      * Access an instance of {@link CurrencyConversion} for the given providers.
-     * Use {@link #getProviderNames()}} to check, which are available.
+     * Use {@link #getConversionProviderNames()}} to check, which are available.
      *
      * @param conversionQuery The {@link ConversionQuery} required, not {@code null}
      * @return the {@link CurrencyConversion}  instance matching.
@@ -134,7 +134,7 @@ public final class MonetaryConversions{
     /**
      * Checks if a {@link javax.money.convert.CurrencyConversion} is available for the given parameters.
      *
-     * @param currencyCode The currencoy code, resolvable by {@link javax.money.MonetaryCurrencies#getCurrency
+     * @param currencyCode The currencoy code, resolvable by {@link javax.money.Monetary#getCurrency
      *                     (String, String...)}
      * @param providers    Additional providers, for building a provider chain
      * @return true, if a conversion is accessible from {@link #getConversion(String, String...)}.
@@ -145,7 +145,7 @@ public final class MonetaryConversions{
                                                                  "loaded, " +
                                                                  "query functionality is not " +
                                                                  "available."))
-                .isConversionAvailable(MonetaryCurrencies.getCurrency(currencyCode), providers);
+                .isConversionAvailable(Monetary.getCurrency(currencyCode), providers);
     }
 
     /**
@@ -166,7 +166,7 @@ public final class MonetaryConversions{
 
     /**
      * Access an instance of {@link CurrencyConversion} using the given
-     * providers as a provider chain. Use {@link #getProviderNames()}s
+     * providers as a provider chain. Use {@link #getConversionProviderNames()}s
      * to check, which are available.
      *
      * @return the exchange rate provider.
@@ -174,7 +174,7 @@ public final class MonetaryConversions{
      */
     public static ExchangeRateProvider getExchangeRateProvider(String... providers){
         if(providers.length == 0){
-            List<String> defaultProviderChain = getDefaultProviderChain();
+            List<String> defaultProviderChain = getDefaultConversionProviderChain();
             return MONETARY_CONVERSION_SPI.getExchangeRateProvider(ConversionQueryBuilder.of().setProviderNames(
                     defaultProviderChain.toArray(new String[defaultProviderChain.size()])).build());
         }
@@ -211,7 +211,7 @@ public final class MonetaryConversions{
 	}
     /**
      * Access an instance of {@link CurrencyConversion} using the given
-     * providers as a provider chain. Use {@link #getProviderNames()}
+     * providers as a provider chain. Use {@link #getConversionProviderNames()}
      * to check, which are available.
      *
      * @return the exchange rate provider.
@@ -247,7 +247,7 @@ public final class MonetaryConversions{
      * @return all supported provider ids, never {@code null}.
      */
     @SuppressWarnings("ConstantConditions")
-    public static Collection<String> getProviderNames(){
+    public static Collection<String> getConversionProviderNames(){
         Collection<String> providers = Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(
                 () -> new MonetaryException(
                         "No MonetaryConversionsSingletonSpi loaded, query functionality is not available."))
@@ -266,7 +266,7 @@ public final class MonetaryConversions{
      *
      * @return the default provider, never {@code null}.
      */
-    public static List<String> getDefaultProviderChain(){
+    public static List<String> getDefaultConversionProviderChain(){
         List<String> defaultChain = Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(
                 () -> new MonetaryException(
                         "No MonetaryConversionsSingletonSpi loaded, query functionality is not available."))

@@ -56,7 +56,7 @@ public final class MonetaryFormats {
      * Checks if a {@link MonetaryAmountFormat} is available for the given {@link Locale} and providers.
      *
      * @param locale    the target {@link Locale}, not {@code null}.
-     * @param providers The providers to be queried, if not set the providers as defined by #getDefaultProviderChain()
+     * @param providers The providers to be queried, if not set the providers as defined by #getDefaultCurrencyProviderChain()
      *                  are queried.
      * @return true, if a corresponding {@link MonetaryAmountFormat} is accessible.
      */
@@ -70,7 +70,7 @@ public final class MonetaryFormats {
      * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
      *
      * @param locale    the target {@link Locale}, not {@code null}.
-     * @param providers The providers to be queried, if not set the providers as defined by #getDefaultProviderChain()
+     * @param providers The providers to be queried, if not set the providers as defined by #getDefaultCurrencyProviderChain()
      *                  are queried.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
@@ -84,7 +84,7 @@ public final class MonetaryFormats {
      * Checks if a {@link MonetaryAmountFormat} is available for the given {@link javax.money.format.AmountFormatQuery}.
      *
      * @param formatQuery the required {@link AmountFormatQuery}, not {@code null}. If the query does not define
-     *                    any explicit provider chain, the providers as defined by #getDefaultProviderChain()
+     *                    any explicit provider chain, the providers as defined by #getDefaultCurrencyProviderChain()
      *                    are used.
      * @return true, if a corresponding {@link MonetaryAmountFormat} is accessible.
      */
@@ -98,7 +98,7 @@ public final class MonetaryFormats {
      * Access the default {@link MonetaryAmountFormat} given a {@link Locale}.
      *
      * @param formatQuery the required {@link AmountFormatQuery}, not {@code null}. If the query does not define
-     *                    any explicit provider chain, the providers as defined by #getDefaultProviderChain()
+     *                    any explicit provider chain, the providers as defined by #getDefaultCurrencyProviderChain()
      *                    are used.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
@@ -114,7 +114,7 @@ public final class MonetaryFormats {
      * Access all {@link MonetaryAmountFormat} instances that match the given a {@link AmountFormatQuery}.
      *
      * @param formatQuery the required {@link AmountFormatQuery}, not {@code null}. If the query does not define
-     *                    any explicit provider chain, the providers as defined by #getDefaultProviderChain()
+     *                    any explicit provider chain, the providers as defined by #getDefaultCurrencyProviderChain()
      *                    are used.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
@@ -130,7 +130,7 @@ public final class MonetaryFormats {
      * Access the a {@link MonetaryAmountFormat} given its styleId.
      *
      * @param formatName the target format name, not {@code null}.
-     * @param providers  The providers to be used, if not set the providers as defined by #getDefaultProviderChain() are
+     * @param providers  The providers to be used, if not set the providers as defined by #getDefaultCurrencyProviderChain() are
      *                   used.
      * @return the matching {@link MonetaryAmountFormat}
      * @throws MonetaryException if no registered {@link MonetaryAmountFormatProviderSpi} can provide a
@@ -143,7 +143,7 @@ public final class MonetaryFormats {
     /**
      * Get all available locales. This equals to {@link MonetaryAmountFormatProviderSpi#getAvailableLocales()}.
      *
-     * @param providers The providers to be used, if not set the providers as defined by #getDefaultProviderChain() are
+     * @param providers The providers to be used, if not set the providers as defined by #getDefaultCurrencyProviderChain() are
      *                  used.
      * @return all available locales, never {@code null}.
      */
@@ -157,7 +157,7 @@ public final class MonetaryFormats {
      * @return the provider names, never null.
      */
     @SuppressWarnings("ConstantConditions")
-    public static Collection<String> getProviderNames() {
+    public static Collection<String> getFormatProviderNames() {
         Collection<String> providers = Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(
                 () -> new MonetaryException(
                         "No MonetaryFormatsSingletonSpi loaded, query functionality is not available."))
@@ -176,7 +176,7 @@ public final class MonetaryFormats {
      *
      * @return the default provider chain, never null.
      */
-    public static List<String> getDefaultProviderChain() {
+    public static List<String> getDefaultFormatProviderChain() {
         return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
                 "No MonetaryFormatsSingletonSpi " + "loaded, query functionality is not available."))
                 .getDefaultProviderChain();

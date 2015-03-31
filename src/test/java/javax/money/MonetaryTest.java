@@ -22,15 +22,15 @@ import java.util.Set;
 import static org.testng.Assert.*;
 
 /**
- * Tests for the {@link MonetaryCurrencies} class.
+ * Tests for the {@link Monetary} class.
  *
  * @author Anatole Tresch
  */
-public class MonetaryCurrenciesTest {
+public class MonetaryTest {
 
     @Test
     public void testgetCurrencyString() {
-        CurrencyUnit cur = MonetaryCurrencies.getCurrency("test1");
+        CurrencyUnit cur = Monetary.getCurrency("test1");
         assertNotNull(cur);
         assertEquals(cur.getCurrencyCode(), "test1");
         assertEquals(cur.getNumericCode(), 1);
@@ -39,24 +39,24 @@ public class MonetaryCurrenciesTest {
 
     @Test
     public void testIsAvailableString() {
-        assertTrue(MonetaryCurrencies.isCurrencyAvailable("test1"));
-        assertFalse(MonetaryCurrencies.isCurrencyAvailable("akjshakjshajsgdgsdgsdg"));
+        assertTrue(Monetary.isCurrencyAvailable("test1"));
+        assertFalse(Monetary.isCurrencyAvailable("akjshakjshajsgdgsdgsdg"));
     }
 
     @Test
     public void testIsAvailableLocale() {
-        assertFalse(MonetaryCurrencies.isCurrencyAvailable(Locale.CHINA));
-        assertTrue(MonetaryCurrencies.isCurrencyAvailable(new Locale("", "TEST1L")));
+        assertFalse(Monetary.isCurrencyAvailable(Locale.CHINA));
+        assertTrue(Monetary.isCurrencyAvailable(new Locale("", "TEST1L")));
     }
 
     @Test(expectedExceptions = UnknownCurrencyException.class)
     public void testgetCurrencyString_NA() {
-        MonetaryCurrencies.getCurrency("testGetInstanceCurrency_NA");
+        Monetary.getCurrency("testGetInstanceCurrency_NA");
     }
 
     @Test
     public void testgetCurrencyLocale() {
-        Collection<CurrencyUnit> curs = MonetaryCurrencies.getCurrencies(new Locale("", "TEST1L"));
+        Collection<CurrencyUnit> curs = Monetary.getCurrencies(new Locale("", "TEST1L"));
         assertNotNull(curs);
         assertEquals(curs.size(), 1);
         CurrencyUnit cur = curs.iterator().next();
@@ -67,16 +67,16 @@ public class MonetaryCurrenciesTest {
 
     @Test
     public void testGetCurrencies_Providers() {
-        Collection<CurrencyUnit> curs = MonetaryCurrencies.getCurrencies("test");
+        Collection<CurrencyUnit> curs = Monetary.getCurrencies("test");
         assertNotNull(curs);
     }
 
     @Test
     public void testGetCurrency_CurrencyQuery() {
-        CurrencyUnit cur = MonetaryCurrencies.getCurrency(
+        CurrencyUnit cur = Monetary.getCurrency(
                 CurrencyQueryBuilder.of().build());
         assertNull(cur);
-        cur = MonetaryCurrencies.getCurrency(
+        cur = Monetary.getCurrency(
                 CurrencyQueryBuilder.of().setCurrencyCodes("test1").build());
         assertNotNull(cur);
     }
@@ -84,7 +84,7 @@ public class MonetaryCurrenciesTest {
 
     @Test
     public void testGetCurrencies_CurrencyQuery() {
-        Collection<CurrencyUnit> currencies = MonetaryCurrencies.getCurrencies(
+        Collection<CurrencyUnit> currencies = Monetary.getCurrencies(
                 CurrencyQueryBuilder.of().build()
         );
         assertNotNull(currencies);
@@ -92,31 +92,31 @@ public class MonetaryCurrenciesTest {
 
     @Test
     public void testGetProviderNames() {
-        Set<String> chain = MonetaryCurrencies.getProviderNames();
+        Set<String> chain = Monetary.getCurrencyProviderNames();
         assertNotNull(chain);
     }
 
     @Test
     public void testGetDefaultProviderChain() {
-        List<String> chain = MonetaryCurrencies.getDefaultProviderChain();
+        List<String> chain = Monetary.getDefaultCurrencyProviderChain();
         assertNotNull(chain);
     }
 
     @Test
     public void testgetCurrencyLocale_Empty() {
-        Collection<CurrencyUnit> curs = MonetaryCurrencies.getCurrencies(Locale.CHINA);
+        Collection<CurrencyUnit> curs = Monetary.getCurrencies(Locale.CHINA);
         assertNotNull(curs);
         assertTrue(curs.isEmpty());
-        curs = MonetaryCurrencies.getCurrencies(new Locale("", "sdsdsd"));
+        curs = Monetary.getCurrencies(new Locale("", "sdsdsd"));
         assertNotNull(curs);
         assertTrue(curs.isEmpty());
     }
 
     @Test(expectedExceptions = UnknownCurrencyException.class)
     public void testgetCurrencyString_Error() {
-        CurrencyUnit cur = MonetaryCurrencies.getCurrency("error");
+        CurrencyUnit cur = Monetary.getCurrency("error");
         assertNull(cur);
-        cur = MonetaryCurrencies.getCurrency("invalid");
+        cur = Monetary.getCurrency("invalid");
         assertNull(cur);
     }
 

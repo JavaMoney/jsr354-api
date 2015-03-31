@@ -11,8 +11,8 @@ package javax.money.format;
 import java.util.Locale;
 
 import javax.money.AbstractQuery;
+import javax.money.Monetary;
 import javax.money.MonetaryAmountFactory;
-import javax.money.MonetaryAmounts;
 
 /**
  * Query for accessing instances of {@link javax.money.format.MonetaryAmountFormat}. In general it is determined by the
@@ -69,7 +69,7 @@ public final class AmountFormatQuery extends AbstractQuery {
     public MonetaryAmountFactory getMonetaryAmountFactory() {
         MonetaryAmountFactory factory = get(MonetaryAmountFactory.class);
         if (factory == null) {
-            return MonetaryAmounts.getDefaultAmountFactory();
+            return Monetary.getDefaultAmountFactory();
         }
         return factory;
     }

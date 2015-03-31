@@ -106,15 +106,15 @@ public class MonetaryConversionsTest {
 
     @Test
     public void testGetProviderNames() throws Exception {
-        assertNotNull(MonetaryConversions.getProviderNames());
-        assertTrue(MonetaryConversions.getProviderNames().contains("test"));
-        assertTrue(MonetaryConversions.getProviderNames().size() == 1);
+        assertNotNull(MonetaryConversions.getConversionProviderNames());
+        assertTrue(MonetaryConversions.getConversionProviderNames().contains("test"));
+        assertTrue(MonetaryConversions.getConversionProviderNames().size() == 1);
     }
 
     @Test
     public void testGetDefaultProviderChain() throws Exception {
-        assertNotNull(MonetaryConversions.getDefaultProviderChain());
-        assertFalse(MonetaryConversions.getDefaultProviderChain().isEmpty());
-        assertEquals(1, MonetaryConversions.getDefaultProviderChain().size());
+        assertNotNull(MonetaryConversions.getDefaultConversionProviderChain());
+        assertFalse(MonetaryConversions.getDefaultConversionProviderChain().isEmpty());
+        assertEquals(1, MonetaryConversions.getDefaultConversionProviderChain().size());
     }
 }

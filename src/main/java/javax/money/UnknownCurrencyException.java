@@ -33,7 +33,7 @@ public class UnknownCurrencyException extends MonetaryException {
 	 * Creates a new exception instance when a {@link CurrencyUnit} could not be evaluated given a
 	 * currency code.
 	 * 
-	 * @see MonetaryCurrencies#getCurrency(String)
+	 * @see Monetary#getCurrency(String, String...)
 	 * @param code
 	 *            The unknown currency code (the message is constructed automatically), not null.
 	 */
@@ -47,7 +47,7 @@ public class UnknownCurrencyException extends MonetaryException {
 	 * Creates a new exception instance when a {@link CurrencyUnit} could not be evaluated given a
 	 * (country) {@link Locale}.
 	 * 
-	 * @see MonetaryCurrencies#getCurrency(Locale)
+	 * @see Monetary#getCurrency(Locale,String...)
 	 * @param locale
 	 *            The unknown {@link Locale}, for which a {@link CurrencyUnit} was queried (the
 	 *            message is constructed automatically), not null.

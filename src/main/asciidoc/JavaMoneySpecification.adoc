@@ -347,7 +347,7 @@ Specification
 The JSR defines 4 packages:
 
 +javax.money+:: contains the main artifacts, such as +CurrencyUnit, MonetaryAmount, MonetaryContext, MonetaryOperator,
-MonetaryQuery, MonetaryRounding+, and the singleton accessors +MonetaryCurrencies, MonetaryAmounts, MonetaryRoundings+.
+MonetaryQuery, MonetaryRounding+, and the singleton accessor +Monetary+.
 It is discussed in section <<CoreAPI>>. The meta-data context and query features are discussed in <<MetadataModeling>>.
 
 +javax.money.conversion+:: contains the conversion artifacts +ExchangeRate, ExchangeRateProvider, CurrencyConversion+
@@ -445,9 +445,10 @@ Nevertheless for an API to be complete, you need some type of concrete classes a
 designed as a standalone APIs the singleton accessor patterns are a good choice, so this API provides according
 accessor classes. Summarizing the following singletons are available as part of the JSR's core module:
 
-* +MonetaryCurrencies+ provides access and query functionality to +CurrencyUnit+ instances.
-* +MonetaryAmounts+ provides access and query functionality to factories for creating +MonetaryAmount+ instances.
-* +MonetaryRoundings+ finally provides provides access and query functionality to +MonetaryRounding+ instances.
+* +Monetary+
+  ** provides access and query functionality to +CurrencyUnit+ instances.
+  ** provides access and query functionality to factories for creating +MonetaryAmount+ instances.
+  ** provides provides access and query functionality to +MonetaryRounding+ instances.
 
 Additionally the conversion and formatting module also provide singletons:
 
@@ -930,13 +931,13 @@ modeled by the interface +javax.money.MonetaryAmountFactory<T>+. Instances can b
   changed. This is known as the prototype pattern [<<GoF>>]. This is useful for +MonetaryOperator+ implementations,
   where the default operations available on +MonetaryAmount+ are not sufficient for implementing the logic/result
   required, or calculations are done externally and a new amount is created with the numeric result of that calculation.
-* the +MonetaryAmounts+ singleton also provides access to +MonetaryAmountFactory+ instances, hereby also allowing to
+* the +Monetary+ singleton also provides access to +MonetaryAmountFactory+ instances, hereby also allowing to
   bind to a specific implementation type or query for matching +MonetaryAmountFactory+ instances:
 
 [source,java]
 .Usage Example for creating an Amount, using an explicit type
 -------------------------------------------------------------------------------
-MonetaryAmountFactory<MyMoney> fact = MonetaryAmounts.getAmountFactory(MyMoney.class);
+MonetaryAmountFactory<MyMoney> fact = Monetary.getAmountFactory(MyMoney.class);
 MyMoney money = fact.setCurrency("USD").setNumber(10.50).create();
 -------------------------------------------------------------------------------
 
@@ -946,7 +947,7 @@ SPIs (see <<SPI>>) using +MonetaryAmountFactoryQuery+ and its related Builder cl
 [source,java]
 .Usage Example for querying for a +MonetaryAmountFactory+
 -------------------------------------------------------------------------------
-MonetaryAmountFactory<?> fact = MonetaryAmounts.getAmountFactory(
+MonetaryAmountFactory<?> fact = Monetary.getAmountFactory(
    MonetaryAmountFactoryQueryBuilder.of()
      .setMaxScale(2)
      .setPrecision(10)
@@ -1008,16 +1009,16 @@ SE ServiceLoader based component lifecycle. Refer to section <<SPI>> for more de
 [[AccessingCurrencies]]
 ===== Accessing Currencies
 
-The +javax.money.MonetaryCurrencies+ singleton class implements an accessor for +CurrencyUnit+ instances. Each
+The +javax.money.Monetary+ singleton class implements an accessor for +CurrencyUnit+ instances. Each
 implementation must also provide/include a provider that uses +java.util.Currency+ as a backend. But this JSR in
 addition allows registration of additional currencies by implementing instances of
 +CurrencyProviderSpi+ (refer to section <<CurrencyProviderSpi>>):
 
 [source,java]
-.MonetaryCurrencies Singleton
+.Monetary Singleton (Currency related methods)
 -------------------------------------------------------------------------------
-public final class MonetaryCurrencies{
-  private MonetaryCurrencies(){}
+public final class Monetary{
+  private Monetary(){}
 
   public static CurrencyUnit getCurrency(String currencyCode, String... providers);
   public static CurrencyUnit getCurrency(Locale locale, String... providers);
@@ -1027,8 +1028,9 @@ public final class MonetaryCurrencies{
   public static boolean isCurrencyAvailable(CurrencyQuery query);
   public static Set<CurrencyUnit> getCurrencies(String... providers);
   public static Collection<CurrencyUnit> getCurrencies(CurrencyQuery query);
-  public static Set<String> getProviderNames();
-  public static List<String> getDefaultProviderChain();
+  public static Set<String> getCurrencyProviderNames();
+  public static List<String> getDefaultCurrencyProviderChain();
+  [...]
 }
 -------------------------------------------------------------------------------
 
@@ -1059,7 +1061,7 @@ Hereby
 .Example for querying currencies
 -------------------------------------------------------------------------------
 // Note: Enum Region only serves as an example and not part of the API
-Collection<CurrencyUnit> currencies = MonetaryCurrencies.getCurrencies(
+Collection<CurrencyUnit> currencies = Monetary.getCurrencies(
   CurrencyQueryBuilder.of()
     .setProvider("A", "B")
     .set(Region.EMEA)
@@ -1075,7 +1077,7 @@ provider would be implemented and registered one could perform the following que
 .Example for querying historic currencies
 -------------------------------------------------------------------------------
 // Note: This is just an example: no historic provider is part of the API or RI currently
-Collection<CurrencyUnit> currencies = MonetaryCurrencies.getCurrencies(
+Collection<CurrencyUnit> currencies = Monetary.getCurrencies(
   CurrencyQueryBuilder.of()
     .set(Locale.GERMANY)
     .setTimestamp(LocalDate.of(1930,1,1))
@@ -1091,22 +1093,22 @@ classpath as follows:
 -------------------------------------------------------------------------------
 # Defaults for java money
 ...
-javax.money.defaults.MonetaryCurrencies.providerChain=provider1,provider2,provider3
+javax.money.defaults.Monetary.currencyProviderChain=provider1,provider2,provider3
 -------------------------------------------------------------------------------
 
 [[AccessingAmountFactories]]
 ===== Accessing Monetary Amount Factories
 
-The +javax.money.MonetaryAmounts+ singleton class implements an accessor for +MonetaryAmountFactory+ instances. Hereby
+The +javax.money.Monetary+ singleton class implements also an accessor for +MonetaryAmountFactory+ instances. Hereby
 for not hard-coding the selection algorithm and for enabling contextual behaviour in a EE context, the singleton is
 backed up by +<<MonetaryAmountsSingletonSpi>>+ and +<<MonetaryAmountsSingletonQuerySpi>>+, that can be registered
 using the JSR’s +<<Bootstrap>>+ mechanism.
 
 [source,java]
-.MonetaryAmounts Singleton
+.Monetary Singleton (Amount Related Methods)
 -------------------------------------------------------------------------------
-public final class MonetaryAmounts{
-  private MonetaryAmounts(){}
+public final class Monetary{
+  private Monetary(){}
 
   public static <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType);
   public static MonetaryAmountFactory<?> getDefaultAmountFactory();
@@ -1116,6 +1118,7 @@ public final class MonetaryAmounts{
   public static MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query);
   public static Collection<MonetaryAmountFactory> getAmountFactories(MonetaryAmountFactoryQuery query);
   public static boolean isAvailable(MonetaryAmountFactoryQuery query);
+  [...]
 }
 -------------------------------------------------------------------------------
 
@@ -1156,7 +1159,7 @@ Rounding is modeled by implementations of +MonetaryRounding+, which extends +Mon
 rounding meta-data, modeled as +RoundingContext+. This is very useful since in the financial area beside mathematical
 roundings, also non standard variants with arbitrary rules and constraints are quite common in the financial area.
 
-This JSR provides several roundings accessible from the +javax.money.MonetaryRoundings+ singleton based on:
+This JSR provides several roundings accessible from the +javax.money.Monetary+ singleton based on:
 
 . a target +CurrencyUnit+. By default the rounding is based on the currency’s default fraction units
   (see +CurrencyUnit.getDefaultFractionUnits()+).
@@ -1170,13 +1173,13 @@ This JSR provides several roundings accessible from the +javax.money.MonetaryRou
   e.g. it could be possible to access special cash rounding, which may be different than the default currency rounding
   (e.g. for +CHF/Swiss Francs+).
 
-The +MonetaryRoundings+ singleton provides access to +MonetaryRounding+ instances as follows:
+The +Monetary+ singleton provides access to +MonetaryRounding+ instances as follows:
 
 [source,java]
-.MonetaryRoundings Singleton
+.Monetary Singleton (Rounding related methods)
 -------------------------------------------------------------------------------
-public final class MonetaryRoundings{
-  private MonetaryRoundings(){}
+public final class Monetary{
+  private Monetary(){}
 
   public static MonetaryOperator getDefaultRounding();
   public static MonetaryRounding getRounding(CurrencyUnit currencyUnit, String... providers);
@@ -1186,8 +1189,8 @@ public final class MonetaryRoundings{
   public static boolean isRoundingAvailable(String roundingName, String... providers);
   public static boolean isRoundingAvailable(RoundingQuery query);
   public static Set<String> getRoundingNames(String... providers);
-  public static Set<String> getProviderNames();
-  public static List<String> getDefaultProviderChain();
+  public static Set<String> getRoundingProviderNames();
+  public static List<String> getDefaultRoundingProviderChain();
 }
 -------------------------------------------------------------------------------
 
@@ -1201,14 +1204,14 @@ Hereby
   the given providers.
 * +isRoundingAvailable+ allows to determine if the query function return corresponding roundings.
 * All access methods above also allow to pass an ellipse operator of provider names. If not set explicitly the
-  default providers and ordering as defined by +getDefaultProviderNames()+ must be used. Hereby
+  default providers and ordering as defined by +getDefaultRoundingProviderNames()+ must be used. Hereby
   ** if only a single valued result is returned (+MonetaryRounding+, boolean), the provider chain is evaluated until
      the first provider returns +true+ or a non-null +CurrencyUnit+ instance.
   ** in case of multi valued results all values returned by the providers are added to the result collection
      (+List, Set, Collection+).
-* +getProviderNames()+ provide the names of all currently registered +RoundingProviderSpi+ instances. Refer to section
+* +getRoundingProviderNames()+ provide the names of all currently registered +RoundingProviderSpi+ instances. Refer to section
   <<RoundingProviderSpi>> for more details.
-* +getDefaultProviderNames()+ provide the names of the current default +RoundingProviderSpi+ providers in the
+* +getDefaultRoundingProviderNames()+ provide the names of the current default +RoundingProviderSpi+ providers in the
   corresponding chain order.
 * +getRounding(RoundingQuery)+ offers maximal flexibility for accessing roundings. It is only restricted by the
   capabilities provided by the registered +RoundingProviderSpi+ instances. Refer to section <<RoundingProviderSpi>>
@@ -1217,7 +1220,7 @@ Hereby
   roundings.
 
 
-The +RoundingQuery+ for accessing a rounding from the +MonetaryRoundings+ singleton is modeled as follows:
+The +RoundingQuery+ for accessing a rounding from the +Monetary+ singleton is modeled as follows:
 
 [source,java]
 .RoundingQuery Value Type
@@ -1251,7 +1254,7 @@ default currency rounding (e.g. for +CHF/Swiss Francs+), as follows:
 .Example how a cash rounding could be accessed (not part of the API)
 -------------------------------------------------------------------------------
 LocalDate localDate = ...;
-MonetaryRounding rounding = MonetaryRoundings.getRounding(
+MonetaryRounding rounding = Monetary.getRounding(
                 RoundingQueryBuilder.of()                               <1>
                   .setRoundingName("cashRounding")                      <2>
                   .setCurrencyUnit("CHF")                               <3>
@@ -1271,7 +1274,7 @@ Finally the default rounding provider chain can be configured within +javamoney.
 -------------------------------------------------------------------------------
 # Defaults for java money
 ...
-javax.money.defaults.MonetaryRoundings.providerChain=provider1,provider2,provider3
+javax.money.defaults.Monetary.roundingProviderChain=provider1,provider2,provider3
 -------------------------------------------------------------------------------
 
 [[FunctionalSupport]]
@@ -1689,7 +1692,7 @@ using a +Locale+:
 [source,java]
 .Usage Example Formatting a MonetaryAmount
 --------------------------------------------------------------------------
-MonetaryAmountFactory<?> f = MonetaryAmounts.getDefaultAmountFactory();
+MonetaryAmountFactory<?> f = Monetary.getDefaultAmountFactory();
 MonetaryAmount amount = f.setCurrency("CHF").setNumber(12.50).create();
 
 MonetaryAmountFormat format =
@@ -1714,7 +1717,7 @@ AmountFormatQuery query = AmountFormatQueryBuilder.of(new Locale("","INR"))
 MonetaryAmountFormat format = MonetaryAmountFormats.getAmountFormat(query);
 
 MonetaryAmount amount =
-          MonetaryAmounts.getDefaultAmountFactory()
+          Monetary.getDefaultAmountFactory()
             .setCurrency("INR")
             .setNumber(123456789101112.123456).create();
 
@@ -1830,8 +1833,8 @@ public final class MonetaryFormats{
   public static boolean isAvailable(AmountFormatQuery formatQuery){...}
   public static Set<Locale> getAvailableLocales(String... providers);
   public static Set<String> getFormatNames(String... providers);
-  public static Set<String> getProviderNames();
-  public static List<String> geDefaultProviderChain();
+  public static Set<String> getFormatProviderNames();
+  public static List<String> geDefaultFormatProviderChain();
 }
 -------------------------------------------------------------------------------
 
@@ -1893,23 +1896,23 @@ All SPIs are contained in the package +javax.money.spi+. Summarizing the followi
 .Core SPI
 
 * +CurrencyProviderSpi+ (mandatory, multiple service chain) - provides instances of +CurrencyUnit+, accessible from
-  +MonetaryCurrencies+ singleton.
+  +Monetary+ singleton.
 * +MonetaryAmountsSingletonSpi+ (mandatory, only one instance selected by priority) - manages instances of
   +MonetaryAmountFactoryProviderSpi+, which create instances of +MonetaryAmountFactory+, that are being accessible from
-  the +MonetaryAmounts+ singleton.
+  the +Monetary+ singleton.
 * +MonetaryAmountFactoryProviderSpi+ (mandatory, multiple service chain) - is responsible for registering and providing
   instances of +MonetaryAmountFactory+.
 * +MonetaryAmountsSingletonQuerySpi+ (mandatory, only one instance selected by priority) - this SPI allows to
-  override/define the behaviour of +MonetaryAmounts.queryAmountType(MonetaryContext)+.
+  override/define the behaviour of +Monetary.queryAmountType(MonetaryContext)+.
 * +RoundingProviderSpi+ (mandatory, multiple service chain) - provides instances of +MonetaryOperator+, for being
-  accessible by +MonetaryRoundings+.
+  accessible from +Monetary+.
 * +MonetaryRoundingsSingletonSpi+ controls the loading of +RoundingProviderSpi+ instances.
 
 
 .Conversion SPI
 
 * +MonetaryConversionSingletonSpi+ (mandatory, only one instance selected by priority) - manages instances of
-  +ExchangeRateProvider+, for being accessible by the +MonetaryCurrencies+ singleton and also is responsible for
+  +ExchangeRateProvider+, for being accessible by the +Monetary+ singleton and also is responsible for
   providing the composite provider instances as to be returned by the conversion API.
 * +ExchangeRateProvider+ (mandatory, multiple instances selected by API) - this class is also part of the API, but also
   models the huge part of the SPI required for currency conversion.
@@ -1942,7 +1945,7 @@ reference implementation for further details, which exactly implements this beha
 [[CoreSPI]]
 ==== Core SPI
 ===== Accessing Currencies
-Currencies are accessed from the <<MonetaryCurrencies>> singleton. This singleton is backed up by an implementation of
+Currencies are accessed from the <<Monetary>> singleton. This singleton is backed up by an implementation of
 +MonetaryCurrenciesSingletonSpi+, which must be registered to the <<Bootstrap>>:
 
 
@@ -1984,7 +1987,7 @@ for a given runtime context.
 
 ===== Registering Currencies
 By registering instances of +javax.money.spi.CurrencyProviderSpi+ to the <<Bootstrap>> logic additional +CurrencyUnit+
-instances can be registered into the +MonetaryCurrencies+ singleton:
+instances can be registered into the +Monetary+ singleton:
 
 [source,java]
 .Interface CurrencyProviderSpi
@@ -2042,7 +2045,7 @@ Hereby
 * The default +MonetaryContext+ used can be determined by calling +getDefaultMonetaryContext()+.
 * The maximal supported +MonetaryContext+ can be determined by calling +getMaximalMonetaryContext()+.
 * +getQueryInclusionPolicy()+ defines if the given spi (and hence the corresponding +MonetaryAmount+ implementation
-  type) is to be considered, when +MonetaryAmounts.queryAmountType(MonetaryContext)+ is called:
+  type) is to be considered, when +Monetary.queryAmountType(MonetaryContext)+ is called:
   ** +ALWAYS+ means that given instance should be considered always as a candidate. Nevertheless the active
      implementation of +MonetaryAmountSpi+ decides finally, which implementation type (evaluated by calling
      +getAmountType()+) is returned as the result of such a query operation, based on the flavors and capabilities
@@ -2055,8 +2058,8 @@ Hereby
 * +createAmountFactory()+ finally creates a corresponding +MonetaryAmountFactory+ factory.
 
 
-===== Backing the MonetaryAmounts Singleton
-Also the functionality of the +MonetaryAmounts+ accessor singleton is backed up by two SPI interfaces, called
+===== Backing the Monetary Singleton (Amount related functionality)
+Also the functionality of the +Monetary+ accessor singleton is backed up by two SPI interfaces, called
 +javax.money.spi.MonetaryAmountsSingletonSpi+ and +javax.money.spi.MonetaryAmountsSingletonQuerySpi+. Implementations
 of these interfaces should rely on the +Bootstrap+ class to access the available instances of +MonetaryAmountFactory+
 and +MonetaryAmountFactoryProviderSpi+ respectively. Nevertheless being able to register alternate implementations
@@ -2064,7 +2067,7 @@ would allow to support more complex rules for a couple of enterprise related fun
 
 Implementing +MonetaryAmountsSingletonSpi+ allows
 * to provide amount types (and related factories) based on the current runtime context.
-* to configure the default amount type, as provided by +MonetaryAmounts.getDefaultAmountType()+, differently based on
+* to configure the default amount type, as provided by +Monetary.getDefaultAmountType()+, differently based on
    the current runtime context.
 * to configure different defaults for the +MonetaryContext+ used by the amount implementation types/factories.
 
@@ -2098,7 +2101,7 @@ Hereby
 
 
 Implementing +MonetaryAmountsSingletonQuerySpi+ allows to provide alternate implementations of query algorithm used
-within +MonetaryAmounts.queryAmountType(MonetaryContext)+ to evaluate the best matching +MonetaryAmount+ implementation
+within +Monetary.queryAmountType(MonetaryContext)+ to evaluate the best matching +MonetaryAmount+ implementation
 given a +MonetaryAmountFactoryQuery+ required. The interface is defined as follows:
 
 [source,java]
@@ -2120,7 +2123,7 @@ Hereby
 * The only method to be overriden by default is +getAmountFactories(MonetaryAmountFactoryQuery)+, which evaluates
   a given +MonetaryAmountFactoryQuery+ and returns the matching +MonetaryAmountFactory+ instances.
 * Additionally there are a couple of default methods, which reflect the overall functionality provided from
-  the +MonetaryAmounts+ singleton. This gives implementation providers full control about the functionality
+  the +Monetary+ singleton. This gives implementation providers full control about the functionality
   executed. Summarizing the methods implemented by default are:
  ** +getAmountType(MonetaryAmountFactoryQuery)+ allows to evaluate a +MonetaryAmount+ implementation type that best
     covers the requirements defined by the passed +MonetaryAmountFactoryQuery+. If multiple types match the query
@@ -2163,8 +2166,8 @@ Since a monetary rounding is nothing else than a conversion from an unrounded am
 as +<<MonetaryOperator>>+. Nevertheless similar to other artifacts defined by this JSR also roundings have
 metadata attached, so roundings extends +<<MonetaryOperator>>+ and additionally provide access to the so called
 +RoundingContext+.
-+MonetaryRounding+ instances are accessed from the +MonetaryRoundings+ singleton. Similar to other
-singletons in this JSR the +MonetaryRoundings+ singleton is backed up by an instance of
++MonetaryRounding+ instances are accessed from the +Monetary+ singleton. Similar to other
+singletons in this JSR the +Monetarys+ singleton is backed up by an instance of
 +MonetaryRoundingsSingletonSpi+, which allows to control the exact logic how registered
 +javax.money.spi.RoundingProviderSpi+ are managed:
 
@@ -2201,7 +2204,7 @@ Similar to <<CurrencyConversion>> a provider based service model is defined, mea
   used, when no explicit rounding providers are selected.
 
 Basically all access methods by default delegate to +getRoundings(RoundingQuery)+. Nevertheless all possible
-access methods from the +MonetaryRoundings+ singleton are reflected in the SPI, so implementations have full control of
+access methods from the +Monetary+ singleton are reflected in the SPI, so implementations have full control of
 the logic executed.
 
 Summarizing:
@@ -2467,7 +2470,7 @@ allows also to adapt the behaviour in case your application runs in a EE/CDI con
 backing implementations should delegate to the bootstrap component's +ServiceProvider+ to evaluate the right
 instances of components given a special type. As a consequence integration with Java EE can be done in multiple ways:
 
-* you can override the singleton SPIs (+MonetaryAmountsSinlgetonSpi, MonetarFormatsSingletonSpi, MonetaryRoundingsSpi,
+* you can override the singleton SPIs (+MonetaryAmountsSingletonSpi, MonetarFormatsSingletonSpi, MonetaryRoundingsSpi,
 MonetaryConversionsSingletonSpi, MonetaryFormatsSingletonSpi+ and reimplement the mechanism how the different
 components are located within the current runtime environment. Additionally you can filter or adapt the components
 accessible, e.g. based on tenant or other contextual information. Overriding the singletons gives you full control.
@@ -2702,7 +2705,7 @@ The query provides basic query properties:
 * a query contains the provider names that defines the provider chain to be used for answering the query. If not set
   the corresponding default provider chain must be used. The providers available are accessible by calling
   +getProviderNames()+ on the corresponding singleton accessors/SPI interfaces, e.g.
-  +MonetaryCurrencies.getProviderNames+, +MonetaryRoundings.getProviderNames+, +MonetaryConversions.getProviderNames+
+  +Monetary.getCurrencyProviderNames+, +Monetary.getRoundingProviderNames+, +MonetaryConversions.getProviderNames+
   etc.
 * a query may defines a target type, hereby defining the target result type expected.
 
@@ -2846,7 +2849,7 @@ The following sections illustrate the API’s usage in more detail.
 
 === Working with org.javamoney.moneta.Money
 A reference implementation of this JSR has to provide value type classes for monetary amounts, hereby implementing
-+MonetaryAmount+, and registering at least one implementation class with the +MonetaryAmounts+ singleton by
++MonetaryAmount+, and registering at least one implementation class with the +Monetary+ singleton by
 implementing and registering a corresponding +MonetayAmountFactory+ instance.
 
 As an example the reference implementation provides a class +org.javamoney.moneta.Money+, which is using
@@ -2877,7 +2880,7 @@ Since a corresponding +MonetaryAmountFactory+ is registered, a new instance can 
 [source,java]
 .Example Usage of MonetaryAmountFactory
 -------------------------------------------------------------------
-MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(Money.class);
+MonetaryAmountFactory<Money> fact = Monetary.getAmountFactory(Money.class);
 Money m = fact.withCurrency("USD").with(200.50).create();
 -------------------------------------------------------------------
 
@@ -2887,7 +2890,7 @@ default amount factory, which effective type instance is returned):
 [source,java]
 .Example Usage MonetaryAmountFactory
 -------------------------------------------------------------------
-MonetaryAmount amt = MonetaryAmounts.getDefaultAmountFactory()
+MonetaryAmount amt = Monetary.getDefaultAmountFactory()
                        .withCurrency("USD").with(200.50).create();
 -------------------------------------------------------------------
 
@@ -2933,9 +2936,9 @@ mentioned also external functionality can be chained, e.g. using instances of +M
 .Example Function Chaining footnote:[+MonetaryFunctions+ is not part of the JSR, its just for illustration purposes.]
 -------------------------------------------------------------------
 MonetaryAmount amt = ...;
-amt = amt.multiply(2.12345).with(MonetaryRoundings.getDefaultRounding())
+amt = amt.multiply(2.12345).with(Monetary.getDefaultRounding())
         .with(MonetaryFunctions.minimal(100)).
-        .multiply(2.12345).with(MonetaryRoundings.getDefaultRounding())
+        .multiply(2.12345).with(Monetary.getDefaultRounding())
         .with(MonetaryFunctions.percent(23));
 -------------------------------------------------------------------
 
@@ -2948,7 +2951,7 @@ When accessing +MonetaryAmountFactory+ instances it is possible to configure the
 [source,java]
 .Example Configuring a +MonetaryAmountFactory+, using the RI class +Money+ as example.
 -------------------------------------------------------------------
-MonetaryAmountFactory<Money> fact = MonetaryAmounts.getAmountFactory(
+MonetaryAmountFactory<Money> fact = Monetary.getAmountFactory(
    MonetaryAmountFactoryQueryBuilder.of(Money.class)
      .set(new MathContext(250, RoundingMode.HALF_DOWN)).build()
 );
@@ -3011,7 +3014,7 @@ just replacing +FastMoney+ with +Money+:
 [source,java]
 .Usage Example - FastMoney
 -------------------------------------------------------------------
-MonetaryAmountFactory<FastMoney> fact = MonetaryAmounts.getAmountFactory(FastMoney.class);
+MonetaryAmountFactory<FastMoney> fact = Monetary.getAmountFactory(FastMoney.class);
 // Creates an instance of Money with the given MathContext
 MonetaryAmount m1 = fact.setCurrency("CHF").setNumber(250.34).create();
 FastMoney m2 = fact.setCurrency("CHF").setNumber(250.34).create();
@@ -3068,7 +3071,7 @@ public class Total implements MonetaryOperator{
    }
 
    public <T extends MonetaryAmount> T getTotal(Class<T> amountType){
-      return MonetaryAmounts.getAmountFactory(amountType).with(total).create();
+      return Monetary.getAmountFactory(amountType).with(total).create();
    }
 
 }

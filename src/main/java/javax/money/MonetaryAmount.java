@@ -131,7 +131,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * <pre>
      * // converting from Money to MyMoney
      * Money m = ...;
-     * MonetartyAmountFactory<MyMoney> f = MonetaryAmounts.queryAmountFactory(MyMoney.class);
+     * MonetartyAmountFactory<MyMoney> f = Monetary.queryAmountFactory(MyMoney.class);
      * MyMoney myMoney = f.setAmount(m).of();
      * </blockquote>
      * </pre>

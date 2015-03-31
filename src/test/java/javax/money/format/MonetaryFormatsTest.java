@@ -96,7 +96,7 @@ public class MonetaryFormatsTest {
 
     @Test
     public void testGetProviderNames() {
-        Collection<String> provs = MonetaryFormats.getProviderNames();
+        Collection<String> provs = MonetaryFormats.getFormatProviderNames();
         assertNotNull(provs);
         System.out.println(provs);
         assertTrue(provs.contains("TestAmountFormatProvider"));
@@ -104,7 +104,7 @@ public class MonetaryFormatsTest {
 
     @Test
     public void testGetDefaultProviderChain() {
-        List<String> provs = MonetaryFormats.getDefaultProviderChain();
+        List<String> provs = MonetaryFormats.getDefaultFormatProviderChain();
         assertNotNull(provs);
         assertTrue(provs.contains("TestAmountFormatProvider"));
     }

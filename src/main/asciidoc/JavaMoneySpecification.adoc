@@ -3,8 +3,8 @@
 :title: JSR 354 (Money & Currency) - Specification
 :revnumber: 1.0
 :revremark: Final
-:revdate: March 2015
-:longversion: 1.0 (Final) March 2015
+:revdate: April 2015
+:longversion: 1.0 (Final) April 2015
 :authorinitials: ATR
 :author: Anatole Tresch, Credit Suisse
 :email: <anatole.tresch@credit-suisse.com>

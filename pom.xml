@@ -70,8 +70,15 @@
             </roles>
         </developer>
         <developer>
-            <id>jodastephen</id>
-            <name>Stephen Colebourne</name>
+            <id>otaviojava</id>
+            <name>Otávio Santana</name>
+            <roles>
+                <role>Expert Group Member</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>simasch</id>
+            <name>Simon Martinelli</name>
             <roles>
                 <role>Expert Group Member</role>
             </roles>
@@ -99,14 +106,21 @@
         </developer>
         <developer>
             <id>-</id>
-            <name>Benjamin Cotton</name>
+            <name>Manuela Grindei</name>
             <roles>
                 <role>Expert Group Member</role>
             </roles>
         </developer>
         <developer>
-            <id>simasch</id>
-            <name>Simon Martinelli</name>
+            <id>-</id>
+            <name>Benjamin Cotton</name>
+            <roles>
+                <role>Expert Group Member</role>
+            </roles>
+        </developer>
+	<developer>
+            <id>jodastephen</id>
+            <name>Stephen Colebourne</name>
             <roles>
                 <role>Expert Group Member</role>
             </roles>
@@ -151,6 +165,13 @@
         <developer>
             <id>-</id>
             <name>Sanjay Nagpal</name>
+            <roles>
+                <role>Expert Group Member</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>-</id>
+            <name>Mohamed Taman</name>
             <roles>
                 <role>Expert Group Member</role>
             </roles>

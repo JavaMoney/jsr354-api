@@ -1,10 +1,10 @@
 JSR-000354 Java Money & Currency 1.0 Final Release for Evaluation
 
 Specification: JSR-354 Java Money & Currency Specification ("Specification")
-Version: 1.0-SNAPSHOT
-Status: Proposed Final Draft
+Version: 1.0
+Status: Final
 Specification Lead: Credit Suisse ("Specification Lead")
-Release: 20 March 2015
+Release: April 2015
 Copyright 2015 Credit Suisse, Inc.
 All rights reserved.
 

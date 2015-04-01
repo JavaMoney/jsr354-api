@@ -136,7 +136,7 @@
         </developer>
         <developer>
             <id>-</id>
-            <name>Scot James</name>
+            <name>Scott James</name>
             <roles>
                 <role>Expert Group Member</role>
             </roles>
@@ -151,20 +151,6 @@
         <developer>
             <id>-</id>
             <name>Sanjay Nagpal</name>
-            <roles>
-                <role>Expert Group Member</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>keilw</id>
-            <name>Werner Keil</name>
-            <roles>
-                <role>Expert Group Member</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>crazybob</id>
-            <name>Bob Lee</name>
             <roles>
                 <role>Expert Group Member</role>
             </roles>

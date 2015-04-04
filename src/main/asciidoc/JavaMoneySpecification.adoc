@@ -78,6 +78,7 @@ persons have actively contributed to Java Money in alphabetical order:
 * Arumugam Swaminathan
 * Mohamed Taman
 * Anatole Tresch (Credit Suisse, Spec Lead)
+* Otávio Santana
 
 === Specification goals
 Monetary values are a key feature of many applications, yet the JDK provides little or no support.

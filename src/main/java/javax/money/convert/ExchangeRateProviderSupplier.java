@@ -12,8 +12,10 @@ package javax.money.convert;
 
 
 /**
-* A supplier of {@link ExchangeRateProvider} name that references an implementation.
-*/
+ * A supplier of {@link ExchangeRateProvider} name that references an implementation. This can be used to let
+ * an enum type implement this interface, so enums values can be passed to {@link javax.money.convert.MonetaryConversions}
+ * for determining the rate providers to be used.
+ */
 @FunctionalInterface
 public interface ExchangeRateProviderSupplier{
 

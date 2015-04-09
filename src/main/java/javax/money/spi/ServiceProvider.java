@@ -5,7 +5,7 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * API ("Specification") Copyright (c) 2012-2015, Credit Suisse All rights
  * reserved.
  */
 package javax.money.spi;
@@ -29,20 +29,19 @@ public interface ServiceProvider {
      */
     public int getPriority();
 
-	/**
-	 * Access a list of services, given its type. The bootstrap mechanism should
-	 * order the instance for precedence, hereby the most significant should be
+    /**
+     * Access a list of services, given its type. The bootstrap mechanism should
+     * order the instance for precedence, hereby the most significant should be
      * first in order. If no such services are found, an empty list should be
      * returned.
      *
-	 * @param serviceType
-	 *            the service type.
-	 * @return The instance to be used, never {@code null}
-	 */
+     * @param serviceType the service type.
+     * @return The instance to be used, never {@code null}
+     */
     <T> List<T> getServices(Class<T> serviceType);
 
     /**
-     * Access a single services, given its type. The bootstrap mechanism should
+     * Access a single service, given its type. The bootstrap mechanism should
      * order the instance for precedence, hereby the most significant should be
      * first in order and returned. If no such services are found, null is
      * returned.
@@ -53,5 +52,4 @@ public interface ServiceProvider {
     default <T> T getService(Class<T> serviceType) {
         return getServices(serviceType).stream().findFirst().orElse(null);
     }
-
 }

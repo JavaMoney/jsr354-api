@@ -129,7 +129,7 @@ older releases.
 
 
 === How this document is organized
-There are five main section in this document:
+There are five main sections in this document:
 
 * Use cases
 * Requirements
@@ -372,6 +372,9 @@ jsr354-tck:: contains the technical compatibility kit (TCK). The TCK is built us
 used to test implementations based on Java 8.
 javamoney-parent:: is a root “POM” project for all modules under +org.javamoney+. This includes the RI/TCK projects,
   but not jsr354-api (which is standalone).
+
+The repository also contains additional modules such as
+
 javamoney-library:: contains a financial library (JavaMoney) adding comprehensive support for several extended
   functionality, built on top of this JSR, but not part of the JSR.
 javamoney-examples:: finally contains the examples and demos, and also is not part of this JSR.

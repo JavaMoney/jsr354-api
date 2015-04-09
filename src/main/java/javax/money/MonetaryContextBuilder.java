@@ -30,7 +30,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
      *
      * @param amountType the target amount type, not null.
      */
-    MonetaryContextBuilder(Class<? extends MonetaryAmount> amountType) {
+    private MonetaryContextBuilder(Class<? extends MonetaryAmount> amountType) {
         set(MonetaryContext.AMOUNT_TYPE, amountType);
     }
 

@@ -27,7 +27,7 @@ import static org.testng.AssertJUnit.assertNotNull;
  */
 public class MonetaryAmountsSingletonSpiTest {
 
-    private MonetaryAmountsSingletonSpi testSpi = new MonetaryAmountsSingletonSpi() {
+    private final MonetaryAmountsSingletonSpi testSpi = new MonetaryAmountsSingletonSpi() {
         @SuppressWarnings("unchecked")
         @Override
         public <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType) {

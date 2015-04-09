@@ -63,7 +63,7 @@ public abstract class AbstractContext implements Serializable {
 
     /**
      * Get the current attribute type.
-     *
+     * @param key the entry's key, not null
      * @return the current attribute type, or null, if no such attribute exists.
      */
     public Class<?> getType(String key) {
@@ -135,6 +135,7 @@ public abstract class AbstractContext implements Serializable {
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
+    @SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
     public Boolean getBoolean(String key) {
         return get(key, Boolean.class);
     }

@@ -96,7 +96,6 @@ public class AbstractContextTest {
     public void testToString() {
         TestContext ctx = new TestContext.Builder().set("Test").set(1).set((long) 2).build();
         assertNotNull(ctx.toString());
-        System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("1"));
         assertTrue(ctx.toString().contains("2"));
         assertTrue(ctx.toString().contains("Test"));

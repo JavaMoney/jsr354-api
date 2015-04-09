@@ -22,7 +22,7 @@ import static org.testng.AssertJUnit.*;
  */
 public class MonetaryFormatsSingletonSpiTest {
 
-    private MonetaryFormatsSingletonSpi testSpi = new MonetaryFormatsSingletonSpi() {
+    private final MonetaryFormatsSingletonSpi testSpi = new MonetaryFormatsSingletonSpi() {
 
         @Override
         public Set<Locale> getAvailableLocales(String... providers) {

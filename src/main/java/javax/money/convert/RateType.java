@@ -39,8 +39,7 @@ public enum RateType{
     OTHER,
     /**
      * Any type of rates. This can be used, where any type of rate is suitable. This may be feasible if you
-     * access a specific chain of rate providers, e.g. by calling {@link MonetaryConversions#getConversion(String,
-     * ConversionContext, String...)},
+     * access a specific chain of rate providers,
      * where the order of providers already implies a prioritization and the rate type in that scenario is not relevant.
      */
     ANY

@@ -24,17 +24,17 @@ public abstract class AbstractQuery extends AbstractContext {
     /**
      * Key for storing the target providers to be queried
      */
-    public static final String KEY_QUERY_PROVIDERS = "Query.providers";
+    protected static final String KEY_QUERY_PROVIDERS = "Query.providers";
 
     /**
      * Key name for the timestamp attribute.
      */
-    public static final String KEY_QUERY_TIMESTAMP = "Query.timestamp";
+    protected static final String KEY_QUERY_TIMESTAMP = "Query.timestamp";
 
     /**
      * Key name for the target type attribute.
      */
-    public static final String KEY_QUERY_TARGET_TYPE = "Query.targetType";
+    protected static final String KEY_QUERY_TARGET_TYPE = "Query.targetType";
 
 
     /**

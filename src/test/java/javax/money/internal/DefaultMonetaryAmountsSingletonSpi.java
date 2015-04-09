@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultMonetaryAmountsSingletonSpi implements MonetaryAmountsSingletonSpi{
 
-	private Map<Class<? extends MonetaryAmount>, MonetaryAmountFactoryProviderSpi<?>> factories = new ConcurrentHashMap<>();
+	private final Map<Class<? extends MonetaryAmount>, MonetaryAmountFactoryProviderSpi<?>> factories = new ConcurrentHashMap<>();
 
 	public DefaultMonetaryAmountsSingletonSpi() {
 		for (MonetaryAmountFactoryProviderSpi<?> f : Bootstrap

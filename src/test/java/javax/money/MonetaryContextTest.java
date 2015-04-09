@@ -60,6 +60,7 @@ public class MonetaryContextTest {
     public void testGetAmountType() throws Exception {
         MonetaryContext ctx = MonetaryContextBuilder.of(MonetaryAmount.class).setMaxScale(122).build();
         assertEquals(ctx.getAmountType(), MonetaryAmount.class);
+        //noinspection ClassMayBeInterface
         abstract class TestAmount implements MonetaryAmount {
         }
         ctx = MonetaryContextBuilder.of(TestAmount.class).build();
@@ -95,13 +96,13 @@ public class MonetaryContextTest {
 
     @Test
     public void testToString() throws Exception {
+        //noinspection ClassMayBeInterface
         abstract class TestAmount implements MonetaryAmount {
         }
         MonetaryContext ctx =
                 MonetaryContextBuilder.of(TestAmount.class).setFixedScale(true).setMaxScale(111).setPrecision(200)
                         .set("myKey", "myValue").set("TEST").build();
         assertNotNull(ctx.toString());
-        System.out.println(ctx.toString());
         assertTrue(ctx.toString().contains("111"));
         assertTrue(ctx.toString().contains("200"));
         assertTrue(ctx.toString().contains("TEST"));

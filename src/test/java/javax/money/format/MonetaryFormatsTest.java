@@ -98,7 +98,6 @@ public class MonetaryFormatsTest {
     public void testGetProviderNames() {
         Collection<String> provs = MonetaryFormats.getFormatProviderNames();
         assertNotNull(provs);
-        System.out.println(provs);
         assertTrue(provs.contains("TestAmountFormatProvider"));
     }
 

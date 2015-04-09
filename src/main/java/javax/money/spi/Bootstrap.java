@@ -25,6 +25,7 @@ public final class Bootstrap {
     /**
      * The ServiceProvider used.
      */
+    @SuppressWarnings("StaticNonFinalField")
     private static volatile ServiceProvider serviceProviderDelegate;
     /**
      * The shared lock instance user.

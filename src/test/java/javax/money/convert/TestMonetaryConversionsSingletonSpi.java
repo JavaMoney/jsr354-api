@@ -28,7 +28,7 @@ import javax.money.spi.MonetaryConversionsSingletonSpi;
  */
 public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsSingletonSpi {
 
-    private ExchangeRateProvider provider = new DummyRateProvider();
+    private final ExchangeRateProvider provider = new DummyRateProvider();
 
 
     @Override
@@ -62,10 +62,10 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
 
     private static final class DummyConversion implements CurrencyConversion {
 
-        private CurrencyUnit termCurrency;
-        private ConversionContext ctx = ConversionContext.of();
+        private final CurrencyUnit termCurrency;
+        private final ConversionContext ctx = ConversionContext.of();
 
-        public DummyConversion(CurrencyUnit termCurrency) {
+        DummyConversion(CurrencyUnit termCurrency) {
             this.termCurrency = termCurrency;
         }
 
@@ -99,7 +99,7 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
 
     private static final class DummyRateProvider implements ExchangeRateProvider {
 
-        private ProviderContext ctx = ProviderContext.of("test");
+        private final ProviderContext ctx = ProviderContext.of("test");
 
         @Override
         public ProviderContext getContext() {
@@ -118,14 +118,14 @@ public class TestMonetaryConversionsSingletonSpi implements MonetaryConversionsS
 
         @Override
         public ExchangeRate getExchangeRate(ConversionQuery query) {
-            if (query.getBaseCurrency().getCurrencyCode().equals("test1")
-                    && query.getCurrency().getCurrencyCode().equals("test2")) {
+            if ("test1".equals(query.getBaseCurrency().getCurrencyCode())
+                    && "test2".equals(query.getCurrency().getCurrencyCode())) {
                 return new DefaultExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
                         .setBaseCurrency(query.getBaseCurrency()).setTermCurrency(query.getCurrency())
                         .setFactor(TestNumberValue.of(new BigDecimal("0.5"))).build();
             }
-            if (query.getBaseCurrency().getCurrencyCode().equals("test2")
-                    && query.getCurrency().getCurrencyCode().equals("test1")) {
+            if ("test2".equals(query.getBaseCurrency().getCurrencyCode())
+                    && "test1".equals(query.getCurrency().getCurrencyCode())) {
                 return new DefaultExchangeRate.Builder(getClass().getSimpleName(), RateType.OTHER)
                         .setBaseCurrency(query.getBaseCurrency()).setTermCurrency(query.getCurrency())
                         .setFactor(TestNumberValue.of(new BigDecimal("2"))).build();

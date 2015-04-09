@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  */
 public final class MonetaryFormats {
 
-    private static final MonetaryFormatsSingletonSpi monetaryFormatsSingletonSpi = loadMonetaryFormatsSingletonSpi();
+    private static final MonetaryFormatsSingletonSpi MONETARY_FORMATS_SINGLETON_SPI = loadMonetaryFormatsSingletonSpi();
 
     /**
      * Private singleton constructor.
@@ -61,7 +61,7 @@ public final class MonetaryFormats {
      * @return true, if a corresponding {@link MonetaryAmountFormat} is accessible.
      */
     public static boolean isAvailable(Locale locale, String... providers) {
-        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
+        return Optional.ofNullable(MONETARY_FORMATS_SINGLETON_SPI).orElseThrow(() -> new MonetaryException(
                 "No MonetaryFormatsSingletonSpi " + "loaded, query functionality is not available."))
                 .isAvailable(locale, providers);
     }
@@ -89,7 +89,7 @@ public final class MonetaryFormats {
      * @return true, if a corresponding {@link MonetaryAmountFormat} is accessible.
      */
     public static boolean isAvailable(AmountFormatQuery formatQuery) {
-        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
+        return Optional.ofNullable(MONETARY_FORMATS_SINGLETON_SPI).orElseThrow(() -> new MonetaryException(
                 "No MonetaryFormatsSingletonSpi " + "loaded, query functionality is not available."))
                 .isAvailable(formatQuery);
     }
@@ -105,7 +105,7 @@ public final class MonetaryFormats {
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     public static MonetaryAmountFormat getAmountFormat(AmountFormatQuery formatQuery) {
-        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
+        return Optional.ofNullable(MONETARY_FORMATS_SINGLETON_SPI).orElseThrow(() -> new MonetaryException(
                 "No MonetaryFormatsSingletonSpi " + "loaded, query functionality is not available."))
                 .getAmountFormat(formatQuery);
     }
@@ -121,7 +121,7 @@ public final class MonetaryFormats {
      *                           corresponding {@link MonetaryAmountFormat} instance.
      */
     public static Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery) {
-        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
+        return Optional.ofNullable(MONETARY_FORMATS_SINGLETON_SPI).orElseThrow(() -> new MonetaryException(
                 "No MonetaryFormatsSingletonSpi " + "loaded, query functionality is not available."))
                 .getAmountFormats(formatQuery);
     }
@@ -148,7 +148,7 @@ public final class MonetaryFormats {
      * @return all available locales, never {@code null}.
      */
     public static Set<Locale> getAvailableLocales(String... providers) {
-        return monetaryFormatsSingletonSpi.getAvailableLocales(providers);
+        return MONETARY_FORMATS_SINGLETON_SPI.getAvailableLocales(providers);
     }
 
     /**
@@ -158,14 +158,14 @@ public final class MonetaryFormats {
      */
     @SuppressWarnings("ConstantConditions")
     public static Collection<String> getFormatProviderNames() {
-        Collection<String> providers = Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(
+        Collection<String> providers = Optional.ofNullable(MONETARY_FORMATS_SINGLETON_SPI).orElseThrow(
                 () -> new MonetaryException(
                         "No MonetaryFormatsSingletonSpi loaded, query functionality is not available."))
                 .getProviderNames();
         if (Objects.isNull(providers)) {
             Logger.getLogger(MonetaryFormats.class.getName()).warning(
                     "No supported rate/conversion providers returned by SPI: " +
-                            monetaryFormatsSingletonSpi.getClass().getName());
+                            MONETARY_FORMATS_SINGLETON_SPI.getClass().getName());
             return Collections.emptySet();
         }
         return providers;
@@ -177,7 +177,7 @@ public final class MonetaryFormats {
      * @return the default provider chain, never null.
      */
     public static List<String> getDefaultFormatProviderChain() {
-        return Optional.ofNullable(monetaryFormatsSingletonSpi).orElseThrow(() -> new MonetaryException(
+        return Optional.ofNullable(MONETARY_FORMATS_SINGLETON_SPI).orElseThrow(() -> new MonetaryException(
                 "No MonetaryFormatsSingletonSpi " + "loaded, query functionality is not available."))
                 .getDefaultProviderChain();
     }

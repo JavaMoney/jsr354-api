@@ -14,7 +14,9 @@ package javax.money.spi;
 
 import org.testng.annotations.Test;
 
-import javax.money.*;
+import javax.money.CurrencyQueryBuilder;
+import javax.money.CurrencyUnit;
+import javax.money.TestCurrency;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +27,7 @@ import static org.testng.Assert.*;
  */
 public class CurrencyProviderSpiTest {
 
-    private static CurrencyProviderSpi testProvider = query -> {
+    private static final CurrencyProviderSpi testProvider = query -> {
         Set<CurrencyUnit> result = new HashSet<>();
         if (query.getCurrencyCodes().contains("CHF")) {
             result.add(TestCurrency.of("CHF"));

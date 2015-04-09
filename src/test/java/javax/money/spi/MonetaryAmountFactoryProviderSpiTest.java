@@ -30,13 +30,13 @@ public class MonetaryAmountFactoryProviderSpiTest {
     private MonetaryContext monetaryContext;
 
     @BeforeMethod
-    public void setUp() throws Exception {
+    public void setUp(){
         monetaryContext = MonetaryContextBuilder.of().build();
         sut = new MonetaryAmountFactoryProviderSpiTestStub(monetaryContext);
     }
 
     @Test
-    public void shouldReturnQueryInclusionPolicyALWAYS() throws Exception {
+    public void shouldReturnQueryInclusionPolicyALWAYS() {
         // when
         QueryInclusionPolicy result = sut.getQueryInclusionPolicy();
         // then
@@ -44,7 +44,7 @@ public class MonetaryAmountFactoryProviderSpiTest {
     }
 
     @Test
-    public void getMaximalMonetaryContextShouldReturnDefault() throws Exception {
+    public void getMaximalMonetaryContextShouldReturnDefault(){
         // given
         // when
         MonetaryContext result = sut.getMaximalMonetaryContext();
@@ -56,7 +56,7 @@ public class MonetaryAmountFactoryProviderSpiTest {
 
         private final MonetaryContext monetaryContext;
 
-        public MonetaryAmountFactoryProviderSpiTestStub(MonetaryContext monetaryContext) {
+        MonetaryAmountFactoryProviderSpiTestStub(MonetaryContext monetaryContext) {
             this.monetaryContext = monetaryContext;
         }
 

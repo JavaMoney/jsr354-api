@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
 
 public class CurrencyConversionExceptionTest {
 
-    private static ConversionContext CONTEXT100 =
+    private static final ConversionContext CONTEXT100 =
             ConversionContextBuilder.of().setProviderName("test").set("timestampMillis", 100L).build();
 
     @Test

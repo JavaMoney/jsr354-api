@@ -12,7 +12,6 @@
  */
 package javax.money;
 
-import java.util.function.UnaryOperator;
 
 /**
  * Represents an operation on a single {@link MonetaryAmount} that produces a

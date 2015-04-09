@@ -282,7 +282,7 @@ public class TestNumberValue extends NumberValue {
 	 *            the number type
 	 * @return the corresponding {@link java.math.BigDecimal}
 	 */
-	protected static BigDecimal getBigDecimal(Number num) {
+	private static BigDecimal getBigDecimal(Number num) {
 		// try fast equality check first (delegates to identity!)
 		if (BigDecimal.class.equals(num.getClass())) {
 			return (BigDecimal) num;

@@ -17,7 +17,7 @@ import javax.money.spi.MonetaryAmountFormatProviderSpi;
 public class TestAmountFormatProvider implements
         MonetaryAmountFormatProviderSpi {
 
-    private Set<Locale> testSet = new HashSet<>();
+    private final Set<Locale> testSet = new HashSet<>();
 
     public TestAmountFormatProvider() {
         testSet.add(Locale.ENGLISH);
@@ -50,7 +50,7 @@ public class TestAmountFormatProvider implements
 
     public static final class TestFormat implements MonetaryAmountFormat {
 
-        private AmountFormatContext formatStyle;
+        private final AmountFormatContext formatStyle;
 
         TestFormat(AmountFormatQuery formatStyle) {
             Objects.requireNonNull(formatStyle);

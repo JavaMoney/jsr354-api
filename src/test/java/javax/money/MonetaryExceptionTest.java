@@ -34,7 +34,6 @@ public class MonetaryExceptionTest{
         assertNotNull(e.getMessage());
         assertTrue(e.getMessage().contains("message1"));
         assertNotNull(e.getCause());
-        assertTrue(e.getCause().getMessage().equals("Test"));
-
+        assertEquals(e.getCause().getMessage(), "Test");
     }
 }

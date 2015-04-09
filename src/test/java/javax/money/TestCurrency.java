@@ -30,7 +30,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
      * The predefined name space for ISO 4217 currencies, similar to
      * {@link java.util.Currency}.
      */
-    public static final String ISO_NAMESPACE = "ISO-4217";
+    private static final String ISO_NAMESPACE = "ISO-4217";
 
     /**
      * serialVersionUID.

@@ -38,8 +38,6 @@ class DefaultServiceProvider implements ServiceProvider {
      *            The service type.
      * @param <T>
      *            the concrete type.
-     * @param defaultList
-     *            the list of items returned, if no services were found.
      * @return the items found, never {@code null}.
      */
     @Override
@@ -58,7 +56,6 @@ class DefaultServiceProvider implements ServiceProvider {
      *
      * @param   serviceType  The service type.
      * @param   <T>          the concrete type.
-     * @param   defaultList  the list of items returned, if no services were found.
      *
      * @return  the items found, never {@code null}.
      */

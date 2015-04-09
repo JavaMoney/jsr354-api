@@ -23,7 +23,7 @@ import static org.testng.AssertJUnit.*;
  */
 public class MonetarySingletonSpiTest {
 
-    private MonetaryCurrenciesSingletonSpi testSpi = new MonetaryCurrenciesSingletonSpi() {
+    private final MonetaryCurrenciesSingletonSpi testSpi = new MonetaryCurrenciesSingletonSpi() {
 
         @Override
         public List<String> getDefaultProviderChain() {

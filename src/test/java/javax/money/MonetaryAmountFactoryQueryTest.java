@@ -22,7 +22,7 @@ public class MonetaryAmountFactoryQueryTest {
     private static final int PRECISION = 3;
     private static final boolean FIXED_SCALE = true;
 
-    final MonetaryAmountFactoryQuery query = new MonetaryAmountFactoryQuery(MonetaryAmountFactoryQueryBuilder
+    private final MonetaryAmountFactoryQuery query = new MonetaryAmountFactoryQuery(MonetaryAmountFactoryQueryBuilder
             .of()
             .setMaxScale(MAX_SCALE)
             .setPrecision(PRECISION)
@@ -57,12 +57,12 @@ public class MonetaryAmountFactoryQueryTest {
 
     /**
      * Test method for
-     * {@link MonetaryAmountFactoryQuery#getFixedScale()}.
+     * {@link MonetaryAmountFactoryQuery#isFixedScale()}.
      */
     @Test
     public void testGetFixedScale() throws Exception {
         //when
-        final boolean retVal = query.getFixedScale();
+        final boolean retVal = query.isFixedScale();
 
         //then
         assertEquals(retVal, FIXED_SCALE);

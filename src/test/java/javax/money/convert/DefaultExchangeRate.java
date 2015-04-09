@@ -81,7 +81,7 @@ import java.util.Objects;
  * href="https://en.wikipedia.org/wiki/Exchange_rate#Quotations">Wikipedia:
  * Exchange Rate (Quotations)</a>
  */
-public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparable<ExchangeRate> {
+public final class DefaultExchangeRate implements ExchangeRate, Serializable, Comparable<ExchangeRate> {
 
     /**
      * serialVersionUID.
@@ -106,7 +106,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
     /**
      * The full chain, at least one instance long.
      */
-    private List<ExchangeRate> chain = new ArrayList<>();
+    private final List<ExchangeRate> chain = new ArrayList<>();
 
 
     /**
@@ -153,7 +153,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      *
      * @return the conversion context, never null.
      */
-    public final ConversionContext getContext() {
+    public ConversionContext getContext() {
         return this.conversionContext;
     }
 
@@ -162,7 +162,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      *
      * @return the baseCurrency {@link javax.money.CurrencyUnit}.
      */
-    public final CurrencyUnit getBaseCurrency() {
+    public CurrencyUnit getBaseCurrency() {
         return this.baseCurrency;
     }
 
@@ -171,7 +171,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      *
      * @return the termCurrency {@link javax.money.CurrencyUnit}.
      */
-    public final CurrencyUnit getCurrency() {
+    public CurrencyUnit getCurrency() {
         return this.termCurrency;
     }
 
@@ -180,7 +180,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      *
      * @return the bid factor for this exchange rate, or {@code null}.
      */
-    public final NumberValue getFactor() {
+    public NumberValue getFactor() {
         return this.factor;
     }
 
@@ -191,7 +191,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      * several instances. For a direct exchange rate, this equals to
      * <code>new ExchangeRate[]{this}</code>.
      */
-    public final List<ExchangeRate> getExchangeRateChain() {
+    public List<ExchangeRate> getExchangeRateChain() {
         return this.chain;
     }
 
@@ -206,7 +206,7 @@ public class DefaultExchangeRate implements ExchangeRate, Serializable, Comparab
      *
      * @return true, if the exchange rate is derived.
      */
-    public final boolean isDerived() {
+    public boolean isDerived() {
         return this.chain.size() > 1;
     }
 

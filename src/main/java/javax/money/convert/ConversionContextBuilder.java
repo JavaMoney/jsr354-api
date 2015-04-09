@@ -75,7 +75,7 @@ public final class ConversionContextBuilder extends AbstractContextBuilder<Conve
 
     /**
      * Creates a new {@link javax.money.convert.ConversionContextBuilder} instance.
-     *
+     * @param conversionContext the conversion context to be used to initialize the new builder instance, not null.
      * @return a new {@link javax.money.convert.ConversionContextBuilder} instance, never null.
      */
     public static ConversionContextBuilder of(ConversionContext conversionContext) {

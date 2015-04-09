@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
- * SPI (core) for the backing implementation of the {@link javax.money.MonetaryAmounts} singleton, implementing
+ * SPI (core) for the backing implementation of the {@link javax.money.Monetary} singleton, implementing
  * the query functionality for amounts.
  *
  * @author Anatole Tresch

@@ -88,12 +88,12 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi {
 
     private static final class TestCurrency implements CurrencyUnit {
 
-        private String code;
-        private int numCode;
-        private int digits;
+        private final String code;
+        private final int numCode;
+        private final int digits;
         private static final CurrencyContext CONTEXT = CurrencyContextBuilder.of("TestCurrencyProvider").build();
 
-        public TestCurrency(String code, int numCode, int digits) {
+        TestCurrency(String code, int numCode, int digits) {
             this.code = code;
             this.numCode = numCode;
             this.digits = digits;

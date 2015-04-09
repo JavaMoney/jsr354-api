@@ -13,7 +13,6 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import javax.money.DummyAmount;
 import javax.money.DummyAmountBuilder;
@@ -46,7 +45,7 @@ public class ConcurrentInitializationTest {
      * https://github.com/JavaMoney/jsr354-ri/issues/30.
      */
     @Test
-    public void shouldSupportConcurrentInitialization() throws ExecutionException, InterruptedException {
+    public void shouldSupportConcurrentInitialization() throws InterruptedException {
         final DummyAmount amount = new DummyAmountBuilder().create();
 
         final List<Thread> threads = new ArrayList<>(THREAD_COUNT);

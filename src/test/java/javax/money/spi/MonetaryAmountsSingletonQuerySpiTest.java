@@ -19,7 +19,7 @@ import static org.testng.AssertJUnit.*;
  */
 public class MonetaryAmountsSingletonQuerySpiTest {
 
-    MonetaryAmountsSingletonQuerySpi testSpi = query -> {
+    private final MonetaryAmountsSingletonQuerySpi testSpi = query -> {
         List<MonetaryAmountFactory<? extends MonetaryAmount>> factories = new ArrayList<>();
         if (query.getBoolean("select")) {
             factories.add(new DummyAmountBuilder());

@@ -32,7 +32,7 @@ public class MonetaryRoundingsSingletonSpiTest {
         }
     };
 
-    private MonetaryRoundingsSingletonSpi testSpi = new MonetaryRoundingsSingletonSpi() {
+    private final MonetaryRoundingsSingletonSpi testSpi = new MonetaryRoundingsSingletonSpi() {
 
         @Override
         public Set<String> getRoundingNames(String... providers) {
@@ -60,7 +60,7 @@ public class MonetaryRoundingsSingletonSpiTest {
             List<MonetaryRounding> roundings = new ArrayList<>();
             if ("r1".equals(query.getRoundingName())) {
                 roundings.add(R1);
-            } else if (query.getCurrency() != null && query.getCurrency().getCurrencyCode().equals("USD")) {
+            } else if (query.getCurrency() != null && "USD".equals(query.getCurrency().getCurrencyCode())) {
                 roundings.add(R1);
             }
             return roundings;

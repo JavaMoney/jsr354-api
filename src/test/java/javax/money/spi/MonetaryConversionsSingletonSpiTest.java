@@ -21,7 +21,7 @@ import static org.testng.AssertJUnit.*;
  */
 public class MonetaryConversionsSingletonSpiTest {
 
-    private MonetaryConversionsSingletonSpi testSpi = new MonetaryConversionsSingletonSpi() {
+    private final MonetaryConversionsSingletonSpi testSpi = new MonetaryConversionsSingletonSpi() {
 
         @Override
         public Collection<String> getProviderNames() {

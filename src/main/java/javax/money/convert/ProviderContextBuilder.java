@@ -87,7 +87,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
     @SuppressWarnings({"unchecked", "rawtypes"})
     public ProviderContextBuilder setRateTypes(Collection<RateType> rateTypes) {
         Objects.requireNonNull(rateTypes);
-        if (rateTypes.size() == 0) {
+        if (rateTypes.isEmpty()) {
             throw new IllegalArgumentException("At least one RateType is required.");
         }
         Set rtSet = new HashSet<>();

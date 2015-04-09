@@ -22,7 +22,7 @@ import java.io.Serializable;
  * </ul>
  * <p>This class is thread-safe, final and serializable.</p>
  *
- * @see MonetaryAmounts#getAmountFactory(MonetaryAmountFactoryQuery)
+ * @see Monetary#getAmountFactory(MonetaryAmountFactoryQuery)
  * @see MonetaryAmountFactory
  */
 public final class MonetaryAmountFactoryQuery extends AbstractQuery implements Serializable {
@@ -30,17 +30,17 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
     /**
      * Key name for the context.
      */
-    static final String KEY_PRECISION = "precision";
+    private static final String KEY_PRECISION = "precision";
 
     /**
      * Key name for the currency provider.
      */
-    static final String KEY_FIXED_SCALE = "fixedScale";
+    private static final String KEY_FIXED_SCALE = "fixedScale";
 
     /**
      * Key name for the max scale.
      */
-    static final String KEY_MAX_SCALE = "maxScale";
+    private static final String KEY_MAX_SCALE = "maxScale";
 
     /**
      * Constructor, used from the {@link MonetaryAmountFactoryQueryBuilder}.
@@ -75,7 +75,7 @@ public final class MonetaryAmountFactoryQuery extends AbstractQuery implements S
      *
      * @return the fixed scale flag, or null, if this attribute must not be considered.
      */
-    public Boolean getFixedScale() {
+    public Boolean isFixedScale() {
         return getBoolean(KEY_FIXED_SCALE);
     }
 

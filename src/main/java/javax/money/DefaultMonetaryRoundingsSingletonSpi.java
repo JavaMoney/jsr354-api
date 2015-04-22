@@ -58,7 +58,8 @@ final class DefaultMonetaryRoundingsSingletonSpi implements MonetaryRoundingsSin
      *
      * @return the default rounding, never null.
      */
-    public MonetaryRounding getDefaultRounding() {
+    @Override
+	public MonetaryRounding getDefaultRounding() {
         return DEFAULT_ROUNDING;
     }
 
@@ -132,7 +133,8 @@ final class DefaultMonetaryRoundingsSingletonSpi implements MonetaryRoundingsSin
      *                  #getDefaultProviders is used, not null.
      * @return the set of custom rounding ids, never {@code null}.
      */
-    public Set<String> getRoundingNames(String... providers) {
+    @Override
+	public Set<String> getRoundingNames(String... providers) {
         Set<String> result = new HashSet<>();
         String[] providerNames = providers;
         if (providerNames.length == 0) {
@@ -161,7 +163,9 @@ final class DefaultMonetaryRoundingsSingletonSpi implements MonetaryRoundingsSin
      */
     private static final class DefaultCurrencyRounding implements MonetaryRounding, Serializable {
 
-        private static final RoundingContext ROUNDING_CONTEXT = RoundingContextBuilder.of("default", "default").build();
+		private static final long serialVersionUID = 8641545296538357839L;
+
+		private static final RoundingContext ROUNDING_CONTEXT = RoundingContextBuilder.of("default", "default").build();
 
         @Override
         public MonetaryAmount apply(MonetaryAmount amount) {

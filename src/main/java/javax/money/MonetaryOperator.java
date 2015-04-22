@@ -5,12 +5,13 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE.
- * 
+ *
  * Specification: JSR-354 Money and Currency API ("Specification")
- * 
+ *
  * Copyright (c) 2012-2015, Credit Suisse All rights reserved.
  */
 package javax.money;
+
 
 
 /**
@@ -23,16 +24,16 @@ package javax.money;
  * There are two equivalent ways of using a {@code MonetaryOperator}. The first
  * is to invoke the method on this interface. The second is to use
  * {@link MonetaryAmount#with(MonetaryOperator)}:
- * 
+ *
  * <pre>
  * // these two lines are equivalent, but the second approach is recommended
  * monetary = thisOperator.apply(monetary);
  * monetary = monetary.with(thisOperator);
  * </pre>
- * 
+ *
  * It is recommended to use the second approach, {@code with(MonetaryOperator)},
  * as it is a lot clearer to read in code.
- * 
+ *
  * <h4>Implementation specification</h4>
  * The implementation must take the input object and apply it. The
  * implementation defines the logic of the operator and is responsible for
@@ -45,13 +46,13 @@ package javax.money;
  * <p>
  * This method may be called from multiple threads in parallel. It must be
  * thread-safe when invoked.
- * 
+ *
  * <p>
  * This interface extends {@code java.util.function.UnaryOperator} introduced by Java 8.
- * 
+ *
  * @author Werner Keil
  * @author Anatole Tresch
- * 
+ *
  * @version 0.9
  */
 @FunctionalInterface
@@ -63,4 +64,12 @@ public interface MonetaryOperator{
      * @return the applied amount.
      */
     MonetaryAmount apply(MonetaryAmount amount);
+
+    /**
+     * Returns a function that always returns its input argument.
+     * @return an operator  that always returns its input argument
+     */
+    static MonetaryOperator identity() {
+        return m -> m;
+    }
 }

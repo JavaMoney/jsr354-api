@@ -4,6 +4,7 @@ import org.testng.annotations.Test;
 
 import javax.money.DummyAmountBuilder;
 import javax.money.MonetaryAmountFactory;
+
 import java.util.Locale;
 
 import static org.testng.Assert.*;
@@ -25,7 +26,8 @@ public class AmountFormatContextTest {
 
     @Test
     public void testGetParseFactory() throws Exception {
-        MonetaryAmountFactory f = new DummyAmountBuilder();
+        @SuppressWarnings("rawtypes")
+		MonetaryAmountFactory f = new DummyAmountBuilder();
         AmountFormatContext ctx = AmountFormatContextBuilder.of("blbl2").
                 setMonetaryAmountFactory(f).build();
         assertEquals(ctx.getParseFactory(), f);

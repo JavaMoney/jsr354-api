@@ -65,11 +65,4 @@ public interface MonetaryOperator{
      */
     MonetaryAmount apply(MonetaryAmount amount);
 
-    /**
-     * Returns a function that always returns its input argument.
-     * @return an operator  that always returns its input argument
-     */
-    static MonetaryOperator identity() {
-        return m -> m;
-    }
 }

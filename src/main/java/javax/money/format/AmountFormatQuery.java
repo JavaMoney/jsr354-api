@@ -28,7 +28,9 @@ import javax.money.MonetaryAmountFactory;
  */
 public final class AmountFormatQuery extends AbstractQuery {
 
-    /**
+
+	private static final long serialVersionUID = 5848832058616502383L;
+	/**
      * Key used for the format name attribute.
      */
     static final String KEY_QUERY_FORMAT_NAME = "Query.formatName";
@@ -66,7 +68,8 @@ public final class AmountFormatQuery extends AbstractQuery {
      *
      * @return the monetary context, or {@code null}.
      */
-    public MonetaryAmountFactory getMonetaryAmountFactory() {
+    @SuppressWarnings("rawtypes")
+	public MonetaryAmountFactory getMonetaryAmountFactory() {
         MonetaryAmountFactory factory = get(MonetaryAmountFactory.class);
         if (factory == null) {
             return Monetary.getDefaultAmountFactory();

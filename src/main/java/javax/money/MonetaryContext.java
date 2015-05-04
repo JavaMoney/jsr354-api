@@ -28,7 +28,9 @@ import java.io.Serializable;
  */
 public final class MonetaryContext extends AbstractContext implements Serializable {
 
-    /**
+	private static final long serialVersionUID = 500722564420978659L;
+
+	/**
      * Constant that defines under which key the amount type is stored in the context map.
      */
     static final String AMOUNT_TYPE = "amountType";

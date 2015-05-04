@@ -156,7 +156,6 @@ public final class MonetaryFormats {
      *
      * @return the provider names, never null.
      */
-    @SuppressWarnings("ConstantConditions")
     public static Collection<String> getFormatProviderNames() {
         Collection<String> providers = Optional.ofNullable(MONETARY_FORMATS_SINGLETON_SPI).orElseThrow(
                 () -> new MonetaryException(
@@ -203,7 +202,8 @@ public final class MonetaryFormats {
          *                                       .MonetaryAmountFormatProviderSpi} can provide a
          *                                       corresponding {@link javax.money.format.MonetaryAmountFormat} instance.
          */
-        public Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery) {
+        @Override
+		public Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery) {
             Collection<MonetaryAmountFormat> result = new ArrayList<>();
             for (MonetaryAmountFormatProviderSpi spi : Bootstrap.getServices(MonetaryAmountFormatProviderSpi.class)) {
                 Collection<MonetaryAmountFormat> formats = spi.getAmountFormats(formatQuery);
@@ -239,7 +239,8 @@ public final class MonetaryFormats {
          *
          * @return all available locales, never {@code null}.
          */
-        public Set<Locale> getAvailableLocales(String... providerNames) {
+        @Override
+		public Set<Locale> getAvailableLocales(String... providerNames) {
             Set<Locale> locales = new HashSet<>();
             Collection<MonetaryAmountFormatProviderSpi> spis = getSpis(providerNames);
             for (MonetaryAmountFormatProviderSpi spi : spis) {

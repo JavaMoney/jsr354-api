@@ -83,15 +83,18 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
         return cu;
     }
 
-    public String getCurrencyCode() {
+    @Override
+	public String getCurrencyCode() {
         return currencyCode;
     }
 
-    public int getNumericCode() {
+    @Override
+	public int getNumericCode() {
         return numericCode;
     }
 
-    public int getDefaultFractionDigits() {
+    @Override
+	public int getDefaultFractionDigits() {
         return defaultFractionDigits;
     }
 
@@ -113,7 +116,8 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
         // Templates.
     }
 
-    public int compareTo(@SuppressWarnings("NullableProblems") CurrencyUnit currency) {
+    @Override
+	public int compareTo(CurrencyUnit currency) {
         Objects.requireNonNull(currency);
         return getCurrencyCode().compareTo(currency.getCurrencyCode());
     }
@@ -234,7 +238,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
         }
 
         @Override
-        public int compareTo(@SuppressWarnings("NullableProblems") CurrencyUnit currency) {
+        public int compareTo(CurrencyUnit currency) {
             Objects.requireNonNull(currency);
             int compare = getCurrencyCode().compareTo(currency.getCurrencyCode());
             if (compare == 0) {
@@ -243,15 +247,18 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
             return compare;
         }
 
-        public String getCurrencyCode() {
+        @Override
+		public String getCurrencyCode() {
             return this.currency.getCurrencyCode();
         }
 
-        public int getNumericCode() {
+        @Override
+		public int getNumericCode() {
             return this.currency.getNumericCode();
         }
 
-        public int getDefaultFractionDigits() {
+        @Override
+		public int getDefaultFractionDigits() {
             return this.currency.getDefaultFractionDigits();
         }
 
@@ -260,7 +267,8 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
             return JDK_CONTEXT;
         }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return this.currency.toString();
         }
 

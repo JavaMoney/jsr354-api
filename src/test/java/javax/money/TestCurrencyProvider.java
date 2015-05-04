@@ -5,9 +5,9 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE.
- * 
+ *
  * Specification: JSR-354 Money and Currency API ("Specification")
- * 
+ *
  * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money;
@@ -143,7 +143,7 @@ public final class TestCurrencyProvider implements CurrencyProviderSpi {
         }
 
         @Override
-        public int compareTo(@SuppressWarnings("NullableProblems") CurrencyUnit o) {
+        public int compareTo(CurrencyUnit o) {
             Objects.requireNonNull(o);
             return getCurrencyCode().compareTo(o.getCurrencyCode());
         }

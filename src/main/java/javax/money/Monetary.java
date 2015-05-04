@@ -5,9 +5,9 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE.
- * 
+ *
  * Specification: JSR-354 Money and Currency API ("Specification")
- * 
+ *
  * Copyright (c) 2012-2015, Credit Suisse All rights reserved.
  */
 package javax.money;
@@ -18,6 +18,7 @@ import javax.money.spi.MonetaryAmountsSingletonQuerySpi;
 import javax.money.spi.MonetaryAmountsSingletonSpi;
 import javax.money.spi.MonetaryCurrenciesSingletonSpi;
 import javax.money.spi.MonetaryRoundingsSingletonSpi;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -373,7 +374,8 @@ public final class Monetary {
      * @param query the factory query, not null.
      * @return the factory found, or null.
      */
-    public static MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query) {
+    @SuppressWarnings("rawtypes")
+	public static MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query) {
         return Optional.ofNullable(MONETARY_AMOUNTS_SINGLETON_QUERY_SPI).orElseThrow(() -> new MonetaryException(
                 "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available."))
                 .getAmountFactory(query);

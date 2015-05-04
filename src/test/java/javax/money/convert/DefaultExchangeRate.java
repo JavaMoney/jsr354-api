@@ -153,7 +153,8 @@ public final class DefaultExchangeRate implements ExchangeRate, Serializable, Co
      *
      * @return the conversion context, never null.
      */
-    public ConversionContext getContext() {
+    @Override
+	public ConversionContext getContext() {
         return this.conversionContext;
     }
 
@@ -162,7 +163,8 @@ public final class DefaultExchangeRate implements ExchangeRate, Serializable, Co
      *
      * @return the baseCurrency {@link javax.money.CurrencyUnit}.
      */
-    public CurrencyUnit getBaseCurrency() {
+    @Override
+	public CurrencyUnit getBaseCurrency() {
         return this.baseCurrency;
     }
 
@@ -171,7 +173,8 @@ public final class DefaultExchangeRate implements ExchangeRate, Serializable, Co
      *
      * @return the termCurrency {@link javax.money.CurrencyUnit}.
      */
-    public CurrencyUnit getCurrency() {
+    @Override
+	public CurrencyUnit getCurrency() {
         return this.termCurrency;
     }
 
@@ -180,7 +183,8 @@ public final class DefaultExchangeRate implements ExchangeRate, Serializable, Co
      *
      * @return the bid factor for this exchange rate, or {@code null}.
      */
-    public NumberValue getFactor() {
+    @Override
+	public NumberValue getFactor() {
         return this.factor;
     }
 
@@ -191,7 +195,8 @@ public final class DefaultExchangeRate implements ExchangeRate, Serializable, Co
      * several instances. For a direct exchange rate, this equals to
      * <code>new ExchangeRate[]{this}</code>.
      */
-    public List<ExchangeRate> getExchangeRateChain() {
+    @Override
+	public List<ExchangeRate> getExchangeRateChain() {
         return this.chain;
     }
 
@@ -206,7 +211,8 @@ public final class DefaultExchangeRate implements ExchangeRate, Serializable, Co
      *
      * @return true, if the exchange rate is derived.
      */
-    public boolean isDerived() {
+    @Override
+	public boolean isDerived() {
         return this.chain.size() > 1;
     }
 
@@ -216,7 +222,7 @@ public final class DefaultExchangeRate implements ExchangeRate, Serializable, Co
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     @Override
-    public int compareTo(@SuppressWarnings("NullableProblems") ExchangeRate o) {
+    public int compareTo(ExchangeRate o) {
         Objects.requireNonNull(o);
         int compare = this.getBaseCurrency().getCurrencyCode().compareTo(o.getBaseCurrency().getCurrencyCode());
         if (compare == 0) {

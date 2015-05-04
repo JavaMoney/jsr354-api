@@ -5,9 +5,9 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE.
- * 
+ *
  * Specification: JSR-354 Money and Currency API ("Specification")
- * 
+ *
  * Copyright (c) 2012-2013, Credit Suisse All rights reserved.
  */
 package javax.money;
@@ -83,7 +83,8 @@ public class MonetaryAmountsTest {
      */
     @Test
     public void testGetAmountFactory_Query() {
-        MonetaryAmountFactory f = Monetary.getAmountFactory(MonetaryAmountFactoryQueryBuilder.of()
+        @SuppressWarnings("rawtypes")
+		MonetaryAmountFactory f = Monetary.getAmountFactory(MonetaryAmountFactoryQueryBuilder.of()
                 .setTargetType(DummyAmount.class).build());
         assertNotNull(f);
         assertEquals(f.getClass(), DummyAmountBuilder.class);

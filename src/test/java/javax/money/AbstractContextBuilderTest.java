@@ -18,14 +18,18 @@ import java.util.Set;
 
 import static org.testng.Assert.*;
 
+@SuppressWarnings("rawtypes")
 public class AbstractContextBuilderTest {
 
-    private AbstractContextBuilder<AbstractContextBuilder, AbstractContext> createBuilder() {
+
+	@SuppressWarnings("unchecked")
+	private AbstractContextBuilder<AbstractContextBuilder, AbstractContext> createBuilder() {
         //noinspection unchecked
         return new AbstractContextBuilder() {
             @Override
             public AbstractContext build() {
                 return new AbstractContext(this) {
+					private static final long serialVersionUID = -5720498720434069240L;
                 };
             }
         };
@@ -174,7 +178,6 @@ public class AbstractContextBuilderTest {
         assertEquals(ctx.get("myKey", Set.class), set);
     }
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Test
     public void testRemoveAttributes() throws Exception {
         AbstractContextBuilder b = createBuilder();
@@ -190,7 +193,6 @@ public class AbstractContextBuilderTest {
         assertEquals(ctx.getText("myKey"), null);
     }
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Test
     public void testToString() throws Exception {
         AbstractContextBuilder b = createBuilder();

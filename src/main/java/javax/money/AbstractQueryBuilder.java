@@ -21,6 +21,7 @@ import java.util.Objects;
  * <p>
  * Instances of this class are not thread-safe and not serializable.
  */
+@SuppressWarnings("rawtypes")
 public abstract class AbstractQueryBuilder<B extends javax.money.AbstractQueryBuilder, C extends AbstractQuery>
         extends AbstractContextBuilder<B, C> {
 

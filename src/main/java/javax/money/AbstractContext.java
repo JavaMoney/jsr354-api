@@ -44,7 +44,6 @@ public abstract class AbstractContext implements Serializable {
      *
      * @param builder the Builder.
      */
-	@SuppressWarnings("rawtypes")
 	protected AbstractContext(AbstractContextBuilder<?, ?> builder) {
         data.putAll(builder.data);
     }
@@ -135,7 +134,6 @@ public abstract class AbstractContext implements Serializable {
      * @param key the attribute's key, not null.
      * @return the value, or null.
      */
-    @SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
     public Boolean getBoolean(String key) {
         return get(key, Boolean.class);
     }

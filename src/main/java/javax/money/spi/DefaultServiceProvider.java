@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  */
 class DefaultServiceProvider implements ServiceProvider {
     /** List of services loaded, per class. */
-    private final ConcurrentHashMap<Class, List<Object>> servicesLoaded = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Class<?>, List<Object>> servicesLoaded = new ConcurrentHashMap<>();
 
     @Override
     public int getPriority() {

@@ -31,7 +31,9 @@ import java.util.Locale;
 @SuppressWarnings("unchecked")
 public final class CurrencyQuery extends AbstractQuery implements Serializable {
 
-    /**
+	private static final long serialVersionUID = -5117949582074719190L;
+
+	/**
      * Key for storing a countries to be queried.
      */
     static final String KEY_QUERY_COUNTRIES = "Query.countries";

@@ -21,7 +21,9 @@ import java.util.List;
  */
 public abstract class AbstractQuery extends AbstractContext {
 
-    /**
+	private static final long serialVersionUID = 5309190820845869327L;
+
+	/**
      * Key for storing the target providers to be queried
      */
     protected static final String KEY_QUERY_PROVIDERS = "Query.providers";
@@ -42,7 +44,7 @@ public abstract class AbstractQuery extends AbstractContext {
      *
      * @param builder the builder, not null.
      */
-    protected AbstractQuery(AbstractQueryBuilder builder) {
+    protected AbstractQuery(@SuppressWarnings("rawtypes") AbstractQueryBuilder builder) {
         super(builder);
     }
 

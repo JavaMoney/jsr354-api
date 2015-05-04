@@ -27,7 +27,9 @@ import java.io.Serializable;
  */
 public final class MonetaryAmountFactoryQuery extends AbstractQuery implements Serializable {
 
-    /**
+	private static final long serialVersionUID = -6961037049540444782L;
+
+	/**
      * Key name for the context.
      */
     private static final String KEY_PRECISION = "precision";

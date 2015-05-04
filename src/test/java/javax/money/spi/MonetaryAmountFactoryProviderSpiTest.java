@@ -52,7 +52,8 @@ public class MonetaryAmountFactoryProviderSpiTest {
         assertThat(result, sameInstance(monetaryContext));
     }
 
-    private static final class MonetaryAmountFactoryProviderSpiTestStub implements MonetaryAmountFactoryProviderSpi {
+    @SuppressWarnings("rawtypes")
+	private static final class MonetaryAmountFactoryProviderSpiTestStub implements MonetaryAmountFactoryProviderSpi {
 
         private final MonetaryContext monetaryContext;
 

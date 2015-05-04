@@ -187,7 +187,7 @@ public final class MonetaryConversions{
 	/**
 	 * Access an instance of {@link CurrencyConversion} using the
 	 * {@link ExchangeRateProviderSupplier}.
-	 * 
+	 *
 	 * @param provider
 	 *            the exchange rate provider.
 	 * @param providers
@@ -246,7 +246,6 @@ public final class MonetaryConversions{
      *
      * @return all supported provider ids, never {@code null}.
      */
-    @SuppressWarnings("ConstantConditions")
     public static Collection<String> getConversionProviderNames(){
         Collection<String> providers = Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(
                 () -> new MonetaryException(

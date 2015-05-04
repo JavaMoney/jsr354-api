@@ -25,7 +25,6 @@ public final class Bootstrap {
     /**
      * The ServiceProvider used.
      */
-    @SuppressWarnings("StaticNonFinalField")
     private static volatile ServiceProvider serviceProviderDelegate;
     /**
      * The shared lock instance user.
@@ -43,7 +42,6 @@ public final class Bootstrap {
      *
      * @return {@link ServiceProvider} to be used for loading the services.
      */
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
     private static ServiceProvider loadDefaultServiceProvider() {
         try {
             for (ServiceProvider sp : ServiceLoader.load(ServiceProvider.class)) {

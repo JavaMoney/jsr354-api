@@ -28,7 +28,10 @@ import java.io.Serializable;
  */
 public final class CurrencyContext extends AbstractContext implements Serializable{
 
-    /**
+	private static final long serialVersionUID = 8450310852172607016L;
+
+
+	/**
      * Constructor, used from the {@link javax.money.CurrencyContextBuilder}.
      *
      * @param builder the corresponding builder, not null.

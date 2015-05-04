@@ -26,7 +26,9 @@ package javax.money;
  */
 public final class RoundingQuery extends AbstractQuery implements CurrencySupplier {
 
-    /**
+	private static final long serialVersionUID = -9088736532066489061L;
+
+	/**
      * Attribute key used for the rounding name attribute.
      */
     static final String KEY_QUERY_ROUNDING_NAME = "Query.roundingName";
@@ -76,7 +78,8 @@ public final class RoundingQuery extends AbstractQuery implements CurrencySuppli
      *
      * @return the CurrencyUnit, or null.
      */
-    public CurrencyUnit getCurrency() {
+    @Override
+	public CurrencyUnit getCurrency() {
         return get(CurrencyUnit.class);
     }
 

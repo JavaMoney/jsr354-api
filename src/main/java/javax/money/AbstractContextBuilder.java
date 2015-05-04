@@ -22,7 +22,7 @@ import java.util.TreeMap;
  * <p>
  * Instances of this class are not thread-safe and not serializable.
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C extends AbstractContext>{
 
     /**
@@ -190,35 +190,6 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
         set(AbstractContext.KEY_PROVIDER, provider);
         return (B) this;
     }
-//
-//    /**
-//     * Set the target timestamp in UTC millis. This allows to select historical roundings that were valid in the
-//     * past. Its implementation specific, to what extend historical roundings are available. By default if this
-//     * property is not set always current {@link  javax.money.MonetaryRounding} instances are provided.
-//     *
-//     * @param timestamp the target timestamp
-//     * @return this instance for chaining
-//     * @see #setTimestamp(java.time.temporal.TemporalAccessor)
-//     */
-//    public B setTimestampMillis(long timestamp){
-//        set(AbstractContext.KEY_TIMESTAMP, timestamp);
-//        return (B) this;
-//    }
-//
-//    /**
-//     * Set the target timestamp as {@link java.time.temporal.TemporalAccessor}. This allows to select historical
-//     * roundings that were valid in the past. Its implementation specific, to what extend historical roundings
-//     * are available. By default if this property is not set always current {@link  javax.money.MonetaryRounding}
-//     * instances are provided.
-//     *
-//     * @param timestamp the target timestamp
-//     * @return this instance for chaining
-//     * @see #setTimestampMillis(long)
-//     */
-//	public B setTimestamp(LocalDateTime timestamp) {
-//        set(AbstractContext.KEY_TIMESTAMP, Objects.requireNonNull(timestamp));
-//        return (B) this;
-//    }
 
     /**
      * Removes an entry of a certain keys. This can be useful, when a context is initialized with another
@@ -242,12 +213,6 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return a new {@link AbstractContext}. never {@code null}.
      */
     public abstract C build();
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see Object#toString()
-     */
 
     @Override
     public String toString(){

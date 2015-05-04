@@ -11,6 +11,7 @@ package javax.money.spi;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryAmountFactory;
 import javax.money.MonetaryAmountFactoryQuery;
+
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -93,7 +94,8 @@ public interface MonetaryAmountsSingletonQuerySpi {
      * @param query the factory query, not null.
      * @return the type found, or null.
      */
-    default MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query) {
+    @SuppressWarnings("rawtypes")
+	default MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query) {
         Collection<MonetaryAmountFactory<?>> factories = getAmountFactories(query);
         if (factories.isEmpty()) {
             return null;

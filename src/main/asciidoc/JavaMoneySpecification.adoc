@@ -351,7 +351,7 @@ The JSR defines 4 packages:
 MonetaryQuery, MonetaryRounding+, and the singleton accessor +Monetary+.
 It is discussed in section <<CoreAPI>>. The meta-data context and query features are discussed in <<MetadataModeling>>.
 
-+javax.money.conversion+:: contains the conversion artifacts +ExchangeRate, ExchangeRateProvider, CurrencyConversion+
++javax.money.convert+:: contains the conversion artifacts +ExchangeRate, ExchangeRateProvider, CurrencyConversion+
 and the according +MonetaryConversions+ accessor singleton. It is discussed in section <<CurrencyConversion>>.
 
 +javax.money.format+:: contains the formatting artifacts +MonetaryAmountFormat, AmountFormatContext+ and the according
@@ -2634,8 +2634,8 @@ The classes extending this class hereby are thread-safe and immutable:
 * +javax.money.CurrencyContext+
 * +javax.money.MonetaryContext+
 * +javax.money.RoundingContext+
-* +javax.money.conversion.ProviderContext+
-* +javax.money.conversion.ConversionContext+
+* +javax.money.convert.ProviderContext+
+* +javax.money.convert.ConversionContext+
 * +javax.money.format.AmountFormatContext+
 
 Creation of context instances is encapsulated using corresponding builder instances:
@@ -2643,8 +2643,8 @@ Creation of context instances is encapsulated using corresponding builder instan
 * +javax.money.CurrencyContextBuilder+
 * +javax.money.MonetaryContextBuilder+
 * +javax.money.RoundingContextBuilder+
-* +javax.money.conversion.ProviderContextBuilder+
-* +javax.money.conversion.ConversionContextBuilder+
+* +javax.money.convert.ProviderContextBuilder+
+* +javax.money.convert.ConversionContextBuilder+
 * +javax.money.format.AmountFormatContextBuilder+
 
 The builders hereby extend +AbstractContestBuilder+, discussed in the following section.

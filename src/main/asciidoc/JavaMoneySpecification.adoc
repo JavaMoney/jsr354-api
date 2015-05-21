@@ -3,8 +3,8 @@
 :title: JSR 354 (Money & Currency) - Specification
 :revnumber: 1.0
 :revremark: Final
-:revdate: April 2015
-:longversion: 1.0 (Final) April 2015
+:revdate: May 2015
+:longversion: 1.0 (Final) May 2015
 :authorinitials: ATR
 :author: Anatole Tresch, Credit Suisse
 :email: <anatole.tresch@credit-suisse.com>
@@ -31,7 +31,7 @@ image::https://raw.githubusercontent.com/JavaMoney/jsr354-api/master/src/main/as
 Specification: JSR-354 Money and Currency API ("Specification")
 Version:       1.0
 Status:        Final
-Release:       March 2015
+Release:       May 2015
 Copyright:     2012-2015
                Credit Suisse AG
                P.O.Box

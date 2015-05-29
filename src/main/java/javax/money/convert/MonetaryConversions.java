@@ -5,7 +5,7 @@
  * DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE
  * AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE"
  * BUTTON AT THE BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency
- * API ("Specification") Copyright (c) 2012-2013, Credit Suisse All rights
+ * API ("Specification") Copyright (c) 2012-2015, Credit Suisse All rights
  * reserved.
  */
 package javax.money.convert;
@@ -35,7 +35,7 @@ import javax.money.spi.MonetaryConversionsSingletonSpi;
  * <p>
  * This class is thread safe.
  * <p>
- * This class is designed to support also contextual behaviour, e.g. in Java EE
+ * This class is designed to support also contextual behavior, e.g. in Java EE
  * containers each application may provide its own {@link ExchangeRateProvider}
  * instances, e.g. by registering them as CDI beans. An EE container can
  * register an according {@link javax.money.spi.MonetaryConversionsSingletonSpi} that manages the

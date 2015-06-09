@@ -1166,7 +1166,7 @@ roundings, also non standard variants with arbitrary rules and constraints are q
 This JSR provides several roundings accessible from the +javax.money.Monetary+ singleton based on:
 
 . a target +CurrencyUnit+. By default the rounding is based on the currency’s default fraction units
-  (see +CurrencyUnit.getDefaultFractionUnits()+).
+  (see +CurrencyUnit.getDefaultFractionDigits()+).
 . an explicit (unique) _rounding id_ that must be known (and documented) by a +RoundingProviderSpi+ implementation.
 . each implementation should at least enable accessing mathematical rounding, supporting
 .. the maximal _precision_ (+int+)

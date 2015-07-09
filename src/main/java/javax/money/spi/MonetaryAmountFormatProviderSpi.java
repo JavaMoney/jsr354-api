@@ -4,7 +4,7 @@
  * AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF
  * THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT, SELECT THE "DECLINE" BUTTON AT THE
  * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
- * (c) 2012-2013, Credit Suisse All rights reserved.
+ * (c) 2012-2015, Credit Suisse All rights reserved.
  */
 package javax.money.spi;
 
@@ -29,15 +29,15 @@ public interface MonetaryAmountFormatProviderSpi {
         return getClass().getSimpleName();
     }
 
-	/**
-	 * Create a new {@link MonetaryAmountFormat} for the given input.
-	 * 
-	 * @param formatQuery
-	 *            The {@link javax.money.format.AmountFormatContext} to be used.
-	 * @return An according {@link MonetaryAmountFormat} instance, or {@code null}, which delegates
-	 *         the request to subsequent {@link MonetaryAmountFormatProviderSpi} instances
-	 *         registered.
-	 */
+    /**
+     * Create a new {@link MonetaryAmountFormat} for the given input.
+     * 
+     * @param formatQuery
+     *            The {@link javax.money.format.AmountFormatContext} to be used.
+     * @return An according {@link MonetaryAmountFormat} instance, or {@code null}, which delegates
+     *         the request to subsequent {@link MonetaryAmountFormatProviderSpi} instances
+     *         registered.
+     */
     Collection<MonetaryAmountFormat> getAmountFormats(AmountFormatQuery formatQuery);
 
     /**
@@ -48,8 +48,7 @@ public interface MonetaryAmountFormatProviderSpi {
 
     /**
      * Gets a list with available format names for this format provider.
-     * @return list of available styles, never null.
+     * @return list of available formats, never null.
      */
     Set<String> getAvailableFormatNames();
-
 }

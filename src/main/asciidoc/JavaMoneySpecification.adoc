@@ -3192,7 +3192,7 @@ MonetaryAmount inEUR = inCHF.with(conv);
 Also we can define the providers to be used for currency conversion by passing the provider names explicitly:
 [source,java]
 -------------------------------------------------------------------------------
-CurrencyConversion conv = MonetaryConversions.getConversion("EUR", "EZB", "IMF");
+CurrencyConversion conv = MonetaryConversions.getConversion("EUR", "ECB", "IMF");
 -------------------------------------------------------------------------------
 
 To cover also more complex usage scenarios we can also pass a +ConversionQuery+ with additional parameters for
@@ -3202,7 +3202,7 @@ conversion, e.g.:
 -------------------------------------------------------------------
 MonetaryAmount inCHF =...;
 CurrencyConversion conv = MonetaryConversions.getConversion(ConversionQueryBuilder.of()
-        .setProviders("CS", "EZB", "IMF")
+        .setProviders("CS", "ECB", "IMF")
         .setTermCurrency("EUR")
         .set(MonetaryAmount.class, inCHF, MonetaryAmount.class)
         .set(LocalDate.of(2008, 1, 1))

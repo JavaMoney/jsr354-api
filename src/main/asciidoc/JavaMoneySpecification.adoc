@@ -375,7 +375,7 @@ javamoney-parent:: is a root “POM” project for all modules under +org.javamo
 
 The repository also contains additional modules such as
 
-javamoney-library:: contains a financial library (JavaMoney) adding comprehensive support for several extended
+javamoney-lib:: contains a set of financial libraries (JavaMoney) adding comprehensive support for extended
   functionality, built on top of this JSR, but not part of the JSR.
 javamoney-examples:: finally contains the examples and demos, and also is not part of this JSR.
 

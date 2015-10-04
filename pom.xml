@@ -15,8 +15,7 @@
 	<artifactId>money-api</artifactId>
 	<packaging>bundle</packaging>
 
-	<version>1.0.1-SNAPSHOT</version>
-
+	<version>1.1-SNAPSHOT</version>
 	<name>JSR 354 (Money and Currency API)</name>
 	<url>http://java.net/projects/javamoney</url>
 	<inceptionYear>2012</inceptionYear>
@@ -948,5 +947,4 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
 </project>

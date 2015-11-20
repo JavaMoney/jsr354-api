@@ -15,5 +15,6 @@ http://javamoney.java.net
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/javax.money/money-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/javax.money/money-api)
 [![Build Status](https://api.travis-ci.org/JavaMoney/jsr354-api.png?branch=master)](https://travis-ci.org/JavaMoney/jsr354-api)
 [![Coverage Status](https://coveralls.io/repos/JavaMoney/jsr354-api/badge.svg?branch=master)](https://coveralls.io/r/JavaMoney/jsr354-api?branch=master)
+[![Reference Status](https://www.versioneye.com/java/javax.money:money-api/reference_badge.svg?style=flat)](https://www.versioneye.com/java/javax.money:money-api/references)
 
 [![Built with Maven](http://maven.apache.org/images/logos/maven-feather.png)](http://maven.org/)

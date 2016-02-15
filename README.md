@@ -12,6 +12,13 @@ This is the API module of JSR 354 licenced under
 See also:
 http://javamoney.java.net
 
+Release Notes
+-------------
+
+- *1.0*    API as defined by JSR 354 Spec.
+- *1.0.1*  API as defined by JSR 354 Spec (Fix: building Java 7 API with Java 7)
+
+
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/javax.money/money-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/javax.money/money-api)
 [![Build Status](https://api.travis-ci.org/JavaMoney/jsr354-api.png?branch=master)](https://travis-ci.org/JavaMoney/jsr354-api)
 [![Coverage Status](https://coveralls.io/repos/JavaMoney/jsr354-api/badge.svg?branch=master)](https://coveralls.io/r/JavaMoney/jsr354-api?branch=master)

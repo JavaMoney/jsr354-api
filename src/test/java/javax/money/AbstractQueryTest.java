@@ -10,7 +10,14 @@ package javax.money;
 
 import org.testng.annotations.Test;
 
+import javax.money.convert.CurrencyConversion;
+import javax.money.convert.ExchangeRate;
+import javax.money.convert.ExchangeRateProvider;
+import javax.money.convert.MonetaryConversions;
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 import static org.testng.Assert.*;
 
@@ -19,6 +26,7 @@ import static org.testng.Assert.*;
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class AbstractQueryTest {
+
 
 	private AbstractQueryBuilder<AbstractQueryBuilder, AbstractQuery> createBuilder() {
         return new AbstractQueryBuilder() {

@@ -8,6 +8,8 @@
  */
 package javax.money;
 
+import java.io.Serializable;
+
 /**
  * Interface defining a monetary amount. The effective format representation of an amount may vary
  * depending on the implementation used. JSR 354 explicitly supports different types of monetary
@@ -93,7 +95,7 @@ package javax.money;
  * @version 0.8.2
  * @see #with(MonetaryOperator)
  */
-public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Comparable<MonetaryAmount>{
+public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Comparable<MonetaryAmount>, Serializable{
 
     /**
      * Returns the {@link MonetaryContext} of this {@code MonetaryAmount}. The

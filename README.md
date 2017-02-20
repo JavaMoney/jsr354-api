@@ -1,6 +1,8 @@
 JSR 354: Money and Currency API
 ===============================
 
+[![Join the chat at https://gitter.im/JavaMoney/jsr354-api](https://badges.gitter.im/JavaMoney/jsr354-api.svg)](https://gitter.im/JavaMoney/jsr354-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 JSR 354 provides an API for representing, transporting, and performing comprehensive calculations with Money and Currency. 
 See the home page for more details:
 http://jcp.org/en/jsr/detail?id=354

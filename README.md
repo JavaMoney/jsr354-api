@@ -1,7 +1,11 @@
 JSR 354: Money and Currency API
 ===============================
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bfea0539add5419896d4df825bafbec6)](https://www.codacy.com/app/keilw/jsr354-api?utm_source=github.com&utm_medium=referral&utm_content=JavaMoney/jsr354-api&utm_campaign=badger)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/javax.money/money-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/javax.money/money-api)
+[![Build Status](https://api.travis-ci.org/JavaMoney/jsr354-api.png?branch=master)](https://travis-ci.org/JavaMoney/jsr354-api)
+[![Coverage Status](https://coveralls.io/repos/JavaMoney/jsr354-api/badge.svg?branch=master)](https://coveralls.io/r/JavaMoney/jsr354-api?branch=master)
+[![Reference Status](https://www.versioneye.com/java/javax.money:money-api/reference_badge.svg?style=flat)](https://www.versioneye.com/java/javax.money:money-api/references)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bfea0539add5419896d4df825bafbec6)](https://www.codacy.com/app/JavaMoney/jsr354-api?utm_source=github.com&utm_medium=referral&utm_content=JavaMoney/jsr354-api&utm_campaign=badger)
 [![Join the chat at https://gitter.im/JavaMoney/jsr354-api](https://badges.gitter.im/JavaMoney/jsr354-api.svg)](https://gitter.im/JavaMoney/jsr354-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 JSR 354 provides an API for representing, transporting, and performing comprehensive calculations with Money and Currency. 
@@ -20,11 +24,5 @@ Release Notes
 
 - *1.0*    API as defined by JSR 354 Spec.
 - *1.0.1*  API as defined by JSR 354 Spec (Fix: building Java 7 API with Java 7)
-
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/javax.money/money-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/javax.money/money-api)
-[![Build Status](https://api.travis-ci.org/JavaMoney/jsr354-api.png?branch=master)](https://travis-ci.org/JavaMoney/jsr354-api)
-[![Coverage Status](https://coveralls.io/repos/JavaMoney/jsr354-api/badge.svg?branch=master)](https://coveralls.io/r/JavaMoney/jsr354-api?branch=master)
-[![Reference Status](https://www.versioneye.com/java/javax.money:money-api/reference_badge.svg?style=flat)](https://www.versioneye.com/java/javax.money:money-api/references)
 
 [![Built with Maven](http://maven.apache.org/images/logos/maven-feather.png)](http://maven.org/)

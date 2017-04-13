@@ -15,7 +15,7 @@
 	<artifactId>money-api</artifactId>
 	<packaging>bundle</packaging>
 
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<name>JSR 354 (Money and Currency API)</name>
 	<url>http://java.net/projects/javamoney</url>
 	<inceptionYear>2012</inceptionYear>
@@ -34,6 +34,7 @@
 		<basedir>.</basedir>
 		<!-- Dependency versions -->
 		<testng.version>6.8.5</testng.version>
+        <mockito.version>1.10.19</mockito.version>
 	</properties>
 
 	<organization>
@@ -399,6 +400,12 @@
 				<version>${testng.version}</version>
 				<scope>test</scope>
 			</dependency>
+            <dependency>
+              <groupId>org.mockito</groupId>
+              <artifactId>mockito-all</artifactId>
+              <version>${mockito.version}</version>
+              <scope>test</scope>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -408,6 +415,11 @@
 			<artifactId>testng</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
 	<build>

@@ -56,8 +56,9 @@ public final class MonetaryConversions{
      * The SPI currently active, use {@link ServiceLoader} to register an
      * alternate implementation.
      */
-    private static final MonetaryConversionsSingletonSpi MONETARY_CONVERSION_SPI = Optional.of(
-            Bootstrap.getService(MonetaryConversionsSingletonSpi.class)).get();
+    private static final MonetaryConversionsSingletonSpi getMonetaryConversionsSpi() {
+        return Optional.of(Bootstrap.getService(MonetaryConversionsSingletonSpi.class)).get();
+    }
 
     /**
      * Private singleton constructor.
@@ -78,11 +79,11 @@ public final class MonetaryConversions{
         Objects.requireNonNull(providers);
         Objects.requireNonNull(termCurrency);
         if(providers.length == 0){
-            return MONETARY_CONVERSION_SPI.getConversion(
+            return getMonetaryConversionsSpi().getConversion(
                     ConversionQueryBuilder.of().setTermCurrency(termCurrency).setProviderNames(getDefaultConversionProviderChain())
                             .build());
         }
-        return MONETARY_CONVERSION_SPI.getConversion(
+        return getMonetaryConversionsSpi().getConversion(
                 ConversionQueryBuilder.of().setTermCurrency(termCurrency).setProviderNames(providers).build());
     }
 
@@ -110,7 +111,7 @@ public final class MonetaryConversions{
      * @throws IllegalArgumentException if the query defines {@link ExchangeRateProvider}s that are not available.
      */
     public static CurrencyConversion getConversion(ConversionQuery conversionQuery){
-        return Optional.ofNullable(MONETARY_CONVERSION_SPI)
+        return Optional.ofNullable(getMonetaryConversionsSpi())
                 .orElseThrow(() -> new MonetaryException("No MonetaryConversionsSingletonSpi " +
                                                                  "loaded, " +
                                                                  "query functionality is not " +
@@ -124,7 +125,7 @@ public final class MonetaryConversions{
      * @return true, if a conversion is accessible from {@link #getConversion(ConversionQuery)}.
      */
     public static boolean isConversionAvailable(ConversionQuery conversionQuery){
-        return Optional.ofNullable(MONETARY_CONVERSION_SPI)
+        return Optional.ofNullable(getMonetaryConversionsSpi())
                 .orElseThrow(() -> new MonetaryException("No MonetaryConversionsSingletonSpi " +
                                                                  "loaded, " +
                                                                  "query functionality is not " +
@@ -140,7 +141,7 @@ public final class MonetaryConversions{
      * @return true, if a conversion is accessible from {@link #getConversion(String, String...)}.
      */
     public static boolean isConversionAvailable(String currencyCode, String... providers){
-        return Optional.ofNullable(MONETARY_CONVERSION_SPI)
+        return Optional.ofNullable(getMonetaryConversionsSpi())
                 .orElseThrow(() -> new MonetaryException("No MonetaryConversionsSingletonSpi " +
                                                                  "loaded, " +
                                                                  "query functionality is not " +
@@ -156,7 +157,7 @@ public final class MonetaryConversions{
      * @return true, if a conversion is accessible from {@link #getConversion(String, String...)}.
      */
     public static boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers){
-        return Optional.ofNullable(MONETARY_CONVERSION_SPI)
+        return Optional.ofNullable(getMonetaryConversionsSpi())
                 .orElseThrow(() -> new MonetaryException("No MonetaryConversionsSingletonSpi " +
                                                                  "loaded, " +
                                                                  "query functionality is not " +
@@ -175,10 +176,10 @@ public final class MonetaryConversions{
     public static ExchangeRateProvider getExchangeRateProvider(String... providers){
         if(providers.length == 0){
             List<String> defaultProviderChain = getDefaultConversionProviderChain();
-            return MONETARY_CONVERSION_SPI.getExchangeRateProvider(ConversionQueryBuilder.of().setProviderNames(
+            return getMonetaryConversionsSpi().getExchangeRateProvider(ConversionQueryBuilder.of().setProviderNames(
                     defaultProviderChain.toArray(new String[defaultProviderChain.size()])).build());
         }
-        ExchangeRateProvider provider = MONETARY_CONVERSION_SPI
+        ExchangeRateProvider provider = getMonetaryConversionsSpi()
                 .getExchangeRateProvider(ConversionQueryBuilder.of().setProviderNames(providers).build());
         return Optional.ofNullable(provider)
                 .orElseThrow(() -> new MonetaryException("No such rate provider: " + Arrays.toString(providers)));
@@ -218,7 +219,7 @@ public final class MonetaryConversions{
      * @throws IllegalArgumentException if no such {@link ExchangeRateProvider} is available.
      */
     public static ExchangeRateProvider getExchangeRateProvider(ConversionQuery conversionQuery){
-        return Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(() -> new MonetaryException(
+        return Optional.ofNullable(getMonetaryConversionsSpi()).orElseThrow(() -> new MonetaryException(
                 "No MonetaryConversionsSingletonSpi loaded, query functionality is not available."))
                 .getExchangeRateProvider(conversionQuery);
     }
@@ -230,7 +231,7 @@ public final class MonetaryConversions{
      * @return true, if a rate provider is accessible from {@link #getExchangeRateProvider(ConversionQuery)}}.
      */
     public static boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery){
-        return Optional.ofNullable(MONETARY_CONVERSION_SPI)
+        return Optional.ofNullable(getMonetaryConversionsSpi())
                 .orElseThrow(() -> new MonetaryException("No MonetaryConversionsSingletonSpi " +
                                                                  "loaded, " +
                                                                  "query functionality is not " +
@@ -247,14 +248,14 @@ public final class MonetaryConversions{
      * @return all supported provider ids, never {@code null}.
      */
     public static Collection<String> getConversionProviderNames(){
-        Collection<String> providers = Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(
+        Collection<String> providers = Optional.ofNullable(getMonetaryConversionsSpi()).orElseThrow(
                 () -> new MonetaryException(
                         "No MonetaryConversionsSingletonSpi loaded, query functionality is not available."))
                 .getProviderNames();
         if(Objects.isNull(providers)){
             Logger.getLogger(MonetaryConversions.class.getName()).warning(
                     "No supported rate/conversion providers returned by SPI: " +
-                            MONETARY_CONVERSION_SPI.getClass().getName());
+                            getMonetaryConversionsSpi().getClass().getName());
             return Collections.emptySet();
         }
         return providers;
@@ -266,12 +267,12 @@ public final class MonetaryConversions{
      * @return the default provider, never {@code null}.
      */
     public static List<String> getDefaultConversionProviderChain(){
-        List<String> defaultChain = Optional.ofNullable(MONETARY_CONVERSION_SPI).orElseThrow(
+        List<String> defaultChain = Optional.ofNullable(getMonetaryConversionsSpi()).orElseThrow(
                 () -> new MonetaryException(
                         "No MonetaryConversionsSingletonSpi loaded, query functionality is not available."))
                 .getDefaultProviderChain();
         Objects.requireNonNull(defaultChain, "No default provider chain provided by SPI: " +
-                MONETARY_CONVERSION_SPI.getClass().getName());
+                getMonetaryConversionsSpi().getClass().getName());
         return defaultChain;
     }
 

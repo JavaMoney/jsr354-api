@@ -55,7 +55,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
     /**
      * Private constructor.
      */
-    private TestCurrency(String code, int numCode, int fractionDigits) {
+    TestCurrency(String code, int numCode, int fractionDigits) {
         this.currencyCode = code;
         this.numericCode = numCode;
         this.defaultFractionDigits = fractionDigits;

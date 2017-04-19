@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Werner Keil
  * @version 0.5
  */
-public final class TestCurrency implements CurrencyUnit, Serializable, Comparable<CurrencyUnit> {
+public final class TestCurrency implements CurrencyUnit, Comparable<CurrencyUnit> {
 
     private static final CurrencyContext CONTEXT = CurrencyContextBuilder.of("test-only").build();
 
@@ -209,7 +209,7 @@ public final class TestCurrency implements CurrencyUnit, Serializable, Comparabl
      * @author Anatole Tresch
      * @author Werner Keil
      */
-    private final static class JDKCurrencyAdapter implements CurrencyUnit, Serializable, Comparable<CurrencyUnit> {
+    private final static class JDKCurrencyAdapter implements CurrencyUnit, Comparable<CurrencyUnit> {
 
         private static final CurrencyContext JDK_CONTEXT = CurrencyContextBuilder.of(Currency.class.getName()).build();
 

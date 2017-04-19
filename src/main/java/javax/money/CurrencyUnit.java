@@ -10,6 +10,8 @@
  */
 package javax.money;
 
+import java.io.Serializable;
+
 /**
  * A unit of currency.
  * <p>
@@ -38,7 +40,7 @@ package javax.money;
  * 
  * @see <a href="https://en.wikipedia.org/wiki/Currency">Wikipedia: Currency</a>
  */
-public interface CurrencyUnit extends Comparable<CurrencyUnit>{
+public interface CurrencyUnit extends Comparable<CurrencyUnit>, Serializable {
 
    /**
     * Gets the unique currency code, the effective code depends on the

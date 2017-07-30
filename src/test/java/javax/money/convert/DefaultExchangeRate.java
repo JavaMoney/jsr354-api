@@ -14,6 +14,7 @@ import javax.money.CurrencyUnit;
 import javax.money.NumberValue;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -252,7 +253,23 @@ public final class DefaultExchangeRate implements ExchangeRate, Serializable, Co
      */
     @Override
     public int hashCode() {
-        return Objects.hash(baseCurrency, conversionContext, factor, termCurrency, chain);
+        // Numerically equal factors should produce the same hash code, so hash a normalized
+        // version of the factor rather than the NumberValue object.
+        BigDecimal normalizedFactor = factor.numberValue(BigDecimal.class).stripTrailingZeros();
+
+        // The exchange rate chain includes a reference to "this" if the caller doesn't explicitly
+        // set a chain in the builder, so we can't naively hash the chain or we'll get infinite
+        // recursion.
+        int chainHash = 0;
+        for (ExchangeRate chainedRate : chain) {
+            if (chainedRate == this) {
+                // Use a constant to represent the presence of this object in the chain.
+                chainHash = Objects.hash(chainHash, "this");
+            } else {
+                chainHash = Objects.hash(chainHash, chainedRate);
+            }
+        }
+        return Objects.hash(baseCurrency, conversionContext, normalizedFactor, termCurrency, chainHash);
     }
 
     /*
@@ -265,13 +282,11 @@ public final class DefaultExchangeRate implements ExchangeRate, Serializable, Co
         if (obj == this) {
             return true;
         }
-        if (obj instanceof DefaultExchangeRate) {
-            DefaultExchangeRate other = (DefaultExchangeRate) obj;
-            return Objects.equals(baseCurrency, other.baseCurrency) &&
-                    Objects.equals(conversionContext, other.conversionContext) &&
-                    Objects.equals(factor, other.factor) && Objects.equals(termCurrency, other.termCurrency);
-        }
-        return false;
+        DefaultExchangeRate other = (DefaultExchangeRate) obj;
+        return Objects.equals(baseCurrency, other.baseCurrency) &&
+                Objects.equals(conversionContext, other.conversionContext) &&
+                factor.compareTo(other.factor) == 0 &&
+                Objects.equals(termCurrency, other.termCurrency);
     }
 
     /**

@@ -27,7 +27,7 @@ public interface ServiceProvider {
      *
      * @return the provider's priority (default is 0).
      */
-    public int getPriority();
+    int getPriority();
 
     /**
      * Access a list of services, given its type. The bootstrap mechanism should

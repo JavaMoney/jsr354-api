@@ -8,10 +8,7 @@
  */
 package javax.money.spi;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -44,6 +41,7 @@ public final class Bootstrap {
      */
     private static ServiceProvider loadDefaultServiceProvider() {
         try {
+            //noinspection LoopStatementThatDoesntLoop
             for (ServiceProvider sp : ServiceLoader.load(ServiceProvider.class)) {
                 return sp;
             }
@@ -115,7 +113,7 @@ public final class Bootstrap {
         List<T> services = getServiceProvider().getServices(serviceType);
 		return services
 				.stream()
-                .sorted((o1, o2) -> o1.getClass().getSimpleName().compareTo(o2.getClass().getSimpleName()))
+                .sorted(Comparator.comparing(o -> o.getClass().getSimpleName()))
                 .findFirst()
                 .orElse(null);
     }

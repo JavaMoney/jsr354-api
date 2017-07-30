@@ -41,7 +41,7 @@ public final class Monetary {
     /**
      * The used {@link javax.money.spi.MonetaryCurrenciesSingletonSpi} instance.
      */
-    private static final MonetaryCurrenciesSingletonSpi MONETARY_CURRENCIES_SINGLETON_SPI() {
+    private static MonetaryCurrenciesSingletonSpi MONETARY_CURRENCIES_SINGLETON_SPI() {
         try {
             return Optional.ofNullable(Bootstrap
                     .getService(MonetaryCurrenciesSingletonSpi.class)).orElseGet(
@@ -56,7 +56,7 @@ public final class Monetary {
     /**
      * The used {@link javax.money.spi.MonetaryAmountsSingletonSpi} instance.
      */
-    private static final MonetaryAmountsSingletonSpi MONETARY_AMOUNTS_SINGLETON_SPI() {
+    private static MonetaryAmountsSingletonSpi monetaryAmountsSingletonSpi() {
         try {
             return Bootstrap.getService(MonetaryAmountsSingletonSpi.class);
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public final class Monetary {
     /**
      * The used {@link javax.money.spi.MonetaryAmountsSingletonSpi} instance.
      */
-    private static final MonetaryAmountsSingletonQuerySpi MONETARY_AMOUNTS_SINGLETON_QUERY_SPI() {
+    private static MonetaryAmountsSingletonQuerySpi MONETARY_AMOUNTS_SINGLETON_QUERY_SPI() {
         try {
             return Bootstrap.getService(MonetaryAmountsSingletonQuerySpi.class);
         } catch (Exception e) {
@@ -84,7 +84,7 @@ public final class Monetary {
     /**
      * The used {@link javax.money.spi.MonetaryCurrenciesSingletonSpi} instance.
      */
-    private static final MonetaryRoundingsSingletonSpi MONETARY_ROUNDINGS_SINGLETON_SPI() {
+    private static MonetaryRoundingsSingletonSpi MONETARY_ROUNDINGS_SINGLETON_SPI() {
         try {
             return Optional.ofNullable(Bootstrap
                     .getService(MonetaryRoundingsSingletonSpi.class))
@@ -275,10 +275,10 @@ public final class Monetary {
      *                           implementation class is registered.
      */
     public static <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType) {
-        Optional.ofNullable(MONETARY_AMOUNTS_SINGLETON_SPI())
+        Optional.ofNullable(monetaryAmountsSingletonSpi())
                 .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."));
 
-        MonetaryAmountFactory<T> factory = MONETARY_AMOUNTS_SINGLETON_SPI().getAmountFactory(amountType);
+        MonetaryAmountFactory<T> factory = monetaryAmountsSingletonSpi().getAmountFactory(amountType);
         return Optional.ofNullable(factory).orElseThrow(
                 () -> new MonetaryException("No AmountFactory available for type: " + amountType.getName()));
     }
@@ -293,7 +293,7 @@ public final class Monetary {
      *                           implementation class is registered.
      */
     public static MonetaryAmountFactory<?> getDefaultAmountFactory() {
-        return Optional.ofNullable(MONETARY_AMOUNTS_SINGLETON_SPI())
+        return Optional.ofNullable(monetaryAmountsSingletonSpi())
                 .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."))
                 .getDefaultAmountFactory();
     }
@@ -306,7 +306,7 @@ public final class Monetary {
      * corresponding {@link MonetaryAmountFactory} instances provided, never {@code null}
      */
     public static Collection<MonetaryAmountFactory<?>> getAmountFactories() {
-        return Optional.ofNullable(MONETARY_AMOUNTS_SINGLETON_SPI())
+        return Optional.ofNullable(monetaryAmountsSingletonSpi())
                 .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."))
                 .getAmountFactories();
     }
@@ -319,7 +319,7 @@ public final class Monetary {
      * corresponding {@link MonetaryAmountFactory} instances provided, never {@code null}
      */
     public static Collection<Class<? extends MonetaryAmount>> getAmountTypes() {
-        return Optional.ofNullable(MONETARY_AMOUNTS_SINGLETON_SPI())
+        return Optional.ofNullable(monetaryAmountsSingletonSpi())
                 .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded.")).getAmountTypes();
     }
 
@@ -330,7 +330,7 @@ public final class Monetary {
      * @return all current default {@link MonetaryAmount} implementation class, never {@code null}
      */
     public static Class<? extends MonetaryAmount> getDefaultAmountType() {
-        return Optional.ofNullable(MONETARY_AMOUNTS_SINGLETON_SPI())
+        return Optional.ofNullable(monetaryAmountsSingletonSpi())
                 .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."))
                 .getDefaultAmountType();
     }

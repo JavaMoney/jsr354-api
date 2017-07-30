@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  */
 public final class MonetaryFormats {
 
-    private static final MonetaryFormatsSingletonSpi getMonetaryFormatsSpi() {
+    private static MonetaryFormatsSingletonSpi getMonetaryFormatsSpi() {
         return loadMonetaryFormatsSingletonSpi();
     }
 

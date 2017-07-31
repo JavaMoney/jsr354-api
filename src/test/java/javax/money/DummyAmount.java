@@ -144,8 +144,8 @@ public final class DummyAmount implements MonetaryAmount {
             }
 
             @Override
-            public Class<?> getNumberType() {
-                return Void.class;
+            public Class<? extends Number> getNumberType() {
+                return Number.class;
             }
         };
     }

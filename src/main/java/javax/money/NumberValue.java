@@ -39,7 +39,7 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
      *
      * @return the numeric implementation type, not {@code null}.
      */
-    public abstract Class<?> getNumberType();
+    public abstract Class<? extends Number> getNumberType();
 
     /**
      * Returns the <i>precision</i> of this {@code MonetaryAmount}. (The precision is the number of

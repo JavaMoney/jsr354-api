@@ -17,7 +17,7 @@ This is the API module of JSR 354 licenced under
 - the JSR Spec Licence for Implementation (see *IMPLEMENTATION-LICENCE.txt)
 
 See also:
-http://javamoney.java.net
+http://javamoney.github.io/
 
 Release Notes
 -------------

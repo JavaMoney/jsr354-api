@@ -1,0 +1,28 @@
+-buildpath: \
+	osgi.annotation; version=6.0.0,\
+	osgi.core; version=6.0,\
+	osgi.cmpn; version=6.0
+
+-testpath: \
+	${junit}
+
+javac.source: 1.8
+javac.target: 1.8
+
+Automatic-Module-Name: javax.money
+Bundle-Version: ${version}.${tstamp}
+Bundle-Name: JavaMoney API
+Bundle-SymbolicName: javax.money
+Bundle-Description: JavaMoney - API
+Bundle-Category: Implementation
+Bundle-Copyright: (C) Credit Suisse
+Bundle-License: JSR 354 Spec Evaluation/Implementation License
+Bundle-Vendor: Credit Suisse
+Bundle-ContactAddress: atsticks@gmail.com
+Bundle-DocURL: http://javamoney.org
+Export-Package: \
+	javax.money,\
+    javax.money.spi,\
+    javax.money.convert,\
+    javax.money.format
+

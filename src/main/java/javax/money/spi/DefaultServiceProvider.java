@@ -8,10 +8,7 @@
  */
 package javax.money.spi;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,6 +62,7 @@ class DefaultServiceProvider implements ServiceProvider {
             for (T t : ServiceLoader.load(serviceType)) {
                 services.add(t);
             }
+            services.sort(Comparator.comparing(o -> o.getClass().getSimpleName()));
             @SuppressWarnings("unchecked")
             final List<T> previousServices = (List<T>) servicesLoaded.putIfAbsent(serviceType, (List<Object>) services);
             return Collections.unmodifiableList(previousServices != null ? previousServices : services);

@@ -113,7 +113,6 @@ public final class Bootstrap {
         List<T> services = getServiceProvider().getServices(serviceType);
 		return services
 				.stream()
-                .sorted(Comparator.comparing(o -> o.getClass().getSimpleName()))
                 .findFirst()
                 .orElse(null);
     }

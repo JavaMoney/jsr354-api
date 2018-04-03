@@ -144,7 +144,7 @@ public class AbstractContextTest {
         private static final long serialVersionUID = 1L;
 
         /**
-         * Private constructor, used by {@link AbstractContext.AbstractContextBuilder}.
+         * Private constructor, used by {@link AbstractContextBuilder}.
          *
          * @param builder the Builder.
          */

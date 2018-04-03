@@ -50,7 +50,7 @@ public class MonetaryFormatsDynamicServiceProviderTest
     public void testMonetaryFormatsSingletonSpi() {
         assertEquals(MonetaryFormats.getFormatProviderNames().size(),1);
         MonetaryFormatsSingletonSpi mock = mock(MonetaryFormatsSingletonSpi.class);
-        doReturn(new HashSet<String>(Arrays.asList("formatProviderOne","formatProviderTow"))).when(mock).getProviderNames();
+        doReturn(new HashSet<>(Arrays.asList("formatProviderOne", "formatProviderTow"))).when(mock).getProviderNames();
         registerService(MonetaryFormatsSingletonSpi.class, mock);
         initTestServiceProvider();
         assertEquals(MonetaryFormats.getFormatProviderNames().size(),2);

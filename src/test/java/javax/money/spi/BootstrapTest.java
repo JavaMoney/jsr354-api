@@ -8,10 +8,7 @@
  */
 package javax.money.spi;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import org.testng.annotations.Test;
 
@@ -81,9 +78,9 @@ public class BootstrapTest {
             if (String.class.equals(serviceType)) {
                 return List.class.cast(Arrays.asList("service1", "service2"));
             } else if (Integer.class.equals(serviceType)) {
-                return List.class.cast(Arrays.asList(5));
+                return List.class.cast(Collections.singletonList(5));
             } else if (Long.class.equals(serviceType)) {
-                return List.class.cast(Arrays.asList((long) 111));
+                return List.class.cast(Collections.singletonList((long) 111));
             }
             return super.getServices(serviceType);
         }

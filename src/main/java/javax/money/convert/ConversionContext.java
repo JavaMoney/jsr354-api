@@ -141,9 +141,6 @@ public final class ConversionContext extends AbstractContext {
      */
     public static ConversionContext of(RateType rateType) {
         switch (rateType) {
-            default:
-            case ANY:
-                return ANY_CONVERSION;
             case DEFERRED:
                 return DEFERRED_CONVERSION;
             case HISTORIC:
@@ -152,6 +149,9 @@ public final class ConversionContext extends AbstractContext {
                 return REALTIME_CONVERSION;
             case OTHER:
                 return OTHER_CONVERSION;
+            case ANY:
+            default:
+                return ANY_CONVERSION;
         }
     }
 

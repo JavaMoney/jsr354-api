@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;

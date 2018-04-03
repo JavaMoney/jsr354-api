@@ -11,7 +11,7 @@ package javax.money;
 import javax.money.spi.MonetaryAmountFactoryProviderSpi;
 
 /**
- * Dummy amount factory only used for testing of the {@link MonetaryAmounts} singleton's delegation
+ * Dummy amount factory only used for testing of the {@link Monetary} singleton's delegation
  * logic.
  *
  * @author Anatole Tresch

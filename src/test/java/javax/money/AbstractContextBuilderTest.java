@@ -95,7 +95,7 @@ public class AbstractContextBuilderTest {
         AbstractContextBuilder b = createBuilder();
         b.set("myKey", 1.5f);
         AbstractContext ctx = b.build();
-        assertEquals(ctx.getFloat("myKey").floatValue(), 1.5f, 0.0f);
+        assertEquals(ctx.getFloat("myKey"), 1.5f, 0.0f);
     }
 
     @Test
@@ -181,8 +181,6 @@ public class AbstractContextBuilderTest {
     @Test
     public void testRemoveAttributes() throws Exception {
         AbstractContextBuilder b = createBuilder();
-        Set<Number> set = new HashSet<>();
-        set.add(BigDecimal.ONE);
         b.set("myKey", "test");
         AbstractContext ctx = b.build();
         assertEquals(ctx.getText("myKey"), "test");
@@ -196,8 +194,6 @@ public class AbstractContextBuilderTest {
     @Test
     public void testToString() throws Exception {
         AbstractContextBuilder b = createBuilder();
-        Set<Number> set = new HashSet<>();
-        set.add(BigDecimal.ONE);
         b.set("myKey", "test");
         String toString = b.toString();
         assertNotNull(toString);

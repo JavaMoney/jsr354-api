@@ -68,7 +68,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(String key, int value) {
-        this.data.put(key, Objects.requireNonNull(value));
+        this.data.put(key, value);
         return (B) this;
     }
 
@@ -81,7 +81,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(String key, boolean value) {
-        this.data.put(key, Objects.requireNonNull(value));
+        this.data.put(key, value);
         return (B) this;
     }
 
@@ -94,7 +94,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(String key, long value) {
-        this.data.put(key, Objects.requireNonNull(value));
+        this.data.put(key, value);
         return (B) this;
     }
 
@@ -107,7 +107,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(String key, float value) {
-        this.data.put(key, Objects.requireNonNull(value));
+        this.data.put(key, value);
         return (B) this;
     }
 
@@ -119,7 +119,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(String key, double value) {
-        this.data.put(key, Objects.requireNonNull(value));
+        this.data.put(key, value);
         return (B) this;
     }
 
@@ -132,7 +132,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder, for chaining.
      */
     public B set(String key, char value) {
-        this.data.put(key, Objects.requireNonNull(value));
+        this.data.put(key, value);
         return (B) this;
     }
 
@@ -142,11 +142,11 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * <i>type</i> and {@code attribute.getClass().getName()} as attribute
      * <i>name</i>.
      *
-     * @param value the attribute value
+     * @param value the attribute value, not null.
      * @return this Builder, for chaining
      */
     public B set(Object value) {
-        data.put(value.getClass().getName(), value);
+        data.put(value.getClass().getName(), Objects.requireNonNull(value));
         return (B) this;
     }
 
@@ -154,12 +154,12 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * Sets an attribute, using {@code attribute.getClass()} as attribute
      * <i>type</i>.
      *
-     * @param value the attribute value
+     * @param value the attribute value, not null.
      * @param key   the attribute's key, not {@code null}
      * @return this Builder, for chaining
      */
     public B set(String key, Object value) {
-        data.put(key, value);
+        data.put(key, Objects.requireNonNull(value));
         return (B) this;
     }
 
@@ -167,12 +167,12 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * Sets an attribute, using {@code attribute.getClass()} as attribute
      * <i>type</i>.
      *
-     * @param value the attribute value
+     * @param value the attribute value, not null.
      * @param key   the attribute's key, not {@code null}
      * @return this Builder, for chaining
      */
     public <T> B set(Class<T> key, T value) {
-        Object old = set(key.getName(), value);
+        Object old = set(key.getName(), Objects.requireNonNull(value));
         if (old != null && old.getClass().isAssignableFrom(value.getClass())) {
             return (B) old;
         }
@@ -186,8 +186,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * @return the Builder for chaining
      */
     public B setProviderName(String provider) {
-        Objects.requireNonNull(provider);
-        set(AbstractContext.KEY_PROVIDER, provider);
+        set(AbstractContext.KEY_PROVIDER, Objects.requireNonNull(provider));
         return (B) this;
     }
 

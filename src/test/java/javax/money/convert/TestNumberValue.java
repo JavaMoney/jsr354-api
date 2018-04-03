@@ -33,13 +33,6 @@ public class TestNumberValue extends NumberValue {
 	/** The numeric value. */
 	private final Number number;
 
-    /**
-     * The value 1, with a scale of 0.<br>
-     * Backed by {@link java.math.BigDecimal#ONE}
-     *
-     * @since  0.8
-     */
-	public static final NumberValue ONE = new TestNumberValue(BigDecimal.ONE);
 
 	public TestNumberValue(Number number) {
 		Objects.requireNonNull(number, "Number required");

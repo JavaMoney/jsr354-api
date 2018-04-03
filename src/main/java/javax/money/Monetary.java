@@ -12,12 +12,7 @@
  */
 package javax.money;
 
-import javax.money.spi.Bootstrap;
-import javax.money.spi.CurrencyProviderSpi;
-import javax.money.spi.MonetaryAmountsSingletonQuerySpi;
-import javax.money.spi.MonetaryAmountsSingletonSpi;
-import javax.money.spi.MonetaryCurrenciesSingletonSpi;
-import javax.money.spi.MonetaryRoundingsSingletonSpi;
+import javax.money.spi.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -69,7 +64,7 @@ public final class Monetary {
     /**
      * The used {@link javax.money.spi.MonetaryAmountsSingletonSpi} instance.
      */
-    private static MonetaryAmountsSingletonQuerySpi MONETARY_AMOUNTS_SINGLETON_QUERY_SPI() {
+    private static MonetaryAmountsSingletonQuerySpi monetaryAmountsSingletonQuerySpi() {
         try {
             return Bootstrap.getService(MonetaryAmountsSingletonQuerySpi.class);
         } catch (Exception e) {
@@ -84,7 +79,7 @@ public final class Monetary {
     /**
      * The used {@link javax.money.spi.MonetaryCurrenciesSingletonSpi} instance.
      */
-    private static MonetaryRoundingsSingletonSpi MONETARY_ROUNDINGS_SINGLETON_SPI() {
+    private static MonetaryRoundingsSingletonSpi monetaryRoundingsSingletonSpi() {
         try {
             return Optional.ofNullable(Bootstrap
                     .getService(MonetaryRoundingsSingletonSpi.class))
@@ -108,7 +103,7 @@ public final class Monetary {
      * @return the set of provider names, never {@code null}.
      */
     public static Set<String> getRoundingProviderNames() {
-        return Optional.ofNullable(MONETARY_ROUNDINGS_SINGLETON_SPI()).orElseThrow(
+        return Optional.ofNullable(monetaryRoundingsSingletonSpi()).orElseThrow(
                 () -> new MonetaryException("No MonetaryRoundingsSpi loaded, query functionality is not available."))
                 .getProviderNames();
     }
@@ -119,7 +114,7 @@ public final class Monetary {
      * @return the chained list of provider names, never {@code null}.
      */
     public static List<String> getDefaultRoundingProviderChain() {
-        return Optional.ofNullable(MONETARY_ROUNDINGS_SINGLETON_SPI()).orElseThrow(
+        return Optional.ofNullable(monetaryRoundingsSingletonSpi()).orElseThrow(
                 () -> new MonetaryException("No MonetaryRoundingsSpi loaded, query functionality is not available."))
                 .getDefaultProviderChain();
     }
@@ -133,7 +128,7 @@ public final class Monetary {
      * @return the (shared) default rounding instance.
      */
     public static MonetaryRounding getDefaultRounding() {
-        return Optional.ofNullable(MONETARY_ROUNDINGS_SINGLETON_SPI()).orElseThrow(
+        return Optional.ofNullable(monetaryRoundingsSingletonSpi()).orElseThrow(
                 () -> new MonetaryException("No MonetaryRoundingsSpi loaded, query functionality is not available."))
                 .getDefaultRounding();
     }
@@ -151,7 +146,7 @@ public final class Monetary {
      * rounding, never {@code null}.
      */
     public static MonetaryRounding getRounding(CurrencyUnit currencyUnit, String... providers) {
-        return Optional.ofNullable(MONETARY_ROUNDINGS_SINGLETON_SPI()).orElseThrow(
+        return Optional.ofNullable(monetaryRoundingsSingletonSpi()).orElseThrow(
                 () -> new MonetaryException("No MonetaryRoundingsSpi loaded, query functionality is not available."))
                 .getRounding(currencyUnit, providers);
     }
@@ -169,7 +164,7 @@ public final class Monetary {
      *                                  {@link javax.money.spi.RoundingProviderSpi} instance.
      */
     public static MonetaryRounding getRounding(String roundingName, String... providers) {
-        return Optional.ofNullable(MONETARY_ROUNDINGS_SINGLETON_SPI()).orElseThrow(
+        return Optional.ofNullable(monetaryRoundingsSingletonSpi()).orElseThrow(
                 () -> new MonetaryException("No MonetaryRoundingsSpi loaded, query functionality is not available."))
                 .getRounding(roundingName, providers);
     }
@@ -184,7 +179,7 @@ public final class Monetary {
      *                                  {@link javax.money.spi.RoundingProviderSpi} instance.
      */
     public static MonetaryRounding getRounding(RoundingQuery roundingQuery) {
-        return Optional.ofNullable(MONETARY_ROUNDINGS_SINGLETON_SPI()).orElseThrow(
+        return Optional.ofNullable(monetaryRoundingsSingletonSpi()).orElseThrow(
                 () -> new MonetaryException("No MonetaryRoundingsSpi loaded, query functionality is not available."))
                 .getRounding(roundingQuery);
     }
@@ -200,7 +195,7 @@ public final class Monetary {
      *                                  {@link javax.money.spi.RoundingProviderSpi} instance.
      */
     public static boolean isRoundingAvailable(String roundingName, String... providers) {
-        return Optional.ofNullable(MONETARY_ROUNDINGS_SINGLETON_SPI()).orElseThrow(
+        return Optional.ofNullable(monetaryRoundingsSingletonSpi()).orElseThrow(
                 () -> new MonetaryException("No MonetaryRoundingsSpi loaded, query functionality is not available."))
                 .isRoundingAvailable(roundingName, providers);
     }
@@ -217,7 +212,7 @@ public final class Monetary {
      *                                  {@link javax.money.spi.RoundingProviderSpi} instance.
      */
     public static boolean isRoundingAvailable(CurrencyUnit currencyUnit, String... providers) {
-        return Optional.ofNullable(MONETARY_ROUNDINGS_SINGLETON_SPI()).orElseThrow(
+        return Optional.ofNullable(monetaryRoundingsSingletonSpi()).orElseThrow(
                 () -> new MonetaryException("No MonetaryRoundingsSpi loaded, query functionality is not available."))
                 .isRoundingAvailable(currencyUnit, providers);
     }
@@ -232,7 +227,7 @@ public final class Monetary {
      *                                  {@link javax.money.spi.RoundingProviderSpi} instance.
      */
     public static boolean isRoundingAvailable(RoundingQuery roundingQuery) {
-        return Optional.ofNullable(MONETARY_ROUNDINGS_SINGLETON_SPI()).orElseThrow(
+        return Optional.ofNullable(monetaryRoundingsSingletonSpi()).orElseThrow(
                 () -> new MonetaryException("No MonetaryRoundingsSpi loaded, query functionality is not available."))
                 .isRoundingAvailable(roundingQuery);
     }
@@ -246,7 +241,7 @@ public final class Monetary {
      * @return all {@link javax.money.MonetaryRounding} instances matching the query, never {@code null}.
      */
     public static Collection<MonetaryRounding> getRoundings(RoundingQuery roundingQuery) {
-        return Optional.ofNullable(MONETARY_ROUNDINGS_SINGLETON_SPI()).orElseThrow(
+        return Optional.ofNullable(monetaryRoundingsSingletonSpi()).orElseThrow(
                 () -> new MonetaryException("No MonetaryRoundingsSpi loaded, query functionality is not available."))
                 .getRoundings(roundingQuery);
     }
@@ -260,7 +255,7 @@ public final class Monetary {
      * @return the set of custom rounding ids, never {@code null}.
      */
     public static Set<String> getRoundingNames(String... providers) {
-        return Optional.ofNullable(MONETARY_ROUNDINGS_SINGLETON_SPI()).orElseThrow(
+        return Optional.ofNullable(monetaryRoundingsSingletonSpi()).orElseThrow(
                 () -> new MonetaryException("No MonetaryRoundingsSpi loaded, query functionality is not available."))
                 .getRoundingNames(providers);
     }
@@ -275,10 +270,9 @@ public final class Monetary {
      *                           implementation class is registered.
      */
     public static <T extends MonetaryAmount> MonetaryAmountFactory<T> getAmountFactory(Class<T> amountType) {
-        Optional.ofNullable(monetaryAmountsSingletonSpi())
+        MonetaryAmountsSingletonSpi spi = Optional.ofNullable(monetaryAmountsSingletonSpi())
                 .orElseThrow(() -> new MonetaryException("No MonetaryAmountsSingletonSpi loaded."));
-
-        MonetaryAmountFactory<T> factory = monetaryAmountsSingletonSpi().getAmountFactory(amountType);
+        MonetaryAmountFactory<T> factory = spi.getAmountFactory(amountType);
         return Optional.ofNullable(factory).orElseThrow(
                 () -> new MonetaryException("No AmountFactory available for type: " + amountType.getName()));
     }
@@ -344,7 +338,7 @@ public final class Monetary {
      */
     @SuppressWarnings("rawtypes")
 	public static MonetaryAmountFactory getAmountFactory(MonetaryAmountFactoryQuery query) {
-        return Optional.ofNullable(MONETARY_AMOUNTS_SINGLETON_QUERY_SPI()).orElseThrow(() -> new MonetaryException(
+        return Optional.ofNullable(monetaryAmountsSingletonQuerySpi()).orElseThrow(() -> new MonetaryException(
                 "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available."))
                 .getAmountFactory(query);
     }
@@ -356,7 +350,7 @@ public final class Monetary {
      * @return the instances found, never null.
      */
     public static Collection<MonetaryAmountFactory<?>> getAmountFactories(MonetaryAmountFactoryQuery query) {
-        return Optional.ofNullable(MONETARY_AMOUNTS_SINGLETON_QUERY_SPI()).orElseThrow(() -> new MonetaryException(
+        return Optional.ofNullable(monetaryAmountsSingletonQuerySpi()).orElseThrow(() -> new MonetaryException(
                 "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available."))
                 .getAmountFactories(query);
     }
@@ -369,7 +363,7 @@ public final class Monetary {
      * @return true, if at least one {@link MonetaryAmountFactory} matches the query.
      */
     public static boolean isAvailable(MonetaryAmountFactoryQuery query) {
-        return Optional.ofNullable(MONETARY_AMOUNTS_SINGLETON_QUERY_SPI()).orElseThrow(() -> new MonetaryException(
+        return Optional.ofNullable(monetaryAmountsSingletonQuerySpi()).orElseThrow(() -> new MonetaryException(
                 "No MonetaryAmountsSingletonQuerySpi loaded, query functionality is not available."))
                 .isAvailable(query);
     }

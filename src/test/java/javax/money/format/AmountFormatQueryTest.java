@@ -57,7 +57,7 @@ public class AmountFormatQueryTest {
         contexts.add(AmountFormatContextBuilder.of(Locale.ENGLISH).build());
         contexts.add(AmountFormatContextBuilder.of(Locale.GERMAN).build());
         Set<AmountFormatContext> checkContexts = new HashSet<>();
-        contexts.forEach(checkContexts::add);
+        checkContexts.addAll(contexts);
         // Check we have 5 distinct hash codes...
         assertTrue(checkContexts.size() == 2);
     }

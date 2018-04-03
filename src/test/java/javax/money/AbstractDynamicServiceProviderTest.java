@@ -72,7 +72,7 @@ public abstract class AbstractDynamicServiceProviderTest {
     
     class TestServiceProvider implements ServiceProvider {
         
-        private Map<Class<?>, List<?>> services = new HashMap<>();
+        private final Map<Class<?>, List<?>> services = new HashMap<>();
 
         @Override
         public int getPriority() {

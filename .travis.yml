@@ -1,6 +1,13 @@
 language: java
 jdk:
-  - oraclejdk8
+  - oraclejdk9
+addons:
+  apt:
+    packages:
+      - oracle-java9-installer
+
 after_success:
   - mvn deploy -Dmaven.test.skip -DcreateDocs=true -s settings.xml
   - mvn jacoco:report coveralls:jacoco -DsourceEncoding=UTF-8
+
+

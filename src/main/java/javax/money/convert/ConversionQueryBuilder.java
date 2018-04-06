@@ -36,7 +36,7 @@ public final class ConversionQueryBuilder extends AbstractQueryBuilder<Conversio
      * @return the query for chaining.
      */
     public ConversionQueryBuilder setRateTypes(RateType... rateTypes) {
-        return set("rateTypes", new HashSet<>(Arrays.asList(rateTypes)));
+        return set(ConversionQuery.KEY_RATE_TYPES, new HashSet<>(Arrays.asList(rateTypes)));
     }
 
     /**

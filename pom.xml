@@ -527,8 +527,6 @@
 						<debug>true</debug>
 						<optimize>true</optimize>
 						<verbose>false</verbose>
-						<source>${maven.compile.sourceLevel}</source>
-						<target>${maven.compile.targetLevel}</target>
 						<compilerArgument>-g</compilerArgument>
 						<encoding>${project.build.sourceEncoding}</encoding>
 					</configuration>
@@ -536,6 +534,8 @@
 						<execution>
 							<id>default</id>
 							<configuration>
+								<source>${maven.compile.sourceLevel}</source>
+								<target>${maven.compile.targetLevel}</target>
 								<excludes>
 									<exclude>javax.money.module-info.java</exclude>
 								</excludes>
@@ -544,6 +544,8 @@
 						<execution>
 							<id>moduledesc</id>
 							<configuration>
+								<source>1.9</source>
+								<target>1.9</target>
 								<includes>
 									<include>javax.money.module-info.java</include>
 								</includes>

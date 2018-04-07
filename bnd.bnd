@@ -2,15 +2,9 @@
 	osgi.annotation; version=6.0.0,\
 	osgi.core; version=6.0,\
 	osgi.cmpn; version=6.0
-
--testpath: \
-	${junit}
-
 javac.source: 1.8
 javac.target: 1.8
-
-Automatic-Module-Name: javax.money
-Bundle-Version: ${version}.${tstamp}
+Bundle-Version: ${project.version}.${tstamp}
 Bundle-Name: JavaMoney API
 Bundle-SymbolicName: javax.money
 Bundle-Description: JavaMoney - API (Backport)

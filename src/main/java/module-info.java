@@ -6,17 +6,13 @@
  * BOTTOM OF THIS PAGE. Specification: JSR-354 Money and Currency API ("Specification") Copyright
  * (c) 2012-2013, Credit Suisse All rights reserved.
  */
-module info {
+module javax.money {
     exports javax.money;
     exports javax.money.convert;
     exports javax.money.format;
     exports javax.money.spi;
-    requires java.util;
-    requires java.util.stream;
-    requires java.util.logging;
-    requires java.util.concurrent;
-    requires java.io;
-    requires java.math;
+    requires java.base;
+    requires java.logging;
     uses javax.money.spi.CurrencyProviderSpi;
     uses javax.money.spi.MonetaryAmountFactoryProviderSpi;
     uses javax.money.spi.MonetaryAmountFormatProviderSpi;

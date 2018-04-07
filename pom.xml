@@ -805,7 +805,7 @@
 						<!-- recompile everything for target VM except the module-info.java -->
 						<configuration>
 							<excludes>
-								<exclude>module-info.java</exclude>
+								<exclude>javax/money/module-info.java</exclude>
 							</excludes>
 						</configuration>
 					</execution>
@@ -814,7 +814,7 @@
 					<source>${maven.compile.sourceLevel}</source>
 					<target>${maven.compile.targetLevel}</target>
 					<excludes>
-						<exclude>module-info.java</exclude>
+						<exclude>javax/money/module-info.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  * @author Anatole Tresch
  * @author Werner Keil
  */
-final class DefaultMonetaryRoundingsSingletonSpi implements MonetaryRoundingsSingletonSpi {
+public final class DefaultMonetaryRoundingsSingletonSpi implements MonetaryRoundingsSingletonSpi {
 
     /**
      * An adaptive rounding instance that transparently looks up the correct

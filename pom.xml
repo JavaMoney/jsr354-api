@@ -805,14 +805,14 @@
 						<!-- recompile everything for target VM except the module-info.java -->
 						<configuration>
 							<excludes>
-								<exclude>javax/money/module-info.java</exclude>
+								<exclude>javax.money/module-info.java</exclude>
 							</excludes>
 						</configuration>
 					</execution>
 				</executions>
 				<configuration>
-					<source>${maven.compile.sourceLevel}</source>
-					<target>${maven.compile.targetLevel}</target>
+					<source>9</source>
+					<target>9</target>
 					<excludes>
 						<exclude>javax/money/module-info.java</exclude>
 					</excludes>

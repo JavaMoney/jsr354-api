@@ -350,7 +350,7 @@
 						<artifactId>maven-gpg-plugin</artifactId>
 						<configuration>
 							<defaultKeyring>false</defaultKeyring>
-							<keyname>0E3BCC9A</keyname>
+							<keyname>11A1E4D6</keyname>
 						</configuration>
 						<executions>
 							<execution>
@@ -553,7 +553,18 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9.1</version>
+					<version>3.0.0</version>
+					<configuration>
+						<excludes>java.money</excludes>
+						<excludePackageNames>java.money</excludePackageNames>
+						<additionalparam>-Xdoclint:none</additionalparam>
+						<detectLinks>false</detectLinks>
+						<keywords>true</keywords>
+						<linksource>false</linksource>
+						<failOnError>false</failOnError>
+						<source>1.9</source>
+						<verbose>false</verbose>
+					</configuration>
 					<executions>
 						<execution>
 							<id>attach-javadocs</id>
@@ -562,15 +573,6 @@
 							</goals>
 						</execution>
 					</executions>
-					<configuration>
-						<additionalparam>-Xdoclint:none</additionalparam>
-						<detectLinks>false</detectLinks>
-						<keywords>true</keywords>
-						<linksource>false</linksource>
-						<failOnError>false</failOnError>
-						<source>1.8</source>
-						<verbose>false</verbose>
-					</configuration>
 				</plugin>
 				<plugin>
 					<artifactId>maven-source-plugin</artifactId>

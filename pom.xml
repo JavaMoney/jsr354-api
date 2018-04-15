@@ -541,8 +541,8 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.7.0</version>
 					<configuration>
-						<source>${maven.compile.sourceLevel}</source>
-						<source>${maven.compile.targetLevel}</source>
+						<source>9</source>
+						<target>9</target>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -808,16 +808,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>9</source>
-					<target>9</target>
-				</configuration>
 				<executions>
 					<execution>
 						<id>default-compile</id>
 						<configuration>
-							<source>9</source>
-							<target>9</target>
 							<!-- compile everything to ensure module-info contains right entries -->
 							<!-- required when JAVA_HOME is JDK 8 or below -->
 							<jdkToolchain>
@@ -836,7 +830,7 @@
 							<source>${maven.compile.sourceLevel}</source>
 							<target>${maven.compile.targetLevel}</target>
 							<excludes>
-								<exclude>java.money/module-info.java</exclude>
+								<exclude>module-info.java</exclude>
 							</excludes>
 						</configuration>
 					</execution>

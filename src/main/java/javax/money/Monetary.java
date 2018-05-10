@@ -27,8 +27,9 @@ import java.util.logging.Logger;
  * Factory singleton for {@link CurrencyUnit}, {@link javax.money.MonetaryAmount} and
  * {@link javax.money.MonetaryRounding} instances as provided by the
  * different registered SPI instances.
- * <p/>
+ * <p>
  * This class is thread safe.
+ * </p>
  *
  * @author Anatole Tresch
  */

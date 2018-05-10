@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 /**
  * This class models the accessor for rounding instances, modeled as
  * {@link javax.money.MonetaryOperator}.
- * <p/>
+ * <p>
  * This class is thread-safe.
  *
  * @author Anatole Tresch

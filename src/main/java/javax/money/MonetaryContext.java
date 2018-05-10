@@ -15,8 +15,8 @@ import java.io.Serializable;
  * platform independent way. It provides information about
  * <ul>
  * <li>the maximal precision supported (0, for unlimited precision).
- * <li>the minimum scale (>=0)
- * <li>the maximal scale (>= -1, -1 for unlimited scale).
+ * <li>the minimum scale (&gt;=0)
+ * <li>the maximal scale (&gt;= -1, -1 for unlimited scale).
  * <li>the numeric representation class.
  * <li>any other attributes, identified by the attribute type, e.g.
  * {@link java.math.RoundingMode}.

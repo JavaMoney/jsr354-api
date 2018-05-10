@@ -31,16 +31,13 @@ import java.io.IOException;
  * instead of instantiating implementations directly, since the <code>MonetaryFormats</code> factory
  * method may return different subclasses or may implement contextual behaviour (in a EE context).
  * If you need to customize the format object, do something like this:
- * <p>
+ * </p>
  * <blockquote>
- * <p>
- * <pre>
+ * <pre><code>
  * MonetaryAmountFormat f = MonetaryFormats.getInstance(loc);
  * f.setStyle(f.getStyle().toBuilder().setPattern(&quot;###.##;(###.##)&quot;).build());
- * </pre>
- * <p>
+ * </code></pre>
  * </blockquote>
- * <p>
  * <h4>Special Values</h4>
  * <p>
  * <p>
@@ -57,10 +54,8 @@ import java.io.IOException;
  * synchronized externally.
  * <p>
  * <h4>Example</h4>
- * <p>
  * <blockquote>
- * <p>
- * <pre>
+ * <pre><code>
  * <strong>// Print out a number using the localized number, currency,
  * // for each locale</strong>
  * Locale[] locales = MonetaryFormats.getAvailableLocales();
@@ -81,8 +76,7 @@ import java.io.IOException;
  *         } catch (ParseException e) {}
  *     }
  * }
- * </pre>
- * <p>
+ * </code></pre>
  * </blockquote>
  */
 public interface MonetaryAmountFormat extends MonetaryQuery<String>{

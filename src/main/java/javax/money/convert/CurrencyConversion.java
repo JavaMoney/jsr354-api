@@ -23,11 +23,11 @@ import javax.money.*;
  * <p>
  * By extending {@link MonetaryOperator} currency conversion can simply be applied on each {@link MonetaryAmount}
  * calling the amount'0s with method:
- * <pre>
+ * <pre><code>
  *     MonetaryAmount amount = ...;
  *     CurrencyConversion conversion = MonetaryConversions.getConversion("CHF");
  *     MonetaryAmount amountInCHF = amount.with(conversion);
- * </pre>
+ * </code></pre>
  * <p>
  * The terminating {@link CurrencyUnit} of this conversion instance can be
  * accessed from {@code getCurrency()}, inherited from {@code CurrencySupplier}.

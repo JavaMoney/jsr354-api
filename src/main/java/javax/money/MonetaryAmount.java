@@ -51,14 +51,12 @@ package javax.money;
  * would contain the following method:
  *
  * <blockquote>
- * <p>
- * <pre>
+ * <pre><code>
  * public final class MyMoney implements MonetaryAmount{
  *   ...
  *   public static MyMoney from(MonetaryAmount amount)(...)
  * }
- * </pre>
- * <p>
+ * </code></pre>
  * </blockquote></li>
  * </ul>
  * <h4>Implementation specification</h4>
@@ -127,36 +125,30 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * Hereby returning an instannce <b>of the same type</b> is very important to prevent
      * uncontrolled mixup of implementations. Switching between implementations is still easily
      * possible, e.g. by using according {@link MonetaryAmountFactory} instances: <blockquote>
-     * <p>
-     * <pre>
+     * <pre><code>
      * // converting from Money to MyMoney
      * Money m = ...;
      * MonetartyAmountFactory<MyMoney> f = Monetary.queryAmountFactory(MyMoney.class);
      * MyMoney myMoney = f.setAmount(m).of();
-     * </blockquote>
-     * </pre>
+     * </code></pre></blockquote>
      * <p>
      * This converts this monetary amount according to the rules of the specified operator. A
      * typical operator will change the amount and leave the currency unchanged. A more complex
      * operator might also change the currency.
      * <p>
      * Some example code indicating how and why this method is used:
-     * <p>
      * <blockquote>
-     * <p>
-     * <pre>
+     * <pre><code>
      * MonetaryAmount money = money.with(amountMultipliedBy(2));
      * money = money.with(amountRoundedToNearestWholeUnit());
-     * </pre>
-     * <p>
+     * </code></pre>
      * </blockquote>
      * <p>
      * Hereby also the method signature on the implementation type must return the concrete type, to
      * enable a fluent API, e.g.
      * <p>
      * <blockquote>
-     * <p>
-     * <pre>
+     * <pre><code>
      * public final class MyMoney implements MonetaryAmount{
      *   ...
      *   public MyMoney with(MonetaryOperator operator){
@@ -165,8 +157,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      *   ...
      * }
-     * </pre>
-     * <p>
+     * </code></pre>
      * </blockquote>
      *
      * @param operator the operator to use, not null

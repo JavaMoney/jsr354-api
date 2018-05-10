@@ -25,11 +25,11 @@ package javax.money;
  * is to invoke the method on this interface. The second is to use
  * {@link MonetaryAmount#with(MonetaryOperator)}:
  *
- * <pre>
+ * <pre><code>
  * // these two lines are equivalent, but the second approach is recommended
  * monetary = thisOperator.apply(monetary);
  * monetary = monetary.with(thisOperator);
- * </pre>
+ * </code></pre>
  *
  * It is recommended to use the second approach, {@code with(MonetaryOperator)},
  * as it is a lot clearer to read in code.

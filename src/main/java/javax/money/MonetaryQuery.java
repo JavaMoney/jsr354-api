@@ -24,12 +24,12 @@ package javax.money;
  * to invoke the method on this interface. The second is to use
  * {@link MonetaryAmount#query(MonetaryQuery)}:
  * 
- * <pre>
+ * <pre><code>
  * // these two lines are equivalent, but the second approach is recommended
  * monetary = thisQuery.queryFrom(monetary);
  * // Recommended approach
  * monetary = monetary.query(thisQuery);
- * </pre>
+ * </code></pre>
  * 
  * It is recommended to use the second approach, {@code query(MonetaryQuery)},
  * as it is a lot clearer to read in code.

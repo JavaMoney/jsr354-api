@@ -82,7 +82,7 @@ public interface MonetaryConversionsSingletonSpi {
      * {@link ExchangeRateProvider} can be
      * accessed.
      * @see #getExchangeRateProvider(ConversionQuery)
-     * @see #getExchangeRateProvider(String...)}
+     * @see #getExchangeRateProvider(String...)
      */
     default boolean isExchangeRateProviderAvailable(ConversionQuery conversionQuery) {
         try {
@@ -102,7 +102,7 @@ public interface MonetaryConversionsSingletonSpi {
      * {@link CurrencyConversion} can be
      * accessed.
      * @see #getConversion(javax.money.convert.ConversionQuery)
-     * @see #getConversion(CurrencyUnit, String...)}
+     * @see #getConversion(CurrencyUnit, String...)
      */
     default boolean isConversionAvailable(ConversionQuery conversionQuery) {
         try {
@@ -125,7 +125,7 @@ public interface MonetaryConversionsSingletonSpi {
      * {@link CurrencyConversion} can be
      * accessed.
      * @see #getConversion(javax.money.convert.ConversionQuery)
-     * @see #getConversion(CurrencyUnit, String...)}
+     * @see #getConversion(CurrencyUnit, String...)
      */
     default boolean isConversionAvailable(CurrencyUnit termCurrency, String... providers) {
         return isConversionAvailable(

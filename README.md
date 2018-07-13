@@ -5,7 +5,7 @@ JSR 354: Money and Currency API
 [![Build Status](https://api.travis-ci.org/JavaMoney/jsr354-api.png?branch=master)](https://travis-ci.org/JavaMoney/jsr354-api)
 [![Coverage Status](https://coveralls.io/repos/JavaMoney/jsr354-api/badge.svg?branch=master)](https://coveralls.io/r/JavaMoney/jsr354-api?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/bfea0539add5419896d4df825bafbec6)](https://www.codacy.com/app/JavaMoney/jsr354-api?utm_source=github.com&utm_medium=referral&utm_content=JavaMoney/jsr354-api&utm_campaign=badger)
-[![Reference Status](https://www.versioneye.com/java/javax.money:money-api/reference_badge.svg?style=flat)](https://www.versioneye.com/java/javax.money:money-api/references)
+[![Stability: Maintenance](https://masterminds.github.io/stability/maintenance.svg)](https://masterminds.github.io/stability/maintenance.html)
 [![Join the chat at https://gitter.im/JavaMoney/jsr354-api](https://badges.gitter.im/JavaMoney/jsr354-api.svg)](https://gitter.im/JavaMoney/jsr354-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 JSR 354 provides an API for representing, transporting, and performing comprehensive calculations with Money and Currency. 

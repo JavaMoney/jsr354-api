@@ -15,16 +15,14 @@
 	<artifactId>money-api</artifactId>
 	<packaging>jar</packaging>
 
-	<version>1.0.3</version>
+	<version>1.0.4-SNAPSHOT</version>
 	<name>JSR 354 (Money and Currency API)</name>
 	<url>http://java.net/projects/javamoney</url>
 	<inceptionYear>2012</inceptionYear>
 	<description>JSR 354 provides an API for representing, transporting, and performing comprehensive calculations with Money and Currency.</description>
 
 	<properties>
-
 		<moduleDir>.</moduleDir>
-
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -617,7 +615,7 @@
 				<plugin>
 					<groupId>org.asciidoctor</groupId>
 					<artifactId>asciidoctor-maven-plugin</artifactId>
-					<version>1.5.0</version>
+					<version>1.5.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.jacoco</groupId>
@@ -746,7 +744,6 @@
 			<plugin>
 				<groupId>org.asciidoctor</groupId>
 				<artifactId>asciidoctor-maven-plugin</artifactId>
-				<version>1.5.2</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.asciidoctor</groupId>
@@ -838,7 +835,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
 
 	<reporting>
 		<plugins>

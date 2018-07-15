@@ -1,13 +1,19 @@
+# Javac settings
+javac.source: 1.8
+javac.target: 1.8
+
+# Override automatic runtime requirement when building with JDK9+
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=8.0))"
+
 -buildpath: \
 	osgi.annotation; version=6.0.0,\
 	osgi.core; version=6.0,\
 	osgi.cmpn; version=6.0
-javac.source: 1.8
-javac.target: 1.8
+
 Bundle-Version: ${project.version}.${tstamp}
 Bundle-Name: JavaMoney API
 Bundle-SymbolicName: javax.money
-Bundle-Description: JavaMoney - API (Backport)
+Bundle-Description: JavaMoney - API
 Bundle-Category: Implementation
 Bundle-Copyright: (C) Credit Suisse AG
 Bundle-License: JSR 354 Spec Evaluation/Implementation License

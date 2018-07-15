@@ -10,11 +10,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>javax.money</groupId>
 	<artifactId>money-api</artifactId>
 	<packaging>jar</packaging>
-
 	<version>1.0.4-SNAPSHOT</version>
 	<name>JSR 354 (Money and Currency API)</name>
 	<url>http://java.net/projects/javamoney</url>

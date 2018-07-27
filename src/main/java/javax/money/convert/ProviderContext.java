@@ -21,7 +21,7 @@ import javax.money.AbstractContext;
  * <li>a unique non localizable provider name. This provider name is also used to identify a concrete instance of
  * ExchangeRateProvider.</li>
  * <li>a set of {@link javax.money.convert.RateType} an ExchangeRateProvider supports</li>
- * <li>a time range for which an ExchangeRateProvider delivers rates.</li
+ * <li>a time range for which an ExchangeRateProvider delivers rates.</li>
  * </ul>
  * Additionally a instance of ProviderContext can have arbitrary additional attributes describing more precisely
  * the capabilities of a concrete {@link }ExchangeRateProvider} implementation.

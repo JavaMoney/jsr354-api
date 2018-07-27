@@ -79,10 +79,10 @@ public class CurrencyConversionException extends MonetaryException {
     /**
      * Constructs a new exception with the specified source and target currency,
      * detail message and cause.
-     * <p/>
-     * <p/>
+     * <p>
      * Note that the detail message associated with <code>cause</code> is
      * <i>not</i> automatically incorporated in this exception's detail message.
+     * </p>
      *
      * @param base    the source currency, may be null.
      * @param term    the target currency, may be null.

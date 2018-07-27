@@ -14,7 +14,7 @@ package javax.money;
  * <li>calling {@link MonetaryAmount#getFactory()}, returning a {@link MonetaryAmountFactory}
  * creating amounts of the same implementation type, which also provided the factory instance.</li>
  * <li>calling {@link Monetary#getAmountFactory(Class)} accessing a
- * {@link MonetaryAmountFactory} for a concrete type <code>Class<T></code>.</li>
+ * {@link MonetaryAmountFactory} for a concrete type <code>Class&lt;T&gt;</code>.</li>
  * <li>calling {@link Monetary#getDefaultAmountFactory()} accessing a default
  * {@link MonetaryAmountFactory}.
  * </ul>
@@ -106,7 +106,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 
     /**
      * Get the maximum possible number that this type can represent. If the numeric model has no limitations on the
-     * numeric range, null should be returned. If {@link MonetaryContext#getPrecision()} returns a value > 0 this
+     * numeric range, null should be returned. If {@link MonetaryContext#getPrecision()} returns a value &gt; 0 this
      * method is required to provide a maximal amount.
      *
      * @return the maximum possible number, or null.
@@ -115,7 +115,7 @@ public interface MonetaryAmountFactory<T extends MonetaryAmount> {
 
     /**
      * Get the minimum possible number that this type can represent. If the numeric model has no limitations on the
-     * numeric range, null should be returned.  If {@link MonetaryContext#getPrecision()} returns a value > 0 this
+     * numeric range, null should be returned.  If {@link MonetaryContext#getPrecision()} returns a value &gt; 0 this
      * method is required to provide a maximal amount.
      *
      * @return the minimum possible number, or null.

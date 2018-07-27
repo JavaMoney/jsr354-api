@@ -50,7 +50,7 @@ public interface ExchangeRateProvider{
 
     /**
      * Access a {@link ExchangeRate} using the given currencies. The
-     * {@link ExchangeRate} may be, depending on the data provider, eal-time or
+     * {@link ExchangeRate} may be, depending on the data provider, real-time or
      * deferred. This method should return the rate that is <i>currently</i>
      * valid.
      *

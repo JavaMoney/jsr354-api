@@ -20,7 +20,7 @@ package javax.money.convert;
 public interface ExchangeRateProviderSupplier{
 
     /**
-     * Get the provider name. This signatire equals to the signrature of java.util.function.Supplier in Java 8.
+     * Get the provider name. This signature equals to the signature of java.util.function.Supplier in Java 8.
      *
      * @return the provider name, not null.
      */

@@ -135,20 +135,20 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
 
     /**
      * This method allows to extract the numerator part of the current fraction, hereby given
-     * <code>
+     * <pre><code>
      * w = longValue()
      * n = getFractionNominator()
      * d = getFractionDenominator()
-     * </code>
+     * </code></pre>
      *
      * the following must be always true:
      *
-     * <code>
+     * <pre><code>
      * !(w<0 && n>0)  and
      * !(w>0 && n<0)  and
      * d>0            and
      * |n| < d        // || = absolute value
-     * </code>.
+     * </code></pre>.
      *
      * @return the amount's fraction numerator..
      */
@@ -156,20 +156,20 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
 
     /**
      * This method allows to extract the denominator part of the current fraction, hereby given
-     * <code>
+     * <pre><code>
      * w = longValue()
      * n = getFractionNominator()
      * d = getFractionDenominator()
-     * </code>
+     * </code></pre>
      *
      * the following must be always true:
      *
-     * <code>
+     * <pre><code>
      * !(w<0 && n>0)  and
      * !(w>0 && n<0)  and
      * d>0            and
      * |n| < d        // || = absolute value
-     * </code>.
+     * </code></pre>.
      *
      * @return the amount's fraction denominator.
      */

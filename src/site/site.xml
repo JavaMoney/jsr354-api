@@ -17,12 +17,12 @@
 	<bannerLeft>
 		<name>JCP.org</name>
 		<!--src>images/joda.png</src -->
-		<href>http://javamoney.java.net/</href>
+		<href>https://jcp.org/en/jsr/detail?id=354</href>
 	</bannerLeft>
 	<bannerRight>
 		<name>Java Money API</name>
 		<!--src>images/jodamoney.png</src -->
-		<href>http://javamoney.java.net/</href>
+		<href>https://javamoney.github.io/</href>
 	</bannerRight>
 
 	<body>
@@ -34,7 +34,7 @@
 			<item name="Issue Tracking" href="issue-tracking.html" />
 			<item name="Mailing lists" href="mail-lists.html" />
 			<item name="Continous Integration" href="integration.html" />
-			<item name="Downloads" href="https://java.net/projects/javamoney/downloads" />
+			<item name="Downloads" href="https://github.com/JavaMoney/jsr354-api/releases" />
 		</menu>
 
 		<menu name="Development">
@@ -42,7 +42,7 @@
 			<item name="Javadoc (Latest)" href="apidocs/index.html" />
 			<item name="Source Repository" href="source-repository.html" />
 			<item name="Browsable Source (Latest)" href="xref/index.html" />
-			<item name="Java.net Project" href="http://java.net/projects/javamoney/" />
+			<item name="GitHub Project" href="https://github.com/JavaMoney/jsr354-api" />
 			<item name="Dependencies" href="dependencies.html" />
 			<item name="Plugins" href="plugins.html" />
 		</menu>
@@ -58,8 +58,8 @@
 	</body>
 
 	<poweredBy>
-		<logo name="Java.net" href="http://java.net"
-			img="http://www.java.net/sites/all/themes/java_adaptive/images/logo.png"
-			width="154" height="60" />
+		<logo name="GitHub" href="https://github.com/"
+			img="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png"
+			width="200" height="52" />
 	</poweredBy>
 </project>

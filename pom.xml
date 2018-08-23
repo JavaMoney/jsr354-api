@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 	<version>1.0.4-SNAPSHOT</version>
 	<name>JSR 354 (Money and Currency API)</name>
-	<url>http://java.net/projects/javamoney</url>
+	<url>https://javamoney.github.io/</url>
 	<inceptionYear>2012</inceptionYear>
 	<description>JSR 354 provides an API for representing, transporting, and performing comprehensive calculations with Money and Currency.</description>
 

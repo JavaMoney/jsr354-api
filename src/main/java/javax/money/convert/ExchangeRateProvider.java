@@ -22,7 +22,7 @@ import java.util.Objects;
  *
  * When accessing ExchangeRateProvider instances or {@link javax.money.convert.CurrencyConversion} instances from the
  * {@link MonetaryConversions}
- * in many cases a chain of providers will be returned. It is the reponsibility of the implementation code assembling
+ * in many cases a chain of providers will be returned. It is the responsibility of the implementation code assembling
  * the chain to
  * establish a well defined coordination mechanism for evaluating the correct result. By default the first provider
  * in the chain that returns a non null result determines the final result of a call. Nevertheless adapting the
@@ -98,7 +98,7 @@ public interface ExchangeRateProvider{
 
     /**
      * Access a {@link ExchangeRate} using the given currencies. The
-     * {@link ExchangeRate} may be, depending on the data provider, eal-time or
+     * {@link ExchangeRate} may be, depending on the data provider, real-time or
      * deferred. This method should return the rate that is <i>currently</i>
      * valid.
      *
@@ -157,7 +157,7 @@ public interface ExchangeRateProvider{
 
     /**
      * Access a {@link ExchangeRate} using the given currencies. The
-     * {@link ExchangeRate} may be, depending on the data provider, eal-time or
+     * {@link ExchangeRate} may be, depending on the data provider, real-time or
      * deferred. This method should return the rate that is <i>currently</i>
      * valid.
      *

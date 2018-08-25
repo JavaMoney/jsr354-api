@@ -78,7 +78,7 @@ public final class AmountFormatQuery extends AbstractQuery {
     }
 
     /**
-     * Creates a simple format query based on a singlet Locale, similar to {@link java.text.DecimalFormat#getInstance
+     * Creates a simple format query based on a single Locale, similar to {@link java.text.DecimalFormat#getInstance
      * (java.util.Locale)}.
      *
      * @param locale    the target locale, not null.

@@ -25,8 +25,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<jdkVersion>1.8</jdkVersion>
-		<maven.compile.targetLevel>${jdkVersion}</maven.compile.targetLevel>
-		<maven.compile.sourceLevel>${jdkVersion}</maven.compile.sourceLevel>
+		<maven.compiler.release>8</maven.compiler.release>
 		<basedir>.</basedir>
 		<!-- Dependency versions -->
 		<testng.version>6.8.5</testng.version>
@@ -535,10 +534,9 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.7.0</version>
+					<version>3.8.0</version>
 					<configuration>
-						<source>9</source>
-						<target>9</target>
+						<release>9</release>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -822,8 +820,7 @@
 						</goals>
 						<!-- recompile everything for target VM except the module-info.java -->
 						<configuration>
-							<source>${maven.compile.sourceLevel}</source>
-							<target>${maven.compile.targetLevel}</target>
+							<release>${maven.compiler.release}</release>
 							<excludes>
 								<exclude>java/money/module-info.java</exclude>
 							</excludes>

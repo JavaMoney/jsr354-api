@@ -19,6 +19,7 @@ module java.money {
     uses javax.money.spi.MonetaryAmountsSingletonQuerySpi;
     uses javax.money.spi.MonetaryAmountsSingletonSpi;
     uses javax.money.spi.MonetaryConversionsSingletonSpi;
+    uses javax.money.spi.MonetaryCurrenciesSingletonSpi;
     uses javax.money.spi.MonetaryFormatsSingletonSpi;
     uses javax.money.spi.MonetaryRoundingsSingletonSpi;
     uses javax.money.spi.RoundingProviderSpi;

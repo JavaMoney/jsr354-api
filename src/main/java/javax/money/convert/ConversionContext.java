@@ -94,7 +94,7 @@ public final class ConversionContext extends AbstractContext {
     }
 
     /**
-     * Creates a query builder based on this onctex.
+     * Creates a query builder based on this context.
      *
      * @return a new instance of {@link ConversionQueryBuilder}, never null.
      */

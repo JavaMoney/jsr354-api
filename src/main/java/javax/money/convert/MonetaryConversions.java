@@ -130,7 +130,7 @@ public final class MonetaryConversions{
     /**
      * Checks if a {@link javax.money.convert.CurrencyConversion} is available for the given parameters.
      *
-     * @param currencyCode The currencoy code, resolvable by {@link javax.money.Monetary#getCurrency
+     * @param currencyCode The currency code, resolvable by {@link javax.money.Monetary#getCurrency
      *                     (String, String...)}
      * @param providers    Additional providers, for building a provider chain
      * @return true, if a conversion is accessible from {@link #getConversion(String, String...)}.

@@ -29,7 +29,7 @@ public interface CurrencyProviderSpi{
 
     /**
      * The unique name of this currency provider instance.
-     * @return hte unique provider id, never null or empty.
+     * @return the unique provider id, never null or empty.
      */
     default String getProviderName(){
         return getClass().getSimpleName();

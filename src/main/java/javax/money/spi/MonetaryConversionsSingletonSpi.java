@@ -136,7 +136,7 @@ public interface MonetaryConversionsSingletonSpi {
      * Access the current registered {@link javax.money.convert.ExchangeRateProvider} instances. If no provider
      * names are passed ALL current registered providers are returned in undefined order.
      *
-     * @param providers the provider names of hte providers to be accessed
+     * @param providers the provider names of the providers to be accessed
      * @return the list of providers, in the same order as requested.
      * @throws MonetaryException if a provider could not be resolved.
      */

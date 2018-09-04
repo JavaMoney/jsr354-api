@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Represents a general context of data targeting an item of type {@code Q}. Contexts are used to add arbitrary
  * data that cannot be be mapped in a standard way to the money API, e.g. use case or customer specific
- * extensions os specialities.<p>
+ * extensions or specialities.<p>
  * Superclasses of this class must be final, immutable, serializable and thread-safe.
  */
 @SuppressWarnings("unchecked")

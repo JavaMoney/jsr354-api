@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 /**
- * Instances of this class allow to externalize the numeric value of a {@link MonetaryAmount}. The classs extends
+ * Instances of this class allow to externalize the numeric value of a {@link MonetaryAmount}. The class extends
  * {@link java.lang.Number} for maximal compatibility with the JDK but also adds additional functionality to
  * overcome some of the pitfalls of the JDK's Number class.
  * <h3>Implementation specification</h3>

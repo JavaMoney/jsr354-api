@@ -144,10 +144,10 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
      * the following must be always true:
      *
      * <pre><code>
-     * !(w<0 && n>0)  and
-     * !(w>0 && n<0)  and
-     * d>0            and
-     * |n| < d        // || = absolute value
+     * !(w&lt;0 &amp;&amp; n&gt;0)  and
+     * !(w&gt;0 &amp;&amp; n&lt;0)  and
+     * d&gt;0            and
+     * |n| &lt; d        // || = absolute value
      * </code></pre>.
      *
      * @return the amount's fraction numerator..
@@ -165,10 +165,10 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
      * the following must be always true:
      *
      * <pre><code>
-     * !(w<0 && n>0)  and
-     * !(w>0 && n<0)  and
-     * d>0            and
-     * |n| < d        // || = absolute value
+     * !(w&lt;0 &amp;&amp; n&gt;0)  and
+     * !(w&gt;0 &amp;&amp; n&lt;0)  and
+     * d&gt;0            and
+     * |n| &lt; d        // || = absolute value
      * </code></pre>.
      *
      * @return the amount's fraction denominator.

@@ -55,7 +55,7 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
      * Sets the target scale. This allows to define the scale required. If not specified as additional
      * attribute, by default, RoundingMode.HALF_EVEN is used hereby.
      *
-     * @param scale the target scale, >0.
+     * @param scale the target scale, &gt;0.
      * @return this instance for chaining
      */
     public RoundingQueryBuilder setScale(int scale) {

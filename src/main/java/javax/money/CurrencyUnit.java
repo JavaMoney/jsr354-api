@@ -23,11 +23,11 @@ package javax.money;
  * Implementation of this class
  * <ul>
  * <li>are required to implement {@code equals/hashCode} considering the
- * concrete implementation type and currency code.
- * <li>are required to be thread-safe
- * <li>are required to be immutable
- * <li>are required to be comparable
- * <li>should be serializable (on platforms providing serialization).
+ * concrete implementation type and currency code.</li>
+ * <li>are required to be thread-safe</li>
+ * <li>are required to be immutable</li>
+ * <li>are required to be comparable</li>
+ * <li>should be serializable (on platforms providing serialization).</li>
  * </ul>
  * 
  * @author Werner Keil

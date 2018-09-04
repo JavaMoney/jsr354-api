@@ -128,7 +128,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * <pre><code>
      * // converting from Money to MyMoney
      * Money m = ...;
-     * MonetartyAmountFactory<MyMoney> f = Monetary.queryAmountFactory(MyMoney.class);
+     * MonetartyAmountFactory&lt;MyMoney&gt; f = Monetary.queryAmountFactory(MyMoney.class);
      * MyMoney myMoney = f.setAmount(m).of();
      * </code></pre></blockquote>
      * <p>
@@ -233,7 +233,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     /**
      * Checks if a {@code MonetaryAmount} is negative.
      *
-     * @return {@code true} if {@link #signum()} < 0.
+     * @return {@code true} if {@link #signum()} &lt; 0.
      */
     default boolean isNegative(){
         return signum() < 0;
@@ -242,7 +242,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     /**
      * Checks if a {@code MonetaryAmount} is negative or zero.
      *
-     * @return {@code true} if {@link #signum()} <= 0.
+     * @return {@code true} if {@link #signum()} &lt;= 0.
      */
     default boolean isNegativeOrZero(){
         return signum() <= 0;
@@ -251,7 +251,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     /**
      * Checks if a {@code MonetaryAmount} is positive.
      *
-     * @return {@code true} if {@link #signum()} > 0.
+     * @return {@code true} if {@link #signum()} &gt; 0.
      */
     default boolean isPositive(){
         return signum() > 0;
@@ -260,7 +260,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     /**
      * Checks if a {@code MonetaryAmount} is positive or zero.
      *
-     * @return {@code true} if {@link #signum()} >= 0.
+     * @return {@code true} if {@link #signum()} &gt;= 0.
      */
     default boolean isPositiveOrZero(){
         return signum() >= 0;

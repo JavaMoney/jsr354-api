@@ -14,8 +14,10 @@ import java.util.*;
 
 /**
  * Query for accessing {@link javax.money.convert.CurrencyConversion} instances. If not properties are set the query
- * should returns the <i>default</i> currencies.<p/>
+ * should returns the <i>default</i> currencies.
+ * <p>
  * This class is immutable, serializable and thread-safe.
+ * </p>
  */
 public final class ConversionQuery extends AbstractQuery implements CurrencySupplier {
     /**

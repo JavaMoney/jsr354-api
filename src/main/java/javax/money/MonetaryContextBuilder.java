@@ -38,7 +38,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
     /**
      * Set the maximal scale to be supported.
      *
-     * @param maxScale the max scale, >= 0.
+     * @param maxScale the max scale, &gt;= 0.
      * @return this builder for chaining.
      */
     public MonetaryContextBuilder setMaxScale(int maxScale) {
@@ -48,7 +48,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
     /**
      * Set the required precision.
      *
-     * @param precision the precision, >= 0, 0 meaning unlimited.
+     * @param precision the precision, &gt;= 0, 0 meaning unlimited.
      * @return this builder for chaining.
      */
     public MonetaryContextBuilder setPrecision(int precision) {

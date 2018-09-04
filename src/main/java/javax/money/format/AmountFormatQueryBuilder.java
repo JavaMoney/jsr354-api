@@ -109,7 +109,7 @@ public final class AmountFormatQueryBuilder extends AbstractQueryBuilder<AmountF
     }
 
     /**
-     * Creates a new {@link AmountFormatQueryBuilder} and initializes it with the values from {@code formatQuery.
+     * Creates a new {@link AmountFormatQueryBuilder} and initializes it with the values from {@code formatQuery}.
      *
      * @param formatQuery the base {@link AmountFormatContext}, not {@code null}.
      * @return a new {@link javax.money.format.AmountFormatQueryBuilder} instance, never null.

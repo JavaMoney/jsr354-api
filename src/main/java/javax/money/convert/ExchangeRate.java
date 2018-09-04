@@ -50,29 +50,30 @@ import java.util.List;
  * reversing a ExchangeRate one must access an {@link ExchangeRateProvider} and
  * query for the reverse rate.</li>
  * </ul>
- * <p/>
+ * <p>
  * The class also implements {@link Comparable} to allow sorting of multiple
  * exchange rates using the following sorting order;
+ * </p>
  * <ul>
  * <li>Exchange rate type</li>
  * <li>Exchange rate provider</li>
  * <li>base currency</li>
  * <li>term currency</li>
  * </ul>
- * <p/>
+ * <p>
  * Finally ExchangeRate is modeled as an immutable and thread safe type. Also
  * exchange rates are {@link Serializable}, hereby serializing in the following
  * form and order:
+ * </p>
  * <ul>
- * <li>The base {@link CurrencyUnit}
- * <li>The target {@link CurrencyUnit}
- * <li>The factor (NumberValue)
- * <li>The {@link ConversionContext}
- * <li>The rate chain
+ * <li>The base {@link CurrencyUnit}</li>
+ * <li>The target {@link CurrencyUnit}</li>
+ * <li>The factor (NumberValue)</li>
+ * <li>The {@link ConversionContext}</li>
+ * <li>The rate chain</li>
  * </ul>
- * <p/>
  * <h3>Implementation Specification</h3>
- * <p>Implementations of this interface
+ * <p>Implementations of this interface</p>
  * <ul>
  * <li>must be Comparable(with {@code ExchangeRate})</li>
  * <li>must implement equals/hashCode considering #getBaseCurrency, #getCurrency,
@@ -81,7 +82,6 @@ import java.util.List;
  * <li>should be serializable</li>
  * <li>should provide a fluent builder API for constructing new rate instances easily.</li>
  * </ul>
- * </ul></p>
  *
  * @author Werner Keil
  * @author Anatole Tresch

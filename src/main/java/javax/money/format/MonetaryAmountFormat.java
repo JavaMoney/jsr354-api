@@ -62,7 +62,7 @@ import java.io.IOException;
  * MonetaryAmount amount = ...;
  * MonetaryAmountFormat form;
  *     System.out.println("FORMAT");
- *     for (int i = 0; i < locales.length; ++i) {
+ *     for (int i = 0; i &lt; locales.length; ++i) {
  *         if (locales[i].getCountry().length() == 0) {
  *            continue; // Skip language-only locales
  *         }
@@ -70,9 +70,9 @@ import java.io.IOException;
  *         form = MonetaryFormats.getInstance(locales[i]);
  *         System.out.print(": " + form.getStyle().getPattern());
  *         String myAmount = form.format(amount);
- *         System.out.print(" -> " + myAmount);
+ *         System.out.print(" -&gt; " + myAmount);
  *         try {
- *             System.out.println(" -> " + form.parse(form.format(myAmount)));
+ *             System.out.println(" -&gt; " + form.parse(form.format(myAmount)));
  *         } catch (ParseException e) {}
  *     }
  * }

@@ -25,6 +25,4 @@ module java.money {
     uses javax.money.spi.RoundingProviderSpi;
     uses javax.money.spi.ServiceProvider;
     uses javax.money.convert.ExchangeRateProvider;
-    uses javax.money.convert.ExchangeRateProviderSupplier;
-    uses javax.money.format.MonetaryAmountFormat;
 }

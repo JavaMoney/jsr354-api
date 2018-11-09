@@ -186,7 +186,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      * @param amount the {@code MonetaryAmount} to be compared with this instance.
      * @return {@code true} if {@code amount > this}.
-     * @throws MonetaryException if the amount's currency is not equals to the currency of this instance.
+     * @throws MonetaryException if the amount's currency is not equal to the currency of this instance.
      */
     boolean isGreaterThan(MonetaryAmount amount);
 
@@ -196,7 +196,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      * @param amount the {@link MonetaryAmount} to be compared with this instance.
      * @return {@code true} if {@code amount >= this}.
-     * @throws MonetaryException if the amount's currency is not equals to the currency of this instance.
+     * @throws MonetaryException if the amount's currency is not equal to the currency of this instance.
      */
     boolean isGreaterThanOrEqualTo(MonetaryAmount amount);
 
@@ -206,7 +206,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      * @param amount the {@link MonetaryAmount} to be compared with this instance.
      * @return {@code true} if {@code amount < this}.
-     * @throws MonetaryException if the amount's currency is not equals to the currency of this instance.
+     * @throws MonetaryException if the amount's currency is not equal to the currency of this instance.
      */
     boolean isLessThan(MonetaryAmount amount);
 
@@ -216,7 +216,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      * @param amt the {@link MonetaryAmount} to be compared with this instance.
      * @return {@code true} if {@code amount <= this}.
-     * @throws MonetaryException if the amount's currency is not equals to the currency of this instance.
+     * @throws MonetaryException if the amount's currency is not equal to the currency of this instance.
      */
     boolean isLessThanOrEqualTo(MonetaryAmount amt);
 
@@ -226,7 +226,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      *
      * @param amount the {@link MonetaryAmount} to be compared with this instance.
      * @return {@code true} if {@code amount == this}.
-     * @throws MonetaryException if the amount's currency is not equals to the currency of this instance.
+     * @throws MonetaryException if the amount's currency is not equal to the currency of this instance.
      */
     boolean isEqualTo(MonetaryAmount amount);
 

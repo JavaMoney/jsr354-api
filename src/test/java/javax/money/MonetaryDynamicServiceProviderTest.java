@@ -34,7 +34,6 @@ import javax.money.spi.MonetaryRoundingsSingletonSpi;
 import javax.money.spi.RoundingProviderSpi;
 import javax.money.spi.ServiceProvider;
 
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.Test;
@@ -74,7 +73,7 @@ public class MonetaryDynamicServiceProviderTest extends AbstractDynamicServicePr
         assertCurrencyAvailable("test1");
         assertCurrencyAvailable("test2");
         assertCurrencyMissing("test3");
-        MonetaryCurrenciesSingletonSpi mockSingleton = Mockito.mock(MonetaryCurrenciesSingletonSpi.class);
+        MonetaryCurrenciesSingletonSpi mockSingleton = mock(MonetaryCurrenciesSingletonSpi.class);
         registerService(MonetaryCurrenciesSingletonSpi.class, mockSingleton);
         doAnswer(new Answer<CurrencyUnit>() {
             private final List<String> supportedCurrencies = Arrays.asList("test1","test3");

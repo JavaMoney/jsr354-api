@@ -10,7 +10,6 @@
  */
 package javax.money.convert;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.money.CurrencyUnit;
@@ -20,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.assertSame;
 
 /**
  * @author Anatole Tresch
@@ -32,23 +31,23 @@ public class ExchangeRate_BuilderTest {
     public void testWithConversionContext() {
         DefaultExchangeRate.Builder b = new DefaultExchangeRate.Builder("test", RateType.DEFERRED);
         DefaultExchangeRate.Builder b2 = b.setContext(ConversionContext.of("test", RateType.DEFERRED));
-        assertTrue(b == b2);
+        assertSame(b, b2);
         b2 = b.setContext(ConversionContext.of("test2", RateType.DEFERRED));
-        assertTrue(b == b2);
+        assertSame(b, b2);
     }
 
     @Test
     public void testGetSetBase() {
         DefaultExchangeRate.Builder b = new DefaultExchangeRate.Builder("test", RateType.DEFERRED);
         DefaultExchangeRate.Builder b2 = b.setBaseCurrency(TestCurrency.of("CHF"));
-        assertTrue(b == b2);
+        assertSame(b, b2);
     }
 
     @Test
     public void testGetSetTerm() {
         DefaultExchangeRate.Builder b = new DefaultExchangeRate.Builder("test", RateType.DEFERRED);
         DefaultExchangeRate.Builder b2 = b.setTermCurrency(TestCurrency.of("CHF"));
-        assertTrue(b == b2);
+        assertSame(b, b2);
     }
 
     @Test
@@ -73,7 +72,7 @@ public class ExchangeRate_BuilderTest {
     public void testGetSetBaseLeadingFactor() {
         DefaultExchangeRate.Builder b = new DefaultExchangeRate.Builder("test", RateType.DEFERRED);
         DefaultExchangeRate.Builder b2 = b.setFactor(TestNumberValue.of(Long.MAX_VALUE));
-        assertTrue(b == b2);
+        assertSame(b, b2);
         b.setFactor(TestNumberValue.of(100L));
         CurrencyUnit base = TestCurrency.of("CHF");
         CurrencyUnit term = TestCurrency.of("USD");
@@ -86,7 +85,7 @@ public class ExchangeRate_BuilderTest {
     public void testGetSetTermLeadingFactorBigDecimal() {
         DefaultExchangeRate.Builder b = new DefaultExchangeRate.Builder("test", RateType.DEFERRED);
         DefaultExchangeRate.Builder b2 = b.setFactor(TestNumberValue.of(1.2));
-        assertTrue(b == b2);
+        assertSame(b, b2);
         CurrencyUnit base = TestCurrency.of("CHF");
         CurrencyUnit term = TestCurrency.of("USD");
         ExchangeRate rate = b.setBaseCurrency(base).setContext(ConversionContext.of("test", RateType.DEFERRED))
@@ -125,8 +124,8 @@ public class ExchangeRate_BuilderTest {
         b.setFactor(TestNumberValue.of(2.0));
         rate = b.build();
         assertEquals(rate.getContext(), ConversionContext.of("test", RateType.DEFERRED));
-        Assert.assertEquals(TestCurrency.of("CHF"), rate.getBaseCurrency());
-        Assert.assertEquals(TestCurrency.of("USD"), rate.getCurrency());
+        assertEquals(TestCurrency.of("CHF"), rate.getBaseCurrency());
+        assertEquals(TestCurrency.of("USD"), rate.getCurrency());
         assertEquals(BigDecimal.valueOf(2.0), rate.getFactor().numberValue(BigDecimal.class));
     }
 }

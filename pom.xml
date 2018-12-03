@@ -30,6 +30,7 @@
 		<!-- Dependency versions -->
 		<testng.version>6.8.5</testng.version>
         <mockito.version>1.10.19</mockito.version>
+		<jacoco.version>0.8.2</jacoco.version>
 	</properties>
 
 	<organization>
@@ -616,7 +617,7 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.1</version>
+					<version>${jacoco.version}</version>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
@@ -634,7 +635,7 @@
 											jacoco-maven-plugin
 										</artifactId>
 										<versionRange>
-											[0.8.1,)
+											[0.8.2,)
 										</versionRange>
 										<goals>
 											<goal>prepare-agent</goal>
@@ -969,7 +970,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.1</version>
+				<version>${jacoco.version}</version>
 				<configuration>
 					<destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
 					<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>

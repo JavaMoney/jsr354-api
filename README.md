@@ -13,8 +13,7 @@ See the home page for more details:
 http://jcp.org/en/jsr/detail?id=354
 
 This is the API module of JSR 354 licenced under 
-- the JSR Spec Licence for Evaluation (see *EVALUATION-LICENCE.txt)
-- the JSR Spec Licence for Implementation (see *IMPLEMENTATION-LICENCE.txt)
+- the Apache License Version 2.0 (LICENCE.txt)
 
 See also:
 http://javamoney.github.io/

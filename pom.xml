@@ -856,7 +856,8 @@
                         <exclude>src/main/config/**</exclude>
                         <exclude>src/main/emf/**</exclude>
                         <exclude>src/site/**</exclude>
-                        <exclude>src/etc/**</exclude>
+                        <exclude>src/asciidoc/**</exclude>
+                        <exclude>src/license/**</exclude>
                         <exclude>*.css</exclude>
                         <exclude>*.jpg</exclude>
                         <exclude>*.png</exclude>

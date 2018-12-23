@@ -19,7 +19,7 @@ package javax.money;
 /**
  * Interface representing a monetary rounding. Rounding must not necessarily represent roundings in a pure arithmetical sense. Basically a rounding
  * can scale an amount arbitrarily.
- * <h4>Implementation specification</h4>
+ * <h3>Implementation specification</h3>
  * Implementations of this interface must be
  * <ul>
  *     <li>final</li>

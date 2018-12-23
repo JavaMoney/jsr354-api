@@ -130,6 +130,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * Create a new ProviderContextBuilder instance.
      *
      * @param provider  the provider name, not {@code null}.
+     * @param rateType the required {@link RateType}, not null
      * @param rateTypes the rate types, not null and not empty.
      * @return a new {@link javax.money.convert.ProviderContextBuilder} instance, never null.
      */

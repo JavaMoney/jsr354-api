@@ -76,6 +76,7 @@ public final class MonetaryContextBuilder extends AbstractContextBuilder<Monetar
     /**
      * Set the MonetaryAmount implementation class.
      *
+     * @param amountType the target amount type, not null.
      * @return the implementation class of the containing amount instance, never null.
      * @see javax.money.MonetaryAmount#getContext()
      */

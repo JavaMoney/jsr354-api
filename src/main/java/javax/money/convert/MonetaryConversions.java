@@ -163,6 +163,7 @@ public final class MonetaryConversions{
      * providers as a provider chain. Use {@link #getConversionProviderNames()}s
      * to check, which are available.
      *
+     * @param providers    Additional providers, for building a provider chain
      * @return the exchange rate provider.
      * @throws IllegalArgumentException if no such {@link ExchangeRateProvider} is available.
      */
@@ -208,6 +209,7 @@ public final class MonetaryConversions{
      * providers as a provider chain. Use {@link #getConversionProviderNames()}
      * to check, which are available.
      *
+     * @param conversionQuery the {@link javax.money.convert.ConversionQuery}, not null.
      * @return the exchange rate provider.
      * @throws IllegalArgumentException if no such {@link ExchangeRateProvider} is available.
      */

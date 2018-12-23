@@ -50,6 +50,7 @@ public interface MonetaryAmountsSingletonQuerySpi {
      * <li>After this point the selection may be arbitrary.
      * </ul>
      *
+     * @param query the factory query, not null.
      * @return the {@link javax.money.MonetaryAmount} implementation class, that best matches to cover the given
      * {@link javax.money.MonetaryContext}, never {@code null}.
      * @throws javax.money.MonetaryException if no {@link javax.money.MonetaryAmount} implementation class can cover

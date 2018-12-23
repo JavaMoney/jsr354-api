@@ -46,22 +46,22 @@ import java.io.IOException;
  * f.setStyle(f.getStyle().toBuilder().setPattern(&quot;###.##;(###.##)&quot;).build());
  * </code></pre>
  * </blockquote>
- * <h4>Special Values</h4>
- * <p>
+ * <h3>Special Values</h3>
+ * 
  * <p>
  * Negative zero (<code>"-0"</code>) should always parse to
  * <ul>
  * <li><code>0</code></li>
  * </ul>
- * <p>
- * <h4><a name="synchronization">Synchronization</a></h4>
- * <p>
+ *
+ * <h3><a id="synchronization">Synchronization</a></h3>
+ *
  * <p>
  * Instances of this class are not required to be thread-safe. It is recommended to of separate
  * format instances for each thread. If multiple threads access a format concurrently, it must be
  * synchronized externally.
- * <p>
- * <h4>Example</h4>
+ * 
+ * <h3>Example</h3>
  * <blockquote>
  * <pre><code>
  * <strong>// Print out a number using the localized number, currency,

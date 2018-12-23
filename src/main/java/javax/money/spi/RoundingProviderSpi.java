@@ -43,7 +43,7 @@ public interface RoundingProviderSpi {
 
     /**
      * Evaluate the rounding that match the given query.
-     *
+     * @param query the rounding query.
      * @return the matching rounding instance, or {@code null}.
      */
     MonetaryRounding getRounding(RoundingQuery query);

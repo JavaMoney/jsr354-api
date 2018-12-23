@@ -37,7 +37,7 @@ package javax.money;
  * 
  * It is recommended to use the second approach, {@code query(MonetaryQuery)},
  * as it is a lot clearer to read in code.
- * <h4>Implementation specification</h4>
+ * <h3>Implementation specification</h3>
  * This interface places no restrictions on the mutability of implementations,
  * however immutability is strongly recommended.
  * 
@@ -72,7 +72,7 @@ public interface MonetaryQuery<R>{
 	 * It is recommended to use the second approach,
 	 * {@code query(MonetaryQuery)}, as it is a lot clearer to read in code.
 	 * 
-	 * <h4>Implementation specification</h4>
+	 * <h3>Implementation specification</h3>
 	 * The implementation must take the input object and query it. The
 	 * implementation defines the logic of the query and is responsible for
 	 * documenting that logic. It may use any method on {@code MonetaryAmount}

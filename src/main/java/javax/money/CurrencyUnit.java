@@ -25,7 +25,7 @@ package javax.money;
  * <p>
  * Currencies can be distinguished by separate {@link #getCurrencyCode()} codes,
  * similar to {@link java.util.Currency}.
- * <h4>Implementation specification</h4>
+ * <h3>Implementation specification</h3>
  * Implementation of this class
  * <ul>
  * <li>are required to implement {@code equals/hashCode} considering the

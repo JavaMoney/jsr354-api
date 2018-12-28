@@ -85,6 +85,7 @@ public final class ProviderContext extends AbstractContext {
      * Creates a new ProviderContext based on the provider id and rate type(s).
      *
      * @param provider  the provider id, not null.
+     * @param rateType  the required {@link RateType}, not null.
      * @param rateTypes the required {@link RateType}s, not null
      * @return a new {@link ProviderContext} instance.
      */

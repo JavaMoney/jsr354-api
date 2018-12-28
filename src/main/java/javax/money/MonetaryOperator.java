@@ -24,10 +24,13 @@ package javax.money;
  * <p>
  * Examples might be an operator that rounds the amount to the nearest 1000, or
  * one that performs currency conversion.
+ * </p>
+ *
  * <p>
  * There are two equivalent ways of using a {@code MonetaryOperator}. The first
  * is to invoke the method on this interface. The second is to use
  * {@link MonetaryAmount#with(MonetaryOperator)}:
+ * </p>
  *
  * <pre><code>
  * // these two lines are equivalent, but the second approach is recommended
@@ -38,21 +41,28 @@ package javax.money;
  * It is recommended to use the second approach, {@code with(MonetaryOperator)},
  * as it is a lot clearer to read in code.
  *
- * <h4>Implementation specification</h4>
+ * <h3>Implementation specification</h3>
+ * <p>
  * The implementation must take the input object and apply it. The
  * implementation defines the logic of the operator and is responsible for
  * documenting that logic. It may use any method on {@code MonetaryAmount} to
  * determine the result.
+ * </p>
+ * 
  * <p>
  * The input object must not be altered. Instead, an altered copy of the
  * original must be returned. This provides equivalent, safe behavior for
  * immutable and mutable monetary amounts.
+ * </p>
+ * 
  * <p>
  * This method may be called from multiple threads in parallel. It must be
  * thread-safe when invoked.
+ * </p>
  *
  * <p>
  * This interface extends {@code java.util.function.UnaryOperator} introduced by Java 8.
+ * </p>
  *
  * @author Werner Keil
  * @author Anatole Tresch

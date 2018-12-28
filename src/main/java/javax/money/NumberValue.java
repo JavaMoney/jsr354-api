@@ -24,14 +24,13 @@ import java.math.MathContext;
  * {@link java.lang.Number} for maximal compatibility with the JDK but also adds additional functionality to
  * overcome some of the pitfalls of the JDK's Number class.
  * <h3>Implementation specification</h3>
- * <p>Implementations of this interface must be
+ * <p>Implementations of this interface must be : </p>
  * <ul>
  * <li>Comparable, hereby comparing the numeric value.</li>
  * <li>immutable</li>
  * <li>serializable</li>
  * <li>thread-safe</li>
  * </ul>
- * </p>
  *
  * @author Anatole Tresch
  */
@@ -52,7 +51,7 @@ public abstract class NumberValue extends Number implements Comparable<NumberVal
     /**
      * Returns the <i>precision</i> of this {@code MonetaryAmount}. (The precision is the number of
      * digits in the unscaled value.)
-     * <p>
+     *
      * <p>
      * The precision of a zero value is 1.
      *

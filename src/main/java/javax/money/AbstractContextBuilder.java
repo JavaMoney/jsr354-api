@@ -176,7 +176,7 @@ public abstract class AbstractContextBuilder<B extends AbstractContextBuilder, C
      * <i>type</i>.
      *
      * @param value the attribute value, not null.
-     * @param key   the attribute's key, not {@code null}
+     * @param key the attribute's key, not {@code null}
      * @return this Builder, for chaining
      */
     public <T> B set(Class<T> key, T value) {

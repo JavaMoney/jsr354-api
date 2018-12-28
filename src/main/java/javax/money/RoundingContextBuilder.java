@@ -54,7 +54,7 @@ public final class RoundingContextBuilder extends AbstractContextBuilder<Roundin
 
     /**
      * Get the basic {@link CurrencyUnit}, which is based for this rounding type.
-     *
+     * @param currencyUnit the target currency unit not null.
      * @return the target CurrencyUnit, or null.
      */
     public RoundingContextBuilder setCurrency(CurrencyUnit currencyUnit) {

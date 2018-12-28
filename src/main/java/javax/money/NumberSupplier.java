@@ -18,13 +18,14 @@ package javax.money;
 
 
 /**
+ *  <p>
  * Represents a supplier of {@link NumberValue}-valued results. This is the
  * {@link NumberValue}-producing specialization of {@code Supplier} (as in Java 8).
- * <p>
+ *
  * <p>
  * There is no requirement that a distinct result be returned each time the
  * supplier is invoked.
- * <p>
+ *
  * <p>
  * This is a <b>functional interface</b> whose
  * functional method is {@link #getNumber()}.

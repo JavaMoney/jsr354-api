@@ -51,7 +51,7 @@ package javax.money;
  * <li>{@code a.b.MyMoney.ctx.maxScale} to define the maximal supported scale.</li>
  * <li>{@code a.b.MyMoney.ctx.fixedScale} to define the scale to be fixed (constant).</li>
  * </ul>
- * <p>
+ * 
  * <h2>Implementation specification</h2> Instances of this interface are <b>not</b> required to be
  * thread-safe!
  *

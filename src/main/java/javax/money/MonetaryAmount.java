@@ -67,7 +67,7 @@ package javax.money;
  * </code></pre>
  * </blockquote></li>
  * </ul>
- * <h4>Implementation specification</h4>
+ * <h3>Implementation specification</h3>
  * Implementations of this interface must be
  * <ul>
  * <li>thread-safe</li>
@@ -154,7 +154,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * <p>
      * Hereby also the method signature on the implementation type must return the concrete type, to
      * enable a fluent API, e.g.
-     * <p>
+     *
      * <blockquote>
      * <pre><code>
      * public final class MyMoney implements MonetaryAmount{
@@ -315,8 +315,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     MonetaryAmount subtract(MonetaryAmount amount);
 
     /**
-     * Returns a {@code MonetaryAmount} whose value is <tt>(this &times;
-     * multiplicand)</tt>, and whose scale is <code>this.scale() +
+     * Returns a {@code MonetaryAmount} whose value is <code>(this &times;
+     * multiplicand)</code>, and whose scale is <code>this.scale() +
      * multiplicand.scale()</code>.
      *
      * @param multiplicand value to be multiplied by this {@code MonetaryAmount}.
@@ -327,8 +327,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     MonetaryAmount multiply(long multiplicand);
 
     /**
-     * Returns a {@code MonetaryAmount} whose value is <tt>(this &times;
-     * multiplicand)</tt>, and whose scale is <code>this.scale() +
+     * Returns a {@code MonetaryAmount} whose value is <code>(this &times;
+     * multiplicand)</code>, and whose scale is <code>this.scale() +
      * multiplicand.scale()</code>.
      * By default the input value's scale will be rounded to
      * accommodate the format capabilities, and no {@link java.lang.ArithmeticException}
@@ -345,8 +345,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
 
     /**
-     * Returns a {@code MonetaryAmount} whose value is <tt>(this &times;
-     * multiplicand)</tt>, and whose scale is <code>this.scale() +
+     * Returns a {@code MonetaryAmount} whose value is <code>(this &times;
+     * multiplicand)</code>, and whose scale is <code>this.scale() +
      * multiplicand.scale()</code>.
      *
      * @param multiplicand value to be multiplied by this {@code MonetaryAmount}. If the multiplicand's scale exceeds
@@ -402,7 +402,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>this % divisor</code>.
-     * <p>
+     *
      * <p>
      * The remainder is given by
      * <code>this.subtract(this.divideToIntegralValue(divisor).multiply(divisor)</code> . Note that this
@@ -418,7 +418,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>this % divisor</code>.
-     * <p>
+     *
      * <p>
      * The remainder is given by
      * <code>this.subtract(this.divideToIntegralValue(divisor).multiply(divisor)</code> . Note that this
@@ -434,7 +434,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>this % divisor</code>.
-     * <p>
+     *
      * <p>
      * The remainder is given by
      * <code>this.subtract(this.divideToIntegralValue(divisor).multiply(divisor)</code> . Note that this
@@ -452,7 +452,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * Returns a two-element {@code MonetaryAmount} array containing the result of
      * {@code divideToIntegralValue} followed by the result of {@code remainder} on the two
      * operands.
-     * <p>
+     *
      * <p>
      * Note that if both the integer quotient and remainder are needed, this method is faster than
      * using the {@code divideToIntegralValue} and {@code remainder} methods separately because the
@@ -475,7 +475,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * Returns a two-element {@code MonetaryAmount} array containing the result of
      * {@code divideToIntegralValue} followed by the result of {@code remainder} on the two
      * operands.
-     * <p>
+     *
      * <p>
      * Note that if both the integer quotient and remainder are needed, this method is faster than
      * using the {@code divideToIntegralValue} and {@code remainder} methods separately because the
@@ -498,7 +498,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * Returns a two-element {@code MonetaryAmount} array containing the result of
      * {@code divideToIntegralValue} followed by the result of {@code remainder} on the two
      * operands.
-     * <p>
+     *
      * <p>
      * Note that if both the integer quotient and remainder are needed, this method is faster than
      * using the {@code divideToIntegralValue} and {@code remainder} methods separately because the

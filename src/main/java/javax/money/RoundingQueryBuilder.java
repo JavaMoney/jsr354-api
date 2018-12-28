@@ -97,7 +97,7 @@ public final class RoundingQueryBuilder extends AbstractQueryBuilder<RoundingQue
     }
 
     /**
-     * Creates a new RoundingQueryBuilder.
+     * @return Creates a new RoundingQueryBuilder.
      */
     public static RoundingQueryBuilder of() {
         return new RoundingQueryBuilder();

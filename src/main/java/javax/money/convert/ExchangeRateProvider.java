@@ -110,6 +110,7 @@ public interface ExchangeRateProvider{
      *
      * @param base base {@link CurrencyUnit}, not {@code null}
      * @param term term {@link CurrencyUnit}, not {@code null}
+     * @return the matching {@link ExchangeRate}.
      * @throws CurrencyConversionException If no such rate is available.
      */
     default ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term){
@@ -184,6 +185,7 @@ public interface ExchangeRateProvider{
      * recalculated as {@code 1/oldFactor}, since typically reverse rates are
      * not symmetric in most cases.
      *
+     * @param rate {@link ExchangeRate}, not {@code null}
      * @return the matching reversed {@link ExchangeRate}, or {@code null}, if
      * the rate cannot be reversed.
      */

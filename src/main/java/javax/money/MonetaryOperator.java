@@ -60,10 +60,6 @@ package javax.money;
  * thread-safe when invoked.
  * </p>
  *
- * <p>
- * This interface extends {@code java.util.function.UnaryOperator} introduced by Java 8.
- * </p>
- *
  * @author Werner Keil
  * @author Anatole Tresch
  *

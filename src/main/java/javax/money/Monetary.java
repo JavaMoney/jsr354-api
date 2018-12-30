@@ -97,7 +97,7 @@ public final class Monetary {
     }
 
     /**
-     * Required for deserialization only.
+     * Private singletons constructor.
      */
     private Monetary() {
     }

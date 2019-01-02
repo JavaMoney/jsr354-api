@@ -124,8 +124,7 @@ public final class DefaultMonetaryRoundingsSingletonSpi implements MonetaryRound
      */
     @Override
     public List<String> getDefaultProviderChain() {
-        List<String> result = new ArrayList<>();
-        result.addAll(Monetary.getRoundingProviderNames());
+        List<String> result = new ArrayList<>(Monetary.getRoundingProviderNames());
         Collections.sort(result);
         return result;
     }

@@ -60,8 +60,7 @@ final class DefaultMonetaryCurrenciesSingletonSpi implements MonetaryCurrenciesS
      */
     @Override
     public List<String> getDefaultProviderChain() {
-        List<String> list = new ArrayList<>();
-        list.addAll(getProviderNames());
+        List<String> list = new ArrayList<>(getProviderNames());
         Collections.sort(list);
         return list;
     }

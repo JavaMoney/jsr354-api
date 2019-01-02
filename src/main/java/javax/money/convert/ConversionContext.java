@@ -42,22 +42,22 @@ public final class ConversionContext extends AbstractContext {
     public static final ConversionContext ANY_CONVERSION =
             new ConversionContextBuilder().setRateType(RateType.ANY).build();
     /**
-     * ConversionContext quering for any deferred rates.
+     * ConversionContext querying for any deferred rates.
      */
     public static final ConversionContext DEFERRED_CONVERSION =
             new ConversionContextBuilder().setRateType(RateType.DEFERRED).build();
     /**
-     * ConversionContext quering for any historic rates.
+     * ConversionContext querying for any historic rates.
      */
     public static final ConversionContext HISTORIC_CONVERSION =
             new ConversionContextBuilder().setRateType(RateType.HISTORIC).build();
     /**
-     * ConversionContext quering for real-time rates.
+     * ConversionContext querying for real-time rates.
      */
     public static final ConversionContext REALTIME_CONVERSION =
             new ConversionContextBuilder().setRateType(RateType.REALTIME).build();
     /**
-     * ConversionContext quering for any other rates.
+     * ConversionContext querying for any other rates.
      */
     public static final ConversionContext OTHER_CONVERSION =
             new ConversionContextBuilder().setRateType(RateType.OTHER).build();

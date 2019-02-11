@@ -55,8 +55,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
             throw new IllegalArgumentException("At least one RateType is required.");
         }
         setProviderName(provider);
-        Set<RateType> rts = new HashSet<>();
-        rts.addAll(rateTypes);
+        Set<RateType> rts = new HashSet<>(rateTypes);
         set("rateTypes", rts);
     }
 
@@ -69,8 +68,7 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      */
     private ProviderContextBuilder(ProviderContext context) {
         importContext(context);
-        Set<RateType> rts = new HashSet<>();
-        rts.addAll(context.getRateTypes());
+        Set<RateType> rts = new HashSet<>(context.getRateTypes());
         set(ProviderContext.KEY_RATE_TYPES, rts);
     }
 
@@ -92,14 +90,12 @@ public final class ProviderContextBuilder extends AbstractContextBuilder<Provide
      * @return this, for chaining.
      * @throws IllegalArgumentException when not at least one {@link RateType} is provided.
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public ProviderContextBuilder setRateTypes(Collection<RateType> rateTypes) {
         Objects.requireNonNull(rateTypes);
         if (rateTypes.isEmpty()) {
             throw new IllegalArgumentException("At least one RateType is required.");
         }
-        Set rtSet = new HashSet<>();
-        rtSet.addAll(rateTypes);
+        Set<RateType> rtSet = new HashSet<>(rateTypes);
         set(ProviderContext.KEY_RATE_TYPES, rtSet);
         return this;
     }

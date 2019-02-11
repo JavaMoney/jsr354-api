@@ -130,7 +130,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns an operated object <b>of the same type</b> as this object with the operation made.
-     * Hereby returning an instannce <b>of the same type</b> is very important to prevent
+     * Hereby returning an instance <b>of the same type</b> is very important to prevent
      * uncontrolled mixup of implementations. Switching between implementations is still easily
      * possible, e.g. by using according {@link MonetaryAmountFactory} instances: <blockquote>
      * <pre><code>

@@ -24,6 +24,8 @@
 		<testng.version>6.8.5</testng.version>
         <mockito.version>1.10.19</mockito.version>
 		<jacoco.version>0.8.2</jacoco.version>
+        <findbugs.version>2.5.2</findbugs.version>
+        <javadoc.version>3.0.1</javadoc.version>
 	</properties>
 
 	<organization>
@@ -555,7 +557,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>${javadoc.version}</version>
 					<configuration>
 						<excludes>java.money</excludes>
 						<excludePackageNames>java.money</excludePackageNames>
@@ -879,7 +881,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.1</version>
+				<version>${javadoc.version}</version>
 				<inherited>true</inherited>
 				<reportSets>
 					<reportSet>
@@ -1021,7 +1023,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.5.2</version>
+				<version>${findbugs.version}</version>
 				<configuration>
 					<xrefLocation>${project.reporting.outputDirectory}/../xref</xrefLocation>
 					<xmlOutput>true</xmlOutput>
@@ -1042,7 +1044,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.5.2</version>
+				<version>${findbugs.version}</version>
 				<configuration>
 					<xrefLocation>${project.reporting.outputDirectory}/../xref</xrefLocation>
 					<xmlOutput>true</xmlOutput>

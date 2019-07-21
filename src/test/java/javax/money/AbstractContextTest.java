@@ -131,19 +131,6 @@ public class AbstractContextTest {
         assertEquals(Integer.class, ctx.getType("a"));
         assertEquals(Integer.class, ctx.getType("b"));
     }
-//
-//    @Test
-//    public void testGetTimestampMillis() {
-//        TestContext ctx = new TestContext.Builder().setTimestampMillis(2000L).build();
-//        assertEquals(Long.valueOf(2000L), ctx.getTimestampMillis());
-//    }
-//
-//    @Test
-//    public void testGetTimestamp() {
-//        LocalDateTime now = LocalDateTime.now();
-//        TestContext ctx = new TestContext.Builder().setTimestamp(now).build();
-//        assertEquals(now, ctx.getTimestamp());
-//    }
 
     private static class TestContext extends AbstractContext {
 

@@ -81,7 +81,7 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable {
     /**
      * Gets the currency codes, or the regular expression to select codes.
      *
-     * @return the query for chaining.
+     * @return the target currency codes or the regular expression, never null.
      */
     public Collection<String> getCurrencyCodes() {
         Collection<String> result = get(KEY_QUERY_CURRENCY_CODES, Collection.class);
@@ -94,7 +94,7 @@ public final class CurrencyQuery extends AbstractQuery implements Serializable {
     /**
      * Gets the numeric codes. Setting it to -1 search for currencies that have no numeric code.
      *
-     * @return the query for chaining.
+     * @return the target numeric codes, never null.
      */
     public Collection<Integer> getNumericCodes() {
         Collection<Integer> result = get(KEY_QUERY_NUMERIC_CODES, Collection.class);

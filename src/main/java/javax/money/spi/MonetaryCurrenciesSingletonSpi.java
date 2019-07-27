@@ -42,7 +42,7 @@ public interface MonetaryCurrenciesSingletonSpi {
     List<String> getDefaultProviderChain();
 
     /**
-     * Access a list of the currently registered providers. Th names can be used to
+     * Access a list of the currently registered providers. The names can be used to
      * access subsets of the overall currency range by calling {@link #getCurrencies(String...)}.
      *
      * @return the currencies returned by the given provider chain. If not provider names are provided

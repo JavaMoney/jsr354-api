@@ -26,8 +26,8 @@ import java.util.Locale;
  * provides information such as
  * <ul>
  * <li>the providers that may provide {@link CurrencyUnit} instances
- * <li>a target timestamp / temporal unit, when the {@link CurrencyUnit} instances should be valid
- * <li>any other attributes, identified by the attribute type, e.g. regions, tenants etc.
+ * <li>any other attributes, identified by the attribute type, e.g. regions, tenants,
+ *     a target timestamp / temporal unit, when the {@link CurrencyUnit} instances should be valid, etc.
  * </ul>
  * The effective attributes supported are only determined by the implementations of {@link javax.money.spi
  * .CurrencyProviderSpi}.

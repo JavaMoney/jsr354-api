@@ -1,13 +1,12 @@
 ﻿JSR 354 Money and Currency -- Specification
 ===========================================
 :title: JSR 354 (Money & Currency) - Specification
-:revnumber: 1.0
-:revremark: Final
-:revdate: May 2015
-:longversion: 1.0 (Final) May 2015
-:authorinitials: ATR
-:author: Anatole Tresch, Credit Suisse
-:email: <anatole.tresch@credit-suisse.com>
+:revnumber: 1.1
+:revremark: Snapshot
+:revdate: Nov 2019
+:longversion: 1.1 (MR 1) November 2019
+:authorinitials: WKE, OGS, ATR
+:author: Werner Keil; Otavio Santana; Anatole Tresch, Trivadis
 :source-highlighter: coderay
 :website: http://javamoney.org/
 :iconsdir: {imagesdir}/icons
@@ -29,14 +28,17 @@ image::https://raw.githubusercontent.com/JavaMoney/jsr354-api/master/src/main/as
 ==== Version Information:
 ------------------------------------------------------------------
 Specification: JSR-354 Money and Currency API ("Specification")
-Version:       1.0
-Status:        Final
-Release:       May 2015
-Copyright:     2012-2015
+Version:       1.1
+Status:        Snapshot
+Release:       November 2019
+Copyright:     2012-2016
                Credit Suisse AG
                P.O.Box
                8070 Zurich
                Switzerland
+               
+               2018-2019
+               Werner Keil, Otavio Santana, Trivadis AG
                All rights reserved.
 ------------------------------------------------------------------
 
@@ -69,7 +71,7 @@ persons have actively contributed to Java Money in alphabetical order:
 * Thomas Huesler
 * Scott James (Credit Suisse)
 * Tony Jewell
-* Werner Keil
+* Werner Keil (Maintenance Lead)
 * Bob Lee 
 * Simon Martinelli
 * Sanjay Nagpal (Credit Suisse)
@@ -77,8 +79,8 @@ persons have actively contributed to Java Money in alphabetical order:
 * Jefferson Prestes
 * Arumugam Swaminathan
 * Mohamed Taman
-* Anatole Tresch (Credit Suisse, Spec Lead)
-* Otávio Santana
+* Anatole Tresch (Trivadis, Maintenance Lead)
+* Otávio Santana  (Maintenance Lead)
 
 === Specification goals
 Monetary values are a key feature of many applications, yet the JDK provides little or no support.
@@ -113,7 +115,7 @@ Basically this affects usage of +java.math+ and +java.text+. Nevertheless the re
 existing functionality and the JSR also includes requirements (also checkable by the TCK) to ensure a minimal set of
 functionality on Java SE 7 and SE 8.
 During the development of the JSR a wide set of features were implemented. Most of these features will not end up within
-the JSR itself, enabling feature innovation elsewhere. The corresponding libraries were avaailable under [JavaMoney]
+the JSR itself, enabling feature innovation elsewhere. The corresponding libraries were available under [JavaMoney]
 as an Apache 2 licensed open source project. Though these libraries were removed from the JSR, their development
 ensured that scope was fully evaluated and that the parts best suited to standardization were identified.
 
@@ -452,7 +454,7 @@ accessor classes. Summarizing the following singletons are available as part of 
 * +Monetary+
   ** provides access and query functionality to +CurrencyUnit+ instances.
   ** provides access and query functionality to factories for creating +MonetaryAmount+ instances.
-  ** provides provides access and query functionality to +MonetaryRounding+ instances.
+  ** provides access and query functionality to +MonetaryRounding+ instances.
 
 Additionally the conversion and formatting module also provide singletons:
 
@@ -1700,7 +1702,7 @@ MonetaryAmountFactory<?> f = Monetary.getDefaultAmountFactory();
 MonetaryAmount amount = f.setCurrency("CHF").setNumber(12.50).create();
 
 MonetaryAmountFormat format =
-                        MonetaryAmountFormats.getAmountFormat(Locale.GERMANY);
+                        MonetaryFormats.getAmountFormat(Locale.GERMANY);
 
 // format the given amount
 String formatted = format.format(amount); // result: CHF 12,50
@@ -1718,7 +1720,7 @@ for this we could configure an +AmountFormatContext+ that implements this behavi
 --------------------------------------------------------------------------
 AmountFormatQuery query = AmountFormatQueryBuilder.of(new Locale("","INR"))
                                 .set("groupSizes", new int[]{3,2]).build();
-MonetaryAmountFormat format = MonetaryAmountFormats.getAmountFormat(query);
+MonetaryAmountFormat format = MonetaryFormats.getAmountFormat(query);
 
 MonetaryAmount amount =
           Monetary.getDefaultAmountFactory()

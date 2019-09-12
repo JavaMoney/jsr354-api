@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-module java.money {
+module javax.money {
     exports javax.money;
     exports javax.money.convert;
     exports javax.money.format;

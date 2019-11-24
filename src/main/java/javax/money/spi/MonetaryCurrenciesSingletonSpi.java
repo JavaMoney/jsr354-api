@@ -169,7 +169,7 @@ public interface MonetaryCurrenciesSingletonSpi {
     default CurrencyUnit getCurrency(CurrencyQuery query) {
         Set<CurrencyUnit> currencies = getCurrencies(query);
         if (currencies.isEmpty()) {
-            return null;
+            throw new MonetaryException("CurrencyUnit not found: " + query);
         }
         if (currencies.size() == 1) {
             return currencies.iterator().next();

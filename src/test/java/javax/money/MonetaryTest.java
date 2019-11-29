@@ -75,7 +75,7 @@ public class MonetaryTest {
         assertNotNull(curs);
     }
 
-    @Test
+    @Test(expectedExceptions = MonetaryException.class)
     public void testGetCurrency_CurrencyQuery() {
         CurrencyUnit cur = Monetary.getCurrency(
                 CurrencyQueryBuilder.of().build());

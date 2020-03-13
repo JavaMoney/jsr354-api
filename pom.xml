@@ -850,7 +850,8 @@
                     <excludes>
                         <exclude>.editorconfig</exclude>
                         <exclude>.gitattributes</exclude>
-                         <exclude>.travis.yml</exclude>
+						<exclude>.github/**</exclude>
+						<exclude>.travis.yml</exclude>
                         <exclude>.circleci/**</exclude>
                         <exclude>**/LICENSE.txt</exclude>
                         <exclude>**/README.md</exclude>

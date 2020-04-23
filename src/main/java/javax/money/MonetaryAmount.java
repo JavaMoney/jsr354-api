@@ -96,7 +96,7 @@ package javax.money;
  *
  * @author Anatole Tresch
  * @author Werner Keil
- * @version 0.8.2
+ * @version 1.0.0
  * @see #with(MonetaryOperator)
  */
 public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Comparable<MonetaryAmount>{
@@ -586,6 +586,9 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>+this</code>, with rounding according to
      * the context settings.
+     *
+     * <p>This method, which simply returns this {@code MonetaryAmount}
+     * is included for symmetry with the unary minus method {@link #negate()}.
      *
      * @return {@code this}, rounded as necessary. A zero result will have a scale of 0.
      * @throws ArithmeticException if rounding fails.

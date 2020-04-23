@@ -1,6 +1,6 @@
 /*
  * Copyright 2012-2016 Credit Suisse
- * Copyright 2018-2019 Werner Keil, Otavio Santana, Trivadis AG
+ * Copyright 2018-2020 Werner Keil, Otavio Santana, Trivadis AG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 package javax.money;
-
-
 
 /**
  * Represents an operation on a single {@link MonetaryAmount} that produces a
@@ -63,7 +61,7 @@ package javax.money;
  * @author Werner Keil
  * @author Anatole Tresch
  *
- * @version 0.9
+ * @version 1.0
  */
 @FunctionalInterface
 public interface MonetaryOperator{
@@ -74,5 +72,4 @@ public interface MonetaryOperator{
      * @return the applied amount.
      */
     MonetaryAmount apply(MonetaryAmount amount);
-
 }

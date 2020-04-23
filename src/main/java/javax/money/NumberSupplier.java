@@ -1,6 +1,6 @@
 /*
  * Copyright 2012-2016 Credit Suisse
- * Copyright 2018-2019 Werner Keil, Otavio Santana, Trivadis AG
+ * Copyright 2018-2020 Werner Keil, Otavio Santana, Trivadis AG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ package javax.money;
  *
  * @author Werner Keil
  * @author Anatole Tresch
- * @version 0.6
+ * @version 1.0
  * @see java.util.function.Supplier
  * @since 0.8
  */

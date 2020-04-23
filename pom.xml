@@ -21,6 +21,8 @@
 		<maven.compiler.release>9</maven.compiler.release>
 		<maven.compiler.source>9</maven.compiler.source>
 		<basedir>.</basedir>
+		<thisYear>2020</thisYear>
+
 		<!-- Dependency versions -->
 		<testng.version>6.8.5</testng.version>
         <mockito.version>1.10.19</mockito.version>

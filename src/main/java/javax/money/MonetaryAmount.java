@@ -96,7 +96,7 @@ package javax.money;
  *
  * @author Anatole Tresch
  * @author Werner Keil
- * @version 1.0.0
+ * @version 1.0.1
  * @see #with(MonetaryOperator)
  */
 public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Comparable<MonetaryAmount>{
@@ -577,21 +577,22 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>-this</code>, and whose scale is
-     * {@code this.scale()}.
+     * {@code this.scale()}, with rounding according to the context settings.
      *
-     * @return {@code -this}.
+     * @throws ArithmeticException if rounding fails.
+     * @return {@code -this}, rounded as necessary.
+     * @see java.math.BigDecimal#negate()
      */
     MonetaryAmount negate();
 
     /**
-     * Returns a {@code MonetaryAmount} whose value is <code>+this</code>, with rounding according to
-     * the context settings.
+     * Returns a {@code MonetaryAmount} whose value is <code>+this</code>.
      *
      * <p>This method, which simply returns this {@code MonetaryAmount}
      * is included for symmetry with the unary minus method {@link #negate()}.
      *
-     * @return {@code this}, rounded as necessary. A zero result will have a scale of 0.
-     * @throws ArithmeticException if rounding fails.
+     * @return {@code this}. A zero result will have a scale of 0.
+     * @see #negate()
      * @see java.math.BigDecimal#plus()
      */
     MonetaryAmount plus();

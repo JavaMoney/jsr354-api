@@ -33,6 +33,7 @@ import java.io.Serializable;
  * This class is immutable, serializable and thread-safe.
  *
  * @author Anatole Tresch
+ * @author Werner Keil
  */
 public final class MonetaryContext extends AbstractContext implements Serializable {
 
@@ -44,12 +45,12 @@ public final class MonetaryContext extends AbstractContext implements Serializab
     static final String AMOUNT_TYPE = "amountType";
 
     /**
-     * Key name for the context.
+     * Key name for the precision.
      */
     private static final String PRECISION = "precision";
 
     /**
-     * Key name for the currency provider.
+     * Key name for the fixed scale.
      */
     private static final String FIXED_SCALE = "fixedScale";
 

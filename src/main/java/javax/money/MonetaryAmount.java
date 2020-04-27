@@ -96,7 +96,7 @@ package javax.money;
  *
  * @author Anatole Tresch
  * @author Werner Keil
- * @version 1.0.1
+ * @version 1.1
  * @see #with(MonetaryOperator)
  */
 public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Comparable<MonetaryAmount>{
@@ -292,32 +292,32 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     int signum();
 
     /**
-     * Returns a {@code MonetaryAmount} whose value is <code>this + amount</code>, and whose scale is <code>max(this.scale(),
-     * amount.scale()</code>.
+     * Returns a {@code MonetaryAmount} whose value is <code>this + augend</code>, and whose scale is <code>max(this.getContext().getMaxScale(),
+     * augend.getContext().getMaxScale())</code>.
      *
-     * @param amount value to be added to this {@code MonetaryAmount}.
-     * @return {@code this + amount}
+     * @param augend value to be added to this {@code MonetaryAmount}.
+     * @return {@code this + augend}
      * @throws ArithmeticException if the result exceeds the numeric capabilities of this implementation class, i.e.
      *                             the {@link MonetaryContext} cannot be adapted as required.
      */
-    MonetaryAmount add(MonetaryAmount amount);
+    MonetaryAmount add(MonetaryAmount augend);
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>this -
-     * amount</code>, and whose scale is <code>max(this.scale(),
-     * subtrahend.scale()</code>.
+     * amount</code>, and whose scale is <code>max(this.getContext().getMaxScale(),
+     * subtrahend.getContext().getMaxScale()</code>.
      *
-     * @param amount value to be subtracted from this {@code MonetaryAmount}.
-     * @return {@code this - amount}
+     * @param subtrahend value to be subtracted from this {@code MonetaryAmount}.
+     * @return {@code this - subtrahend}
      * @throws ArithmeticException if the result exceeds the numeric capabilities of this implementation class, i.e.
      *                             the {@link MonetaryContext} cannot be adapted as required.
      */
-    MonetaryAmount subtract(MonetaryAmount amount);
+    MonetaryAmount subtract(MonetaryAmount subtrahend);
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>(this &times;
-     * multiplicand)</code>, and whose scale is <code>this.scale() +
-     * multiplicand.scale()</code>.
+     * multiplicand)</code>, and whose scale is <code>this.getContext().getMaxScale() +
+     * multiplicand.getContext().getMaxScale()</code>.
      *
      * @param multiplicand value to be multiplied by this {@code MonetaryAmount}.
      * @return {@code this * multiplicand}
@@ -328,8 +328,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>(this &times;
-     * multiplicand)</code>, and whose scale is <code>this.scale() +
-     * multiplicand.scale()</code>.
+     * multiplicand)</code>, and whose scale is <code>this.getContext().getMaxScale() +
+     * multiplicand.getContext().getMaxScale()</code>.
      * By default the input value's scale will be rounded to
      * accommodate the format capabilities, and no {@link java.lang.ArithmeticException}
      * is thrown if the input number's scale exceeds the capabilities.
@@ -346,8 +346,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>(this &times;
-     * multiplicand)</code>, and whose scale is <code>this.scale() +
-     * multiplicand.scale()</code>.
+     * multiplicand)</code>, and whose scale is <code>this.getContext().getMaxScale() +
+     * multiplicand.getContext().getMaxScale()</code>.
      *
      * @param multiplicand value to be multiplied by this {@code MonetaryAmount}. If the multiplicand's scale exceeds
      *                     the
@@ -360,8 +360,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>this /
-     * divisor</code>, and whose preferred scale is <code>this.scale() -
-     * divisor.scale()</code>; if the exact quotient cannot be represented an {@code ArithmeticException}
+     * divisor</code>, and whose preferred scale is <code>this.getContext().getMaxScale() -
+     * divisor.getContext().getMaxScale()</code>; if the exact quotient cannot be represented an {@code ArithmeticException}
      * is thrown.
      *
      * @param divisor value by which this {@code MonetaryAmount} is to be divided.
@@ -374,8 +374,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>this /
-     * divisor</code>, and whose preferred scale is <code>this.scale() -
-     * divisor.scale()</code>; if the exact quotient cannot be represented an {@code ArithmeticException}
+     * divisor</code>, and whose preferred scale is <code>this.getContext().getMaxScale() -
+     * divisor.getContext().getMaxScale()</code>; if the exact quotient cannot be represented an {@code ArithmeticException}
      * is thrown.
      *
      * @param divisor value by which this {@code MonetaryAmount} is to be divided.
@@ -388,8 +388,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>this /
-     * divisor</code>, and whose preferred scale is <code>this.scale() -
-     * divisor.scale()</code>; if the exact quotient cannot be represented an {@code ArithmeticException}
+     * divisor</code>, and whose preferred scale is <code>this.getContext().getMaxScale() -
+     * divisor.getContext().getMaxScale()</code>; if the exact quotient cannot be represented an {@code ArithmeticException}
      * is thrown.
      *
      * @param divisor value by which this {@code MonetaryAmount} is to be divided.
@@ -520,8 +520,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     /**
      * Returns a {@code MonetaryAmount} whose value is the integer part of the quotient
      * <code>this / divisor</code> rounded down. The preferred scale of the result is
-     * <code>this.scale() -
-     * divisor.scale()</code>.
+     * <code>this.getContext().getMaxScale() -
+     * divisor.getContext().getMaxScale()</code>.
      *
      * @param divisor value by which this {@code BigDecimal} is to be divided.
      * @return The integer part of {@code this / divisor}.
@@ -533,7 +533,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     /**
      * Returns a {@code MonetaryAmount} whose value is the integer part of the quotient
      * <code>this / divisor</code> rounded down. The preferred scale of the result is
-     * <code>this.scale() - divisor.scale()</code>.
+     * <code>this.getContext().getMaxScale() - divisor.getContext().getMaxScale()</code>.
      *
      * @param divisor value by which this {@code BigDecimal} is to be divided.
      * @return The integer part of {@code this / divisor}.
@@ -545,8 +545,8 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
     /**
      * Returns a {@code MonetaryAmount} whose value is the integer part of the quotient
      * <code>this / divisor</code> rounded down. The preferred scale of the result is
-     * <code>this.scale() -
-     * divisor.scale()</code>.
+     * <code>this.getContext().getMaxScale() -
+     * divisor.getContext().getMaxScale()</code>.
      *
      * @param divisor value by which this {@code BigDecimal} is to be divided.
      * @return The integer part of {@code this / divisor}.
@@ -557,7 +557,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose numerical value is equal to ( {@code this} *
-     * 10<sup>n</sup>). The scale of the result is <code>this.scale() - n</code>.
+     * 10<sup>n</sup>). The scale of the result is <code>this.getContext().getMaxScale() - n</code>.
      *
      * @param power the power.
      * @return the calculated amount value.
@@ -569,7 +569,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose value is the absolute value of this
-     * {@code MonetaryAmount}, and whose scale is {@code this.scale()}.
+     * {@code MonetaryAmount}, and whose scale is {@code this.getContext().getMaxScale()}.
      *
      * @return <code>abs(this</code>
      */
@@ -577,7 +577,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
 
     /**
      * Returns a {@code MonetaryAmount} whose value is <code>-this</code>, and whose scale is
-     * {@code this.scale()}, with rounding according to the context settings.
+     * {@code this.getContext().getMaxScale()}, with rounding according to the context settings.
      *
      * @throws ArithmeticException if rounding fails.
      * @return {@code -this}, rounded as necessary.

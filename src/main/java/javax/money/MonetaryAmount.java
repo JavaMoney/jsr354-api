@@ -591,7 +591,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * <p>This method, which simply returns this {@code MonetaryAmount}
      * is included for symmetry with the unary minus method {@link #negate()}.
      *
-     * @return {@code this}. A zero result will have a scale of 0.
+     * @return {@code this}.
      * @see #negate()
      * @see java.math.BigDecimal#plus()
      */

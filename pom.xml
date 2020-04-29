@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -24,11 +25,12 @@
 		<thisYear>2020</thisYear>
 
 		<!-- Dependency versions -->
-		<testng.version>6.8.5</testng.version>
-        <mockito.version>1.10.19</mockito.version>
-		<jacoco.version>0.8.2</jacoco.version>
-        <findbugs.version>3.0.5</findbugs.version>
-        <javadoc.version>3.0.1</javadoc.version>
+		<testng.version>7.1.0</testng.version>
+		<mockito.version>1.10.19</mockito.version>
+		<hamcrest.version>2.2</hamcrest.version>
+		<jacoco.version>0.8.5</jacoco.version>
+		<findbugs.version>3.0.5</findbugs.version>
+		<javadoc.version>3.0.1</javadoc.version>
 	</properties>
 
 	<organization>
@@ -221,18 +223,18 @@
 		<url>https://github.com/JavaMoney/jsr354-api</url>
 	</scm>
 
-    <distributionManagement>
-        <repository>
-            <id>bintray-release</id>
-            <name>oss-jfrog-artifactory-releases</name>
-            <url>https://oss.jfrog.org/artifactory/oss-release-local</url>
-        </repository>
-        <snapshotRepository>
-            <id>bintray-snapshot</id>
-            <name>oss-jfrog-artifactory-snapshots</name>
-            <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
-        </snapshotRepository>
-    </distributionManagement>
+	<distributionManagement>
+		<repository>
+			<id>bintray-release</id>
+			<name>oss-jfrog-artifactory-releases</name>
+			<url>https://oss.jfrog.org/artifactory/oss-release-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>bintray-snapshot</id>
+			<name>oss-jfrog-artifactory-snapshots</name>
+			<url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<repositories>
 		<repository>
@@ -244,9 +246,9 @@
 			<url>https://oss.jfrog.org/artifactory/libs-release</url>
 		</repository>
 		<repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 			<id>bintray-snapshot</id>
 			<name>libs-snapshot</name>
 			<url>https://oss.jfrog.org/artifactory/libs-snapshot</url>
@@ -254,79 +256,79 @@
 	</repositories>
 
 	<profiles>
-        <profile>
-            <id>travis</id>
-            <activation>
-                <property>
-                    <name>env.TRAVIS</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.eluder.coveralls</groupId>
-                        <artifactId>coveralls-maven-plugin</artifactId>
-                        <version>2.2.0</version>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-					<!--<plugin>-->
-						<!--<groupId>org.jfrog.buildinfo</groupId>-->
-						<!--<artifactId>artifactory-maven-plugin</artifactId>-->
-						<!--<version>2.6.1</version>-->
-						<!--<inherited>false</inherited>-->
-						<!--<executions>-->
-							<!--<execution>-->
-								<!--<id>build-info</id>-->
-								<!--<goals>-->
-									<!--<goal>publish</goal>-->
-								<!--</goals>-->
-								<!--<configuration>-->
-									<!--<deployProperties>-->
-										<!--<gradle>awesome</gradle>-->
-										<!--<review.team>qa</review.team>-->
-									<!--</deployProperties>-->
-									<!--<publisher>-->
-										<!--<contextUrl>https://oss.jfrog.org</contextUrl>-->
-										<!--<username>javamoney</username>-->
-										<!--<password></password>-->
-										<!--<repoKey>libs-release-local</repoKey>-->
-										<!--<snapshotRepoKey>libs-snapshot-local</snapshotRepoKey>-->
-									<!--</publisher>-->
-								<!--</configuration>-->
-							<!--</execution>-->
-						<!--</executions>-->
-					<!--</plugin>-->
-                </plugins>
-            </build>
-        </profile>
+		<profile>
+			<id>travis</id>
+			<activation>
+				<property>
+					<name>env.TRAVIS</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.eluder.coveralls</groupId>
+						<artifactId>coveralls-maven-plugin</artifactId>
+						<version>2.2.0</version>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!--<plugin> -->
+					<!--<groupId>org.jfrog.buildinfo</groupId> -->
+					<!--<artifactId>artifactory-maven-plugin</artifactId> -->
+					<!--<version>2.6.1</version> -->
+					<!--<inherited>false</inherited> -->
+					<!--<executions> -->
+					<!--<execution> -->
+					<!--<id>build-info</id> -->
+					<!--<goals> -->
+					<!--<goal>publish</goal> -->
+					<!--</goals> -->
+					<!--<configuration> -->
+					<!--<deployProperties> -->
+					<!--<gradle>awesome</gradle> -->
+					<!--<review.team>qa</review.team> -->
+					<!--</deployProperties> -->
+					<!--<publisher> -->
+					<!--<contextUrl>https://oss.jfrog.org</contextUrl> -->
+					<!--<username>javamoney</username> -->
+					<!--<password></password> -->
+					<!--<repoKey>libs-release-local</repoKey> -->
+					<!--<snapshotRepoKey>libs-snapshot-local</snapshotRepoKey> -->
+					<!--</publisher> -->
+					<!--</configuration> -->
+					<!--</execution> -->
+					<!--</executions> -->
+					<!--</plugin> -->
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>release-sign-artifacts</id>
 			<activation>
@@ -404,12 +406,18 @@
 				<version>${testng.version}</version>
 				<scope>test</scope>
 			</dependency>
-            <dependency>
-              <groupId>org.mockito</groupId>
-              <artifactId>mockito-all</artifactId>
-              <version>${mockito.version}</version>
-              <scope>test</scope>
-            </dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>hamcrest-library</artifactId>
+				<version>${hamcrest.version}</version>
+				<scope>test</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -419,11 +427,16 @@
 			<artifactId>testng</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -636,27 +649,27 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
-				
+
 				<!-- License -->
-                <plugin>
-                    <groupId>com.mycila</groupId>
-                    <artifactId>license-maven-plugin</artifactId>
-                    <version>3.0</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>			
+				<plugin>
+					<groupId>com.mycila</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>3.0</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -837,49 +850,49 @@
 					</execution>
 				</executions>
 			</plugin>
-			
-            <!-- ======================================================= -->
-            <!-- Maven License Plugin -->
-            <!-- ======================================================= -->
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <configuration>
-                    <header>src/license/asl_2/header.txt</header>
-                    <properties>
-                        <owner>${project.organization.name}</owner>
-                        <currentYear>${thisYear}</currentYear>
-                    </properties>
-                    <excludes>
-                        <exclude>.editorconfig</exclude>
-                        <exclude>.gitattributes</exclude>
+
+			<!-- ======================================================= -->
+			<!-- Maven License Plugin -->
+			<!-- ======================================================= -->
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<header>src/license/asl_2/header.txt</header>
+					<properties>
+						<owner>${project.organization.name}</owner>
+						<currentYear>${thisYear}</currentYear>
+					</properties>
+					<excludes>
+						<exclude>.editorconfig</exclude>
+						<exclude>.gitattributes</exclude>
 						<exclude>.github/**</exclude>
 						<exclude>.travis.yml</exclude>
-                        <exclude>.circleci/**</exclude>
-                        <exclude>**/LICENSE.txt</exclude>
-                        <exclude>**/README.md</exclude>
-                        <exclude>**/pom.xml</exclude>
-                        <exclude>**/settings.xml</exclude>
-                        <exclude>src/test/resources/**</exclude>
-                        <exclude>src/main/resources/**</exclude>
-                        <exclude>src/main/config/**</exclude>
-                        <exclude>src/main/emf/**</exclude>
-                        <exclude>src/site/**</exclude>
-                        <exclude>src/asciidoc/**</exclude>
-                        <exclude>src/license/**</exclude>
-                        <exclude>*.css</exclude>
-                        <exclude>*.jpg</exclude>
-                        <exclude>*.png</exclude>
-                        <exclude>*.yml</exclude>
-                    </excludes>
-                    <headerDefinitions>
-                        <headerDefinition>src/license/headers.xml</headerDefinition>
-                    </headerDefinitions>
-                    <mapping>
-                        <java>JAVA_STYLE</java>
-                    </mapping>
-                </configuration>
-            </plugin>
+						<exclude>.circleci/**</exclude>
+						<exclude>**/LICENSE.txt</exclude>
+						<exclude>**/README.md</exclude>
+						<exclude>**/pom.xml</exclude>
+						<exclude>**/settings.xml</exclude>
+						<exclude>src/test/resources/**</exclude>
+						<exclude>src/main/resources/**</exclude>
+						<exclude>src/main/config/**</exclude>
+						<exclude>src/main/emf/**</exclude>
+						<exclude>src/site/**</exclude>
+						<exclude>src/asciidoc/**</exclude>
+						<exclude>src/license/**</exclude>
+						<exclude>*.css</exclude>
+						<exclude>*.jpg</exclude>
+						<exclude>*.png</exclude>
+						<exclude>*.yml</exclude>
+					</excludes>
+					<headerDefinitions>
+						<headerDefinition>src/license/headers.xml</headerDefinition>
+					</headerDefinitions>
+					<mapping>
+						<java>JAVA_STYLE</java>
+					</mapping>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -912,11 +925,14 @@
 							<show>private</show>
 							<additionalparam>
 								-Xdoclint:none
-								-inferrel -inferdep -quiet -hide java.*
+								-inferrel -inferdep -quiet -hide
+								java.*
 								-collpackages java.util.*
-								-postfixpackage -nodefontname Tahoma
+								-postfixpackage -nodefontname
+								Tahoma
 								-nodefontsize 9
-								-nodefontpackagesize 7 -outputencoding UTF-8
+								-nodefontpackagesize 7 -outputencoding
+								UTF-8
 							</additionalparam>
 						</configuration>
 					</reportSet>

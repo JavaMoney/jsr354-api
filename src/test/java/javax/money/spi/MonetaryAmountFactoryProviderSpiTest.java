@@ -19,9 +19,8 @@ package javax.money.spi;
 import static javax.money.spi.MonetaryAmountFactoryProviderSpi.QueryInclusionPolicy;
 import static javax.money.spi.MonetaryAmountFactoryProviderSpi.QueryInclusionPolicy.ALWAYS;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat; 
 import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
-
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

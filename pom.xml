@@ -191,8 +191,9 @@
 
 	<mailingLists>
 		<mailingList>
-			<name>JavaMoney Support Mail</name>
-			<post>support@javamoney.org</post>
+			<name>JavaMoney @ groups.io</name>
+			<subscribe>https://groups.io/g/javamoney/editsub</subscribe>
+			<post>javamoney@groups.io</post>
 		</mailingList>
 	</mailingLists>
 

@@ -2,9 +2,9 @@
 ===========================================
 :title: JSR 354 (Money & Currency) - Specification
 :revnumber: 1.1
-:revremark: Snapshot
-:revdate: Nov 2019
-:longversion: 1.1 (MR 1) November 2019
+:revremark: Maintenance Release 1
+:revdate: May 2020
+:longversion: 1.1 (MR 1) May 2020
 :authorinitials: WKE, OGS, ATR
 :author: Werner Keil; Otavio Santana; Anatole Tresch, Trivadis
 :source-highlighter: coderay
@@ -29,15 +29,15 @@ image::https://raw.githubusercontent.com/JavaMoney/jsr354-api/master/src/main/as
 ------------------------------------------------------------------
 Specification: JSR-354 Money and Currency API ("Specification")
 Version:       1.1
-Status:        Snapshot
-Release:       November 2019
+Status:        Maintenance Release 1
+Release:       May 2020
 Copyright:     2012-2016
                Credit Suisse AG
                P.O.Box
                8070 Zurich
                Switzerland
                
-               2018-2019
+               2018-2020
                Werner Keil, Otavio Santana, Trivadis AG
                All rights reserved.
 ------------------------------------------------------------------
@@ -103,31 +103,27 @@ Nevertheless the API was designed to support different implementations of moneta
 several ways. So it should be flexible enough that corresponding implementations can be used transparently to
 accommodate such applications.
 
-As many applications in the financial area will quite probably use Java 7 for several years this JSR supports
-both platforms, Java 7 as well as Java 8.
+As it is the first Java LTS version and applications in the financial area will probably use Java 8 for several years this JSR supports
+Java 8 as the minimum version.
 
 [[Scope]]
 === Scope
 JSR 354 targets a standalone scope. Nevertheless we considered a later integration into the JDK, so its design and scope
 must follow JDK patterns. Additionally the work on the JSR has shown, that it is possible to define a flexible
-and comprehensive API that is not only be compatible with Java 7 and Java 8, but also with Java Embedded.
+and comprehensive API that is compatible with Java 8, and also with Java SE Embedded.
 Basically this affects usage of +java.math+ and +java.text+. Nevertheless the reference implementations are free to use
 existing functionality and the JSR also includes requirements (also checkable by the TCK) to ensure a minimal set of
-functionality on Java SE 7 and SE 8.
+functionality on Java SE 8.
 During the development of the JSR a wide set of features were implemented. Most of these features will not end up within
 the JSR itself, enabling feature innovation elsewhere. The corresponding libraries were available under [JavaMoney]
 as an Apache 2 licensed open source project. Though these libraries were removed from the JSR, their development
 ensured that scope was fully evaluated and that the parts best suited to standardization were identified.
 
 === Required Java version
-The specification supports Java SE platforms version 7 and 8 (in fact the Java 7 based API is even compatible with Java 6).
-The Java 8 based API is backward compatible with the Java 7 version since its only adding additional default method
-implementations to the API. Implementations hereby may target any suitable Java SE version, or given an increasing
-SE/ME correlation also future ME versions. The JSR consequently provides two reference implementations, one based on
-Java 7, one based on Java 8 language features. Since the Java 8 version is backward compatible the same TCK can be
-used for testing both reference implementations.
-This allows to design an API, which will easily fit into Java 8 and beyond, but still supporting
-older releases.
+The specification supports Java SE platforms version 8 and above.
+The API is backward compatible with Java 8 while exposing a JPMS (Jigsaw) module for Java 9 and above, 
+so implementations may target any suitable Java SE version.
+The reference implementation "Moneta" is modular and supports the Java Platform Module System (JPMS) as well as OSGi bundles, but it's binary compatible with Java 8 as the minimal Java version.
 
 
 === How this document is organized
@@ -147,10 +143,10 @@ Use Cases
 This section describes some, but not all, of the use cases that should be covered with this JSR. 
 
 === Scenario eCommerce (Online-Shop)
-One basic scenario that must be covered is a traditional web shop. Hereby products are presented and collected in a shopping cart. Each product can be added once or multiple times to the cart. Some sites also need to represent non integral amounts, such as 1.5kg of a product. Additionally a site may be internationalized handling multiple currencies, perhaps controlled by user settings or address.
+One basic scenario that must be covered is a traditional web shop. Hereby products are presented and collected in a shopping cart. Each product can be added once or multiple times to the cart. Some sites also need to represent non integral amounts, such as 1.5 kg of a product. Additionally a site may be internationalized handling multiple currencies, perhaps controlled by user settings or address.
 Summarizing this scenario implies the following requirements:
 
--> Prices for each item must be modelled by some monetary amount, representing a numeric amount in a single currency.
+-> Prices for each item must be modeled by some monetary amount, representing a numeric amount in a single currency.
 
 -> The prices for all items in the cart must be calculated, this requires sum up all monetary amounts.
 
@@ -255,7 +251,7 @@ that also may change quickly depending on legal changes. Such systems are built 
 different granularity size and complexity, starting from simple sum of amounts until to complex investment
 strategy forecasts on an enterprise level. Such systems imply the following requirements:
 
--> Building blocks should be modelled/organized in a common repository and accessible by a common API, that also allows
+-> Building blocks should be modeled/organized in a common repository and accessible by a common API, that also allows
   introspection of the functionality available. This is a precondition  so insurance solutions can reuse the blocks for
   modeling the required business cases.
 
@@ -303,8 +299,8 @@ It must be possible to format and parse monetary amounts. Therefore the JSR defi
 . supports rounding of amounts for display and reverse rounding during parsing.
 
 [[RequirementsFormattingEE]]
-=== Java EE Support
-. This JSR must avoid restrictions that prevents its use in different runtime environments, such as Java EE. Refer
+=== Java EE / Jakarta EE Support
+. This JSR must avoid restrictions that prevents its use in different runtime environments, such as Java EE or Jakarta EE. Refer
 also to the section <<Boostrap>> for more details on possible EE/CDI integration.
 
 [[RequirementsNonFunctional]]
@@ -314,12 +310,12 @@ also to the section <<Boostrap>> for more details on possible EE/CDI integration
 . Implementation requirements for currencies must require only minimal (if any) extensions on the existing
   +java.util.Currency+.
 . The JSR must be self-contained, meaning it must be possible to use the JSR, without acquiring of external resources,
-  e.g. accessing resources in the internet.
+  e.g. accessing resources in the Internet.
 . Interfaces defined should enable interoperability between different implementations, for data as well as
   functional interoperability. The interfaces must cover all typical use cases, so casting to concrete types should not
   be necessary normally.
 . The API for monetary amounts must not expose its concrete numeric internal representation during compile time.
-. Where feasible method naming and style for currency modelling should be in alignment with parts of the Java
+. Where feasible method naming and style for currency modeling should be in alignment with parts of the Java
   Collection API or +java.time+ / [<<JodaMoney>>]:
    .. same method name prefixes - +of()+ for all factories, unless their inheritance e.g. from +java.lang.Enum+ -
       mandates otherwise, such as +valueOf()+.
@@ -332,7 +328,7 @@ also to the section <<Boostrap>> for more details on possible EE/CDI integration
    .. overall monetary API _feel_ should be similar to +java.math.BigDecimal+.
 . Queries and contexts may require adding additional time related data, such as POSIX timestamps based on millisecond
   resolution as returned by +System.currentTimeMillis()+ or other time types based on new Java 8 date/time API.
-  These aspects are not explicitly modelled, since they depend on the capabilities of the corresponding providers
+  These aspects are not explicitly modeled, since they depend on the capabilities of the corresponding providers
   and the <<MetadataModeling>> capabilities provide good flexibility to implement these things effectively.
 . This JSR will probably also be used also for (business) critical software like real time trading and similar systems.
   These systems and use cases require very specific parameters, which are impossible to model by this JSR and
@@ -367,11 +363,8 @@ different runtime environments and component loading mechanisms. It is discussed
 The JSR’s source code repository under <<source>> provides several modules:
 
 jsr354-api:: contains the JSR 354 API based on Java 8 as described by this specification.
-jsr354-api-bp:: contains the JSR 354 API based on Java 7 as described by this specification.
-jsr354-ri:: contains the ''moneta'' reference implementation based on Java 8 language features.
-jsr354-ri-bp:: contains the ''moneta'' reference implementation based on Java 7 language features.
-jsr354-tck:: contains the technical compatibility kit (TCK). The TCK is built using Java 7 but can be seemlessly be
-used to test implementations based on Java 8.
+jsr354-ri:: contains the ''Moneta'' reference implementation based on Java 8 language features.
+jsr354-tck:: contains the technical compatibility kit (TCK). The TCK is built using Java 8.
 javamoney-parent:: is a root “POM” project for all modules under +org.javamoney+. This includes the RI/TCK projects,
   but not jsr354-api (which is standalone).
 
@@ -477,7 +470,7 @@ formatting. Additionally the JSR's currency interface provides access to a +Curr
 which is capable of providing arbitrary meta-data on the current instance. This meta-data container can be used to
 store additional data, such as the validity time range, corresponding regions or territories or provider data.
 
-So the +CurrencyUnit+ interface for currencies is modelled only with 4 methods as follows:
+So the +CurrencyUnit+ interface for currencies is modeled only with 4 methods as follows:
 
 [source,java]
 .Interface CurrencyUnit
@@ -505,7 +498,7 @@ Hereby
   details on contexts). It basically allows to evaluate the data provider of a currency unit, but can also contain
   additional data as useful, determined by the implementation that provided the currency instance. This context allows
   to support also more complex use cases for extended currency meta-data such as:
-** validity range, e.g. modelled as from/to +LocalDate+
+** validity range, e.g. modeled as from/to +LocalDate+
 ** regional validity constraints
 ** provider validity constraints, e.g. the target stock exchange
 ** internal provider reference ids
@@ -532,7 +525,7 @@ implementation.
 One key aspect is that a monetary amount must always be related to a currency. Mixing of currencies makes typically no
 sense for arithmetic operations on amount or, even worse, results in useless and incorrect results. Properties and
 operations of monetary amounts are modeled by an interface, called +javax.money.MonetaryAmount+. This enables
-effective data and functional interoperability. In general the following aspects are modelled:
+effective data and functional interoperability. In general the following aspects are modeled:
 
 * _Data interoperability_ allowing access to the amount’s
    ** currency modeled as +CurrencyUnit+.
@@ -603,7 +596,7 @@ public interface MonetaryAmount{
 
 Hereby
 
-* +getCurrency()+ returns the amount’s currency, modelled as +CurrencyUnit+. Implementations may co-variantly change the
+* +getCurrency()+ returns the amount’s currency, modeled as +CurrencyUnit+. Implementations may co-variantly change the
   return type to a more specific implementation of +CurrencyUnit+ if desired.
 * +NumberValue getNumber()+ returns a +NumberValue+ (discussed within the next section) that models the numeric part of
   an amount for data interoperability.
@@ -724,13 +717,12 @@ Hereby
 ====  Functional Extension Points: Operators and Queries
 Since the model for monetary amounts only defines a minimal set of algorithmic functions and a prototyping mechanism
 additional extension points are required to allow easily external functionality, e.g. more complex financial
-operations, being applied on amounts. This is modelled by
+operations, being applied on amounts. This is modeled by
 
 * +javax.money.MonetaryOperator+, which models a function +f(M1) -> M2+, that converts an amount to another amount, and
 * +javax.money.MonetaryQuery+, which models a function +f(M1) -> T+, that converts an amount to any type of result.
 
-Note that interfaces in Java 7 and Java 8 have similar signatures, whereas Java 8 additionally is annotated with the
-+@FunctionalInterface+ annotation.
+Functional interfaces are annotated with the +@FunctionalInterface+ annotation.
 
 [[MonetaryOperator]]
 ===== Monetary Operators
@@ -738,15 +730,9 @@ The interface +javax.money.MonetaryOperator+ defines an arbitrary function +f(M1
 amount to another amount. Examples of such operations are rounding, currency conversion or monetary calculations:
 
 [source,java]
-.Interface MonetaryOperator (Java 7)
+.Interface MonetaryOperator
 -------------------------------------------------------------------------------
-// Java 8
 @FunctionalInterface
-public interface MonetaryOperator{
-   MonetaryAmount apply(MonetaryAmount amount);
-}
-
-// Java 7
 public interface MonetaryOperator{
    MonetaryAmount apply(MonetaryAmount amount);
 }
@@ -813,13 +799,7 @@ The interface +javax.money.MonetaryQuery+ models a function +f(M1) -> T+, that c
 [source,java]
 .Interface MonetaryQuery
 -------------------------------------------------------------------------------
-// Java 8
 @FunctionalInterface
-public interface MonetaryQuery<R> {
-  R queryFrom(MonetaryAmount<?> amount);
-}
-
-// Java 7
 public interface MonetaryQuery<R> {
   R queryFrom(MonetaryAmount<?> amount);
 }
@@ -872,7 +852,7 @@ A +MonetaryContext+ is basically used on the following distinct use cases:
    numeric fraction
 ** by the _maximal precision_, that an implementation type supports, without having to truncate the whole or
    the fractional part of an amount.
-** basically additional aspects can be modelled as useful, but are not defined by this specification, e.g. the
+** basically additional aspects can be modeled as useful, but are not defined by this specification, e.g. the
    +MonetaryContext+ can also contain an amount flavor or some other implementation priority, that can be used for
    determining, which amount type is best suited for some use case. For additional aspects to be considered a
    corresponding instance of +<<MonetaryAmountsSingletonQuerySpi>>+ must be implemented and registered, with the
@@ -961,7 +941,7 @@ MonetaryAmountFactory<?> fact = Monetary.getAmountFactory(
 MonetaryAmount money = fact.setCurrency("USD").setNumber(10.50).create();
 -------------------------------------------------------------------------------
 
-As illustrated above the signature of +MonetaryAmountFactory+ is modelled as a builder also supporting a fluent
+As illustrated above the signature of +MonetaryAmountFactory+ is modeled as a builder also supporting a fluent
 programming style:
 
 [source,java]
@@ -1296,13 +1276,7 @@ in Java 8), whose functional method is +getCurrency()+:
 [source,java]
 .Interface CurrencySupplier
 -------------------------------------------------------------------------------
-// Java 8
 @FunctionalInterface
-public interface CurrencySupplier {
-  CurrencyUnit getCurrency();
-}
-
-// Java 7
 public interface CurrencySupplier {
   CurrencyUnit getCurrency();
 }
@@ -1320,13 +1294,7 @@ The interface +javax.money.NumberSupplier+ is a functional interface similar to 
 [source,java]
 .Interface NumberSupplier
 -------------------------------------------------------------------------------
-// Java 8
 @FunctionalInterface
-public interface NumberSupplier {
-  NumberValue getNumber();
-}
-
-// Java 7
 public interface NumberSupplier {
   NumberValue getNumber();
 }
@@ -1381,7 +1349,7 @@ hereby keeping the basic model as simple as possible.
 Similar to other areas of this JSR a +MonetaryConversions+ singleoton is defined, which provides access to all different
 aspects related to currency conversion, such as
 
-* access to providers that offer conversion rates, modelled as +<<ExchangeRateProviders, ExchangeRate>>+.
+* access to providers that offer conversion rates, modeled as +<<ExchangeRateProviders, ExchangeRate>>+.
 * access to conversion operators (+CurrencyConversion extends MonetaryOperator+), that can be used with any
  +MonetaryAmount+ instances.
 * access to further information about the providers currently available.
@@ -1391,8 +1359,8 @@ The following sections give an overview about the functionality in more detail. 
 implementation of the functionality defined. Refer to the <<SPI>> section in this document for more details.
 
 ==== Converting Amounts
-Basically converting of amounts is modelled by the +CurrencyConversion+ interface which extends +MonetaryOperator+,
-hereby adding meta-data support, modelled by +ConversionContext+. Hereby a *conversion is always bound to a specific
+Basically converting of amounts is modeled by the +CurrencyConversion+ interface which extends +MonetaryOperator+,
+hereby adding meta-data support, modeled by +ConversionContext+. Hereby a *conversion is always bound to a specific
 terminating (target) currency*. So basically a +MonetaryAmount+ can simply be converted by passing a
 +CurrencyConversion+ to the amount's +with(MonetaryOperator)+ method:
 
@@ -1442,7 +1410,7 @@ The +ExchangeRate+ models the details of a conversion applied:
 * a +ConversionContext+, which can contain arbitrary additional information about the provider that issued the rate and
   arbitrary further aspects concerning the rate/conversion.
 
-Summarizing an +ExchangeRate+ is modelled as follows:
+Summarizing an +ExchangeRate+ is modeled as follows:
 
 [source,java]
 .Interface ExchangeRate
@@ -1491,7 +1459,7 @@ its backing +ExchangeRateProvider+. Such a provider allows
 * to access +ExchangeRate+ instances, providing a base and a terminating (target) currency.
 * to access +CurrencyConversion+ instances, providing a terminating (target) currency.
 
-Summarizing an +ExchangeRateProvider+ is modelled as follows:
+Summarizing an +ExchangeRateProvider+ is modeled as follows:
 
 [source,java]
 .Interface ExchangeRateProvider
@@ -1504,7 +1472,7 @@ public interface ExchangeRateProvider{
   ExchangeRate getExchangeRate(ConversionQuery conversionQuery);
   CurrencyConversion getCurrencyConversion(ConversionQuery conversionQuery);
 
-  // modelled as default methods in Java 8
+  // modeled as default methods in Java 8
   boolean isAvailable(CurrencyUnit base, CurrencyUnit term);
   boolean isAvailable(String baseCode, String termCode);
   ExchangeRate getExchangeRate(CurrencyUnit base, CurrencyUnit term);
@@ -1623,7 +1591,7 @@ javax.money.defaults.MonetaryConversions.providerChain=provider1,provider2,provi
 
 [[FormattingAPI]]
 === Money and Currency Formatting API
-The formatting is modelled with a quite simple, but very flexible design. It allows the access of formats based
+The formatting is modeled with a quite simple, but very flexible design. It allows the access of formats based
 on +java.util.Locale+, similarly to the functionality in +java.text+, but offers flexibility that goes beyond the JDKs
 formatting packages. In contrary to the JDK formatter the formatter defined by this API are thread-safe and
 arbitrarily expandable.
@@ -1795,7 +1763,7 @@ public interface MonetaryFormatsSingletonSpi{
   Set<String> getProviderNames();                                                          <4>
   List<String> geDefaultProviderChain();                                                   <5>
 
-  // The following methods are modelled as default methods in Java 8
+  // The following methods are modeled as default methods in Java 8
   MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <6>
   MonetaryAmountFormat getAmountFormat(Locale locale, String... providers){...}    <6>
   MonetaryAmountFormat getAmountFormat(String name, String... providers);          <6>
@@ -1963,7 +1931,7 @@ public interface MonetaryCurrenciesSingletonSpi {
   Set<String> getProviderNames();
   Set<CurrencyUnit> getCurrencies(CurrencyQuery query);
 
-  // The following methods are modelled as default methods in Java 8
+  // The following methods are modeled as default methods in Java 8
   CurrencyUnit getCurrency(String currencyCode, String... providers);
   CurrencyUnit getCurrency(Locale country, String... providers);
   Set<CurrencyUnit> getCurrencies(Locale locale, String... providers);
@@ -2258,7 +2226,7 @@ Implementations of this JSR should also consider additional aspects:
 . Implementations should also support cash rounding. E.g. in Switzerland default rounding is done for a scale of +2+,
   whereas when paying in cash, the minor units must be divisible by +5+, since +5+ is the smallest coin possible.
 . Finally it may also possible to provide _historic_ roundings hereby considering an additional target date/time, e.g.
-  modelled as +LocalDate+.
+  modeled as +LocalDate+.
 
 
 [[CurrencyConversionSpi]]
@@ -2754,7 +2722,7 @@ most of them for the following reasons:
   Therefore the corresponding models in this JSR define similar implementation constraints.
 * More complex constraints would be difficult or impossible to ensure by a TCK, so they are defined as recommendations.
 * Finally there is always the possibility that no common ground can be found for the way some functionality can be
-  modelled generically across implementations. It would then be the responsibility of the implementers to follow best,
+  modeled generically across implementations. It would then be the responsibility of the implementers to follow best,
   or at least _de-facto_, practice.
 
 Nevertheless we think some practices are important and should be followed by implementations, so we added the most

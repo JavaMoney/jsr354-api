@@ -302,7 +302,7 @@ It must be possible to format and parse monetary amounts. Therefore the JSR defi
 === Java EE / Jakarta EE Support
 . This JSR must avoid restrictions that prevents its use in different runtime environments, such as Java EE or Jakarta EE. Refer
 also to the section <<Bootstrap>> for more details on possible EE/CDI integration. 
-Examples like <<JadiraFramework>>, <<JakartaBeanValidation>>, <<SpringSupport>> or <<ZalandoJacksonBinding>> show a broad support for JSR 354 in the Java EE, Jakarta EE or Spring ecosystem.
+Examples like <<JadiraFramework>>, <<JakartaBeanValidation>>, <<SpringSupport>> or <<ZalandoJacksonBinding>> show a broad support for JSR 354 in the Java EE, Jakarta EE or Spring ecosystems.
 
 [[RequirementsNonFunctional]]
 === Non Functional Requirements

@@ -7,7 +7,7 @@
 	<groupId>javax.money</groupId>
 	<artifactId>money-api</artifactId>
 	<packaging>jar</packaging>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1</version>
 	<name>JSR 354 (Money and Currency API)</name>
 	<url>https://javamoney.github.io/</url>
 	<inceptionYear>2012</inceptionYear>

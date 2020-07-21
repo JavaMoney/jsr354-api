@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 	<version>1.1.1-SNAPSHOT</version>
 	<name>JSR 354 (Money and Currency API)</name>
-	<url>https://javamoney.github.io/</url>
+	<url>https://javamoney.github.io</url>
 	<inceptionYear>2012</inceptionYear>
 	<description>JSR 354 provides an API for representing, transporting, and performing comprehensive calculations with Money and Currency.</description>
 
@@ -29,7 +29,6 @@
 		<mockito.version>1.10.19</mockito.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<jacoco.version>0.8.5</jacoco.version>
-		<findbugs.version>3.0.5</findbugs.version>
 		<javadoc.version>3.0.1</javadoc.version>
 	</properties>
 
@@ -39,14 +38,6 @@
 	</organization>
 
 	<developers>
-		<developer>
-			<id>atsticks</id>
-			<name>Anatole Tresch</name>
-			<organization>Trivadis AG</organization>
-			<roles>
-				<role>Maintenance Lead</role>
-			</roles>
-		</developer>
 		<developer>
 			<id>keilw</id>
 			<name>Werner Keil</name>
@@ -460,7 +451,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.1</version>
+					<version>3.9.1</version>
 				</plugin>
 				<!-- ======================================================= -->
 				<!-- Packaging (OSGi bundle) -->
@@ -1043,41 +1034,22 @@
 					<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
 				</configuration>
 			</plugin>
+				<!-- Static analysis for occurrences of bug patterns -->
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>${findbugs.version}</version>
-				<configuration>
-					<xrefLocation>${project.reporting.outputDirectory}/../xref</xrefLocation>
-					<xmlOutput>true</xmlOutput>
-					<effort>Max</effort>
-					<threshold>Low</threshold>
-					<failOnError>false</failOnError>
-					<findbugsXmlOutput>true</findbugsXmlOutput>
-					<findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
-					<xrefLocation>xref/</xrefLocation>
-				</configuration>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>4.0.4</version>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 				<version>3.0.0</version>
 			</plugin>
+			<!-- Static analysis for occurrences of bug patterns -->
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>${findbugs.version}</version>
-				<configuration>
-					<xrefLocation>${project.reporting.outputDirectory}/../xref</xrefLocation>
-					<xmlOutput>true</xmlOutput>
-					<effort>Max</effort>
-					<threshold>Low</threshold>
-					<failOnError>false</failOnError>
-					<findbugsXmlOutput>true</findbugsXmlOutput>
-					<findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
-					<xrefLocation>xref/</xrefLocation>
-				</configuration>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>4.0.4</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

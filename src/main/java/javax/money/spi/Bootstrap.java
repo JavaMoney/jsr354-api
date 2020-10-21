@@ -111,18 +111,14 @@ public final class Bootstrap {
     }
 
     /**
-     * Delegate method for {@link ServiceProvider#getServices(Class)}.
+     * Delegate method for {@link ServiceProvider#getService(Class)}.
      *
      * @param serviceType the service type.
      * @return the service found, or {@code null}.
      * @see ServiceProvider#getServices(Class)
      */
     public static <T> T getService(Class<T> serviceType) {
-        List<T> services = getServiceProvider().getServices(serviceType);
-		return services
-				.stream()
-                .findFirst()
-                .orElse(null);
+        return getServiceProvider().getService(serviceType);
     }
 
 }

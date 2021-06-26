@@ -25,5 +25,6 @@ Release Notes
 - *1.0.1*  API as defined by JSR 354 Spec (Fix: building Java 7 API with Java 7)
 - *1.0.2*  API as defined by JSR 354 Spec (Fix: built with Java 9) - dont use, use 1.0.3 instead!
 - *1.0.3*  API as defined by JSR 354 Spec (Compatible with Java 8, full Java 9 module support)
+- *1.1*    API as defined by JSR 354 MR 1.
 
 [![Built with Maven](http://maven.apache.org/images/logos/maven-feather.png)](http://maven.org/)

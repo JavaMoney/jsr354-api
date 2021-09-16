@@ -1,6 +1,6 @@
 /*
  * Copyright 2012-2016 Credit Suisse
- * Copyright 2018-2020 Werner Keil, Otavio Santana, Trivadis AG
+ * Copyright 2018-2021 Werner Keil, Otavio Santana, Trivadis AG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public final class Monetary {
                     DefaultMonetaryCurrenciesSingletonSpi::new);
         } catch (Exception e) {
             Logger.getLogger(Monetary.class.getName())
-                    .log(Level.INFO, "Failed to load MonetaryCurrenciesSingletonSpi, using default.", e);
+                    .log(Level.WARNING, "Failed to load MonetaryCurrenciesSingletonSpi, using default.", e);
             return new DefaultMonetaryCurrenciesSingletonSpi();
         }
     }
@@ -496,6 +496,4 @@ public final class Monetary {
         return monetaryCurrenciesSingletonSpi()
                 .getDefaultProviderChain();
     }
-
-
 }

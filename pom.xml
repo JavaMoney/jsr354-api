@@ -858,6 +858,7 @@
 						<exclude>**/settings.xml</exclude>
 						<exclude>src/test/resources/**</exclude>
 						<exclude>src/main/resources/**</exclude>
+						<exclude>src/main/asciidoc/**</exclude>
 						<exclude>src/main/config/**</exclude>
 						<exclude>src/main/emf/**</exclude>
 						<exclude>src/site/**</exclude>

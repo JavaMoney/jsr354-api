@@ -22,13 +22,13 @@
 		<maven.compiler.release>9</maven.compiler.release>
 		<maven.compiler.source>9</maven.compiler.source>
 		<basedir>.</basedir>
-		<thisYear>2020</thisYear>
+		<thisYear>2021</thisYear>
 
 		<!-- Dependency versions -->
 		<testng.version>7.1.0</testng.version>
 		<mockito.version>1.10.19</mockito.version>
 		<hamcrest.version>2.2</hamcrest.version>
-		<jacoco.version>0.8.5</jacoco.version>
+		<jacoco.version>0.8.7</jacoco.version>
 		<javadoc.version>3.0.1</javadoc.version>
 	</properties>
 

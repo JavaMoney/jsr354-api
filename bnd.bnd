@@ -16,7 +16,7 @@ Bundle-SymbolicName: javax.money
 Bundle-Description: JavaMoney - API
 Bundle-Category: Implementation
 Bundle-Copyright: (C) Trivadis AG, Werner Keil, Otavio Santana
-Bundle-License: JSR 354 Spec Evaluation/Implementation License
+Bundle-License: Apache License 2.0
 Bundle-Vendor: Trivadis AG, Werner Keil, Otavio Santana
 Bundle-DocURL: http://www.javamoney.org
 Export-Package: \

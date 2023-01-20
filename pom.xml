@@ -854,6 +854,9 @@
 						<exclude>.github/**</exclude>
 						<exclude>.travis.yml</exclude>
 						<exclude>.circleci/**</exclude>
+						<exclude>.mvn/**</exclude>
+						<exclude>mvnw</exclude>
+						<exclude>mvnw.cmd</exclude>
 						<exclude>**/LICENSE.txt</exclude>
 						<exclude>**/README.md</exclude>
 						<exclude>**/pom.xml</exclude>

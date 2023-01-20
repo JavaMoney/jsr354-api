@@ -25,7 +25,7 @@
 		<thisYear>2021</thisYear>
 
 		<!-- Dependency versions -->
-		<testng.version>7.1.0</testng.version>
+		<testng.version>7.7.1</testng.version>
 		<mockito.version>1.10.19</mockito.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<jacoco.version>0.8.7</jacoco.version>

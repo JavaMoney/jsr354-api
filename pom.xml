@@ -30,6 +30,7 @@
 		<hamcrest.version>2.2</hamcrest.version>
 		<jacoco.version>0.8.7</jacoco.version>
 		<javadoc.version>3.0.1</javadoc.version>
+		<closeTestReports>true</closeTestReports>
 	</properties>
 
 	<organization>
@@ -518,6 +519,7 @@
 						<excludes>
 							<exclude>**/Abstract*.java</exclude>
 						</excludes>
+						<disableXmlReport>${closeTestReports}</disableXmlReport>
 					</configuration>
 				</plugin>
 				<plugin>

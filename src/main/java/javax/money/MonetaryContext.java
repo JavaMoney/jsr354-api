@@ -34,6 +34,7 @@ import java.io.Serializable;
  *
  * @author Anatole Tresch
  * @author Werner Keil
+ * @version 1.5
  */
 public final class MonetaryContext extends AbstractContext implements Serializable {
 
@@ -83,9 +84,9 @@ public final class MonetaryContext extends AbstractContext implements Serializab
     }
 
     /**
-     * Allows to check if {@code minScale == maxScale}.
+     * Allows to check if {@code scale == maxScale}.
      *
-     * @return {@code true} if {@code minScale == maxScale}.
+     * @return {@code true} if {@code scale == maxScale}.
      */
     public boolean isFixedScale() {
         Boolean val = getBoolean(FIXED_SCALE);

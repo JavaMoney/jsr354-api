@@ -25,11 +25,11 @@ jobs:
       # Then run your tests!
       - run:
           name: Test
-          command: mvn test
+          command: mvn test -DcreateDocs=true -B
       # Then deliver code coverage
       - run:
           name: Coverage
-          command: mvn --batch-mode jacoco:report coveralls:jacoco -DsourceEncoding=UTF-8
+          command: mvn jacoco:report coveralls:jacoco -DsourceEncoding=UTF-8
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows

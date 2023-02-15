@@ -25,7 +25,7 @@ jobs:
       # Then run your tests!
       - run:
           name: Test
-          command: mvn test jacoco:report coveralls:report -DsourceEncoding=UTF-8
+          command: mvn test jacoco:report coveralls:report -DsourceEncoding=UTF-8 -P ci
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows

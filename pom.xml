@@ -17,7 +17,6 @@
 		<moduleDir>.</moduleDir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
 		<jdkVersion>1.8</jdkVersion>
 		<maven.compiler.release>9</maven.compiler.release>
 		<maven.compiler.source>9</maven.compiler.source>
@@ -25,11 +24,13 @@
 		<thisYear>2021</thisYear>
 
 		<!-- Dependency versions -->
-		<testng.version>7.1.0</testng.version>
-		<mockito.version>1.10.19</mockito.version>
+		<testng.version>7.7.1</testng.version>
+		<mockito.version>5.3.1</mockito.version>
 		<hamcrest.version>2.2</hamcrest.version>
-		<jacoco.version>0.8.7</jacoco.version>
-		<javadoc.version>3.0.1</javadoc.version>
+		<jacoco.version>0.8.10</jacoco.version>
+		<javadoc.version>3.5.0</javadoc.version>
+		<asciidoctor-maven.version>2.2.3</asciidoctor-maven.version>
+		<asciidoctor-pdf.version></asciidoctor-pdf.version>
 		<closeTestReports>true</closeTestReports>
 	</properties>
 
@@ -192,7 +193,7 @@
 	</mailingLists>
 
 	<issueManagement>
-		<system>GITHUB</system>
+		<system>GitHub</system>
 		<url>https://github.com/JavaMoney/jsr354-api/issues</url>
 	</issueManagement>
 
@@ -402,9 +403,10 @@
 				<version>${testng.version}</version>
 				<scope>test</scope>
 			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
 			<dependency>
 				<groupId>org.mockito</groupId>
-				<artifactId>mockito-all</artifactId>
+				<artifactId>mockito-core</artifactId>
 				<version>${mockito.version}</version>
 				<scope>test</scope>
 			</dependency>
@@ -425,7 +427,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
+			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -616,7 +618,7 @@
 				<plugin>
 					<groupId>org.asciidoctor</groupId>
 					<artifactId>asciidoctor-maven-plugin</artifactId>
-					<version>2.2.1</version>
+					<version>${asciidoctor-maven.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.jacoco</groupId>
@@ -763,7 +765,7 @@
 					<dependency>
 						<groupId>org.asciidoctor</groupId>
 						<artifactId>asciidoctorj-pdf</artifactId>
-						<version>1.6.0</version>
+						<version>${asciidoctor-pdf.version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>

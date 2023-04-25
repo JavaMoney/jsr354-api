@@ -30,7 +30,7 @@
 		<jacoco.version>0.8.10</jacoco.version>
 		<javadoc.version>3.5.0</javadoc.version>
 		<asciidoctor-maven.version>2.2.3</asciidoctor-maven.version>
-		<asciidoctor-pdf.version></asciidoctor-pdf.version>
+		<asciidoctor-pdf.version>2.3.7</asciidoctor-pdf.version>
 		<closeTestReports>true</closeTestReports>
 	</properties>
 

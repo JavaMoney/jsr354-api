@@ -946,7 +946,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>3.0.0-M3</version>
+				<version>3.0.0-M7</version>
 				<configuration>
 					<aggregate>true</aggregate>
 					<xrefLocation>${project.reporting.outputDirectory}/../xref-test</xrefLocation>
@@ -956,7 +956,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.12.0</version>
+				<version>3.20.0</version>
 				<configuration>
 					<targetJdk>${maven.compile.targetLevel}</targetJdk>
 					<format>xml</format>
@@ -968,7 +968,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
-				<version>2.4</version>
+				<version>3.0.0</version>
 				<configuration>
 					<aggregate>true</aggregate>
 					<encoding>${project.build.sourceEncoding}</encoding>

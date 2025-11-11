@@ -213,7 +213,7 @@ public interface MonetaryAmount extends CurrencySupplier, NumberSupplier, Compar
      * zeroes and different numeric capabilities.
      *
      * @param amount the {@link MonetaryAmount} to be compared with this instance.
-     * @return {@code true} if {@code amount < this}.
+     * @return {@code true} if {@code this < amount}.
      * @throws MonetaryException if the amount's currency is not equal to the currency of this instance.
      */
     boolean isLessThan(MonetaryAmount amount);
